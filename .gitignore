@@ -1,4 +1,6 @@
 # Ed's custom
+.gitignore
+.gitattributes
 _old/
 nb_wrkspc
 __pycache__/
