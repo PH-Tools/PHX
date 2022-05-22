@@ -1,3 +1,23 @@
+# Ed's custom
+_old/
+nb_wrkspc
+__pycache__/
+.DS_Store
+.vscode/
+.env
+venv/
+.venv/
+.venv_mbair/
+.gitignore
+_coverage_html/*
+.coverage
+.coveragerc
+logs/
+LOG/
+copy_hb_extension_files.py
+sample/
+docs/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
