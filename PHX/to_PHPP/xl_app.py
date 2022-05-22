@@ -7,7 +7,7 @@ from typing import Optional, List
 from contextlib import contextmanager
 
 import xlwings as xw
-from rich import print
+
 
 from PHX.to_PHPP import xl_data
 

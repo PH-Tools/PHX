@@ -4,7 +4,7 @@
 """Export an HBJSON file to a PHPP excel document."""
 
 import sys
-from rich import print
+
 import pathlib
 import os
 

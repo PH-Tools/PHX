@@ -3,7 +3,6 @@
 
 """DEV SANDBOX: export an HBJSON file to a PHPP XL file."""
 
-from rich import print
 import pathlib
 
 from PHX.from_HBJSON import read_HBJSON_file, create_project
