@@ -1,0 +1,2 @@
+# to_WUFI_XML:
+The modules in this package are used to create a new WUFI-Passive XML file, based on an existing PHX model object. This will output a new XML file with all relevant building date which can then be opened in WUFI-Passive. 

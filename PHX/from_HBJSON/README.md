@@ -1,0 +1,2 @@
+# from_HBJSON:
+The modules in this package are used to build up a new PHX model object, based on an existing Honeybee-model. These modules include tools for the reading of HBJSON files which have been created with additional Passive House specific attributes using the [Honeybee-PH](https://github.com/PH-Tools/honeybee_ph) plugin.
