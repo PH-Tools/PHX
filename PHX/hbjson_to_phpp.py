@@ -8,7 +8,7 @@ from rich import print
 import pathlib
 import os
 
-from PHX.from_HBJSON import read_HBJSON_file, create_project
+from from_HBJSON import read_HBJSON_file, create_project
 from PHX.to_PHPP import phpp_app
 from PHX.to_PHPP.phpp_localization.shape_model import PhppShape
 
