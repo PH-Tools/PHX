@@ -4,6 +4,7 @@
 """DEV SANDBOX: export an HBJSON file to a PHPP XL file."""
 
 import pathlib
+from rich import print
 
 from PHX.from_HBJSON import read_HBJSON_file, create_project
 from PHX.to_PHPP import phpp_app
@@ -17,7 +18,7 @@ if __name__ == '__main__':
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
-    print("[bold green]- [/bold green]" * 50)
+    print("[bold green]- " * 50)
     print(
         f"[bold green]> Reading in the HBJSON file: ./{SOURCE_FILE}[/bold green]")
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(SOURCE_FILE)

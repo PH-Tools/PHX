@@ -42,7 +42,7 @@ def read_hb_json_from_file(_file_address: pathlib.Path) -> Dict:
     """
 
     if not os.path.isfile(_file_address):
-        raise Exception("Error: {} is not a valid file path?".format(_file_address))
+        raise FileNotFoundError("Error: {} is not a valid file path?".format(_file_address))
 
     with open(_file_address) as json_file:
         data = json.load(json_file)
