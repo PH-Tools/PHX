@@ -37,7 +37,7 @@ Project
 ```
 
 # PHX Python Version:
-All PHX Classes should be written to comply with Python 3.7 (IronPython) format. In the Rhino use-case, these PHX classes are used from the Ladybug-Tools standard python interpreter and so should ensure compatibility with the python version installed by the Ladybug Tools plugin.
+All PHX Classes should be written to comply with Python 3.7 format. In the Rhino use-case, these PHX classes are used from the Ladybug-Tools standard python interpreter and so should ensure compatibility with the python version installed by the Ladybug Tools plugin.
 
 Note: It is recommended to include type hints on all PHX classes for documentation purposes.
 
