@@ -37,6 +37,7 @@ def _hb_ext_exposure_to_phx_enum(_hb_face: Union[face.Face, aperture.Aperture]) 
         "Outdoors": ComponentExposureExterior.EXTERIOR,
         "Ground": ComponentExposureExterior.GROUND,
         "Surface": ComponentExposureExterior.SURFACE,
+        "Adiabatic": ComponentExposureExterior.SURFACE
     }
     return mapping[str(_hb_face.boundary_condition)]
 
@@ -47,16 +48,19 @@ def _hb_int_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
             "Outdoors": ComponentColor.EXT_WALL_OUTER,
             "Surface": ComponentColor.INNER_WALL,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
+            "Adiabatic": ComponentColor.INNER_WALL,
         },
         "RoofCeiling": {
             "Outdoors": ComponentColor.SLOPED_ROOF_OUTER,
             "Surface": ComponentColor.CEILING,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
+            "Adiabatic": ComponentColor.CEILING,
         },
         "Floor": {
             "Outdoors": ComponentColor.FLOOR,
             "Surface": ComponentColor.FLOOR,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
+            "Adiabatic": ComponentColor.FLOOR,
         },
     }
     return mapping[str(_hb_face.type)][str(_hb_face.boundary_condition)]
@@ -68,16 +72,19 @@ def _hb_ext_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
             "Outdoors": ComponentColor.EXT_WALL_OUTER,
             "Surface": ComponentColor.INNER_WALL,
             "Ground": ComponentColor.EXT_WALL_OUTER,
+            "Adiabatic": ComponentColor.INNER_WALL,
         },
         "RoofCeiling": {
             "Outdoors": ComponentColor.SLOPED_ROOF_INNER,
             "Surface": ComponentColor.CEILING,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
+            "Adiabatic": ComponentColor.CEILING,
         },
         "Floor": {
             "Outdoors": ComponentColor.FLOOR,
             "Surface": ComponentColor.FLOOR,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
+            "Adiabatic": ComponentColor.FLOOR,
         },
     }
     return mapping[str(_hb_face.type)][str(_hb_face.boundary_condition)]
