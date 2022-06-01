@@ -25,7 +25,6 @@ source_file_names = [
 SOURCE_FILES = [pathlib.Path(SOURCE_DIR, n) for n in source_file_names]
 TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 
-
 def reload_PHX():
     """Reload all the PHX model modules to reset counters. This is only needed 
     so that the tests align when converting multiple models in one run."""

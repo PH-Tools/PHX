@@ -13,8 +13,7 @@ from PHX.to_PHPP.phpp_localization.shape_model import PhppShape
 if __name__ == '__main__':
     # --- Input file Path
     # -------------------------------------------------------------------------
-    SOURCE_FILE = pathlib.Path("tests", "_source_hbjson",
-                               "Default_Room_Multiple_Zones_with_PHI_Cert.hbjson")
+    SOURCE_FILE = pathlib.Path("sample","hbjson","Java_Street.hbjson")
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
