@@ -2,9 +2,12 @@
 # -*- Python Version: 3.7 -*-
 
 """DEV SANDBOX: convert an HBJSON file over to WUFI XML format."""
-import importlib
 
+import importlib
 import pathlib
+
+from rich import print
+
 from PHX.from_HBJSON import read_HBJSON_file, create_project
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 from PHX.model import (building, project, geometry, schedules, certification,
@@ -39,6 +42,7 @@ def reload_PHX():
     importlib.reload(components)
 
 
+
 def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
     # -- Re-set all the PHX modules (counters)
     reload_PHX()
@@ -69,5 +73,6 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
 
 
 if __name__ == '__main__':
+    SOURCE_FILES = [pathlib.Path("/Users/em/Dropbox/bldgtyp/2021 ELS/07 PHPP/hbjson/ELS_220704.hbjson")]
     for source_file in SOURCE_FILES:
         generate_xml_file(source_file, TARGET_DIR)

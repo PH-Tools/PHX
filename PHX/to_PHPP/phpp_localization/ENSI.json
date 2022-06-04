@@ -1,6 +1,51 @@
 {
     "VERIFICATION": {
         "name": "Verification",
+        "phi_building_category_type": {
+            "locator_col": "Q",
+            "locator_string": "Calculation electricity / Internal heat gains",
+            "input_column": "R",
+            "input_row_offset": 1,
+            "options": {
+                "1": "1-Residential building",
+                "2": "2-Non-residential building"
+            }
+        },
+        "phi_building_use_type": {
+            "locator_col": "Q",
+            "locator_string": "Utilisation pattern:",
+            "input_column": "R",
+            "input_row_offset": 0,
+            "options": {
+                "10": "10-Dwelling",
+                "11": "11-Nursing home / students",
+                "12": "12-Other",
+                "20": "20-Office / Admin. building",
+                "21": "21-School",
+                "22": "22-Other"
+            }
+        },
+        "phi_building_ihg_type": {
+            "locator_col": "Q",
+            "locator_string": "Values:",
+            "input_column": "R",
+            "input_row_offset": 0,
+            "options": {
+                "2": "2-Standard",
+                "3": "3-PHPP calculation ('IHG' worksheet)",
+                "4": "4-PHPP calculation ('IHG non-res' worksheet)"
+            }
+        },
+        "phi_building_occupancy_type": {
+            "locator_col": "Q",
+            "locator_string": "Occupancy",
+            "input_column": "R",
+            "input_row_offset": 1,
+            "options": {
+                "1": "1-Standard (only for residential buildings)",
+                "2": "2-User determined"
+            }
+        },
         "phi_certification_type": {
             "locator_col": "Q",
             "locator_string": "Building energy standard",

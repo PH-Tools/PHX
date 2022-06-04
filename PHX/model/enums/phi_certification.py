@@ -5,6 +5,26 @@
 
 from enum import Enum
 
+class PhiCertificationBuildingCategoryType(Enum):
+    RESIDENTIAL_BUILDING = 1
+    NONRESIDENTIAL_BUILDING = 2
+
+class PhiCertificationBuildingUseType(Enum):
+        DWELLING = 10
+        NURSING_HOME = 11
+        OTHER_RES = 12
+        OFFICE = 20
+        SCHOOL = 21
+        OTHER_NONRES = 22
+
+class PhiCertificationIHGType(Enum):
+        STANDARD = 2
+        RES_CUSTOM = 3
+        NONRES_CUSTOM = 4
+
+class PhiCertificationOccupancyType(Enum):
+        STANDARD = 1
+        CUSTOM = 2
 
 class PhiCertificationType(Enum):
     PASSIVE_HOUSE = 1

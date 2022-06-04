@@ -8,7 +8,7 @@ from typing import ClassVar, Optional
 from dataclasses import dataclass, field
 
 from PHX.model import ground
-from PHX.model.enums import phi_certification
+from PHX.model.enums import phi_certification, phius_certification
 
 
 @dataclass
@@ -22,10 +22,7 @@ class PhxPhBuildingData:
     _count: ClassVar[int] = 0
 
     id_num: int = field(init=False, default=0)
-    building_category: int = 1
-    occupancy_type: int = 1
-    building_status: int = 1
-    building_type: int = 1
+        
     num_of_units: int = 1
     num_of_floors: int = 1
     occupancy_setting_method: int = 2  # Design
@@ -34,7 +31,9 @@ class PhxPhBuildingData:
     airtightness_n50: float = 1.0  # ach
     wind_coefficient_e: float = 0.07
     wind_coefficient_f: float = 15
+    
     setpoints: PhxSetpoints = field(default_factory=PhxSetpoints)
+    
     foundations: list[ground.PhxFoundation] = field(default_factory=list)
 
     def __post_init__(self) -> None:
@@ -45,29 +44,51 @@ class PhxPhBuildingData:
         self.foundations.append(_input)
 
 
+# -----------------------------------------------------------------------------
 @dataclass
-class PhxPhCertificationSettings:
-    phi_certification_type = phi_certification.PhiCertificationType(1)
-    phi_certification_class = phi_certification.PhiCertificationClass(1)
-    phi_pe_type = phi_certification.PhiCertificationPEType(2)
-    phi_enerphit_type = phi_certification.PhiCertificationEnerPHitType(2)
-    phi_retrofit_type = phi_certification.PhiCertificationRetrofitType(1)
-
-
-@dataclass
-class PhxPHCertificationCriteria:
+class PhxPhiusCertificationCriteria:
     ph_certificate_criteria: int = 3
     ph_selection_target_data: int = 2
-    annual_heating_demand: float = 15.0
-    annual_cooling_demand: float = 15.0
-    peak_heating_load: float = 10.0
-    peak_cooling_load: float = 10.0
-
+    
+    phius_annual_heating_demand: float = 15.0
+    phius_annual_cooling_demand: float = 15.0
+    phius_peak_heating_load: float = 10.0
+    phius_peak_cooling_load: float = 10.0
 
 @dataclass
-class PhxPHCertification:
-    certification_criteria: PhxPHCertificationCriteria = field(
-        default_factory=PhxPHCertificationCriteria)
-    certification_settings: PhxPhCertificationSettings = field(
-        default_factory=PhxPhCertificationSettings)
-    ph_building_data: Optional[PhxPhBuildingData] = None
+class PhxPhiusCertificationSettings:
+    phius_building_category_type = phius_certification.PhiusCertificationBuildingCategoryType.RESIDENTIAL_BUILDING
+    phius_building_use_type = phius_certification.PhiusCertificationBuildingUseType.RESIDENTIAL
+    phius_building_status = phius_certification.PhiusCertificationBuildingStatus.IN_PLANNING
+    phius_building_type = phius_certification.PhiusCertificationBuildingType.NEW_CONSTRUCTION
+
+@dataclass
+class PhxPhiusCertification:
+    phius_certification_criteria: PhxPhiusCertificationCriteria = field(
+        default_factory=PhxPhiusCertificationCriteria)
+    phius_certification_settings: PhxPhiusCertificationSettings = field(
+        default_factory=PhxPhiusCertificationSettings)
+    
+    # TODO: Refactor this out to someplace else....
+    ph_building_data: PhxPhBuildingData = field(
+        default_factory=PhxPhBuildingData)
+
+
+# -----------------------------------------------------------------------------
+@dataclass
+class PhxPhiCertificationSettings:
+    phi_building_category_type = phi_certification.PhiCertificationBuildingCategoryType.RESIDENTIAL_BUILDING
+    phi_building_use_type = phi_certification.PhiCertificationBuildingUseType.DWELLING
+    phi_building_ihg_type = phi_certification.PhiCertificationIHGType.STANDARD
+    phi_building_occupancy_type = phi_certification.PhiCertificationOccupancyType.STANDARD
+
+    phi_certification_type = phi_certification.PhiCertificationType.PASSIVE_HOUSE
+    phi_certification_class = phi_certification.PhiCertificationClass.CLASSIC
+    phi_pe_type = phi_certification.PhiCertificationPEType.PER
+    phi_enerphit_type = phi_certification.PhiCertificationEnerPHitType.BY_DEMAND
+    phi_retrofit_type = phi_certification.PhiCertificationRetrofitType.NEW_BUILDING
+
+@dataclass
+class PhxPhiCertification:
+    phi_certification_settings: PhxPhiCertificationSettings = field(
+        default_factory=PhxPhiCertificationSettings)

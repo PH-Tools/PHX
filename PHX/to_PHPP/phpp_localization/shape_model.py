@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""Datamodel of the PHPP 'Shape' (worksheet names and input column names)."""
+"""Data model of the PHPP 'Shape' (worksheet names and input column names)."""
 
 from typing import Dict, Optional
 from pydantic import BaseModel
@@ -20,11 +20,17 @@ class VerificationInputItem(BaseModel):
 
 class Verification(BaseModel):
     name: str
+    phi_building_category_type: VerificationInputItem
+    phi_building_use_type: VerificationInputItem
+    phi_building_ihg_type: VerificationInputItem
+    phi_building_occupancy_type: VerificationInputItem
+
     phi_certification_type: VerificationInputItem
     phi_certification_class: VerificationInputItem
     phi_pe_type: VerificationInputItem
     phi_enerphit_type: VerificationInputItem
     phi_retrofit_type: VerificationInputItem
+    
     num_of_units: VerificationInputItem
     setpoint_winter: VerificationInputItem
     setpoint_summer: VerificationInputItem

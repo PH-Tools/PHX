@@ -62,68 +62,101 @@ class PHPPConnection:
 
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
         for phx_variant in phx_project.variants:
+            
             # # TODO: multiple variants?
+
+            # --- Building Type / Use
+            self.verification.write_item(
+                verification_data.VerificationInput.enum(
+                    shape=self.shape.VERIFICATION,
+                    input_type='phi_building_category_type',
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_building_category_type
+                )
+            )
+            self.verification.write_item(
+                verification_data.VerificationInput.enum(
+                    shape=self.shape.VERIFICATION,
+                    input_type='phi_building_use_type',
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_building_use_type
+                )
+            )
+            self.verification.write_item(
+                verification_data.VerificationInput.enum(
+                    shape=self.shape.VERIFICATION,
+                    input_type='phi_building_ihg_type',
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_building_ihg_type
+                )
+            )
+            self.verification.write_item(
+                verification_data.VerificationInput.enum(
+                    shape=self.shape.VERIFICATION,
+                    input_type='phi_building_occupancy_type',
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_building_occupancy_type
+                )
+            )
+
             # --- Certification Config
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_certification_type',
-                    input_enum_value=phx_variant.ph_certification.certification_settings.phi_certification_type
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_certification_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_certification_class',
-                    input_enum_value=phx_variant.ph_certification.certification_settings.phi_certification_class
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_certification_class
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_pe_type',
-                    input_enum_value=phx_variant.ph_certification.certification_settings.phi_pe_type
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_pe_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_enerphit_type',
-                    input_enum_value=phx_variant.ph_certification.certification_settings.phi_enerphit_type
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_enerphit_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_retrofit_type',
-                    input_enum_value=phx_variant.ph_certification.certification_settings.phi_retrofit_type
+                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_retrofit_type
                 )
             )
 
             # ---- Model Parameters
-            if not phx_variant.ph_certification.ph_building_data:
+            if not phx_variant.phius_certification.ph_building_data:
                 continue
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type='num_of_units',
-                    input_data=phx_variant.ph_certification.ph_building_data.num_of_units
+                    input_data=phx_variant.phius_certification.ph_building_data.num_of_units
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type='setpoint_winter',
-                    input_data=phx_variant.ph_certification.ph_building_data.setpoints.winter
+                    input_data=phx_variant.phius_certification.ph_building_data.setpoints.winter
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type='setpoint_summer',
-                    input_data=phx_variant.ph_certification.ph_building_data.setpoints.summer
+                    input_data=phx_variant.phius_certification.ph_building_data.setpoints.summer
                 )
             )
+        
         return None
 
     def write_climate_data(self, phx_project: project.PhxProject) -> None:
@@ -336,9 +369,9 @@ class PHPPConnection:
 
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
-            if not variant.ph_certification.ph_building_data:
+            if not variant.phius_certification.ph_building_data:
                 continue
-            ph_bldg: certification.PhxPhBuildingData = variant.ph_certification.ph_building_data
+            ph_bldg: certification.PhxPhBuildingData = variant.phius_certification.ph_building_data
 
             # TODO: Get the actual values from the Model somehow
             self.ventilation.write_wind_coeff_e(

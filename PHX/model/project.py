@@ -21,8 +21,12 @@ class PhxVariant:
     plugin: str = ""
     building: building.PhxBuilding = field(
         default_factory=building.PhxBuilding)
-    ph_certification: certification.PhxPHCertification = field(
-        default_factory=certification.PhxPHCertification)
+    
+    phius_certification: certification.PhxPhiusCertification = field(
+        default_factory=certification.PhxPhiusCertification)
+    phi_certification: certification.PhxPhiCertification = field(
+        default_factory=certification.PhxPhiCertification)
+    
     location: climate.PhxLocation = field(default_factory=climate.PhxLocation)
     mech_systems: collection.PhxMechanicalEquipmentCollection = field(
         default_factory=collection.PhxMechanicalEquipmentCollection)

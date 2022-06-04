@@ -8,7 +8,7 @@ import sys
 
 from PHX.model import (certification, climate, constructions,
                        geometry, ground, schedules, hvac, loads,
-                       building, building, elec_equip, project, components)
+                       building, elec_equip, project, components)
 from PHX.to_WUFI_XML.xml_writables import XML_Node, XML_List, XML_Object, xml_writable
 
 TOL_LEV1 = 2  # Value tolerance for rounding. ie; 9.843181919194 -> 9.84
@@ -55,7 +55,7 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
         XML_Object("Graphics_3D", _variant.graphics3D),
         XML_Object("Building", _variant.building),
         XML_Object("ClimateLocation", _variant.location),
-        XML_Object("PassivehouseData", _variant.ph_certification),
+        XML_Object("PassivehouseData", _variant.phius_certification),
         XML_Object("HVAC", _variant.mech_systems,
                    _schema_name='_PhxMechanicalEquipmentCollection'),
     ]
@@ -170,41 +170,41 @@ def _PhxComponentAperture(_c: building.PhxComponentAperture) -> List[xml_writabl
 # -- CERTIFICATION ------------------------------------------------------------
 
 
-def _PhxPhBuildingData(_ph_bldg: certification.PhxPhBuildingData) -> List[xml_writable]:
+def _PhxPhBuildingData(_phius_cert: certification.PhxPhiusCertification) -> List[xml_writable]:
     return [
-        XML_Node("IdentNr", _ph_bldg._count),
-        XML_Node("BuildingCategory", _ph_bldg.building_category),
-        XML_Node("OccupancyTypeResidential", _ph_bldg.occupancy_type),
-        XML_Node("BuildingStatus", _ph_bldg.building_status),
-        XML_Node("BuildingType", _ph_bldg.building_type),
-        XML_Node("OccupancySettingMethod", _ph_bldg.occupancy_setting_method),
-        XML_Node("NumberUnits", _ph_bldg.num_of_units),
-        XML_Node("CountStories", _ph_bldg.num_of_floors),
-        XML_Node("EnvelopeAirtightnessCoefficient", _ph_bldg.airtightness_q50),
+        XML_Node("IdentNr", _phius_cert.ph_building_data._count),
+        XML_Node("BuildingCategory", _phius_cert.phius_certification_settings.phius_building_category_type.value),
+        XML_Node("OccupancyTypeResidential", _phius_cert.phius_certification_settings.phius_building_use_type.value),
+        XML_Node("BuildingStatus", _phius_cert.phius_certification_settings.phius_building_status.value),
+        XML_Node("BuildingType", _phius_cert.phius_certification_settings.phius_building_type.value),
+        XML_Node("OccupancySettingMethod", _phius_cert.ph_building_data.occupancy_setting_method),
+        XML_Node("NumberUnits", _phius_cert.ph_building_data.num_of_units),
+        XML_Node("CountStories", _phius_cert.ph_building_data.num_of_floors),
+        XML_Node("EnvelopeAirtightnessCoefficient", _phius_cert.ph_building_data.airtightness_q50),
         XML_List('FoundationInterfaces', [XML_Object('FoundationInterface', f, 'index', i)
-                                          for i, f in enumerate(_ph_bldg.foundations)]),
+                                          for i, f in enumerate(_phius_cert.ph_building_data.foundations)]),
     ]
 
 
-def _PhxPHCertification(_ph_data: certification.PhxPHCertification) -> List[xml_writable]:
+def _PhxPhiusCertification(_phius_cert: certification.PhxPhiusCertification) -> List[xml_writable]:
     # No idea why this is a list in Wufi? When would there ever be more than 1? whatever...
-    ph_building_data_as_list = [
-        _ph_data.ph_building_data] if _ph_data.ph_building_data else []
+    _temp_bldg_data_list = [_phius_cert]
+    
     return [
         XML_Node("PH_CertificateCriteria",
-                 _ph_data.certification_criteria.ph_certificate_criteria),
+                 _phius_cert.phius_certification_criteria.ph_certificate_criteria),
         XML_Node("PH_SelectionTargetData",
-                 _ph_data.certification_criteria.ph_selection_target_data),
+                 _phius_cert.phius_certification_criteria.ph_selection_target_data),
         XML_Node("AnnualHeatingDemand",
-                 _ph_data.certification_criteria.annual_heating_demand),
+                 _phius_cert.phius_certification_criteria.phius_annual_heating_demand),
         XML_Node("AnnualCoolingDemand",
-                 _ph_data.certification_criteria.annual_cooling_demand),
+                 _phius_cert.phius_certification_criteria.phius_annual_cooling_demand),
         XML_Node("PeakHeatingLoad",
-                 _ph_data.certification_criteria.peak_heating_load),
+                 _phius_cert.phius_certification_criteria.phius_peak_heating_load),
         XML_Node("PeakCoolingLoad",
-                 _ph_data.certification_criteria.peak_cooling_load),
-        XML_List("PH_Buildings", [XML_Object("PH_Building", obj, "index", i)
-                 for i, obj in enumerate(ph_building_data_as_list)]),
+                 _phius_cert.phius_certification_criteria.phius_peak_cooling_load),
+        XML_List("PH_Buildings", [XML_Object("PH_Building", obj, "index", i, _schema_name="_PhxPhBuildingData")
+                 for i, obj in enumerate(_temp_bldg_data_list)]),
     ]
 
 

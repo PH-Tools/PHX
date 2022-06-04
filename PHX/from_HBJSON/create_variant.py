@@ -7,9 +7,10 @@ from typing import Dict
 
 from honeybee import room
 
-from honeybee_ph import location
+from honeybee_ph import location, phi, phius
 from honeybee_energy_ph.properties.load import equipment
 from PHX.model import project, certification, ground, climate, constructions
+from PHX.model.enums import phi_certification, phius_certification
 from PHX.from_HBJSON import create_building, create_hvac, create_shw, create_elec_equip
 
 
@@ -22,7 +23,7 @@ def add_building_from_hb_room(_variant: project.PhxVariant,
 
     Arguments:
     ----------
-        * _variaint (project.Variant): The PHX-Variant to add the building to.
+        * _variant (project.Variant): The PHX-Variant to add the building to.
         * _hb_room (room.Room): The honeybee-Room to use as the source.
         * _assembly_dict (Dict[str, constructions.PhxConstructionOpaque]): The Assembly Type dict.
         * _window_type_dict (Dict[str, constructions.PhxConstructionWindow]): The Window Type dict.
@@ -44,11 +45,11 @@ def add_building_from_hb_room(_variant: project.PhxVariant,
 
 
 def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
-    """Apply PhxPHCertificationCriteria from a Honeybee-Room's Building Segement to a PhxVariant.
+    """Set all the PhxPhiusCertificationCriteria on a PhxVariant based on a Honeybee-Room's Building Segment.
 
     Arguments:
     ----------
-        * _variant (project.Variant): The PhxVariant to add the PhxPhiusCertification to.
+        * _variant (project.Variant): The PhxVariant to set the PhxPhiusCertificationCriteria on.
         * _hb_room (room.Room): The Honeybee-Room to use as the source.
 
     Returns:
@@ -56,20 +57,63 @@ def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room:
         * None
     """
 
-    hbph_phius_cert = _hb_room.properties.ph.ph_bldg_segment.phius_certification  # alias
+    # alias cus' all this shit is deep in there...
+    hbph_phius_cert: phius.PhiusCertification = _hb_room.properties.ph.ph_bldg_segment.phius_certification  # alias
+    phx_phius_cert_criteria = _variant.phius_certification.phius_certification_criteria # alias
+    phx_phius_cert_settings = _variant.phius_certification.phius_certification_settings # alias
 
-    _variant.ph_certification.certification_criteria.ph_certificate_criteria = hbph_phius_cert.certification_criteria
-    _variant.ph_certification.certification_criteria.ph_selection_target_data = hbph_phius_cert.localization_selection_type
-    _variant.ph_certification.certification_criteria.annual_heating_demand = hbph_phius_cert.PHIUS2021_heating_demand
-    _variant.ph_certification.certification_criteria.annual_cooling_demand = hbph_phius_cert.PHIUS2021_cooling_demand
-    _variant.ph_certification.certification_criteria.peak_heating_load = hbph_phius_cert.PHIUS2021_heating_load
-    _variant.ph_certification.certification_criteria.peak_cooling_load = hbph_phius_cert.PHIUS2021_cooling_load
+    # some random bullshit
+    phx_phius_cert_criteria.ph_certificate_criteria = hbph_phius_cert.certification_criteria
+    phx_phius_cert_criteria.ph_selection_target_data = hbph_phius_cert.localization_selection_type
+    
+    # certification thresholds (for Phius, they change)
+    phx_phius_cert_criteria.phius_annual_heating_demand = hbph_phius_cert.PHIUS2021_heating_demand
+    phx_phius_cert_criteria.phius_annual_cooling_demand = hbph_phius_cert.PHIUS2021_cooling_demand
+    phx_phius_cert_criteria.phius_peak_heating_load = hbph_phius_cert.PHIUS2021_heating_load
+    phx_phius_cert_criteria.phius_peak_cooling_load = hbph_phius_cert.PHIUS2021_cooling_load
+
+    # certification settings / types
+    phx_phius_cert_settings.phius_building_category_type = phius_certification.PhiusCertificationBuildingCategoryType(hbph_phius_cert.building_category_type.number)
+    phx_phius_cert_settings.phius_building_use_type = phius_certification.PhiusCertificationBuildingUseType(hbph_phius_cert.building_use_type.number)
+    phx_phius_cert_settings.phius_building_status = phius_certification.PhiusCertificationBuildingStatus(hbph_phius_cert.building_status.number)
+    phx_phius_cert_settings.phius_building_type = phius_certification.PhiusCertificationBuildingType(hbph_phius_cert.building_type.number)
 
     return None
 
 
-def add_PH_Building_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
-    """Create and add a PHX PH-Building to a PHX-Variant.
+def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+    """Set all the PhxPhiCertificationCriteria on a PhxVariant based on a Honeybee-Room's Building Segment.
+
+    Arguments:
+    ----------
+        * _variant (project.Variant): The PhxVariant to set the PhxPhiCertificationCriteria to.
+        * _hb_room (room.Room): The Honeybee-Room to use as the source.
+
+    Returns:
+    --------
+        * None
+    """
+    # alias cus' all this shit is deep in there...
+    hbph_phi_cert: phi.PhiCertification = _hb_room.properties.ph.ph_bldg_segment.phi_certification  # alias
+    phx_phi_cert_settings = _variant.phi_certification.phi_certification_settings # alias
+
+    # certification settings / types
+    phx_phi_cert_settings.phi_building_category_type = phi_certification.PhiCertificationBuildingCategoryType(hbph_phi_cert.building_category_type.number)
+    phx_phi_cert_settings.phi_building_use_type = phi_certification.PhiCertificationBuildingUseType(hbph_phi_cert.building_use_type.number)
+    phx_phi_cert_settings.phi_building_ihg_type = phi_certification.PhiCertificationIHGType(hbph_phi_cert.ihg_type.number)
+    phx_phi_cert_settings.phi_building_occupancy_type = phi_certification.PhiCertificationOccupancyType(hbph_phi_cert.occupancy_type.number)
+
+    phx_phi_cert_settings.phi_certification_type = phi_certification.PhiCertificationType(hbph_phi_cert.certification_type.number)
+    phx_phi_cert_settings.phi_certification_class = phi_certification.PhiCertificationClass(hbph_phi_cert.certification_class.number)
+    phx_phi_cert_settings.phi_pe_type = phi_certification.PhiCertificationPEType(hbph_phi_cert.primary_energy_type.number)
+    phx_phi_cert_settings.phi_enerphit_type = phi_certification.PhiCertificationEnerPHitType(hbph_phi_cert.enerphit_type.number)
+    phx_phi_cert_settings.phi_retrofit_type = phi_certification.PhiCertificationRetrofitType(hbph_phi_cert.retrofit_type.number)
+
+    return None
+
+
+def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+    """Create and add a PhxPhBuildingData with data from a Honeybee-Room to a PHX-Variant.
 
     Arguments:
     ----------
@@ -82,10 +126,6 @@ def add_PH_Building_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Ro
     """
     ph_bldg_data = certification.PhxPhBuildingData()
 
-    ph_bldg_data.building_category = _hb_room.properties.ph.ph_bldg_segment.usage_type.number
-    ph_bldg_data.occupancy_type = _hb_room.properties.ph.ph_bldg_segment.occupancy_type.number
-    ph_bldg_data.building_status = _hb_room.properties.ph.ph_bldg_segment.phius_certification.building_status.number
-    ph_bldg_data.building_type = _hb_room.properties.ph.ph_bldg_segment.phius_certification.building_type.number
     ph_bldg_data.num_of_units = _hb_room.properties.ph.ph_bldg_segment.num_dwelling_units
     ph_bldg_data.num_of_floors = _hb_room.properties.ph.ph_bldg_segment.num_floor_levels
 
@@ -99,7 +139,7 @@ def add_PH_Building_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Ro
     ph_bldg_data.setpoints.winter = _hb_room.properties.ph.ph_bldg_segment.set_points.winter
     ph_bldg_data.setpoints.summer = _hb_room.properties.ph.ph_bldg_segment.set_points.summer
 
-    _variant.ph_certification.ph_building_data = ph_bldg_data
+    _variant.phius_certification.ph_building_data = ph_bldg_data
 
     return None
 
@@ -236,7 +276,7 @@ def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room
         * None
     """
 
-    for space in _hb_room.properties._ph.spaces:
+    for space in _hb_room.properties.ph.spaces:
         # -- Get the HBE-PH Ventilation system from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
@@ -273,7 +313,7 @@ def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
         * None
     """
 
-    for space in _hb_room.properties._ph.spaces:
+    for space in _hb_room.properties.ph.spaces:
         # -- Get the HBE-PH Heating Systems from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
@@ -308,7 +348,7 @@ def add_cooling_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
         * None
     """
 
-    for space in _hb_room.properties._ph.spaces:
+    for space in _hb_room.properties.ph.spaces:
         # -- Get the HBPH-Cooling-Systems from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
@@ -343,7 +383,7 @@ def add_dhw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
         * None
     """
 
-    for space in _hb_room.properties._ph.spaces:
+    for space in _hb_room.properties.ph.spaces:
         # -- Guard Clause
         if not space.host.properties.energy.shw:
             continue
@@ -450,7 +490,8 @@ def from_hb_room(_hb_room: room.Room,
     add_building_from_hb_room(new_variant, _hb_room, _assembly_dict,
                               _window_type_dict, group_components)
     add_phius_certification_from_hb_room(new_variant, _hb_room)
-    add_PH_Building_from_hb_room(new_variant, _hb_room)
+    add_phi_certification_from_hb_room(new_variant, _hb_room)
+    add_PhxPhBuildingData_from_hb_room(new_variant, _hb_room)
     add_climate_from_hb_room(new_variant, _hb_room)
     add_local_pe_conversion_factors(new_variant, _hb_room)
     add_local_co2_conversion_factors(new_variant, _hb_room)
