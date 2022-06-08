@@ -69,6 +69,11 @@ class XLConnection:
             return False
         return True
 
+    def unprotect_all_sheets(self) -> None:
+        """Walk through all the sheets and unprotect them all."""
+        for sheet in self.wb.sheets:
+            sheet.api.unprotect()
+
     def get_row_num_of_value_in_column(self, sheet_name: str, row_start: int,
                                        row_end: int,  col: str, find: str) -> Optional[int]:
         """Returns the row number of the first instance of a specific value found within a column, or None if not found.
