@@ -348,8 +348,8 @@ class AddnlVentColumnsRooms(BaseModel):
     V_sup: str
     V_eta: str
     V_trans: str
+    operating_hours: str
     operating_days: str
-    operating_weeks: str
     holiday_days: str
     period_high_speed: str
     period_high_time: str

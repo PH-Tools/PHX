@@ -82,13 +82,14 @@ class VentSpaceRow:
             (create_range('vent_unit_assigned'), self.phpp_row_ventilator),
             (create_range('weighted_floor_area'), self.phx_room_vent.weighted_floor_area),
             (create_range('clear_height'), self.phx_room_vent.clear_height),
+            
             (create_range('V_sup'), self.phx_room_vent.flow_rates.flow_supply),
             (create_range('V_eta'), self.phx_room_vent.flow_rates.flow_extract),
             (create_range('V_trans'), self.phx_room_vent.flow_rates.flow_transfer),
             
             # -- Operating Days / weeks
+            (create_range('operating_hours'), self.phx_vent_pattern.operating_hours),
             (create_range('operating_days'), self.phx_vent_pattern.operating_days),
-            (create_range('operating_weeks'), self.phx_vent_pattern.operating_weeks),
             (create_range('holiday_days'), self.phx_vent_pattern.holiday_days),
             
             # -- Operating hours / speeds
