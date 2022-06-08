@@ -360,7 +360,7 @@ class PHPPConnection:
                             phpp_id_ventilator
                         )
                     except NoVentUnitFoundError:
-                        # If no ventilation system / unit has been applied yet
+                        # If no ventilation system / unit has not been applied yet
                         phpp_row_ventilator = None
 
                     phx_vent_pattern = phx_project.utilization_patterns_ventilation.get_pattern_by_id_num(
