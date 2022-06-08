@@ -270,22 +270,51 @@ class WindowWindowRows(BaseModel):
     locator_string_entry: str
     input_columns: WindowWindowRowsColumns
 
+class WindowWindowRowsEnd(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str 
 
 class Windows(BaseModel):
     name: str
     window_rows: WindowWindowRows
+    window_rows_end: WindowWindowRowsEnd
 
 
 # -----------------------------------------------------------------------------
 
+class ShadingRowsColumns(BaseModel):
+    h_hori: str
+    d_hori: str
+    o_reveal: str
+    d_reveal: str
+    o_over: str
+    d_over:str
+    r_other_winter: str
+    r_other_summer: str
+    temp_z: str
+    regulated: str
 
-class ColShading(BaseModel):
-    ...
 
+class ShadingRows(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    input_columns: ShadingRowsColumns
+
+
+class ShadingRowsEnd(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str 
 
 class Shading(BaseModel):
     name: str
-    columns: ColShading
+    shading_rows: ShadingRows
+    shading_rows_end: ShadingRowsEnd
 
 
 # -----------------------------------------------------------------------------

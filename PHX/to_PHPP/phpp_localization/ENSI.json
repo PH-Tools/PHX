@@ -295,11 +295,40 @@
                 "comfort_exempt": "BR",
                 "comfort_temp": "BR"
             }
+        },
+        "window_rows_end": {
+            "locator_col_header": "L",
+            "locator_string_header": "Windows",
+            "locator_col_entry": "L",
+            "locator_string_entry": "Unhide further data"
         }
     },
     "SHADING": {
         "name": "Shading",
-        "columns": {}
+        "shading_rows": {
+            "locator_col_header": "R",
+            "locator_string_header": "Calculation of shading coefficients",
+            "locator_col_entry": "R",
+            "locator_string_entry": "Quan",
+            "input_columns": {
+                "h_hori": "Z",
+                "d_hori": "AA",
+                "o_reveal": "AB",
+                "d_reveal": "AC",
+                "o_over": "AD",
+                "d_over": "AE",
+                "r_other_winter": "AF",
+                "r_other_summer": "AG",
+                "temp_z": "AH",
+                "regulated": "AI"
+            }
+        },
+        "shading_rows_end": {
+            "locator_col_header": "R",
+            "locator_string_header": "Shading",
+            "locator_col_entry": "R",
+            "locator_string_entry": "Unhide further data"
+        }
     },
     "VENTILATION": {
         "name": "Ventilation",

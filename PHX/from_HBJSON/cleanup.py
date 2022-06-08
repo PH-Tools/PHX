@@ -188,7 +188,7 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
         exposed_faces += _get_room_exposed_faces(hb_room)
 
     new_room = room.Room(
-        identifier=reference_room.properties.ph.ph_bldg_segment.name,
+        identifier=reference_room.properties.ph.ph_bldg_segment.display_name,
         faces=exposed_faces,
     )
 

@@ -108,16 +108,23 @@ def create_component_from_hb_aperture(
     --------
         * componets.PhxComponentAperture: A new Transparent (window) Component.
     """
-    phx_ap = building.PhxComponentAperture(_host=_host_compo)
+    
+    # -- Create new Aperture
+    phx_ap = components.PhxComponentAperture(_host=_host_compo)
     phx_ap.display_name = _hb_aperture.display_name
     phx_ap.exposure_interior = _hb_room.properties.ph.id_num
     phx_ap.window_type = _window_type_dict[_hb_aperture.properties.energy.construction.identifier]
     phx_ap.window_type_id_num = _hb_aperture.properties.energy.construction.properties.ph.id_num
 
-    # -- Polygons
-    phx_ap.add_polygons(
-        create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture))
-
+    # -- Create new Aperture Element (Sash)
+    new_phx_ap_element = components.PhxApertureElement(_host=phx_ap)
+    new_phx_ap_element.display_name = _hb_aperture.display_name
+    new_phx_ap_element.polygon = create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture)
+    
+    new_phx_ap_element.winter_shading_factor = _hb_aperture.properties.ph.winter_shading_factor
+    new_phx_ap_element.summer_shading_factor = _hb_aperture.properties.ph.summer_shading_factor
+    phx_ap.add_elements((new_phx_ap_element,))
+    
     return phx_ap
 
 

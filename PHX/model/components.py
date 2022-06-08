@@ -4,7 +4,7 @@
 """PHX Component (Face, Aperture) Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Collection, List, Set, Union
+from typing import ClassVar, Collection, List, Set, Union, Optional
 
 from PHX.model import geometry, constructions
 from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType, ComponentFaceOpacity, ComponentColor
@@ -134,7 +134,21 @@ class PhxComponentOpaque(PhxComponentBase):
             f'Error: Cannot find a host polygon for the child id_num: {_id_num}')
 
 
+class PhxApertureElement(PhxComponentBase):
+    """A single sash / element of an Aperture Component."""
+    
+    def __init__(self, _host: PhxComponentAperture):
+        super().__init__()
+
+        self.host:PhxComponentAperture = _host
+        self.display_name: str = ""
+        self.polygon: Optional[geometry.PhxPolygonRectangular] = None
+        self.winter_shading_factor: float = 0.75
+        self.summer_shading_factor: float = 0.75
+
+
 class PhxComponentAperture(PhxComponentBase):
+    """An Aperture (window, door) component with one or more 'element' (sash)."""
 
     def __init__(self, _host: PhxComponentOpaque):
         super().__init__()
@@ -153,7 +167,11 @@ class PhxComponentAperture(PhxComponentBase):
         self.window_type: constructions.PhxConstructionWindow = constructions.PhxConstructionWindow()
         self.window_type_id_num: int = -1
 
-        self.polygons: List[geometry.PhxPolygonRectangular] = []
+        self.elements: List[PhxApertureElement] = []
+
+    @property
+    def polygons(self) -> List[geometry.PhxPolygonRectangular]:
+        return [e.polygon for e in self.elements if e.polygon]
 
     @property
     def polygon_ids(self) -> Set[int]:
@@ -166,24 +184,14 @@ class PhxComponentAperture(PhxComponentBase):
         return f'{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-'\
             f'{self.exposure_exterior}-{self.window_type_id_num}'
 
-    def add_polygons(self,
-                     _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]) -> None:
-        """Adds a new Polygon or Polygons to the Component's collection.
 
-        Arguments:
-        ----------
-            * _input (Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]): The polygon or
-                polygons to add to the component's collection.
+    def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:
+        """Add one or more new 'Elements' (Sashes) to the Aperture"""
 
-        Returns:
-        --------
-            * None
-        """
-        if not isinstance(_input, Collection):
-            _input = (_input,)
+        for element in _elements:
+            self.elements.append(element)
 
-        for polygon in _input:
-            self.polygons.append(polygon)
+        return None
 
     def __add__(self, other) -> PhxComponentAperture:
         """Merge with another Component into a single new Component.
@@ -203,6 +211,8 @@ class PhxComponentAperture(PhxComponentBase):
             setattr(new_compo, attr_name, attr_val)
 
         new_compo.display_name = 'Merged_Component'
-        new_compo.polygons = self.polygons + other.polygons
+        new_compo.elements = self.elements + other.elements
+        for element in new_compo.elements:
+            element.host = new_compo
 
         return new_compo

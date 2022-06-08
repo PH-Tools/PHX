@@ -13,7 +13,7 @@ from PHX.to_PHPP import sheet_io
 from PHX.to_PHPP.phpp_localization import shape_model
 from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, climate_entry, uvalues_constructor,
                                     component_glazing, component_frame, component_vent, ventilation_data,
-                                    windows_rows, vent_space, vent_units, vent_ducts, verification_data)
+                                    windows_rows, shading_rows, vent_space, vent_units, vent_ducts, verification_data)
 
 
 class PHPPConnection:
@@ -32,6 +32,7 @@ class PHPPConnection:
         self.components = sheet_io.Components(self.xl, self.shape.COMPONENTS)
         self.areas = sheet_io.Areas(self.xl, self.shape.AREAS)
         self.windows = sheet_io.Windows(self.xl, self.shape.WINDOWS)
+        self.shading = sheet_io.Shading(self.xl, self.shape.SHADING)
         self.addnl_vent = sheet_io.AddnlVent(self.xl, self.shape.ADDNL_VENT)
         self.ventilation = sheet_io.Ventilation(self.xl, self.shape.VENTILATION)
 
@@ -289,6 +290,39 @@ class PHPPConnection:
         self.windows.write_windows(phpp_windows)
         return None
 
+    def write_project_window_shading_factors(self, phx_project: project.PhxProject) -> None:
+        # Get all the Window worksheet names in order
+        window_names = self.windows.get_all_window_names()
+        
+        # Get all the PHX Aperture objects
+        phx_aperture_dict = {}
+        for phx_variant in phx_project.variants:
+            for phx_component in phx_variant.building.opaque_components:
+                for phx_aperture in phx_component.apertures:
+                    for phx_ap_element in phx_aperture.elements:
+                        phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element
+
+        # Sort the phx apertures to match the window_names order
+        phx_aperture_elements_in_order = []
+        for window_name in window_names:
+            phx_aperture_elements_in_order.append( phx_aperture_dict[window_name] )
+
+        # Write out all the factors
+        phpp_shading_rows: List[shading_rows.ShadingRow] = []
+        for phx_aperture_element in phx_aperture_elements_in_order:
+            phpp_shading_rows.append(
+                            shading_rows.ShadingRow(
+                                self.shape.SHADING,
+                                phx_aperture_element.winter_shading_factor,
+                                phx_aperture_element.summer_shading_factor
+                            )
+                        )
+        self.shading.write_shading(phpp_shading_rows)
+
+        # TODO: option to clear all the dimensional info?
+
+        return None
+
     def write_project_ventilators(self, phx_project: project.PhxProject) -> None:
         """Write all of the used Ventilator Units from a PhxProject to the PHPP 'Additional Vent' worksheet."""
 
@@ -399,3 +433,5 @@ class PHPPConnection:
                 )
             )
         return None
+
+
