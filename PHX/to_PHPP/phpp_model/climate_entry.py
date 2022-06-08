@@ -30,9 +30,9 @@ class ClimateSettings:
         create_range = partial(self._create_range, _start_row=_start_row)
 
         items: List[Tuple[str, xl_data.xl_writable]] = [
-            (create_range('country', 0), "ud-User Data"),
-            (create_range('region', 1), "All"),
-            (create_range('dataset', 3), f"ud---00-{self.phx_location.display_name}"),
+            (create_range('country', 0), self.phx_location.phpp_country_code),
+            (create_range('region', 1), self.phx_location.phpp_region_code),
+            (create_range('dataset', 3), f"{self.phx_location.phpp_dataset_name}"),
             (create_range('elevation_override', 9), self.phx_location.site.elevation),
         ]
 

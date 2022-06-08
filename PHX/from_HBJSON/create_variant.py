@@ -163,6 +163,11 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     _variant.location.climate.daily_temp_swing = ud_climate.summer_daily_temperature_swing
     _variant.location.climate.avg_wind_speed = ud_climate.average_wind_speed
 
+    # -- PHPP Stuff
+    _variant.location.phpp_country_code = ud_climate.phpp_country_code
+    _variant.location.phpp_region_code = ud_climate.phpp_region_code
+    _variant.location.phpp_dataset_name = ud_climate.phpp_dataset_name
+
     # -- Location
     _variant.location.site.latitude = ud_climate.location.latitude
     _variant.location.site.longitude = ud_climate.location.longitude

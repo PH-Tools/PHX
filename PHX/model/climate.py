@@ -125,7 +125,12 @@ class PhxClimate:
 
 @dataclass
 class PhxLocation:
-    display_name: str = "__unnamed_location__"
+    display_name: str = "New York"
+    
+    phpp_country_code: str = "US-United States of America"
+    phpp_region_code: str = "New York"
+    phpp_dataset_name = "US0055b-New York"
+    
     source: str = "__unknown__"
     selection: int = 1
     site: PhxSite = field(default_factory=PhxSite)
