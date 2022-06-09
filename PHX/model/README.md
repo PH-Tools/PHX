@@ -24,7 +24,10 @@ Project
 └─ Building Segments
     ├─ Passive House Certification Data
     ├─ Location / Climate
-    ├─ Mechanical Systems
+    ├─ Mechanical System <Collection>
+    │   ├─ Heating System(s)
+    │   ├─ Cooling System(s)
+    │   └─ Hot-Water System(s)
     └─ Building
         ├─ Components (Opaque)
         │   ├─ Polygons
