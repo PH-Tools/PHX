@@ -4,7 +4,7 @@
 """Valid 'types' for Mech Equipment Options."""
 
 from enum import Enum
-
+from honeybee_energy_ph.hvac.hot_water import PhSHWTankType
 
 class FuelType(Enum):
     GAS = 1
@@ -58,3 +58,19 @@ class PhxHotWaterInputOptions(Enum):
     SPEC_TOTAL_LOSSES = 1
     SPEC_STANDBY_LOSSES = 2
     TOTAL_LOSSES = 3
+
+
+class PhxHotWaterTankType(Enum):
+    NONE = 0
+    DHW_AND_HEATING = 1
+    DHW_ONLY = 2
+
+    @classmethod
+    def from_hbph_type(cls, _hbph_type):
+        """Return a new PhxHotWaterTankType based on the HBPH Tank Type."""
+        _mapping = {
+            "0-NO STORAGE TANK": cls.NONE,
+            "1-DHW AND HEATING": cls.DHW_AND_HEATING,
+            "2-DHW ONLY": cls.DHW_ONLY,
+        }
+        return _mapping[_hbph_type]

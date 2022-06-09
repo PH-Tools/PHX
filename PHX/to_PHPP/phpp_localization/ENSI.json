@@ -456,6 +456,19 @@
                 "tank_1": "J",
                 "tank_2": "M",
                 "tank_buffer": "P"
+            },
+            "tank_type": {
+                "options": {
+                    "0": "0-No storage tank",
+                    "1": "1-DHW and heating",
+                    "2": "2-DHW only"
+                }
+            },
+            "tank_location": {
+                "options": {
+                    "1": "1-Inside",
+                    "0": "2-Outside"
+                }
             }
         }
     },

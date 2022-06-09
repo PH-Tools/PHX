@@ -270,11 +270,13 @@ class WindowWindowRows(BaseModel):
     locator_string_entry: str
     input_columns: WindowWindowRowsColumns
 
+
 class WindowWindowRowsEnd(BaseModel):
     locator_col_header: str
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str 
+
 
 class Windows(BaseModel):
     name: str
@@ -310,6 +312,7 @@ class ShadingRowsEnd(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str 
+
 
 class Shading(BaseModel):
     name: str
@@ -450,10 +453,15 @@ class CoolingUnits(BaseModel):
 # -----------------------------------------------------------------------------
 
 
+class DhwTankInputOptions(BaseModel):
+    options: Dict
+
+
 class DhwTankInputColumns(BaseModel):
     tank_1: str
     tank_2: str
     tank_buffer: str
+
 
 class DhwTanks(BaseModel):
     locator_col_header: str
@@ -461,10 +469,14 @@ class DhwTanks(BaseModel):
     locator_col_entry: str
     locator_string_entry: str
     input_columns: DhwTankInputColumns
+    tank_type: DhwTankInputOptions
+    tank_location: DhwTankInputOptions
+
 
 class Dhw(BaseModel):
     name: str
     tanks: DhwTanks
+
 
 # -----------------------------------------------------------------------------
 

@@ -446,7 +446,7 @@ class PHPPConnection:
 
             # Use only the first 2 tanks for PHPP
             tank_inputs = []
-            for i, phx_mech_subsystem in enumerate(variant.mech_systems.dhw_tank_subsystems[:2]):
+            for i, phx_mech_subsystem in enumerate(variant.mech_systems.dhw_tank_subsystems[:2], start=1):
                 tank_inputs.append(
                     hot_water_tank.TankInput(
                         self.shape.DHW,

@@ -15,8 +15,8 @@ def test_add_default_PhxHotWaterTankParams(reset_class_counters):
     assert p3.standby_losses == p1.standby_losses
     assert p3.input_option == p1.input_option
     assert p3.storage_capacity == p1.storage_capacity
-    assert p3.tank_room_temp == p1.tank_room_temp
-    assert p3.tank_water_temp == p1.tank_water_temp
+    assert p3.room_temp == p1.room_temp
+    assert p3.water_temp == p1.water_temp
 
 
 def test_add_mixed_PhxHotWaterTankParams(reset_class_counters):
@@ -27,8 +27,8 @@ def test_add_mixed_PhxHotWaterTankParams(reset_class_counters):
         standby_losses=10,
         input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
         storage_capacity=10,
-        tank_room_temp=1,
-        tank_water_temp=4,
+        room_temp=1,
+        water_temp=4,
     )
     p2 = water.PhxHotWaterTankParams(
         quantity=11,
@@ -37,8 +37,8 @@ def test_add_mixed_PhxHotWaterTankParams(reset_class_counters):
         standby_losses=20,
         input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
         storage_capacity=20,
-        tank_room_temp=2,
-        tank_water_temp=8,
+        room_temp=2,
+        water_temp=8,
     )
 
     p3 = p1 + p2
@@ -50,8 +50,8 @@ def test_add_mixed_PhxHotWaterTankParams(reset_class_counters):
     assert p3.standby_losses == 15
     assert p3.input_option == p1.input_option
     assert p3.storage_capacity == 15
-    assert p3.tank_room_temp == 1.5
-    assert p3.tank_water_temp == 6
+    assert p3.room_temp == 1.5
+    assert p3.water_temp == 6
 
 
 def test_default_PhxHotWaterTank(reset_class_counters):
@@ -90,8 +90,8 @@ def test_add_mixed_PhxHotWaterTank(reset_class_counters):
         standby_losses=10,
         input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
         storage_capacity=10,
-        tank_room_temp=1,
-        tank_water_temp=4,
+        room_temp=1,
+        water_temp=4,
     )
     d2 = water.PhxHotWaterTank()
     d2.params = water.PhxHotWaterTankParams(
@@ -101,8 +101,8 @@ def test_add_mixed_PhxHotWaterTank(reset_class_counters):
         standby_losses=20,
         input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
         storage_capacity=20,
-        tank_room_temp=2,
-        tank_water_temp=8,
+        room_temp=2,
+        water_temp=8,
     )
 
     d3 = d1 + d2
@@ -114,5 +114,5 @@ def test_add_mixed_PhxHotWaterTank(reset_class_counters):
     assert d3.params.standby_losses == 15
     assert d3.params.input_option == d1.params.input_option
     assert d3.params.storage_capacity == 15
-    assert d3.params.tank_room_temp == 1.5
-    assert d3.params.tank_water_temp == 6
+    assert d3.params.room_temp == 1.5
+    assert d3.params.water_temp == 6

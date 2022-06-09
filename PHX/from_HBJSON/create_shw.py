@@ -5,7 +5,7 @@
 
 from PHX.model import hvac
 from honeybee_energy_ph.hvac import hot_water
-
+from PHX.model.enums.hvac import PhxHotWaterTankType
 
 def build_phx_hw_tank(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTank:
     """Returns a new PHX Hot-Water Tank based on the HBPH Hot Water Tank input.
@@ -22,17 +22,23 @@ def build_phx_hw_tank(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTank:
 
     phx_tank = hvac.PhxHotWaterTank()
 
-    phx_tank.display_name = _hbph_tank.name
+    phx_tank.display_name = _hbph_tank.display_name
     phx_tank.params.quantity = _hbph_tank.quantity
 
-    phx_tank.params.storage_capacity = _hbph_tank.volume
-    phx_tank.params.storage_loss_rate = _hbph_tank.heat_loss_rate
-    phx_tank.params.solar_losses = _hbph_tank.heat_loss_rate
-    phx_tank.params.standby_losses = _hbph_tank.heat_loss_rate
-
+    phx_tank.params.tank_type = PhxHotWaterTankType.from_hbph_type(_hbph_tank.tank_type)
     phx_tank.params.in_conditioned_space = _hbph_tank.in_conditioned_space
-    phx_tank.params.tank_room_temp = _hbph_tank.location_temp
-    phx_tank.params.tank_water_temp = _hbph_tank.water_temp
+    
+    phx_tank.params.solar_connection = _hbph_tank.solar_connection
+    phx_tank.params.solar_losses = _hbph_tank.solar_losses    
+
+    phx_tank.params.storage_capacity = _hbph_tank.storage_capacity
+    phx_tank.params.storage_loss_rate = _hbph_tank.storage_loss_rate
+
+    phx_tank.params.standby_losses = _hbph_tank.standby_losses
+    phx_tank.params.standby_fraction = _hbph_tank.standby_fraction
+
+    phx_tank.params.room_temp = _hbph_tank.room_temp
+    phx_tank.params.water_temp = _hbph_tank.water_temp
 
     return phx_tank
 
@@ -50,12 +56,12 @@ def build_phx_hw_storage_subsystem(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxM
         * (mech.PhxMechanicalSubSystem): The new Water Storage SubSystem.
     """
 
-    phx_strg_subsystem = hvac.PhxMechanicalSubSystem()
-    phx_strg_subsystem.device = build_phx_hw_tank(_hbph_tank)
+    phx_storage_subsystem = hvac.PhxMechanicalSubSystem()
+    phx_storage_subsystem.device = build_phx_hw_tank(_hbph_tank)
 
     # TODO: Distribution...
 
-    return phx_strg_subsystem
+    return phx_storage_subsystem
 
 
 def build_phx_hw_heater(_hbph_heater: hot_water.PhSHWHeaterElectric) -> hvac.PhxHeatingDevice:
@@ -120,9 +126,9 @@ def build_phx_hw_heating_subsystem(_hbph_heater: hot_water.PhSHWHeaterElectric) 
         * (mech.PhxMechanicalSubSystem): The new Water-Heating SubSystem.
     """
 
-    phx_strg_subsystem = hvac.PhxMechanicalSubSystem()
-    phx_strg_subsystem.device = build_phx_hw_heater(_hbph_heater)
+    phx_storage_subsystem = hvac.PhxMechanicalSubSystem()
+    phx_storage_subsystem.device = build_phx_hw_heater(_hbph_heater)
 
     # TODO: Distribution...
 
-    return phx_strg_subsystem
+    return phx_storage_subsystem

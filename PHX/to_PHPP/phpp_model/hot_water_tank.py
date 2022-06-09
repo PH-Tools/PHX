@@ -21,11 +21,14 @@ class TankInput:
     phx_tank: water.PhxHotWaterTank
     tank_number: int
 
-    def _create_range(self, _field_name: str, _row_num: int) -> str:
+    @property
+    def input_column(self) -> str:
+        """Return the right input column based on the tank-number."""
+        return getattr(self.shape.tanks.input_columns, f"tank_{self.tank_number}")
+
+    def create_range(self, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
-        return
-        col = getattr(self.shape.window_rows.input_columns, _field_name)
-        return f'{col}{_row_num}'
+        return f'{self.input_column}{_row_num}'
     
     def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this DHW Tank
@@ -38,15 +41,13 @@ class TankInput:
         --------
             * (List[XlItem]): The XlItems to write to the sheet.
         """
-        print('>>', self.phx_tank.params.storage_loss_rate)
         items = [
-            ('J191', self.phx_tank.params.storage_loss_rate),
+            (self.create_range(_row_num+0), self.shape.tanks.tank_type.options[str(self.phx_tank.params.tank_type.value)]),
+            (self.create_range(_row_num+5), self.phx_tank.params.standby_losses),
+            (self.create_range(_row_num+6), self.phx_tank.params.storage_capacity),
+            (self.create_range(_row_num+7), self.phx_tank.params.standby_fraction),
+            (self.create_range(_row_num+9), self.shape.tanks.tank_location.options[str(int(self.phx_tank.params.in_conditioned_space))]),
+            (self.create_range(_row_num+12), self.phx_tank.params.water_temp),
         ]
 
         return [xl_data.XlItem(_sheet_name, *item) for item in items]
-
-        create_range = partial(self._create_range, _row_num=_row_num)
-        items: List[Tuple[str, xl_data.xl_writable]] = [
-            (create_range('psi_i_left'), self.phx_construction.frame_left.psi_install),
-        ]
-
