@@ -7,3 +7,4 @@ from PHX.to_PHPP.sheet_io.windows import *
 from PHX.to_PHPP.sheet_io.shading import *
 from PHX.to_PHPP.sheet_io.addnl_vent import *
 from PHX.to_PHPP.sheet_io.ventilation import *
+from PHX.to_PHPP.sheet_io.io_hot_water import *

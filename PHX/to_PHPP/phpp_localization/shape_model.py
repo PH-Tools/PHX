@@ -447,13 +447,26 @@ class CoolingUnits(BaseModel):
     columns: ColCoolingUnits
 
 
-class ColDhw(BaseModel):
-    ...
+# -----------------------------------------------------------------------------
 
+
+class DhwTankInputColumns(BaseModel):
+    tank_1: str
+    tank_2: str
+    tank_buffer: str
+
+class DhwTanks(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    input_columns: DhwTankInputColumns
 
 class Dhw(BaseModel):
     name: str
-    columns: ColDhw
+    tanks: DhwTanks
+
+# -----------------------------------------------------------------------------
 
 
 class ColSolarDhw(BaseModel):

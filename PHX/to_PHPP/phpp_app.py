@@ -13,7 +13,8 @@ from PHX.to_PHPP import sheet_io
 from PHX.to_PHPP.phpp_localization import shape_model
 from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, climate_entry, uvalues_constructor,
                                     component_glazing, component_frame, component_vent, ventilation_data,
-                                    windows_rows, shading_rows, vent_space, vent_units, vent_ducts, verification_data)
+                                    windows_rows, shading_rows, vent_space, vent_units, vent_ducts, 
+                                    verification_data, hot_water_tank)
 
 
 class PHPPConnection:
@@ -35,6 +36,7 @@ class PHPPConnection:
         self.shading = sheet_io.Shading(self.xl, self.shape.SHADING)
         self.addnl_vent = sheet_io.AddnlVent(self.xl, self.shape.ADDNL_VENT)
         self.ventilation = sheet_io.Ventilation(self.xl, self.shape.VENTILATION)
+        self.hot_water = sheet_io.HotWater(self.xl, self.shape.DHW)
 
     def valid_phpp_document(self) -> bool:
         """Return False is if appears the Excel file isn't a PHPP."""
@@ -435,15 +437,25 @@ class PHPPConnection:
         return None
 
     def write_project_hot_water(self, phx_project: project.PhxProject) -> None:
+        """Write the Hot Water data to the PHPP 'DHW+Distribution' worksheet."""
         for variant in phx_project.variants:
             if len(variant.mech_systems.dhw_tank_subsystems) > 2:
                 print(f'Warning: PHPP only allows 2 tanks.'\
                     f'{len(variant.mech_systems.dhw_tank_subsystems)} tank'\
                     f'found in the Variant "{variant.name}"')
 
-            # Use only the first 3 tanks for PHPP
-            phpp_tanks = variant.mech_systems.dhw_tank_subsystems[:3]
-            print(phpp_tanks)
-        
+            # Use only the first 2 tanks for PHPP
+            tank_inputs = []
+            for i, phx_mech_subsystem in enumerate(variant.mech_systems.dhw_tank_subsystems[:2]):
+                tank_inputs.append(
+                    hot_water_tank.TankInput(
+                        self.shape.DHW,
+                        phx_mech_subsystem.device, # type: water.PhxHotWaterTank
+                        i
+                    )
+                )
+
+            self.hot_water.write_tanks(tank_inputs)
+
         return None
 

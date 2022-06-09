@@ -24,6 +24,7 @@ class PhxHotWaterDevice(_base.PhxMechanicalEquipment):
 class PhxHotWaterTankParams(_base.PhxMechanicalEquipmentParams):
     # -- Device Params
     quantity: int = 0
+    solar_connection: bool = False
     solar_losses: float = 0.0  # W/K
     storage_loss_rate: float = 0.0  # W
     standby_losses: float = 0.0  # W/K
