@@ -4,8 +4,7 @@
 """Model class for a PHPP DHW Tank"""
 
 from dataclasses import dataclass
-from typing import List, Tuple, Optional
-from functools import partial
+from typing import List
 
 from PHX.model.hvac import water
 

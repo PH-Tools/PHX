@@ -24,7 +24,6 @@ class PhxHotWaterDevice(_base.PhxMechanicalEquipment):
 class PhxHotWaterTankParams(_base.PhxMechanicalEquipmentParams):
     # -- Device Params
     display_name: str = "_unnamed_PHX_hw_tank_"
-    quantity: int = 0
 
     tank_type: PhxHotWaterTankType = PhxHotWaterTankType.NONE
     input_option: PhxHotWaterInputOptions = PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES
@@ -45,20 +44,30 @@ class PhxHotWaterTankParams(_base.PhxMechanicalEquipmentParams):
     def __add__(self, other: PhxHotWaterTankParams) -> PhxHotWaterTankParams:
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
-        new_obj.quantity = self.quantity + other.quantity
+
+        new_obj.tank_type = self.tank_type
+        new_obj.input_option = self.input_option
+
+        new_obj.in_conditioned_space = any([self.in_conditioned_space, other.in_conditioned_space])
+        new_obj.solar_connection = any([self.solar_connection, other.solar_connection])
         new_obj.solar_losses = (
             self.solar_losses + other.solar_losses) / 2
+        
         new_obj.storage_loss_rate = (
             self.storage_loss_rate + other.storage_loss_rate) / 2
-        new_obj.standby_losses = (
-            self.standby_losses + other.standby_losses) / 2
-        new_obj.input_option = self.input_option
         new_obj.storage_capacity = (
             self.storage_capacity + other.storage_capacity) / 2
+        
+        new_obj.standby_losses = (
+            self.standby_losses + other.standby_losses) / 2
+        new_obj.standby_fraction = (
+            self.standby_fraction + other.standby_fraction) / 2
+
         new_obj.room_temp = (
             self.room_temp + other.room_temp) / 2
         new_obj.water_temp = (
             self.water_temp + other.water_temp) / 2
+            
         return new_obj
 
 

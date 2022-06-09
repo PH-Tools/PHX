@@ -23,7 +23,7 @@ def build_phx_hw_tank(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTank:
     phx_tank = hvac.PhxHotWaterTank()
 
     phx_tank.display_name = _hbph_tank.display_name
-    phx_tank.params.quantity = _hbph_tank.quantity
+    phx_tank.quantity = _hbph_tank.quantity
 
     phx_tank.params.tank_type = PhxHotWaterTankType.from_hbph_type(_hbph_tank.tank_type)
     phx_tank.params.in_conditioned_space = _hbph_tank.in_conditioned_space

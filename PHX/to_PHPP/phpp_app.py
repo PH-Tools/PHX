@@ -454,7 +454,6 @@ class PHPPConnection:
                         i
                     )
                 )
-
             self.hot_water.write_tanks(tank_inputs)
 
         return None
