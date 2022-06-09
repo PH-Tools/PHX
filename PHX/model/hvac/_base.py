@@ -131,6 +131,8 @@ class PhxMechanicalEquipment:
         # use the native ones to create the class ...
         return cls(**native_args)
 
+    def __str__(self):
+        return f'{self.__class__.__name__}()'
 
 @dataclass
 class PhxMechanicalSubSystem:
@@ -169,7 +171,7 @@ class PhxMechanicalSubSystem:
         self.id_num = self.__class__._count
 
     def __str__(self):
-        return '{}()'.format(self.__class__.__name__)
+        return f'{self.__class__.__name__}(display_name={self.display_name}, device={self.device})'
 
     def __repr__(self):
         return str(self)

@@ -434,4 +434,16 @@ class PHPPConnection:
             )
         return None
 
+    def write_project_hot_water(self, phx_project: project.PhxProject) -> None:
+        for variant in phx_project.variants:
+            if len(variant.mech_systems.dhw_tank_subsystems) > 2:
+                print(f'Warning: PHPP only allows 2 tanks.'\
+                    f'{len(variant.mech_systems.dhw_tank_subsystems)} tank'\
+                    f'found in the Variant "{variant.name}"')
+
+            # Use only the first 3 tanks for PHPP
+            phpp_tanks = variant.mech_systems.dhw_tank_subsystems[:3]
+            print(phpp_tanks)
+        
+        return None
 

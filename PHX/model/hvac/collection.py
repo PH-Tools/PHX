@@ -5,8 +5,9 @@
 
 from dataclasses import dataclass, field
 from typing import ClassVar, Dict, Optional, List
-from PHX.model import hvac
 
+from PHX.model import hvac
+from PHX.model.enums.hvac import DeviceType
 
 class NoVentUnitFoundError(Exception):
     def __init__(self, _id_num):
@@ -114,6 +115,16 @@ class PhxMechanicalEquipmentCollection:
         return [sys for sys in self.subsystems if sys.device.usage_profile.cooling]
 
     @property
-    def dhw_heating_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
-        """Returns a list of the 'DHW Heating' subsystems in the collection."""
+    def dhw_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
+        """Returns a list of the 'DHW Heating' and 'DHW Storage' subsystems in the collection."""
         return [sys for sys in self.subsystems if sys.device.usage_profile.dhw_heating]
+
+    @property
+    def dhw_heating_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
+        """Returns a list of only the 'DHW Heating' subsystems (no tanks) in the collection."""
+        return [sys for sys in self.subsystems if sys.device.usage_profile.dhw_heating and sys.device.device_type != DeviceType.WATER_STORAGE]
+
+    @property
+    def dhw_tank_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
+        """Returns a list of only the 'DHW Storage Tank' subsystems (no heaters) in the collection."""
+        return [sys for sys in self.subsystems if sys.device.usage_profile.dhw_heating and sys.device.device_type == DeviceType.WATER_STORAGE]
