@@ -70,9 +70,6 @@ def create_room_from_space(_space: space.Space) -> ventilation.PhxRoomVentilatio
     if _space.properties.ph._v_eta is not None:
         new_room.flow_rates.flow_extract = _space.properties.ph._v_eta  
 
-    print(new_room.flow_rates.flow_supply, new_room.flow_rates.flow_extract)
-
-
     # -- Ventilation Equipment
     if _space.host.properties.energy.hvac.properties.ph.ventilation_system:
         new_room.vent_unit_id_num = _space.host.properties.energy.hvac.properties.ph.ventilation_system.id_num
