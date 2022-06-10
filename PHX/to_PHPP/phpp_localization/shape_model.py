@@ -498,14 +498,44 @@ class Pv(BaseModel):
     name: str
     columns: ColPv
 
+# -----------------------------------------------------------------------------
 
-class ColElectricity(BaseModel):
-    ...
+
+class ElectricityInputColumns(BaseModel):
+    used: str
+    inside_envelope: str
+    nom_demand: str
+    utilization_factor: str
+    frequency: str
+    reference_quantity: str
+
+
+class ElectricityInputRow(BaseModel):
+    data: int
+    selection: int
+    selection_options: Dict
+
+
+class ElectricityInputRows(BaseModel):
+    dishwasher: ElectricityInputRow
+    clothes_washing: ElectricityInputRow
+    clothes_drying: ElectricityInputRow
+    refrigerator: ElectricityInputRow
+    freezer: ElectricityInputRow
+    fridge_freezer: ElectricityInputRow
+    cooking: ElectricityInputRow
+    lighting: ElectricityInputRow
+    consumer_elec: ElectricityInputRow
+    small_appliances: ElectricityInputRow
 
 
 class Electricity(BaseModel):
     name: str
-    columns: ColElectricity
+    input_columns: ElectricityInputColumns
+    input_rows: ElectricityInputRows
+
+
+# -----------------------------------------------------------------------------
 
 
 class ColUseNonRes(BaseModel):

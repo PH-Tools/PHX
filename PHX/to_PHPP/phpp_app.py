@@ -11,7 +11,7 @@ from PHX.model.hvac.collection import NoVentUnitFoundError
 from PHX.to_PHPP import xl_app
 from PHX.to_PHPP import sheet_io
 from PHX.to_PHPP.phpp_localization import shape_model
-from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, climate_entry, uvalues_constructor,
+from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, climate_entry, electricity_item, uvalues_constructor,
                                     component_glazing, component_frame, component_vent, ventilation_data,
                                     windows_rows, shading_rows, vent_space, vent_units, vent_ducts, 
                                     verification_data, hot_water_tank)
@@ -37,6 +37,7 @@ class PHPPConnection:
         self.addnl_vent = sheet_io.AddnlVent(self.xl, self.shape.ADDNL_VENT)
         self.ventilation = sheet_io.Ventilation(self.xl, self.shape.VENTILATION)
         self.hot_water = sheet_io.HotWater(self.xl, self.shape.DHW)
+        self.electricity = sheet_io.Electricity(self.xl, self.shape.ELECTRICITY)
 
     def valid_phpp_document(self) -> bool:
         """Return False is if appears the Excel file isn't a PHPP."""
@@ -458,3 +459,13 @@ class PHPPConnection:
 
         return None
 
+    def write_project_res_elec_appliances(self, phx_project: project.PhxProject) -> None:
+        """Write out all of the detailed residential appliances to the "Electricity" Worksheet."""
+        equipment_inputs = []
+        for phx_variant in phx_project.variants:
+            for zone in phx_variant.building.zones:
+                for phx_equip in zone.elec_equipment_collection:
+                    equipment_inputs.append(electricity_item.ElectricityItem(phx_equip))
+            self.electricity.write_equipment(equipment_inputs)
+        
+        return None

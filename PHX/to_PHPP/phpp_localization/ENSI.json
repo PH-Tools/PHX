@@ -482,7 +482,83 @@
     },
     "ELECTRICITY": {
         "name": "Electricity",
-        "columns": {}
+        "input_columns": {
+            "used": "F",
+            "inside_envelope": "H",
+            "nom_demand": "J",
+            "utilization_factor": "N",
+            "frequency": "P",
+            "reference_quantity": "S"
+        },
+        "input_rows": {
+            "dishwasher": {
+                "data": 14,
+                "selection": 15,
+                "selection_options": {
+                    "1": "1-DHW connection",
+                    "2": "2-Cold water connection"
+                }
+            },
+            "clothes_washing": {
+                "data": 16,
+                "selection": 17,
+                "selection_options": {
+                    "1": "1-DHW connection",
+                    "2": "2-Cold water connection"
+                }
+            },
+            "clothes_drying": {
+                "data": 18,
+                "selection": 19,
+                "selection_options": {
+                    "1": "1-Clothes line",
+                    "2": "2-Drying closet (cold!)",
+                    "3": "3-Drying closet (cold!) in extract air",
+                    "4": "4-Condensation dryer",
+                    "5": "5-Electric exhaust air dryer",
+                    "6": "6-Gas exhaust air dryer"
+                }
+            },
+            "refrigerator": {
+                "data": 21,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "freezer": {
+                "data": 22,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "fridge_freezer": {
+                "data": 23,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "cooking": {
+                "data": 24,
+                "selection": 25,
+                "selection_options": {
+                    "1": "1-Electricity",
+                    "2": "2-Natural gas",
+                    "3": "3-LPG"
+                }
+            },
+            "lighting": {
+                "data": 26,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "consumer_elec": {
+                "data": 27,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "small_appliances": {
+                "data": 28,
+                "selection": 0,
+                "selection_options": {}
+            }
+        }
     },
     "USE_NON_RES": {
         "name": "Use non-res",
