@@ -43,11 +43,17 @@ def build_phx_elec_device(_hbph_device: ph_equipment.PhEquipment) -> elec_equip.
 
     # -- Pull out all the PH attributes and set the PHX ones to match.
     for attr_name in vars(_hbph_device).keys():
+        if str(attr_name).startswith('_'):
+            attr_name = attr_name[1:]
+        
         try:
-            if attr_name.startswith('_'):
-                attr_name = attr_name[1:]
-            setattr(phx_device, attr_name, getattr(_hbph_device, attr_name))
-        except KeyError:
-            pass
+            # try and set any Enums by number first...
+            setattr(phx_device, attr_name, getattr(_hbph_device, attr_name).number)
+        except AttributeError:
+            # then just set copy over any non-enum values
+            try:
+                setattr(phx_device, attr_name, getattr(_hbph_device, attr_name))
+            except KeyError:
+                pass
 
     return phx_device
