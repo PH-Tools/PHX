@@ -1121,7 +1121,7 @@ def _PhxDeviceDishwasher(_d: elec_equip.PhxDeviceDishwasher) -> List[xml_writabl
 def _PhxDeviceClothesWasher(_d: elec_equip.PhxDeviceClothesWasher) -> List[xml_writable]:
     return [
         XML_Node('Type', 2),
-        XML_Node('Connection', _d.connection),
+        XML_Node('Connection', _d.water_connection),
         XML_Node('UtilizationFactor', _d.utilization_factor),
         XML_Node('CapacityClothesWasher', _d.capacity),
         XML_Node('MEF_ModifiedEnergyFactor', _d.modified_energy_factor),

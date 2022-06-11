@@ -483,9 +483,10 @@
     "ELECTRICITY": {
         "name": "Electricity",
         "input_columns": {
+            "selection": "D",
             "used": "F",
-            "inside_envelope": "H",
-            "nom_demand": "J",
+            "in_conditioned_space": "H",
+            "energy_demand_per_use": "J",
             "utilization_factor": "N",
             "frequency": "P",
             "reference_quantity": "S"

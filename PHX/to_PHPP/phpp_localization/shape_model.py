@@ -502,9 +502,10 @@ class Pv(BaseModel):
 
 
 class ElectricityInputColumns(BaseModel):
+    selection: str
     used: str
-    inside_envelope: str
-    nom_demand: str
+    in_conditioned_space: str
+    energy_demand_per_use: str
     utilization_factor: str
     frequency: str
     reference_quantity: str

@@ -36,7 +36,7 @@ class PhxDeviceDishwasher(PhxElectricalDevice):
         self.display_name = "Kitchen Dishwasher"
         self.capacity_type: int = 1
         self.capacity: float = 1
-        self.water_connection: int = 1
+        self.water_connection: int = 1 # DHW Connection
 
 
 class PhxDeviceClothesWasher(PhxElectricalDevice):
@@ -45,7 +45,7 @@ class PhxDeviceClothesWasher(PhxElectricalDevice):
         self.display_name = "Laundry - washer"
         self.capacity: float = 0.0814  # m3
         self.modified_energy_factor: float = 2.38
-        self.connection: int = 1  # DHW Connection
+        self.water_connection: int = 1  # DHW Connection
         self.utilization_factor: float = 1
 
 

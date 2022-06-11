@@ -73,10 +73,14 @@ def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room:
     phx_phius_cert_criteria.phius_peak_cooling_load = hbph_phius_cert.PHIUS2021_cooling_load
 
     # certification settings / types
-    phx_phius_cert_settings.phius_building_category_type = phius_certification.PhiusCertificationBuildingCategoryType(hbph_phius_cert.building_category_type.number)
-    phx_phius_cert_settings.phius_building_use_type = phius_certification.PhiusCertificationBuildingUseType(hbph_phius_cert.building_use_type.number)
-    phx_phius_cert_settings.phius_building_status = phius_certification.PhiusCertificationBuildingStatus(hbph_phius_cert.building_status.number)
-    phx_phius_cert_settings.phius_building_type = phius_certification.PhiusCertificationBuildingType(hbph_phius_cert.building_type.number)
+    phx_phius_cert_settings.phius_building_category_type = phius_certification.PhiusCertificationBuildingCategoryType(
+        hbph_phius_cert.building_category_type.number)
+    phx_phius_cert_settings.phius_building_use_type = phius_certification.PhiusCertificationBuildingUseType(
+        hbph_phius_cert.building_use_type.number)
+    phx_phius_cert_settings.phius_building_status = phius_certification.PhiusCertificationBuildingStatus(
+        hbph_phius_cert.building_status.number)
+    phx_phius_cert_settings.phius_building_type = phius_certification.PhiusCertificationBuildingType(
+        hbph_phius_cert.building_type.number)
 
     return None
 
