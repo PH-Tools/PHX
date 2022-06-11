@@ -68,7 +68,7 @@ class VentilationInputItem:
         return obj
 
     @classmethod
-    def airtightness_q50(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
+    def airtightness_Vn50(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
-        obj.input_type = 'airtightness_q50'
+        obj.input_type = 'airtightness_Vn50'
         return obj

@@ -352,7 +352,7 @@
             "locator_string": "Air change rate at press. test",
             "input_column": "N"
         },
-        "airtightness_q50": {
+        "airtightness_Vn50": {
             "locator_col": "I",
             "locator_string": "Air change rate at press. test",
             "input_column": "P"

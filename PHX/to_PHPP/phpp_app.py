@@ -5,7 +5,7 @@
 
 from typing import List
 
-from PHX.model import project, certification
+from PHX.model import project, certification, building
 from PHX.model.hvac.collection import NoVentUnitFoundError
 
 from PHX.to_PHPP import xl_app
@@ -382,7 +382,7 @@ class PHPPConnection:
         return None
 
     def write_project_ventilation_type(self, phx_project: project.PhxProject) -> None:
-        """Write the Ventilation-Type to the PHPP 'Ventilation' worksheet."""
+        """Set the Ventilation-Type to the PHPP 'Ventilation' worksheet."""
 
         for variant in phx_project.variants:
             self.ventilation.write_ventilation_type(
@@ -401,11 +401,28 @@ class PHPPConnection:
             )
         return None
 
+    def write_project_volume(self, phx_project: project.PhxProject) -> None:
+        """Write the Vn50 and Vv to the PHPP 'Ventilation Worksheet."""
+        for variant in phx_project.variants:
+            # TODO: How to handle multiple variants?
+            
+            if not variant.phius_certification.ph_building_data:
+                continue
+            bldg: building.PhxBuilding = variant.building
+
+            self.ventilation.write_Vn50_volume(
+                ventilation_data.VentilationInputItem.airtightness_Vn50(
+                    self.shape.VENTILATION,
+                    bldg.net_volume
+                )
+            )
+
     def write_project_airtightness(self, phx_project: project.PhxProject) -> None:
         """Write the Airtightness data to the PHPP 'Ventilation' worksheet."""
 
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
+            
             if not variant.phius_certification.ph_building_data:
                 continue
             ph_bldg: certification.PhxPhBuildingData = variant.phius_certification.ph_building_data
@@ -427,12 +444,6 @@ class PHPPConnection:
                 ventilation_data.VentilationInputItem.airtightness_n50(
                     self.shape.VENTILATION,
                     ph_bldg.airtightness_n50
-                )
-            )
-            self.ventilation.write_airtightness_q50(
-                ventilation_data.VentilationInputItem.airtightness_q50(
-                    self.shape.VENTILATION,
-                    ph_bldg.airtightness_q50
                 )
             )
         return None

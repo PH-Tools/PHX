@@ -4,7 +4,7 @@
 """PHX Passive House Certification Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Optional
+from typing import ClassVar
 from dataclasses import dataclass, field
 
 from PHX.model import ground

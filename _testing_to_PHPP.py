@@ -53,5 +53,6 @@ if __name__ == '__main__':
         phpp_conn.write_project_spaces(phx_project)
         phpp_conn.write_project_ventilation_type(phx_project)
         phpp_conn.write_project_airtightness(phx_project)
+        phpp_conn.write_project_volume(phx_project)
         phpp_conn.write_project_hot_water(phx_project)
         phpp_conn.write_project_res_elec_appliances(phx_project)

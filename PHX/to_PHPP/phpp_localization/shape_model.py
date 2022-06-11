@@ -335,7 +335,7 @@ class Ventilation(BaseModel):
     wind_coeff_e: VentilationInputItem
     wind_coeff_f: VentilationInputItem
     airtightness_n50: VentilationInputItem
-    airtightness_q50: VentilationInputItem
+    airtightness_Vn50: VentilationInputItem
     multi_unit_on: VentilationInputItem
 
 

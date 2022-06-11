@@ -99,7 +99,7 @@ class Ventilation:
     def write_airtightness_n50(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
         self._write_input(self.io_air_change_rate, _phpp_model_obj)
 
-    def write_airtightness_q50(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
+    def write_Vn50_volume(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
         self._write_input(self.io_air_change_rate, _phpp_model_obj)
 
     def write_multi_vent_worksheet_on(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
