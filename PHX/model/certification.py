@@ -22,7 +22,7 @@ class PhxPhBuildingData:
     _count: ClassVar[int] = 0
 
     id_num: int = field(init=False, default=0)
-        
+    
     num_of_units: int = 1
     num_of_floors: int = 1
     occupancy_setting_method: int = 2  # Design
@@ -69,7 +69,7 @@ class PhxPhiusCertification:
     phius_certification_settings: PhxPhiusCertificationSettings = field(
         default_factory=PhxPhiusCertificationSettings)
     
-    # TODO: Refactor this out to someplace else....
+    # TODO: Refactor this out to someplace more general than inside Phius....
     ph_building_data: PhxPhBuildingData = field(
         default_factory=PhxPhBuildingData)
 

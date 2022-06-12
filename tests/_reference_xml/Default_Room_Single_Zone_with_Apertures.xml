@@ -36,8 +36,8 @@
 		<UtilizationPatternVent index="0">
 			<Name>Generic Office Ventilation</Name>
 			<IdentNr>1</IdentNr>
-			<OperatingDays>7</OperatingDays>
-			<OperatingWeeks>52</OperatingWeeks>
+			<OperatingDays>7.0</OperatingDays>
+			<OperatingWeeks>52.0</OperatingWeeks>
 			<Maximum_DOS>5.71</Maximum_DOS>
 			<Maximum_PDF>0.98</Maximum_PDF>
 			<Standard_DOS>0.71</Standard_DOS>
@@ -346,8 +346,8 @@
 			<Building>
 				<Components count="4">
 					<Component index="0">
-						<IdentNr>9</IdentNr>
-						<Name>Room_3_d5d69c16..Face4</Name>
+						<IdentNr>13</IdentNr>
+						<Name>Room_17_faa1724a..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -362,8 +362,8 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="1">
-						<IdentNr>10</IdentNr>
-						<Name>Room_3_d5d69c16..Face5</Name>
+						<IdentNr>14</IdentNr>
+						<Name>Room_17_faa1724a..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -378,7 +378,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="2">
-						<IdentNr>13</IdentNr>
+						<IdentNr>17</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -397,7 +397,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="3">
-						<IdentNr>16</IdentNr>
+						<IdentNr>20</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>

@@ -73,6 +73,6 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
 
 
 if __name__ == '__main__':
-    SOURCE_FILES = [pathlib.Path("/Users/em/Dropbox/bldgtyp/2021 ELS/07 PHPP/hbjson/ELS_220704.hbjson")]
+    # SOURCE_FILES = [pathlib.Path("/Users/em/Dropbox/bldgtyp/2021 ELS/07 PHPP/hbjson/ELS_220704.hbjson")]
     for source_file in SOURCE_FILES:
         generate_xml_file(source_file, TARGET_DIR)

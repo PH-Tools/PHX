@@ -56,10 +56,11 @@ def _reset_phx_class_counters():
     geometry.PhxPolygon._count = 0
     geometry.PhxVertix._count = 0
     schedules.UtilizationPatternVent._count = 0
-    certification.PhxPhBuildingData._count = 0
     constructions.PhxConstructionOpaque._count = 0
     constructions.PhxConstructionWindow._count = 0
     building.PhxZone._count = 0
+    certification.PhxPhBuildingData._count = 0
+    
     components.PhxComponentBase._count = 0
     elec_equip.PhxElectricalDevice._count = 0
     PhxRoomVentilation._count = 0

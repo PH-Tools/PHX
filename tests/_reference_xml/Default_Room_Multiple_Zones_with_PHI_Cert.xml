@@ -36,8 +36,8 @@
 		<UtilizationPatternVent index="0">
 			<Name>Generic Office Ventilation</Name>
 			<IdentNr>1</IdentNr>
-			<OperatingDays>7</OperatingDays>
-			<OperatingWeeks>52</OperatingWeeks>
+			<OperatingDays>7.0</OperatingDays>
+			<OperatingWeeks>52.0</OperatingWeeks>
 			<Maximum_DOS>5.71</Maximum_DOS>
 			<Maximum_PDF>0.98</Maximum_PDF>
 			<Standard_DOS>0.71</Standard_DOS>
@@ -52,7 +52,7 @@
 	<Variants count="1">
 		<Variant index="0">
 			<IdentNr>1</IdentNr>
-			<Name>Unnamed_Bldg_Segment</Name>
+			<Name>_unnamed_bldg_segment_</Name>
 			<Remarks></Remarks>
 			<PlugIn></PlugIn>
 			<Graphics_3D>
@@ -500,7 +500,7 @@
 			<Building>
 				<Components count="4">
 					<Component index="0">
-						<IdentNr>21</IdentNr>
+						<IdentNr>27</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -521,7 +521,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="1">
-						<IdentNr>22</IdentNr>
+						<IdentNr>28</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -538,7 +538,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="2">
-						<IdentNr>23</IdentNr>
+						<IdentNr>29</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -555,7 +555,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="3">
-						<IdentNr>28</IdentNr>
+						<IdentNr>34</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
@@ -578,7 +578,7 @@
 				</Components>
 				<Zones count="1">
 					<Zone index="0">
-						<Name>Unnamed_Bldg_Segment</Name>
+						<Name>_unnamed_bldg_segment_</Name>
 						<KindZone choice="Simulated zone">1</KindZone>
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="2">
@@ -586,7 +586,7 @@
 								<Name>101-Room_1</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>0</IdentNrVentilationUnit>
+								<IdentNrVentilationUnit>2</IdentNrVentilationUnit>
 								<Quantity>1</Quantity>
 								<AreaRoom unit="m²">1.0</AreaRoom>
 								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
@@ -597,7 +597,7 @@
 								<Name>102-Room_2</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>0</IdentNrVentilationUnit>
+								<IdentNrVentilationUnit>2</IdentNrVentilationUnit>
 								<Quantity>1</Quantity>
 								<AreaRoom unit="m²">1.0</AreaRoom>
 								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
@@ -868,7 +868,33 @@
 								<CoverageDehumidification>1.0</CoverageDehumidification>
 							</ZoneCoverage>
 						</ZonesCoverage>
-						<Devices count="0"/>
+						<Devices count="1">
+							<Device index="0">
+								<Name>Ventilator: 0%-HR, 0%-MR</Name>
+								<IdentNr>2</IdentNr>
+								<SystemType>1</SystemType>
+								<TypeDevice>1</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>true</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<UseOptionalClimate>false</UseOptionalClimate>
+								<IdentNr_OptionalClimate>-1</IdentNr_OptionalClimate>
+								<HeatRecovery>0.0</HeatRecovery>
+								<MoistureRecovery >0.0</MoistureRecovery >
+								<PH_Parameters>
+									<Quantity>1</Quantity>
+									<HumidityRecoveryEfficiency>0.0</HumidityRecoveryEfficiency>
+									<ElectricEfficiency>0.55</ElectricEfficiency>
+									<DefrostRequired>true</DefrostRequired>
+									<FrostProtection>true</FrostProtection>
+									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
+									<InConditionedSpace>true</InConditionedSpace>
+								</PH_Parameters>
+							</Device>
+						</Devices>
 						<PHDistribution>
 							<DistributionCooling/>
 							<UseDefaultValues>true</UseDefaultValues>

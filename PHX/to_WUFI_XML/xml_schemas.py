@@ -868,24 +868,24 @@ def _PhxDeviceWaterStorage(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable
         XML_Node("UsedFor_Humidification", _d.usage_profile.humidification),
         XML_Node("UsedFor_Dehumidification",
                  _d.usage_profile.dehumidification),
-        XML_Object('PH_Parameters', _d.params,
+        XML_Object('PH_Parameters', _d,
                    _schema_name='_DeviceWaterStoragePhParams')
     ]
 
 
-def _DeviceWaterStoragePhParams(_p: hvac.PhxHotWaterTankParams) -> List[xml_writable]:
+def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
     return [
-        XML_Node("SolarThermalStorageCapacity", _p.storage_capacity),
-        XML_Node("StorageLossesStandby", _p.standby_losses),
-        XML_Node("TotalSolarThermalStorageLosses", _p.solar_losses),
-        XML_Node("InputOption", _p.input_option.value),
-        XML_Node("AverageHeatReleaseStorage", _p.storage_loss_rate),
-        XML_Node("TankRoomTemp ", _p.room_temp),
-        XML_Node("TypicalStorageWaterTemperature", _p.water_temp),
-        XML_Node("QauntityWS", _p.quantity),
-        XML_Node("AuxiliaryEnergy", _p.aux_energy),
-        XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
-        XML_Node("InConditionedSpace", _p.in_conditioned_space),
+        XML_Node("SolarThermalStorageCapacity", _t.params.storage_capacity),
+        XML_Node("StorageLossesStandby", _t.params.standby_losses),
+        XML_Node("TotalSolarThermalStorageLosses", _t.params.solar_losses),
+        XML_Node("InputOption", _t.params.input_option.value),
+        XML_Node("AverageHeatReleaseStorage", _t.params.storage_loss_rate),
+        XML_Node("TankRoomTemp ", _t.params.room_temp),
+        XML_Node("TypicalStorageWaterTemperature", _t.params.water_temp),
+        XML_Node("QauntityWS", _t.quantity),
+        XML_Node("AuxiliaryEnergy", _t.params.aux_energy),
+        XML_Node("AuxiliaryEnergyDHW", _t.params.aux_energy_dhw),
+        XML_Node("InConditionedSpace", _t.params.in_conditioned_space),
     ]
 
 

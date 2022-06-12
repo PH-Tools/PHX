@@ -128,22 +128,21 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     --------
         * None
     """
-    ph_bldg_data = certification.PhxPhBuildingData()
+    # alias
+    ph_bldg = _variant.phius_certification.ph_building_data
 
-    ph_bldg_data.num_of_units = _hb_room.properties.ph.ph_bldg_segment.num_dwelling_units
-    ph_bldg_data.num_of_floors = _hb_room.properties.ph.ph_bldg_segment.num_floor_levels
+    ph_bldg.num_of_units = _hb_room.properties.ph.ph_bldg_segment.num_dwelling_units
+    ph_bldg.num_of_floors = _hb_room.properties.ph.ph_bldg_segment.num_floor_levels
 
     # TODO: Foundations. For now: set to None
-    ph_bldg_data.add_foundation(ground.PhxFoundation())
+    ph_bldg.add_foundation(ground.PhxFoundation())
 
     # Set the airtightness for Building
-    ph_bldg_data.airtightness_q50 = _hb_room.properties.energy.infiltration.flow_per_exterior_area * 3600
+    ph_bldg.airtightness_q50 = _hb_room.properties.energy.infiltration.flow_per_exterior_area * 3600
 
     # Air temp Setpoints
-    ph_bldg_data.setpoints.winter = _hb_room.properties.ph.ph_bldg_segment.set_points.winter
-    ph_bldg_data.setpoints.summer = _hb_room.properties.ph.ph_bldg_segment.set_points.summer
-
-    _variant.phius_certification.ph_building_data = ph_bldg_data
+    ph_bldg.setpoints.winter = _hb_room.properties.ph.ph_bldg_segment.set_points.winter
+    ph_bldg.setpoints.summer = _hb_room.properties.ph.ph_bldg_segment.set_points.summer
 
     return None
 

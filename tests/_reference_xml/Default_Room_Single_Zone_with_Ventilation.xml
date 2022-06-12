@@ -36,8 +36,8 @@
 		<UtilizationPatternVent index="0">
 			<Name>Generic Office Ventilation</Name>
 			<IdentNr>1</IdentNr>
-			<OperatingDays>7</OperatingDays>
-			<OperatingWeeks>52</OperatingWeeks>
+			<OperatingDays>7.0</OperatingDays>
+			<OperatingWeeks>52.0</OperatingWeeks>
 			<Maximum_DOS>5.71</Maximum_DOS>
 			<Maximum_PDF>0.98</Maximum_PDF>
 			<Standard_DOS>0.71</Standard_DOS>
@@ -191,7 +191,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_12_d32855a8..Face4</Name>
+						<Name>Room_26_c598cfa3..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -207,7 +207,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_12_d32855a8..Face5</Name>
+						<Name>Room_26_c598cfa3..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
