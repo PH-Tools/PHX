@@ -5,9 +5,9 @@
 
 from typing import Optional, List
 from contextlib import contextmanager
+import os
 
 import xlwings as xw
-
 
 from PHX.to_PHPP import xl_data
 
@@ -33,6 +33,13 @@ class ReadMultipleColumnsError(Exception):
             f'and _col_end={_c2}. Please use "read_single_column()" instead.'
         super().__init__(self.msg)
 
+class WriteValueError(Exception):
+    def __init__(self, _value, _range, _worksheet, _e):
+        self.msg = "\n\n\tSomething went wrong trying to write the value: '{}' to the cell: '{}' on worksheet: '{}'. Please "\
+                    "make sure that a valid PHPP file is open, and both the worksheet and workbook are unprotected.\n\n{}".format(
+                         _value, _range, _worksheet, _e
+                    )
+        super().__init__(self.msg)
 
 # -----------------------------------------------------------------------------
 
@@ -72,7 +79,10 @@ class XLConnection:
     def unprotect_all_sheets(self) -> None:
         """Walk through all the sheets and unprotect them all."""
         for sheet in self.wb.sheets:
-            sheet.api.unprotect()
+            if os.name != 'nt':
+                sheet.api.unprotect()
+            else:
+                sheet.api.Unprotect()
 
     def get_row_num_of_value_in_column(self, sheet_name: str, row_start: int,
                                        row_end: int,  col: str, find: str) -> Optional[int]:
@@ -183,8 +193,11 @@ class XLConnection:
         ---------
             * _xl_item: (XLItem) The XLItem with a sheet_name, range and value to write.
          """
-        self.get_sheet_by_name(_xl_item.sheet_name).range(
-            _xl_item.xl_range).value = _xl_item.write_value
+        try:
+            self.get_sheet_by_name(_xl_item.sheet_name).range(
+                _xl_item.xl_range).value = _xl_item.write_value
+        except Exception as e:
+            raise WriteValueError(_xl_item.write_value, _xl_item.xl_range, _xl_item.sheet_name, e)
 
     def write_data(self, _sheet_name: str, _range: str, _val: xl_data.xl_writable) -> None:
         """Writes a value to a specific cell range in the excel sheet 
@@ -195,7 +208,10 @@ class XLConnection:
             * _range: (str) The cell range to write to (ie: "A1") or a set of ranges (ie: "A1:B4")
             * _val: (xl_writable) The cell value(s) to write. Accepts single value or list
          """
-        self.get_sheet_by_name(_sheet_name).range(_range).value = _val
+        try:
+            self.get_sheet_by_name(_sheet_name).range(_range).value = _val
+        except Exception as e:
+            raise WriteValueError(_val, _range, _sheet_name, e)
 
     def clear_data(self, _sheet_name: str, _range: str) -> None:
         """Sets the specified excel sheet's range to 'None'

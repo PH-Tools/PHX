@@ -49,6 +49,7 @@ if __name__ == '__main__':
             raise Exception(msg)
 
     with phpp_conn.xl.in_silent_mode():
+        phpp_conn.xl.unprotect_all_sheets()
         phpp_conn.write_certification_config(phx_project)
         phpp_conn.write_climate_data(phx_project)
         phpp_conn.write_project_constructions(phx_project)
