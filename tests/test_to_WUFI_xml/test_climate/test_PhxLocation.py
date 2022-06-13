@@ -1,10 +1,11 @@
-from PHX.model import climate
+from PHX.model import phx_site
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
+
 def test_default_PhxLocation(reset_class_counters):
-    l1 = climate.PhxLocation()
+    l1 = phx_site.PhxSite()
     result = generate_WUFI_XML_from_object(l1, _header="")
     assert xml_string_to_list(result) == [
         '<Selection>1</Selection>',

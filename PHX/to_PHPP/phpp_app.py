@@ -170,14 +170,14 @@ class PHPPConnection:
             # -- Write the actual weather station data
             weather_station_data = climate_entry.ClimateDataBlock(
                 shape=self.shape.CLIMATE,
-                phx_location=phx_variant.location
+                phx_site=phx_variant.site
             )
             self.climate.write_climate_block(weather_station_data)
 
             # -- Set the active weather station
             active_climate_data = climate_entry.ClimateSettings(
                 shape=self.shape.CLIMATE,
-                phx_location=phx_variant.location
+                phx_site=phx_variant.site
             )
             self.climate.write_active_climate(active_climate_data)
         return None

@@ -6,8 +6,8 @@
 from typing import List
 import sys
 
-from PHX.model import (certification, climate, constructions,
-                       geometry, ground, schedules, hvac, loads,
+from PHX.model import (certification, constructions,
+                       geometry, ground, phx_site, schedules, hvac, loads,
                        building, elec_equip, project, components)
 from PHX.to_WUFI_XML.xml_writables import XML_Node, XML_List, XML_Object, xml_writable
 
@@ -54,7 +54,7 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
         XML_Node("PlugIn", _variant.plugin),
         XML_Object("Graphics_3D", _variant.graphics3D),
         XML_Object("Building", _variant.building),
-        XML_Object("ClimateLocation", _variant.location),
+        XML_Object("ClimateLocation", _variant.site),
         XML_Object("PassivehouseData", _variant.phius_certification),
         XML_Object("HVAC", _variant.mech_systems,
                    _schema_name='_PhxMechanicalEquipmentCollection'),
@@ -254,9 +254,10 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
 
 # -- CLIMATE ------------------------------------------------------------------
 
-def _PH_ClimateLocation(_phx_location: climate.PhxLocation) -> List[xml_writable]:
 
-    def _in_wufi_order(_factor_dict: dict) -> List[climate.PhxEnergyFactor]:
+def _PH_ClimateLocation(_phx_location: phx_site.PhxSite) -> List[xml_writable]:
+
+    def _in_wufi_order(_factor_dict: dict) -> List[phx_site.PhxEnergyFactor]:
         """Returns the PE /CO2 conversion factors in WUFI-specific order."""
         fuel_order = ["OIL", "NATURAL_GAS", "LPG", "HARD_COAL", "WOOD", "ELECTRICITY_MIX",
                       "ELECTRICITY_PV", "HARD_COAL_CGS_70_CHP", "HARD_COAL_CGS_35_CHP",
@@ -272,12 +273,12 @@ def _PH_ClimateLocation(_phx_location: climate.PhxLocation) -> List[xml_writable
         XML_Node('AverageWindSpeed', _phx_location.climate.avg_wind_speed),
 
         # -- Location
-        XML_Node('Latitude', _phx_location.site.latitude),
-        XML_Node('Longitude', _phx_location.site.longitude),
+        XML_Node('Latitude', _phx_location.location.latitude),
+        XML_Node('Longitude', _phx_location.location.longitude),
         XML_Node('HeightNNWeatherStation',
-                 _phx_location.site.elevation),
-        XML_Node('dUTC', _phx_location.site.hours_from_UTC),
-        XML_Node('ClimateZone', _phx_location.site.climate_zone),
+                 _phx_location.climate.station_elevation),
+        XML_Node('dUTC', _phx_location.location.hours_from_UTC),
+        XML_Node('ClimateZone', _phx_location.location.climate_zone),
 
         # -- Ground
         XML_Node('GroundThermalConductivity',
@@ -369,17 +370,17 @@ def _PH_ClimateLocation(_phx_location: climate.PhxLocation) -> List[xml_writable
     ]
 
 
-def _PhxLocation(_phx_location: climate.PhxLocation) -> List[xml_writable]:
+def _PhxLocation(_phx_location: phx_site.PhxSite) -> List[xml_writable]:
     return [
         XML_Node('Selection', _phx_location.selection),
         # XML_Node('IDNr_DB', _climate.),
         # XML_Node('Name_DB', _climate.),
         # XML_Node('Comment_DB', _climate.),
-        XML_Node('Latitude_DB', _phx_location.site.latitude, 'unit', "°"),
-        XML_Node('Longitude_DB', _phx_location.site.longitude,  'unit', "°"),
+        XML_Node('Latitude_DB', _phx_location.location.latitude, 'unit', "°"),
+        XML_Node('Longitude_DB', _phx_location.location.longitude,  'unit', "°"),
         XML_Node(
-            'HeightNN_DB', _phx_location.site.elevation, 'unit', "m"),
-        XML_Node('dUTC_DB', _phx_location.site.hours_from_UTC),
+            'HeightNN_DB', _phx_location.location.site_elevation, 'unit', "m"),
+        XML_Node('dUTC_DB', _phx_location.location.hours_from_UTC),
         # XML_Node('FileName_DB', _climate.),
         # XML_Node('Type_DB', _climate.),
         # XML_Node('CatalogueNr_DB', _climate.),

@@ -7,9 +7,9 @@ from typing import Dict
 
 from honeybee import room
 
-from honeybee_ph import location, phi, phius
+from honeybee_ph import site, phi, phius
 from honeybee_energy_ph.properties.load import equipment
-from PHX.model import project, certification, ground, climate, constructions
+from PHX.model import phx_site, project, ground, constructions
 from PHX.model.enums import phi_certification, phius_certification
 from PHX.from_HBJSON import create_building, create_hvac, create_shw, create_elec_equip
 
@@ -160,70 +160,70 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
         * None
     """
 
-    ud_climate: location.Climate = _hb_room.properties.ph.ph_bldg_segment.climate
-
-    # -- Basics
-    _variant.location.climate.daily_temp_swing = ud_climate.summer_daily_temperature_swing
-    _variant.location.climate.avg_wind_speed = ud_climate.average_wind_speed
-
-    # -- PHPP Stuff
-    _variant.location.phpp_country_code = ud_climate.phpp_country_code
-    _variant.location.phpp_region_code = ud_climate.phpp_region_code
-    _variant.location.phpp_dataset_name = ud_climate.phpp_dataset_name
+    ud_site: site.Site = _hb_room.properties.ph.ph_bldg_segment.site
 
     # -- Location
-    _variant.location.site.latitude = ud_climate.location.latitude
-    _variant.location.site.longitude = ud_climate.location.longitude
-    _variant.location.site.elevation = ud_climate.location.weather_station_elevation
-    _variant.location.site.climate_zone = ud_climate.location.climate_zone
-    _variant.location.site.hours_from_UTC = ud_climate.location.hours_from_UTC
+    _variant.site.location.latitude = ud_site.location.latitude
+    _variant.site.location.longitude = ud_site.location.longitude
+    _variant.site.location.site_elevation = ud_site.location.site_elevation
+    _variant.site.location.climate_zone = ud_site.location.climate_zone
+    _variant.site.location.hours_from_UTC = ud_site.location.hours_from_UTC
+
+    # -- Basics
+    _variant.site.climate.daily_temp_swing = ud_site.climate.summer_daily_temperature_swing
+    _variant.site.climate.avg_wind_speed = ud_site.climate.average_wind_speed
+
+    # -- PHPP Stuff
+    _variant.site.phpp_codes.country_code = ud_site.phpp_library_codes.country_code
+    _variant.site.phpp_codes.region_code = ud_site.phpp_library_codes.region_code
+    _variant.site.phpp_codes.dataset_name = ud_site.phpp_library_codes.dataset_name
 
     # -- Ground
-    _variant.location.ground.ground_thermal_conductivity = ud_climate.ground.ground_thermal_conductivity
-    _variant.location.ground.ground_heat_capacity = ud_climate.ground.ground_heat_capacity
-    _variant.location.ground.ground_density = ud_climate.ground.ground_density
-    _variant.location.ground.depth_groundwater = ud_climate.ground.depth_groundwater
-    _variant.location.ground.flow_rate_groundwater = ud_climate.ground.flow_rate_groundwater
+    _variant.site.ground.ground_thermal_conductivity = ud_site.climate.ground.ground_thermal_conductivity
+    _variant.site.ground.ground_heat_capacity = ud_site.climate.ground.ground_heat_capacity
+    _variant.site.ground.ground_density = ud_site.climate.ground.ground_density
+    _variant.site.ground.depth_groundwater = ud_site.climate.ground.depth_groundwater
+    _variant.site.ground.flow_rate_groundwater = ud_site.climate.ground.flow_rate_groundwater
 
     # -- Monthly Values
-    _variant.location.climate.monthly_temperature_air = ud_climate.monthly_temperature_air.values
-    _variant.location.climate.monthly_temperature_dewpoint = ud_climate.monthly_temperature_dewpoint.values
-    _variant.location.climate.monthly_temperature_sky = ud_climate.monthly_temperature_sky.values
+    _variant.site.climate.monthly_temperature_air = ud_site.climate.monthly_temperature_air.values
+    _variant.site.climate.monthly_temperature_dewpoint = ud_site.climate.monthly_temperature_dewpoint.values
+    _variant.site.climate.monthly_temperature_sky = ud_site.climate.monthly_temperature_sky.values
 
-    _variant.location.climate.monthly_radiation_north = ud_climate.monthly_radiation_north.values
-    _variant.location.climate.monthly_radiation_east = ud_climate.monthly_radiation_east.values
-    _variant.location.climate.monthly_radiation_south = ud_climate.monthly_radiation_south.values
-    _variant.location.climate.monthly_radiation_west = ud_climate.monthly_radiation_west.values
-    _variant.location.climate.monthly_radiation_global = ud_climate.monthly_radiation_global.values
+    _variant.site.climate.monthly_radiation_north =ud_site.climate.monthly_radiation_north.values
+    _variant.site.climate.monthly_radiation_east =ud_site.climate.monthly_radiation_east.values
+    _variant.site.climate.monthly_radiation_south =ud_site.climate.monthly_radiation_south.values
+    _variant.site.climate.monthly_radiation_west =ud_site.climate.monthly_radiation_west.values
+    _variant.site.climate.monthly_radiation_global =ud_site.climate.monthly_radiation_global.values
 
     # -- Peak Load Values
-    _variant.location.climate.peak_heating_1.temp = ud_climate.peak_heating_1.temp
-    _variant.location.climate.peak_heating_1.rad_north = ud_climate.peak_heating_1.rad_north
-    _variant.location.climate.peak_heating_1.rad_east = ud_climate.peak_heating_1.rad_east
-    _variant.location.climate.peak_heating_1.rad_south = ud_climate.peak_heating_1.rad_south
-    _variant.location.climate.peak_heating_1.rad_west = ud_climate.peak_heating_1.rad_west
-    _variant.location.climate.peak_heating_1.rad_global = ud_climate.peak_heating_1.rad_global
+    _variant.site.climate.peak_heating_1.temp = ud_site.climate.peak_heating_1.temp
+    _variant.site.climate.peak_heating_1.rad_north = ud_site.climate.peak_heating_1.rad_north
+    _variant.site.climate.peak_heating_1.rad_east = ud_site.climate.peak_heating_1.rad_east
+    _variant.site.climate.peak_heating_1.rad_south = ud_site.climate.peak_heating_1.rad_south
+    _variant.site.climate.peak_heating_1.rad_west = ud_site.climate.peak_heating_1.rad_west
+    _variant.site.climate.peak_heating_1.rad_global = ud_site.climate.peak_heating_1.rad_global
 
-    _variant.location.climate.peak_heating_2.temp = ud_climate.peak_heating_2.temp
-    _variant.location.climate.peak_heating_2.rad_north = ud_climate.peak_heating_2.rad_north
-    _variant.location.climate.peak_heating_2.rad_east = ud_climate.peak_heating_2.rad_east
-    _variant.location.climate.peak_heating_2.rad_south = ud_climate.peak_heating_2.rad_south
-    _variant.location.climate.peak_heating_2.rad_west = ud_climate.peak_heating_2.rad_west
-    _variant.location.climate.peak_heating_2.rad_global = ud_climate.peak_heating_2.rad_global
+    _variant.site.climate.peak_heating_2.temp = ud_site.climate.peak_heating_2.temp
+    _variant.site.climate.peak_heating_2.rad_north = ud_site.climate.peak_heating_2.rad_north
+    _variant.site.climate.peak_heating_2.rad_east = ud_site.climate.peak_heating_2.rad_east
+    _variant.site.climate.peak_heating_2.rad_south = ud_site.climate.peak_heating_2.rad_south
+    _variant.site.climate.peak_heating_2.rad_west = ud_site.climate.peak_heating_2.rad_west
+    _variant.site.climate.peak_heating_2.rad_global = ud_site.climate.peak_heating_2.rad_global
 
-    _variant.location.climate.peak_cooling_1.temp = ud_climate.peak_cooling_1.temp
-    _variant.location.climate.peak_cooling_1.rad_north = ud_climate.peak_cooling_1.rad_north
-    _variant.location.climate.peak_cooling_1.rad_east = ud_climate.peak_cooling_1.rad_east
-    _variant.location.climate.peak_cooling_1.rad_south = ud_climate.peak_cooling_1.rad_south
-    _variant.location.climate.peak_cooling_1.rad_west = ud_climate.peak_cooling_1.rad_west
-    _variant.location.climate.peak_cooling_1.rad_global = ud_climate.peak_cooling_1.rad_global
+    _variant.site.climate.peak_cooling_1.temp = ud_site.climate.peak_cooling_1.temp
+    _variant.site.climate.peak_cooling_1.rad_north = ud_site.climate.peak_cooling_1.rad_north
+    _variant.site.climate.peak_cooling_1.rad_east = ud_site.climate.peak_cooling_1.rad_east
+    _variant.site.climate.peak_cooling_1.rad_south = ud_site.climate.peak_cooling_1.rad_south
+    _variant.site.climate.peak_cooling_1.rad_west = ud_site.climate.peak_cooling_1.rad_west
+    _variant.site.climate.peak_cooling_1.rad_global = ud_site.climate.peak_cooling_1.rad_global
 
-    _variant.location.climate.peak_cooling_2.temp = ud_climate.peak_cooling_2.temp
-    _variant.location.climate.peak_cooling_2.rad_north = ud_climate.peak_cooling_2.rad_north
-    _variant.location.climate.peak_cooling_2.rad_east = ud_climate.peak_cooling_2.rad_east
-    _variant.location.climate.peak_cooling_2.rad_south = ud_climate.peak_cooling_2.rad_south
-    _variant.location.climate.peak_cooling_2.rad_west = ud_climate.peak_cooling_2.rad_west
-    _variant.location.climate.peak_cooling_2.rad_global = ud_climate.peak_cooling_2.rad_global
+    _variant.site.climate.peak_cooling_2.temp = ud_site.climate.peak_cooling_2.temp
+    _variant.site.climate.peak_cooling_2.rad_north = ud_site.climate.peak_cooling_2.rad_north
+    _variant.site.climate.peak_cooling_2.rad_east = ud_site.climate.peak_cooling_2.rad_east
+    _variant.site.climate.peak_cooling_2.rad_south = ud_site.climate.peak_cooling_2.rad_south
+    _variant.site.climate.peak_cooling_2.rad_west = ud_site.climate.peak_cooling_2.rad_west
+    _variant.site.climate.peak_cooling_2.rad_global = ud_site.climate.peak_cooling_2.rad_global
 
     return None
 
@@ -241,11 +241,11 @@ def add_local_pe_conversion_factors(_variant: project.PhxVariant, _hb_room: room
         * None
     """
     for factor in _hb_room.properties.ph.ph_bldg_segment.source_energy_factors:
-        new_phx_factor = climate.PhxPEFactor()
+        new_phx_factor = phx_site.PhxPEFactor()
         new_phx_factor.fuel_name = factor.fuel_name
         new_phx_factor.value = factor.value
         new_phx_factor.unit = factor.unit
-        _variant.location.energy_factors.pe_factors[new_phx_factor.fuel_name] = new_phx_factor
+        _variant.site.energy_factors.pe_factors[new_phx_factor.fuel_name] = new_phx_factor
     return
 
 
@@ -263,11 +263,11 @@ def add_local_co2_conversion_factors(_variant: project.PhxVariant, _hb_room: roo
     """
 
     for factor in _hb_room.properties.ph.ph_bldg_segment.co2e_factors:
-        new_phx_factor = climate.PhxCO2Factor()
+        new_phx_factor = phx_site.PhxCO2Factor()
         new_phx_factor.fuel_name = factor.fuel_name
         new_phx_factor.value = factor.value
         new_phx_factor.unit = factor.unit
-        _variant.location.energy_factors.co2_factors[new_phx_factor.fuel_name] = new_phx_factor
+        _variant.site.energy_factors.co2_factors[new_phx_factor.fuel_name] = new_phx_factor
     return
 
 
