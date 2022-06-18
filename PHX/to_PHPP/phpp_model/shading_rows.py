@@ -6,6 +6,7 @@
 from dataclasses import dataclass
 from typing import List, Tuple
 from functools import partial
+from PHX.model import components
 
 from PHX.to_PHPP import xl_data
 from PHX.to_PHPP.phpp_localization import shape_model
@@ -15,8 +16,9 @@ from PHX.to_PHPP.phpp_localization import shape_model
 class ShadingRow:
     """Model class for a single Window's Shading entry row."""
 
-    __slots__ = ('shape', 'winter_shading_factor', 'summer_shading_factor')
+    __slots__ = ('shape', 'shading_dims', 'winter_shading_factor', 'summer_shading_factor')
     shape: shape_model.Shading
+    shading_dims: components.PhxApertureShadingDimensions
     winter_shading_factor: float
     summer_shading_factor: float
 
@@ -38,6 +40,12 @@ class ShadingRow:
         """
         create_range = partial(self._create_range, _row_num=_row_num)
         items: List[Tuple[str, xl_data.xl_writable]] = [
+            (create_range('h_hori'), self.shading_dims.h_hori),
+            (create_range('d_hori'), self.shading_dims.d_hori),
+            (create_range('o_reveal'), self.shading_dims.o_reveal),
+            (create_range('d_reveal'), self.shading_dims.d_reveal),
+            (create_range('o_over'), self.shading_dims.o_over),
+            (create_range('d_over'), self.shading_dims.d_over),
             (create_range('r_other_winter'), self.winter_shading_factor),
             (create_range('r_other_summer'), self.summer_shading_factor),
         ]

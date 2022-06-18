@@ -121,8 +121,16 @@ def create_component_from_hb_aperture(
     new_phx_ap_element.display_name = _hb_aperture.display_name
     new_phx_ap_element.polygon = create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture)
     
+    if _hb_aperture.properties.ph.shading_dimensions:
+        new_phx_ap_element.shading_dimensions.h_hori = _hb_aperture.properties.ph.shading_dimensions.h_hori
+        new_phx_ap_element.shading_dimensions.d_hori = _hb_aperture.properties.ph.shading_dimensions.d_hori
+        new_phx_ap_element.shading_dimensions.o_reveal = _hb_aperture.properties.ph.shading_dimensions.o_reveal
+        new_phx_ap_element.shading_dimensions.d_reveal = _hb_aperture.properties.ph.shading_dimensions.d_reveal
+        new_phx_ap_element.shading_dimensions.o_over = _hb_aperture.properties.ph.shading_dimensions.o_over
+        new_phx_ap_element.shading_dimensions.d_over = _hb_aperture.properties.ph.shading_dimensions.d_over
     new_phx_ap_element.winter_shading_factor = _hb_aperture.properties.ph.winter_shading_factor
     new_phx_ap_element.summer_shading_factor = _hb_aperture.properties.ph.summer_shading_factor
+
     phx_ap.add_elements((new_phx_ap_element,))
     
     return phx_ap

@@ -3,9 +3,9 @@
 
 """Controller for managing the PHPP Connection."""
 
-from typing import List
+from typing import List, Dict, Any
 
-from PHX.model import project, certification, building
+from PHX.model import project, certification, building, components
 from PHX.model.hvac.collection import NoVentUnitFoundError
 
 from PHX.to_PHPP import xl_app
@@ -293,12 +293,12 @@ class PHPPConnection:
         self.windows.write_windows(phpp_windows)
         return None
 
-    def write_project_window_shading_factors(self, phx_project: project.PhxProject) -> None:
+    def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
         # Get all the Window worksheet names in order
         window_names = self.windows.get_all_window_names()
         
         # Get all the PHX Aperture objects
-        phx_aperture_dict = {}
+        phx_aperture_dict: Dict[str, components.PhxApertureElement] = {}
         for phx_variant in phx_project.variants:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
@@ -306,16 +306,15 @@ class PHPPConnection:
                         phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element
 
         # Sort the phx apertures to match the window_names order
-        phx_aperture_elements_in_order = []
-        for window_name in window_names:
-            phx_aperture_elements_in_order.append( phx_aperture_dict[window_name] )
+        phx_aperture_elements_in_order = (phx_aperture_dict[window_name] for window_name in window_names)
 
-        # Write out all the factors
+        # Write out all the Shading
         phpp_shading_rows: List[shading_rows.ShadingRow] = []
         for phx_aperture_element in phx_aperture_elements_in_order:
             phpp_shading_rows.append(
                             shading_rows.ShadingRow(
                                 self.shape.SHADING,
+                                phx_aperture_element.shading_dimensions,
                                 phx_aperture_element.winter_shading_factor,
                                 phx_aperture_element.summer_shading_factor
                             )

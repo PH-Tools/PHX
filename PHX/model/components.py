@@ -134,6 +134,20 @@ class PhxComponentOpaque(PhxComponentBase):
             f'Error: Cannot find a host polygon for the child id_num: {_id_num}')
 
 
+class PhxApertureShadingDimensions(PhxComponentBase):
+    """PHPP old-style shading dimensions data."""
+
+    def __init__(self):
+        super().__init__()
+
+        self.d_hori: Optional[float] = None
+        self.h_hori: Optional[float] = None
+        self.d_reveal: Optional[float] = None
+        self.o_reveal: Optional[float] = None
+        self.d_over: Optional[float] = None
+        self.o_over: Optional[float] = None
+        
+
 class PhxApertureElement(PhxComponentBase):
     """A single sash / element of an Aperture Component."""
     
@@ -145,6 +159,7 @@ class PhxApertureElement(PhxComponentBase):
         self.polygon: Optional[geometry.PhxPolygonRectangular] = None
         self.winter_shading_factor: float = 0.75
         self.summer_shading_factor: float = 0.75
+        self.shading_dimensions: PhxApertureShadingDimensions = PhxApertureShadingDimensions()
 
 
 class PhxComponentAperture(PhxComponentBase):
