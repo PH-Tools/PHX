@@ -3,7 +3,7 @@
 
 """Controller for managing the PHPP Connection."""
 
-from typing import List, Dict, Any
+from typing import List, Dict
 
 from PHX.model import project, certification, building, components
 from PHX.model.hvac.collection import NoVentUnitFoundError
@@ -11,10 +11,12 @@ from PHX.model.hvac.collection import NoVentUnitFoundError
 from PHX.to_PHPP import xl_app
 from PHX.to_PHPP import sheet_io
 from PHX.to_PHPP.phpp_localization import shape_model
-from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, climate_entry, electricity_item, uvalues_constructor,
-                                    component_glazing, component_frame, component_vent, ventilation_data,
-                                    windows_rows, shading_rows, vent_space, vent_units, vent_ducts, 
-                                    verification_data, hot_water_tank)
+from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, areas_thermal_bridges, 
+                                    climate_entry, electricity_item, uvalues_constructor,
+                                    component_glazing, component_frame, component_vent, 
+                                    ventilation_data, windows_rows, shading_rows, 
+                                    vent_space, vent_units, vent_ducts, verification_data, 
+                                    hot_water_tank)
 
 
 class PHPPConnection:
@@ -259,6 +261,21 @@ class PHPPConnection:
         self.areas.write_surfaces(surfaces)
         return None
 
+    def write_project_thermal_bridges(self, phx_project: project.PhxProject) -> None:
+        """Write all of the thermal-bridge elements of a PhxProject to the PHPP 'Areas' worksheet."""
+        
+        thermal_bridges: List[areas_thermal_bridges.ThermalBridgeRow] = []
+        for variant in phx_project.variants:
+            for phx_tb in variant.building.thermal_bridges:
+                thermal_bridges.append(
+                    areas_thermal_bridges.ThermalBridgeRow(
+                        self.shape.AREAS,
+                        phx_tb
+                    )
+                )
+        self.areas.write_thermal_bridges(thermal_bridges)
+        return None
+        
     def write_project_window_surfaces(self, phx_project: project.PhxProject) -> None:
         """Write all of the window surfaces from a PhxProject to the PHPP 'Windows' worksheet."""
 

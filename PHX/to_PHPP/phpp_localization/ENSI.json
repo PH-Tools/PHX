@@ -207,6 +207,20 @@
             "locator_string": "Treated floor area",
             "input_column": "V",
             "input_row_offset": 0
+        },
+        "thermal_bridge_rows": {
+            "locator_col_header": "K",
+            "locator_string_header": "Thermal bridge inputs",
+            "locator_col_entry": "K",
+            "locator_string_entry": "1",
+            "input_columns": {
+                "description": "L",
+                "group_number": "M",
+                "quantity": "P",
+                "length": "R",
+                "psi_value": "X",
+                "fRsi_value": "Z"
+            }
         }
     },
     "GROUND": {

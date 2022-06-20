@@ -38,6 +38,8 @@ def add_building_from_hb_room(_variant: project.PhxVariant,
         create_building.create_components_from_hb_room(_hb_room, _assembly_dict, _window_type_dict))
     _variant.building.add_zones(
         create_building.create_zones_from_hb_room(_hb_room))
+    _variant.building.add_thermal_bridges(
+        create_building.create_thermal_bridges_from_hb_room(_hb_room))
 
     if group_components:
         _variant.building.merge_opaque_components_by_assembly()

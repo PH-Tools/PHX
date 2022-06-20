@@ -9,7 +9,8 @@ from honeybee import room, aperture, face
 
 from PHX.model import building, constructions, components
 from PHX.from_HBJSON import create_rooms, create_geometry
-from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceOpacity, ComponentColor, ComponentFaceType
+from PHX.model.enums.building import (ComponentExposureExterior, ComponentFaceOpacity,
+                                ComponentColor, ComponentFaceType, ThermalBridgeType)
 
 
 def _hb_face_opacity_to_phx_enum(_hb_face: face.Face) -> ComponentFaceOpacity:
@@ -238,3 +239,29 @@ def create_zones_from_hb_room(_hb_room: room.Room) -> building.PhxZone:
     new_zone.res_number_bedrooms = _hb_room.properties.energy.people.properties.ph.number_bedrooms
 
     return new_zone
+
+
+def create_thermal_bridges_from_hb_room(_hb_room: room.Room) -> List[components.PhxComponentThermalBridge]:
+    """Create a list of new PHX-ThermalBridges based on those found on a honeybee-Room.
+
+    Arguments:
+    ----------
+        * _hb_room (room.Room): The honeybee-Room to use as the source.
+
+    Returns:
+    --------
+        * (List[components.PhxThermalBridge]): A list of the new Thermal Bridge objects.
+    """
+    phx_thermal_bridges = []
+    for thermal_bridge in sorted(_hb_room.properties.ph.ph_bldg_segment.thermal_bridges.values(), key=lambda tb:tb.display_name):
+        phx_tb = components.PhxComponentThermalBridge()
+        phx_tb.display_name = thermal_bridge.display_name
+        phx_tb.quantity = thermal_bridge.quantity
+        phx_tb.group_number = ThermalBridgeType(thermal_bridge.group_type.number)
+        phx_tb.identifier = str(thermal_bridge.identifier)
+        phx_tb.psi_value = thermal_bridge.psi_value
+        phx_tb.fRsi_value = thermal_bridge.fRsi_value
+        phx_tb.length = thermal_bridge.length
+        phx_thermal_bridges.append(phx_tb)
+    
+    return phx_thermal_bridges

@@ -8,7 +8,7 @@ from typing import List, Optional
 
 from PHX.to_PHPP import xl_app
 from PHX.to_PHPP.xl_data import col_offset
-from PHX.to_PHPP.phpp_model import areas_surface, areas_data
+from PHX.to_PHPP.phpp_model import areas_surface, areas_data, areas_thermal_bridges
 from PHX.to_PHPP.phpp_localization import shape_model
 
 
@@ -132,7 +132,57 @@ class Surfaces:
 class ThermalBridges:
 
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Areas):
-        pass
+        self.xl = _xl
+        self.shape = _shape
+        self.section_header_row: Optional[int] = None
+        self.section_first_entry_row: Optional[int] = None
+    
+    def find_section_header_row(self, _row_start: int = 100, _row_end: int = 500) -> int:
+        """Return the row number of the 'Thermal Bridge input' section header."""
+
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.thermal_bridge_rows.locator_col_header,
+            _row_start=_row_start,
+            _row_end=_row_end
+        )
+
+        for i,  val in enumerate(xl_data, start=_row_start):
+            if val == self.shape.thermal_bridge_rows.locator_string_header:
+                return i
+
+        raise Exception(
+            f'\n\tError: Not able to find the "Thermal Bridge input" input section of '
+            f'the "{self.shape.name}" worksheet? Please be sure the section begins '
+            f'with the "{self.shape.thermal_bridge_rows.locator_string_header}" flag in '
+            f'column {self.shape.thermal_bridge_rows.locator_col_header}.'
+        )
+
+    def find_section_first_entry_row(self) -> int:
+        """Return the row number of the very first user-input entry row in the 'Thermal Bridge input' section."""
+
+        if not self.section_header_row:
+            self.section_header_row = self.find_section_header_row()
+
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.thermal_bridge_rows.locator_col_entry,
+            _row_start=self.section_header_row,
+            _row_end=self.section_header_row+25,
+        )
+
+        for i, val in enumerate(xl_data, start=self.section_header_row):
+            try:
+                val = str(int(val))  # Value comes in as  "1.0" from Excel?
+            except:
+                continue
+
+            if val == self.shape.thermal_bridge_rows.locator_string_entry:
+                return i
+
+        raise Exception(
+            f'\n\tError: Not able to find the first Thermal Bridge entry row in the "Thermal Bridge input" section?'
+        )
 
 
 class Areas:
@@ -143,6 +193,14 @@ class Areas:
         self.shape = _shape
         self.surfaces = Surfaces(self.xl, self.shape)
         self.thermal_bridges = ThermalBridges(self.xl, self.shape)
+
+    def write_thermal_bridges(self, _tbs: List[areas_thermal_bridges.ThermalBridgeRow]) -> None:
+        if not self.thermal_bridges.section_first_entry_row:
+            self.thermal_bridges.section_first_entry_row = self.thermal_bridges.find_section_first_entry_row()
+        
+        for i, tb in enumerate(_tbs, start=self.thermal_bridges.section_first_entry_row):
+            for item in tb.create_xl_items(self.shape.name, _row_num=i):
+                self.xl.write_xl_item(item)
 
     def write_surfaces(self, _surfaces: List[areas_surface.SurfaceRow]) -> None:
         if not self.surfaces.section_first_entry_row:

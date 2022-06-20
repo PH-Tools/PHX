@@ -141,6 +141,21 @@ class AreasSurfaceRowsCol(BaseModel):
     absorptivity: str
     emissivity: str
 
+class AreasThermalBridgeRowsCol(BaseModel):
+    description: str
+    group_number: str
+    quantity: str
+    length: str
+    psi_value: str
+    fRsi_value: str
+
+
+class AreasThermalBridgeRows(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    input_columns: AreasThermalBridgeRowsCol
 
 class AreasSurfaceRows(BaseModel):
     locator_col_header: str
@@ -154,6 +169,7 @@ class Areas(BaseModel):
     name: str
     surface_rows: AreasSurfaceRows
     tfa_input: AreasInputItem
+    thermal_bridge_rows: AreasThermalBridgeRows
 
 
 # -----------------------------------------------------------------------------

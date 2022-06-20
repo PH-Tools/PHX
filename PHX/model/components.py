@@ -7,7 +7,8 @@ from __future__ import annotations
 from typing import ClassVar, Collection, List, Set, Union, Optional
 
 from PHX.model import geometry, constructions
-from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType, ComponentFaceOpacity, ComponentColor
+from PHX.model.enums.building import (ComponentExposureExterior, ComponentFaceType, 
+                                        ComponentFaceOpacity, ComponentColor, ThermalBridgeType)
 
 
 class PhxComponentBase:
@@ -22,6 +23,9 @@ class PhxComponentBase:
     @property
     def id_num(self) -> int:
         return self._id_num
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(id_num={self.id_num})"
 
 
 class PhxComponentOpaque(PhxComponentBase):
@@ -199,7 +203,6 @@ class PhxComponentAperture(PhxComponentBase):
         return f'{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-'\
             f'{self.exposure_exterior}-{self.window_type_id_num}'
 
-
     def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:
         """Add one or more new 'Elements' (Sashes) to the Aperture"""
 
@@ -231,3 +234,18 @@ class PhxComponentAperture(PhxComponentBase):
             element.host = new_compo
 
         return new_compo
+
+
+class PhxComponentThermalBridge(PhxComponentBase):
+    """A single Thermal Bridge Element."""
+
+    def __init__(self):
+        super().__init__()
+
+        self.identifier: str = ""
+        self.quantity: float = 0.0
+        self.group_number: ThermalBridgeType = ThermalBridgeType.AMBIENT
+        self.display_name: str = ""
+        self.psi_value: float = 0.1
+        self.fRsi_value: float = 0.75
+        self.length: float = 0.0
