@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""Datamodel of the PHPP 'Shape' (worksheet names and input column names)."""
+"""Data model of the PHPP 'Shape' (worksheet names and input column names)."""
 
 from typing import Dict, Optional
 from pydantic import BaseModel
@@ -20,11 +20,17 @@ class VerificationInputItem(BaseModel):
 
 class Verification(BaseModel):
     name: str
+    phi_building_category_type: VerificationInputItem
+    phi_building_use_type: VerificationInputItem
+    phi_building_ihg_type: VerificationInputItem
+    phi_building_occupancy_type: VerificationInputItem
+
     phi_certification_type: VerificationInputItem
     phi_certification_class: VerificationInputItem
     phi_pe_type: VerificationInputItem
     phi_enerphit_type: VerificationInputItem
     phi_retrofit_type: VerificationInputItem
+    
     num_of_units: VerificationInputItem
     setpoint_winter: VerificationInputItem
     setpoint_summer: VerificationInputItem
@@ -135,6 +141,21 @@ class AreasSurfaceRowsCol(BaseModel):
     absorptivity: str
     emissivity: str
 
+class AreasThermalBridgeRowsCol(BaseModel):
+    description: str
+    group_number: str
+    quantity: str
+    length: str
+    psi_value: str
+    fRsi_value: str
+
+
+class AreasThermalBridgeRows(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    input_columns: AreasThermalBridgeRowsCol
 
 class AreasSurfaceRows(BaseModel):
     locator_col_header: str
@@ -148,6 +169,7 @@ class Areas(BaseModel):
     name: str
     surface_rows: AreasSurfaceRows
     tfa_input: AreasInputItem
+    thermal_bridge_rows: AreasThermalBridgeRows
 
 
 # -----------------------------------------------------------------------------
@@ -265,21 +287,53 @@ class WindowWindowRows(BaseModel):
     input_columns: WindowWindowRowsColumns
 
 
+class WindowWindowRowsEnd(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str 
+
+
 class Windows(BaseModel):
     name: str
     window_rows: WindowWindowRows
+    window_rows_end: WindowWindowRowsEnd
 
 
 # -----------------------------------------------------------------------------
 
+class ShadingRowsColumns(BaseModel):
+    h_hori: str
+    d_hori: str
+    o_reveal: str
+    d_reveal: str
+    o_over: str
+    d_over:str
+    r_other_winter: str
+    r_other_summer: str
+    temp_z: str
+    regulated: str
 
-class ColShading(BaseModel):
-    ...
+
+class ShadingRows(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    input_columns: ShadingRowsColumns
+
+
+class ShadingRowsEnd(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str 
 
 
 class Shading(BaseModel):
     name: str
-    columns: ColShading
+    shading_rows: ShadingRows
+    shading_rows_end: ShadingRowsEnd
 
 
 # -----------------------------------------------------------------------------
@@ -297,7 +351,7 @@ class Ventilation(BaseModel):
     wind_coeff_e: VentilationInputItem
     wind_coeff_f: VentilationInputItem
     airtightness_n50: VentilationInputItem
-    airtightness_q50: VentilationInputItem
+    airtightness_Vn50: VentilationInputItem
     multi_unit_on: VentilationInputItem
 
 
@@ -313,8 +367,8 @@ class AddnlVentColumnsRooms(BaseModel):
     V_sup: str
     V_eta: str
     V_trans: str
+    operating_hours: str
     operating_days: str
-    operating_weeks: str
     holiday_days: str
     period_high_speed: str
     period_high_time: str
@@ -412,13 +466,35 @@ class CoolingUnits(BaseModel):
     columns: ColCoolingUnits
 
 
-class ColDhw(BaseModel):
-    ...
+# -----------------------------------------------------------------------------
+
+
+class DhwTankInputOptions(BaseModel):
+    options: Dict
+
+
+class DhwTankInputColumns(BaseModel):
+    tank_1: str
+    tank_2: str
+    tank_buffer: str
+
+
+class DhwTanks(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    input_columns: DhwTankInputColumns
+    tank_type: DhwTankInputOptions
+    tank_location: DhwTankInputOptions
 
 
 class Dhw(BaseModel):
     name: str
-    columns: ColDhw
+    tanks: DhwTanks
+
+
+# -----------------------------------------------------------------------------
 
 
 class ColSolarDhw(BaseModel):
@@ -438,14 +514,45 @@ class Pv(BaseModel):
     name: str
     columns: ColPv
 
+# -----------------------------------------------------------------------------
 
-class ColElectricity(BaseModel):
-    ...
+
+class ElectricityInputColumns(BaseModel):
+    selection: str
+    used: str
+    in_conditioned_space: str
+    energy_demand_per_use: str
+    utilization_factor: str
+    frequency: str
+    reference_quantity: str
+
+
+class ElectricityInputRow(BaseModel):
+    data: int
+    selection: int
+    selection_options: Dict
+
+
+class ElectricityInputRows(BaseModel):
+    dishwasher: ElectricityInputRow
+    clothes_washing: ElectricityInputRow
+    clothes_drying: ElectricityInputRow
+    refrigerator: ElectricityInputRow
+    freezer: ElectricityInputRow
+    fridge_freezer: ElectricityInputRow
+    cooking: ElectricityInputRow
+    lighting: ElectricityInputRow
+    consumer_elec: ElectricityInputRow
+    small_appliances: ElectricityInputRow
 
 
 class Electricity(BaseModel):
     name: str
-    columns: ColElectricity
+    input_columns: ElectricityInputColumns
+    input_rows: ElectricityInputRows
+
+
+# -----------------------------------------------------------------------------
 
 
 class ColUseNonRes(BaseModel):

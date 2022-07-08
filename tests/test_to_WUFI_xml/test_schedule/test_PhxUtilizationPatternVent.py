@@ -9,8 +9,8 @@ def test_default_PhxRoomVentilation(reset_class_counters):
     assert xml_string_to_list(result) == [
         '<Name>__unamed_vent_pattern__</Name>',
         '<IdentNr>1</IdentNr>',
-        '<OperatingDays>7</OperatingDays>',
-        '<OperatingWeeks>52</OperatingWeeks>',
+        '<OperatingDays>7.0</OperatingDays>',
+        '<OperatingWeeks>52.0</OperatingWeeks>',
         '<Maximum_DOS>0.0</Maximum_DOS>',
         '<Maximum_PDF>0.0</Maximum_PDF>',
         '<Standard_DOS>0.0</Standard_DOS>',

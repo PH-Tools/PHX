@@ -124,7 +124,20 @@ def test_default_PhxProject(reset_class_counters):
         '<AnnualCoolingDemand>15.0</AnnualCoolingDemand>',
         '<PeakHeatingLoad>10.0</PeakHeatingLoad>',
         '<PeakCoolingLoad>10.0</PeakCoolingLoad>',
-        '<PH_Buildings count="0"/>',
+        '<PH_Buildings count="1">',
+        '<PH_Building index="0">',
+        '<IdentNr>1</IdentNr>',
+        '<BuildingCategory>1</BuildingCategory>',
+        '<OccupancyTypeResidential>1</OccupancyTypeResidential>',
+        '<BuildingStatus>1</BuildingStatus>',
+        '<BuildingType>1</BuildingType>',
+        '<OccupancySettingMethod>2</OccupancySettingMethod>',
+        '<NumberUnits>1</NumberUnits>',
+        '<CountStories>1</CountStories>',
+        '<EnvelopeAirtightnessCoefficient>1.0</EnvelopeAirtightnessCoefficient>',
+        '<FoundationInterfaces count="0"/>',
+        '</PH_Building>',
+        '</PH_Buildings>',
         '</PassivehouseData>',
         '<HVAC>',
         '<Systems count="1">',
@@ -150,5 +163,5 @@ def test_default_PhxProject(reset_class_counters):
         '</PHDistribution>',
         '</System>',
         '</Systems>',
-        '</HVAC>'
+        '</HVAC>'   
     ]

@@ -8,17 +8,18 @@ from typing import Dict, List, Tuple, ClassVar
 from functools import partial
 
 from PHX.to_PHPP import xl_data
-from PHX.model import climate
+from PHX.model import phx_site
 from PHX.to_PHPP.phpp_localization import shape_model
+
 
 
 @dataclass
 class ClimateSettings:
     """The active climate data selections."""
 
-    __slots__ = ("shape", "phx_location")
+    __slots__ = ("shape", "phx_site")
     shape: shape_model.Climate
-    phx_location: climate.PhxLocation
+    phx_site: phx_site.PhxSite
 
     def _create_range(self, _field_name: str, _row_offset: int, _start_row: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -30,12 +31,20 @@ class ClimateSettings:
         create_range = partial(self._create_range, _start_row=_start_row)
 
         items: List[Tuple[str, xl_data.xl_writable]] = [
-            (create_range('country', 0), "ud-User Data"),
-            (create_range('region', 1), "All"),
-            (create_range('dataset', 3), f"ud---00-{self.phx_location.display_name}"),
-            (create_range('elevation_override', 9), self.phx_location.site.elevation),
+            (create_range('country', 0), self.phx_site.phpp_codes.country_code),
+            (create_range('region', 1), self.phx_site.phpp_codes.region_code),
+            (create_range('dataset', 3), f"{self.phx_site.phpp_codes.dataset_name}"),
         ]
 
+        if self.phx_site.location.site_elevation:
+            items.append(
+                 (create_range('elevation_override', 9), self.phx_site.location.site_elevation),
+            )
+        else:
+            # probably shouldn't hardcode D17 here...
+            items.append(
+                 ('D18', '=D17'),
+            )
         return [xl_data.XlItem(_sheet_name, *item) for item in items]
 
 
@@ -46,9 +55,9 @@ class ClimateDataBlock:
     month_order: ClassVar[List[str]] = ['jan', 'feb', 'mar', 'apr',
                                         'may', 'jun', 'jul', 'aug',
                                         'sep', 'oct', 'nov', 'dec']
-    __slots__ = ("shape", "phx_location")
+    __slots__ = ("shape", "phx_site")
     shape: shape_model.Climate
-    phx_location: climate.PhxLocation
+    phx_site: phx_site.PhxSite
 
     def _create_range(self, _field_name: str, _row_offset: int, _start_row: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -58,17 +67,17 @@ class ClimateDataBlock:
     def create_xl_items(self, _sheet_name: str, _start_row: int) -> List[xl_data.XlItem]:
         """Return a list of the XL items to write to the worksheet."""
         create_range = partial(self._create_range, _start_row=_start_row)
-        phx_climate = self.phx_location.climate
-        phx_site = self.phx_location.site
+        phx_climate = self.phx_site.climate
+        phx_site = self.phx_site.location
 
         # -- Build the Header assembly attributes
         items: List[Tuple[str, xl_data.xl_writable]] = [
             (create_range('latitude', 0), phx_site.latitude),
             (create_range('longitude', 0), phx_site.longitude),
-            (create_range('elevation', 0), phx_climate.weather_station_elevation),
-            (create_range('display_name', 0), self.phx_location.display_name),
+            (create_range('elevation', 0), phx_climate.station_elevation),
+            (create_range('display_name', 0), self.phx_site.display_name),
             (create_range('summer_delta_t', 0), phx_climate.daily_temp_swing),
-            (create_range('source', 0), self.phx_location.source),
+            (create_range('source', 0), self.phx_site.source),
         ]
 
         # -- Add in the monthly data

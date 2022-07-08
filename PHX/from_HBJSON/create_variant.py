@@ -7,9 +7,10 @@ from typing import Dict
 
 from honeybee import room
 
-from honeybee_ph import location
+from honeybee_ph import site, phi, phius
 from honeybee_energy_ph.properties.load import equipment
-from PHX.model import project, certification, ground, climate, constructions
+from PHX.model import phx_site, project, ground, constructions
+from PHX.model.enums import phi_certification, phius_certification
 from PHX.from_HBJSON import create_building, create_hvac, create_shw, create_elec_equip
 
 
@@ -22,7 +23,7 @@ def add_building_from_hb_room(_variant: project.PhxVariant,
 
     Arguments:
     ----------
-        * _variaint (project.Variant): The PHX-Variant to add the building to.
+        * _variant (project.Variant): The PHX-Variant to add the building to.
         * _hb_room (room.Room): The honeybee-Room to use as the source.
         * _assembly_dict (Dict[str, constructions.PhxConstructionOpaque]): The Assembly Type dict.
         * _window_type_dict (Dict[str, constructions.PhxConstructionWindow]): The Window Type dict.
@@ -37,6 +38,8 @@ def add_building_from_hb_room(_variant: project.PhxVariant,
         create_building.create_components_from_hb_room(_hb_room, _assembly_dict, _window_type_dict))
     _variant.building.add_zones(
         create_building.create_zones_from_hb_room(_hb_room))
+    _variant.building.add_thermal_bridges(
+        create_building.create_thermal_bridges_from_hb_room(_hb_room))
 
     if group_components:
         _variant.building.merge_opaque_components_by_assembly()
@@ -44,11 +47,11 @@ def add_building_from_hb_room(_variant: project.PhxVariant,
 
 
 def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
-    """Apply PhxPHCertificationCriteria from a Honeybee-Room's Building Segement to a PhxVariant.
+    """Set all the PhxPhiusCertificationCriteria on a PhxVariant based on a Honeybee-Room's Building Segment.
 
     Arguments:
     ----------
-        * _variant (project.Variant): The PhxVariant to add the PhxPhiusCertification to.
+        * _variant (project.Variant): The PhxVariant to set the PhxPhiusCertificationCriteria on.
         * _hb_room (room.Room): The Honeybee-Room to use as the source.
 
     Returns:
@@ -56,20 +59,67 @@ def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room:
         * None
     """
 
-    hbph_phius_cert = _hb_room.properties.ph.ph_bldg_segment.phius_certification  # alias
+    # alias cus' all this shit is deep in there...
+    hbph_phius_cert: phius.PhiusCertification = _hb_room.properties.ph.ph_bldg_segment.phius_certification  # alias
+    phx_phius_cert_criteria = _variant.phius_certification.phius_certification_criteria # alias
+    phx_phius_cert_settings = _variant.phius_certification.phius_certification_settings # alias
 
-    _variant.ph_certification.certification_criteria.ph_certificate_criteria = hbph_phius_cert.certification_criteria
-    _variant.ph_certification.certification_criteria.ph_selection_target_data = hbph_phius_cert.localization_selection_type
-    _variant.ph_certification.certification_criteria.annual_heating_demand = hbph_phius_cert.PHIUS2021_heating_demand
-    _variant.ph_certification.certification_criteria.annual_cooling_demand = hbph_phius_cert.PHIUS2021_cooling_demand
-    _variant.ph_certification.certification_criteria.peak_heating_load = hbph_phius_cert.PHIUS2021_heating_load
-    _variant.ph_certification.certification_criteria.peak_cooling_load = hbph_phius_cert.PHIUS2021_cooling_load
+    # some random bullshit
+    phx_phius_cert_criteria.ph_certificate_criteria = hbph_phius_cert.certification_criteria
+    phx_phius_cert_criteria.ph_selection_target_data = hbph_phius_cert.localization_selection_type
+    
+    # certification thresholds (for Phius, they change)
+    phx_phius_cert_criteria.phius_annual_heating_demand = hbph_phius_cert.PHIUS2021_heating_demand
+    phx_phius_cert_criteria.phius_annual_cooling_demand = hbph_phius_cert.PHIUS2021_cooling_demand
+    phx_phius_cert_criteria.phius_peak_heating_load = hbph_phius_cert.PHIUS2021_heating_load
+    phx_phius_cert_criteria.phius_peak_cooling_load = hbph_phius_cert.PHIUS2021_cooling_load
+
+    # certification settings / types
+    phx_phius_cert_settings.phius_building_category_type = phius_certification.PhiusCertificationBuildingCategoryType(
+        hbph_phius_cert.building_category_type.number)
+    phx_phius_cert_settings.phius_building_use_type = phius_certification.PhiusCertificationBuildingUseType(
+        hbph_phius_cert.building_use_type.number)
+    phx_phius_cert_settings.phius_building_status = phius_certification.PhiusCertificationBuildingStatus(
+        hbph_phius_cert.building_status.number)
+    phx_phius_cert_settings.phius_building_type = phius_certification.PhiusCertificationBuildingType(
+        hbph_phius_cert.building_type.number)
 
     return None
 
 
-def add_PH_Building_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
-    """Create and add a PHX PH-Building to a PHX-Variant.
+def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+    """Set all the PhxPhiCertificationCriteria on a PhxVariant based on a Honeybee-Room's Building Segment.
+
+    Arguments:
+    ----------
+        * _variant (project.Variant): The PhxVariant to set the PhxPhiCertificationCriteria to.
+        * _hb_room (room.Room): The Honeybee-Room to use as the source.
+
+    Returns:
+    --------
+        * None
+    """
+    # alias cus' all this shit is deep in there...
+    hbph_phi_cert: phi.PhiCertification = _hb_room.properties.ph.ph_bldg_segment.phi_certification  # alias
+    phx_phi_cert_settings = _variant.phi_certification.phi_certification_settings # alias
+
+    # certification settings / types
+    phx_phi_cert_settings.phi_building_category_type = phi_certification.PhiCertificationBuildingCategoryType(hbph_phi_cert.building_category_type.number)
+    phx_phi_cert_settings.phi_building_use_type = phi_certification.PhiCertificationBuildingUseType(hbph_phi_cert.building_use_type.number)
+    phx_phi_cert_settings.phi_building_ihg_type = phi_certification.PhiCertificationIHGType(hbph_phi_cert.ihg_type.number)
+    phx_phi_cert_settings.phi_building_occupancy_type = phi_certification.PhiCertificationOccupancyType(hbph_phi_cert.occupancy_type.number)
+
+    phx_phi_cert_settings.phi_certification_type = phi_certification.PhiCertificationType(hbph_phi_cert.certification_type.number)
+    phx_phi_cert_settings.phi_certification_class = phi_certification.PhiCertificationClass(hbph_phi_cert.certification_class.number)
+    phx_phi_cert_settings.phi_pe_type = phi_certification.PhiCertificationPEType(hbph_phi_cert.primary_energy_type.number)
+    phx_phi_cert_settings.phi_enerphit_type = phi_certification.PhiCertificationEnerPHitType(hbph_phi_cert.enerphit_type.number)
+    phx_phi_cert_settings.phi_retrofit_type = phi_certification.PhiCertificationRetrofitType(hbph_phi_cert.retrofit_type.number)
+
+    return None
+
+
+def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+    """Create and add a PhxPhBuildingData with data from a Honeybee-Room to a PHX-Variant.
 
     Arguments:
     ----------
@@ -80,26 +130,21 @@ def add_PH_Building_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Ro
     --------
         * None
     """
-    ph_bldg_data = certification.PhxPhBuildingData()
+    # alias
+    ph_bldg = _variant.phius_certification.ph_building_data
 
-    ph_bldg_data.building_category = _hb_room.properties.ph.ph_bldg_segment.usage_type.number
-    ph_bldg_data.occupancy_type = _hb_room.properties.ph.ph_bldg_segment.occupancy_type.number
-    ph_bldg_data.building_status = _hb_room.properties.ph.ph_bldg_segment.phius_certification.building_status.number
-    ph_bldg_data.building_type = _hb_room.properties.ph.ph_bldg_segment.phius_certification.building_type.number
-    ph_bldg_data.num_of_units = _hb_room.properties.ph.ph_bldg_segment.num_dwelling_units
-    ph_bldg_data.num_of_floors = _hb_room.properties.ph.ph_bldg_segment.num_floor_levels
+    ph_bldg.num_of_units = _hb_room.properties.ph.ph_bldg_segment.num_dwelling_units
+    ph_bldg.num_of_floors = _hb_room.properties.ph.ph_bldg_segment.num_floor_levels
 
     # TODO: Foundations. For now: set to None
-    ph_bldg_data.add_foundation(ground.PhxFoundation())
+    ph_bldg.add_foundation(ground.PhxFoundation())
 
     # Set the airtightness for Building
-    ph_bldg_data.airtightness_q50 = _hb_room.properties.energy.infiltration.flow_per_exterior_area * 3600
+    ph_bldg.airtightness_q50 = _hb_room.properties.energy.infiltration.flow_per_exterior_area * 3600
 
     # Air temp Setpoints
-    ph_bldg_data.setpoints.winter = _hb_room.properties.ph.ph_bldg_segment.set_points.winter
-    ph_bldg_data.setpoints.summer = _hb_room.properties.ph.ph_bldg_segment.set_points.summer
-
-    _variant.ph_certification.ph_building_data = ph_bldg_data
+    ph_bldg.setpoints.winter = _hb_room.properties.ph.ph_bldg_segment.set_points.winter
+    ph_bldg.setpoints.summer = _hb_room.properties.ph.ph_bldg_segment.set_points.summer
 
     return None
 
@@ -117,65 +162,70 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
         * None
     """
 
-    ud_climate: location.Climate = _hb_room.properties.ph.ph_bldg_segment.climate
-
-    # -- Basics
-    _variant.location.climate.daily_temp_swing = ud_climate.summer_daily_temperature_swing
-    _variant.location.climate.avg_wind_speed = ud_climate.average_wind_speed
+    ud_site: site.Site = _hb_room.properties.ph.ph_bldg_segment.site
 
     # -- Location
-    _variant.location.site.latitude = ud_climate.location.latitude
-    _variant.location.site.longitude = ud_climate.location.longitude
-    _variant.location.site.elevation = ud_climate.location.weather_station_elevation
-    _variant.location.site.climate_zone = ud_climate.location.climate_zone
-    _variant.location.site.hours_from_UTC = ud_climate.location.hours_from_UTC
+    _variant.site.location.latitude = ud_site.location.latitude
+    _variant.site.location.longitude = ud_site.location.longitude
+    _variant.site.location.site_elevation = ud_site.location.site_elevation
+    _variant.site.location.climate_zone = ud_site.location.climate_zone
+    _variant.site.location.hours_from_UTC = ud_site.location.hours_from_UTC
+
+    # -- Basics
+    _variant.site.climate.daily_temp_swing = ud_site.climate.summer_daily_temperature_swing
+    _variant.site.climate.avg_wind_speed = ud_site.climate.average_wind_speed
+
+    # -- PHPP Stuff
+    _variant.site.phpp_codes.country_code = ud_site.phpp_library_codes.country_code
+    _variant.site.phpp_codes.region_code = ud_site.phpp_library_codes.region_code
+    _variant.site.phpp_codes.dataset_name = ud_site.phpp_library_codes.dataset_name
 
     # -- Ground
-    _variant.location.ground.ground_thermal_conductivity = ud_climate.ground.ground_thermal_conductivity
-    _variant.location.ground.ground_heat_capacity = ud_climate.ground.ground_heat_capacity
-    _variant.location.ground.ground_density = ud_climate.ground.ground_density
-    _variant.location.ground.depth_groundwater = ud_climate.ground.depth_groundwater
-    _variant.location.ground.flow_rate_groundwater = ud_climate.ground.flow_rate_groundwater
+    _variant.site.ground.ground_thermal_conductivity = ud_site.climate.ground.ground_thermal_conductivity
+    _variant.site.ground.ground_heat_capacity = ud_site.climate.ground.ground_heat_capacity
+    _variant.site.ground.ground_density = ud_site.climate.ground.ground_density
+    _variant.site.ground.depth_groundwater = ud_site.climate.ground.depth_groundwater
+    _variant.site.ground.flow_rate_groundwater = ud_site.climate.ground.flow_rate_groundwater
 
     # -- Monthly Values
-    _variant.location.climate.monthly_temperature_air = ud_climate.monthly_temperature_air.values
-    _variant.location.climate.monthly_temperature_dewpoint = ud_climate.monthly_temperature_dewpoint.values
-    _variant.location.climate.monthly_temperature_sky = ud_climate.monthly_temperature_sky.values
+    _variant.site.climate.monthly_temperature_air = ud_site.climate.monthly_temperature_air.values
+    _variant.site.climate.monthly_temperature_dewpoint = ud_site.climate.monthly_temperature_dewpoint.values
+    _variant.site.climate.monthly_temperature_sky = ud_site.climate.monthly_temperature_sky.values
 
-    _variant.location.climate.monthly_radiation_north = ud_climate.monthly_radiation_north.values
-    _variant.location.climate.monthly_radiation_east = ud_climate.monthly_radiation_east.values
-    _variant.location.climate.monthly_radiation_south = ud_climate.monthly_radiation_south.values
-    _variant.location.climate.monthly_radiation_west = ud_climate.monthly_radiation_west.values
-    _variant.location.climate.monthly_radiation_global = ud_climate.monthly_radiation_global.values
+    _variant.site.climate.monthly_radiation_north =ud_site.climate.monthly_radiation_north.values
+    _variant.site.climate.monthly_radiation_east =ud_site.climate.monthly_radiation_east.values
+    _variant.site.climate.monthly_radiation_south =ud_site.climate.monthly_radiation_south.values
+    _variant.site.climate.monthly_radiation_west =ud_site.climate.monthly_radiation_west.values
+    _variant.site.climate.monthly_radiation_global =ud_site.climate.monthly_radiation_global.values
 
     # -- Peak Load Values
-    _variant.location.climate.peak_heating_1.temp = ud_climate.peak_heating_1.temp
-    _variant.location.climate.peak_heating_1.rad_north = ud_climate.peak_heating_1.rad_north
-    _variant.location.climate.peak_heating_1.rad_east = ud_climate.peak_heating_1.rad_east
-    _variant.location.climate.peak_heating_1.rad_south = ud_climate.peak_heating_1.rad_south
-    _variant.location.climate.peak_heating_1.rad_west = ud_climate.peak_heating_1.rad_west
-    _variant.location.climate.peak_heating_1.rad_global = ud_climate.peak_heating_1.rad_global
+    _variant.site.climate.peak_heating_1.temp = ud_site.climate.peak_heating_1.temp
+    _variant.site.climate.peak_heating_1.rad_north = ud_site.climate.peak_heating_1.rad_north
+    _variant.site.climate.peak_heating_1.rad_east = ud_site.climate.peak_heating_1.rad_east
+    _variant.site.climate.peak_heating_1.rad_south = ud_site.climate.peak_heating_1.rad_south
+    _variant.site.climate.peak_heating_1.rad_west = ud_site.climate.peak_heating_1.rad_west
+    _variant.site.climate.peak_heating_1.rad_global = ud_site.climate.peak_heating_1.rad_global
 
-    _variant.location.climate.peak_heating_2.temp = ud_climate.peak_heating_2.temp
-    _variant.location.climate.peak_heating_2.rad_north = ud_climate.peak_heating_2.rad_north
-    _variant.location.climate.peak_heating_2.rad_east = ud_climate.peak_heating_2.rad_east
-    _variant.location.climate.peak_heating_2.rad_south = ud_climate.peak_heating_2.rad_south
-    _variant.location.climate.peak_heating_2.rad_west = ud_climate.peak_heating_2.rad_west
-    _variant.location.climate.peak_heating_2.rad_global = ud_climate.peak_heating_2.rad_global
+    _variant.site.climate.peak_heating_2.temp = ud_site.climate.peak_heating_2.temp
+    _variant.site.climate.peak_heating_2.rad_north = ud_site.climate.peak_heating_2.rad_north
+    _variant.site.climate.peak_heating_2.rad_east = ud_site.climate.peak_heating_2.rad_east
+    _variant.site.climate.peak_heating_2.rad_south = ud_site.climate.peak_heating_2.rad_south
+    _variant.site.climate.peak_heating_2.rad_west = ud_site.climate.peak_heating_2.rad_west
+    _variant.site.climate.peak_heating_2.rad_global = ud_site.climate.peak_heating_2.rad_global
 
-    _variant.location.climate.peak_cooling_1.temp = ud_climate.peak_cooling_1.temp
-    _variant.location.climate.peak_cooling_1.rad_north = ud_climate.peak_cooling_1.rad_north
-    _variant.location.climate.peak_cooling_1.rad_east = ud_climate.peak_cooling_1.rad_east
-    _variant.location.climate.peak_cooling_1.rad_south = ud_climate.peak_cooling_1.rad_south
-    _variant.location.climate.peak_cooling_1.rad_west = ud_climate.peak_cooling_1.rad_west
-    _variant.location.climate.peak_cooling_1.rad_global = ud_climate.peak_cooling_1.rad_global
+    _variant.site.climate.peak_cooling_1.temp = ud_site.climate.peak_cooling_1.temp
+    _variant.site.climate.peak_cooling_1.rad_north = ud_site.climate.peak_cooling_1.rad_north
+    _variant.site.climate.peak_cooling_1.rad_east = ud_site.climate.peak_cooling_1.rad_east
+    _variant.site.climate.peak_cooling_1.rad_south = ud_site.climate.peak_cooling_1.rad_south
+    _variant.site.climate.peak_cooling_1.rad_west = ud_site.climate.peak_cooling_1.rad_west
+    _variant.site.climate.peak_cooling_1.rad_global = ud_site.climate.peak_cooling_1.rad_global
 
-    _variant.location.climate.peak_cooling_2.temp = ud_climate.peak_cooling_2.temp
-    _variant.location.climate.peak_cooling_2.rad_north = ud_climate.peak_cooling_2.rad_north
-    _variant.location.climate.peak_cooling_2.rad_east = ud_climate.peak_cooling_2.rad_east
-    _variant.location.climate.peak_cooling_2.rad_south = ud_climate.peak_cooling_2.rad_south
-    _variant.location.climate.peak_cooling_2.rad_west = ud_climate.peak_cooling_2.rad_west
-    _variant.location.climate.peak_cooling_2.rad_global = ud_climate.peak_cooling_2.rad_global
+    _variant.site.climate.peak_cooling_2.temp = ud_site.climate.peak_cooling_2.temp
+    _variant.site.climate.peak_cooling_2.rad_north = ud_site.climate.peak_cooling_2.rad_north
+    _variant.site.climate.peak_cooling_2.rad_east = ud_site.climate.peak_cooling_2.rad_east
+    _variant.site.climate.peak_cooling_2.rad_south = ud_site.climate.peak_cooling_2.rad_south
+    _variant.site.climate.peak_cooling_2.rad_west = ud_site.climate.peak_cooling_2.rad_west
+    _variant.site.climate.peak_cooling_2.rad_global = ud_site.climate.peak_cooling_2.rad_global
 
     return None
 
@@ -193,11 +243,11 @@ def add_local_pe_conversion_factors(_variant: project.PhxVariant, _hb_room: room
         * None
     """
     for factor in _hb_room.properties.ph.ph_bldg_segment.source_energy_factors:
-        new_phx_factor = climate.PhxPEFactor()
+        new_phx_factor = phx_site.PhxPEFactor()
         new_phx_factor.fuel_name = factor.fuel_name
         new_phx_factor.value = factor.value
         new_phx_factor.unit = factor.unit
-        _variant.location.energy_factors.pe_factors[new_phx_factor.fuel_name] = new_phx_factor
+        _variant.site.energy_factors.pe_factors[new_phx_factor.fuel_name] = new_phx_factor
     return
 
 
@@ -215,11 +265,11 @@ def add_local_co2_conversion_factors(_variant: project.PhxVariant, _hb_room: roo
     """
 
     for factor in _hb_room.properties.ph.ph_bldg_segment.co2e_factors:
-        new_phx_factor = climate.PhxCO2Factor()
+        new_phx_factor = phx_site.PhxCO2Factor()
         new_phx_factor.fuel_name = factor.fuel_name
         new_phx_factor.value = factor.value
         new_phx_factor.unit = factor.unit
-        _variant.location.energy_factors.co2_factors[new_phx_factor.fuel_name] = new_phx_factor
+        _variant.site.energy_factors.co2_factors[new_phx_factor.fuel_name] = new_phx_factor
     return
 
 
@@ -236,7 +286,7 @@ def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room
         * None
     """
 
-    for space in _hb_room.properties._ph.spaces:
+    for space in _hb_room.properties.ph.spaces:
         # -- Get the HBE-PH Ventilation system from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
@@ -273,7 +323,7 @@ def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
         * None
     """
 
-    for space in _hb_room.properties._ph.spaces:
+    for space in _hb_room.properties.ph.spaces:
         # -- Get the HBE-PH Heating Systems from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
@@ -308,7 +358,7 @@ def add_cooling_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
         * None
     """
 
-    for space in _hb_room.properties._ph.spaces:
+    for space in _hb_room.properties.ph.spaces:
         # -- Get the HBPH-Cooling-Systems from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
@@ -343,7 +393,7 @@ def add_dhw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
         * None
     """
 
-    for space in _hb_room.properties._ph.spaces:
+    for space in _hb_room.properties.ph.spaces:
         # -- Guard Clause
         if not space.host.properties.energy.shw:
             continue
@@ -450,7 +500,8 @@ def from_hb_room(_hb_room: room.Room,
     add_building_from_hb_room(new_variant, _hb_room, _assembly_dict,
                               _window_type_dict, group_components)
     add_phius_certification_from_hb_room(new_variant, _hb_room)
-    add_PH_Building_from_hb_room(new_variant, _hb_room)
+    add_phi_certification_from_hb_room(new_variant, _hb_room)
+    add_PhxPhBuildingData_from_hb_room(new_variant, _hb_room)
     add_climate_from_hb_room(new_variant, _hb_room)
     add_local_pe_conversion_factors(new_variant, _hb_room)
     add_local_co2_conversion_factors(new_variant, _hb_room)

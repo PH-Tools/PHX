@@ -63,6 +63,13 @@ def create_room_from_space(_space: space.Space) -> ventilation.PhxRoomVentilatio
     new_room.flow_rates.flow_extract = space_peak_flow_rate
     new_room.vent_pattern_id_num = _space.host.properties.energy.ventilation.schedule.properties.ph.id_num
 
+    # -- TODO: FIX THIS TO A BETTER TECHNIQUE SOMEDAY, OVERRIDE WITH LOCAL INFO, IF ANY
+    if _space.properties.ph._v_sup is not None:
+        new_room.flow_rates.flow_supply = _space.properties.ph._v_sup
+    
+    if _space.properties.ph._v_eta is not None:
+        new_room.flow_rates.flow_extract = _space.properties.ph._v_eta  
+
     # -- Ventilation Equipment
     if _space.host.properties.energy.hvac.properties.ph.ventilation_system:
         new_room.vent_unit_id_num = _space.host.properties.energy.hvac.properties.ph.ventilation_system.id_num

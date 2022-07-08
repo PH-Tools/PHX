@@ -4,10 +4,11 @@
 """PHX Component (Face, Aperture) Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Collection, List, Set, Union
+from typing import ClassVar, Collection, List, Set, Union, Optional
 
 from PHX.model import geometry, constructions
-from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType, ComponentFaceOpacity, ComponentColor
+from PHX.model.enums.building import (ComponentExposureExterior, ComponentFaceType, 
+                                        ComponentFaceOpacity, ComponentColor, ThermalBridgeType)
 
 
 class PhxComponentBase:
@@ -22,6 +23,9 @@ class PhxComponentBase:
     @property
     def id_num(self) -> int:
         return self._id_num
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(id_num={self.id_num})"
 
 
 class PhxComponentOpaque(PhxComponentBase):
@@ -134,7 +138,36 @@ class PhxComponentOpaque(PhxComponentBase):
             f'Error: Cannot find a host polygon for the child id_num: {_id_num}')
 
 
+class PhxApertureShadingDimensions(PhxComponentBase):
+    """PHPP old-style shading dimensions data."""
+
+    def __init__(self):
+        super().__init__()
+
+        self.d_hori: Optional[float] = None
+        self.h_hori: Optional[float] = None
+        self.d_reveal: Optional[float] = None
+        self.o_reveal: Optional[float] = None
+        self.d_over: Optional[float] = None
+        self.o_over: Optional[float] = None
+        
+
+class PhxApertureElement(PhxComponentBase):
+    """A single sash / element of an Aperture Component."""
+    
+    def __init__(self, _host: PhxComponentAperture):
+        super().__init__()
+
+        self.host:PhxComponentAperture = _host
+        self.display_name: str = ""
+        self.polygon: Optional[geometry.PhxPolygonRectangular] = None
+        self.winter_shading_factor: float = 0.75
+        self.summer_shading_factor: float = 0.75
+        self.shading_dimensions: PhxApertureShadingDimensions = PhxApertureShadingDimensions()
+
+
 class PhxComponentAperture(PhxComponentBase):
+    """An Aperture (window, door) component with one or more 'element' (sash)."""
 
     def __init__(self, _host: PhxComponentOpaque):
         super().__init__()
@@ -153,7 +186,11 @@ class PhxComponentAperture(PhxComponentBase):
         self.window_type: constructions.PhxConstructionWindow = constructions.PhxConstructionWindow()
         self.window_type_id_num: int = -1
 
-        self.polygons: List[geometry.PhxPolygonRectangular] = []
+        self.elements: List[PhxApertureElement] = []
+
+    @property
+    def polygons(self) -> List[geometry.PhxPolygonRectangular]:
+        return [e.polygon for e in self.elements if e.polygon]
 
     @property
     def polygon_ids(self) -> Set[int]:
@@ -166,24 +203,13 @@ class PhxComponentAperture(PhxComponentBase):
         return f'{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-'\
             f'{self.exposure_exterior}-{self.window_type_id_num}'
 
-    def add_polygons(self,
-                     _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]) -> None:
-        """Adds a new Polygon or Polygons to the Component's collection.
+    def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:
+        """Add one or more new 'Elements' (Sashes) to the Aperture"""
 
-        Arguments:
-        ----------
-            * _input (Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]): The polygon or
-                polygons to add to the component's collection.
+        for element in _elements:
+            self.elements.append(element)
 
-        Returns:
-        --------
-            * None
-        """
-        if not isinstance(_input, Collection):
-            _input = (_input,)
-
-        for polygon in _input:
-            self.polygons.append(polygon)
+        return None
 
     def __add__(self, other) -> PhxComponentAperture:
         """Merge with another Component into a single new Component.
@@ -203,6 +229,23 @@ class PhxComponentAperture(PhxComponentBase):
             setattr(new_compo, attr_name, attr_val)
 
         new_compo.display_name = 'Merged_Component'
-        new_compo.polygons = self.polygons + other.polygons
+        new_compo.elements = self.elements + other.elements
+        for element in new_compo.elements:
+            element.host = new_compo
 
         return new_compo
+
+
+class PhxComponentThermalBridge(PhxComponentBase):
+    """A single Thermal Bridge Element."""
+
+    def __init__(self):
+        super().__init__()
+
+        self.identifier: str = ""
+        self.quantity: float = 0.0
+        self.group_number: ThermalBridgeType = ThermalBridgeType.AMBIENT
+        self.display_name: str = ""
+        self.psi_value: float = 0.1
+        self.fRsi_value: float = 0.75
+        self.length: float = 0.0

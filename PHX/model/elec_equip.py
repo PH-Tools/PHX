@@ -36,7 +36,7 @@ class PhxDeviceDishwasher(PhxElectricalDevice):
         self.display_name = "Kitchen Dishwasher"
         self.capacity_type: int = 1
         self.capacity: float = 1
-        self.water_connection: int = 1
+        self.water_connection: int = 1 # DHW Connection
 
 
 class PhxDeviceClothesWasher(PhxElectricalDevice):
@@ -45,7 +45,7 @@ class PhxDeviceClothesWasher(PhxElectricalDevice):
         self.display_name = "Laundry - washer"
         self.capacity: float = 0.0814  # m3
         self.modified_energy_factor: float = 2.38
-        self.connection: int = 1  # DHW Connection
+        self.water_connection: int = 1  # DHW Connection
         self.utilization_factor: float = 1
 
 
@@ -140,19 +140,20 @@ class PhxElectricDeviceCollection:
 
     @property
     def devices(self) -> List[PhxElectricalDevice]:
+        """Returns a list of all the devices in the PhxElectricDeviceCollection, sorted by display_name."""
         if not self._devices:
             return []
         return sorted(self._devices.values(), key=lambda e: e.display_name)
 
-    def devices_in_collection(self, _device_key) -> bool:
-        """Returns True if the key supplied is in the existing device set."""
+    def device_key_in_collection(self, _device_key) -> bool:
+        """Returns True if the key supplied is in the existing device collection."""
         return _device_key in self._devices.keys()
 
     def get_equipment_by_key(self, _key: str) -> Optional[PhxElectricalDevice]:
         return self._devices.get(_key, None)
 
     def add_new_device(self, _key: str, _device: PhxElectricalDevice) -> None:
-        """Adds a new PHX Electric-Equipment device to the collection.
+        """Adds a new PHX Electric-Equipment device to the PhxElectricDeviceCollection.
 
         Arguments:
         ----------
@@ -165,6 +166,15 @@ class PhxElectricDeviceCollection:
             * None
         """
         self._devices[_key] = _device
+
+    def __iter__(self):
+        """Get each device in the PhxElectricDeviceCollection, one at a time."""
+        for _ in self.devices:
+            yield _
+
+    def __len__(self) -> int:
+        """Number of devices in the PhxElectricDeviceCollection"""
+        return len(self.devices)
 
     def __bool__(self) -> bool:
         return bool(self._devices)

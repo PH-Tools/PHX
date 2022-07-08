@@ -1,6 +1,51 @@
 {
     "VERIFICATION": {
         "name": "Verification",
+        "phi_building_category_type": {
+            "locator_col": "Q",
+            "locator_string": "Calculation electricity / Internal heat gains",
+            "input_column": "R",
+            "input_row_offset": 1,
+            "options": {
+                "1": "1-Residential building",
+                "2": "2-Non-residential building"
+            }
+        },
+        "phi_building_use_type": {
+            "locator_col": "Q",
+            "locator_string": "Utilisation pattern:",
+            "input_column": "R",
+            "input_row_offset": 0,
+            "options": {
+                "10": "10-Dwelling",
+                "11": "11-Nursing home / students",
+                "12": "12-Other",
+                "20": "20-Office / Admin. building",
+                "21": "21-School",
+                "22": "22-Other"
+            }
+        },
+        "phi_building_ihg_type": {
+            "locator_col": "Q",
+            "locator_string": "Values:",
+            "input_column": "R",
+            "input_row_offset": 0,
+            "options": {
+                "2": "2-Standard",
+                "3": "3-PHPP calculation ('IHG' worksheet)",
+                "4": "4-PHPP calculation ('IHG non-res' worksheet)"
+            }
+        },
+        "phi_building_occupancy_type": {
+            "locator_col": "Q",
+            "locator_string": "Occupancy",
+            "input_column": "R",
+            "input_row_offset": 1,
+            "options": {
+                "1": "1-Standard (only for residential buildings)",
+                "2": "2-User determined"
+            }
+        },
         "phi_certification_type": {
             "locator_col": "Q",
             "locator_string": "Building energy standard",
@@ -162,6 +207,20 @@
             "locator_string": "Treated floor area",
             "input_column": "V",
             "input_row_offset": 0
+        },
+        "thermal_bridge_rows": {
+            "locator_col_header": "K",
+            "locator_string_header": "Thermal bridge inputs",
+            "locator_col_entry": "K",
+            "locator_string_entry": "1",
+            "input_columns": {
+                "description": "L",
+                "group_number": "M",
+                "quantity": "P",
+                "length": "R",
+                "psi_value": "X",
+                "fRsi_value": "Z"
+            }
         }
     },
     "GROUND": {
@@ -250,11 +309,40 @@
                 "comfort_exempt": "BR",
                 "comfort_temp": "BR"
             }
+        },
+        "window_rows_end": {
+            "locator_col_header": "L",
+            "locator_string_header": "Windows",
+            "locator_col_entry": "L",
+            "locator_string_entry": "Unhide further data"
         }
     },
     "SHADING": {
         "name": "Shading",
-        "columns": {}
+        "shading_rows": {
+            "locator_col_header": "R",
+            "locator_string_header": "Calculation of shading coefficients",
+            "locator_col_entry": "R",
+            "locator_string_entry": "Quan",
+            "input_columns": {
+                "h_hori": "Z",
+                "d_hori": "AA",
+                "o_reveal": "AB",
+                "d_reveal": "AC",
+                "o_over": "AD",
+                "d_over": "AE",
+                "r_other_winter": "AF",
+                "r_other_summer": "AG",
+                "temp_z": "AH",
+                "regulated": "AI"
+            }
+        },
+        "shading_rows_end": {
+            "locator_col_header": "R",
+            "locator_string_header": "Shading",
+            "locator_col_entry": "R",
+            "locator_string_entry": "Unhide further data"
+        }
     },
     "VENTILATION": {
         "name": "Ventilation",
@@ -278,7 +366,7 @@
             "locator_string": "Air change rate at press. test",
             "input_column": "N"
         },
-        "airtightness_q50": {
+        "airtightness_Vn50": {
             "locator_col": "I",
             "locator_string": "Air change rate at press. test",
             "input_column": "P"
@@ -305,8 +393,8 @@
                 "V_sup": "J",
                 "V_eta": "K",
                 "V_trans": "L",
-                "operating_days": "N",
-                "operating_weeks": "O",
+                "operating_hours": "N",
+                "operating_days": "O",
                 "holiday_days": "P",
                 "period_high_speed": "Q",
                 "period_high_time": "R",
@@ -373,7 +461,30 @@
     },
     "DHW": {
         "name": "DHW+Distribution",
-        "columns": {}
+        "tanks": {
+            "locator_col_header": "D",
+            "locator_string_header": "Storage heat losses",
+            "locator_col_entry": "J",
+            "locator_string_entry": "Storage 1",
+            "input_columns": {
+                "tank_1": "J",
+                "tank_2": "M",
+                "tank_buffer": "P"
+            },
+            "tank_type": {
+                "options": {
+                    "0": "0-No storage tank",
+                    "1": "1-DHW and heating",
+                    "2": "2-DHW only"
+                }
+            },
+            "tank_location": {
+                "options": {
+                    "1": "1-Inside",
+                    "0": "2-Outside"
+                }
+            }
+        }
     },
     "SOLAR_DHW": {
         "name": "SolarDHW",
@@ -385,7 +496,84 @@
     },
     "ELECTRICITY": {
         "name": "Electricity",
-        "columns": {}
+        "input_columns": {
+            "selection": "D",
+            "used": "F",
+            "in_conditioned_space": "H",
+            "energy_demand_per_use": "J",
+            "utilization_factor": "N",
+            "frequency": "P",
+            "reference_quantity": "S"
+        },
+        "input_rows": {
+            "dishwasher": {
+                "data": 14,
+                "selection": 15,
+                "selection_options": {
+                    "1": "1-DHW connection",
+                    "2": "2-Cold water connection"
+                }
+            },
+            "clothes_washing": {
+                "data": 16,
+                "selection": 17,
+                "selection_options": {
+                    "1": "1-DHW connection",
+                    "2": "2-Cold water connection"
+                }
+            },
+            "clothes_drying": {
+                "data": 18,
+                "selection": 19,
+                "selection_options": {
+                    "1": "1-Clothes line",
+                    "2": "2-Drying closet (cold!)",
+                    "3": "3-Drying closet (cold!) in extract air",
+                    "4": "4-Condensation dryer",
+                    "5": "5-Electric exhaust air dryer",
+                    "6": "6-Gas exhaust air dryer"
+                }
+            },
+            "refrigerator": {
+                "data": 21,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "freezer": {
+                "data": 22,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "fridge_freezer": {
+                "data": 23,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "cooking": {
+                "data": 24,
+                "selection": 25,
+                "selection_options": {
+                    "1": "1-Electricity",
+                    "2": "2-Natural gas",
+                    "3": "3-LPG"
+                }
+            },
+            "lighting": {
+                "data": 26,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "consumer_elec": {
+                "data": 27,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "small_appliances": {
+                "data": 28,
+                "selection": 0,
+                "selection_options": {}
+            }
+        }
     },
     "USE_NON_RES": {
         "name": "Use non-res",

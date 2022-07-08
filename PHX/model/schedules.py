@@ -31,8 +31,9 @@ class UtilizationPatternVent:
     id_num: int = field(init=False, default=0)
     name: str = '__unamed_vent_pattern__'
     identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
-    operating_days: int = 7
-    operating_weeks: int = 52
+    operating_hours: float = 24.0
+    operating_days: float = 7.0
+    operating_weeks: float = 52.0
     operating_periods: Vent_UtilPeriods = field(default_factory=Vent_UtilPeriods)
     holiday_days: int = 0
 

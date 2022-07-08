@@ -116,6 +116,7 @@ def _create_vent_pattern_from_ph_style(_hb_room: room.Room) -> schedules.Utiliza
 
     ph_sched_props = _hb_room.properties.energy.ventilation.schedule.properties.ph
 
+    new_util_pattern.operating_hours = 24.0
     new_util_pattern.operating_days = ph_sched_props.operating_days_wk
     new_util_pattern.operating_weeks = ph_sched_props.operating_weeks_year
 

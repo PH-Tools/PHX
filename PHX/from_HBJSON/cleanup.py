@@ -188,7 +188,7 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
         exposed_faces += _get_room_exposed_faces(hb_room)
 
     new_room = room.Room(
-        identifier=reference_room.properties.ph.ph_bldg_segment.name,
+        identifier=reference_room.properties.ph.ph_bldg_segment.display_name,
         faces=exposed_faces,
     )
 
@@ -208,17 +208,18 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     # -- Then, collect all the spaces from the input rooms and add to the NEW room
     # -- NOTE: this has to be done AFTER the duplicate()
     # -- call, otherwise not all the spaces will transfer over properly.
-    # -- NOTE: Skip the reference room so it isn't counted twice.
     for hb_room in _hb_rooms:
-        # for hb_room in _hb_rooms[1:]: #TODO <--- verify this change....
         for existing_space in hb_room.properties.ph.spaces:
             # -- Preserve the original HB-Room's energy and ph properties over
             # -- on the space. We need to do this cus' the HB-Room is being removed
-            # -- and we want to presever HVAC and program info for the spaces.
+            # -- and we want to preserve HVAC and program info for the spaces.
             existing_space.properties._energy = hb_room.properties._energy.duplicate(
                 new_host=existing_space)
-            existing_space.properties._ph = hb_room.properties._ph.duplicate(
-                new_host=existing_space)
+            # TODO: Verify that this can be removed without causing any issues?
+            # Note: it it also wrong - RoomPhProperties are being applied over SpacePhProperties.
+            # existing_space.properties._ph = hb_room.properties._ph.duplicate(
+            #     new_host=existing_space)
+            
             new_room.properties.ph.add_new_space(existing_space)
 
     # -------------------------------------------------------------------------
@@ -230,7 +231,6 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     # -------------------------------------------------------------------------
     # -- TODO: Can I merge together the surfaces as well?
     # -- For larger models, I think this will be important.... hmm....
-
     # -- Organize the surfaces by -> assembly / exposure / orientation (normal)
 
     return new_room

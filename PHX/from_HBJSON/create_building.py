@@ -9,7 +9,8 @@ from honeybee import room, aperture, face
 
 from PHX.model import building, constructions, components
 from PHX.from_HBJSON import create_rooms, create_geometry
-from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceOpacity, ComponentColor, ComponentFaceType
+from PHX.model.enums.building import (ComponentExposureExterior, ComponentFaceOpacity,
+                                ComponentColor, ComponentFaceType, ThermalBridgeType)
 
 
 def _hb_face_opacity_to_phx_enum(_hb_face: face.Face) -> ComponentFaceOpacity:
@@ -108,16 +109,31 @@ def create_component_from_hb_aperture(
     --------
         * componets.PhxComponentAperture: A new Transparent (window) Component.
     """
-    phx_ap = building.PhxComponentAperture(_host=_host_compo)
+    
+    # -- Create new Aperture
+    phx_ap = components.PhxComponentAperture(_host=_host_compo)
     phx_ap.display_name = _hb_aperture.display_name
     phx_ap.exposure_interior = _hb_room.properties.ph.id_num
     phx_ap.window_type = _window_type_dict[_hb_aperture.properties.energy.construction.identifier]
     phx_ap.window_type_id_num = _hb_aperture.properties.energy.construction.properties.ph.id_num
 
-    # -- Polygons
-    phx_ap.add_polygons(
-        create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture))
+    # -- Create new Aperture Element (Sash)
+    new_phx_ap_element = components.PhxApertureElement(_host=phx_ap)
+    new_phx_ap_element.display_name = _hb_aperture.display_name
+    new_phx_ap_element.polygon = create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture)
+    
+    if _hb_aperture.properties.ph.shading_dimensions:
+        new_phx_ap_element.shading_dimensions.h_hori = _hb_aperture.properties.ph.shading_dimensions.h_hori
+        new_phx_ap_element.shading_dimensions.d_hori = _hb_aperture.properties.ph.shading_dimensions.d_hori
+        new_phx_ap_element.shading_dimensions.o_reveal = _hb_aperture.properties.ph.shading_dimensions.o_reveal
+        new_phx_ap_element.shading_dimensions.d_reveal = _hb_aperture.properties.ph.shading_dimensions.d_reveal
+        new_phx_ap_element.shading_dimensions.o_over = _hb_aperture.properties.ph.shading_dimensions.o_over
+        new_phx_ap_element.shading_dimensions.d_over = _hb_aperture.properties.ph.shading_dimensions.d_over
+    new_phx_ap_element.winter_shading_factor = _hb_aperture.properties.ph.winter_shading_factor
+    new_phx_ap_element.summer_shading_factor = _hb_aperture.properties.ph.summer_shading_factor
 
+    phx_ap.add_elements((new_phx_ap_element,))
+    
     return phx_ap
 
 
@@ -223,3 +239,29 @@ def create_zones_from_hb_room(_hb_room: room.Room) -> building.PhxZone:
     new_zone.res_number_bedrooms = _hb_room.properties.energy.people.properties.ph.number_bedrooms
 
     return new_zone
+
+
+def create_thermal_bridges_from_hb_room(_hb_room: room.Room) -> List[components.PhxComponentThermalBridge]:
+    """Create a list of new PHX-ThermalBridges based on those found on a honeybee-Room.
+
+    Arguments:
+    ----------
+        * _hb_room (room.Room): The honeybee-Room to use as the source.
+
+    Returns:
+    --------
+        * (List[components.PhxThermalBridge]): A list of the new Thermal Bridge objects.
+    """
+    phx_thermal_bridges = []
+    for thermal_bridge in sorted(_hb_room.properties.ph.ph_bldg_segment.thermal_bridges.values(), key=lambda tb:tb.display_name):
+        phx_tb = components.PhxComponentThermalBridge()
+        phx_tb.display_name = thermal_bridge.display_name
+        phx_tb.quantity = thermal_bridge.quantity
+        phx_tb.group_number = ThermalBridgeType(thermal_bridge.group_type.number)
+        phx_tb.identifier = str(thermal_bridge.identifier)
+        phx_tb.psi_value = thermal_bridge.psi_value
+        phx_tb.fRsi_value = thermal_bridge.fRsi_value
+        phx_tb.length = thermal_bridge.length
+        phx_thermal_bridges.append(phx_tb)
+    
+    return phx_thermal_bridges

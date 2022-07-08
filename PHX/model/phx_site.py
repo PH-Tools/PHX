@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""PHC Climate Classes"""
+"""PHX Location and Climate Dataclasses"""
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Union
+from typing import Union, Optional
 
 
 @dataclass
@@ -82,10 +82,11 @@ class PhxSiteEnergyFactors:
 
 
 @dataclass
-class PhxSite:
+class PhxLocation:
+    """The physical location of the building."""
     latitude: float = 40.6
     longitude: float = -73.8
-    elevation: float = 3.0
+    site_elevation: Optional[float] = None
     climate_zone: int = 1
     hours_from_UTC: int = -4
 
@@ -102,7 +103,8 @@ class PhxClimatePeakLoad:
 
 @dataclass
 class PhxClimate:
-    weather_station_elevation: float = 3.0
+    """Monthly Climate Date for the building location."""
+    station_elevation: float = 3.0
     selection: int = 6
     daily_temp_swing: float = 8.0
     avg_wind_speed: float = 4.0
@@ -122,13 +124,24 @@ class PhxClimate:
     peak_cooling_1: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)
     peak_cooling_2: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)
 
+@dataclass
+class PhxPHPPCodes:
+    country_code: str = "US-United States of America"
+    region_code: str = "New York"
+    dataset_name = "US0055b-New York"
+    
 
 @dataclass
-class PhxLocation:
-    display_name: str = "__unnamed_location__"
+class PhxSite:
+    """The climate and location date for the building's site."""
+    display_name: str = "New York"
+
     source: str = "__unknown__"
     selection: int = 1
-    site: PhxSite = field(default_factory=PhxSite)
+    
+    location: PhxLocation = field(default_factory=PhxLocation)
     climate: PhxClimate = field(default_factory=PhxClimate)
+    phpp_codes: PhxPHPPCodes = field(default_factory=PhxPHPPCodes)
     ground: PhxGround = field(default_factory=PhxGround)
+    
     energy_factors: PhxSiteEnergyFactors = field(default_factory=PhxSiteEnergyFactors)

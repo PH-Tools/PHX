@@ -94,7 +94,6 @@ class PhxMechanicalEquipment:
 
     def __add__(self, other: PhxMechanicalEquipment) -> PhxMechanicalEquipment:
         obj = self.__class__()
-        # obj.id_num = self.id_num  # TODO: verify this can be removed?
         obj.device_type = self.device_type
         obj.display_name = self.display_name
         obj.quantity = self.quantity + other.quantity
@@ -114,7 +113,7 @@ class PhxMechanicalEquipment:
     def from_kwargs(cls, **kwargs):
         """Allow for the create of base object from arbitrary kwarg input.
 
-        This is used by subclasses dring __add__ or __copy__, otherwise fields
+        This is used by subclasses during __add__ or __copy__, otherwise fields
         such as 'id_num' or any other init=False fields result in an AttributeError.
         """
         # fetch the constructor's signature
@@ -131,6 +130,8 @@ class PhxMechanicalEquipment:
         # use the native ones to create the class ...
         return cls(**native_args)
 
+    def __str__(self):
+        return f'{self.__class__.__name__}()'
 
 @dataclass
 class PhxMechanicalSubSystem:
@@ -169,7 +170,7 @@ class PhxMechanicalSubSystem:
         self.id_num = self.__class__._count
 
     def __str__(self):
-        return '{}()'.format(self.__class__.__name__)
+        return f'{self.__class__.__name__}(display_name={self.display_name}, device={self.device})'
 
     def __repr__(self):
         return str(self)

@@ -41,3 +41,8 @@ class ComponentColor(Enum):
     SURFACE_GROUND_CONTACT = 12
     GROUND_ABOVE = 13
     GROUND_BENEATH = 14
+
+class ThermalBridgeType(Enum):
+    AMBIENT = 15
+    PERIMETER = 16
+    UNDERGROUND = 17

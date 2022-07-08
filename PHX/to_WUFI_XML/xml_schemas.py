@@ -6,9 +6,9 @@
 from typing import List
 import sys
 
-from PHX.model import (certification, climate, constructions,
-                       geometry, ground, schedules, hvac, loads,
-                       building, building, elec_equip, project, components)
+from PHX.model import (certification, constructions,
+                       geometry, ground, phx_site, schedules, hvac, loads,
+                       building, elec_equip, project, components)
 from PHX.to_WUFI_XML.xml_writables import XML_Node, XML_List, XML_Object, xml_writable
 
 TOL_LEV1 = 2  # Value tolerance for rounding. ie; 9.843181919194 -> 9.84
@@ -54,8 +54,8 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
         XML_Node("PlugIn", _variant.plugin),
         XML_Object("Graphics_3D", _variant.graphics3D),
         XML_Object("Building", _variant.building),
-        XML_Object("ClimateLocation", _variant.location),
-        XML_Object("PassivehouseData", _variant.ph_certification),
+        XML_Object("ClimateLocation", _variant.site),
+        XML_Object("PassivehouseData", _variant.phius_certification),
         XML_Object("HVAC", _variant.mech_systems,
                    _schema_name='_PhxMechanicalEquipmentCollection'),
     ]
@@ -170,41 +170,41 @@ def _PhxComponentAperture(_c: building.PhxComponentAperture) -> List[xml_writabl
 # -- CERTIFICATION ------------------------------------------------------------
 
 
-def _PhxPhBuildingData(_ph_bldg: certification.PhxPhBuildingData) -> List[xml_writable]:
+def _PhxPhBuildingData(_phius_cert: certification.PhxPhiusCertification) -> List[xml_writable]:
     return [
-        XML_Node("IdentNr", _ph_bldg._count),
-        XML_Node("BuildingCategory", _ph_bldg.building_category),
-        XML_Node("OccupancyTypeResidential", _ph_bldg.occupancy_type),
-        XML_Node("BuildingStatus", _ph_bldg.building_status),
-        XML_Node("BuildingType", _ph_bldg.building_type),
-        XML_Node("OccupancySettingMethod", _ph_bldg.occupancy_setting_method),
-        XML_Node("NumberUnits", _ph_bldg.num_of_units),
-        XML_Node("CountStories", _ph_bldg.num_of_floors),
-        XML_Node("EnvelopeAirtightnessCoefficient", _ph_bldg.airtightness_q50),
+        XML_Node("IdentNr", _phius_cert.ph_building_data._count),
+        XML_Node("BuildingCategory", _phius_cert.phius_certification_settings.phius_building_category_type.value),
+        XML_Node("OccupancyTypeResidential", _phius_cert.phius_certification_settings.phius_building_use_type.value),
+        XML_Node("BuildingStatus", _phius_cert.phius_certification_settings.phius_building_status.value),
+        XML_Node("BuildingType", _phius_cert.phius_certification_settings.phius_building_type.value),
+        XML_Node("OccupancySettingMethod", _phius_cert.ph_building_data.occupancy_setting_method),
+        XML_Node("NumberUnits", _phius_cert.ph_building_data.num_of_units),
+        XML_Node("CountStories", _phius_cert.ph_building_data.num_of_floors),
+        XML_Node("EnvelopeAirtightnessCoefficient", _phius_cert.ph_building_data.airtightness_q50),
         XML_List('FoundationInterfaces', [XML_Object('FoundationInterface', f, 'index', i)
-                                          for i, f in enumerate(_ph_bldg.foundations)]),
+                                          for i, f in enumerate(_phius_cert.ph_building_data.foundations)]),
     ]
 
 
-def _PhxPHCertification(_ph_data: certification.PhxPHCertification) -> List[xml_writable]:
+def _PhxPhiusCertification(_phius_cert: certification.PhxPhiusCertification) -> List[xml_writable]:
     # No idea why this is a list in Wufi? When would there ever be more than 1? whatever...
-    ph_building_data_as_list = [
-        _ph_data.ph_building_data] if _ph_data.ph_building_data else []
+    _temp_bldg_data_list = [_phius_cert]
+    
     return [
         XML_Node("PH_CertificateCriteria",
-                 _ph_data.certification_criteria.ph_certificate_criteria),
+                 _phius_cert.phius_certification_criteria.ph_certificate_criteria),
         XML_Node("PH_SelectionTargetData",
-                 _ph_data.certification_criteria.ph_selection_target_data),
+                 _phius_cert.phius_certification_criteria.ph_selection_target_data),
         XML_Node("AnnualHeatingDemand",
-                 _ph_data.certification_criteria.annual_heating_demand),
+                 _phius_cert.phius_certification_criteria.phius_annual_heating_demand),
         XML_Node("AnnualCoolingDemand",
-                 _ph_data.certification_criteria.annual_cooling_demand),
+                 _phius_cert.phius_certification_criteria.phius_annual_cooling_demand),
         XML_Node("PeakHeatingLoad",
-                 _ph_data.certification_criteria.peak_heating_load),
+                 _phius_cert.phius_certification_criteria.phius_peak_heating_load),
         XML_Node("PeakCoolingLoad",
-                 _ph_data.certification_criteria.peak_cooling_load),
-        XML_List("PH_Buildings", [XML_Object("PH_Building", obj, "index", i)
-                 for i, obj in enumerate(ph_building_data_as_list)]),
+                 _phius_cert.phius_certification_criteria.phius_peak_cooling_load),
+        XML_List("PH_Buildings", [XML_Object("PH_Building", obj, "index", i, _schema_name="_PhxPhBuildingData")
+                 for i, obj in enumerate(_temp_bldg_data_list)]),
     ]
 
 
@@ -254,9 +254,10 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
 
 # -- CLIMATE ------------------------------------------------------------------
 
-def _PH_ClimateLocation(_phx_location: climate.PhxLocation) -> List[xml_writable]:
 
-    def _in_wufi_order(_factor_dict: dict) -> List[climate.PhxEnergyFactor]:
+def _PH_ClimateLocation(_phx_location: phx_site.PhxSite) -> List[xml_writable]:
+
+    def _in_wufi_order(_factor_dict: dict) -> List[phx_site.PhxEnergyFactor]:
         """Returns the PE /CO2 conversion factors in WUFI-specific order."""
         fuel_order = ["OIL", "NATURAL_GAS", "LPG", "HARD_COAL", "WOOD", "ELECTRICITY_MIX",
                       "ELECTRICITY_PV", "HARD_COAL_CGS_70_CHP", "HARD_COAL_CGS_35_CHP",
@@ -272,12 +273,12 @@ def _PH_ClimateLocation(_phx_location: climate.PhxLocation) -> List[xml_writable
         XML_Node('AverageWindSpeed', _phx_location.climate.avg_wind_speed),
 
         # -- Location
-        XML_Node('Latitude', _phx_location.site.latitude),
-        XML_Node('Longitude', _phx_location.site.longitude),
+        XML_Node('Latitude', _phx_location.location.latitude),
+        XML_Node('Longitude', _phx_location.location.longitude),
         XML_Node('HeightNNWeatherStation',
-                 _phx_location.site.elevation),
-        XML_Node('dUTC', _phx_location.site.hours_from_UTC),
-        XML_Node('ClimateZone', _phx_location.site.climate_zone),
+                 _phx_location.climate.station_elevation),
+        XML_Node('dUTC', _phx_location.location.hours_from_UTC),
+        XML_Node('ClimateZone', _phx_location.location.climate_zone),
 
         # -- Ground
         XML_Node('GroundThermalConductivity',
@@ -369,17 +370,17 @@ def _PH_ClimateLocation(_phx_location: climate.PhxLocation) -> List[xml_writable
     ]
 
 
-def _PhxLocation(_phx_location: climate.PhxLocation) -> List[xml_writable]:
+def _PhxLocation(_phx_location: phx_site.PhxSite) -> List[xml_writable]:
     return [
         XML_Node('Selection', _phx_location.selection),
         # XML_Node('IDNr_DB', _climate.),
         # XML_Node('Name_DB', _climate.),
         # XML_Node('Comment_DB', _climate.),
-        XML_Node('Latitude_DB', _phx_location.site.latitude, 'unit', "°"),
-        XML_Node('Longitude_DB', _phx_location.site.longitude,  'unit', "°"),
+        XML_Node('Latitude_DB', _phx_location.location.latitude, 'unit', "°"),
+        XML_Node('Longitude_DB', _phx_location.location.longitude,  'unit', "°"),
         XML_Node(
-            'HeightNN_DB', _phx_location.site.elevation, 'unit', "m"),
-        XML_Node('dUTC_DB', _phx_location.site.hours_from_UTC),
+            'HeightNN_DB', _phx_location.location.site_elevation, 'unit', "m"),
+        XML_Node('dUTC_DB', _phx_location.location.hours_from_UTC),
         # XML_Node('FileName_DB', _climate.),
         # XML_Node('Type_DB', _climate.),
         # XML_Node('CatalogueNr_DB', _climate.),
@@ -868,24 +869,24 @@ def _PhxDeviceWaterStorage(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable
         XML_Node("UsedFor_Humidification", _d.usage_profile.humidification),
         XML_Node("UsedFor_Dehumidification",
                  _d.usage_profile.dehumidification),
-        XML_Object('PH_Parameters', _d.params,
+        XML_Object('PH_Parameters', _d,
                    _schema_name='_DeviceWaterStoragePhParams')
     ]
 
 
-def _DeviceWaterStoragePhParams(_p: hvac.PhxHotWaterTankParams) -> List[xml_writable]:
+def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
     return [
-        XML_Node("SolarThermalStorageCapacity", _p.storage_capacity),
-        XML_Node("StorageLossesStandby", _p.standby_losses),
-        XML_Node("TotalSolarThermalStorageLosses", _p.solar_losses),
-        XML_Node("InputOption", _p.input_option.value),
-        XML_Node("AverageHeatReleaseStorage", _p.storage_loss_rate),
-        XML_Node("TankRoomTemp ", _p.tank_room_temp),
-        XML_Node("TypicalStorageWaterTemperature", _p.tank_water_temp),
-        XML_Node("QauntityWS", _p.quantity),
-        XML_Node("AuxiliaryEnergy", _p.aux_energy),
-        XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
-        XML_Node("InConditionedSpace", _p.in_conditioned_space),
+        XML_Node("SolarThermalStorageCapacity", _t.params.storage_capacity),
+        XML_Node("StorageLossesStandby", _t.params.standby_losses),
+        XML_Node("TotalSolarThermalStorageLosses", _t.params.solar_losses),
+        XML_Node("InputOption", _t.params.input_option.value),
+        XML_Node("AverageHeatReleaseStorage", _t.params.storage_loss_rate),
+        XML_Node("TankRoomTemp ", _t.params.room_temp),
+        XML_Node("TypicalStorageWaterTemperature", _t.params.water_temp),
+        XML_Node("QauntityWS", _t.quantity),
+        XML_Node("AuxiliaryEnergy", _t.params.aux_energy),
+        XML_Node("AuxiliaryEnergyDHW", _t.params.aux_energy_dhw),
+        XML_Node("InConditionedSpace", _t.params.in_conditioned_space),
     ]
 
 
@@ -1121,7 +1122,7 @@ def _PhxDeviceDishwasher(_d: elec_equip.PhxDeviceDishwasher) -> List[xml_writabl
 def _PhxDeviceClothesWasher(_d: elec_equip.PhxDeviceClothesWasher) -> List[xml_writable]:
     return [
         XML_Node('Type', 2),
-        XML_Node('Connection', _d.connection),
+        XML_Node('Connection', _d.water_connection),
         XML_Node('UtilizationFactor', _d.utilization_factor),
         XML_Node('CapacityClothesWasher', _d.capacity),
         XML_Node('MEF_ModifiedEnergyFactor', _d.modified_energy_factor),

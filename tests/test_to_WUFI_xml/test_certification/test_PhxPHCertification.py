@@ -3,24 +3,9 @@ from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
+
 def test_default_PhxPHCertification(reset_class_counters):
-    c1 = certification.PhxPHCertification()
-    result = generate_WUFI_XML_from_object(c1, _header="")
-    assert xml_string_to_list(result) == [
-        '<PH_CertificateCriteria>3</PH_CertificateCriteria>',
-        '<PH_SelectionTargetData>2</PH_SelectionTargetData>',
-        '<AnnualHeatingDemand>15.0</AnnualHeatingDemand>',
-        '<AnnualCoolingDemand>15.0</AnnualCoolingDemand>',
-        '<PeakHeatingLoad>10.0</PeakHeatingLoad>',
-        '<PeakCoolingLoad>10.0</PeakCoolingLoad>',
-        '<PH_Buildings count="0"/>'
-    ]
-
-
-def test_default_PhxPHCertification_with_Building(reset_class_counters):
-    c1 = certification.PhxPHCertification()
-    b1 = certification.PhxPhBuildingData()
-    c1.ph_building_data = b1
+    c1 = certification.PhxPhiusCertification()
     result = generate_WUFI_XML_from_object(c1, _header="")
     assert xml_string_to_list(result) == [
         '<PH_CertificateCriteria>3</PH_CertificateCriteria>',
@@ -46,15 +31,12 @@ def test_default_PhxPHCertification_with_Building(reset_class_counters):
     ]
 
 
-def test_customized_PhxPHCertification_with_Building(reset_class_counters):
-    c1 = certification.PhxPHCertification()
-    c1.certification_criteria.annual_heating_demand = 123.45
-    c1.certification_criteria.annual_cooling_demand = 234.56
-    c1.certification_criteria.peak_heating_load = 345.67
-    c1.certification_criteria.peak_cooling_load = 456.78
-
-    b1 = certification.PhxPhBuildingData()
-    c1.ph_building_data = b1
+def test_customized_PhxPhiusCertification(reset_class_counters):
+    c1 = certification.PhxPhiusCertification()
+    c1.phius_certification_criteria.phius_annual_heating_demand = 123.45
+    c1.phius_certification_criteria.phius_annual_cooling_demand = 234.56
+    c1.phius_certification_criteria.phius_peak_heating_load = 345.67
+    c1.phius_certification_criteria.phius_peak_cooling_load = 456.78
     result = generate_WUFI_XML_from_object(c1, _header="")
     assert xml_string_to_list(result) == [
         '<PH_CertificateCriteria>3</PH_CertificateCriteria>',

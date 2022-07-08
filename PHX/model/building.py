@@ -4,14 +4,14 @@
 """PHX Building Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Collection, List, Union, Set
+from typing import ClassVar, List, Sequence, Union, Set, Dict, ValuesView
 from dataclasses import dataclass, field
 from collections import defaultdict
 from functools import reduce
 import operator
 
 from PHX.model import loads, elec_equip, geometry
-from PHX.model.components import PhxComponentAperture, PhxComponentOpaque
+from PHX.model.components import PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
 from PHX.model.enums.building import ComponentFaceOpacity
 
 
@@ -40,27 +40,43 @@ class PhxZone:
 class PhxBuilding:
     _components: List[PhxComponentOpaque] = field(default_factory=list)
     zones: List[PhxZone] = field(default_factory=list)
+    _thermal_bridges: Dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
 
     @property
     def weighted_net_floor_area(self) -> float:
         """Returns the total weighted net floor area of all zones in the PhxBuilding."""
         return sum(z.weighted_net_floor_area for z in self.zones)
 
-    def add_components(self, _components: Union[PhxComponentOpaque, Collection[PhxComponentOpaque]]) -> None:
-        """Add a new PHXComponentOPAQUE to the PHX-Building"""
-        if not isinstance(_components, Collection):
+    @property
+    def net_volume(self) -> float:
+        """Returns the total net-volume of all the zones in the PhxBuilding."""
+        return sum(z.volume_net for z in self.zones)
+
+    def add_components(self, _components: Union[PhxComponentOpaque, Sequence[PhxComponentOpaque]]) -> None:
+        """Add a new PhxComponentOpaque to the PhxBuilding."""
+        if not isinstance(_components, Sequence):
             _components = (_components,)
 
         for compo in _components:
             self._components.append(compo)
 
-    def add_zones(self, _zones: Union[PhxZone, Collection[PhxZone]]) -> None:
-        """Add a new PHX-Zone to the PHX-Building"""
-        if not isinstance(_zones, Collection):
+    def add_zones(self, _zones: Union[PhxZone, Sequence[PhxZone]]) -> None:
+        """Add a new PhxZone to the PhxBuilding."""
+        if not isinstance(_zones, Sequence):
             _zones = (_zones,)
 
         for zone in _zones:
             self.zones.append(zone)
+
+    def add_thermal_bridges(self, _thermal_bridges: Union[PhxComponentThermalBridge, Sequence[PhxComponentThermalBridge]]) -> None:
+        """Add a new PhxComponentThermalBridge (or list of Bridges) to the PhxBuilding."""
+        if not isinstance(_thermal_bridges, Sequence):
+            _thermal_bridges = (_thermal_bridges,)
+        
+        for tb in _thermal_bridges:
+            self._thermal_bridges[tb.identifier] = tb
+        
+        return None
 
     def merge_opaque_components_by_assembly(self) -> None:
         """Merge together all the Opaque-Components in the Building if they gave the same Attributes."""
@@ -102,7 +118,7 @@ class PhxBuilding:
 
     @property
     def all_components(self) -> List[Union[PhxComponentOpaque, PhxComponentAperture]]:
-        """Return a list of all the Opaque and Aperture Componets in the Building.
+        """Return a list of all the Opaque and Aperture Components in the Building.
 
         Returns:
         --------
@@ -146,6 +162,11 @@ class PhxBuilding:
             [c for c in self.opaque_components if is_shading_shading(c)],
             key=lambda _: _.display_name
         )
+
+    @property
+    def thermal_bridges(self) -> ValuesView[PhxComponentThermalBridge]:
+        """Return all of the PhxComponentThermalBridge objects in the PhxBuilding."""
+        return self._thermal_bridges.values()
 
     @property
     def polygon_ids(self) -> Set[int]:
