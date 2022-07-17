@@ -30,10 +30,10 @@ def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
     hb_room_total_space_fa = _space.host.properties.ph.total_space_floor_area
     space_percent_of_total = ref_flr_area / hb_room_total_space_fa
 
-    m3s_by_ach = (air_changes_per_hour * space_percent_of_total)/3600
+    m3s_by_ach = (air_changes_per_hour * space_percent_of_total) / 3_600
     m3s_by_zone = flow_per_zone * space_percent_of_total
 
-    return (m3s_by_occupancy + m3s_by_area + m3s_by_zone + m3s_by_ach) * 3600
+    return (m3s_by_occupancy + m3s_by_area + m3s_by_zone + m3s_by_ach) * 3_600
 
 
 def create_room_from_space(_space: space.Space) -> ventilation.PhxRoomVentilation:
@@ -65,10 +65,13 @@ def create_room_from_space(_space: space.Space) -> ventilation.PhxRoomVentilatio
 
     # -- TODO: FIX THIS TO A BETTER TECHNIQUE SOMEDAY, OVERRIDE WITH LOCAL INFO, IF ANY
     if _space.properties.ph._v_sup is not None:
-        new_room.flow_rates.flow_supply = _space.properties.ph._v_sup
+        new_room.flow_rates.flow_supply = _space.properties.ph._v_sup * 3_600
     
     if _space.properties.ph._v_eta is not None:
-        new_room.flow_rates.flow_extract = _space.properties.ph._v_eta  
+        new_room.flow_rates.flow_extract = _space.properties.ph._v_eta * 3_600
+    
+    if _space.properties.ph._v_tran is not None:
+        new_room.flow_rates.flow_transfer = _space.properties.ph._v_tran * 3_600
 
     # -- Ventilation Equipment
     if _space.host.properties.energy.hvac.properties.ph.ventilation_system:
