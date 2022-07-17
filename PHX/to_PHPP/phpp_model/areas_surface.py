@@ -26,7 +26,11 @@ class SurfaceRow:
 
     @property
     def phpp_group_number(self) -> int:
-        if self.phx_component.face_type == ComponentFaceType.WALL:
+        """Return the correct PHPP 'Group Number' depending on the exposure and type."""
+
+        if self.phx_component.exposure_exterior == ComponentExposureExterior.SURFACE:
+            return 18
+        elif self.phx_component.face_type == ComponentFaceType.WALL:
             if self.phx_component.exposure_exterior == ComponentExposureExterior.EXTERIOR:
                 return 8
             else:
