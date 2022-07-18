@@ -294,8 +294,8 @@
 			<Building>
 				<Components count="4">
 					<Component index="0">
-						<IdentNr>10</IdentNr>
-						<Name>Room_19_f2d66683..Face4</Name>
+						<IdentNr>13</IdentNr>
+						<Name>Room_5_3520162f..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -310,8 +310,8 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="1">
-						<IdentNr>11</IdentNr>
-						<Name>Room_19_f2d66683..Face5</Name>
+						<IdentNr>14</IdentNr>
+						<Name>Room_5_3520162f..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -326,7 +326,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="2">
-						<IdentNr>13</IdentNr>
+						<IdentNr>16</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -344,7 +344,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="3">
-						<IdentNr>15</IdentNr>
+						<IdentNr>18</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
@@ -389,7 +389,7 @@
 				<Selection>1</Selection>
 				<Latitude_DB unit="°">40.6</Latitude_DB>
 				<Longitude_DB unit="°">-73.8</Longitude_DB>
-				<HeightNN_DB unit="m">3.0</HeightNN_DB>
+				<HeightNN_DB unit="m">None</HeightNN_DB>
 				<dUTC_DB>-4</dUTC_DB>
 				<Albedo choice="User defined">-2</Albedo>
 				<GroundReflShort unit="-">0.2</GroundReflShort>
@@ -885,8 +885,8 @@
 			<Building>
 				<Components count="4">
 					<Component index="0">
-						<IdentNr>25</IdentNr>
-						<Name>Room_20_434613fe..Face4</Name>
+						<IdentNr>31</IdentNr>
+						<Name>Room_6_43ada5bf..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -901,8 +901,8 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="1">
-						<IdentNr>26</IdentNr>
-						<Name>Room_20_434613fe..Face5</Name>
+						<IdentNr>32</IdentNr>
+						<Name>Room_6_43ada5bf..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -917,7 +917,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="2">
-						<IdentNr>28</IdentNr>
+						<IdentNr>34</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -935,7 +935,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="3">
-						<IdentNr>30</IdentNr>
+						<IdentNr>36</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
@@ -980,7 +980,7 @@
 				<Selection>1</Selection>
 				<Latitude_DB unit="°">40.6</Latitude_DB>
 				<Longitude_DB unit="°">-73.8</Longitude_DB>
-				<HeightNN_DB unit="m">3.0</HeightNN_DB>
+				<HeightNN_DB unit="m">None</HeightNN_DB>
 				<dUTC_DB>-4</dUTC_DB>
 				<Albedo choice="User defined">-2</Albedo>
 				<GroundReflShort unit="-">0.2</GroundReflShort>

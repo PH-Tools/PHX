@@ -500,7 +500,7 @@
 			<Building>
 				<Components count="4">
 					<Component index="0">
-						<IdentNr>27</IdentNr>
+						<IdentNr>33</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -521,7 +521,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="1">
-						<IdentNr>28</IdentNr>
+						<IdentNr>34</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -538,7 +538,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="2">
-						<IdentNr>29</IdentNr>
+						<IdentNr>35</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -555,7 +555,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="3">
-						<IdentNr>34</IdentNr>
+						<IdentNr>40</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
@@ -603,7 +603,7 @@
 				<Selection>1</Selection>
 				<Latitude_DB unit="°">40.6</Latitude_DB>
 				<Longitude_DB unit="°">-73.8</Longitude_DB>
-				<HeightNN_DB unit="m">3.0</HeightNN_DB>
+				<HeightNN_DB unit="m">None</HeightNN_DB>
 				<dUTC_DB>-4</dUTC_DB>
 				<Albedo choice="User defined">-2</Albedo>
 				<GroundReflShort unit="-">0.2</GroundReflShort>

@@ -1,190 +1,11 @@
 {
-  "tolerance": 0.01, 
-  "units": "Meters", 
+  "tolerance": 0.001, 
+  "units": "Millimeters", 
   "properties": {
     "ph": {
       "bldg_segments": [
         {
-          "climate": {
-            "monthly_temperature_air": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "average_wind_speed": 4, 
-            "monthly_temperature_ground": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "peak_heating_1": {
-              "temp": 0, 
-              "rad_global": 0, 
-              "rad_east": 0, 
-              "rad_west": 0, 
-              "rad_south": 0, 
-              "rad_north": 0
-            }, 
-            "monthly_radiation_east": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "summer_daily_temperature_swing": 8, 
-            "phpp_region_code": "New York", 
-            "peak_heating_2": {
-              "temp": 0, 
-              "rad_global": 0, 
-              "rad_east": 0, 
-              "rad_west": 0, 
-              "rad_south": 0, 
-              "rad_north": 0
-            }, 
-            "monthly_temperature_dewpoint": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "name": "New York", 
-            "monthly_temperature_sky": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "phpp_country_code": "US-United States of America", 
-            "phpp_dataset_name": "US0055b-New York", 
-            "ground": {
-              "depth_groundwater": 3, 
-              "ground_thermal_conductivity": 2, 
-              "ground_density": 2000, 
-              "ground_heat_capacity": 1000, 
-              "flow_rate_groundwater": 0.050000000000000003
-            }, 
-            "peak_cooling_1": {
-              "temp": 0, 
-              "rad_global": 0, 
-              "rad_east": 0, 
-              "rad_west": 0, 
-              "rad_south": 0, 
-              "rad_north": 0
-            }, 
-            "location": {
-              "weather_station_elevation": 3.0, 
-              "latitude": 40.600000000000001, 
-              "longitude": -73.799999999999997, 
-              "hours_from_UTC": -4, 
-              "climate_zone": 1
-            }, 
-            "monthly_radiation_global": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "peak_cooling_2": {
-              "temp": 0, 
-              "rad_global": 0, 
-              "rad_east": 0, 
-              "rad_west": 0, 
-              "rad_south": 0, 
-              "rad_north": 0
-            }, 
-            "monthly_radiation_north": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "monthly_radiation_south": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "monthly_radiation_west": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }
-          }, 
+          "thermal_bridges": {}, 
           "num_dwelling_units": 1, 
           "co2e_factors": {
             "factors": []
@@ -220,7 +41,192 @@
             "PHIUS2021_cooling_load": 10.0
           }, 
           "name": "Unnamed_Bldg_Segment", 
-          "identifier": "9406e2ee-2b74-47e1-9a00-fac36fc75660", 
+          "identifier": "e578da22-531b-4c50-a919-110cde443ab8", 
+          "site": {
+            "location": {
+              "site_elevation": null, 
+              "latitude": 40.600000000000001, 
+              "longitude": -73.799999999999997, 
+              "hours_from_UTC": -4, 
+              "climate_zone": 1
+            }, 
+            "climate": {
+              "monthly_radiation_west": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "peak_heating_1": {
+                "temp": 0, 
+                "rad_global": 0, 
+                "rad_east": 0, 
+                "rad_west": 0, 
+                "rad_south": 0, 
+                "rad_north": 0
+              }, 
+              "peak_cooling_2": {
+                "temp": 0, 
+                "rad_global": 0, 
+                "rad_east": 0, 
+                "rad_west": 0, 
+                "rad_south": 0, 
+                "rad_north": 0
+              }, 
+              "monthly_radiation_east": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "peak_cooling_1": {
+                "temp": 0, 
+                "rad_global": 0, 
+                "rad_east": 0, 
+                "rad_west": 0, 
+                "rad_south": 0, 
+                "rad_north": 0
+              }, 
+              "monthly_temperature_air": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "monthly_temperature_dewpoint": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "ground": {
+                "depth_groundwater": 3, 
+                "ground_thermal_conductivity": 2, 
+                "ground_density": 2000, 
+                "ground_heat_capacity": 1000, 
+                "flow_rate_groundwater": 0.050000000000000003
+              }, 
+              "average_wind_speed": 4, 
+              "monthly_radiation_global": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "monthly_temperature_ground": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "peak_heating_2": {
+                "temp": 0, 
+                "rad_global": 0, 
+                "rad_east": 0, 
+                "rad_west": 0, 
+                "rad_south": 0, 
+                "rad_north": 0
+              }, 
+              "display_name": "New York", 
+              "summer_daily_temperature_swing": 8, 
+              "monthly_temperature_sky": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "monthly_radiation_north": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "station_elevation": 0.0, 
+              "monthly_radiation_south": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }
+            }, 
+            "phpp_library_codes": {
+              "phpp_dataset_name": "US0055b-New York", 
+              "phpp_country_code": "US-United States of America", 
+              "phpp_region_code": "New York"
+            }
+          }, 
           "phi_certification": {
             "_certification_class": {
               "value": "1-CLASSIC"
@@ -256,186 +262,7 @@
           "num_floor_levels": 1
         }, 
         {
-          "climate": {
-            "monthly_temperature_air": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "average_wind_speed": 4, 
-            "monthly_temperature_ground": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "peak_heating_1": {
-              "temp": 0, 
-              "rad_global": 0, 
-              "rad_east": 0, 
-              "rad_west": 0, 
-              "rad_south": 0, 
-              "rad_north": 0
-            }, 
-            "monthly_radiation_east": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "summer_daily_temperature_swing": 8, 
-            "phpp_region_code": "New York", 
-            "peak_heating_2": {
-              "temp": 0, 
-              "rad_global": 0, 
-              "rad_east": 0, 
-              "rad_west": 0, 
-              "rad_south": 0, 
-              "rad_north": 0
-            }, 
-            "monthly_temperature_dewpoint": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "name": "New York", 
-            "monthly_temperature_sky": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "phpp_country_code": "US-United States of America", 
-            "phpp_dataset_name": "US0055b-New York", 
-            "ground": {
-              "depth_groundwater": 3, 
-              "ground_thermal_conductivity": 2, 
-              "ground_density": 2000, 
-              "ground_heat_capacity": 1000, 
-              "flow_rate_groundwater": 0.050000000000000003
-            }, 
-            "peak_cooling_1": {
-              "temp": 0, 
-              "rad_global": 0, 
-              "rad_east": 0, 
-              "rad_west": 0, 
-              "rad_south": 0, 
-              "rad_north": 0
-            }, 
-            "location": {
-              "weather_station_elevation": 3.0, 
-              "latitude": 40.600000000000001, 
-              "longitude": -73.799999999999997, 
-              "hours_from_UTC": -4, 
-              "climate_zone": 1
-            }, 
-            "monthly_radiation_global": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "peak_cooling_2": {
-              "temp": 0, 
-              "rad_global": 0, 
-              "rad_east": 0, 
-              "rad_west": 0, 
-              "rad_south": 0, 
-              "rad_north": 0
-            }, 
-            "monthly_radiation_north": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "monthly_radiation_south": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }, 
-            "monthly_radiation_west": {
-              "february": 0, 
-              "july": 0, 
-              "october": 0, 
-              "december": 0, 
-              "august": 0, 
-              "april": 0, 
-              "september": 0, 
-              "january": 0, 
-              "march": 0, 
-              "may": 0, 
-              "june": 0, 
-              "november": 0
-            }
-          }, 
+          "thermal_bridges": {}, 
           "num_dwelling_units": 1, 
           "co2e_factors": {
             "factors": []
@@ -471,7 +298,192 @@
             "PHIUS2021_cooling_load": 10.0
           }, 
           "name": "Unnamed_Bldg_Segment", 
-          "identifier": "14d9e564-1845-48af-bff0-6939da98f0c6", 
+          "identifier": "81d67b2c-3655-43f0-a47f-a6babc3de5e8", 
+          "site": {
+            "location": {
+              "site_elevation": null, 
+              "latitude": 40.600000000000001, 
+              "longitude": -73.799999999999997, 
+              "hours_from_UTC": -4, 
+              "climate_zone": 1
+            }, 
+            "climate": {
+              "monthly_radiation_west": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "peak_heating_1": {
+                "temp": 0, 
+                "rad_global": 0, 
+                "rad_east": 0, 
+                "rad_west": 0, 
+                "rad_south": 0, 
+                "rad_north": 0
+              }, 
+              "peak_cooling_2": {
+                "temp": 0, 
+                "rad_global": 0, 
+                "rad_east": 0, 
+                "rad_west": 0, 
+                "rad_south": 0, 
+                "rad_north": 0
+              }, 
+              "monthly_radiation_east": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "peak_cooling_1": {
+                "temp": 0, 
+                "rad_global": 0, 
+                "rad_east": 0, 
+                "rad_west": 0, 
+                "rad_south": 0, 
+                "rad_north": 0
+              }, 
+              "monthly_temperature_air": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "monthly_temperature_dewpoint": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "ground": {
+                "depth_groundwater": 3, 
+                "ground_thermal_conductivity": 2, 
+                "ground_density": 2000, 
+                "ground_heat_capacity": 1000, 
+                "flow_rate_groundwater": 0.050000000000000003
+              }, 
+              "average_wind_speed": 4, 
+              "monthly_radiation_global": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "monthly_temperature_ground": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "peak_heating_2": {
+                "temp": 0, 
+                "rad_global": 0, 
+                "rad_east": 0, 
+                "rad_west": 0, 
+                "rad_south": 0, 
+                "rad_north": 0
+              }, 
+              "display_name": "New York", 
+              "summer_daily_temperature_swing": 8, 
+              "monthly_temperature_sky": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "monthly_radiation_north": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }, 
+              "station_elevation": 0.0, 
+              "monthly_radiation_south": {
+                "february": 0, 
+                "july": 0, 
+                "october": 0, 
+                "december": 0, 
+                "august": 0, 
+                "april": 0, 
+                "september": 0, 
+                "january": 0, 
+                "march": 0, 
+                "may": 0, 
+                "june": 0, 
+                "november": 0
+              }
+            }, 
+            "phpp_library_codes": {
+              "phpp_dataset_name": "US0055b-New York", 
+              "phpp_country_code": "US-United States of America", 
+              "phpp_region_code": "New York"
+            }
+          }, 
           "phi_certification": {
             "_certification_class": {
               "value": "1-CLASSIC"
@@ -529,7 +541,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_19_f2d66683 Ideal Loads Air System", 
+          "identifier": "Room_5_3520162f Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": false, 
           "cooling_limit": {
@@ -555,7 +567,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_20_434613fe Ideal Loads Air System", 
+          "identifier": "Room_6_43ada5bf Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": false, 
           "cooling_limit": {
@@ -2436,18 +2448,18 @@
     }
   }, 
   "version": "1.50.2", 
-  "identifier": "unnamed_dfac8557", 
+  "identifier": "unnamed_a9d1544d", 
   "display_name": "unnamed", 
   "rooms": [
     {
       "properties": {
         "ph": {
           "type": "RoomPhPropertiesAbridged", 
-          "ph_bldg_segment_id": "9406e2ee-2b74-47e1-9a00-fac36fc75660", 
+          "ph_bldg_segment_id": "81d67b2c-3655-43f0-a47f-a6babc3de5e8", 
           "spaces": []
         }, 
         "energy": {
-          "hvac": "Room_19_f2d66683 Ideal Loads Air System", 
+          "hvac": "Room_5_3520162f Ideal Loads Air System", 
           "type": "RoomEnergyPropertiesAbridged", 
           "program_type": "Generic Office Program"
         }, 
@@ -2456,8 +2468,8 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_19_f2d66683", 
-      "display_name": "Room_19", 
+      "identifier": "Room_5_3520162f", 
+      "display_name": "Room_5", 
       "faces": [
         {
           "boundary_condition": {
@@ -2568,9 +2580,9 @@
               "properties": {
                 "ph": {
                   "id_num": 0, 
-                  "summer_shading_factor": 0.75, 
                   "inset_dist": 0.10000000000000001, 
                   "winter_shading_factor": 0.75, 
+                  "summer_shading_factor": 0.75, 
                   "type": "AperturePhPropertiesAbridged"
                 }, 
                 "energy": {
@@ -2581,8 +2593,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_19_f2d66683..Face0_Glz0", 
-              "display_name": "Room_19_f2d66683..Face0_Glz0", 
+              "identifier": "Room_5_3520162f..Face0_Glz0", 
+              "display_name": "Room_5_3520162f..Face0_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -2600,15 +2612,15 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_19_f2d66683..Face0", 
-          "display_name": "Room_19_f2d66683..Face0", 
+          "identifier": "Room_5_3520162f..Face0", 
+          "display_name": "Room_5_3520162f..Face0", 
           "type": "Face"
         }, 
         {
           "boundary_condition": {
             "boundary_condition_objects": [
-              "Room_20_434613fe..Face3", 
-              "Room_20_434613fe"
+              "Room_6_43ada5bf..Face3", 
+              "Room_6_43ada5bf"
             ], 
             "type": "Surface"
           }, 
@@ -2669,8 +2681,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_19_f2d66683..Face1", 
-          "display_name": "Room_19_f2d66683..Face1", 
+          "identifier": "Room_5_3520162f..Face1", 
+          "display_name": "Room_5_3520162f..Face1", 
           "type": "Face"
         }, 
         {
@@ -2782,9 +2794,9 @@
               "properties": {
                 "ph": {
                   "id_num": 0, 
-                  "summer_shading_factor": 0.75, 
                   "inset_dist": 0.10000000000000001, 
                   "winter_shading_factor": 0.75, 
+                  "summer_shading_factor": 0.75, 
                   "type": "AperturePhPropertiesAbridged"
                 }, 
                 "energy": {
@@ -2795,8 +2807,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_19_f2d66683..Face2_Glz0", 
-              "display_name": "Room_19_f2d66683..Face2_Glz0", 
+              "identifier": "Room_5_3520162f..Face2_Glz0", 
+              "display_name": "Room_5_3520162f..Face2_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -2814,8 +2826,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_19_f2d66683..Face2", 
-          "display_name": "Room_19_f2d66683..Face2", 
+          "identifier": "Room_5_3520162f..Face2", 
+          "display_name": "Room_5_3520162f..Face2", 
           "type": "Face"
         }, 
         {
@@ -2927,9 +2939,9 @@
               "properties": {
                 "ph": {
                   "id_num": 0, 
-                  "summer_shading_factor": 0.75, 
                   "inset_dist": 0.10000000000000001, 
                   "winter_shading_factor": 0.75, 
+                  "summer_shading_factor": 0.75, 
                   "type": "AperturePhPropertiesAbridged"
                 }, 
                 "energy": {
@@ -2940,8 +2952,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_19_f2d66683..Face3_Glz0", 
-              "display_name": "Room_19_f2d66683..Face3_Glz0", 
+              "identifier": "Room_5_3520162f..Face3_Glz0", 
+              "display_name": "Room_5_3520162f..Face3_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -2959,8 +2971,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_19_f2d66683..Face3", 
-          "display_name": "Room_19_f2d66683..Face3", 
+          "identifier": "Room_5_3520162f..Face3", 
+          "display_name": "Room_5_3520162f..Face3", 
           "type": "Face"
         }, 
         {
@@ -3024,8 +3036,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_19_f2d66683..Face4", 
-          "display_name": "Room_19_f2d66683..Face4", 
+          "identifier": "Room_5_3520162f..Face4", 
+          "display_name": "Room_5_3520162f..Face4", 
           "type": "Face"
         }, 
         {
@@ -3094,8 +3106,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_19_f2d66683..Face5", 
-          "display_name": "Room_19_f2d66683..Face5", 
+          "identifier": "Room_5_3520162f..Face5", 
+          "display_name": "Room_5_3520162f..Face5", 
           "type": "Face"
         }
       ], 
@@ -3105,11 +3117,11 @@
       "properties": {
         "ph": {
           "type": "RoomPhPropertiesAbridged", 
-          "ph_bldg_segment_id": "14d9e564-1845-48af-bff0-6939da98f0c6", 
+          "ph_bldg_segment_id": "e578da22-531b-4c50-a919-110cde443ab8", 
           "spaces": []
         }, 
         "energy": {
-          "hvac": "Room_20_434613fe Ideal Loads Air System", 
+          "hvac": "Room_6_43ada5bf Ideal Loads Air System", 
           "type": "RoomEnergyPropertiesAbridged", 
           "program_type": "Generic Office Program"
         }, 
@@ -3118,8 +3130,8 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_20_434613fe", 
-      "display_name": "Room_20", 
+      "identifier": "Room_6_43ada5bf", 
+      "display_name": "Room_6", 
       "faces": [
         {
           "boundary_condition": {
@@ -3230,9 +3242,9 @@
               "properties": {
                 "ph": {
                   "id_num": 0, 
-                  "summer_shading_factor": 0.75, 
                   "inset_dist": 0.10000000000000001, 
                   "winter_shading_factor": 0.75, 
+                  "summer_shading_factor": 0.75, 
                   "type": "AperturePhPropertiesAbridged"
                 }, 
                 "energy": {
@@ -3243,8 +3255,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_20_434613fe..Face0_Glz0", 
-              "display_name": "Room_20_434613fe..Face0_Glz0", 
+              "identifier": "Room_6_43ada5bf..Face0_Glz0", 
+              "display_name": "Room_6_43ada5bf..Face0_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -3262,8 +3274,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_20_434613fe..Face0", 
-          "display_name": "Room_20_434613fe..Face0", 
+          "identifier": "Room_6_43ada5bf..Face0", 
+          "display_name": "Room_6_43ada5bf..Face0", 
           "type": "Face"
         }, 
         {
@@ -3375,9 +3387,9 @@
               "properties": {
                 "ph": {
                   "id_num": 0, 
-                  "summer_shading_factor": 0.75, 
                   "inset_dist": 0.10000000000000001, 
                   "winter_shading_factor": 0.75, 
+                  "summer_shading_factor": 0.75, 
                   "type": "AperturePhPropertiesAbridged"
                 }, 
                 "energy": {
@@ -3388,8 +3400,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_20_434613fe..Face1_Glz0", 
-              "display_name": "Room_20_434613fe..Face1_Glz0", 
+              "identifier": "Room_6_43ada5bf..Face1_Glz0", 
+              "display_name": "Room_6_43ada5bf..Face1_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -3407,8 +3419,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_20_434613fe..Face1", 
-          "display_name": "Room_20_434613fe..Face1", 
+          "identifier": "Room_6_43ada5bf..Face1", 
+          "display_name": "Room_6_43ada5bf..Face1", 
           "type": "Face"
         }, 
         {
@@ -3520,9 +3532,9 @@
               "properties": {
                 "ph": {
                   "id_num": 0, 
-                  "summer_shading_factor": 0.75, 
                   "inset_dist": 0.10000000000000001, 
                   "winter_shading_factor": 0.75, 
+                  "summer_shading_factor": 0.75, 
                   "type": "AperturePhPropertiesAbridged"
                 }, 
                 "energy": {
@@ -3533,8 +3545,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_20_434613fe..Face2_Glz0", 
-              "display_name": "Room_20_434613fe..Face2_Glz0", 
+              "identifier": "Room_6_43ada5bf..Face2_Glz0", 
+              "display_name": "Room_6_43ada5bf..Face2_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -3552,15 +3564,15 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_20_434613fe..Face2", 
-          "display_name": "Room_20_434613fe..Face2", 
+          "identifier": "Room_6_43ada5bf..Face2", 
+          "display_name": "Room_6_43ada5bf..Face2", 
           "type": "Face"
         }, 
         {
           "boundary_condition": {
             "boundary_condition_objects": [
-              "Room_19_f2d66683..Face1", 
-              "Room_19_f2d66683"
+              "Room_5_3520162f..Face1", 
+              "Room_5_3520162f"
             ], 
             "type": "Surface"
           }, 
@@ -3621,8 +3633,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_20_434613fe..Face3", 
-          "display_name": "Room_20_434613fe..Face3", 
+          "identifier": "Room_6_43ada5bf..Face3", 
+          "display_name": "Room_6_43ada5bf..Face3", 
           "type": "Face"
         }, 
         {
@@ -3686,8 +3698,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_20_434613fe..Face4", 
-          "display_name": "Room_20_434613fe..Face4", 
+          "identifier": "Room_6_43ada5bf..Face4", 
+          "display_name": "Room_6_43ada5bf..Face4", 
           "type": "Face"
         }, 
         {
@@ -3756,8 +3768,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_20_434613fe..Face5", 
-          "display_name": "Room_20_434613fe..Face5", 
+          "identifier": "Room_6_43ada5bf..Face5", 
+          "display_name": "Room_6_43ada5bf..Face5", 
           "type": "Face"
         }
       ], 
