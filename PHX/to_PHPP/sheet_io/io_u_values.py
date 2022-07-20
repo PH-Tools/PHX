@@ -82,6 +82,8 @@ class UValues:
             f'{col_offset(self.shape.constructor.input_columns.display_name, -1)}{row}'
         )
 
+        print(f'Getting PHPP Constructor id for {_name}')
+
         return f'{prefix}-{_name}'
 
     def write_construction_blocks(self, _const_blocks: List[uvalues_constructor.ConstructorBlock]) -> None:

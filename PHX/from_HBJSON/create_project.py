@@ -37,7 +37,6 @@ def sort_hb_rooms_by_bldg_segment(_hb_rooms: Tuple[room.Room]) -> List[List[room
     for room in _hb_rooms:
         rooms_by_segment[room.properties.ph.ph_bldg_segment.identifier].append(
             room)
-
     return list(rooms_by_segment.values())
 
 
@@ -66,7 +65,7 @@ def convert_hb_model_to_PhxProject(_hb_model: model.Model, group_components: boo
     # -- try and weld the vertices too in order to reduce load-time.
     for room_group in sort_hb_rooms_by_bldg_segment(_hb_model.rooms):
         merged_hb_room = cleanup.merge_rooms(room_group)
-
+        
         new_variant = create_variant.from_hb_room(
             merged_hb_room, project.assembly_types, project.window_types, group_components)
         new_variant = cleanup.weld_vertices(new_variant)

@@ -119,7 +119,10 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
 
     # -- Set the new Infiltration Object's attr to the weighted average
     new_infil = _hb_rooms[0].properties.energy.infiltration.duplicate()
-    new_infil.flow_per_exterior_area = total_m3_s / total_exposed_area
+    try:
+        new_infil.flow_per_exterior_area = total_m3_s / total_exposed_area
+    except ZeroDivisionError:
+        new_infil.flow_per_exterior_area = 0.0
 
     return new_infil
 

@@ -76,6 +76,9 @@ class Glazings:
             self.shape.name,
             f'{col_offset(self.shape.glazings.input_columns.description, -1)}{row}'
         )
+
+        print(f'Getting PHPP Glazing id for {_name}')
+
         return f'{prefix}-{_name}'
 
 
@@ -146,6 +149,8 @@ class Frames:
             self.shape.name,
             f'{col_offset(self.shape.frames.input_columns.description, -1)}{row}'
         )
+
+        print(f'Getting PHPP Frame id for {_name}')
 
         return f'{prefix}-{_name}'
 

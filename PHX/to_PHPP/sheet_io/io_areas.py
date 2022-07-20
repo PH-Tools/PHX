@@ -126,6 +126,8 @@ class Surfaces:
             f'{col_offset(self.shape.surface_rows.input_columns.description, -1)}{row}'
         )
 
+        print(f'Getting PHPP Surface id for {_name}')
+
         return f'{int(prefix)}-{_name}'
 
 

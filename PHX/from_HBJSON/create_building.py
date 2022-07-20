@@ -222,7 +222,7 @@ def create_zones_from_hb_room(_hb_room: room.Room) -> building.PhxZone:
 
     # -- Sort the room order by full_name
     sorted_spaces = sorted(_hb_room.properties.ph.spaces,
-                           key=lambda x: x.full_name)
+                           key=lambda space: space.full_name)
 
     # -- Create a new WUFI-RoomVentilation for each space
     new_zone.wufi_rooms = [create_rooms.create_room_from_space(sp)

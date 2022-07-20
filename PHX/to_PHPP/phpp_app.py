@@ -258,6 +258,12 @@ class PHPPConnection:
                                 opaque_component.assembly.display_name)
                         )
                     )
+
+        if len(surfaces) >= 100:
+            print(f"Warning: {len(surfaces)} surfaces found in the model. Ensure that you have "\
+                "added enough rows to the 'Areas' worksheet to handle that many surfaces. "\
+                "By default the PHPP can only have 100 surfaces input.")
+        
         self.areas.write_surfaces(surfaces)
         return None
 
@@ -273,6 +279,12 @@ class PHPPConnection:
                         phx_tb
                     )
                 )
+        
+        if len(thermal_bridges) >= 100:
+            print(f"Warning: {len(thermal_bridges)} thermal bridges found in the model. Ensure that you have "\
+                "added enough rows to the 'Areas' worksheet to handle that many thermal bridges. "\
+                "By default the PHPP can only have 100 thermal bridges input.")
+
         self.areas.write_thermal_bridges(thermal_bridges)
         return None
         
@@ -293,7 +305,7 @@ class PHPPConnection:
                         phpp_id_frame = self.components.frames.get_frame_phpp_id_by_name(
                             phx_aperture.window_type.display_name
                         )
-                        phpp_id_glazing = self.components.frames.get_frame_phpp_id_by_name(
+                        phpp_id_glazing = self.components.glazings.get_glazing_phpp_id_by_name(
                             phx_aperture.window_type.display_name
                         )
 
@@ -307,6 +319,12 @@ class PHPPConnection:
                                 phpp_id_glazing=phpp_id_glazing
                             )
                         )
+        
+        if len(phpp_windows) >= 150:
+            print(f"Warning: {len(phpp_windows)} windows found in the model. Ensure that you have "\
+                "added enough rows to the 'Windows' worksheet to handle that many windows. "\
+                "By default the PHPP can only have 150 windows input.")
+        
         self.windows.write_windows(phpp_windows)
         return None
 
@@ -393,6 +411,13 @@ class PHPPConnection:
                         phx_vent_pattern=phx_vent_pattern,
                     )
                     phpp_vent_rooms.append(phpp_rm)
+
+        
+        if len(phpp_vent_rooms) >= 30:
+            print(f"Warning: {len(phpp_vent_rooms)} spaces found in the model. Ensure that you have "\
+                "added enough rows to the 'Additional Vent' worksheet to handle that many spaces. "\
+                "By default the PHPP can only have 30 spaces input.")
+        
 
         self.addnl_vent.write_spaces(phpp_vent_rooms)
         return None
