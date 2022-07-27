@@ -80,7 +80,7 @@ class VentSpaceRow:
             (create_range('quantity'), self.phx_room_vent.quantity),
             (create_range('display_name'), self.phx_room_vent.display_name),
             (create_range('vent_unit_assigned'), self.phpp_row_ventilator),
-            (create_range('weighted_floor_area'), self.phx_room_vent.weighted_floor_area),
+            (create_range('weighted_floor_area'), self.phx_room_vent.floor_area),
             (create_range('clear_height'), self.phx_room_vent.clear_height),
             
             (create_range('V_sup'), self.phx_room_vent.flow_rates.flow_supply),

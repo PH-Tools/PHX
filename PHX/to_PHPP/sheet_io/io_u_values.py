@@ -20,13 +20,13 @@ class UValues:
         self.shape = _shape
         self.constructor_start_rows: List[int] = []
 
-    def get_start_rows(self, _row_start: int = 1, _row_end: int = 500) -> List[int]:
+    def get_start_rows(self, _row_start: int = 1, _row_end: int = 1730) -> List[int]:
         """Reads through the U-Values worksheet and finds each of the constructor 'start' (title) rows.
 
         Arguments:
         ----------
             * _row_start: (int) default=1
-            * _row_end: (int) default=500
+            * _row_end: (int) default=1730
 
         Returns:
         -------
@@ -47,10 +47,12 @@ class UValues:
         for i, column_val in enumerate(col_data):
             if column_val[0] == self.shape.constructor.locator_string_header:
                 constructors.append(i)
+            elif column_val[0] == "Bauteil Nr.": # Fuck you PHPP
+                constructors.append(i)
 
         return constructors
 
-    def get_constructor_phpp_id_by_name(self, _name, _row_start: int = 1, _row_end: int = 500) -> Optional[str]:
+    def get_constructor_phpp_id_by_name(self, _name, _row_start: int = 1, _row_end: int = 1730) -> Optional[str]:
         """Returns the full PHPP-style value for the constructor with a specified name.
 
         ie: "Exterior Wall" in constructor 1 will return "01ud-Exterior Wall"
@@ -59,7 +61,7 @@ class UValues:
         ---------
             * _name: (str) The name to search for.
             * _row_start: (int) default=1
-            * _row_end: (int) default=500
+            * _row_end: (int) default=1730
 
         Returns:
         --------
@@ -82,13 +84,14 @@ class UValues:
             f'{col_offset(self.shape.constructor.input_columns.display_name, -1)}{row}'
         )
 
-        print(f'Getting PHPP Constructor id for {_name}')
-
         return f'{prefix}-{_name}'
 
     def write_construction_blocks(self, _const_blocks: List[uvalues_constructor.ConstructorBlock]) -> None:
         if not self.constructor_start_rows:
             self.constructor_start_rows = self.get_start_rows()
+        
+        assert len(_const_blocks) <= len(self.constructor_start_rows), \
+            f"Error: Too many U-Value Constructions: {len(self.constructor_start_rows)}"
 
         for construction, start_row in zip(_const_blocks, self.constructor_start_rows):
             for item in construction.create_xl_items(self.shape.name, start_row):

@@ -184,6 +184,7 @@ class XLConnection:
         ---------
             * (xl_writable): The resultant value/values returned from excel.
         """
+        print(f'Reading: {_sheet_name}:{_range}')
         return self.get_sheet_by_name(_sheet_name).range(_range).value
 
     def write_xl_item(self, _xl_item: xl_data.XlItem) -> None:

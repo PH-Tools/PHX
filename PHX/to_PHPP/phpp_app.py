@@ -194,6 +194,7 @@ class PHPPConnection:
                     shape=self.shape.UVALUES,
                     phx_construction=phx_construction)
             )
+
         self.u_values.write_construction_blocks(construction_blocks)
         return None
 
