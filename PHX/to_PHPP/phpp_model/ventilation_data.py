@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
+from typing import Optional
 
 from PHX.to_PHPP import xl_data
 from PHX.to_PHPP.xl_data import xl_writable
@@ -18,6 +19,8 @@ class VentilationInputItem:
     shape: shape_model.Ventilation
     input_data: xl_writable
     input_type: str = field(init=False)
+    input_unit: Optional[str] = None
+    target_unit: Optional[str] = None
 
     def create_xl_item(self, _sheet_name: str, _row_num: int) -> xl_data.XlItem:
         """Returns a list of the XL Items to write for this Surface Entry
@@ -34,7 +37,9 @@ class VentilationInputItem:
         return xl_data.XlItem(
             sheet_name=_sheet_name,
             xl_range=f'{getattr(self.shape, self.input_type).input_column}{_row_num}',
-            write_value=self.input_data
+            write_value=self.input_data,
+            input_unit=self.input_unit,
+            target_unit=self.target_unit
         )
 
     @classmethod
@@ -71,4 +76,6 @@ class VentilationInputItem:
     def airtightness_Vn50(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
         obj.input_type = 'airtightness_Vn50'
+        obj.input_unit = "M3"
+        obj.target_unit = shape.airtightness_Vn50.unit
         return obj

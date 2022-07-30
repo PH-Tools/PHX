@@ -3,7 +3,10 @@
 
 """Controller for managing the PHPP Connection."""
 
-from typing import List, Dict
+import pathlib
+import os
+from typing import List, Dict, Tuple
+from xlwings import Sheet
 
 from PHX.model import project, certification, building, components
 from PHX.model.hvac.collection import NoVentUnitFoundError
@@ -18,15 +21,101 @@ from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, areas_thermal_bri
                                     vent_space, vent_units, vent_ducts, verification_data, 
                                     hot_water_tank)
 
+def get_data_worksheet(_xl:xl_app.XLConnection) -> Sheet:
+    """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""  
+    worksheet_names = _xl.get_worksheet_names()
+    for worksheet_name in ['Data', 'Daten', 'Datos']:
+        if worksheet_name in worksheet_names:
+            return _xl.get_sheet_by_name(worksheet_name)
+       
+    raise Exception(f"Error: Cannot fine a 'Data' worksheet in the Excel file: {_xl.wb.name}?")
+
+def get_phpp_version(_xl:xl_app.XLConnection,
+                    _search_col: str="A",
+                    _row_start: int=1,
+                    _row_end: int=5 ) -> Tuple[str, str]:
+    """Find the PHPP Version and Language of the active xl-file.
+    
+    Arguments:
+    ----------
+        * _xl (xl_app.XLConnection):
+        * _search_col (str)
+        * _row_start (int) default=1
+        * _row_end (int) default=5
+    
+    Returns:
+    --------
+        * (Tuple[str, str]): The Version number and Language of the Active PHPP.
+    """
+
+    # -- Find the right 'Data' worksheet
+    data_worksheet: Sheet = get_data_worksheet(_xl)
+    
+    # -- Pull the search Column data from the Active XL Instance
+    data = _xl.get_single_column_data(
+        _sheet_name=data_worksheet.name,
+        _col=_search_col,
+        _row_start=_row_start,
+        _row_end=_row_end,
+    )
+
+    for i, xl_rang_data in enumerate(data, start=_row_start):
+        if str(xl_rang_data).upper().strip().replace(' ', '').startswith('PHPP'):
+            data_row = i
+   
+   # -- Pull the search row data from the Active XL Instance
+    data = _xl.get_single_row_data(data_worksheet.name, data_row)
+    data = [_ for _ in data if _ is not None]
+    
+    # -- Find the right Versions number
+    version = str(data[1]).upper().strip().replace(" ", "").replace(".", "_")
+    
+    # - Figure out the PHPP language
+    language_search_data = { 
+        '1-PE-FAKTOREN':"DE",
+        '1-FACTORES EP':"ES",
+        '1-PE-FACTORS':"EN",
+    }
+    language = None
+    for search_string in language_search_data.keys():
+        if search_string in str(data[-1]).upper().strip():
+            language = language_search_data[search_string]
+            language = language.strip().replace(' ', "_").replace(".", "_")
+            break
+    if not language:
+        raise Exception("Error: Cannot determine the PHPP language? Only English, German and Spanish are supported.")
+
+    return version, language
+
+def get_shape_file(_xl:xl_app.XLConnection, _shape_file_directory: pathlib.Path):
+    """Returns the path to the PHPP Shape File based on the language and PHPP version found.
+    
+    Arguments:
+    ----------
+        * _xl (xl_app.XLConnection): The XL connection to use to find the version data.
+        * _shape_file_directory ():
+    
+    Returns:
+    --------
+        * (pathlib.Path): The path to the correct PHPP Shape File.
+    """
+    phpp_version, phpp_language = get_phpp_version(_xl)
+    shape_file_name = f"{phpp_language}_{phpp_version}.json"
+    shape_file_path = pathlib.Path(_shape_file_directory, shape_file_name)
+    
+    if not os.path.exists(shape_file_path):
+        raise FileNotFoundError(f'\n\tError: The PHPP shapefile "{shape_file_path}" was not found?')
+
+    return shape_file_path
 
 class PHPPConnection:
 
-    def __init__(self, _phpp_shape: shape_model.PhppShape):
+    def __init__(self, _xl:xl_app.XLConnection, _phpp_shape: shape_model.PhppShape):
         # -- Get the localized (units, language) PHPP Shape with worksheet names and column locations
         self.shape = _phpp_shape
 
         # -- Setup the Excel connection and facade object.
-        self.xl: xl_app.XLConnection = xl_app.XLConnection()
+        self.xl = _xl
 
         # -- Setup all the individual worksheet Classes.
         self.verification = sheet_io.Verification(self.xl, self.shape.VERIFICATION)
@@ -40,31 +129,6 @@ class PHPPConnection:
         self.ventilation = sheet_io.Ventilation(self.xl, self.shape.VENTILATION)
         self.hot_water = sheet_io.HotWater(self.xl, self.shape.DHW)
         self.electricity = sheet_io.Electricity(self.xl, self.shape.ELECTRICITY)
-
-    def valid_phpp_document(self) -> bool:
-        """Return False is if appears the Excel file isn't a PHPP."""
-        # -- Check the file has a 'Data' worksheet
-        try:
-            self.xl.get_sheet_by_name(self.shape.DATA.name)
-        except:
-            return False
-
-        # -- Check that the file's 'Data' worksheet has as 'version'
-        data = self.xl.get_single_column_data(
-            _sheet_name=self.shape.DATA.name,
-            _col=self.shape.DATA.version.locator_col_header,
-            _row_start=1,
-            _row_end=25,
-        )
-        for i, _ in enumerate(data):
-            if self.shape.DATA.version.locator_string_header == _:
-                version = self.xl.get_data(
-                    self.shape.DATA.name,
-                    f'{self.shape.DATA.version.locator_col_entry}{i}'
-                )
-                if len(str(version)) > 0:
-                    return True
-        return False
 
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
         for phx_variant in phx_project.variants:
@@ -238,7 +302,9 @@ class PHPPConnection:
                 areas_data.AreasInput(
                     shape=self.shape.AREAS,
                     input_type='tfa_input',
-                    input_data=phx_variant.building.weighted_net_floor_area
+                    input_data=phx_variant.building.weighted_net_floor_area,
+                    input_unit='M2',
+                    target_unit=self.shape.AREAS.tfa_input.unit
                 )
             )
         return None
@@ -413,13 +479,11 @@ class PHPPConnection:
                     )
                     phpp_vent_rooms.append(phpp_rm)
 
-        
         if len(phpp_vent_rooms) >= 30:
             print(f"Warning: {len(phpp_vent_rooms)} spaces found in the model. Ensure that you have "\
                 "added enough rows to the 'Additional Vent' worksheet to handle that many spaces. "\
                 "By default the PHPP can only have 30 spaces input.")
         
-
         self.addnl_vent.write_spaces(phpp_vent_rooms)
         return None
 

@@ -4,7 +4,7 @@
 """Model class for a PHPP Components/Glazing row."""
 
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List
 from functools import partial
 
 from PHX.model import constructions
@@ -23,8 +23,12 @@ class GlazingRow:
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
-        col = getattr(self.shape.glazings.input_columns, _field_name)
-        return f'{col}{_row_num}'
+        col = getattr(self.shape.glazings.inputs, _field_name).column
+        return f"{col}{_row_num}"
+
+    def _get_target_unit(self, _field_name: str) -> str:
+        "Return the right target unit for the PHPP item writing (IP | SI)"
+        return getattr(self.shape.glazings.inputs, _field_name).unit
 
     def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
@@ -38,10 +42,16 @@ class GlazingRow:
             * (List[XlItem]): The XlItems to write to the sheet.
         """
         create_range = partial(self._create_range, _row_num=_row_num)
-        items: List[Tuple[str, xl_data.xl_writable]] = [
-            (create_range('description'), self.phx_construction.display_name),
-            (create_range('g_value'), self.phx_construction.glass_g_value),
-            (create_range('u_value'),  self.phx_construction.u_value_glass)
+        XLItemCompo = partial(xl_data.XlItem, _sheet_name)
+        xl_item_list: List[xl_data.XlItem] = [
+            XLItemCompo(create_range("description"), self.phx_construction.display_name),
+            XLItemCompo(create_range("g_value"), self.phx_construction.glass_g_value),
+            XLItemCompo(
+                create_range("u_value"),
+                self.phx_construction.u_value_glass,
+                "W/M2K",
+                self._get_target_unit("u_value")
+            )
         ]
 
-        return [xl_data.XlItem(_sheet_name, *item) for item in items]
+        return xl_item_list

@@ -93,12 +93,12 @@ class PhxLocation:
 
 @dataclass
 class PhxClimatePeakLoad:
-    temp: float = 0
-    rad_north: float = 0
-    rad_east: float = 0
-    rad_south: float = 0
-    rad_west: float = 0
-    rad_global: float = 0
+    temperature_air: float = 0
+    radiation_north: float = 0
+    radiation_east: float = 0
+    radiation_south: float = 0
+    radiation_west: float = 0
+    radiation_global: float = 0
 
 
 @dataclass
@@ -109,15 +109,15 @@ class PhxClimate:
     daily_temp_swing: float = 8.0
     avg_wind_speed: float = 4.0
 
-    monthly_temperature_air: list[float] = field(default_factory=list)
-    monthly_temperature_dewpoint: list[float] = field(default_factory=list)
-    monthly_temperature_sky: list[float] = field(default_factory=list)
+    temperature_air: list[float] = field(default_factory=list)
+    temperature_dewpoint: list[float] = field(default_factory=list)
+    temperature_sky: list[float] = field(default_factory=list)
 
-    monthly_radiation_north: list[float] = field(default_factory=list)
-    monthly_radiation_east: list[float] = field(default_factory=list)
-    monthly_radiation_south: list[float] = field(default_factory=list)
-    monthly_radiation_west: list[float] = field(default_factory=list)
-    monthly_radiation_global: list[float] = field(default_factory=list)
+    radiation_north: list[float] = field(default_factory=list)
+    radiation_east: list[float] = field(default_factory=list)
+    radiation_south: list[float] = field(default_factory=list)
+    radiation_west: list[float] = field(default_factory=list)
+    radiation_global: list[float] = field(default_factory=list)
 
     peak_heating_1: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)
     peak_heating_2: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)

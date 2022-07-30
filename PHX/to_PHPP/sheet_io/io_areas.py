@@ -111,19 +111,19 @@ class Surfaces:
             sheet_name=self.shape.name,
             row_start=self.section_first_entry_row,
             row_end=self.section_first_entry_row+500,
-            col=self.shape.surface_rows.input_columns.description,
+            col=self.shape.surface_rows.inputs.description.column,
             find=_name
         )
 
         if not row:
             raise Exception(
                 f'Error: Cannot locate the phpp surface named: {_name} in'
-                f'column {self.shape.surface_rows.input_columns.description}?'
+                f'column {self.shape.surface_rows.inputs.description.column}?'
             )
 
         prefix = self.xl.get_data(
             self.shape.name,
-            f'{col_offset(self.shape.surface_rows.input_columns.description, -1)}{row}'
+            f'{col_offset(self.shape.surface_rows.inputs.description.column, -1)}{row}'
         )
 
         print(f'Getting PHPP Surface id for {_name}')
@@ -214,7 +214,7 @@ class Areas:
 
     def _create_input_location_object(self, _phpp_model_obj: areas_data.AreasInput) -> AreasInputLocation:
         """Create and setup the AreasInputLocation object with the correct data."""
-        phpp_obj_shape: shape_model.AreasInputItem = getattr(
+        phpp_obj_shape: shape_model.AreasDataInput = getattr(
             self.shape, _phpp_model_obj.input_type)
         return AreasInputLocation(
             _xl=self.xl,

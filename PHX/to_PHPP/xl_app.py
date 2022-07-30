@@ -3,7 +3,7 @@
 
 """Class for managing the XL-Connection and common read/write operations."""
 
-from typing import Optional, List
+from typing import Optional, List, Set
 from contextlib import contextmanager
 import os
 
@@ -33,6 +33,7 @@ class ReadMultipleColumnsError(Exception):
             f'and _col_end={_c2}. Please use "read_single_column()" instead.'
         super().__init__(self.msg)
 
+
 class WriteValueError(Exception):
     def __init__(self, _value, _range, _worksheet, _e):
         self.msg = "\n\n\tSomething went wrong trying to write the value: '{}' to the cell: '{}' on worksheet: '{}'. Please "\
@@ -40,6 +41,7 @@ class WriteValueError(Exception):
                          _value, _range, _worksheet, _e
                     )
         super().__init__(self.msg)
+
 
 # -----------------------------------------------------------------------------
 
@@ -115,8 +117,17 @@ class XLConnection:
                 return row
         return None
 
+    def get_worksheet_names(self) -> Set[str]:
+        """Return a list of all the worksheet names in the workbook.
+            
+        Returns:
+        --------
+            * (List[str])
+        """
+        return {sh.name for sh in self.wb.sheets}
+
     def get_sheet_by_name(self, _sheet_name: str) -> xw.main.Sheet:
-        """Returns an Excel Sheet with the specified name, or error if not found.
+        """Returns an Excel Sheet with the specified name, or KeyError if not found.
 
         Arguments:
         ----------
@@ -144,6 +155,22 @@ class XLConnection:
         """
 
         return self.get_sheet_by_name(_sheet_name).range(f'{_col}{_row_start}:{_col}{_row_end}').value
+
+    def get_single_row_data(self, _sheet_name: str, _row_number: int) -> List[xl_data.xl_range_value]:
+        """
+        
+        Arguments:
+        ----------
+            * _sheet_name (str): The name of the sheet to read
+            * _row_number (int): The row to read
+        
+        Returns:
+        --------
+            * (List[xl_data.xl_range_value]) The data read from XL.
+        """
+
+        sht = self.get_sheet_by_name(_sheet_name)
+        return sht.range((_row_number, 1),(_row_number, 500)).value
 
     def get_multiple_column_data(self, _sheet_name: str, _col_start: str, _col_end: str,
                                  _row_start: int = 1, _row_end: int = 100, ) -> List[List[xl_data.xl_range_value]]:
@@ -200,20 +227,6 @@ class XLConnection:
                 _xl_item.xl_range).value = _xl_item.write_value
         except Exception as e:
             raise WriteValueError(_xl_item.write_value, _xl_item.xl_range, _xl_item.sheet_name, e)
-
-    def write_data(self, _sheet_name: str, _range: str, _val: xl_data.xl_writable) -> None:
-        """Writes a value to a specific cell range in the excel sheet 
-
-        Arguments:
-        ---------
-            * _sheet_name: (str) The name of the sheet to write to
-            * _range: (str) The cell range to write to (ie: "A1") or a set of ranges (ie: "A1:B4")
-            * _val: (xl_writable) The cell value(s) to write. Accepts single value or list
-         """
-        try:
-            self.get_sheet_by_name(_sheet_name).range(_range).value = _val
-        except Exception as e:
-            raise WriteValueError(_val, _range, _sheet_name, e)
 
     def clear_data(self, _sheet_name: str, _range: str) -> None:
         """Sets the specified excel sheet's range to 'None'

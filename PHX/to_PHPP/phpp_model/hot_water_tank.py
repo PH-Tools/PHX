@@ -5,6 +5,7 @@
 
 from dataclasses import dataclass
 from typing import List
+from functools import partial
 
 from PHX.model.hvac import water
 
@@ -24,7 +25,7 @@ class TankInput:
     def input_column(self) -> str:
         """Return the right input column based on the tank-number."""
         return getattr(self.shape.tanks.input_columns, f"tank_{self.tank_number}")
-
+    
     def create_range(self, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
         return f'{self.input_column}{_row_num}'
@@ -40,13 +41,34 @@ class TankInput:
         --------
             * (List[XlItem]): The XlItems to write to the sheet.
         """
-        items = [
-            (self.create_range(_row_num+0), self.shape.tanks.tank_type.options[str(self.phx_tank.params.tank_type.value)]),
-            (self.create_range(_row_num+5), self.phx_tank.params.standby_losses),
-            (self.create_range(_row_num+6), self.phx_tank.params.storage_capacity),
-            (self.create_range(_row_num+7), self.phx_tank.params.standby_fraction),
-            (self.create_range(_row_num+9), self.shape.tanks.tank_location.options[str(int(self.phx_tank.params.in_conditioned_space))]),
-            (self.create_range(_row_num+12), self.phx_tank.params.water_temp),
+        XLItemDHW = partial(xl_data.XlItem, _sheet_name)
+        items: List[xl_data.XlItem] = [
+            XLItemDHW(
+                self.create_range(_row_num + self.shape.tanks.input_rows.tank_type.row),
+                self.shape.tanks.tank_type.options[str(self.phx_tank.params.tank_type.value)]
+            ),
+            XLItemDHW(
+                self.create_range(_row_num + self.shape.tanks.input_rows.standby_losses.row),
+                self.phx_tank.params.standby_losses,
+                "W/K",
+                self.shape.tanks.input_rows.standby_losses.unit
+            ),
+            XLItemDHW(self.create_range(_row_num + self.shape.tanks.input_rows.storage_capacity.row),
+                self.phx_tank.params.storage_capacity,
+                "LITER",
+                self.shape.tanks.input_rows.storage_capacity.unit
+            ),
+            XLItemDHW(self.create_range(_row_num + self.shape.tanks.input_rows.standby_fraction.row),
+                self.phx_tank.params.standby_fraction
+            ),
+            XLItemDHW(self.create_range(_row_num + self.shape.tanks.input_rows.tank_location.row),
+                self.shape.tanks.tank_location.options[str(int(self.phx_tank.params.in_conditioned_space))]
+            ),
+            XLItemDHW(self.create_range(_row_num + self.shape.tanks.input_rows.water_temp.row),
+                self.phx_tank.params.water_temp,
+                "C",
+                self.shape.tanks.input_rows.water_temp.unit
+            ),
         ]
 
-        return [xl_data.XlItem(_sheet_name, *item) for item in items]
+        return items

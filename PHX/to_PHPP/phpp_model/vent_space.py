@@ -25,8 +25,12 @@ class VentSpaceRow:
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
-        col = getattr(self.shape.rooms.input_columns, _field_name)
+        col = getattr(self.shape.rooms.inputs, _field_name).column
         return f'{col}{_row_num}'
+
+    def _get_target_unit(self, _field_name: str) -> str:
+        "Return the right target unit for the PHPP item writing (IP | SI)"
+        return getattr(self.shape.rooms.inputs, _field_name).unit
 
     def _get_time_periods(self) -> Tuple[float, float, float]:
         """Return a tuple of the high, standard and min operating periods as % values."""
@@ -76,31 +80,54 @@ class VentSpaceRow:
 
         # --
         create_range = partial(self._create_range, _row_num=_row_num)
-        items: List[Tuple[str, xl_data.xl_writable]] = [
-            (create_range('quantity'), self.phx_room_vent.quantity),
-            (create_range('display_name'), self.phx_room_vent.display_name),
-            (create_range('vent_unit_assigned'), self.phpp_row_ventilator),
-            (create_range('weighted_floor_area'), self.phx_room_vent.floor_area),
-            (create_range('clear_height'), self.phx_room_vent.clear_height),
-            
-            (create_range('V_sup'), self.phx_room_vent.flow_rates.flow_supply),
-            (create_range('V_eta'), self.phx_room_vent.flow_rates.flow_extract),
-            (create_range('V_trans'), self.phx_room_vent.flow_rates.flow_transfer),
+        XLItemAddnlVent = partial(xl_data.XlItem, _sheet_name)
+        items: List[xl_data.XlItem] = [
+            XLItemAddnlVent(create_range('quantity'), self.phx_room_vent.quantity),
+            XLItemAddnlVent(create_range('display_name'), self.phx_room_vent.display_name),
+            XLItemAddnlVent(create_range('vent_unit_assigned'), self.phpp_row_ventilator),
+            XLItemAddnlVent(
+                create_range('weighted_floor_area'),
+                self.phx_room_vent.floor_area,
+                "M2",
+                self._get_target_unit("weighted_floor_area")
+            ),
+            XLItemAddnlVent(
+                create_range('clear_height'),
+                self.phx_room_vent.clear_height,
+                "M",
+                self._get_target_unit("clear_height")
+            ),
+            XLItemAddnlVent(
+                create_range('V_sup'),
+                self.phx_room_vent.flow_rates.flow_supply,
+                "M3/HR",
+                self._get_target_unit("V_sup")
+            ),
+            XLItemAddnlVent(create_range('V_eta'),
+                self.phx_room_vent.flow_rates.flow_extract,
+                "M3/HR",
+                self._get_target_unit("V_eta")
+            ),
+            XLItemAddnlVent(create_range('V_trans'),
+                self.phx_room_vent.flow_rates.flow_transfer,
+                "M3/HR",
+                self._get_target_unit("V_trans")
+            ),
             
             # -- Operating Days / weeks
-            (create_range('operating_hours'), self.phx_vent_pattern.operating_hours),
-            (create_range('operating_days'), self.phx_vent_pattern.operating_days),
-            (create_range('holiday_days'), self.phx_vent_pattern.holiday_days),
+            XLItemAddnlVent(create_range('operating_hours'), self.phx_vent_pattern.operating_hours),
+            XLItemAddnlVent(create_range('operating_days'), self.phx_vent_pattern.operating_days),
+            XLItemAddnlVent(create_range('holiday_days'), self.phx_vent_pattern.holiday_days),
             
             # -- Operating hours / speeds
-            (create_range('period_high_speed'), speed_high),
-            (create_range('period_high_time'), time_high),
+            XLItemAddnlVent(create_range('period_high_speed'), speed_high),
+            XLItemAddnlVent(create_range('period_high_time'), time_high),
             
-            (create_range('period_standard_speed'), speed_standard),
-            (create_range('period_standard_time'), time_standard),
+            XLItemAddnlVent(create_range('period_standard_speed'), speed_standard),
+            XLItemAddnlVent(create_range('period_standard_time'), time_standard),
             
-            (create_range('period_minimum_speed'), speed_minimum),
-            (create_range('period_minimum_time'), time_minimum),
+            XLItemAddnlVent(create_range('period_minimum_speed'), speed_minimum),
+            XLItemAddnlVent(create_range('period_minimum_time'), time_minimum),
         ]
 
-        return [xl_data.XlItem(_sheet_name, *item) for item in items]
+        return items

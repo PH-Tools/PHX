@@ -4,7 +4,7 @@
 """Model class for a PHPP Areas / Surface-Entry row"""
 
 from dataclasses import dataclass
-from typing import List, Tuple, Optional, Dict
+from typing import List, Optional
 from functools import partial
 
 from PHX.model import components, geometry
@@ -44,8 +44,11 @@ class SurfaceRow:
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
-        col = getattr(self.shape.surface_rows.input_columns, _field_name)
-        return f'{col}{_row_num}'
+        return f'{getattr(self.shape.surface_rows.inputs, _field_name).column}{_row_num}'
+
+    def _get_target_unit(self, _field_name: str) -> str:
+        "Return the right target unit for the PHPP item writing (IP | SI)"
+        return getattr(self.shape.surface_rows.inputs, _field_name).unit
 
     def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
@@ -59,17 +62,16 @@ class SurfaceRow:
             * (List[XlItem]): The XlItems to write to the sheet.
         """
         create_range = partial(self._create_range, _row_num=_row_num)
-        items: List[Tuple[str, xl_data.xl_writable]] = [
-            (create_range('description'), self.phx_polygon.display_name),
-            (create_range('group_number'), self.phpp_group_number),
-            (create_range('quantity'),  1),
-            (create_range('area'),  self.phx_polygon.area),
-            (create_range('assembly_id'), self.phpp_assembly_id_name),
-            (create_range('orientation'), self.phx_polygon.cardinal_orientation_angle),
-            (create_range('angle'),  self.phx_polygon.angle_from_horizontal),
-            (create_range('shading'),  0.5),
-            (create_range('absorptivity'),  0.6),
-            (create_range('emissivity'),  0.9),
+        XLItemAreas = partial(xl_data.XlItem, _sheet_name)
+        return [
+            XLItemAreas(create_range('description'), self.phx_polygon.display_name),
+            XLItemAreas(create_range('group_number'), self.phpp_group_number),
+            XLItemAreas(create_range('quantity'),  1),
+            XLItemAreas(create_range('area'), self.phx_polygon.area, "M2", self._get_target_unit('area')),
+            XLItemAreas(create_range('assembly_id'), self.phpp_assembly_id_name),
+            XLItemAreas(create_range('orientation'), self.phx_polygon.cardinal_orientation_angle),
+            XLItemAreas(create_range('angle'),  self.phx_polygon.angle_from_horizontal),
+            XLItemAreas(create_range('shading'),  0.5),
+            XLItemAreas(create_range('absorptivity'),  0.6),
+            XLItemAreas(create_range('emissivity'),  0.9),
         ]
-
-        return [xl_data.XlItem(_sheet_name, *item) for item in items]

@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass
+from typing import Optional
 
 from PHX.to_PHPP import xl_data
 from PHX.to_PHPP.xl_data import xl_writable
@@ -18,6 +19,8 @@ class AreasInput:
     shape: shape_model.Areas
     input_type: str
     input_data: xl_writable
+    input_unit: Optional[str] =None
+    target_unit: Optional[str] = None
 
     def create_xl_item(self, _sheet_name: str, _row_num: int) -> xl_data.XlItem:
         """Returns a list of the XL Items to write for this Data item
@@ -34,5 +37,7 @@ class AreasInput:
         return xl_data.XlItem(
             sheet_name=_sheet_name,
             xl_range=f'{getattr(self.shape, self.input_type).input_column}{_row_num}',
-            write_value=self.input_data
+            write_value=self.input_data,
+            input_unit=self.input_unit,
+            target_unit=self.target_unit
         )

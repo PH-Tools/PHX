@@ -9,6 +9,14 @@ from pydantic import BaseModel
 
 # -----------------------------------------------------------------------------
 
+class InputItem(BaseModel):
+    column: Optional[str]
+    row: Optional[int]
+    unit: Optional[str]
+
+
+# -----------------------------------------------------------------------------
+
 
 class VerificationInputItem(BaseModel):
     locator_col: str
@@ -16,6 +24,7 @@ class VerificationInputItem(BaseModel):
     input_column: str
     input_row_offset: int
     options: Optional[Dict]
+    unit: Optional[str]
 
 
 class Verification(BaseModel):
@@ -73,15 +82,29 @@ class ClimateUDBlockCol(BaseModel):
     latitude: str
     longitude: str
     elevation: str
+    elevation_unit: str
     display_name: str
     summer_delta_t: str
+    summer_delta_t_unit: str
     source: str
+
+
+class ClimateUDBlockRows(BaseModel):
+    temperature_air: InputItem
+    radiation_north: InputItem
+    radiation_east: InputItem
+    radiation_south: InputItem
+    radiation_west: InputItem
+    radiation_global: InputItem
+    temperature_dewpoint: InputItem
+    temperature_sky: InputItem
 
 
 class ClimateUDBlock(BaseModel):
     locator_col_header: str
     locator_string_header: str
     input_columns: ClimateUDBlockCol
+    input_rows: ClimateUDBlockRows
 
 
 class Climate(BaseModel):
@@ -93,25 +116,25 @@ class Climate(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class UValuesConstructorCol(BaseModel):
-    display_name: str
-    r_si: str
-    r_se: str
-    interior_insulation: str
-    sec_1_description: str
-    sec_1_conductivity: str
-    sec_2_description: str
-    sec_2_conductivity: str
-    sec_3_description: str
-    sec_3_conductivity: str
-    thickness: str
-    u_val_supplement: str
+class UValuesConstructorInputs(BaseModel):
+    display_name: InputItem
+    r_si: InputItem
+    r_se: InputItem
+    interior_insulation: InputItem
+    sec_1_description: InputItem
+    sec_1_conductivity: InputItem
+    sec_2_description: InputItem
+    sec_2_conductivity: InputItem
+    sec_3_description: InputItem
+    sec_3_conductivity: InputItem
+    thickness: InputItem
+    u_val_supplement: InputItem
 
 
 class UValuesConstructor(BaseModel):
     locator_col_header: str
     locator_string_header: str
-    input_columns: UValuesConstructorCol
+    inputs: UValuesConstructorInputs
 
 
 class UValues(BaseModel):
@@ -121,33 +144,34 @@ class UValues(BaseModel):
 
 # -----------------------------------------------------------------------------
 
-class AreasInputItem(BaseModel):
+class AreasDataInput(BaseModel):
     locator_col: str
     locator_string: str
     input_column: str
     input_row_offset: int
-    options: Optional[Dict]
+    unit: str
 
 
-class AreasSurfaceRowsCol(BaseModel):
-    description: str
-    group_number: str
-    quantity: str
-    area: str
-    assembly_id: str
-    orientation: str
-    angle: str
-    shading: str
-    absorptivity: str
-    emissivity: str
+class AreasSurfaceInputs(BaseModel):
+    description: InputItem
+    group_number: InputItem
+    quantity: InputItem
+    area: InputItem
+    assembly_id: InputItem
+    orientation: InputItem
+    angle: InputItem
+    shading: InputItem
+    absorptivity: InputItem
+    emissivity: InputItem
 
-class AreasThermalBridgeRowsCol(BaseModel):
-    description: str
-    group_number: str
-    quantity: str
-    length: str
-    psi_value: str
-    fRsi_value: str
+
+class AreasThermalBridgeInputs(BaseModel):
+    description: InputItem
+    group_number: InputItem
+    quantity: InputItem
+    length: InputItem
+    psi_value: InputItem
+    fRsi_value: InputItem
 
 
 class AreasThermalBridgeRows(BaseModel):
@@ -155,20 +179,21 @@ class AreasThermalBridgeRows(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: AreasThermalBridgeRowsCol
+    inputs: AreasThermalBridgeInputs
+
 
 class AreasSurfaceRows(BaseModel):
     locator_col_header: str
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: AreasSurfaceRowsCol
+    inputs: AreasSurfaceInputs
 
 
 class Areas(BaseModel):
     name: str
     surface_rows: AreasSurfaceRows
-    tfa_input: AreasInputItem
+    tfa_input: AreasDataInput
     thermal_bridge_rows: AreasThermalBridgeRows
 
 
@@ -187,46 +212,46 @@ class Ground(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ComponentsGlazingsCol(BaseModel):
-    description: str
-    g_value: str
-    u_value: str
+class ComponentsGlazingsInputs(BaseModel):
+    description: InputItem
+    g_value: InputItem
+    u_value: InputItem
 
 
-class ComponentsFramesCol(BaseModel):
-    description: str
-    u_value_left: str
-    u_value_right: str
-    u_value_bottom: str
-    u_value_top: str
-    width_left: str
-    width_right: str
-    width_bottom: str
-    width_top: str
-    psi_g_left: str
-    psi_g_right: str
-    psi_g_bottom: str
-    psi_g_top: str
-    psi_i_left: str
-    psi_i_right: str
-    psi_i_bottom: str
-    psi_i_top: str
+class ComponentsFramesInputs(BaseModel):
+    description: InputItem
+    u_value_left: InputItem
+    u_value_right: InputItem
+    u_value_bottom: InputItem
+    u_value_top: InputItem
+    width_left: InputItem
+    width_right: InputItem
+    width_bottom: InputItem
+    width_top: InputItem
+    psi_g_left: InputItem
+    psi_g_right: InputItem
+    psi_g_bottom: InputItem
+    psi_g_top: InputItem
+    psi_i_left: InputItem
+    psi_i_right: InputItem
+    psi_i_bottom: InputItem
+    psi_i_top: InputItem
 
 
-class ComponentsVentilatorsCol(BaseModel):
-    display_name: str
-    sensible_heat_recovery: str
-    latent_heat_recovery: str
-    electric_efficiency: str
-    min_m3h: str
-    max_m3h: str
-    pa_per_section: str
-    pa_per_fittings: str
-    frost_protection_reqd: str
-    noise_35DBA: str
-    noise_supply_air: str
-    noise_extract_air: str
-    additional_info: str
+class ComponentsVentilatorsInputs(BaseModel):
+    display_name: InputItem
+    sensible_heat_recovery: InputItem
+    latent_heat_recovery: InputItem
+    electric_efficiency: InputItem
+    min_m3h: InputItem
+    max_m3h: InputItem
+    pa_per_section: InputItem
+    pa_per_fittings: InputItem
+    frost_protection_reqd: InputItem
+    noise_35DBA: InputItem
+    noise_supply_air: InputItem
+    noise_extract_air: InputItem
+    additional_info: InputItem
 
 
 class ComponentsGlazings(BaseModel):
@@ -234,7 +259,7 @@ class ComponentsGlazings(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: ComponentsGlazingsCol
+    inputs: ComponentsGlazingsInputs
 
 
 class ComponentsFrames(BaseModel):
@@ -242,7 +267,7 @@ class ComponentsFrames(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: ComponentsFramesCol
+    inputs: ComponentsFramesInputs
 
 
 class ComponentsVentilators(BaseModel):
@@ -250,7 +275,7 @@ class ComponentsVentilators(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: ComponentsVentilatorsCol
+    inputs: ComponentsVentilatorsInputs
 
 
 class Components(BaseModel):
@@ -264,19 +289,19 @@ class Components(BaseModel):
 
 
 class WindowWindowRowsColumns(BaseModel):
-    quantity: str
-    description: str
-    width: str
-    height: str
-    host: str
-    glazing_id: str
-    frame_id: str
-    psi_i_left: str
-    psi_i_right: str
-    psi_i_bottom: str
-    psi_i_top: str
-    comfort_exempt: str
-    comfort_temp: str
+    quantity: InputItem
+    description: InputItem
+    width: InputItem
+    height: InputItem
+    host: InputItem
+    glazing_id: InputItem
+    frame_id: InputItem
+    psi_i_left: InputItem
+    psi_i_right: InputItem
+    psi_i_bottom: InputItem
+    psi_i_top: InputItem
+    comfort_exempt: InputItem
+    comfort_temp: InputItem
 
 
 class WindowWindowRows(BaseModel):
@@ -284,7 +309,7 @@ class WindowWindowRows(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: WindowWindowRowsColumns
+    inputs: WindowWindowRowsColumns
 
 
 class WindowWindowRowsEnd(BaseModel):
@@ -302,17 +327,17 @@ class Windows(BaseModel):
 
 # -----------------------------------------------------------------------------
 
-class ShadingRowsColumns(BaseModel):
-    h_hori: str
-    d_hori: str
-    o_reveal: str
-    d_reveal: str
-    o_over: str
-    d_over:str
-    r_other_winter: str
-    r_other_summer: str
-    temp_z: str
-    regulated: str
+class ShadingRowInputs(BaseModel):
+    h_hori: InputItem
+    d_hori: InputItem
+    o_reveal: InputItem
+    d_reveal: InputItem
+    o_over: InputItem
+    d_over:InputItem
+    r_other_winter: InputItem
+    r_other_summer: InputItem
+    temp_z: InputItem
+    regulated: InputItem
 
 
 class ShadingRows(BaseModel):
@@ -320,7 +345,7 @@ class ShadingRows(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: ShadingRowsColumns
+    inputs: ShadingRowInputs
 
 
 class ShadingRowsEnd(BaseModel):
@@ -343,6 +368,7 @@ class VentilationInputItem(BaseModel):
     locator_col: str
     locator_string: str
     input_column: str
+    unit: Optional[str]
 
 
 class Ventilation(BaseModel):
@@ -358,60 +384,60 @@ class Ventilation(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class AddnlVentColumnsRooms(BaseModel):
-    quantity: str
-    display_name: str
-    vent_unit_assigned: str
-    weighted_floor_area: str
-    clear_height: str
-    V_sup: str
-    V_eta: str
-    V_trans: str
-    operating_hours: str
-    operating_days: str
-    holiday_days: str
-    period_high_speed: str
-    period_high_time: str
-    period_standard_speed: str
-    period_standard_time: str
-    period_minimum_speed: str
-    period_minimum_time: str
+class AddnlVentInputsRooms(BaseModel):
+    quantity: InputItem
+    display_name: InputItem
+    vent_unit_assigned: InputItem
+    weighted_floor_area: InputItem
+    clear_height: InputItem
+    V_sup: InputItem
+    V_eta: InputItem
+    V_trans: InputItem
+    operating_hours: InputItem
+    operating_days: InputItem
+    holiday_days: InputItem
+    period_high_speed: InputItem
+    period_high_time: InputItem
+    period_standard_speed: InputItem
+    period_standard_time: InputItem
+    period_minimum_speed: InputItem
+    period_minimum_time: InputItem
 
 
-class AddnlVentColumnsUnits(BaseModel):
-    quantity: str
-    display_name: str
-    unit_selected: str
-    oda_sup_pa: str
-    eta_eha_pa: str
-    addnl_pa: str
-    ext_location: str
-    subsoil_hr: str
-    frost_protection_type: str
-    temperature_below_defrost_used: str
+class AddnlVentInputsUnits(BaseModel):
+    quantity: InputItem
+    display_name: InputItem
+    unit_selected: InputItem
+    oda_sup_pa: InputItem
+    eta_eha_pa: InputItem
+    addnl_pa: InputItem
+    ext_location: InputItem
+    subsoil_hr: InputItem
+    frost_protection_type: InputItem
+    temperature_below_defrost_used: InputItem
 
 
-class AddnlVentColumnsDucts(BaseModel):
-    quantity: str
-    diameter: str
-    width: str
-    height: str
-    insul_thickness: str
-    insul_conductivity: str
-    insul_reflective: str
-    sup_air_duct_len: str
-    oda_air_duct_len: str
-    exh_air_duct_len: str
-    duct_assign_1: str
-    duct_assign_2: str
-    duct_assign_3: str
-    duct_assign_4: str
-    duct_assign_5: str
-    duct_assign_6: str
-    duct_assign_7: str
-    duct_assign_8: str
-    duct_assign_9: str
-    duct_assign_10: str
+class AddnlVentInputsDucts(BaseModel):
+    quantity: InputItem
+    diameter: InputItem
+    width: InputItem
+    height: InputItem
+    insul_thickness: InputItem
+    insul_conductivity: InputItem
+    insul_reflective: InputItem
+    sup_air_duct_len: InputItem
+    oda_air_duct_len: InputItem
+    exh_air_duct_len: InputItem
+    duct_assign_1: InputItem
+    duct_assign_2: InputItem
+    duct_assign_3: InputItem
+    duct_assign_4: InputItem
+    duct_assign_5: InputItem
+    duct_assign_6: InputItem
+    duct_assign_7: InputItem
+    duct_assign_8: InputItem
+    duct_assign_9: InputItem
+    duct_assign_10: InputItem
 
 
 class AddnlVentRoomsInputBlockRooms(BaseModel):
@@ -419,7 +445,7 @@ class AddnlVentRoomsInputBlockRooms(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: AddnlVentColumnsRooms
+    inputs: AddnlVentInputsRooms
 
 
 class AddnlVentRoomsInputBlockUnits(BaseModel):
@@ -427,7 +453,7 @@ class AddnlVentRoomsInputBlockUnits(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: AddnlVentColumnsUnits
+    inputs: AddnlVentInputsUnits
 
 
 class AddnlVentRoomsInputBlockDucts(BaseModel):
@@ -435,7 +461,7 @@ class AddnlVentRoomsInputBlockDucts(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_columns: AddnlVentColumnsDucts
+    inputs: AddnlVentInputsDucts
 
 
 class AddnlVent(BaseModel):
@@ -478,6 +504,13 @@ class DhwTankInputColumns(BaseModel):
     tank_2: str
     tank_buffer: str
 
+class DhwTankInputRows(BaseModel):
+    tank_type: InputItem
+    standby_losses: InputItem
+    storage_capacity: InputItem
+    standby_fraction: InputItem
+    tank_location: InputItem
+    water_temp: InputItem
 
 class DhwTanks(BaseModel):
     locator_col_header: str
@@ -487,7 +520,7 @@ class DhwTanks(BaseModel):
     input_columns: DhwTankInputColumns
     tank_type: DhwTankInputOptions
     tank_location: DhwTankInputOptions
-
+    input_rows: DhwTankInputRows
 
 class Dhw(BaseModel):
     name: str

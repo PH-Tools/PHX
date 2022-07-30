@@ -1,6 +1,6 @@
 {
   "tolerance": 0.001, 
-  "units": "Millimeters", 
+  "units": "Meters", 
   "properties": {
     "ph": {
       "bldg_segments": [
@@ -41,7 +41,7 @@
             "PHIUS2021_cooling_load": 10.0
           }, 
           "name": "Unnamed_Bldg_Segment", 
-          "identifier": "95835acf-7080-4226-a470-0ef376c8f06f", 
+          "identifier": "66516290-ad55-4f1c-a0da-6b9292e017a3", 
           "site": {
             "location": {
               "site_elevation": null, 
@@ -284,7 +284,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_1_06293b09 Ideal Loads Air System", 
+          "identifier": "Room_15_af779748 Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": false, 
           "cooling_limit": {
@@ -2165,18 +2165,18 @@
     }
   }, 
   "version": "1.50.2", 
-  "identifier": "unnamed_db981ac8", 
+  "identifier": "unnamed_b551bdb4", 
   "display_name": "unnamed", 
   "rooms": [
     {
       "properties": {
         "ph": {
           "type": "RoomPhPropertiesAbridged", 
-          "ph_bldg_segment_id": "95835acf-7080-4226-a470-0ef376c8f06f", 
+          "ph_bldg_segment_id": "66516290-ad55-4f1c-a0da-6b9292e017a3", 
           "spaces": []
         }, 
         "energy": {
-          "hvac": "Room_1_06293b09 Ideal Loads Air System", 
+          "hvac": "Room_15_af779748 Ideal Loads Air System", 
           "type": "RoomEnergyPropertiesAbridged", 
           "program_type": "Generic Office Program"
         }, 
@@ -2185,8 +2185,8 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_1_06293b09", 
-      "display_name": "Room_1", 
+      "identifier": "Room_15_af779748", 
+      "display_name": "Room_15", 
       "faces": [
         {
           "boundary_condition": {
@@ -2254,8 +2254,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_06293b09..Face0", 
-          "display_name": "Room_1_06293b09..Face0", 
+          "identifier": "Room_15_af779748..Face0", 
+          "display_name": "Room_15_af779748..Face0", 
           "type": "Face"
         }, 
         {
@@ -2324,8 +2324,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_06293b09..Face1", 
-          "display_name": "Room_1_06293b09..Face1", 
+          "identifier": "Room_15_af779748..Face1", 
+          "display_name": "Room_15_af779748..Face1", 
           "type": "Face"
         }, 
         {
@@ -2394,8 +2394,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_06293b09..Face2", 
-          "display_name": "Room_1_06293b09..Face2", 
+          "identifier": "Room_15_af779748..Face2", 
+          "display_name": "Room_15_af779748..Face2", 
           "type": "Face"
         }, 
         {
@@ -2464,8 +2464,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_06293b09..Face3", 
-          "display_name": "Room_1_06293b09..Face3", 
+          "identifier": "Room_15_af779748..Face3", 
+          "display_name": "Room_15_af779748..Face3", 
           "type": "Face"
         }, 
         {
@@ -2529,8 +2529,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_06293b09..Face4", 
-          "display_name": "Room_1_06293b09..Face4", 
+          "identifier": "Room_15_af779748..Face4", 
+          "display_name": "Room_15_af779748..Face4", 
           "type": "Face"
         }, 
         {
@@ -2599,8 +2599,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_06293b09..Face5", 
-          "display_name": "Room_1_06293b09..Face5", 
+          "identifier": "Room_15_af779748..Face5", 
+          "display_name": "Room_15_af779748..Face5", 
           "type": "Face"
         }
       ], 

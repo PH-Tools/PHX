@@ -56,7 +56,7 @@
 			<Remarks></Remarks>
 			<PlugIn></PlugIn>
 			<Graphics_3D>
-				<Vertices count="36">
+				<Vertices count="44">
 					<Vertix index="0">
 						<IdentNr>3</IdentNr>
 						<X>0.0</X>
@@ -273,8 +273,56 @@
 						<Y>4.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
+					<Vertix index="36">
+						<IdentNr>99</IdentNr>
+						<X>0.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="37">
+						<IdentNr>100</IdentNr>
+						<X>0.0</X>
+						<Y>-1.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="38">
+						<IdentNr>101</IdentNr>
+						<X>5.0</X>
+						<Y>-1.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="39">
+						<IdentNr>102</IdentNr>
+						<X>5.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="40">
+						<IdentNr>105</IdentNr>
+						<X>5.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="41">
+						<IdentNr>106</IdentNr>
+						<X>5.0</X>
+						<Y>-1.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="42">
+						<IdentNr>107</IdentNr>
+						<X>12.0</X>
+						<Y>-1.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="43">
+						<IdentNr>108</IdentNr>
+						<X>12.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
 				</Vertices>
-				<Polygons count="16">
+				<Polygons count="18">
 					<Polygon index="0">
 						<IdentNr>1</IdentNr>
 						<NormalVectorX>0.0</NormalVectorX>
@@ -495,10 +543,36 @@
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
+					<Polygon index="16">
+						<IdentNr>17</IdentNr>
+						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">99</IdentNr>
+							<IdentNr index="1">100</IdentNr>
+							<IdentNr index="2">101</IdentNr>
+							<IdentNr index="3">102</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="17">
+						<IdentNr>18</IdentNr>
+						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">105</IdentNr>
+							<IdentNr index="1">106</IdentNr>
+							<IdentNr index="2">107</IdentNr>
+							<IdentNr index="3">108</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
 				</Polygons>
 			</Graphics_3D>
 			<Building>
-				<Components count="4">
+				<Components count="6">
 					<Component index="0">
 						<IdentNr>33</IdentNr>
 						<Name>Merged_Component</Name>
@@ -573,6 +647,38 @@
 							<IdentNr index="3">10</IdentNr>
 							<IdentNr index="4">12</IdentNr>
 							<IdentNr index="5">14</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+					<Component index="4">
+						<IdentNr>41</IdentNr>
+						<Name>Shade_34a6af53</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>1</IdentNrColorI>
+						<IdentNrColorE>1</IdentNrColorE>
+						<InnerAttachment>-1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">17</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+					<Component index="5">
+						<IdentNr>42</IdentNr>
+						<Name>Shade_23935b1f</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>1</IdentNrColorI>
+						<IdentNrColorE>1</IdentNrColorE>
+						<InnerAttachment>-1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">18</IdentNr>
 						</IdentNrPolygons>
 					</Component>
 				</Components>

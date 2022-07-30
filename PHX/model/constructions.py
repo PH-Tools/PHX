@@ -22,9 +22,13 @@ class PhxMaterial:
 
 @dataclass
 class PhxLayer:
-    thickness: float = 0.0
+    thickness_m: float = 0.0
     material: PhxMaterial = field(default_factory=PhxMaterial)
 
+    @property
+    def thickness_mm(self):
+        """Returns the thickness of the layer in MM"""
+        return self.thickness_m * 1000
 
 @dataclass
 class PhxConstructionOpaque:

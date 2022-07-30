@@ -21,11 +21,13 @@ class ThermalBridgeRow:
     shape: shape_model.Areas
     phx_tb: components.PhxComponentThermalBridge
 
-
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
-        col = getattr(self.shape.thermal_bridge_rows.input_columns, _field_name)
-        return f'{col}{_row_num}'
+        return f'{getattr(self.shape.thermal_bridge_rows.inputs, _field_name).column}{_row_num}'
+    
+    def _get_target_unit(self, _field_name: str) -> str:
+        "Return the right target unit for the PHPP item writing (IP | SI)"
+        return getattr(self.shape.thermal_bridge_rows.inputs, _field_name).unit
 
     def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Thermal Bridge Entry
@@ -39,13 +41,12 @@ class ThermalBridgeRow:
             * (List[XlItem]): The XlItems to write to the sheet.
         """
         create_range = partial(self._create_range, _row_num=_row_num)
-        items: List[Tuple[str, xl_data.xl_writable]] = [
-            (create_range('description'), self.phx_tb.display_name),
-            (create_range('group_number'), self.phx_tb.group_number.value),
-            (create_range('quantity'), self.phx_tb.quantity),
-            (create_range('length'), self.phx_tb.length),
-            (create_range('psi_value'), self.phx_tb.psi_value),
-            (create_range('fRsi_value'), self.phx_tb.fRsi_value),
+        XLItemAreas = partial(xl_data.XlItem, _sheet_name)
+        return [
+            XLItemAreas(create_range('description'), self.phx_tb.display_name),
+            XLItemAreas(create_range('group_number'), self.phx_tb.group_number.value),
+            XLItemAreas(create_range('quantity'), self.phx_tb.quantity),
+            XLItemAreas(create_range('length'), self.phx_tb.length, "M", self._get_target_unit('length')),
+            XLItemAreas(create_range('psi_value'), self.phx_tb.psi_value, "W/MK", self._get_target_unit('psi_value')),
+            XLItemAreas(create_range('fRsi_value'), self.phx_tb.fRsi_value),
         ]
-
-        return [xl_data.XlItem(_sheet_name, *item) for item in items]

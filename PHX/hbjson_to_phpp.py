@@ -4,12 +4,10 @@
 """Export an HBJSON file to a PHPP excel document."""
 
 import sys
-
 import pathlib
-import os
 
 from from_HBJSON import read_HBJSON_file, create_project
-from PHX.to_PHPP import phpp_app
+from PHX.to_PHPP import phpp_app, xl_app
 from PHX.to_PHPP.phpp_localization.shape_model import PhppShape
 
 if __name__ == '__main__':
@@ -28,25 +26,20 @@ if __name__ == '__main__':
 
     # --- Generate the PhxProject file.
     # -------------------------------------------------------------------------
-    print(f"> Converting HB-Model: {hb_model.display_name} to a PHX model")
     phx_project = create_project.convert_hb_model_to_PhxProject(
         hb_model, group_components=True)
 
-    # --- Load the correct PHPP Shape, Connect to open instance of XL
+    # --- Connect to open instance of XL, Load the correct PHPP Shape file
     # -------------------------------------------------------------------------
-    phpp_shape = PhppShape.parse_file(SHAPE_FILE)
-    phpp_conn = phpp_app.PHPPConnection(phpp_shape)
+    xl = xl_app.XLConnection = xl_app.XLConnection()
+    shape_file_dir = pathlib.Path("PHX", "to_PHPP", "phpp_localization")
+    phpp_shape_file = phpp_app.get_shape_file(xl, shape_file_dir)
+    phpp_shape = PhppShape.parse_file(phpp_shape_file)
+    phpp_conn = phpp_app.PHPPConnection(xl, phpp_shape)
 
     if phpp_conn.xl.connection_is_open():
         file = phpp_conn.xl.wb.name
-        print(f'> Successfully connected to excel doc: {file}')
-        if not phpp_conn.valid_phpp_document():
-            msg = f"\nError: The excel file '{file}' does not appear to be a valid PHPP? "\
-                "Please ensure this is a PHPP file, and if you have multiple Excel "\
-                "documents open, ensure that the PHPP is the 'active' excel file. "\
-                "If you continue to have trouble, try closing all other excel documents "\
-                "except the PHPP."
-            raise Exception(msg)
+        print(f'[bold green]> connected to excel doc: {file}[/bold green]')
 
     with phpp_conn.xl.in_silent_mode():
         phpp_conn.xl.unprotect_all_sheets()
@@ -55,11 +48,15 @@ if __name__ == '__main__':
         phpp_conn.write_project_constructions(phx_project)
         phpp_conn.write_project_tfa(phx_project)
         phpp_conn.write_project_opaque_surfaces(phx_project)
+        phpp_conn.write_project_thermal_bridges(phx_project)
         phpp_conn.write_project_window_components(phx_project)
         phpp_conn.write_project_window_surfaces(phx_project)
+        phpp_conn.write_project_window_shading(phx_project)
         phpp_conn.write_project_ventilation_components(phx_project)
         phpp_conn.write_project_ventilators(phx_project)
         phpp_conn.write_project_spaces(phx_project)
         phpp_conn.write_project_ventilation_type(phx_project)
         phpp_conn.write_project_airtightness(phx_project)
-        print("> Done writing data to PHPP.")
+        phpp_conn.write_project_volume(phx_project)
+        phpp_conn.write_project_hot_water(phx_project)
+        phpp_conn.write_project_res_elec_appliances(phx_project)

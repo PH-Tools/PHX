@@ -188,44 +188,44 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     _variant.site.ground.flow_rate_groundwater = ud_site.climate.ground.flow_rate_groundwater
 
     # -- Monthly Values
-    _variant.site.climate.monthly_temperature_air = ud_site.climate.monthly_temperature_air.values
-    _variant.site.climate.monthly_temperature_dewpoint = ud_site.climate.monthly_temperature_dewpoint.values
-    _variant.site.climate.monthly_temperature_sky = ud_site.climate.monthly_temperature_sky.values
+    _variant.site.climate.temperature_air = ud_site.climate.monthly_temperature_air.values
+    _variant.site.climate.temperature_dewpoint = ud_site.climate.monthly_temperature_dewpoint.values
+    _variant.site.climate.temperature_sky = ud_site.climate.monthly_temperature_sky.values
 
-    _variant.site.climate.monthly_radiation_north =ud_site.climate.monthly_radiation_north.values
-    _variant.site.climate.monthly_radiation_east =ud_site.climate.monthly_radiation_east.values
-    _variant.site.climate.monthly_radiation_south =ud_site.climate.monthly_radiation_south.values
-    _variant.site.climate.monthly_radiation_west =ud_site.climate.monthly_radiation_west.values
-    _variant.site.climate.monthly_radiation_global =ud_site.climate.monthly_radiation_global.values
+    _variant.site.climate.radiation_north =ud_site.climate.monthly_radiation_north.values
+    _variant.site.climate.radiation_east =ud_site.climate.monthly_radiation_east.values
+    _variant.site.climate.radiation_south =ud_site.climate.monthly_radiation_south.values
+    _variant.site.climate.radiation_west =ud_site.climate.monthly_radiation_west.values
+    _variant.site.climate.radiation_global =ud_site.climate.monthly_radiation_global.values
 
     # -- Peak Load Values
-    _variant.site.climate.peak_heating_1.temp = ud_site.climate.peak_heating_1.temp
-    _variant.site.climate.peak_heating_1.rad_north = ud_site.climate.peak_heating_1.rad_north
-    _variant.site.climate.peak_heating_1.rad_east = ud_site.climate.peak_heating_1.rad_east
-    _variant.site.climate.peak_heating_1.rad_south = ud_site.climate.peak_heating_1.rad_south
-    _variant.site.climate.peak_heating_1.rad_west = ud_site.climate.peak_heating_1.rad_west
-    _variant.site.climate.peak_heating_1.rad_global = ud_site.climate.peak_heating_1.rad_global
+    _variant.site.climate.peak_heating_1.temperature_air = ud_site.climate.peak_heating_1.temp
+    _variant.site.climate.peak_heating_1.radiation_north = ud_site.climate.peak_heating_1.rad_north
+    _variant.site.climate.peak_heating_1.radiation_east = ud_site.climate.peak_heating_1.rad_east
+    _variant.site.climate.peak_heating_1.radiation_south = ud_site.climate.peak_heating_1.rad_south
+    _variant.site.climate.peak_heating_1.radiation_west = ud_site.climate.peak_heating_1.rad_west
+    _variant.site.climate.peak_heating_1.radiation_global = ud_site.climate.peak_heating_1.rad_global
 
-    _variant.site.climate.peak_heating_2.temp = ud_site.climate.peak_heating_2.temp
-    _variant.site.climate.peak_heating_2.rad_north = ud_site.climate.peak_heating_2.rad_north
-    _variant.site.climate.peak_heating_2.rad_east = ud_site.climate.peak_heating_2.rad_east
-    _variant.site.climate.peak_heating_2.rad_south = ud_site.climate.peak_heating_2.rad_south
-    _variant.site.climate.peak_heating_2.rad_west = ud_site.climate.peak_heating_2.rad_west
-    _variant.site.climate.peak_heating_2.rad_global = ud_site.climate.peak_heating_2.rad_global
+    _variant.site.climate.peak_heating_2.temperature_air = ud_site.climate.peak_heating_2.temp
+    _variant.site.climate.peak_heating_2.radiation_north = ud_site.climate.peak_heating_2.rad_north
+    _variant.site.climate.peak_heating_2.radiation_east = ud_site.climate.peak_heating_2.rad_east
+    _variant.site.climate.peak_heating_2.radiation_south = ud_site.climate.peak_heating_2.rad_south
+    _variant.site.climate.peak_heating_2.radiation_west = ud_site.climate.peak_heating_2.rad_west
+    _variant.site.climate.peak_heating_2.radiation_global = ud_site.climate.peak_heating_2.rad_global
 
-    _variant.site.climate.peak_cooling_1.temp = ud_site.climate.peak_cooling_1.temp
-    _variant.site.climate.peak_cooling_1.rad_north = ud_site.climate.peak_cooling_1.rad_north
-    _variant.site.climate.peak_cooling_1.rad_east = ud_site.climate.peak_cooling_1.rad_east
-    _variant.site.climate.peak_cooling_1.rad_south = ud_site.climate.peak_cooling_1.rad_south
-    _variant.site.climate.peak_cooling_1.rad_west = ud_site.climate.peak_cooling_1.rad_west
-    _variant.site.climate.peak_cooling_1.rad_global = ud_site.climate.peak_cooling_1.rad_global
+    _variant.site.climate.peak_cooling_1.temperature_air = ud_site.climate.peak_cooling_1.temp
+    _variant.site.climate.peak_cooling_1.radiation_north = ud_site.climate.peak_cooling_1.rad_north
+    _variant.site.climate.peak_cooling_1.radiation_east = ud_site.climate.peak_cooling_1.rad_east
+    _variant.site.climate.peak_cooling_1.radiation_south = ud_site.climate.peak_cooling_1.rad_south
+    _variant.site.climate.peak_cooling_1.radiation_west = ud_site.climate.peak_cooling_1.rad_west
+    _variant.site.climate.peak_cooling_1.radiation_global = ud_site.climate.peak_cooling_1.rad_global
 
-    _variant.site.climate.peak_cooling_2.temp = ud_site.climate.peak_cooling_2.temp
-    _variant.site.climate.peak_cooling_2.rad_north = ud_site.climate.peak_cooling_2.rad_north
-    _variant.site.climate.peak_cooling_2.rad_east = ud_site.climate.peak_cooling_2.rad_east
-    _variant.site.climate.peak_cooling_2.rad_south = ud_site.climate.peak_cooling_2.rad_south
-    _variant.site.climate.peak_cooling_2.rad_west = ud_site.climate.peak_cooling_2.rad_west
-    _variant.site.climate.peak_cooling_2.rad_global = ud_site.climate.peak_cooling_2.rad_global
+    _variant.site.climate.peak_cooling_2.temperature_air = ud_site.climate.peak_cooling_2.temp
+    _variant.site.climate.peak_cooling_2.radiation_north = ud_site.climate.peak_cooling_2.rad_north
+    _variant.site.climate.peak_cooling_2.radiation_east = ud_site.climate.peak_cooling_2.rad_east
+    _variant.site.climate.peak_cooling_2.radiation_south = ud_site.climate.peak_cooling_2.rad_south
+    _variant.site.climate.peak_cooling_2.radiation_west = ud_site.climate.peak_cooling_2.rad_west
+    _variant.site.climate.peak_cooling_2.radiation_global = ud_site.climate.peak_cooling_2.rad_global
 
     return None
 

@@ -6,7 +6,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 import math
-from typing import ClassVar, Collection, List, Union, Optional, Tuple
+from typing import ClassVar, Collection, List, Union, Optional
 
 
 class PolygonEdgeError(Exception):

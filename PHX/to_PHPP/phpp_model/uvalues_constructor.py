@@ -23,26 +23,41 @@ class ConstructorBlock:
 
     def _create_range(self, _field_name: str, _row_offset: int, _start_row: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
-        col = getattr(self.shape.constructor.input_columns, _field_name)
+        col = getattr(self.shape.constructor.inputs, _field_name).column
         return f'{col}{_start_row + _row_offset}'
+    
+    def _get_target_unit(self, _field_name: str) -> str:
+        "Return the right target unit for the PHPP item writing (IP | SI)"
+        return getattr(self.shape.constructor.inputs, _field_name).unit
 
     def create_xl_items(self, _sheet_name: str, _start_row: int) -> List[xl_data.XlItem]:
         create_range = partial(self._create_range, _start_row=_start_row)
+        XLItemUValues = partial(xl_data.XlItem, _sheet_name)
 
         # -- Build the basic assembly attributes
-        items: List[Tuple[str, xl_data.xl_writable]] = [
-            (create_range('display_name', 2), self.phx_construction.display_name),
-            (create_range('r_si', 4), 0.0),
-            (create_range('r_se', 5), 0.0),
+        xl_items_list: List[xl_data.XlItem] = [
+            XLItemUValues(create_range('display_name', 2), self.phx_construction.display_name),
+            XLItemUValues(create_range('r_si', 4), 0.0, "M2K/W", self._get_target_unit('r_si')),
+            XLItemUValues(create_range('r_se', 5), 0.0, "M2K/W", self._get_target_unit('r_se')),
         ]
 
         # -- Build all the layers of the assembly
         for i, layer in enumerate(self.phx_construction.layers, start=8):
-            layer_items: List[Tuple[str, xl_data.xl_writable]] = [
-                (create_range('sec_1_description', i), layer.material.display_name),
-                (create_range('sec_1_conductivity', i), layer.material.conductivity),
-                (create_range('thickness', i), layer.thickness * 1000),
+            layer_items: List[xl_data.XlItem] = [
+                XLItemUValues(create_range('sec_1_description', i),
+                    layer.material.display_name),
+                XLItemUValues(create_range('sec_1_conductivity', i),
+                    layer.material.conductivity,
+                    "W/MK",
+                    self._get_target_unit('sec_1_conductivity')
+                ),
+                XLItemUValues(create_range(
+                    'thickness', i),
+                    layer.thickness_mm,
+                    "MM",
+                    self._get_target_unit('thickness')
+                ),
             ]
-            items.extend(layer_items)
+            xl_items_list.extend(layer_items)
 
-        return [xl_data.XlItem(_sheet_name, *item) for item in items]
+        return xl_items_list

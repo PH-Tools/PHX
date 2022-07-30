@@ -150,7 +150,7 @@ class VentUnits:
         if not self.section_first_entry_row:
             self.section_first_entry_row = self.find_section_first_entry_row()
 
-        search_column = self.shape.units.input_columns.unit_selected
+        search_column = self.shape.units.inputs.unit_selected.column
 
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,

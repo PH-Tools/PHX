@@ -66,7 +66,7 @@ class Glazings:
             sheet_name=self.shape.name,
             row_start=1,
             row_end=500,
-            col=self.shape.glazings.input_columns.description,
+            col=self.shape.glazings.inputs.description.column,
             find=_name)
 
         if not row:
@@ -74,7 +74,7 @@ class Glazings:
 
         prefix = self.xl.get_data(
             self.shape.name,
-            f'{col_offset(self.shape.glazings.input_columns.description, -1)}{row}'
+            f'{col_offset(self.shape.glazings.inputs.description.column, -1)}{row}'
         )
 
         print(f'Getting PHPP Glazing id for {_name}')
@@ -136,18 +136,18 @@ class Frames:
             sheet_name=self.shape.name,
             row_start=_row_start,
             row_end=_row_end,
-            col=self.shape.frames.input_columns.description,
+            col=self.shape.frames.inputs.description.column,
             find=_name
         )
 
         if not row:
             msg = f'Error: Cannot find a Frame component named: "{_name}" in'\
-                  f'column {self.shape.frames.input_columns.description}?'
+                  f'column {self.shape.frames.inputs.description.column}?'
             raise Exception(msg)
 
         prefix = self.xl.get_data(
             self.shape.name,
-            f'{col_offset(self.shape.frames.input_columns.description, -1)}{row}'
+            f'{col_offset(self.shape.frames.inputs.description.column, -1)}{row}'
         )
 
         print(f'Getting PHPP Frame id for {_name}')
@@ -209,19 +209,19 @@ class Ventilators:
             sheet_name=self.shape.name,
             row_start=_row_start,
             row_end=_row_end,
-            col=self.shape.ventilators.input_columns.display_name,
+            col=self.shape.ventilators.inputs.display_name.column,
             find=_name
         )
 
         if not row:
             raise Exception(
                 f'Error: Cannot find a Ventilator component named: "{_name}"]'
-                f'in column {self.shape.ventilators.input_columns.display_name}?'
+                f'in column {self.shape.ventilators.inputs.display_name.column}?'
             )
 
         prefix = self.xl.get_data(
             self.shape.name,
-            f'{col_offset(self.shape.ventilators.input_columns.display_name, -1)}{row}'
+            f'{col_offset(self.shape.ventilators.inputs.display_name.column, -1)}{row}'
         )
         return f'{prefix}-{_name}'
 

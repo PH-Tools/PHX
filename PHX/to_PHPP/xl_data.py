@@ -6,17 +6,39 @@
 from typing import Union, Optional
 import string
 
+from honeybee_ph_utils import units
+
 xl_writable = Optional[Union[str, float, int, list, tuple]]
 xl_range_value = Optional[Union[str, float, int]]
 
 
 class XlItem:
-    __slots__ = ('sheet_name', 'xl_range', 'write_value')
+    __slots__ = ('sheet_name', 'xl_range', '_write_value', 'input_unit', 'target_unit')
 
-    def __init__(self, sheet_name: str, xl_range: str, write_value: xl_writable):
+    def __init__(self,
+                sheet_name: str, 
+                xl_range: str, 
+                write_value: xl_writable, 
+                input_unit: Optional[str]=None, 
+                target_unit: Optional[str]=None
+    ):
         self.sheet_name = sheet_name
         self.xl_range = xl_range
-        self.write_value = write_value
+        self._write_value = write_value
+        self.input_unit = input_unit
+        self.target_unit = target_unit
+
+    @property
+    def write_value(self):
+        # -- Try to convert the unit (SI/IP)
+        
+        if not self.input_unit or not self.target_unit:
+            return self._write_value
+
+        if isinstance(self._write_value, (tuple, list)):
+            return [units.convert(v, self.input_unit, self.target_unit) for v in self._write_value]
+        else:
+            return units.convert(self._write_value, self.input_unit, self.target_unit)
 
     def __str__(self):
         return f'{self.__class__.__name__}({self.sheet_name}, {self.xl_range}, {self.write_value})'
