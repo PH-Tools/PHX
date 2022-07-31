@@ -134,32 +134,27 @@ class PhxBuilding:
 
     @property
     def opaque_components(self) -> List[PhxComponentOpaque]:
-        """Returns a sorted list (by display name) of all the opaque components in the building.
+        """Returns a sorted list (by display name) of all the opaque non-shade components in the building.
 
         Returns:
         --------
             * (List[PhxComponentOpaque]) A sorted list of all the opaque components.
         """
-        return sorted(self._components, key=lambda _: _.display_name)
+        return sorted(
+            [c for c in self._components if not c.is_shade],
+            key=lambda _: _.display_name
+        )
 
     @property
     def shading_components(self) -> List[PhxComponentOpaque]:
-        """Returns a list of all the shading components in the building.
+        """Returns a list of all the opaque shade components in the building.
 
         Returns:
         --------
             * (List[PhxComponentOpaque]) A sorted list of all the shading components.
         """
-
-        def is_shading_shading(_compo: PhxComponentOpaque):
-            if _compo.face_opacity != ComponentFaceOpacity.OPAQUE:
-                return False
-            if _compo.exposure_interior != -1:
-                return False
-            return True
-
         return sorted(
-            [c for c in self.opaque_components if is_shading_shading(c)],
+            [c for c in self._components if c.is_shade],
             key=lambda _: _.display_name
         )
 

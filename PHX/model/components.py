@@ -60,6 +60,14 @@ class PhxComponentOpaque(PhxComponentBase):
         return f'{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-'\
             f'{self.exposure_exterior}-{self.assembly_type_id_num}'
 
+    @property
+    def is_shade(self) -> bool:
+        if self.face_opacity != ComponentFaceOpacity.OPAQUE:
+            return False
+        if self.exposure_interior != -1:
+            return False
+        return True
+
     def add_polygons(self,
                      _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]) -> None:
         """Adds a new Polygon or Polygons to the Component's collection.
