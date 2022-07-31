@@ -106,7 +106,11 @@ class VentUnits:
         """Return the row number of the very first user-input entry row in the 'Rooms' section."""
 
         if not self.section_header_row:
-            self.section_header_row = self.find_section_header_row()
+            try:
+                self.section_header_row = self.find_section_header_row()
+            except:
+                # Try one more time with a larger read-block
+                self.section_header_row = self.find_section_header_row(_row_start=1, _row_end=999)
 
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
@@ -130,7 +134,12 @@ class VentUnits:
         )
 
     def find_section_shape(self) -> None:
-        self.section_start_row = self.find_section_header_row()
+        try:
+            self.section_start_row = self.find_section_header_row()
+        except Exception:
+            # Try one more time using a larger read-block
+            self.section_start_row = self.find_section_header_row(_row_start=1, _row_end=1000)
+        
         self.section_first_entry_row = self.find_section_first_entry_row()
 
     def get_vent_unit_num_by_phpp_id(self, _phpp_id: str) -> xl_writable:
@@ -161,12 +170,14 @@ class VentUnits:
 
         for i, val in enumerate(xl_data, start=self.section_first_entry_row):
             if val == _phpp_id:
-                num_col = col_offset(search_column, -3)
+                num_col = col_offset(str(search_column), -3)
                 return self.xl.get_data(self.shape.name, f"{num_col}{i}")
 
         raise Exception(
-            f"Error: Cannot locate the Ventilation Unit: {_phpp_id} in"
-            " the Additional Ventilation worksheet Units section?"
+            f"Error: Cannot locate the Ventilation Unit: '{_phpp_id}' in"
+            f" the '{self.shape.name}' worksheet Units section, column {search_column}?"
+            f" Ensure that you enter the Ventilator-unit data into the '{self.shape.name}'"
+            " worksheet before writing the spaces and ducts."
         )
 
 

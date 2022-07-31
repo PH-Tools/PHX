@@ -4,7 +4,7 @@
 """Model class for a single PHPP Addition Vent / Unit-Entry row."""
 
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List
 from functools import partial
 
 from PHX.model import hvac

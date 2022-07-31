@@ -38,12 +38,13 @@ def _get_room_exposed_faces(_hb_room: room.Room, _bc_types: Tuple = (Outdoors, G
         new_face = original_face.duplicate()
         new_face._properties._duplicate_extension_attr(original_face._properties)
 
-        # TODO: Verify this next isn't needed anymore:
-        # # -- Duplicate any extensions like .ph, .energy or .radiance
-        # for extension_name in original_face.properties._extension_attributes:
-        #     original_extension = getattr(original_face._properties, f'_{extension_name}')
-        #     new_extension = original_extension.duplicate()
-        #     setattr(new_face._properties, f'_{extension_name}', new_extension)
+        # -- Note, this is required if the user has set custom .energy constructions
+        # -- or other custom face-specific attributes
+        # -- Duplicate any extensions like .ph, .energy or .radiance
+        for extension_name in original_face.properties._extension_attributes:
+            original_extension = getattr(original_face._properties, f'_{extension_name}')
+            new_extension = original_extension.duplicate()
+            setattr(new_face._properties, f'_{extension_name}', new_extension)
 
         exposed_faces.append(new_face)
 
@@ -183,7 +184,8 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
         * room.Room: The new Honeybee Room.
     """
     reference_room = _hb_rooms[0]
-
+    
+    
     # -------------------------------------------------------------------------
     # -- Get only the 'exposed' faces to build a new HB-Room with
     exposed_faces = []
@@ -194,7 +196,7 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
         identifier=reference_room.properties.ph.ph_bldg_segment.display_name,
         faces=exposed_faces,
     )
-
+    
     # -------------------------------------------------------------------------
     # -- Set the new Merged-Room's properties.ph and
     # -- properties.energy to match the 'reference' room to start with, but leave

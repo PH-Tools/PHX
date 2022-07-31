@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # --- Input file Path
     # -------------------------------------------------------------------------
     SOURCE_FILE = pathlib.Path(
-        "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Multi_Room_Complete.hbjson"
+        "/Users/em/Dropbox/bldgtyp/2021 ELS/07 PHPP/hbjson/ELS_220731.hbjson"
     )
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
@@ -48,7 +48,7 @@ if __name__ == '__main__':
         # phpp_conn.write_climate_data(phx_project)
         # phpp_conn.write_project_constructions(phx_project)
         # phpp_conn.write_project_tfa(phx_project)
-        phpp_conn.write_project_opaque_surfaces(phx_project)
+        # phpp_conn.write_project_opaque_surfaces(phx_project)
         # phpp_conn.write_project_thermal_bridges(phx_project)
         # phpp_conn.write_project_window_components(phx_project)
         # phpp_conn.write_project_window_surfaces(phx_project)
@@ -56,8 +56,8 @@ if __name__ == '__main__':
         # phpp_conn.write_project_ventilation_components(phx_project)
         # phpp_conn.write_project_ventilators(phx_project)
         # phpp_conn.write_project_spaces(phx_project)
-        # phpp_conn.write_project_ventilation_type(phx_project)
-        # phpp_conn.write_project_airtightness(phx_project)
-        # phpp_conn.write_project_volume(phx_project)
-        # phpp_conn.write_project_hot_water(phx_project)
-        # phpp_conn.write_project_res_elec_appliances(phx_project)
+        phpp_conn.write_project_ventilation_type(phx_project)
+        phpp_conn.write_project_airtightness(phx_project)
+        phpp_conn.write_project_volume(phx_project)
+        phpp_conn.write_project_hot_water(phx_project)
+        phpp_conn.write_project_res_elec_appliances(phx_project)
