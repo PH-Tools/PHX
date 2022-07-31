@@ -15,15 +15,7 @@ from PHX.model import (building, project, geometry, schedules, certification,
 
 SOURCE_DIR = pathlib.Path("tests", "_source_hbjson")
 source_file_names = [
-    "Default_Model_Single_Zone.hbjson",
-    "Default_Room_Multiple_Zones_with_Apertures_Single_BldgSegment.hbjson",
-    "Default_Room_Multiple_Zones_with_Apertures.hbjson",
-    "Default_Room_Single_Zone_with_Apertures.hbjson",
-    "Default_Room_Single_Zone_with_Shades.hbjson",
-    "Default_Room_Multiple_Zones_with_Apertures_default_Climate.hbjson",
-    "Default_Room_Single_Zone_with_Rooms.hbjson",
-    "Default_Room_Single_Zone_with_Ventilation.hbjson",
-    "Default_Room_Multiple_Zones_with_PHI_Cert.hbjson",
+    "Multi_Room_Complete.hbjson",
 ]
 SOURCE_FILES = [pathlib.Path(SOURCE_DIR, n) for n in source_file_names]
 TARGET_DIR = pathlib.Path("tests", "_reference_xml")

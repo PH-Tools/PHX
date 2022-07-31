@@ -257,7 +257,7 @@ def weld_vertices(_variant: project.PhxVariant) -> project.PhxVariant:
     """
 
     unique_vertix_dict = {}
-    for component in _variant.building.opaque_components:
+    for component in _variant.building.all_components:
         for polygon in component.polygons:
             for i, vert in enumerate(polygon.vertices):
                 try:
