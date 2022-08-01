@@ -216,14 +216,18 @@ class PHPPConnection:
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type='setpoint_winter',
-                    input_data=phx_variant.phius_certification.ph_building_data.setpoints.winter
+                    input_data=phx_variant.phius_certification.ph_building_data.setpoints.winter,
+                    input_unit='C',
+                    target_unit=self.shape.VERIFICATION.setpoint_winter.unit,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type='setpoint_summer',
-                    input_data=phx_variant.phius_certification.ph_building_data.setpoints.summer
+                    input_data=phx_variant.phius_certification.ph_building_data.setpoints.summer,
+                    input_unit='C',
+                    target_unit=self.shape.VERIFICATION.setpoint_summer.unit
                 )
             )
         

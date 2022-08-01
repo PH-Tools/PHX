@@ -6,6 +6,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
+from typing import Optional
 
 from PHX.to_PHPP import xl_data
 from PHX.to_PHPP.xl_data import xl_writable
@@ -19,17 +20,28 @@ class VerificationInput:
     shape: shape_model.Verification
     input_type: str
     input_data: xl_writable
+    input_unit: Optional[str] = None
+    target_unit: Optional[str] = None
 
     @classmethod
-    def item(cls, shape: shape_model.Verification, input_type: str, input_data: xl_writable) -> VerificationInput:
+    def item(cls, shape: shape_model.Verification,
+            input_type: str,
+            input_data: xl_writable,
+            input_unit: Optional[str]=None,
+            target_unit: Optional[str]=None
+    ) -> VerificationInput:
+        """Create a new data-input item."""
         return cls(
             shape,
             input_type,
-            input_data
+            input_data,
+            input_unit,
+            target_unit
         )
 
     @classmethod
     def enum(cls, shape: shape_model.Verification, input_type: str, input_enum_value: Enum) -> VerificationInput:
+        """Create a new options-input item."""
         shape_data = getattr(shape, input_type).options
         return cls(
             shape,
@@ -52,5 +64,7 @@ class VerificationInput:
         return xl_data.XlItem(
             sheet_name=_sheet_name,
             xl_range=f'{getattr(self.shape, self.input_type).input_column}{_row_num}',
-            write_value=self.input_data
+            write_value=self.input_data,
+            input_unit=self.input_unit,
+            target_unit=self.target_unit,
         )
