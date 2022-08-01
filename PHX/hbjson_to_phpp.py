@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # --- Command line arguments
     # -------------------------------------------------------------------------
     SOURCE_FILE = pathlib.Path(sys.argv[1]).resolve()
-    SHAPE_FILE = pathlib.Path(sys.argv[2]).resolve()
+    LBT_PYTHON_SITE_PACKAGES = pathlib.Path(sys.argv[2]).resolve()
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # --- Connect to open instance of XL, Load the correct PHPP Shape file
     # -------------------------------------------------------------------------
     xl = xl_app.XLConnection = xl_app.XLConnection()
-    shape_file_dir = pathlib.Path("PHX", "to_PHPP", "phpp_localization")
+    shape_file_dir = pathlib.Path(LBT_PYTHON_SITE_PACKAGES, "PHX", "to_PHPP", "phpp_localization")
     phpp_shape_file = phpp_app.get_shape_file(xl, shape_file_dir)
     phpp_shape = PhppShape.parse_file(phpp_shape_file)
     phpp_conn = phpp_app.PHPPConnection(xl, phpp_shape)

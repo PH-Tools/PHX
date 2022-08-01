@@ -87,14 +87,15 @@ def convert_hbjson_to_WUFI_XML(_hbjson_file, _save_file_name, _save_folder):
     return directory, file_name
 
 
-def write_hbjson_to_phpp(_hbjson_file, _shape_file):
+def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path):
     # type: (str, str) -> None
     """Read in an hbjson file and write out to a PHPP file.
 
     Arguments:
     ---------
         * _hbjson (str): File path to an HBJSON file to be read in and converted to a PHX-Model.
-        * _shape_file (str): Full path to the designated PHPP Shape File to use.
+        * _lbt_python_site_packages_path (str) The full path to the LBT Python-3 Site-packages 
+            folder where PHX and HBPH are installed
     """
 
     # -- Specify the path to the subprocess python script to run
@@ -106,8 +107,8 @@ def write_hbjson_to_phpp(_hbjson_file, _shape_file):
         raise Exception('\nNo HBJSON file found at {}?'.format(_hbjson_file))
     if not os.path.isfile(run_file_path):
         raise Exception('\nNo Python file to run found at: {}?'.format(run_file_path))
-    if not os.path.isfile(_shape_file):
-        raise Exception('\nNo PHPP-Shapefile to found at: {}?'.format(_shape_file))
+    if not os.path.exists(_lbt_python_site_packages_path):
+        raise Exception('\nNo Python site_packages folder found at: {}?'.format(_lbt_python_site_packages_path))
 
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, write our to PHPP
@@ -115,6 +116,6 @@ def write_hbjson_to_phpp(_hbjson_file, _shape_file):
         hb_folders.python_exe_path,
         run_file_path,
         _hbjson_file,
-        _shape_file
+        _lbt_python_site_packages_path
     ]
     _run_subprocess(commands)

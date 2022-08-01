@@ -222,7 +222,7 @@ class XLConnection:
             * _xl_item: (XLItem) The XLItem with a sheet_name, range and value to write.
          """
         try:
-            print(f'Writing {_xl_item.write_value} to {_xl_item.sheet_name}:{_xl_item.xl_range}')
+            #print(f'Writing {_xl_item.write_value} to {_xl_item.sheet_name}:{_xl_item.xl_range}')
             self.get_sheet_by_name(_xl_item.sheet_name).range(
                 _xl_item.xl_range).value = _xl_item.write_value
         except Exception as e:
