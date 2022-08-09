@@ -3,7 +3,7 @@
 
 """Class for managing the XL-Connection and common read/write operations."""
 
-from typing import Optional, List, Set
+from typing import Optional, List, Set, Callable, Any
 from contextlib import contextmanager
 import os
 
@@ -11,6 +11,12 @@ import xlwings as xw
 
 from PHX.to_PHPP import xl_data
 
+# -----------------------------------------------------------------------------
+
+class SupportsString:
+    """An object which can be stringified."""
+
+    def __str__(self): ...
 
 # -----------------------------------------------------------------------------
 
@@ -47,7 +53,32 @@ class WriteValueError(Exception):
 
 
 class XLConnection:
-    """Facade class for Excel Interop"""
+
+    def __init__(self, _output: Optional[Callable]]]=None):
+        """Facade class for Excel Interop
+            
+        Arguments:
+        ----------
+            * _log: Optional[Callable]: The logger to use. Input None for silent.
+        """
+    
+        self._output = _output
+
+    def output(self, _input: SupportsString):
+        """Used to set the output method. Default is None (silent).
+        
+        Arguments:
+        ----------
+            * _input (SupportsString): The string to output.
+        
+        Returns:
+        --------
+            *
+        """
+        try:
+            self._output(str(_input))
+        except:
+            pass
 
     @property
     def wb(self) -> xw.main.Book:
@@ -192,7 +223,7 @@ class XLConnection:
         if _col_start == _col_end:
             raise ReadMultipleColumnsError(_col_start, _col_end)
 
-        # -- Use XW instead of standard ord() since ord('KL') and similar will fail
+        # -- Use XW instead of ord() since ord('KL') and similar will fail
         rng = xw.Range(f'{_col_end}1:{_col_start}1')
         _ndim = len(rng.columns)
 
@@ -211,7 +242,7 @@ class XLConnection:
         ---------
             * (xl_writable): The resultant value/values returned from excel.
         """
-        print(f'Reading: {_sheet_name}:{_range}')
+        self.output(f'Reading: {_sheet_name}:{_range}')
         return self.get_sheet_by_name(_sheet_name).range(_range).value
 
     def write_xl_item(self, _xl_item: xl_data.XlItem) -> None:
@@ -222,7 +253,7 @@ class XLConnection:
             * _xl_item: (XLItem) The XLItem with a sheet_name, range and value to write.
          """
         try:
-            #print(f'Writing {_xl_item.write_value} to {_xl_item.sheet_name}:{_xl_item.xl_range}')
+            self.output(f'Writing {_xl_item.write_value} to {_xl_item.sheet_name}:{_xl_item.xl_range}')
             self.get_sheet_by_name(_xl_item.sheet_name).range(
                 _xl_item.xl_range).value = _xl_item.write_value
         except Exception as e:

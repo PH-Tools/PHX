@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # --- Input file Path
     # -------------------------------------------------------------------------
     SOURCE_FILE = pathlib.Path(
-        "/Users/em/Dropbox/bldgtyp/2021 ELS/07 PHPP/hbjson/ELS_220801.hbjson"
+        "sample/hbjson/220809_Sunflower_St.hbjson"
     )
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     # --- Connect to open instance of XL, Load the correct PHPP Shape file
     # -------------------------------------------------------------------------
-    xl = xl_app.XLConnection = xl_app.XLConnection()
+    xl = xl_app.XLConnection = xl_app.XLConnection(_output=print)
     shape_file_dir = pathlib.Path("PHX", "to_PHPP", "phpp_localization")
     phpp_shape_file = phpp_app.get_shape_file(xl, shape_file_dir)
     phpp_shape = PhppShape.parse_file(phpp_shape_file)
