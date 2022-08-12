@@ -17,14 +17,15 @@ from PHX.to_PHPP.phpp_localization import shape_model
 class WindowRow:
     """Model class for a single Window entry row."""
 
-    __slots__ = ("shape", "phx_polygon", "phx_construction",
-                 "phpp_host_surface_id_name", "phpp_id_frame", "phpp_id_glazing")
+    __slots__ = ("shape", "phx_polygon", "phx_construction", "phpp_host_surface_id_name", 
+                 "phpp_id_frame", "phpp_id_glazing", "phpp_id_variant_type")
     shape: shape_model.Windows
     phx_polygon: geometry.PhxPolygonRectangular
     phx_construction: constructions.PhxConstructionWindow
     phpp_host_surface_id_name: Optional[str]
     phpp_id_frame: Optional[str]
     phpp_id_glazing: Optional[str]
+    phpp_id_variant_type: Optional[str]
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -49,6 +50,7 @@ class WindowRow:
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemWindows = partial(xl_data.XlItem, _sheet_name)
         items: List[xl_data.XlItem] = [
+            XLItemWindows(create_range("variant_input"), self.phpp_id_variant_type),
             XLItemWindows(create_range("quantity"), 1),
             XLItemWindows(create_range("description"), self.phx_polygon.display_name),
             XLItemWindows(create_range("host"), self.phpp_host_surface_id_name),

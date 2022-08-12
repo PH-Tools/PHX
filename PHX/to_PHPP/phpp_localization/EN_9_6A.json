@@ -134,7 +134,11 @@
         },
         "radiation_balance": null,
         "thermal_bridges": null,
-        "windows": null,
+        "windows": {
+            "locator_col_header": "B",
+            "locator_string_header": "Windows and shading",
+            "input_col": "B"
+        },
         "ventilation": null,
         "summer_ventilation": null,
         "heating": null,
@@ -591,6 +595,9 @@
                 "comfort_temp": {
                     "column": "BR",
                     "unit": "C"
+                },
+                "variant_input": {
+                    "column": "F"
                 }
             }
         },

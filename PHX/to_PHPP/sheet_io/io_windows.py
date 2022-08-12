@@ -6,7 +6,7 @@
 from __future__ import annotations
 from typing import List, Optional, Tuple
 
-from PHX.to_PHPP import xl_app
+from PHX.to_PHPP import xl_app, xl_data
 from PHX.to_PHPP.xl_data import col_offset
 from PHX.to_PHPP.phpp_model import windows_rows
 from PHX.to_PHPP.phpp_localization import shape_model
@@ -105,3 +105,26 @@ class Windows:
         )
 
         return [str(_) for _ in xl_data if _]
+    
+    def activate_variants(self):
+        """Set the frame and glass values to link to the Variants worksheet."""
+        start_row, end_row = self.find_entry_row_start_end()
+        
+        for row_num in range(start_row, end_row):
+            # -- Link Glazing to the variants type
+            self.xl.write_xl_item(
+                xl_data.XlItem(
+                            self.shape.name,
+                            f'{self.shape.window_rows.inputs.glazing_id.column}{row_num}',
+                            f'={col_offset(str(self.shape.window_rows.inputs.variant_input.column), 1)}{row_num}',
+                        )
+            )
+
+            # -- Link Frame to the variants type
+            self.xl.write_xl_item(
+                xl_data.XlItem(
+                            self.shape.name,
+                            f'{self.shape.window_rows.inputs.frame_id.column}{row_num}',
+                            f'={col_offset(str(self.shape.window_rows.inputs.variant_input.column), 2)}{row_num}',
+                        )
+            )

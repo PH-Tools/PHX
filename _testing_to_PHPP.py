@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # --- Input file Path
     # -------------------------------------------------------------------------
     SOURCE_FILE = pathlib.Path(
-        "sample/hbjson/220810_Sunflower_St.hbjson"
+        "sample/hbjson/220813_Sunflower_St.hbjson"
     )
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
@@ -43,9 +43,6 @@ if __name__ == '__main__':
         print(f'[bold green]> connected to excel doc: {file}[/bold green]')
 
     with phpp_conn.xl.in_silent_mode():
-        phpp_conn.activate_variant_assemblies()
-        phpp_conn.activate_variant_windows()
-
         # phpp_conn.xl.unprotect_all_sheets()
         # phpp_conn.write_certification_config(phx_project)
         # phpp_conn.write_climate_data(phx_project)
@@ -64,3 +61,6 @@ if __name__ == '__main__':
         # phpp_conn.write_project_volume(phx_project)
         # phpp_conn.write_project_hot_water(phx_project)
         # phpp_conn.write_project_res_elec_appliances(phx_project)
+        phpp_conn.activate_variant_assemblies()
+        phpp_conn.activate_variant_windows()
+        phpp_conn.activate_variant_ventilation()

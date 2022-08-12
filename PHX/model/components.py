@@ -193,6 +193,7 @@ class PhxComponentAperture(PhxComponentBase):
 
         self.window_type: constructions.PhxConstructionWindow = constructions.PhxConstructionWindow()
         self.window_type_id_num: int = -1
+        self.variant_type_name: str = '_unnamed_type_'
 
         self.elements: List[PhxApertureElement] = []
 
@@ -209,7 +210,7 @@ class PhxComponentAperture(PhxComponentBase):
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
         return f'{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-'\
-            f'{self.exposure_exterior}-{self.window_type_id_num}'
+            f'{self.exposure_exterior}-{self.window_type_id_num}-{self.variant_type_name}'
 
     def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:
         """Add one or more new 'Elements' (Sashes) to the Aperture"""

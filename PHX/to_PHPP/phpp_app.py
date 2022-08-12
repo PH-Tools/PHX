@@ -62,6 +62,12 @@ def get_phpp_version(_xl:xl_app.XLConnection,
     for i, xl_rang_data in enumerate(data, start=_row_start):
         if str(xl_rang_data).upper().strip().replace(' ', '').startswith('PHPP'):
             data_row = i
+            break
+    else:
+        raise Exception(
+            f"Error: Cannot determine the PHPP Version? Expected 'PHPP' in"\
+            "col: {_search_col} of the {data_worksheet.name} worksheet?"
+            )
    
    # -- Pull the search row data from the Active XL Instance
     data = _xl.get_single_row_data(data_worksheet.name, data_row)
@@ -363,6 +369,20 @@ class PHPPConnection:
     def write_project_window_surfaces(self, phx_project: project.PhxProject) -> None:
         """Write all of the window surfaces from a PhxProject to the PHPP 'Windows' worksheet."""
 
+        # -- First, populate the Variant types
+        variant_type_names = [
+            phx_aperture.variant_type_name
+            for phx_variant in phx_project.variants
+            for phx_component in phx_variant.building.opaque_components
+            for phx_aperture in phx_component.apertures
+        ]        
+        for i, variant_type_name in enumerate(sorted(variant_type_names)):
+            self.variants.write_window_type(variant_type_name, i)
+        
+        # -- Get the variant types in a dict
+        window_type_phpp_ids = self.variants.get_window_type_phpp_ids()
+        
+        # -- Write in the window-data
         phpp_windows: List[windows_rows.WindowRow] = []
         for phx_variant in phx_project.variants:
             for phx_component in phx_variant.building.opaque_components:
@@ -388,7 +408,8 @@ class PHPPConnection:
                                 phx_construction=phx_aperture.window_type,
                                 phpp_host_surface_id_name=phpp_host_surface_id_name,
                                 phpp_id_frame=phpp_id_frame,
-                                phpp_id_glazing=phpp_id_glazing
+                                phpp_id_glazing=phpp_id_glazing,
+                                phpp_id_variant_type=window_type_phpp_ids[phx_aperture.variant_type_name].phpp_id
                             )
                         )
         
@@ -399,7 +420,7 @@ class PHPPConnection:
         
         self.windows.write_windows(phpp_windows)
         return None
-
+        
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
         # Get all the Window worksheet names in order
         window_names = self.windows.get_all_window_names()
@@ -613,4 +634,12 @@ class PHPPConnection:
         return None
    
     def activate_variant_windows(self) -> None:
-        pass
+        """Set the Frame and Glass Components to link to the Variants worksheet for all windows."""
+        
+        self.windows.activate_variants()
+        
+        return None
+
+    def activate_variant_ventilation(self) -> None:
+
+        return None

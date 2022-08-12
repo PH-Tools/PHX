@@ -47,6 +47,11 @@ class Verification(BaseModel):
 
 # -----------------------------------------------------------------------------
 
+class VariantWindows(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    input_col: str
+
 class VariantAssemblies(BaseModel):
     locator_col_header: str
     locator_string_header: str
@@ -62,7 +67,7 @@ class Variants(BaseModel):
     assemblies: VariantAssemblies
     radiation_balance: None
     thermal_bridges: None
-    windows: None
+    windows: VariantWindows
     ventilation: None
     summer_ventilation: None
     heating: None
@@ -330,6 +335,7 @@ class WindowWindowRowsColumns(BaseModel):
     psi_i_top: InputItem
     comfort_exempt: InputItem
     comfort_temp: InputItem
+    variant_input: InputItem
 
 
 class WindowWindowRows(BaseModel):

@@ -116,6 +116,7 @@ def create_component_from_hb_aperture(
     phx_ap.exposure_interior = _hb_room.properties.ph.id_num
     phx_ap.window_type = _window_type_dict[_hb_aperture.properties.energy.construction.identifier]
     phx_ap.window_type_id_num = _hb_aperture.properties.energy.construction.properties.ph.id_num
+    phx_ap.variant_type_name = _hb_aperture.properties.ph.variant_type
 
     # -- Create new Aperture Element (Sash)
     new_phx_ap_element = components.PhxApertureElement(_host=phx_ap)
@@ -171,7 +172,7 @@ def create_components_from_hb_face(_hb_face: face.Face,
     phx_polygon = create_geometry.create_PhxPolygon_from_hb_Face(_hb_face)
     opaque_compo.add_polygons(phx_polygon)
 
-    # -- Create Child Apertures, register the Aperature with the Parent Compo
+    # -- Create Child Apertures, register the Aperture with the Parent Compo
     for hb_aperture in _hb_face.apertures:
         phx_compo_aperture = create_component_from_hb_aperture(
             opaque_compo, hb_aperture, _hb_room, _window_type_dict)

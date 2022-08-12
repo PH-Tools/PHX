@@ -72,7 +72,7 @@ class UValues:
             sheet_name=self.shape.name,
             row_start=_row_start,
             row_end=_row_end,
-            col=self.shape.constructor.inputs.display_name.column,
+            col=str(self.shape.constructor.inputs.display_name.column),
             find=_name
         )
 
@@ -81,7 +81,7 @@ class UValues:
 
         prefix = self.xl.get_data(
             self.shape.name,
-            f'{col_offset(self.shape.constructor.inputs.display_name.column, -1)}{row}'
+            f'{col_offset(str(self.shape.constructor.inputs.display_name.column), -1)}{row}'
         )
 
         return f'{prefix}-{_name}'
