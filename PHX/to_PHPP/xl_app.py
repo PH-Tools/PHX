@@ -54,12 +54,12 @@ class WriteValueError(Exception):
 
 class XLConnection:
 
-    def __init__(self, _output: Optional[Callable]]]=None):
+    def __init__(self, _output: Optional[Callable]=None):
         """Facade class for Excel Interop
             
         Arguments:
         ----------
-            * _log: Optional[Callable]: The logger to use. Input None for silent.
+            * _log: Optional[Callable]: The output functions to use. Input None for silent.
         """
     
         self._output = _output

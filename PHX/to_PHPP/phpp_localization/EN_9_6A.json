@@ -121,6 +121,26 @@
             "unit": "C"
         }
     },
+    "VARIANTS": {
+        "name": "Variants",
+        "input_header": {
+            "locator_col_header": "A",
+            "locator_string_header": "Input variables"
+        },
+        "assemblies": {
+            "locator_col_header": "B",
+            "locator_string_header": "Building assembly layers",
+            "input_col": "B"
+        },
+        "radiation_balance": null,
+        "thermal_bridges": null,
+        "windows": null,
+        "ventilation": null,
+        "summer_ventilation": null,
+        "heating": null,
+        "cooling": null,
+        "user_defined": null
+    },
     "CLIMATE": {
         "name": "Climate",
         "active_dataset": {
@@ -252,7 +272,10 @@
                 "u_val_supplement": {
                     "column": "M",
                     "unit": "W/M2K"
-                }
+                },
+                "variants_layer_name": "E",
+                "variants_conductivity": "F",
+                "variants_thickness": "G"
             }
         }
     },

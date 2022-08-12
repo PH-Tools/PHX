@@ -47,6 +47,31 @@ class Verification(BaseModel):
 
 # -----------------------------------------------------------------------------
 
+class VariantAssemblies(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    input_col: str
+
+class VariantInputHeader(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+
+class Variants(BaseModel):
+    name: str
+    input_header: VariantInputHeader
+    assemblies: VariantAssemblies
+    radiation_balance: None
+    thermal_bridges: None
+    windows: None
+    ventilation: None
+    summer_ventilation: None
+    heating: None
+    cooling: None
+    user_defined: None
+
+
+# -----------------------------------------------------------------------------
+
 
 class ClimateActiveDatasetCol(BaseModel):
     country: str
@@ -129,6 +154,9 @@ class UValuesConstructorInputs(BaseModel):
     sec_3_conductivity: InputItem
     thickness: InputItem
     u_val_supplement: InputItem
+    variants_layer_name: str
+    variants_conductivity: str
+    variants_thickness: str
 
 
 class UValuesConstructor(BaseModel):
@@ -669,6 +697,7 @@ class Data(BaseModel):
 
 class PhppShape(BaseModel):
     VERIFICATION: Verification
+    VARIANTS: Variants
     CLIMATE: Climate
     UVALUES: UValues
     AREAS: Areas

@@ -4,7 +4,7 @@
 """Data-entry constructor for the U-Values Worksheet."""
 
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List, Optional
 from functools import partial
 
 from PHX.model import constructions
@@ -31,6 +31,8 @@ class ConstructorBlock:
         return getattr(self.shape.constructor.inputs, _field_name).unit
 
     def create_xl_items(self, _sheet_name: str, _start_row: int) -> List[xl_data.XlItem]:
+        """Convert the PHX-Construction into a list of XLItems for writing to the PHPP."""
+                
         create_range = partial(self._create_range, _start_row=_start_row)
         XLItemUValues = partial(xl_data.XlItem, _sheet_name)
 
@@ -61,3 +63,4 @@ class ConstructorBlock:
             xl_items_list.extend(layer_items)
 
         return xl_items_list
+

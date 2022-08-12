@@ -129,6 +129,7 @@ class PHPPConnection:
         self.ventilation = sheet_io.Ventilation(self.xl, self.shape.VENTILATION)
         self.hot_water = sheet_io.HotWater(self.xl, self.shape.DHW)
         self.electricity = sheet_io.Electricity(self.xl, self.shape.ELECTRICITY)
+        self.variants = sheet_io.Variants(self.xl, self.shape.VARIANTS)
 
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
         for phx_variant in phx_project.variants:
@@ -590,3 +591,26 @@ class PHPPConnection:
             self.electricity.write_equipment(equipment_inputs)
         
         return None
+
+    def activate_variant_assemblies(self) -> None:
+        """Remove all existing U-Value information and link assemblies to the Variants worksheet."""
+        
+        # -- Collect all the assemblies from the U-Values page
+        # -- and add each one to the Variants assembly-layers section
+        for i, assembly_name in enumerate(self.u_values.get_used_constructor_names(), start=0):
+            if i > 25:
+                print("WARNING: The Variants worksheet can only handle 26 different assemblies."\
+                    "You will have to set up the assembly-layer Variants links manually.")
+                continue
+            self.variants.write_assembly_layer(assembly_name, i)
+            
+        # -- Get all the Variant assembly names with prefix
+        assembly_phpp_ids = self.variants.get_assembly_layer_phpp_ids()
+        
+        # -- Make all Variants--->U-Values links
+        self.u_values.activate_variants(assembly_phpp_ids)
+
+        return None
+   
+    def activate_variant_windows(self) -> None:
+        pass
