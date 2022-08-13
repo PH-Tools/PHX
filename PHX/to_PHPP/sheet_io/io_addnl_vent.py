@@ -6,7 +6,7 @@
 from __future__ import annotations
 from typing import List, Optional
 
-from PHX.to_PHPP import xl_app
+from PHX.to_PHPP import xl_app, xl_data
 from PHX.to_PHPP.xl_data import col_offset, xl_writable
 from PHX.to_PHPP.phpp_model import vent_space, vent_units, vent_ducts
 from PHX.to_PHPP.phpp_localization import shape_model
@@ -80,6 +80,7 @@ class VentUnits:
         self.shape = _shape
         self.section_header_row: Optional[int] = None
         self.section_first_entry_row: Optional[int] = None
+        self.section_last_entry_row: Optional[int] = None
 
     def find_section_header_row(self, _row_start: int = 50, _row_end: int = 200) -> int:
         """Return the row number of the 'Units' section header."""
@@ -103,7 +104,7 @@ class VentUnits:
         )
 
     def find_section_first_entry_row(self) -> int:
-        """Return the row number of the very first user-input entry row in the 'Rooms' section."""
+        """Return the row number of the very first user-input entry row in the 'Vent Unit' section."""
 
         if not self.section_header_row:
             try:
@@ -130,6 +131,28 @@ class VentUnits:
 
         raise Exception(
             f'\nError: Not able to find the first vent-unit entry row on the '
+            f'"{self.shape.name}" worksheet?'
+        )
+
+    def find_section_last_entry_row(self, _rows:int = 50) -> int:
+        """Return the row number of the very last user-input entry row in the 'Vent Unit' section."""
+
+        if not self.section_first_entry_row:
+            self.section_first_entry_row = self.find_section_first_entry_row()
+
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.units.locator_col_entry,
+            _row_start=self.section_first_entry_row,
+            _row_end=self.section_first_entry_row + _rows,
+        )
+
+        for i, read_value in enumerate(xl_data, start=self.section_first_entry_row):
+            if read_value == None:
+                return i - 1
+        
+        raise Exception(
+            f'\nError: Not able to find the last vent-unit entry row on the '
             f'"{self.shape.name}" worksheet?'
         )
 
@@ -188,20 +211,22 @@ class VentDucts:
         self.shape = _shape
         self.section_header_row: Optional[int] = None
         self.section_first_entry_row: Optional[int] = None
+        self.section_last_entry_row: Optional[int] = None
 
     def find_section_header_row(self, _row_start: int = 100, _row_end: int = 300) -> int:
-        """Return the row number of the 'Rooms' section header."""
+        """Return the row number of the 'Rooms' section header."""       
+        
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.ducts.locator_col_header,
             _row_start=_row_start,
             _row_end=_row_end
         )
-
+        
         for i,  val in enumerate(xl_data, start=_row_start):
             if self.shape.ducts.locator_string_header in str(val):
                 return i
-
+        
         raise Exception(
             f'\n\tError: Not able to find the "Vent-Ducts" input section'
             f'of the "{self.shape.name}" worksheet? Please be sure the section'
@@ -210,13 +235,40 @@ class VentDucts:
         )
 
     def find_section_first_entry_row(self) -> int:
-        """Return the row number of the very first user-input entry row in the 'Rooms' section."""
+        """Return the row number of the very first user-input entry row in the 'Ducts' section."""
+        
         if not self.section_header_row:
             self.section_header_row = self.find_section_header_row()
 
         # -- There is no 'flag' or number or any other indication of the entry row?
         # -- So use the hard-coded offset of 9. I'm sure this will cause a problem someday...
         return self.section_header_row + 9
+
+    def find_section_last_entry_row(self, _rows:int=100) -> int:
+        """Return the row number of the very last user-input entry row in the 'Ducts' section."""
+        
+        if not self.section_first_entry_row:
+            self.section_first_entry_row = self.find_section_first_entry_row()
+
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.ducts.locator_col_entry,
+            _row_start=self.section_first_entry_row,
+            _row_end=self.section_first_entry_row + _rows,
+        )
+
+        # -- duct section doesn't have numbers, but after the last data entry
+        # -- line, there is some instruction text. Use that as the flag to indicate
+        # -- the end of the section.
+
+        for i, read_value in enumerate(xl_data, start=self.section_first_entry_row):
+            if self.shape.ducts.locator_string_end in str(read_value):
+                return i - 1
+        
+        raise Exception(
+            f'\nError: Not able to find the last duct entry row on the '
+            f'"{self.shape.name}" worksheet?'
+        )
 
     def find_section_shape(self) -> None:
         self.section_start_row = self.find_section_header_row()
@@ -256,3 +308,45 @@ class AddnlVent:
         for i, vent_duct in enumerate(_vent_ducts, start=self.vent_ducts.section_first_entry_row):
             for item in vent_duct.create_xl_items(self.shape.name, _row_num=i):
                 self.xl.write_xl_item(item)
+
+    def activate_variants(self, variants_worksheet_name:str, vent_unit_range:str, 
+                        duct_length_range:str, duct_insul_thickness_range: str) -> None:
+        """Link the Vent unit, duct length and duct insulation thickness to the Variants worksheet."""
+
+        # -- Ventilator Unit
+        start_row=self.vent_units.find_section_first_entry_row()
+        end_row=self.vent_units.find_section_last_entry_row()
+        for i in range(start_row, end_row + 1):
+            self.xl.write_xl_item(
+                xl_data.XlItem(
+                    self.shape.name,
+                    f'{self.shape.units.inputs.unit_selected.column}{i}',
+                    f'={variants_worksheet_name}!{vent_unit_range}',
+                )
+            )
+
+        # -- Ducts
+        start_row=self.vent_ducts.find_section_first_entry_row()
+        end_row=self.vent_ducts.find_section_last_entry_row()
+        
+        # -- Duct Length
+        for i in range(start_row, end_row + 1):
+            self.xl.write_xl_item(
+                xl_data.XlItem(
+                    self.shape.name,
+                    f'{self.shape.ducts.inputs.sup_air_duct_len.column}{i}',
+                    f'={variants_worksheet_name}!{duct_length_range}',
+                )
+            )
+
+        # -- Duct Thickness
+        for i in range(start_row, end_row + 1):
+            self.xl.write_xl_item(
+                xl_data.XlItem(
+                    self.shape.name,
+                    f'{self.shape.ducts.inputs.insul_thickness.column}{i}',
+                    f'={variants_worksheet_name}!{duct_insul_thickness_range}',
+                )
+            )
+
+        return None

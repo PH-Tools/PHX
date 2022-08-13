@@ -41,6 +41,7 @@ class Variants:
         self.user_input_section_start_row: Optional[int] = None
         self.start_assembly_layers: Optional[int] = None
         self.start_window_types: Optional[int] = None
+        self.start_ventilation: Optional[int] = None
     
     def get_user_input_section_start(self, _row_start=1, _rows=500) -> int:
         """Return the row number of the user-input section header."""
@@ -88,11 +89,11 @@ class Variants:
 
     def get_window_types_start(self, _row_start: Optional[int]=None, _rows: int=300) -> int:
         """Return the row number of the start of the Window Types input section."""
-        if not self.user_input_section_start_row:
-            self.user_input_section_start_row = self.get_user_input_section_start()
+        if not self.start_assembly_layers:
+            self.start_assembly_layers = self.get_assembly_layers_start()
         
         # -- Get the data from Excel in one operation
-        row_start = _row_start or self.user_input_section_start_row
+        row_start = _row_start or self.start_assembly_layers
         col_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.windows.locator_col_header,
@@ -109,6 +110,44 @@ class Variants:
             f'section of the "{self.shape.name}" worksheet in column '\
             f'"{self.shape.windows.locator_col_header}"?'
         )
+
+    def get_ventilation_start(self, _row_start: Optional[int]=None, _rows: int=300) -> int:
+        """Return the row number of the start of the Ventilation input section."""
+        if not self.start_window_types:
+            self.start_window_types = self.get_window_types_start()
+        
+        # -- Get the data from Excel in one operation
+        row_start = _row_start or self.start_window_types
+        col_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.ventilation.locator_col_header,
+            _row_start=row_start,
+            _row_end=row_start + _rows
+        )
+
+        for i, column_val in enumerate(col_data, start=row_start):
+            if column_val == self.shape.ventilation.locator_string_header:
+                return i
+        
+        raise Exception(
+            f'Error: Unable to locate the "{self.shape.ventilation.locator_string_header}" '\
+            f'section of the "{self.shape.name}" worksheet in column '\
+            f'"{self.shape.ventilation.locator_col_header}"?'
+        )
+
+    def get_ventilation_input_item_rows(self) -> Dict[str, int]:
+        """Return a dict of the input items and their row-numbers for the ventilation items."""
+        if not self.start_ventilation:
+            self.start_ventilation = self.get_ventilation_start()
+        
+        read_data = self.xl.get_single_column_data(
+            self.shape.name,
+            self.shape.ventilation.input_col,
+            self.start_ventilation + 1,
+            self.start_ventilation + 10
+        )
+        
+        return {str(_):i for i, _ in enumerate(read_data, start=self.start_ventilation + 1)}
 
     def write_assembly_layer(self, _assembly_name: str, _assembly_num: int) -> None:
         """Write a new assembly layer to the Variants worksheet."""

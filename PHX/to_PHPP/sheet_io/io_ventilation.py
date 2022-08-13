@@ -104,3 +104,23 @@ class Ventilation:
 
     def write_multi_vent_worksheet_on(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
         self._write_input(self.io_multi_vent_worksheet_on, _phpp_model_obj)
+
+    def activate_variants(self):
+        """Link Ventilation Type and Airtightness to the Variants worksheet."""
+        
+        # -- Ventilation Type
+        self.write_ventilation_type(
+            ventilation_data.VentilationInputItem.vent_type(
+                self.shape,
+                f'={self.shape.variants_col}{self.io_vent_type.find_input_row()}'
+            )
+        )
+
+        # -- Airtightness
+        self.write_airtightness_n50(
+            ventilation_data.VentilationInputItem.airtightness_n50(
+                self.shape,
+                f'={self.shape.variants_col}{self.io_air_change_rate.find_input_row()}'
+            )
+        )
+

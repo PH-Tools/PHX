@@ -641,5 +641,26 @@ class PHPPConnection:
         return None
 
     def activate_variant_ventilation(self) -> None:
+        """Set the ACH, Ventilation type to link to the Variants worksheet."""
+        
+        self.ventilation.activate_variants()
+        
+        return None
+    
+    def activate_variant_additional_vent(self) -> None:
+        """Set the Ventilator, duct length and insulation to link to the Variants worksheet."""
+
+        # -- Find the locations of the Ventilation input items
+        input_item_rows = self.variants.get_ventilation_input_item_rows()
+        vent_unit_row = input_item_rows[self.shape.VARIANTS.ventilation.input_item_names.ventilator_unit]
+        duct_length_row = input_item_rows[self.shape.VARIANTS.ventilation.input_item_names.duct_length]
+        duct_insul_thickness_row = input_item_rows[self.shape.VARIANTS.ventilation.input_item_names.duct_insul_thickness]
+
+        self.addnl_vent.activate_variants(
+            variants_worksheet_name=self.shape.VARIANTS.name,
+            vent_unit_range=f'{self.shape.VARIANTS.active_value_column}{vent_unit_row}',
+            duct_length_range=f'{self.shape.VARIANTS.active_value_column}{duct_length_row}',
+            duct_insul_thickness_range=f'{self.shape.VARIANTS.active_value_column}{duct_insul_thickness_row}',
+        )
 
         return None

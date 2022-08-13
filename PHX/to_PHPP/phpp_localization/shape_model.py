@@ -57,18 +57,34 @@ class VariantAssemblies(BaseModel):
     locator_string_header: str
     input_col: str
 
+class VariantVentilationInputItemNames(BaseModel):
+    vent_type: str
+    air_change_rate: str
+    design_flow_rate:str
+    install_location: str
+    ventilator_unit: str
+    duct_length: str
+    duct_insul_thickness: str
+
+class VariantVentilation(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    input_col: str
+    input_item_names: VariantVentilationInputItemNames
+
 class VariantInputHeader(BaseModel):
     locator_col_header: str
     locator_string_header: str
 
 class Variants(BaseModel):
     name: str
+    active_value_column: str
     input_header: VariantInputHeader
     assemblies: VariantAssemblies
     radiation_balance: None
     thermal_bridges: None
     windows: VariantWindows
-    ventilation: None
+    ventilation: VariantVentilation
     summer_ventilation: None
     heating: None
     cooling: None
@@ -413,6 +429,7 @@ class Ventilation(BaseModel):
     airtightness_n50: VentilationInputItem
     airtightness_Vn50: VentilationInputItem
     multi_unit_on: VentilationInputItem
+    variants_col: str
 
 
 # -----------------------------------------------------------------------------
@@ -495,6 +512,7 @@ class AddnlVentRoomsInputBlockDucts(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
+    locator_string_end: str
     inputs: AddnlVentInputsDucts
 
 

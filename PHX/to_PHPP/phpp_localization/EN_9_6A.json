@@ -123,6 +123,7 @@
     },
     "VARIANTS": {
         "name": "Variants",
+        "active_value_column": "D",
         "input_header": {
             "locator_col_header": "A",
             "locator_string_header": "Input variables"
@@ -139,7 +140,20 @@
             "locator_string_header": "Windows and shading",
             "input_col": "B"
         },
-        "ventilation": null,
+        "ventilation": {
+            "locator_col_header": "B",
+            "locator_string_header": "Ventilation",
+            "input_col": "B",
+            "input_item_names": {
+                "vent_type": "Ventilation type",
+                "air_change_rate": "Air change rate at pressurisation test (n50)",
+                "design_flow_rate": "Design air flow rate (maximum)",
+                "install_location": "Installation site ventilation unit",
+                "ventilator_unit": "Ventilation unit selection",
+                "duct_length": "Duct Length (ea)",
+                "duct_insul_thickness": "Duct Insuation Thickness"
+            }
+        },
         "summer_ventilation": null,
         "heating": null,
         "cooling": null,
@@ -697,7 +711,8 @@
             "locator_col": "I",
             "locator_string": "Multiple ventilation units, non-res",
             "input_column": "H"
-        }
+        },
+        "variants_col": "D"
     },
     "ADDNL_VENT": {
         "name": "Additional Vent",
@@ -826,10 +841,11 @@
             }
         },
         "ducts": {
-            "locator_col_header": "",
+            "locator_col_header": "E",
             "locator_string_header": "Round",
-            "locator_col_entry": "C",
+            "locator_col_entry": "D",
             "locator_string_entry": "1",
+            "locator_string_end": "Additional lines",
             "inputs": {
                 "quantity": {
                     "column": "D",
