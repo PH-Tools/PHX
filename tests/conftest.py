@@ -64,10 +64,10 @@ def _reset_phx_class_counters():
     components.PhxComponentBase._count = 0
     elec_equip.PhxElectricalDevice._count = 0
     PhxRoomVentilation._count = 0
-    _base.PhxMechanicalEquipment._count = 0
+    _base.PhxMechanicalDevice._count = 0
     _base.PhxMechanicalSubSystem._count = 0
 
-    collection.PhxMechanicalEquipmentCollection._count = 0
+    collection.PhxMechanicalSystemCollection._count = 0
 
     cooling.PhxCoolingDevice._count = 0
     cooling.PhxCoolingVentilation._count = 0

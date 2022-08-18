@@ -7,7 +7,7 @@ def test_default_PhxRoomVentilation(reset_class_counters):
     v1 = ventilation.PhxDeviceVentilator()
     sys = _base.PhxMechanicalSubSystem()
     sys.device = v1
-    coll = collection.PhxMechanicalEquipmentCollection()
+    coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_subsystem(sys.identifier, sys)
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [

@@ -8,7 +8,7 @@ def test_default_PhxHeaterHeatPumpCombined(reset_class_counters):
     h1.usage_profile.space_heating = True
     sys = _base.PhxMechanicalSubSystem()
     sys.device = h1
-    coll = collection.PhxMechanicalEquipmentCollection()
+    coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_subsystem(sys.identifier, sys)
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [

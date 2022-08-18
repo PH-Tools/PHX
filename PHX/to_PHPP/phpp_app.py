@@ -583,12 +583,13 @@ class PHPPConnection:
     def write_project_hot_water(self, phx_project: project.PhxProject) -> None:
         """Write the Hot Water data to the PHPP 'DHW+Distribution' worksheet."""
         for variant in phx_project.variants:
+            # -- Tanks
+            # Use only the first 2 tanks for PHPP
             if len(variant.mech_systems.dhw_tank_subsystems) > 2:
                 print(f'Warning: PHPP only allows 2 tanks.'\
                     f'{len(variant.mech_systems.dhw_tank_subsystems)} tank'\
                     f'found in the Variant "{variant.name}"')
-
-            # Use only the first 2 tanks for PHPP
+            
             tank_inputs = []
             for i, phx_mech_subsystem in enumerate(variant.mech_systems.dhw_tank_subsystems[:2], start=1):
                 tank_inputs.append(
@@ -599,6 +600,12 @@ class PHPPConnection:
                     )
                 )
             self.hot_water.write_tanks(tank_inputs)
+
+            # -- Branch Piping
+        
+
+            # -- Recirculation Piping
+
 
         return None
 

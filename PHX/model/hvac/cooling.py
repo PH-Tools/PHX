@@ -11,7 +11,7 @@ from PHX.model.hvac import _base
 
 
 @dataclass
-class PhxCoolingDevice(_base.PhxMechanicalEquipment):
+class PhxCoolingDevice(_base.PhxMechanicalDevice):
     def __post_init__(self):
         super().__post_init__()
         self.usage_profile.cooling = True
@@ -21,7 +21,7 @@ class PhxCoolingDevice(_base.PhxMechanicalEquipment):
 
 
 @dataclass
-class PhxCoolingVentilationParams(_base.PhxMechanicalEquipmentParams):
+class PhxCoolingVentilationParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.ANNUAL)
     single_speed: bool = False
     min_coil_temp: float = 12  # C
@@ -63,7 +63,7 @@ class PhxCoolingVentilation(PhxCoolingDevice):
 
 
 @dataclass
-class PhxCoolingRecirculationParams(_base.PhxMechanicalEquipmentParams):
+class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.ANNUAL)
     single_speed: bool = False
     min_coil_temp: float = 12  # C
@@ -110,7 +110,7 @@ class PhxCoolingRecirculation(PhxCoolingDevice):
 
 
 @dataclass
-class PhxCoolingDehumidificationParams(_base.PhxMechanicalEquipmentParams):
+class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.ANNUAL)
     annual_COP: float = 4  # W/W
     useful_heat_loss: bool = False
@@ -148,7 +148,7 @@ class PhxCoolingDehumidification(PhxCoolingDevice):
 
 
 @dataclass
-class PhxCoolingPanelParams(_base.PhxMechanicalEquipmentParams):
+class PhxCoolingPanelParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = HeatPumpType.ANNUAL
     annual_COP: float = 4  # W/W
 

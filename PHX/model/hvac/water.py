@@ -11,7 +11,7 @@ from PHX.model.hvac import _base
 from PHX.model.enums.hvac import PhxHotWaterTankType
 
 @dataclass
-class PhxHotWaterDevice(_base.PhxMechanicalEquipment):
+class PhxHotWaterDevice(_base.PhxMechanicalDevice):
     def __post_init__(self):
         super().__post_init__()
         self.usage_profile.dhw_heating = True
@@ -21,7 +21,7 @@ class PhxHotWaterDevice(_base.PhxMechanicalEquipment):
 
 
 @dataclass
-class PhxHotWaterTankParams(_base.PhxMechanicalEquipmentParams):
+class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
     # -- Device Params
     display_name: str = "_unnamed_PHX_hw_tank_"
 

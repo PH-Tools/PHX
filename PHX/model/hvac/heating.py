@@ -12,7 +12,7 @@ from PHX.model.hvac import _base
 
 
 @dataclass
-class PhxHeatingDevice(_base.PhxMechanicalEquipment):
+class PhxHeatingDevice(_base.PhxMechanicalDevice):
     def __post_init__(self):
         super().__post_init__()
 
@@ -21,7 +21,7 @@ class PhxHeatingDevice(_base.PhxMechanicalEquipment):
 # Electric
 
 @dataclass
-class PhxHeaterElectricParams(_base.PhxMechanicalEquipmentParams):
+class PhxHeaterElectricParams(_base.PhxMechanicalDeviceParams):
     pass
 
 
@@ -37,7 +37,7 @@ class PhxHeaterElectric(PhxHeatingDevice):
 
 
 @dataclass
-class PhxHeaterBoilerFossilParams(_base.PhxMechanicalEquipmentParams):
+class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
     _fuel: FuelType = FuelType.GAS
     condensing: bool = True
     in_conditioned_space: bool = True
@@ -60,7 +60,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalEquipmentParams):
 
 
 @dataclass
-class PhxHeaterBoilerWoodParams(_base.PhxMechanicalEquipmentParams):
+class PhxHeaterBoilerWoodParams(_base.PhxMechanicalDeviceParams):
     _fuel: FuelType = FuelType.WOOD_LOG
     effic_in_basic_cycle: float = 0.6
     effic_in_const_operation: float = 0.7
@@ -105,7 +105,7 @@ PhxHeaterBoiler = Union[PhxHeaterBoilerFossil, PhxHeaterBoilerWood]
 
 
 @dataclass
-class PhxHeaterDistrictHeatParams(_base.PhxMechanicalEquipmentParams):
+class PhxHeaterDistrictHeatParams(_base.PhxMechanicalDeviceParams):
     pass
 
 
@@ -121,14 +121,14 @@ class PhxHeaterDistrictHeat(PhxHeatingDevice):
 
 
 @dataclass
-class PhxHeaterHeatPumpAnnualParams(_base.PhxMechanicalEquipmentParams):
+class PhxHeaterHeatPumpAnnualParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.ANNUAL)
     annual_COP: Optional[float] = None
     total_system_perf_ratio: Optional[float] = None
 
 
 @dataclass
-class PhxHeaterHeatPumpMonthlyParams(_base.PhxMechanicalEquipmentParams):
+class PhxHeaterHeatPumpMonthlyParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.RATED_MONTHLY)
     COP_1: Optional[float] = None
     COP_2: Optional[float] = None
@@ -167,7 +167,7 @@ class PhxHeaterHeatPumpMonthlyParams(_base.PhxMechanicalEquipmentParams):
 
 
 @dataclass
-class PhxHeaterHeatPumpHotWaterParams(_base.PhxMechanicalEquipmentParams):
+class PhxHeaterHeatPumpHotWaterParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.HOT_WATER)
     annual_COP: Optional[float] = None
     annual_system_perf_ratio: Optional[float] = None
@@ -175,7 +175,7 @@ class PhxHeaterHeatPumpHotWaterParams(_base.PhxMechanicalEquipmentParams):
 
 
 @dataclass
-class PhxHeaterHeatPumpCombinedParams(_base.PhxMechanicalEquipmentParams):
+class PhxHeaterHeatPumpCombinedParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.COMBINED)
 
 

@@ -7,7 +7,7 @@ def test_default_PhxHotWaterTank(reset_class_counters):
     t1 = water.PhxHotWaterTank()
     sys = _base.PhxMechanicalSubSystem()
     sys.device = t1
-    coll = collection.PhxMechanicalEquipmentCollection()
+    coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_subsystem(sys.identifier, sys)
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [

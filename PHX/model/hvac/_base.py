@@ -34,7 +34,7 @@ class PhxUsageProfile:
 
 
 @dataclass
-class PhxMechanicalEquipmentParams:
+class PhxMechanicalDeviceParams:
     """Base class PHX MechanicalEquipment Params"""
     aux_energy: Optional[float] = None
     aux_energy_dhw: Optional[float] = None
@@ -52,7 +52,7 @@ class PhxMechanicalEquipmentParams:
         else:
             return attr_1 + attr_2
 
-    def __add__(self, other: PhxMechanicalEquipmentParams) -> PhxMechanicalEquipmentParams:
+    def __add__(self, other: PhxMechanicalDeviceParams) -> PhxMechanicalDeviceParams:
         new_obj = self.__class__()
         new_obj.aux_energy = new_obj.safe_add(self.aux_energy, other.aux_energy)
         new_obj.aux_energy_dhw = new_obj.safe_add(
@@ -71,7 +71,7 @@ class PhxMechanicalEquipmentParams:
 
 
 @dataclass
-class PhxMechanicalEquipment:
+class PhxMechanicalDevice:
     """Base class for PHX Mechanical Devices (heaters, tanks, ventilators)
 
     This equipment will be part of a PhxMechanicalSubSystem along with distribution.
@@ -85,14 +85,14 @@ class PhxMechanicalEquipment:
     unit: float = 0.0
     percent_coverage: float = 0.0
     usage_profile: PhxUsageProfile = field(default_factory=PhxUsageProfile)
-    params: PhxMechanicalEquipmentParams = field(
-        default_factory=PhxMechanicalEquipmentParams)
+    params: PhxMechanicalDeviceParams = field(
+        default_factory=PhxMechanicalDeviceParams)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
-    def __add__(self, other: PhxMechanicalEquipment) -> PhxMechanicalEquipment:
+    def __add__(self, other: PhxMechanicalDevice) -> PhxMechanicalDevice:
         obj = self.__class__()
         obj.device_type = self.device_type
         obj.display_name = self.display_name
@@ -103,7 +103,7 @@ class PhxMechanicalEquipment:
         obj.params = self.params + other.params
         return obj
 
-    def __radd__(self, other) -> PhxMechanicalEquipment:
+    def __radd__(self, other) -> PhxMechanicalDevice:
         if isinstance(other, int):
             return self
         else:
@@ -137,8 +137,8 @@ class PhxMechanicalEquipment:
 class PhxMechanicalSubSystem:
     """Base class for a sub-system (heating, cooling, ventilation, hot-water)
 
-    This sub-system will include the device/equipment (heater) and may also
-    include any distribution such as ducting or piping.
+    This sub-system will include a single device/equipment (heater) and may also
+    include any distribution such as ducting or piping connected to that device.
     """
 
     _count: ClassVar[int] = 0
@@ -146,7 +146,7 @@ class PhxMechanicalSubSystem:
     _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
     id_num: int = field(init=False, default=0)
     display_name: str = '_unnamed_mech_subsystem_'
-    device: PhxMechanicalEquipment = field(default_factory=PhxMechanicalEquipment)
+    device: PhxMechanicalDevice = field(default_factory=PhxMechanicalDevice)
     distribution = None  # TODO: Distribution....
     percent_coverage: float = 0.0
     usage_profile: PhxUsageProfile = field(default_factory=PhxUsageProfile)

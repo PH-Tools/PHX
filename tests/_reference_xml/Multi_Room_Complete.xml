@@ -56,7 +56,7 @@
 			<Remarks></Remarks>
 			<PlugIn></PlugIn>
 			<Graphics_3D>
-				<Vertices count="44">
+				<Vertices count="64">
 					<Vertix index="0">
 						<IdentNr>3</IdentNr>
 						<X>0.0</X>
@@ -154,175 +154,295 @@
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="16">
+						<IdentNr>27</IdentNr>
+						<X>0.0</X>
+						<Y>4.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="17">
+						<IdentNr>28</IdentNr>
+						<X>0.0</X>
+						<Y>4.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="18">
+						<IdentNr>29</IdentNr>
+						<X>0.0</X>
+						<Y>0.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="19">
+						<IdentNr>30</IdentNr>
+						<X>0.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="20">
 						<IdentNr>33</IdentNr>
 						<X>0.0</X>
 						<Y>3.3416407865</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="17">
+					<Vertix index="21">
 						<IdentNr>34</IdentNr>
 						<X>0.0</X>
 						<Y>3.3416407865</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="18">
+					<Vertix index="22">
 						<IdentNr>35</IdentNr>
 						<X>0.0</X>
 						<Y>0.6583592135</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="19">
+					<Vertix index="23">
 						<IdentNr>36</IdentNr>
 						<X>0.0</X>
 						<Y>0.6583592135</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="20">
+					<Vertix index="24">
+						<IdentNr>39</IdentNr>
+						<X>5.0</X>
+						<Y>4.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="25">
+						<IdentNr>40</IdentNr>
+						<X>5.0</X>
+						<Y>0.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="26">
+						<IdentNr>41</IdentNr>
+						<X>0.0</X>
+						<Y>0.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="27">
+						<IdentNr>42</IdentNr>
+						<X>0.0</X>
+						<Y>4.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="28">
+						<IdentNr>45</IdentNr>
+						<X>0.0</X>
+						<Y>4.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="29">
+						<IdentNr>46</IdentNr>
+						<X>0.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="30">
+						<IdentNr>47</IdentNr>
+						<X>5.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="31">
+						<IdentNr>48</IdentNr>
+						<X>5.0</X>
+						<Y>4.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="32">
+						<IdentNr>51</IdentNr>
+						<X>5.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="33">
+						<IdentNr>52</IdentNr>
+						<X>5.0</X>
+						<Y>0.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="34">
 						<IdentNr>53</IdentNr>
 						<X>12.0</X>
 						<Y>0.0</Y>
 						<Z>0.0</Z>
 					</Vertix>
-					<Vertix index="21">
+					<Vertix index="35">
 						<IdentNr>54</IdentNr>
 						<X>12.0</X>
 						<Y>0.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
-					<Vertix index="22">
+					<Vertix index="36">
 						<IdentNr>57</IdentNr>
 						<X>6.1521286236</X>
 						<Y>0.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="23">
+					<Vertix index="37">
 						<IdentNr>58</IdentNr>
 						<X>6.1521286236</X>
 						<Y>0.0</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="24">
+					<Vertix index="38">
 						<IdentNr>59</IdentNr>
 						<X>10.8478713764</X>
 						<Y>0.0</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="25">
+					<Vertix index="39">
 						<IdentNr>60</IdentNr>
 						<X>10.8478713764</X>
 						<Y>0.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="26">
+					<Vertix index="40">
+						<IdentNr>63</IdentNr>
+						<X>12.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="41">
+						<IdentNr>64</IdentNr>
+						<X>12.0</X>
+						<Y>0.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="42">
 						<IdentNr>65</IdentNr>
 						<X>12.0</X>
 						<Y>4.0</Y>
 						<Z>0.0</Z>
 					</Vertix>
-					<Vertix index="27">
+					<Vertix index="43">
 						<IdentNr>66</IdentNr>
 						<X>12.0</X>
 						<Y>4.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
-					<Vertix index="28">
+					<Vertix index="44">
 						<IdentNr>69</IdentNr>
 						<X>12.0</X>
 						<Y>0.6583592135</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="29">
+					<Vertix index="45">
 						<IdentNr>70</IdentNr>
 						<X>12.0</X>
 						<Y>0.6583592135</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="30">
+					<Vertix index="46">
 						<IdentNr>71</IdentNr>
 						<X>12.0</X>
 						<Y>3.3416407865</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="31">
+					<Vertix index="47">
 						<IdentNr>72</IdentNr>
 						<X>12.0</X>
 						<Y>3.3416407865</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="32">
+					<Vertix index="48">
+						<IdentNr>75</IdentNr>
+						<X>12.0</X>
+						<Y>4.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="49">
+						<IdentNr>76</IdentNr>
+						<X>12.0</X>
+						<Y>4.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="50">
+						<IdentNr>77</IdentNr>
+						<X>5.0</X>
+						<Y>4.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="51">
+						<IdentNr>78</IdentNr>
+						<X>5.0</X>
+						<Y>4.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="52">
 						<IdentNr>81</IdentNr>
 						<X>10.8478713764</X>
 						<Y>4.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="33">
+					<Vertix index="53">
 						<IdentNr>82</IdentNr>
 						<X>10.8478713764</X>
 						<Y>4.0</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="34">
+					<Vertix index="54">
 						<IdentNr>83</IdentNr>
 						<X>6.1521286236</X>
 						<Y>4.0</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="35">
+					<Vertix index="55">
 						<IdentNr>84</IdentNr>
 						<X>6.1521286236</X>
 						<Y>4.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="36">
-						<IdentNr>99</IdentNr>
-						<X>0.0</X>
-						<Y>0.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="37">
-						<IdentNr>100</IdentNr>
-						<X>0.0</X>
-						<Y>-1.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="38">
-						<IdentNr>101</IdentNr>
-						<X>5.0</X>
-						<Y>-1.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="39">
-						<IdentNr>102</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="40">
-						<IdentNr>105</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="41">
-						<IdentNr>106</IdentNr>
-						<X>5.0</X>
-						<Y>-1.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="42">
-						<IdentNr>107</IdentNr>
+					<Vertix index="56">
+						<IdentNr>87</IdentNr>
 						<X>12.0</X>
-						<Y>-1.0</Y>
-						<Z>3.0</Z>
+						<Y>4.0</Y>
+						<Z>0.0</Z>
 					</Vertix>
-					<Vertix index="43">
-						<IdentNr>108</IdentNr>
+					<Vertix index="57">
+						<IdentNr>88</IdentNr>
 						<X>12.0</X>
 						<Y>0.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="58">
+						<IdentNr>89</IdentNr>
+						<X>5.0</X>
+						<Y>0.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="59">
+						<IdentNr>90</IdentNr>
+						<X>5.0</X>
+						<Y>4.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="60">
+						<IdentNr>93</IdentNr>
+						<X>5.0</X>
+						<Y>4.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="61">
+						<IdentNr>94</IdentNr>
+						<X>5.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="62">
+						<IdentNr>95</IdentNr>
+						<X>12.0</X>
+						<Y>0.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="63">
+						<IdentNr>96</IdentNr>
+						<X>12.0</X>
+						<Y>4.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
 				</Vertices>
-				<Polygons count="18">
+				<Polygons count="16">
 					<Polygon index="0">
 						<IdentNr>1</IdentNr>
 						<NormalVectorX>0.0</NormalVectorX>
@@ -359,10 +479,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">18</IdentNr>
-							<IdentNr index="1">17</IdentNr>
-							<IdentNr index="2">4</IdentNr>
-							<IdentNr index="3">3</IdentNr>
+							<IdentNr index="0">27</IdentNr>
+							<IdentNr index="1">28</IdentNr>
+							<IdentNr index="2">29</IdentNr>
+							<IdentNr index="3">30</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="1">
 							<IdentNr index="0">6</IdentNr>
@@ -374,8 +494,8 @@
 						<NormalVectorY>-1.0</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">6</IdentNr>
-							<IdentNr index="1">5</IdentNr>
+							<IdentNr index="0">51</IdentNr>
+							<IdentNr index="1">52</IdentNr>
 							<IdentNr index="2">53</IdentNr>
 							<IdentNr index="3">54</IdentNr>
 						</IdentNrPoints>
@@ -389,8 +509,8 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">54</IdentNr>
-							<IdentNr index="1">53</IdentNr>
+							<IdentNr index="0">63</IdentNr>
+							<IdentNr index="1">64</IdentNr>
 							<IdentNr index="2">65</IdentNr>
 							<IdentNr index="3">66</IdentNr>
 						</IdentNrPoints>
@@ -404,10 +524,10 @@
 						<NormalVectorY>1.0</NormalVectorY>
 						<NormalVectorZ>-0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">66</IdentNr>
-							<IdentNr index="1">65</IdentNr>
-							<IdentNr index="2">16</IdentNr>
-							<IdentNr index="3">15</IdentNr>
+							<IdentNr index="0">75</IdentNr>
+							<IdentNr index="1">76</IdentNr>
+							<IdentNr index="2">77</IdentNr>
+							<IdentNr index="3">78</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="1">
 							<IdentNr index="0">14</IdentNr>
@@ -419,10 +539,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>-1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">16</IdentNr>
-							<IdentNr index="1">5</IdentNr>
-							<IdentNr index="2">4</IdentNr>
-							<IdentNr index="3">17</IdentNr>
+							<IdentNr index="0">39</IdentNr>
+							<IdentNr index="1">40</IdentNr>
+							<IdentNr index="2">41</IdentNr>
+							<IdentNr index="3">42</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -432,10 +552,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>-1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">65</IdentNr>
-							<IdentNr index="1">53</IdentNr>
-							<IdentNr index="2">5</IdentNr>
-							<IdentNr index="3">16</IdentNr>
+							<IdentNr index="0">87</IdentNr>
+							<IdentNr index="1">88</IdentNr>
+							<IdentNr index="2">89</IdentNr>
+							<IdentNr index="3">90</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -445,10 +565,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">18</IdentNr>
-							<IdentNr index="1">3</IdentNr>
-							<IdentNr index="2">6</IdentNr>
-							<IdentNr index="3">15</IdentNr>
+							<IdentNr index="0">45</IdentNr>
+							<IdentNr index="1">46</IdentNr>
+							<IdentNr index="2">47</IdentNr>
+							<IdentNr index="3">48</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -458,10 +578,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">15</IdentNr>
-							<IdentNr index="1">6</IdentNr>
-							<IdentNr index="2">54</IdentNr>
-							<IdentNr index="3">66</IdentNr>
+							<IdentNr index="0">93</IdentNr>
+							<IdentNr index="1">94</IdentNr>
+							<IdentNr index="2">95</IdentNr>
+							<IdentNr index="3">96</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -543,36 +663,10 @@
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
-					<Polygon index="16">
-						<IdentNr>17</IdentNr>
-						<NormalVectorX>-0.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
-						<NormalVectorZ>1.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">99</IdentNr>
-							<IdentNr index="1">100</IdentNr>
-							<IdentNr index="2">101</IdentNr>
-							<IdentNr index="3">102</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="17">
-						<IdentNr>18</IdentNr>
-						<NormalVectorX>-0.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
-						<NormalVectorZ>1.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">105</IdentNr>
-							<IdentNr index="1">106</IdentNr>
-							<IdentNr index="2">107</IdentNr>
-							<IdentNr index="3">108</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
 				</Polygons>
 			</Graphics_3D>
 			<Building>
-				<Components count="6">
+				<Components count="4">
 					<Component index="0">
 						<IdentNr>41</IdentNr>
 						<Name>Merged_Component</Name>
@@ -647,38 +741,6 @@
 							<IdentNr index="3">10</IdentNr>
 							<IdentNr index="4">12</IdentNr>
 							<IdentNr index="5">14</IdentNr>
-						</IdentNrPolygons>
-					</Component>
-					<Component index="4">
-						<IdentNr>49</IdentNr>
-						<Name>Shade_2d4ac338</Name>
-						<Visual>true</Visual>
-						<Type>1</Type>
-						<IdentNrColorI>1</IdentNrColorI>
-						<IdentNrColorE>1</IdentNrColorE>
-						<InnerAttachment>-1</InnerAttachment>
-						<OuterAttachment>-1</OuterAttachment>
-						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
-						<IdentNrAssembly>-1</IdentNrAssembly>
-						<IdentNrWindowType>-1</IdentNrWindowType>
-						<IdentNrPolygons count="1">
-							<IdentNr index="0">17</IdentNr>
-						</IdentNrPolygons>
-					</Component>
-					<Component index="5">
-						<IdentNr>50</IdentNr>
-						<Name>Shade_2ffc6c21</Name>
-						<Visual>true</Visual>
-						<Type>1</Type>
-						<IdentNrColorI>1</IdentNrColorI>
-						<IdentNrColorE>1</IdentNrColorE>
-						<InnerAttachment>-1</InnerAttachment>
-						<OuterAttachment>-1</OuterAttachment>
-						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
-						<IdentNrAssembly>-1</IdentNrAssembly>
-						<IdentNrWindowType>-1</IdentNrWindowType>
-						<IdentNrPolygons count="1">
-							<IdentNr index="0">18</IdentNr>
 						</IdentNrPolygons>
 					</Component>
 				</Components>

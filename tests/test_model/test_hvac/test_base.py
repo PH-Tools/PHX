@@ -17,8 +17,8 @@ def test_PhxUsageProfile_add(reset_class_counters):
 
 
 def test_add_default_PhxMechEquipmentParams(reset_class_counters):
-    p1 = _base.PhxMechanicalEquipmentParams()
-    p2 = _base.PhxMechanicalEquipmentParams()
+    p1 = _base.PhxMechanicalDeviceParams()
+    p2 = _base.PhxMechanicalDeviceParams()
 
     p3 = p1 + p2
     assert p3.aux_energy == None
@@ -28,8 +28,8 @@ def test_add_default_PhxMechEquipmentParams(reset_class_counters):
 
 
 def test_r_add_default_PhxMechEquipmentParams(reset_class_counters):
-    p1 = _base.PhxMechanicalEquipmentParams()
-    p2 = _base.PhxMechanicalEquipmentParams()
+    p1 = _base.PhxMechanicalDeviceParams()
+    p2 = _base.PhxMechanicalDeviceParams()
 
     p3 = p1.__radd__(p2)
     assert p3.aux_energy == None
@@ -45,10 +45,10 @@ def test_r_add_default_PhxMechEquipmentParams(reset_class_counters):
 
 
 def test_sum_default_PhxMechEquipmentParams(reset_class_counters):
-    p1 = _base.PhxMechanicalEquipmentParams()
-    p2 = _base.PhxMechanicalEquipmentParams()
+    p1 = _base.PhxMechanicalDeviceParams()
+    p2 = _base.PhxMechanicalDeviceParams()
 
-    p3: _base.PhxMechanicalEquipmentParams = sum([p1, p2])
+    p3: _base.PhxMechanicalDeviceParams = sum([p1, p2])
     assert p3.aux_energy == None
     assert p3.aux_energy_dhw == None
     assert p3.solar_fraction == None
@@ -56,13 +56,13 @@ def test_sum_default_PhxMechEquipmentParams(reset_class_counters):
 
 
 def test_add_mixed_PhxMechEquipmentParams(reset_class_counters):
-    p1 = _base.PhxMechanicalEquipmentParams(
+    p1 = _base.PhxMechanicalDeviceParams(
         aux_energy=12,
         aux_energy_dhw=0.4,
         solar_fraction=None,
         in_conditioned_space=False,
     )
-    p2 = _base.PhxMechanicalEquipmentParams(
+    p2 = _base.PhxMechanicalDeviceParams(
         aux_energy=None,
         aux_energy_dhw=0.4,
         solar_fraction=13,
@@ -77,8 +77,8 @@ def test_add_mixed_PhxMechEquipmentParams(reset_class_counters):
 
 
 def test_PhxMechanicalEquipment(reset_class_counters):
-    mech_equip_1 = _base.PhxMechanicalEquipment()
-    mech_equip_2 = _base.PhxMechanicalEquipment()
+    mech_equip_1 = _base.PhxMechanicalDevice()
+    mech_equip_2 = _base.PhxMechanicalDevice()
 
     assert mech_equip_1 != mech_equip_2
     assert mech_equip_1.id_num == 1
@@ -86,8 +86,8 @@ def test_PhxMechanicalEquipment(reset_class_counters):
 
 
 def test_add_default_PhxMechanicalEquipment(reset_class_counters):
-    mech_equip_1 = _base.PhxMechanicalEquipment()
-    mech_equip_2 = _base.PhxMechanicalEquipment()
+    mech_equip_1 = _base.PhxMechanicalDevice()
+    mech_equip_2 = _base.PhxMechanicalDevice()
 
     mech_equip_3 = mech_equip_1 + mech_equip_2
     assert mech_equip_3 != mech_equip_1 != mech_equip_2
@@ -97,21 +97,21 @@ def test_add_default_PhxMechanicalEquipment(reset_class_counters):
 
 
 def test_r_add_default_PhxMechanicalEquipment(reset_class_counters):
-    mech_equip_1 = _base.PhxMechanicalEquipment()
-    mech_equip_2 = _base.PhxMechanicalEquipment()
+    mech_equip_1 = _base.PhxMechanicalDevice()
+    mech_equip_2 = _base.PhxMechanicalDevice()
 
     mech_equip_3 = mech_equip_1.__radd__(mech_equip_2)
     assert mech_equip_3 != mech_equip_1 != mech_equip_2
 
 
 def test_add_mixed_PhxMechanicalEquipment(reset_class_counters):
-    mech_equip_1 = _base.PhxMechanicalEquipment(
+    mech_equip_1 = _base.PhxMechanicalDevice(
         quantity=1,
         unit=0.5,
         percent_coverage=0.25,
         usage_profile=_base.PhxUsageProfile(False, False, False, True, False, False),
     )
-    mech_equip_2 = _base.PhxMechanicalEquipment(
+    mech_equip_2 = _base.PhxMechanicalDevice(
         quantity=9,
         unit=0.25,
         percent_coverage=0.75,
@@ -130,7 +130,7 @@ def test_add_mixed_PhxMechanicalEquipment(reset_class_counters):
     assert mech_equip_3.usage_profile.humidification == False
     assert mech_equip_3.usage_profile.dehumidification == True
 
-    mech_equip_4: _base.PhxMechanicalEquipment = sum([mech_equip_1, mech_equip_2])
+    mech_equip_4: _base.PhxMechanicalDevice = sum([mech_equip_1, mech_equip_2])
     assert mech_equip_4 != mech_equip_1 != mech_equip_2
     assert mech_equip_4.quantity == 10
     assert mech_equip_4.unit == 0.75

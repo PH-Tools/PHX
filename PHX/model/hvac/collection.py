@@ -27,7 +27,7 @@ class PhxZoneCoverage:
 
 
 @dataclass
-class PhxMechanicalEquipmentCollection:
+class PhxMechanicalSystemCollection:
     """A collection of all the mechanical subsystems (heating, cooling, etc) in the project"""
     _count: ClassVar[int] = 0
 

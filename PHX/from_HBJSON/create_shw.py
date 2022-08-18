@@ -64,12 +64,12 @@ def build_phx_hw_storage_subsystem(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxM
     return phx_storage_subsystem
 
 
-def build_phx_hw_heater(_hbph_heater: hot_water.PhSHWHeaterElectric) -> hvac.PhxHeatingDevice:
+def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHeatingDevice:
     """Returns a new PHX Hot-Water Heater based on the HBPH Hot Water Heater input.
 
     Arguments:
     ----------
-        * _hbph_heater (hot_water.PhSHWHeaterElectric): The HBPH Hot-Water heater
+        * _hbph_heater (hot_water.PhHotWaterHeater): The HBPH Hot-Water heater
             to use as the source for the PHX Heater.
 
     Returns:
@@ -113,12 +113,12 @@ def build_phx_hw_heater(_hbph_heater: hot_water.PhSHWHeaterElectric) -> hvac.Phx
     return phx_hw_heater
 
 
-def build_phx_hw_heating_subsystem(_hbph_heater: hot_water.PhSHWHeaterElectric) -> hvac.PhxMechanicalSubSystem:
+def build_phx_hw_heating_subsystem(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxMechanicalSubSystem:
     """
 
     Arguments:
     ----------
-        * _hbph_heater (hot_water.PhSHWHeaterElectric): The HBPH Hot-Water heater
+        * _hbph_heater (hot_water.PhHotWaterHeater): The HBPH Hot-Water heater
             to use as the source for the PHX Heater.
 
     Returns:

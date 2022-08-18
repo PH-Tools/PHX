@@ -419,25 +419,45 @@ def add_dhw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
 
 
 def add_dhw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+    """
+    
+    Arguments:
+    ----------
+        *_variant (project.PhxVariant): The PHX Variant to add the PHX DHW Heaters to.
+        _hb_room (room.Room): The Honeybee room to get the DHW Heater data from.
+    
+    Returns:
+    --------
+        * None
+    """
     for space in _hb_room.properties.ph.spaces:
-        """TODO: Two options:
-            1) Its a Honeybee-SHW System only with 'efficiency', 'condition' and 'loss' data
-            2) Its a detailed HB-PH-SHW System with full PH-Style data
-        """
 
         if not space.host.properties.energy.shw:
             continue
 
         for heater in space.host.properties.energy.shw.properties.ph.heaters:
-            equip_key = str(id(heater))
-
-            if _variant.mech_systems.subsystem_in_collection(equip_key):
+            if _variant.mech_systems.subsystem_in_collection(heater.identifier):
                 continue
 
             # -- Build a new PHX-HW-Heater from the HBPH-HW-Heater
             phx_subsystem = create_shw.build_phx_hw_heating_subsystem(heater)
             _variant.mech_systems.add_new_mech_subsystem(
-                equip_key, phx_subsystem)
+                heater.identifier, phx_subsystem)
+
+
+def add_dhw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+    for space in _hb_room.properties.ph.spaces:
+
+        if not space.host.properties.energy.shw:
+            continue
+
+        # -- Distribution
+        # TODO: How Water Piping....
+        # for branch_piping_element in space.host.properties.energy.shw.properties.ph.branch_piping:
+        #     print('branch_piping=', branch_piping_element)
+        
+        # for recirc_piping_element in space.host.properties.energy.shw.properties.ph.recirc_piping:
+        #     print('recirc_piping=', recirc_piping_element)
 
     return None
 
@@ -496,6 +516,7 @@ def from_hb_room(_hb_room: room.Room,
     add_heating_systems_from_hb_rooms(new_variant, _hb_room)
     add_cooling_systems_from_hb_rooms(new_variant, _hb_room)
     add_dhw_heaters_from_hb_rooms(new_variant, _hb_room)
+    add_dhw_piping_from_hb_rooms(new_variant, _hb_room)
     add_dhw_storage_from_hb_rooms(new_variant, _hb_room)
     add_building_from_hb_room(new_variant, _hb_room, _assembly_dict,
                               _window_type_dict, group_components)

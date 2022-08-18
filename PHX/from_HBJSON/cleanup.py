@@ -9,7 +9,7 @@ from functools import partial
 from honeybee import room, face
 from honeybee.boundarycondition import Outdoors, Ground
 from honeybee_energy.boundarycondition import Adiabatic
-from honeybee_energy.load import infiltration, people, equipment
+from honeybee_energy.load import infiltration, people, equipment, hotwater
 
 from PHX.model import project
 
@@ -128,6 +128,25 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
     return new_infil
 
 
+def merge_shw(_hb_rooms: List[room.Room]) -> hotwater.ServiceHotWater:
+    """
+    
+    Arguments:
+    ----------
+        *
+    
+    Returns:
+    --------
+        *
+    """
+    new_shw: hotwater.ServiceHotWater = _hb_rooms[0].properties.energy.shw.duplicate()
+
+    # -- Merge the SHWSystemPhProperties
+    new_prop = sum(hb_room.properties.energy.shw.properties.ph for hb_room in _hb_rooms)
+    new_shw.properties._ph = new_prop
+
+    return new_shw
+
 def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     """Returns a new HB-ElectricEquipment-Obj with it's values set from a list of input HB-Rooms.
 
@@ -185,7 +204,6 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     """
     reference_room = _hb_rooms[0]
     
-    
     # -------------------------------------------------------------------------
     # -- Get only the 'exposed' faces to build a new HB-Room with
     exposed_faces = []
@@ -232,6 +250,7 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     new_room.properties.energy.infiltration = merge_infiltrations(_hb_rooms)
     new_room.properties.energy.people = merge_occupancies(_hb_rooms)
     new_room.properties.energy.electric_equipment = merge_elec_equip(_hb_rooms)
+    new_room.properties.energy.shw = merge_shw(_hb_rooms)
 
     # -------------------------------------------------------------------------
     # -- TODO: Can I merge together the surfaces as well?

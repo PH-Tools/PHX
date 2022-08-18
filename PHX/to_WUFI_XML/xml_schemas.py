@@ -57,7 +57,7 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
         XML_Object("ClimateLocation", _variant.site),
         XML_Object("PassivehouseData", _variant.phius_certification),
         XML_Object("HVAC", _variant.mech_systems,
-                   _schema_name='_PhxMechanicalEquipmentCollection'),
+                   _schema_name='_PhxMechanicalSystemCollection'),
     ]
 
 
@@ -633,7 +633,7 @@ def _PhxDeviceHeaterElec(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable]:
     ]
 
 
-def _DeviceHeaterElecPhParams(_p: hvac.PhxMechanicalEquipmentParams) -> List[xml_writable]:
+def _DeviceHeaterElecPhParams(_p: hvac.PhxMechanicalDeviceParams) -> List[xml_writable]:
     return [
         XML_Node("AuxiliaryEnergy", _p.aux_energy),
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
@@ -991,7 +991,7 @@ It is stupid that things like COP are stored in there. So use a temp class for n
 class TempDistributionCooling:
     """Temporary wrapper class for WUFI format Cooling Distribution data"""
 
-    def __init__(self, _c: hvac.PhxMechanicalEquipmentCollection):
+    def __init__(self, _c: hvac.PhxMechanicalSystemCollection):
         # -- have to sort and combine the systems together
         self.ventilation_subsystem = sum(
             sys.device for sys in _c.cooling_subsystems if sys.device.cooling_type == hvac.CoolingType.VENTILATION)
@@ -1049,7 +1049,7 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
     return base
 
 
-def _PHDistribution(_c: hvac.PhxMechanicalEquipmentCollection):
+def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
     return [
         # XML_Object('DistributionDHW', DistributionDHW()),
         # XML_Object('DistributionHeating', DistributionHeating()),
@@ -1076,7 +1076,7 @@ def _PhxZoneCoverage(_zc: hvac.PhxZoneCoverage) -> List[xml_writable]:
     ]
 
 
-def _PhxMechanicalSubSystem(_hvac_collection: hvac.PhxMechanicalEquipmentCollection) -> List[xml_writable]:
+def _PhxMechanicalSubSystem(_hvac_collection: hvac.PhxMechanicalSystemCollection) -> List[xml_writable]:
     devices = {
         hvac.DeviceType.VENTILATION: '_PhxDeviceVentilator',
         hvac.DeviceType.ELECTRIC: '_PhxDeviceHeaterElec',
@@ -1100,7 +1100,7 @@ def _PhxMechanicalSubSystem(_hvac_collection: hvac.PhxMechanicalEquipmentCollect
     ]
 
 
-def _PhxMechanicalEquipmentCollection(_hvac: hvac.PhxMechanicalEquipmentCollection) -> List[xml_writable]:
+def _PhxMechanicalSystemCollection(_hvac: hvac.PhxMechanicalSystemCollection) -> List[xml_writable]:
     return [
         XML_List("Systems", [XML_Object("System", n, "index", i, _schema_name='_PhxMechanicalSubSystem')
                  for i, n in enumerate([_hvac])]),

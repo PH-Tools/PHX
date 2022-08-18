@@ -28,8 +28,8 @@ class PhxVariant:
         default_factory=certification.PhxPhiCertification)
     
     site: phx_site.PhxSite = field(default_factory=phx_site.PhxSite)
-    mech_systems: collection.PhxMechanicalEquipmentCollection = field(
-        default_factory=collection.PhxMechanicalEquipmentCollection)
+    mech_systems: collection.PhxMechanicalSystemCollection = field(
+        default_factory=collection.PhxMechanicalSystemCollection)
 
     @property
     def graphics3D(self):

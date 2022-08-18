@@ -11,7 +11,7 @@ from PHX.model.hvac import _base
 
 
 @dataclass
-class PhxDeviceVentilation(_base.PhxMechanicalEquipment):
+class PhxDeviceVentilation(_base.PhxMechanicalDevice):
     def __post_init__(self):
         super().__post_init__()
         self.usage_profile.ventilation = True
@@ -21,7 +21,7 @@ class PhxDeviceVentilation(_base.PhxMechanicalEquipment):
 
 
 @dataclass
-class PhxDeviceVentilatorParams(_base.PhxMechanicalEquipmentParams):
+class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
     sensible_heat_recovery: float = 0.0
     latent_heat_recovery: float = 0.0
     quantity: int = 1

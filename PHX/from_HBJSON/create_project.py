@@ -68,6 +68,7 @@ def convert_hb_model_to_PhxProject(_hb_model: model.Model, group_components: boo
         
         new_variant = create_variant.from_hb_room(
             merged_hb_room, project.assembly_types, project.window_types, group_components)
+        
         new_variant = cleanup.weld_vertices(new_variant)
         
         create_shades.add_hb_model_shades_to_variant(new_variant, _hb_model)

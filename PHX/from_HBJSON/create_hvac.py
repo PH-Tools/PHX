@@ -8,7 +8,7 @@ from honeybee_energy_ph.hvac import ventilation, heating, cooling, _base
 
 
 def _transfer_attributes(_hbeph_obj: _base._PhHVACBase,
-                         _phx_obj: hvac.PhxMechanicalEquipment) -> hvac.PhxMechanicalEquipment:
+                         _phx_obj: hvac.PhxMechanicalDevice) -> hvac.PhxMechanicalDevice:
     """Copy the common attributes from a Honeybee-Energy-PH obj to a PHX-object
 
     Arguments:
