@@ -42,7 +42,7 @@ class TankInput:
             * (List[XlItem]): The XlItems to write to the sheet.
         """
         XLItemDHW = partial(xl_data.XlItem, _sheet_name)
-        items: List[xl_data.XlItem] = [
+        return [
             XLItemDHW(
                 self.create_range(_row_num + self.shape.tanks.input_rows.tank_type.row),
                 self.shape.tanks.tank_type.options[str(self.phx_tank.params.tank_type.value)]
@@ -70,5 +70,3 @@ class TankInput:
                 self.shape.tanks.input_rows.water_temp.unit
             ),
         ]
-
-        return items

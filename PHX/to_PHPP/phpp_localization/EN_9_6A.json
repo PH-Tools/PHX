@@ -940,6 +940,52 @@
     },
     "DHW": {
         "name": "DHW+Distribution",
+        "recirc_piping": {
+            "locator_col_header": "D",
+            "locator_string_header": "DHW distribution",
+            "locator_col_entry": "E",
+            "locator_string_entry": "DHW circulation pipes",
+            "input_rows_offset": {
+                "total_length": {
+                    "row": 1,
+                    "unit": "M"
+                },
+                "diameter": {
+                    "row": 2,
+                    "unit": "MM"
+                },
+                "insul_thickness": {
+                    "row": 3,
+                    "unit": "MM"
+                },
+                "insul_reflective": {
+                    "row": 4
+                },
+                "insul_conductivity": {
+                    "row": 5,
+                    "unit": "W/MK"
+                }
+            },
+            "input_col_start": "J"
+        },
+        "branch_piping": {
+            "locator_col_header": "D",
+            "locator_string_header": "DHW distribution",
+            "locator_col_entry": "E",
+            "locator_string_entry": "DHW individual pipes",
+            "input_rows_offset": {
+                "diameter": {
+                    "row": 1,
+                    "unit": "M"
+                },
+                "total_length": {
+                    "row": 2,
+                    "unit": "M"
+                },
+                "num_taps": 3
+            },
+            "input_col_start": "J"
+        },
         "tanks": {
             "locator_col_header": "D",
             "locator_string_header": "Storage heat losses",

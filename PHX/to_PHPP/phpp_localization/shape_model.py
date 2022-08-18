@@ -547,9 +547,36 @@ class CoolingUnits(BaseModel):
 # -----------------------------------------------------------------------------
 
 
+class DhwRecircPipingInputRows(BaseModel):
+    total_length: InputItem
+    diameter: InputItem
+    insul_thickness: InputItem
+    insul_reflective: InputItem
+    insul_conductivity: InputItem
+
+class DhwRecircPiping(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    input_rows_offset: DhwRecircPipingInputRows
+    input_col_start: str
+
+class DhwBranchPipingInputRows(BaseModel):
+    diameter: InputItem
+    total_length: InputItem
+    num_taps: int
+
+class DhwBranchPiping(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    input_rows_offset: DhwBranchPipingInputRows
+    input_col_start: str
+
 class DhwTankInputOptions(BaseModel):
     options: Dict
-
 
 class DhwTankInputColumns(BaseModel):
     tank_1: str
@@ -576,6 +603,8 @@ class DhwTanks(BaseModel):
 
 class Dhw(BaseModel):
     name: str
+    recirc_piping: DhwRecircPiping
+    branch_piping: DhwBranchPiping
     tanks: DhwTanks
 
 

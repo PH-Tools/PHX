@@ -19,7 +19,7 @@ from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, areas_thermal_bri
                                     component_glazing, component_frame, component_vent, 
                                     ventilation_data, windows_rows, shading_rows, 
                                     vent_space, vent_units, vent_ducts, verification_data, 
-                                    hot_water_tank)
+                                    hot_water_tank, hot_water_piping)
 
 def get_data_worksheet(_xl:xl_app.XLConnection) -> Sheet:
     """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""  
@@ -298,10 +298,10 @@ class PHPPConnection:
 
         phpp_ventilator_rows: List[component_vent.VentilatorRow] = []
         for phx_variant in phx_project.variants:
-            for phx_vent_sys in phx_variant.mech_systems.ventilation_subsystems:
+            for phx_ventilator in phx_variant.mech_systems.ventilation_devices:
                 new_vent_row = component_vent.VentilatorRow(
                     shape=self.shape.COMPONENTS,
-                    phx_vent_sys=phx_vent_sys.device,
+                    phx_vent_sys=phx_ventilator,
                 )
                 phpp_ventilator_rows.append(new_vent_row)
         self.components.write_ventilators(phpp_ventilator_rows)
@@ -458,13 +458,13 @@ class PHPPConnection:
 
         phpp_vent_unit_rows: List[vent_units.VentUnitRow] = []
         for phx_variant in phx_project.variants:
-            for phx_vent_sys in phx_variant.mech_systems.ventilation_subsystems:
+            for phx_ventilator in phx_variant.mech_systems.ventilation_devices:
                 phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
-                    phx_vent_sys.device.display_name
+                    phx_ventilator.display_name
                 )
                 new_vent_row = vent_units.VentUnitRow(
                     shape=self.shape.ADDNL_VENT,
-                    phx_vent_sys=phx_vent_sys.device,
+                    phx_vent_sys=phx_ventilator,
                     phpp_id_ventilator=phpp_id_ventilator,
                 )
                 phpp_vent_unit_rows.append(new_vent_row)
@@ -480,11 +480,11 @@ class PHPPConnection:
             for zone in phx_variant.building.zones:
                 for room in zone.wufi_rooms:
                     try:
-                        phx_mech_vent_system = phx_variant.mech_systems.get_mech_subsystem_by_id(
+                        phx_mech_ventilator = phx_variant.mech_systems.get_mech_device_by_id(
                             room.vent_unit_id_num
                         )
                         phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
-                            phx_mech_vent_system.device.display_name
+                            phx_mech_ventilator.display_name
                         )
                         phpp_row_ventilator = self.addnl_vent.vent_units.get_vent_unit_num_by_phpp_id(
                             phpp_id_ventilator
@@ -602,10 +602,42 @@ class PHPPConnection:
             self.hot_water.write_tanks(tank_inputs)
 
             # -- Branch Piping
-        
+            branch_piping_inputs = []
+            branch_pipe_groups = variant.mech_systems.dhw_branch_piping_segments_by_diam
+            if len(branch_pipe_groups) > 5:
+                print('Warning: PHPP only allows 5 groups of DHW branch piping. '\
+                    f'{len(branch_pipe_groups)} piping groups '\
+                    f'found in the Variant "{variant.name}". '\
+                    'Using only then first 5 piping groups.')
+
+            for i, phx_branch_piping in enumerate(branch_pipe_groups[:5]):
+                branch_piping_inputs.append(
+                    hot_water_piping.BranchPipingInput(
+                        self.shape.DHW,
+                        phx_branch_piping, # type: piping.PhxPipeSegment
+                        i
+                    )
+                )
+            self.hot_water.write_branch_piping(branch_piping_inputs)
 
             # -- Recirculation Piping
+            recirc_piping_inputs = []
+            recirc_pipe_groups = variant.mech_systems.dhw_recirc_piping_segments_by_diam
+            if len(recirc_pipe_groups) > 5:
+                print('Warning: PHPP only allows 5 groups of DHW Recirc. piping. '\
+                    f'{len(recirc_pipe_groups)} piping groups '\
+                    f'found in the Variant "{variant.name}". '\
+                    'Using only then first 5 piping groups.')
 
+            for i, phx_recirc_piping in enumerate(recirc_pipe_groups[:5]):
+                recirc_piping_inputs.append(
+                    hot_water_piping.RecircPipingInput(
+                        self.shape.DHW,
+                        phx_recirc_piping, # type: piping.PhxPipeSegment
+                        i
+                    )
+                )
+            self.hot_water.write_recirc_piping(recirc_piping_inputs)
 
         return None
 

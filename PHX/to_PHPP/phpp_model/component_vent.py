@@ -19,7 +19,7 @@ class VentilatorRow:
 
     __slots__ = ('shape', 'phx_vent_sys',)
     shape: shape_model.Components
-    phx_vent_sys: hvac.PhxDeviceVentilator
+    phx_vent_sys: hvac.AnyPhxVentilation
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""

@@ -6,6 +6,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar, Dict, Optional, List, Any, Union
+from collections import defaultdict
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import DeviceType
@@ -93,7 +94,7 @@ class PhxMechanicalSystemCollection:
 
         raise NoVentUnitFoundError(_id_num)
 
-    def add_new_mech_device(self, _key: str, _d: hvac.PhxMechanicalDevice) -> None:
+    def add_new_mech_device(self, _key: str, _d: AnyMechDevice) -> None:
         """Adds a new PHX Mechanical device to the collection.
 
         Arguments:
@@ -115,7 +116,7 @@ class PhxMechanicalSystemCollection:
         self._distribution_piping_recirc[_p.identifier] = _p
 
     @property
-    def ventilation_devices(self) -> List[hvac.PhxDeviceVentilation]:
+    def ventilation_devices(self) -> List[hvac.AnyPhxVentilation]:
         """Returns a list of the 'Ventilation' devices in the collection."""
         return [_ for _ in self.devices 
                 if isinstance(_, hvac.PhxDeviceVentilation) 
@@ -123,7 +124,7 @@ class PhxMechanicalSystemCollection:
                 ]
 
     @property
-    def space_heating_devices(self) -> List[hvac.PhxHeatingDevice]:
+    def space_heating_devices(self) -> List[hvac.AnyPhxHeater]:
         """Returns a list of the 'Space Heating' devices in the collection."""
         return [_ for _ in self.devices 
                 if isinstance(_, hvac.PhxHeatingDevice) 
@@ -131,7 +132,7 @@ class PhxMechanicalSystemCollection:
                 ]
 
     @property
-    def cooling_devices(self) -> List[hvac.PhxCoolingDevice]:
+    def cooling_devices(self) -> List[hvac.AnyPhxCooling]:
         """Returns a list of the 'Cooling' devices in the collection."""
         return [_ for _ in self.devices 
                 if isinstance(_, hvac.PhxCoolingDevice)
@@ -139,7 +140,7 @@ class PhxMechanicalSystemCollection:
                 ]
 
     @property
-    def dhw_heating_devices(self) -> List[hvac.PhxHeatingDevice]:
+    def dhw_heating_devices(self) -> List[hvac.AnyPhxHeater]:
         """Returns a list of only the 'DHW Heating' devices (no tanks) in the collection."""
         return [_ for _ in self.devices 
                 if isinstance(_, hvac.PhxHeatingDevice)
@@ -148,7 +149,7 @@ class PhxMechanicalSystemCollection:
                 ]
 
     @property
-    def dhw_tank_devices(self) -> List[hvac.PhxHotWaterTank]:
+    def dhw_tank_devices(self) -> List[hvac.AnyWaterTank]:
         """Returns a list of only the 'DHW Storage Tank' devices (no heaters) in the collection."""
         return [_ for _ in self.devices
                 if isinstance(_, hvac.PhxHotWaterTank)
@@ -161,5 +162,25 @@ class PhxMechanicalSystemCollection:
         return list(self._distribution_piping_branches.values())
     
     @property
+    def dhw_branch_piping_segments_by_diam(self) -> List[List[hvac.PhxPipeSegment]]:
+        # -- Group piping segments by diameter
+        d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
+        for pipe in self.dhw_branch_piping:
+            for segment in pipe.segments:
+                d[segment.diameter].append(segment)
+        
+        return list(d.values())
+
+    @property
     def dhw_recirc_piping(self) -> List[hvac.PhxPipeElement]:
         return list(self._distribution_piping_recirc.values())
+
+    @property
+    def dhw_recirc_piping_segments_by_diam(self) -> List[List[hvac.PhxPipeSegment]]:
+        # -- Group piping segments by diameter
+        d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
+        for pipe in self.dhw_recirc_piping:
+            for segment in pipe.segments:
+                d[segment.diameter].append(segment)
+        
+        return list(d.values())
