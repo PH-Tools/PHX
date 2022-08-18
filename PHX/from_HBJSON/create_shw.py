@@ -6,13 +6,16 @@
 from PHX.model import hvac
 from honeybee_energy_ph.hvac import hot_water
 from PHX.model.enums.hvac import PhxHotWaterTankType
+from PHX.model.hvac import piping
+
+# -- Storage -- 
 
 def build_phx_hw_tank(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTank:
-    """Returns a new PHX Hot-Water Tank based on the HBPH Hot Water Tank input.
+    """Returns a new PHX Hot-Water Tank based on the Honeybee-PH Hot Water Tank input.
 
     Arguments:
     ----------
-        * _hbph_heater (hot_water.PhSHWTank): The HBPH Hot-Water tank
+        * _hbph_heater (hot_water.PhSHWTank): The Honeybee-PH Hot-Water tank
             to use as the source.
 
     Returns:
@@ -43,38 +46,38 @@ def build_phx_hw_tank(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTank:
     return phx_tank
 
 
-def build_phx_hw_storage_subsystem(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxMechanicalSubSystem:
+def build_phx_hw_storage(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTank:
     """
 
     Arguments:
     ----------
-        * _hbph_heater (hot_water.PhSHWTank): The HBPH Hot-Water tank
+        * _hbph_heater (hot_water.PhSHWTank): The Honeybee-PH Hot-Water tank
             to use as the source.
 
     Returns:
     --------
-        * (mech.PhxMechanicalSubSystem): The new Water Storage SubSystem.
+        * (mech.PhxHotWaterTank): The new Water Storage SubSystem.
     """
 
-    phx_storage_subsystem = hvac.PhxMechanicalSubSystem()
-    phx_storage_subsystem.device = build_phx_hw_tank(_hbph_tank)
+    phx_storage_tank = build_phx_hw_tank(_hbph_tank)
 
     # TODO: Distribution...
 
-    return phx_storage_subsystem
+    return phx_storage_tank
 
+# -- Heaters ----
 
 def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHeatingDevice:
-    """Returns a new PHX Hot-Water Heater based on the HBPH Hot Water Heater input.
+    """Returns a new PHX Hot-Water Heater based on the Honeybee-PH Hot Water Heater input.
 
     Arguments:
     ----------
-        * _hbph_heater (hot_water.PhHotWaterHeater): The HBPH Hot-Water heater
+        * _hbph_heater (hot_water.PhHotWaterHeater): The Honeybee-PH Hot-Water heater
             to use as the source for the PHX Heater.
 
     Returns:
     --------
-        * mech_equip.PhxHotWaterHeater: The new PHX-Hot-Water-Heater.
+        * (hvac.PhxHeatingDevice): The new PHX-Hot-Water-Heater.
     """
 
     # -- Get the right constructor based on the type of heater
@@ -113,22 +116,57 @@ def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHea
     return phx_hw_heater
 
 
-def build_phx_hw_heating_subsystem(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxMechanicalSubSystem:
+def build_phx_hw_heating_sys(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHeatingDevice:
     """
 
     Arguments:
     ----------
-        * _hbph_heater (hot_water.PhHotWaterHeater): The HBPH Hot-Water heater
+        * _hbph_heater (hot_water.PhHotWaterHeater): The Honeybee-PH Hot-Water heater
             to use as the source for the PHX Heater.
 
     Returns:
     --------
-        * (mech.PhxMechanicalSubSystem): The new Water-Heating SubSystem.
+        * (hvac.PhxHeatingDevice): The new PHX Water-Heating Device.
     """
 
-    phx_storage_subsystem = hvac.PhxMechanicalSubSystem()
-    phx_storage_subsystem.device = build_phx_hw_heater(_hbph_heater)
+    phx_dhw_heater = build_phx_hw_heater(_hbph_heater)
 
     # TODO: Distribution...
 
-    return phx_storage_subsystem
+    return phx_dhw_heater
+
+# -- Piping ----
+
+def build_phx_piping(_hbph_pipe: hot_water.PhPipeElement) -> hvac.PhxPipeElement:
+    """Create a new PHX Water Pipe based on an input Honeybee-PH Water Pipe.
+    
+    Arguments:
+    ----------
+        * _hbph_pipe: (hot_water.PhPipeElement): The Honeybee-PH Pipe to use as 
+            the source.
+    
+    Returns:
+    --------
+        * (hvac.PhxPipeElement): The new PhxPipeElement created.
+    """
+
+    phx_pipe = piping.PhxPipeElement(
+        _hbph_pipe.identifier,
+        _hbph_pipe.display_name
+    )
+    for segment in _hbph_pipe.segments:
+        phx_pipe.add_segment(
+            piping.PhxPipeSegment(
+                segment.identifier,
+                segment.display_name,
+                segment.geometry,
+                segment.diameter,
+                segment.insulation_thickness,
+                segment.insulation_conductivity,
+                segment.insulation_reflective,
+                segment.insulation_quality,
+                segment.daily_period,
+            )
+        )
+
+    return phx_pipe

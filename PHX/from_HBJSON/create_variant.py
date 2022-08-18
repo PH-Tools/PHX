@@ -3,12 +3,16 @@
 
 """Functions to build PHX-Variant from Honeybee Rooms"""
 
-from typing import Dict
+from typing import Dict, Set
 
 from honeybee import room
 
 from honeybee_ph import site, phi, phius
 from honeybee_energy_ph.properties.load import equipment
+from honeybee_energy_ph.hvac.ventilation import PhVentilationSystem
+from honeybee_energy_ph.hvac.heating import PhHeatingSystem
+from honeybee_energy_ph.hvac.cooling import PhCoolingSystem
+
 from PHX.model import phx_site, project, ground, constructions
 from PHX.model.enums import phi_certification, phius_certification
 from PHX.from_HBJSON import create_building, create_hvac, create_shw, create_elec_equip
@@ -287,25 +291,24 @@ def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room
     """
 
     for space in _hb_room.properties.ph.spaces:
-        # -- Get the HBE-PH Ventilation system from the space's host room
+        # -- Get the Honeybee-PH Ventilation system from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
-        vent_sys = space.host.properties.energy.hvac.properties.ph.ventilation_system
+        vent_sys: PhVentilationSystem = space.host.properties.energy.hvac.properties.ph.ventilation_system
 
         if not vent_sys:
             continue
 
-        # -- Get or Build the PHX Ventilation system
+        # -- Get or Build the PHX Ventilation Device
         # -- If the ventilator already exists, just use that one.
-        phx_subsystem = _variant.mech_systems.get_mech_subsystem_by_key(
-            vent_sys.key)
-        if not phx_subsystem:
+        phx_ventilator = _variant.mech_systems.get_mech_device_by_key(vent_sys.key)
+        if not phx_ventilator:
             # -- otherwise, build a new PH-Ventilator from the HB-hvac
-            phx_subsystem = create_hvac.build_phx_ventilation_sys(vent_sys)
-            _variant.mech_systems.add_new_mech_subsystem(
-                vent_sys.key, phx_subsystem)
+            phx_ventilator = create_hvac.build_phx_ventilation_sys(vent_sys)
+            _variant.mech_systems.add_new_mech_device(vent_sys.key, phx_ventilator)
 
-        vent_sys.id_num = phx_subsystem.id_num
+        vent_sys.id_num = phx_ventilator.id_num
+        vent_sys.ventilation_unit.id_num = phx_ventilator.id_num
 
     return None
 
@@ -324,23 +327,21 @@ def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
     """
 
     for space in _hb_room.properties.ph.spaces:
-        # -- Get the HBE-PH Heating Systems from the space's host room
+        # -- Get the Honeybee-PH Heating Systems from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
-        heating_systems = space.host.properties.energy.hvac.properties.ph.heating_systems
+        heating_systems: Set[PhHeatingSystem] = space.host.properties.energy.hvac.properties.ph.heating_systems
 
         # -- Get or Build the PHX Heating systems
         # -- If the system already exists, just use that one.
         for hbph_sys in heating_systems:
-            phx_subsystem = _variant.mech_systems.get_mech_subsystem_by_key(
-                hbph_sys.key)
-            if not phx_subsystem:
+            phx_heating_device = _variant.mech_systems.get_mech_device_by_key(hbph_sys.key)
+            if not phx_heating_device:
                 # -- otherwise, build a new PHX-Heating-Sys from the HB-hvac
-                phx_subsystem = create_hvac.build_phx_heating_sys(hbph_sys)
-                _variant.mech_systems.add_new_mech_subsystem(
-                    hbph_sys.key, phx_subsystem)
+                phx_heating_device = create_hvac.build_phx_heating_sys(hbph_sys)
+                _variant.mech_systems.add_new_mech_device(hbph_sys.key, phx_heating_device)
 
-            hbph_sys.id_num = phx_subsystem.id_num
+            hbph_sys.id_num = phx_heating_device.id_num
 
     return None
 
@@ -359,23 +360,21 @@ def add_cooling_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
     """
 
     for space in _hb_room.properties.ph.spaces:
-        # -- Get the HBPH-Cooling-Systems from the space's host room
+        # -- Get the Honeybee-PH Cooling-Systems from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
-        cooling_systems = space.host.properties.energy.hvac.properties.ph.cooling_systems
+        cooling_systems: Set[PhCoolingSystem] = space.host.properties.energy.hvac.properties.ph.cooling_systems
 
         # -- Get or Build the PHX-Cooling systems
         # -- If the system already exists, just use that one.
         for hbph_sys in cooling_systems:
-            phx_subsystem = _variant.mech_systems.get_mech_subsystem_by_key(
-                hbph_sys.key)
-            if not phx_subsystem:
+            phx_cooling_device = _variant.mech_systems.get_mech_device_by_key(hbph_sys.key)
+            if not phx_cooling_device:
                 # -- otherwise, build a new PHX-Cooling-Sys from the HB-hvac
-                phx_subsystem = create_hvac.build_phx_cooling_sys(hbph_sys)
-                _variant.mech_systems.add_new_mech_subsystem(
-                    hbph_sys.key, phx_subsystem)
+                phx_cooling_device = create_hvac.build_phx_cooling_sys(hbph_sys)
+                _variant.mech_systems.add_new_mech_device(hbph_sys.key, phx_cooling_device)
 
-            hbph_sys.id_num = phx_subsystem.id_num
+            hbph_sys.id_num = phx_cooling_device.id_num
 
     return None
 
@@ -395,10 +394,7 @@ def add_dhw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
 
     for space in _hb_room.properties.ph.spaces:
         # -- Guard Clause
-        if not space.host.properties.energy.shw:
-            continue
-
-        if not space.host.properties.energy.service_hot_water:
+        if not space.host.properties.energy.shw or not space.host.properties.energy.service_hot_water:
             continue
 
         # -- Build the HW-Tank
@@ -406,14 +402,12 @@ def add_dhw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
             if not hw_tank:
                 continue
 
-            equip_key = str(id(hw_tank))
-            if _variant.mech_systems.subsystem_in_collection(equip_key):
+            if _variant.mech_systems.device_in_collection(hw_tank.key):
                 continue
 
             # -- Build a new PHS-HW-Tank from the HB-hvac
-            phx_subsystem = create_shw.build_phx_hw_storage_subsystem(hw_tank)
-            _variant.mech_systems.add_new_mech_subsystem(
-                equip_key, phx_subsystem)
+            phx_dhw_tank = create_shw.build_phx_hw_storage(hw_tank)
+            _variant.mech_systems.add_new_mech_device(hw_tank.key, phx_dhw_tank)
 
     return None
 
@@ -430,19 +424,19 @@ def add_dhw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
     --------
         * None
     """
+
     for space in _hb_room.properties.ph.spaces:
 
         if not space.host.properties.energy.shw:
             continue
 
         for heater in space.host.properties.energy.shw.properties.ph.heaters:
-            if _variant.mech_systems.subsystem_in_collection(heater.identifier):
+            if _variant.mech_systems.device_in_collection(heater.identifier):
                 continue
 
-            # -- Build a new PHX-HW-Heater from the HBPH-HW-Heater
-            phx_subsystem = create_shw.build_phx_hw_heating_subsystem(heater)
-            _variant.mech_systems.add_new_mech_subsystem(
-                heater.identifier, phx_subsystem)
+            # -- Build a new PHX-HW-Heater from the Honeybee-PH HW-Heater
+            phx_hw_heater = create_shw.build_phx_hw_heating_sys(heater)
+            _variant.mech_systems.add_new_mech_device(heater.identifier, phx_hw_heater)
 
 
 def add_dhw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
@@ -451,13 +445,15 @@ def add_dhw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Ro
         if not space.host.properties.energy.shw:
             continue
 
-        # -- Distribution
-        # TODO: How Water Piping....
-        # for branch_piping_element in space.host.properties.energy.shw.properties.ph.branch_piping:
-        #     print('branch_piping=', branch_piping_element)
+        for branch_piping_element in space.host.properties.energy.shw.properties.ph.branch_piping:
+            _variant.mech_systems.add_branch_piping(
+                create_shw.build_phx_piping(branch_piping_element)
+            )
         
-        # for recirc_piping_element in space.host.properties.energy.shw.properties.ph.recirc_piping:
-        #     print('recirc_piping=', recirc_piping_element)
+        for recirc_piping_element in space.host.properties.energy.shw.properties.ph.recirc_piping:
+            _variant.mech_systems.add_recirc_piping(
+                create_shw.build_phx_piping(recirc_piping_element)
+            )
 
     return None
 

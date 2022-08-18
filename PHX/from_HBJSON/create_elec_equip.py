@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""Function to create new PhxElectricalDevices from HBPH-PhEquipment"""
+"""Function to create new PhxElectricalDevices from Honeybee-PH-PhEquipment"""
 
 from honeybee_energy_ph.load import ph_equipment
 from PHX.model import elec_equip
 
 
 def build_phx_elec_device(_hbph_device: ph_equipment.PhEquipment) -> elec_equip.PhxElectricalDevice:
-    """Returns a new PhxElectricalDevice based on the HBPH-PhEquipment input.
+    """Returns a new PhxElectricalDevice based on the Honeybee-PH-PhEquipment input.
 
     Arguments:
     ----------
-        * _hbph_device (ph_equipment.PhEquipment): The HBPH-PhEquipment
+        * _hbph_device (ph_equipment.PhEquipment): The Honeybee-PH PhEquipment
             to use as the source for the new PhxElectricalDevice.
 
     Returns:
     --------
         * elec_equip.PhxElectricalEquipment: The new PhxElectricalDevice.
     """
-    # -- Get the right PHX Device constructor based on the type of HBPH Equipment input
+    # -- Get the right PHX Device constructor based on the type of Honeybee-PH Equipment input
     devices = {
         'PhDishwasher': elec_equip.PhxDeviceDishwasher,
         'PhClothesWasher': elec_equip.PhxDeviceClothesWasher,

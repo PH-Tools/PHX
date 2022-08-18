@@ -78,6 +78,7 @@ class PhxMechanicalDevice:
     """
     _count: ClassVar[int] = 0
 
+    _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
     id_num: int = field(init=False, default=0)
     device_type: DeviceType = DeviceType.ELECTRIC
     display_name: str = '_unnamed_equipment_'
@@ -91,6 +92,16 @@ class PhxMechanicalDevice:
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
+    
+    @property
+    def identifier(self):
+        return str(self._identifier)
+
+    @identifier.setter
+    def identifier(self, _in: str):
+        if not _in:
+            return
+        self._identifier = str(_in)
 
     def __add__(self, other: PhxMechanicalDevice) -> PhxMechanicalDevice:
         obj = self.__class__()
@@ -132,45 +143,3 @@ class PhxMechanicalDevice:
 
     def __str__(self):
         return f'{self.__class__.__name__}()'
-
-@dataclass
-class PhxMechanicalSubSystem:
-    """Base class for a sub-system (heating, cooling, ventilation, hot-water)
-
-    This sub-system will include a single device/equipment (heater) and may also
-    include any distribution such as ducting or piping connected to that device.
-    """
-
-    _count: ClassVar[int] = 0
-
-    _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
-    id_num: int = field(init=False, default=0)
-    display_name: str = '_unnamed_mech_subsystem_'
-    device: PhxMechanicalDevice = field(default_factory=PhxMechanicalDevice)
-    distribution = None  # TODO: Distribution....
-    percent_coverage: float = 0.0
-    usage_profile: PhxUsageProfile = field(default_factory=PhxUsageProfile)
-
-    @property
-    def identifier(self):
-        return str(self._identifier)
-
-    @identifier.setter
-    def identifier(self, _in: str):
-        if not _in:
-            return
-        self._identifier = str(_in)
-
-    @property
-    def system_type(self):
-        return self.device.device_type
-
-    def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
-
-    def __str__(self):
-        return f'{self.__class__.__name__}(display_name={self.display_name}, device={self.device})'
-
-    def __repr__(self):
-        return str(self)

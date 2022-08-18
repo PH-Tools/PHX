@@ -67,7 +67,7 @@ class PhxHotWaterTankType(Enum):
 
     @classmethod
     def from_hbph_type(cls, _hbph_type):
-        """Return a new PhxHotWaterTankType based on the HBPH Tank Type."""
+        """Return a new PhxHotWaterTankType based on the Honeybee-PH Tank Type."""
         _mapping = {
             "0-NO STORAGE TANK": cls.NONE,
             "1-DHW AND HEATING": cls.DHW_AND_HEATING,

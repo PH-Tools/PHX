@@ -585,17 +585,17 @@ class PHPPConnection:
         for variant in phx_project.variants:
             # -- Tanks
             # Use only the first 2 tanks for PHPP
-            if len(variant.mech_systems.dhw_tank_subsystems) > 2:
+            if len(variant.mech_systems.dhw_tank_devices) > 2:
                 print(f'Warning: PHPP only allows 2 tanks.'\
-                    f'{len(variant.mech_systems.dhw_tank_subsystems)} tank'\
+                    f'{len(variant.mech_systems.dhw_tank_devices)} tank'\
                     f'found in the Variant "{variant.name}"')
             
             tank_inputs = []
-            for i, phx_mech_subsystem in enumerate(variant.mech_systems.dhw_tank_subsystems[:2], start=1):
+            for i, phx_dhw_tank in enumerate(variant.mech_systems.dhw_tank_devices[:2], start=1):
                 tank_inputs.append(
                     hot_water_tank.TankInput(
                         self.shape.DHW,
-                        phx_mech_subsystem.device, # type: water.PhxHotWaterTank
+                        phx_dhw_tank, # type: water.PhxHotWaterTank
                         i
                     )
                 )

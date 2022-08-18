@@ -209,3 +209,14 @@ class PhxHeaterHeatPumpCombined(PhxHeatingDevice):
 
 PhxHeaterHeatPump = Union[PhxHeaterHeatPumpAnnual, PhxHeaterHeatPumpMonthly,
                           PhxHeaterHeatPumpHotWater, PhxHeaterHeatPumpCombined]
+
+AnyPhxHeater = Union[
+    PhxHeaterElectric,
+    PhxHeaterBoilerFossil, 
+    PhxHeaterBoilerWood,
+    PhxHeaterDistrictHeat,
+    PhxHeaterHeatPumpAnnual,
+    PhxHeaterHeatPumpMonthly,
+    PhxHeaterHeatPumpHotWater,
+    PhxHeaterHeatPumpCombined,
+]

@@ -3,11 +3,17 @@
 
 """PHX  Mechanical Collection Classes."""
 
+from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import ClassVar, Dict, Optional, List
+from typing import ClassVar, Dict, Optional, List, Any, Union
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import DeviceType
+from PHX.model.hvac.heating import AnyPhxHeater
+from PHX.model.hvac.ventilation import AnyPhxVentilation
+from PHX.model.hvac.cooling import AnyPhxCooling
+from PHX.model.hvac.water import AnyWaterTank
+
 
 class NoVentUnitFoundError(Exception):
     def __init__(self, _id_num):
@@ -25,35 +31,38 @@ class PhxZoneCoverage:
     humidification: float = 1.0
     dehumidification: float = 1.0
 
+AnyMechDevice = Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxCooling, AnyWaterTank]
 
 @dataclass
 class PhxMechanicalSystemCollection:
-    """A collection of all the mechanical subsystems (heating, cooling, etc) in the project"""
+    """A collection of all the mechanical devices (heating, cooling, etc) and distribution in the project"""
     _count: ClassVar[int] = 0
 
     id_num: int = field(init=False, default=0)
     display_name: str = "Ideal Air System"
     sys_type_num: int = 1
     sys_type_str: str = "User defined (ideal system)"
-
     zone_coverage: PhxZoneCoverage = field(default_factory=PhxZoneCoverage)
-    _subsystems: Dict[str, hvac.PhxMechanicalSubSystem] = field(default_factory=dict)
+
+    _devices: Dict[str, AnyMechDevice] = field(default_factory=dict)
+    _distribution_piping_branches: Dict[str, Any] = field(default_factory=dict)
+    _distribution_piping_recirc: Dict[str, Any] = field(default_factory=dict)
+    _distribution_ducting: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
     @property
-    def subsystems(self):
-        """Return a list of all the Mechanical SubSystems in the collection."""
-        return self._subsystems.values()
+    def devices(self) -> List[AnyMechDevice]:
+        return list(self._devices.values())
+    
+    def device_in_collection(self, _device_key) -> bool:
+        """Return True if the a Mech device with the matching key is already in the collection."""
+        return _device_key in self._devices.keys()
 
-    def subsystem_in_collection(self, _subsystem_key) -> bool:
-        """Return True if the a Mech SubSystem with the matching key is already in the collection."""
-        return _subsystem_key in self._subsystems.keys()
-
-    def get_mech_subsystem_by_key(self, _key: str) -> Optional[hvac.PhxMechanicalSubSystem]:
-        """Returns the mechanical SubSystem with the matching key, or None if not found.
+    def get_mech_device_by_key(self, _key: str) -> Optional[hvac.PhxMechanicalDevice]:
+        """Returns the mechanical device with the matching key, or None if not found.
 
         Arguments:
         ----------
@@ -61,70 +70,96 @@ class PhxMechanicalSystemCollection:
 
         Returns:
         --------
-            * (Optional[hvac.PhxMechanicalSubSystem]) The Mechanical Subsystem with
+            * (Optional[hvac.PhxMechanicalDevice]) The Mechanical device with
                 the matching key, or None if not found.
         """
-        return self._subsystems.get(_key, None)
+        return self._devices.get(_key, None)
 
-    def get_mech_subsystem_by_id(self, _id_num: int) -> hvac.PhxMechanicalSubSystem:
-        """Returns a Mechanical SubSystem from the collection which has a matching id-num.
+    def get_mech_device_by_id(self, _id_num: int) -> hvac.PhxMechanicalDevice:
+        """Returns a Mechanical Device from the collection which has a matching id-num.
 
         Arguments:
         ----------
-            * _id_num (int): The Mechanical SubSystem id-number to search for.
+            * _id_num (int): The Mechanical Device id-number to search for.
 
         Returns:
         --------
-            * (hvac.PhxMechanicalSubSystem): The Mechanical SubSystem found with the
+            * (hvac.PhxMechanicalDevice): The Mechanical Device found with the
                 matching ID-Number. Or Error if not found.
         """
-        for sys in self._subsystems.values():
+        for sys in self._devices.values():
             if sys.id_num == _id_num:
                 return sys
 
         raise NoVentUnitFoundError(_id_num)
 
-    def add_new_mech_subsystem(self, _key: str, _subsystem: hvac.PhxMechanicalSubSystem) -> None:
-        """Adds a new PHX Mechanical SubSystem device to the collection.
+    def add_new_mech_device(self, _key: str, _d: hvac.PhxMechanicalDevice) -> None:
+        """Adds a new PHX Mechanical device to the collection.
 
         Arguments:
         ----------
-            * _key (str): The key to use when storing the new mechanical subsystem
-            * _subsystem (_base.PhxMechanicalSubSystem): The new PHX mechanical subsystem to 
+            * _key (str): The key to use when storing the new mechanical device
+            * _device (_base.PhxMechanicalDevice): The new PHX mechanical device to 
                 add to the collection.
 
         Returns:
         --------
             * None
         """
-        self._subsystems[_key] = _subsystem
+        self._devices[_key] = _d
+
+    def add_branch_piping(self, _p: hvac.PhxPipeElement) -> None:
+        self._distribution_piping_branches[_p.identifier] = _p
+    
+    def add_recirc_piping(self, _p: hvac.PhxPipeElement) -> None:
+        self._distribution_piping_recirc[_p.identifier] = _p
 
     @property
-    def ventilation_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
-        """Returns a list of the 'Ventilation' subsystems in the collection."""
-        return [sys for sys in self.subsystems if sys.device.usage_profile.ventilation]
+    def ventilation_devices(self) -> List[hvac.PhxDeviceVentilation]:
+        """Returns a list of the 'Ventilation' devices in the collection."""
+        return [_ for _ in self.devices 
+                if isinstance(_, hvac.PhxDeviceVentilation) 
+                and _.usage_profile.ventilation
+                ]
 
     @property
-    def space_heating_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
-        """Returns a list of the 'Space Heating' subsystems in the collection."""
-        return [sys for sys in self.subsystems if sys.device.usage_profile.space_heating]
+    def space_heating_devices(self) -> List[hvac.PhxHeatingDevice]:
+        """Returns a list of the 'Space Heating' devices in the collection."""
+        return [_ for _ in self.devices 
+                if isinstance(_, hvac.PhxHeatingDevice) 
+                and _.usage_profile.space_heating
+                ]
 
     @property
-    def cooling_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
-        """Returns a list of the 'Cooling' subsystems in the collection."""
-        return [sys for sys in self.subsystems if sys.device.usage_profile.cooling]
+    def cooling_devices(self) -> List[hvac.PhxCoolingDevice]:
+        """Returns a list of the 'Cooling' devices in the collection."""
+        return [_ for _ in self.devices 
+                if isinstance(_, hvac.PhxCoolingDevice)
+                and _.usage_profile.cooling
+                ]
 
     @property
-    def dhw_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
-        """Returns a list of the 'DHW Heating' and 'DHW Storage' subsystems in the collection."""
-        return [sys for sys in self.subsystems if sys.device.usage_profile.dhw_heating]
+    def dhw_heating_devices(self) -> List[hvac.PhxHeatingDevice]:
+        """Returns a list of only the 'DHW Heating' devices (no tanks) in the collection."""
+        return [_ for _ in self.devices 
+                if isinstance(_, hvac.PhxHeatingDevice)
+                and _.usage_profile.dhw_heating 
+                and _.device_type != DeviceType.WATER_STORAGE
+                ]
 
     @property
-    def dhw_heating_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
-        """Returns a list of only the 'DHW Heating' subsystems (no tanks) in the collection."""
-        return [sys for sys in self.subsystems if sys.device.usage_profile.dhw_heating and sys.device.device_type != DeviceType.WATER_STORAGE]
+    def dhw_tank_devices(self) -> List[hvac.PhxHotWaterTank]:
+        """Returns a list of only the 'DHW Storage Tank' devices (no heaters) in the collection."""
+        return [_ for _ in self.devices
+                if isinstance(_, hvac.PhxHotWaterTank)
+                and _.usage_profile.dhw_heating 
+                and _.device_type == DeviceType.WATER_STORAGE
+                ]
 
     @property
-    def dhw_tank_subsystems(self) -> List[hvac.PhxMechanicalSubSystem]:
-        """Returns a list of only the 'DHW Storage Tank' subsystems (no heaters) in the collection."""
-        return [sys for sys in self.subsystems if sys.device.usage_profile.dhw_heating and sys.device.device_type == DeviceType.WATER_STORAGE]
+    def dhw_branch_piping(self) -> List[hvac.PhxPipeElement]:
+        return list(self._distribution_piping_branches.values())
+    
+    @property
+    def dhw_recirc_piping(self) -> List[hvac.PhxPipeElement]:
+        return list(self._distribution_piping_recirc.values())

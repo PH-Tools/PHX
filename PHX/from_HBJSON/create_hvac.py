@@ -3,12 +3,19 @@
 
 """Functions to create PHX-HVAC objects from Honeybee-Energy-PH HVAC"""
 
-from PHX.model import hvac
-from honeybee_energy_ph.hvac import ventilation, heating, cooling, _base
+from typing import TypeVar, Union
 
+from honeybee_energy_ph.hvac import ventilation, heating, cooling, _base
+from PHX.model import hvac
+from PHX.model.hvac.heating import AnyPhxHeater
+from PHX.model.hvac.ventilation import AnyPhxVentilation
+from PHX.model.hvac.cooling import AnyPhxCooling
+
+
+T = TypeVar('T', bound=Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxCooling]) 
 
 def _transfer_attributes(_hbeph_obj: _base._PhHVACBase,
-                         _phx_obj: hvac.PhxMechanicalDevice) -> hvac.PhxMechanicalDevice:
+                         _phx_obj: T) -> T:
     """Copy the common attributes from a Honeybee-Energy-PH obj to a PHX-object
 
     Arguments:
@@ -20,7 +27,7 @@ def _transfer_attributes(_hbeph_obj: _base._PhHVACBase,
     Returns:
     --------
         * (mech_equip.PhxMechanicalEquipment): The input PHX Mechanical Equipment 
-            object, with its attribute values set to match the HBEPH object.
+            object, with its attribute values set to match the Honeybee-PH object.
     """
 
     # -- Copy the base scope attributes from HB->PHX
@@ -47,13 +54,13 @@ def _transfer_attributes(_hbeph_obj: _base._PhHVACBase,
 
 
 def build_phx_ventilator(_hbeph_vent: ventilation.PhVentilationSystem) -> hvac.PhxDeviceVentilator:
-    """Returns a new Fresh-Air Ventilator built from the hb-energy hvac paramaters.
+    """Returns a new Fresh-Air Ventilator built from the hb-energy hvac parameters.
 
     This will look at the Space's Host-Room .properties.energy.hvac for data.
 
     Arguments:
     ----------
-        *_hbeph_vent (ventilation.PhVentilationSystem): The HBE-PH Ventilation System
+        *_hbeph_vent (ventilation.PhVentilationSystem): The Honeybee-PH Ventilation System
             to build the PHX-Ventilation from.
 
     Returns:
@@ -75,26 +82,24 @@ def build_phx_ventilator(_hbeph_vent: ventilation.PhVentilationSystem) -> hvac.P
     return phx_vent
 
 
-def build_phx_ventilation_sys(_hbeph_vent: heating.PhHeatingSystem) -> hvac.PhxMechanicalSubSystem:
-    """Build a new PHX Ventilation Mechanical SubSystem.
+def build_phx_ventilation_sys(_hbeph_vent: ventilation.PhVentilationSystem) -> hvac.PhxDeviceVentilator:
+    """Build a new PHX Ventilation Mechanical Device.
 
     Arguments:
     ----------
-        *_hbeph_vent (ventilation.PhVentilationSystem): The HBE-PH Ventilation System
+        *_hbeph_vent (ventilation.PhVentilationSystem): The Honeybee-PH Ventilation System
             to build the PHX-Ventilation from.
 
     Returns:
     --------
-        * (mech.PhxMechanicalSubSystem): A new mech subsystem with the heating device
-            and distribution.
+        * (mech.PhxDeviceVentilator): A new mech ventilation device.
     """
 
-    phx_vent_subsystem = hvac.PhxMechanicalSubSystem()
-    phx_vent_subsystem.device = build_phx_ventilator(_hbeph_vent)
+    phx_ventilator = build_phx_ventilator(_hbeph_vent)
 
     # TODO: Distribution...
 
-    return phx_vent_subsystem
+    return phx_ventilator
 
 
 # -----------------------------------------------------------------------------
@@ -151,11 +156,11 @@ def build_phx_heating_hp_combined(_hbeph_heater: heating.PhHeatingSystem) -> hva
 
 
 def build_phx_heating_device(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeatingDevice:
-    """Returns a new PHX-Heating-Device based on an input HBE-PH Heating System.
+    """Returns a new PHX-Heating-Device based on an input Honeybee-PH Heating System.
 
     Arguments:
     ----------
-        * _htg_sys (heating.PhHeatingSystem): The HBE-PH Heating System to build 
+        * _htg_sys (heating.PhHeatingSystem): The Honeybee-PH Heating System to build 
             the new PHX Heating system from.
 
     Returns:
@@ -163,7 +168,7 @@ def build_phx_heating_device(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeati
         * (mech.heating.PhxHeatingDevice): The new PHX Heating System created.
     """
 
-    # -- Mapping HBEPH -> PHX types
+    # -- Mapping Honeybee-PH -> PHX types
     phx_heater_classes = {
         'PhHeatingDirectElectric': build_phx_heating_electric,
         'PhHeatingFossilBoiler': build_phx_heating_fossil_boiler,
@@ -179,25 +184,24 @@ def build_phx_heating_device(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeati
     return phx_heater
 
 
-def build_phx_heating_sys(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxMechanicalSubSystem:
+def build_phx_heating_sys(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeatingDevice:
     """
 
     Arguments:
     ----------
-        * _htg_sys (heating.PhHeatingSystem): The HBE-PH Heating System to build 
+        * _htg_sys (heating.PhHeatingSystem): The Honeybee-PH Heating System to build 
             the new PHX Heating system from.
 
     Returns:
     --------
-        * (mech.PhxMechanicalSubSystem): A new mech subsystem with the heating device
-            and distribution.
+        * (mech.PhxHeatingDevice): 
     """
-    phx_htg_subsystem = hvac.PhxMechanicalSubSystem()
-    phx_htg_subsystem.device = build_phx_heating_device(_htg_sys)
+    
+    phx_htg_device = build_phx_heating_device(_htg_sys)
 
     # TODO: Distribution...
 
-    return phx_htg_subsystem
+    return phx_htg_device
 
 
 # -----------------------------------------------------------------------------
@@ -232,12 +236,12 @@ def build_phx_cooling_panel(_hbeph_cooling: cooling.PhCoolingSystem) -> hvac.Phx
     return phx_obj
 
 
-def build_phx_cooling_device(_clg_sys: cooling.PhCoolingSystem) -> hvac.PhxHeatingDevice:
-    """Returns a new PHX-Cooling-Device based on an input HBE-PH cooling System.
+def build_phx_cooling_device(_clg_sys: cooling.PhCoolingSystem) -> hvac.PhxCoolingDevice:
+    """Returns a new PHX-Cooling-Device based on an input Honeybee-PH cooling System.
 
     Arguments:
     ----------
-        * _clg_sys (cooling.PhCoolingSystem): The HBPH-Cooling-System to build 
+        * _clg_sys (cooling.PhCoolingSystem): The Honeybee-PH Cooling-System to build 
             the new PHX-Cooling-System from.
 
     Returns:
@@ -245,7 +249,7 @@ def build_phx_cooling_device(_clg_sys: cooling.PhCoolingSystem) -> hvac.PhxHeati
         * (mech.cooling.PhxHeatingDevice): The new PHX cooling System created.
     """
 
-    # -- Mapping HBEPH -> PHX types
+    # -- Mapping Honeybee-PH -> PHX types
     phx_cooling_classes = {
         'PhCoolingVentilation': build_phx_cooling_ventilation,
         'PhCoolingRecirculation': build_phx_cooling_recirculation,
@@ -258,22 +262,21 @@ def build_phx_cooling_device(_clg_sys: cooling.PhCoolingSystem) -> hvac.PhxHeati
     return phx_cooling
 
 
-def build_phx_cooling_sys(_htg_sys: cooling.PhCoolingSystem) -> hvac.PhxMechanicalSubSystem:
+def build_phx_cooling_sys(_htg_sys: cooling.PhCoolingSystem) -> hvac.PhxCoolingDevice:
     """
 
     Arguments:
     ----------
-        * _htg_sys (cooling.PhCoolingSystem): The HBE-PH cooling System to build 
+        * _htg_sys (cooling.PhCoolingSystem): The Honeybee-PH cooling System to build 
             the new PHX cooling system from.
 
     Returns:
     --------
-        * (mech.PhxMechanicalSubSystem): A new mech subsystem with the cooling device
-            and distribution.
+        * (mech.PhxCoolingDevice):
     """
-    phx_htg_subsystem = hvac.PhxMechanicalSubSystem()
-    phx_htg_subsystem.device = build_phx_cooling_device(_htg_sys)
+
+    phx_htg_device = build_phx_cooling_device(_htg_sys)
 
     # TODO: Distribution...
 
-    return phx_htg_subsystem
+    return phx_htg_device

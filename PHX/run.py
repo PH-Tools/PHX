@@ -95,7 +95,7 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path):
     ---------
         * _hbjson (str): File path to an HBJSON file to be read in and converted to a PHX-Model.
         * _lbt_python_site_packages_path (str) The full path to the LBT Python-3 Site-packages 
-            folder where PHX and HBPH are installed
+            folder where PHX and Honeybee-PH are installed
     """
 
     # -- Specify the path to the subprocess python script to run

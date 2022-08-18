@@ -49,12 +49,12 @@ class TankInput:
             ),
             XLItemDHW(
                 self.create_range(_row_num + self.shape.tanks.input_rows.standby_losses.row),
-                self.phx_tank.params.standby_losses,
+                self.phx_tank.params.standby_losses * self.phx_tank.quantity,
                 "W/K",
                 self.shape.tanks.input_rows.standby_losses.unit
             ),
             XLItemDHW(self.create_range(_row_num + self.shape.tanks.input_rows.storage_capacity.row),
-                self.phx_tank.params.storage_capacity,
+                self.phx_tank.params.storage_capacity * self.phx_tank.quantity,
                 "LITER",
                 self.shape.tanks.input_rows.storage_capacity.unit
             ),

@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
+from typing import Union
 
 from PHX.model.enums.hvac import DeviceType
 from PHX.model.hvac import _base
@@ -56,3 +57,5 @@ class PhxDeviceVentilator(PhxDeviceVentilation):
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         return new_obj
+
+AnyPhxVentilation = PhxDeviceVentilator

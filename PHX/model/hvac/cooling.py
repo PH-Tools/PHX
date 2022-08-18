@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
+from typing import Union
 
 from PHX.model.enums.hvac import CoolingType, DeviceType, HeatPumpType
 from PHX.model.hvac import _base
@@ -178,3 +179,11 @@ class PhxCoolingPanel(PhxCoolingDevice):
         new_obj.cooling_type = self.cooling_type
         new_obj.params = self.params + other.params
         return new_obj
+
+
+AnyPhxCooling = Union[
+    PhxCoolingVentilation,
+    PhxCoolingRecirculation,
+    PhxCoolingDehumidification,
+    PhxCoolingPanel
+]

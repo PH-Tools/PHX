@@ -7,3 +7,4 @@ from PHX.model.hvac.cooling import *
 from PHX.model.hvac.heating import *
 from PHX.model.hvac.ventilation import *
 from PHX.model.hvac.water import *
+from PHX.model.hvac.piping import *

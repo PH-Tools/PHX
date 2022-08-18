@@ -80,3 +80,5 @@ class PhxHotWaterTank(PhxHotWaterDevice):
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         return new_obj
+
+AnyWaterTank = PhxHotWaterTank
