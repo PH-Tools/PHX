@@ -133,7 +133,7 @@ class PhxMechanicalSystemCollection:
 
     @property
     def cooling_devices(self) -> List[hvac.AnyPhxCooling]:
-        """Returns a list of the 'Cooling' devices in the collection."""
+        """Returns a list of all the 'Cooling' devices in the collection."""
         return [_ for _ in self.devices 
                 if isinstance(_, hvac.PhxCoolingDevice)
                 and _.usage_profile.cooling
@@ -159,10 +159,12 @@ class PhxMechanicalSystemCollection:
 
     @property
     def dhw_branch_piping(self) -> List[hvac.PhxPipeElement]:
+        """Returns a list of all the DHW branch-piping in the collection."""
         return list(self._distribution_piping_branches.values())
     
     @property
     def dhw_branch_piping_segments_by_diam(self) -> List[List[hvac.PhxPipeSegment]]:
+        """Returns a list of the DHW branch-piping segments, grouped by diameter."""
         # -- Group piping segments by diameter
         d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
         for pipe in self.dhw_branch_piping:
@@ -173,10 +175,12 @@ class PhxMechanicalSystemCollection:
 
     @property
     def dhw_recirc_piping(self) -> List[hvac.PhxPipeElement]:
+        """Returns a list of all the DHW recirculation-piping in the collection."""
         return list(self._distribution_piping_recirc.values())
 
     @property
     def dhw_recirc_piping_segments_by_diam(self) -> List[List[hvac.PhxPipeSegment]]:
+        """Returns a list of the DHW recirculation-piping segments, grouped by diameter."""
         # -- Group piping segments by diameter
         d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
         for pipe in self.dhw_recirc_piping:

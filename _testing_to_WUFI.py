@@ -14,8 +14,10 @@ from PHX.model import (building, project, geometry, schedules, certification,
                        constructions, elec_equip, components)
 
 SOURCE_DIR = pathlib.Path("tests", "_source_hbjson")
+SOURCE_DIR = pathlib.Path("sample", "hbjson")
 source_file_names = [
-    "Multi_Room_Complete.hbjson",
+    # "Multi_Room_Complete.hbjson",
+    "220819_Chapman.hbjson",
 ]
 SOURCE_FILES = [pathlib.Path(SOURCE_DIR, n) for n in source_file_names]
 TARGET_DIR = pathlib.Path("tests", "_reference_xml")
@@ -66,6 +68,5 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
 
 
 if __name__ == '__main__':
-    # SOURCE_FILES = [pathlib.Path("/Users/em/Dropbox/bldgtyp/2021 ELS/07 PHPP/hbjson/ELS_220704.hbjson")]
     for source_file in SOURCE_FILES:
         generate_xml_file(source_file, TARGET_DIR)

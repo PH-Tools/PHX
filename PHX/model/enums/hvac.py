@@ -23,6 +23,7 @@ class FuelType(Enum):
 
 
 class SystemType(Enum):
+    ANY = 0
     VENTILATION = 1
     ELECTRIC = 2
     BOILER = 3

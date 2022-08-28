@@ -7,7 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Union
 
-from PHX.model.enums.hvac import CoolingType, DeviceType, HeatPumpType
+from PHX.model.enums.hvac import CoolingType, DeviceType, HeatPumpType, SystemType
 from PHX.model.hvac import _base
 
 
@@ -46,6 +46,7 @@ class PhxCoolingVentilationParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxCoolingVentilation(PhxCoolingDevice):
+    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     cooling_type: CoolingType = field(init=False, default=CoolingType.VENTILATION)
     params: PhxCoolingVentilationParams = field(
@@ -93,6 +94,7 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxCoolingRecirculation(PhxCoolingDevice):
+    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     cooling_type: CoolingType = field(init=False, default=CoolingType.RECIRCULATION)
     params: PhxCoolingRecirculationParams = field(
@@ -131,6 +133,7 @@ class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxCoolingDehumidification(PhxCoolingDevice):
+    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     cooling_type: CoolingType = field(init=False, default=CoolingType.DEHUMIDIFICATION)
     params: PhxCoolingDehumidificationParams = field(
@@ -167,8 +170,9 @@ class PhxCoolingPanelParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxCoolingPanel(PhxCoolingDevice):
-    device_type: DeviceType = DeviceType.HEAT_PUMP
-    cooling_type: CoolingType = CoolingType.PANEL
+    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
+    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
+    cooling_type: CoolingType = field(init=False, default=CoolingType.PANEL)
     params: PhxCoolingPanelParams = field(
         default_factory=PhxCoolingPanelParams)
 

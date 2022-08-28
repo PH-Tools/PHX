@@ -3,7 +3,7 @@
 
 """Conversion Schemas for how to write PH/HB objects to WUFI XML"""
 
-from typing import List
+from typing import List, Optional
 import sys
 
 from PHX.model import (certification, constructions,
@@ -557,12 +557,11 @@ def _UtilizationPatternVent(_util_pat: schedules.UtilizationPatternVent) -> List
 # -- MECHANICAL DEVICES -------------------------------------------------------
 
 
-def _PhxDeviceVentilator(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable]:
-    _d: hvac.PhxDeviceVentilator = _s.device
+def _PhxDeviceVentilator(_d: hvac.PhxDeviceVentilator) -> List[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
-        XML_Node("IdentNr", _s.id_num),
-        XML_Node("SystemType", _s.system_type.value),
+        XML_Node("IdentNr", _d.id_num),
+        XML_Node("SystemType", _d.system_type.value),
         XML_Node("TypeDevice", _d.device_type.value),
         XML_Node("UsedFor_Heating", _d.usage_profile.space_heating),
         XML_Node("UsedFor_DHW", _d.usage_profile.dhw_heating),
@@ -610,12 +609,11 @@ def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> List[xml_wr
 # -- Elec Heating--------------------------------------------------------------
 
 
-def _PhxDeviceHeaterElec(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable]:
-    _d: hvac.PhxHeaterElectric = _s.device
+def _PhxDeviceHeaterElec(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
-        XML_Node("SystemType", _s.system_type.value),
+        XML_Node("SystemType", _d.system_type.value),
         XML_Node("TypeDevice", _d.device_type.value),
         XML_Node("UsedFor_Heating", _d.usage_profile.space_heating),
         XML_Node("UsedFor_DHW", _d.usage_profile.dhw_heating),
@@ -652,18 +650,17 @@ def _DeviceHeaterElecDeviceParams(_d: hvac.PhxHeaterElectric) -> List[xml_writab
 # -- Boilers ------------------------------------------------------------------
 
 
-def _PhxDeviceHeaterBoiler(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable]:
+def _PhxDeviceHeaterBoiler(_d: hvac.PhxHeaterBoiler) -> List[xml_writable]:
     ph_params = {
         'GAS': '_DeviceHeaterBoilerFossilPhParams',
         'OIL': '_DeviceHeaterBoilerFossilPhParams',
         'WOOD_LOG': '_DeviceHeaterBoilerWoodPhParams',
         'WOOD_PELLET': '_DeviceHeaterBoilerWoodPhParams',
     }
-    _d: hvac.PhxHeaterBoiler = _s.device
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
-        XML_Node("SystemType", _s.system_type.value),
+        XML_Node("SystemType", _d.system_type.value),
         XML_Node("TypeDevice", _d.device_type.value),
         XML_Node("UsedFor_Heating", _d.usage_profile.space_heating),
         XML_Node("UsedFor_DHW", _d.usage_profile.dhw_heating),
@@ -739,12 +736,11 @@ def _DeviceHeaterBoilerDeviceParams(_d: hvac.PhxHeaterBoiler) -> List[xml_writab
 # -- District Heat ------------------------------------------------------------
 
 
-def _PhxDeviceHeaterDistrict(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable]:
-    _d: hvac.PhxHeaterDistrictHeat = _s.device
+def _PhxDeviceHeaterDistrict(_d: hvac.PhxHeaterDistrictHeat) -> List[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
-        XML_Node("SystemType", _s.system_type.value),
+        XML_Node("SystemType", _d.system_type.value),
         XML_Node("TypeDevice", _d.device_type.value),
         XML_Node("UsedFor_Heating", _d.usage_profile.space_heating),
         XML_Node("UsedFor_DHW", _d.usage_profile.dhw_heating),
@@ -771,18 +767,17 @@ def _DeviceHeaterDistrictDeviceParams(_d: hvac.PhxHeaterDistrictHeat) -> List[xm
 # -- Heat Pumps ---------------------------------------------------------------
 
 
-def _PhxDeviceHeaterHeatPump(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable]:
+def _PhxDeviceHeaterHeatPump(_d: hvac.PhxHeaterHeatPump) -> List[xml_writable]:
     param_schemas = {
         hvac.PhxHeaterHeatPumpAnnualParams.hp_type.value: '_DeviceHeaterHeatPumpPhParamsAnnual',
         hvac.PhxHeaterHeatPumpMonthlyParams.hp_type.value: '_DeviceHeaterHeatPumpPhParamsMonthly',
         hvac.PhxHeaterHeatPumpHotWaterParams.hp_type.value: '_DeviceHeaterHeatPumpPhParamsHotWater',
         hvac.PhxHeaterHeatPumpCombinedParams.hp_type.value: '_DeviceHeaterHeatPumpPhParamsCombined',
     }
-    _d: hvac.PhxHeaterHeatPump = _s.device
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
-        XML_Node("SystemType", _s.system_type.value),
+        XML_Node("SystemType", _d.system_type.value),
         XML_Node("TypeDevice", _d.device_type.value),
         XML_Node("UsedFor_Heating", _d.usage_profile.space_heating),
         XML_Node("UsedFor_DHW", _d.usage_profile.dhw_heating),
@@ -855,12 +850,11 @@ def _DeviceHeaterHeatPumpDeviceParams(_d: hvac.PhxHeaterHeatPump) -> List[xml_wr
     ]
 
 
-def _PhxDeviceWaterStorage(_s: hvac.PhxMechanicalSubSystem) -> List[xml_writable]:
-    _d: hvac.PhxHotWaterTank = _s.device
+def _PhxDeviceWaterStorage(_d: hvac.PhxHotWaterTank) -> List[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
-        XML_Node("SystemType", _s.system_type.value),
+        XML_Node("SystemType", _d.system_type.value),
         XML_Node("TypeDevice", _d.device_type.value),
         XML_Node("UsedFor_Heating", _d.usage_profile.space_heating),
         XML_Node("UsedFor_DHW", _d.usage_profile.dhw_heating),
@@ -991,22 +985,37 @@ It is stupid that things like COP are stored in there. So use a temp class for n
 class TempDistributionCooling:
     """Temporary wrapper class for WUFI format Cooling Distribution data"""
 
-    def __init__(self, _c: hvac.PhxMechanicalSystemCollection):
-        # -- have to sort and combine the systems together
-        self.ventilation_subsystem = sum(
-            sys.device for sys in _c.cooling_subsystems if sys.device.cooling_type == hvac.CoolingType.VENTILATION)
-        self.recirculation_subsystem = sum(
-            sys.device for sys in _c.cooling_subsystems if sys.device.cooling_type == hvac.CoolingType.RECIRCULATION)
-        self.dehumidification_subsystem = sum(
-            sys.device for sys in _c.cooling_subsystems if sys.device.cooling_type == hvac.CoolingType.DEHUMIDIFICATION)
-        self.panel_subsystem = sum(
-            sys.device for sys in _c.cooling_subsystems if sys.device.cooling_type == hvac.CoolingType.PANEL)
+    def __init__(self, _devices: List[hvac.AnyPhxCooling]):
+        # -- have to sort and combine the systems together       
+        self.ventilation_device = self.sum_devices(_devices, hvac.CoolingType.VENTILATION)
+        self.recirculation_device = self.sum_devices(_devices, hvac.CoolingType.RECIRCULATION)
+        self.dehumidification_device = self.sum_devices(_devices, hvac.CoolingType.DEHUMIDIFICATION)
+        self.panel_device = self.sum_devices(_devices, hvac.CoolingType.PANEL)
+
+    def sum_devices(self, _cooling_devices: List[hvac.AnyPhxCooling], _device_type: hvac.CoolingType) -> Optional[hvac.AnyPhxCooling]:
+        """ Returns a single HVAC Cooling device, made from a list of input devices, or None if no devices found.
+        
+        Arguments:
+        ----------
+            * _cooling_devices: 
+            * _device_type: 
+        
+        Returns:
+        --------
+            * Optional[hvac.AnyPhxCooling]: 
+        """
+        devices = [d for d in _cooling_devices if d.cooling_type == _device_type]
+        if len(devices) == 0:
+            return None
+        else:
+            return sum(devices)
 
 
 def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writable]:
     base = []
-    if _clg_distr.ventilation_subsystem != 0:
-        vent_params: hvac.PhxCoolingVentilationParams = _clg_distr.ventilation_subsystem.params
+
+    if _clg_distr.ventilation_device:
+        vent_params: hvac.PhxCoolingVentilationParams = _clg_distr.ventilation_device.params
         base += [
             XML_Node("CoolingViaVentilationAir", True),
             XML_Node("SupplyAirCoolingOnOff", vent_params.single_speed),
@@ -1015,8 +1024,8 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
                      vent_params.min_coil_temp),
             XML_Node("SupplyAirCoolinCOP", vent_params.annual_COP),
         ]
-    if _clg_distr.recirculation_subsystem != 0:
-        recirc_params: hvac.PhxCoolingRecirculationParams = _clg_distr.recirculation_subsystem.params
+    if _clg_distr.recirculation_device:
+        recirc_params: hvac.PhxCoolingRecirculationParams = _clg_distr.recirculation_device.params
         base += [
             XML_Node("CoolingViaRecirculation", True),
             XML_Node("RecirculatingAirOnOff", recirc_params.single_speed),
@@ -1029,8 +1038,8 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
             XML_Node("ControlledRecirculationVolumeFlow",
                      recirc_params.flow_rate_variable),
         ]
-    if _clg_distr.dehumidification_subsystem != 0:
-        dehumid_params: hvac.PhxCoolingDehumidificationParams = _clg_distr.dehumidification_subsystem.params
+    if _clg_distr.dehumidification_device:
+        dehumid_params: hvac.PhxCoolingDehumidificationParams = _clg_distr.dehumidification_device.params
         base += [
             XML_Node("Dehumidification", True),
             XML_Node("UsefullDehumidificationHeatLoss",
@@ -1040,12 +1049,13 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
             XML_Node("EER", None),
             XML_Node("DehumidificationElEnergy", None),
         ]
-    if _clg_distr.panel_subsystem != 0:
-        panel_params: hvac.PhxCoolingPanelParams = _clg_distr.panel_subsystem.params
+    if _clg_distr.panel_device:
+        panel_params: hvac.PhxCoolingPanelParams = _clg_distr.panel_device.params
         base += [
             XML_Node("PanelCooling", True),
             XML_Node("DehumdificationCOP", panel_params.annual_COP),
         ]
+    
     return base
 
 
@@ -1053,8 +1063,9 @@ def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
     return [
         # XML_Object('DistributionDHW', DistributionDHW()),
         # XML_Object('DistributionHeating', DistributionHeating()),
-        XML_Object('DistributionCooling', TempDistributionCooling(
-            _c), _schema_name='_DistributionCooling'),
+        XML_Object('DistributionCooling', 
+            TempDistributionCooling(_c.cooling_devices), _schema_name='_DistributionCooling'
+        ),
         # XML_List('DistributionVentilation', [XML_Object('Duct', None, 'index', i)
         #                                      for i, d in enumerate([])]),
         XML_Node("UseDefaultValues", True),
@@ -1076,7 +1087,7 @@ def _PhxZoneCoverage(_zc: hvac.PhxZoneCoverage) -> List[xml_writable]:
     ]
 
 
-def _PhxMechanicalSubSystem(_hvac_collection: hvac.PhxMechanicalSystemCollection) -> List[xml_writable]:
+def _PhxMechanicalDevices(_hvac_collection: hvac.PhxMechanicalSystemCollection) -> List[xml_writable]:
     devices = {
         hvac.DeviceType.VENTILATION: '_PhxDeviceVentilator',
         hvac.DeviceType.ELECTRIC: '_PhxDeviceHeaterElec',
@@ -1093,8 +1104,8 @@ def _PhxMechanicalSubSystem(_hvac_collection: hvac.PhxMechanicalSystemCollection
         XML_Node("IdentNr", _hvac_collection.id_num),
         XML_List('ZonesCoverage', [XML_Object("ZoneCoverage", n, "index", i)
                  for i, n in enumerate([_hvac_collection.zone_coverage])]),
-        XML_List('Devices', [XML_Object("Device", d, "index", i, _schema_name=devices[d.system_type])
-                 for i, d in enumerate(_hvac_collection.subsystems)]),
+        XML_List('Devices', [XML_Object("Device", d, "index", i, _schema_name=devices[d.device_type])
+                 for i, d in enumerate(_hvac_collection.devices)]),
         XML_Object('PHDistribution', _hvac_collection,
                    _schema_name='_PHDistribution'),
     ]
@@ -1102,8 +1113,13 @@ def _PhxMechanicalSubSystem(_hvac_collection: hvac.PhxMechanicalSystemCollection
 
 def _PhxMechanicalSystemCollection(_hvac: hvac.PhxMechanicalSystemCollection) -> List[xml_writable]:
     return [
-        XML_List("Systems", [XML_Object("System", n, "index", i, _schema_name='_PhxMechanicalSubSystem')
-                 for i, n in enumerate([_hvac])]),
+        XML_List(
+            "Systems",
+            [
+                XML_Object("System", n, "index", i, _schema_name='_PhxMechanicalDevices')
+                for i, n in enumerate([_hvac])
+            ]
+        ),
     ]
 
 

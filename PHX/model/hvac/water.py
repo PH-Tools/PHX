@@ -6,7 +6,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 
-from PHX.model.enums.hvac import DeviceType, PhxHotWaterInputOptions
+from PHX.model.enums.hvac import DeviceType, PhxHotWaterInputOptions, SystemType
 from PHX.model.hvac import _base
 from PHX.model.enums.hvac import PhxHotWaterTankType
 
@@ -73,6 +73,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxHotWaterTank(PhxHotWaterDevice):
+    system_type: SystemType = field(init=False, default=SystemType.WATER_STORAGE)
     device_type: DeviceType = field(init=False, default=DeviceType.WATER_STORAGE)
     params: PhxHotWaterTankParams = field(default_factory=PhxHotWaterTankParams)
 

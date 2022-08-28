@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from typing import Optional, ClassVar, Union
 import uuid
 
-from PHX.model.enums.hvac import DeviceType
+from PHX.model.enums.hvac import DeviceType, SystemType
 
 
 @dataclass
@@ -80,6 +80,7 @@ class PhxMechanicalDevice:
 
     _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
     id_num: int = field(init=False, default=0)
+    system_type: SystemType = SystemType.ANY
     device_type: DeviceType = DeviceType.ELECTRIC
     display_name: str = '_unnamed_equipment_'
     quantity: int = 0

@@ -5,9 +5,8 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Union
 
-from PHX.model.enums.hvac import DeviceType
+from PHX.model.enums.hvac import DeviceType, SystemType
 from PHX.model.hvac import _base
 
 
@@ -49,6 +48,7 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxDeviceVentilator(PhxDeviceVentilation):
+    system_type: SystemType = field(init=False, default=SystemType.VENTILATION)
     device_type: DeviceType = field(init=False, default=DeviceType.VENTILATION)
     params: PhxDeviceVentilatorParams = field(
         default_factory=PhxDeviceVentilatorParams)

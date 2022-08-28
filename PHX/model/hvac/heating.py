@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import Optional, Union
 from dataclasses import dataclass, field
 
-from PHX.model.enums.hvac import DeviceType, HeatPumpType, FuelType
+from PHX.model.enums.hvac import DeviceType, HeatPumpType, FuelType, SystemType
 from PHX.model.hvac import _base
 
 
@@ -27,6 +27,7 @@ class PhxHeaterElectricParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxHeaterElectric(PhxHeatingDevice):
+    system_type: SystemType = field(init=False, default=SystemType.ELECTRIC)
     device_type: DeviceType = field(init=False, default=DeviceType.ELECTRIC)
     params: PhxHeaterElectricParams = field(
         default_factory=PhxHeaterElectricParams)
@@ -85,6 +86,7 @@ class PhxHeaterBoilerWoodParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxHeaterBoilerFossil(PhxHeatingDevice):
+    system_type: SystemType = field(init=False, default=SystemType.BOILER)
     device_type: DeviceType = field(init=False, default=DeviceType.BOILER)
     params: PhxHeaterBoilerFossilParams = field(
         default_factory=PhxHeaterBoilerFossilParams)
@@ -92,6 +94,7 @@ class PhxHeaterBoilerFossil(PhxHeatingDevice):
 
 @dataclass
 class PhxHeaterBoilerWood(PhxHeatingDevice):
+    system_type: SystemType = field(init=False, default=SystemType.BOILER)
     device_type: DeviceType = field(init=False, default=DeviceType.BOILER)
     params: PhxHeaterBoilerWoodParams = field(
         default_factory=PhxHeaterBoilerWoodParams)
@@ -111,6 +114,7 @@ class PhxHeaterDistrictHeatParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxHeaterDistrictHeat(PhxHeatingDevice):
+    system_type: SystemType = field(init=False, default=SystemType.DISTRICT_HEAT)
     device_type: DeviceType = field(init=False, default=DeviceType.DISTRICT_HEAT)
     params: PhxHeaterDistrictHeatParams = field(
         default_factory=PhxHeaterDistrictHeatParams)
@@ -181,28 +185,32 @@ class PhxHeaterHeatPumpCombinedParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxHeaterHeatPumpAnnual(PhxHeatingDevice):
-    device_type: DeviceType = DeviceType.HEAT_PUMP
+    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
+    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     params: PhxHeaterHeatPumpAnnualParams = field(
         default_factory=PhxHeaterHeatPumpAnnualParams)
 
 
 @dataclass
 class PhxHeaterHeatPumpMonthly(PhxHeatingDevice):
-    device_type: DeviceType = DeviceType.HEAT_PUMP
+    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
+    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     params: PhxHeaterHeatPumpMonthlyParams = field(
         default_factory=PhxHeaterHeatPumpMonthlyParams)
 
 
 @dataclass
 class PhxHeaterHeatPumpHotWater(PhxHeatingDevice):
-    device_type: DeviceType = DeviceType.HEAT_PUMP
+    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
+    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     params: PhxHeaterHeatPumpHotWaterParams = field(
         default_factory=PhxHeaterHeatPumpHotWaterParams)
 
 
 @dataclass
 class PhxHeaterHeatPumpCombined(PhxHeatingDevice):
-    device_type: DeviceType = DeviceType.HEAT_PUMP
+    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
+    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     params: PhxHeaterHeatPumpCombinedParams = field(
         default_factory=PhxHeaterHeatPumpCombinedParams)
 
