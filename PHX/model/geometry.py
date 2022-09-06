@@ -264,11 +264,11 @@ class PhxPolygonRectangular(PhxPolygon):
 
     @property
     def width(self) -> float:
-        return self.edge_left.length
+        return self.edge_top.length
 
     @property
     def height(self) -> float:
-        return self.edge_top.length
+        return self.edge_left.length
 
     def add_vertix(self, _phx_vertix: PhxVertix) -> None:
         print(
