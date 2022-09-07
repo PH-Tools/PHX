@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # --- Input file Path
     # -------------------------------------------------------------------------
     SOURCE_FILE = pathlib.Path(
-        "sample/hbjson/220819_Chapman.hbjson"
+        "sample/hbjson/220907_Chapman.hbjson"
     )
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
