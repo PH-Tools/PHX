@@ -5,9 +5,6 @@ permissions: write-all
 
 jobs:
 
-  test:
-    name: Unit tests
-
   deploy:
     name: Deploy to GitHub and PyPI
     runs-on: ubuntu-latest
@@ -18,18 +15,22 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
+      
       - name: set up node  # we need node for for semantic release
         uses: actions/setup-node@v2.1.2
         with:
           node-version: 14.2.0
+      
       - name: install python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r dev-requirements.txt
+      
       - name: install semantic-release
         run:
           npm install @semantic-release/exec
+      
       - name: run semantic release
         id: new_release
         run: |
