@@ -1,4 +1,4 @@
-# PHX v1 (Beta Release | ______ _, 2022)
+# PHX v1 (Release | ______ _, 2022)
 The Passive House Exchange (PHX) model standard and libraries are free plugins which enable users to move their building model data in and out of the energy modeling software packages such as the Passive House Planning Package (PHPP) and WUFI-Passive. 
 
 This library can be used as part of a [Honeybee-PH plugin](https://github.com/PH-Tools/honeybee_ph) workflow, or on its own using the command-line or other GUI tools. Some workflows have been created for use within the [Rhino-3D](https://www.rhino3d.com/) software which are the most typical workflow.
