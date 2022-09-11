@@ -7,7 +7,7 @@ jobs:
 
   deploy:
     name: Deploy to GitHub and PyPI
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: github.ref == 'refs/heads/main' && github.repository_owner == 'ph-tools'
     steps:
       - uses: actions/checkout@v2
