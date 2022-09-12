@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""DEV SANDBOX: export an HBJSON file to a PHPP XL file."""
+"""DEV SANDBOX: export a specified HBJSON file to a PHPP XL file."""
 
-import pathlib
 from rich import print
+import pathlib
 
 from PHX.from_HBJSON import read_HBJSON_file, create_project
 from PHX.to_PHPP import phpp_app, xl_app
 from PHX.to_PHPP.phpp_localization.shape_model import PhppShape
 
-if __name__ == '__main__':
-    # --- Input file Path
-    # -------------------------------------------------------------------------
-    SOURCE_FILE = pathlib.Path(
-        "sample/hbjson/220907_Chapman.hbjson"
-    )
+# --- Input file Path
+# -------------------------------------------------------------------------
+SOURCE_FILE = pathlib.Path(
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Default_Model_Single_Zone.hbjson"
+)
 
+if __name__ == '__main__':
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
     print("[bold green]- " * 50)

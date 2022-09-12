@@ -87,15 +87,23 @@ def convert_hbjson_to_WUFI_XML(_hbjson_file, _save_file_name, _save_folder):
     return directory, file_name
 
 
-def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path):
-    # type: (str, str) -> None
+def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"):
+    # type: (str, str, str) -> None
     """Read in an hbjson file and write out to a PHPP file.
 
     Arguments:
     ---------
         * _hbjson (str): File path to an HBJSON file to be read in and converted to a PHX-Model.
-        * _lbt_python_site_packages_path (str) The full path to the LBT Python-3 Site-packages 
+        
+        * _lbt_python_site_packages_path (str): The full path to the LBT Python-3 Site-packages 
             folder where PHX and Honeybee-PH are installed
+        
+        * _activate_variants (str): Default="False". Set True if you would like to 
+            connect all of the various PHPP inputs to the 'Variants' worksheet. This
+            is used when testing various combinations of attributes during the 
+            early design phase. Note that if activated, any inputs will get overwritten
+            when the connection to the 'Variants' worksheet is made.
+            Note: Args must be strings, not actual boolean True/False.
     """
 
     # -- Specify the path to the subprocess python script to run
@@ -116,6 +124,7 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path):
         hb_folders.python_exe_path,
         run_file_path,
         _hbjson_file,
-        _lbt_python_site_packages_path
+        _lbt_python_site_packages_path,
+        _activate_variants
     ]
     _run_subprocess(commands)
