@@ -27,4 +27,5 @@ For more information on the use of these tools, check out the YouTube playlist h
 and the Passive House Tools website:
 http://www.PassiveHouseTools.com
 
+![Tests](https://github.com/PH-Tools/PHX/actions/workflows/ci.yaml/badge.svg )
 ![versions](https://img.shields.io/pypi/pyversions/pybadges.svg)
