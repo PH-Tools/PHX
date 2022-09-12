@@ -23,7 +23,8 @@ for detailed installation instructions,
 
 # How-To
 For more information on the use of these tools, check out the YouTube playlist here:
-_______________
 
 and the Passive House Tools website:
 http://www.PassiveHouseTools.com
+
+![versions](https://img.shields.io/pypi/pyversions/pybadges.svg)
