@@ -14,35 +14,38 @@ from PHX.model.hvac.collection import NoVentUnitFoundError
 from PHX.to_PHPP import xl_app
 from PHX.to_PHPP import sheet_io
 from PHX.to_PHPP.phpp_localization import shape_model
-from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, areas_thermal_bridges, 
+from PHX.to_PHPP.phpp_model import (areas_surface, areas_data, areas_thermal_bridges,
                                     climate_entry, electricity_item, uvalues_constructor,
-                                    component_glazing, component_frame, component_vent, 
-                                    ventilation_data, windows_rows, shading_rows, 
-                                    vent_space, vent_units, vent_ducts, verification_data, 
+                                    component_glazing, component_frame, component_vent,
+                                    ventilation_data, windows_rows, shading_rows,
+                                    vent_space, vent_units, vent_ducts, verification_data,
                                     hot_water_tank, hot_water_piping)
 
-def get_data_worksheet(_xl:xl_app.XLConnection) -> Sheet:
-    """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""  
+
+def get_data_worksheet(_xl: xl_app.XLConnection) -> Sheet:
+    """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""
     worksheet_names = _xl.get_worksheet_names()
     for worksheet_name in ['Data', 'Daten', 'Datos']:
         if worksheet_name in worksheet_names:
             return _xl.get_sheet_by_name(worksheet_name)
-       
-    raise Exception(f"Error: Cannot fine a 'Data' worksheet in the Excel file: {_xl.wb.name}?")
 
-def get_phpp_version(_xl:xl_app.XLConnection,
-                    _search_col: str="A",
-                    _row_start: int=1,
-                    _row_end: int=5 ) -> Tuple[str, str]:
+    raise Exception(
+        f"Error: Cannot fine a 'Data' worksheet in the Excel file: {_xl.wb.name}?")
+
+
+def get_phpp_version(_xl: xl_app.XLConnection,
+                     _search_col: str = "A",
+                     _row_start: int = 1,
+                     _row_end: int = 5) -> Tuple[str, str]:
     """Find the PHPP Version and Language of the active xl-file.
-    
+
     Arguments:
     ----------
         * _xl (xl_app.XLConnection):
         * _search_col (str)
         * _row_start (int) default=1
         * _row_end (int) default=5
-    
+
     Returns:
     --------
         * (Tuple[str, str]): The Version number and Language of the Active PHPP.
@@ -50,7 +53,7 @@ def get_phpp_version(_xl:xl_app.XLConnection,
 
     # -- Find the right 'Data' worksheet
     data_worksheet: Sheet = get_data_worksheet(_xl)
-    
+
     # -- Pull the search Column data from the Active XL Instance
     data = _xl.get_single_column_data(
         _sheet_name=data_worksheet.name,
@@ -65,22 +68,22 @@ def get_phpp_version(_xl:xl_app.XLConnection,
             break
     else:
         raise Exception(
-            f"Error: Cannot determine the PHPP Version? Expected 'PHPP' in"\
+            f"Error: Cannot determine the PHPP Version? Expected 'PHPP' in"
             "col: {_search_col} of the {data_worksheet.name} worksheet?"
-            )
-   
+        )
+
    # -- Pull the search row data from the Active XL Instance
     data = _xl.get_single_row_data(data_worksheet.name, data_row)
     data = [_ for _ in data if _ is not None]
-    
+
     # -- Find the right Versions number
     version = str(data[1]).upper().strip().replace(" ", "").replace(".", "_")
-    
+
     # - Figure out the PHPP language
-    language_search_data = { 
-        '1-PE-FAKTOREN':"DE",
-        '1-FACTORES EP':"ES",
-        '1-PE-FACTORS':"EN",
+    language_search_data = {
+        '1-PE-FAKTOREN': "DE",
+        '1-FACTORES EP': "ES",
+        '1-PE-FACTORS': "EN",
     }
     language = None
     for search_string in language_search_data.keys():
@@ -89,18 +92,20 @@ def get_phpp_version(_xl:xl_app.XLConnection,
             language = language.strip().replace(' ', "_").replace(".", "_")
             break
     if not language:
-        raise Exception("Error: Cannot determine the PHPP language? Only English, German and Spanish are supported.")
+        raise Exception(
+            "Error: Cannot determine the PHPP language? Only English, German and Spanish are supported.")
 
     return version, language
 
-def get_shape_file(_xl:xl_app.XLConnection, _shape_file_directory: pathlib.Path):
+
+def get_shape_file(_xl: xl_app.XLConnection, _shape_file_directory: pathlib.Path):
     """Returns the path to the PHPP Shape File based on the language and PHPP version found.
-    
+
     Arguments:
     ----------
         * _xl (xl_app.XLConnection): The XL connection to use to find the version data.
         * _shape_file_directory ():
-    
+
     Returns:
     --------
         * (pathlib.Path): The path to the correct PHPP Shape File.
@@ -108,15 +113,17 @@ def get_shape_file(_xl:xl_app.XLConnection, _shape_file_directory: pathlib.Path)
     phpp_version, phpp_language = get_phpp_version(_xl)
     shape_file_name = f"{phpp_language}_{phpp_version}.json"
     shape_file_path = pathlib.Path(_shape_file_directory, shape_file_name)
-    
+
     if not os.path.exists(shape_file_path):
-        raise FileNotFoundError(f'\n\tError: The PHPP shapefile "{shape_file_path}" was not found?')
+        raise FileNotFoundError(
+            f'\n\tError: The PHPP shapefile "{shape_file_path}" was not found?')
 
     return shape_file_path
 
+
 class PHPPConnection:
 
-    def __init__(self, _xl:xl_app.XLConnection, _phpp_shape: shape_model.PhppShape):
+    def __init__(self, _xl: xl_app.XLConnection, _phpp_shape: shape_model.PhppShape):
         # -- Get the localized (units, language) PHPP Shape with worksheet names and column locations
         self.shape = _phpp_shape
 
@@ -139,7 +146,7 @@ class PHPPConnection:
 
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
         for phx_variant in phx_project.variants:
-            
+
             # # TODO: multiple variants?
 
             # --- Building Type / Use
@@ -237,7 +244,7 @@ class PHPPConnection:
                     target_unit=self.shape.VERIFICATION.setpoint_summer.unit
                 )
             )
-        
+
         return None
 
     def write_climate_data(self, phx_project: project.PhxProject) -> None:
@@ -338,16 +345,16 @@ class PHPPConnection:
                     )
 
         if len(surfaces) >= 100:
-            print(f"Warning: {len(surfaces)} surfaces found in the model. Ensure that you have "\
-                "added enough rows to the 'Areas' worksheet to handle that many surfaces. "\
-                "By default the PHPP can only have 100 surfaces input.")
-        
+            print(f"Warning: {len(surfaces)} surfaces found in the model. Ensure that you have "
+                  "added enough rows to the 'Areas' worksheet to handle that many surfaces. "
+                  "By default the PHPP can only have 100 surfaces input.")
+
         self.areas.write_surfaces(surfaces)
         return None
 
     def write_project_thermal_bridges(self, phx_project: project.PhxProject) -> None:
         """Write all of the thermal-bridge elements of a PhxProject to the PHPP 'Areas' worksheet."""
-        
+
         thermal_bridges: List[areas_thermal_bridges.ThermalBridgeRow] = []
         for variant in phx_project.variants:
             for phx_tb in variant.building.thermal_bridges:
@@ -357,15 +364,15 @@ class PHPPConnection:
                         phx_tb
                     )
                 )
-        
+
         if len(thermal_bridges) >= 100:
-            print(f"Warning: {len(thermal_bridges)} thermal bridges found in the model. Ensure that you have "\
-                "added enough rows to the 'Areas' worksheet to handle that many thermal bridges. "\
-                "By default the PHPP can only have 100 thermal bridges input.")
+            print(f"Warning: {len(thermal_bridges)} thermal bridges found in the model. Ensure that you have "
+                  "added enough rows to the 'Areas' worksheet to handle that many thermal bridges. "
+                  "By default the PHPP can only have 100 thermal bridges input.")
 
         self.areas.write_thermal_bridges(thermal_bridges)
         return None
-        
+
     def write_project_window_surfaces(self, phx_project: project.PhxProject) -> None:
         """Write all of the window surfaces from a PhxProject to the PHPP 'Windows' worksheet."""
 
@@ -375,13 +382,13 @@ class PHPPConnection:
             for phx_variant in phx_project.variants
             for phx_component in phx_variant.building.opaque_components
             for phx_aperture in phx_component.apertures
-        ]        
+        ]
         for i, variant_type_name in enumerate(sorted(variant_type_names)):
             self.variants.write_window_type(variant_type_name, i)
-        
+
         # -- Get the variant types in a dict
         window_type_phpp_ids = self.variants.get_window_type_phpp_ids()
-        
+
         # -- Write in the window-data
         phpp_windows: List[windows_rows.WindowRow] = []
         for phx_variant in phx_project.variants:
@@ -412,19 +419,19 @@ class PHPPConnection:
                                 phpp_id_variant_type=window_type_phpp_ids[phx_aperture.variant_type_name].phpp_id
                             )
                         )
-        
+
         if len(phpp_windows) >= 150:
-            print(f"Warning: {len(phpp_windows)} windows found in the model. Ensure that you have "\
-                "added enough rows to the 'Windows' worksheet to handle that many windows. "\
-                "By default the PHPP can only have 150 windows input.")
-        
+            print(f"Warning: {len(phpp_windows)} windows found in the model. Ensure that you have "
+                  "added enough rows to the 'Windows' worksheet to handle that many windows. "
+                  "By default the PHPP can only have 150 windows input.")
+
         self.windows.write_windows(phpp_windows)
         return None
-        
+
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
         # Get all the Window worksheet names in order
         window_names = self.windows.get_all_window_names()
-        
+
         # Get all the PHX Aperture objects
         phx_aperture_dict: Dict[str, components.PhxApertureElement] = {}
         for phx_variant in phx_project.variants:
@@ -434,19 +441,20 @@ class PHPPConnection:
                         phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element
 
         # Sort the phx apertures to match the window_names order
-        phx_aperture_elements_in_order = (phx_aperture_dict[window_name] for window_name in window_names)
+        phx_aperture_elements_in_order = (
+            phx_aperture_dict[window_name] for window_name in window_names)
 
         # Write out all the Shading
         phpp_shading_rows: List[shading_rows.ShadingRow] = []
         for phx_aperture_element in phx_aperture_elements_in_order:
             phpp_shading_rows.append(
-                            shading_rows.ShadingRow(
-                                self.shape.SHADING,
-                                phx_aperture_element.shading_dimensions,
-                                phx_aperture_element.winter_shading_factor,
-                                phx_aperture_element.summer_shading_factor
-                            )
-                        )
+                shading_rows.ShadingRow(
+                    self.shape.SHADING,
+                    phx_aperture_element.shading_dimensions,
+                    phx_aperture_element.winter_shading_factor,
+                    phx_aperture_element.summer_shading_factor
+                )
+            )
         self.shading.write_shading(phpp_shading_rows)
 
         # TODO: option to clear all the dimensional info?
@@ -506,10 +514,10 @@ class PHPPConnection:
                     phpp_vent_rooms.append(phpp_rm)
 
         if len(phpp_vent_rooms) >= 30:
-            print(f"Warning: {len(phpp_vent_rooms)} spaces found in the model. Ensure that you have "\
-                "added enough rows to the 'Additional Vent' worksheet to handle that many spaces. "\
-                "By default the PHPP can only have 30 spaces input.")
-        
+            print(f"Warning: {len(phpp_vent_rooms)} spaces found in the model. Ensure that you have "
+                  "added enough rows to the 'Additional Vent' worksheet to handle that many spaces. "
+                  "By default the PHPP can only have 30 spaces input.")
+
         self.addnl_vent.write_spaces(phpp_vent_rooms)
         return None
 
@@ -537,7 +545,7 @@ class PHPPConnection:
         """Write the Vn50 and Vv to the PHPP 'Ventilation Worksheet."""
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
-            
+
             if not variant.phius_certification.ph_building_data:
                 continue
             bldg: building.PhxBuilding = variant.building
@@ -554,7 +562,7 @@ class PHPPConnection:
 
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
-            
+
             if not variant.phius_certification.ph_building_data:
                 continue
             ph_bldg: certification.PhxPhBuildingData = variant.phius_certification.ph_building_data
@@ -586,16 +594,16 @@ class PHPPConnection:
             # -- Tanks
             # Use only the first 2 tanks for PHPP
             if len(variant.mech_systems.dhw_tank_devices) > 2:
-                print(f'Warning: PHPP only allows 2 tanks.'\
-                    f'{len(variant.mech_systems.dhw_tank_devices)} tank'\
-                    f'found in the Variant "{variant.name}"')
-            
+                print(f'Warning: PHPP only allows 2 tanks.'
+                      f'{len(variant.mech_systems.dhw_tank_devices)} tank'
+                      f'found in the Variant "{variant.name}"')
+
             tank_inputs = []
             for i, phx_dhw_tank in enumerate(variant.mech_systems.dhw_tank_devices[:2], start=1):
                 tank_inputs.append(
                     hot_water_tank.TankInput(
                         self.shape.DHW,
-                        phx_dhw_tank, # type: water.PhxHotWaterTank
+                        phx_dhw_tank,  # type: water.PhxHotWaterTank
                         i
                     )
                 )
@@ -605,16 +613,16 @@ class PHPPConnection:
             branch_piping_inputs = []
             branch_pipe_groups = variant.mech_systems.dhw_branch_piping_segments_by_diam
             if len(branch_pipe_groups) > 5:
-                print('Warning: PHPP only allows 5 groups of DHW branch piping. '\
-                    f'{len(branch_pipe_groups)} piping groups '\
-                    f'found in the Variant "{variant.name}". '\
-                    'Using only then first 5 piping groups.')
+                print('Warning: PHPP only allows 5 groups of DHW branch piping. '
+                      f'{len(branch_pipe_groups)} piping groups '
+                      f'found in the Variant "{variant.name}". '
+                      'Using only then first 5 piping groups.')
 
             for i, phx_branch_piping in enumerate(branch_pipe_groups[:5]):
                 branch_piping_inputs.append(
                     hot_water_piping.BranchPipingInput(
                         self.shape.DHW,
-                        phx_branch_piping, # type: piping.PhxPipeSegment
+                        phx_branch_piping,  # type: piping.PhxPipeSegment
                         i
                     )
                 )
@@ -624,16 +632,16 @@ class PHPPConnection:
             recirc_piping_inputs = []
             recirc_pipe_groups = variant.mech_systems.dhw_recirc_piping_segments_by_diam
             if len(recirc_pipe_groups) > 5:
-                print('Warning: PHPP only allows 5 groups of DHW Recirc. piping. '\
-                    f'{len(recirc_pipe_groups)} piping groups '\
-                    f'found in the Variant "{variant.name}". '\
-                    'Using only then first 5 piping groups.')
+                print('Warning: PHPP only allows 5 groups of DHW Recirc. piping. '
+                      f'{len(recirc_pipe_groups)} piping groups '
+                      f'found in the Variant "{variant.name}". '
+                      'Using only then first 5 piping groups.')
 
             for i, phx_recirc_piping in enumerate(recirc_pipe_groups[:5]):
                 recirc_piping_inputs.append(
                     hot_water_piping.RecircPipingInput(
                         self.shape.DHW,
-                        phx_recirc_piping, # type: piping.PhxPipeSegment
+                        phx_recirc_piping,  # type: piping.PhxPipeSegment
                         i
                     )
                 )
@@ -649,43 +657,43 @@ class PHPPConnection:
                 for phx_equip in zone.elec_equipment_collection:
                     equipment_inputs.append(electricity_item.ElectricityItem(phx_equip))
             self.electricity.write_equipment(equipment_inputs)
-        
+
         return None
 
     def activate_variant_assemblies(self) -> None:
         """Remove all existing U-Value information and link assemblies to the Variants worksheet."""
-        
+
         # -- Collect all the assemblies from the U-Values page
         # -- and add each one to the Variants assembly-layers section
         for i, assembly_name in enumerate(self.u_values.get_used_constructor_names(), start=0):
             if i > 25:
-                print("WARNING: The Variants worksheet can only handle 26 different assemblies."\
-                    "You will have to set up the assembly-layer Variants links manually.")
+                print("WARNING: The Variants worksheet can only handle 26 different assemblies."
+                      "You will have to set up the assembly-layer Variants links manually.")
                 continue
             self.variants.write_assembly_layer(assembly_name, i)
-            
+
         # -- Get all the Variant assembly names with prefix
         assembly_phpp_ids = self.variants.get_assembly_layer_phpp_ids()
-        
+
         # -- Make all Variants--->U-Values links
         self.u_values.activate_variants(assembly_phpp_ids)
 
         return None
-   
+
     def activate_variant_windows(self) -> None:
         """Set the Frame and Glass Components to link to the Variants worksheet for all windows."""
-        
+
         self.windows.activate_variants()
-        
+
         return None
 
     def activate_variant_ventilation(self) -> None:
         """Set the ACH, Ventilation type to link to the Variants worksheet."""
-        
+
         self.ventilation.activate_variants()
-        
+
         return None
-    
+
     def activate_variant_additional_vent(self) -> None:
         """Set the Ventilator, duct length and insulation to link to the Variants worksheet."""
 

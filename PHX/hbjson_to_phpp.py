@@ -6,6 +6,8 @@
 import sys
 import pathlib
 
+from honeybee.config import folders
+
 from PHX.from_HBJSON import read_HBJSON_file, create_project
 from PHX.to_PHPP import phpp_app, xl_app
 from PHX.to_PHPP.phpp_localization.shape_model import PhppShape
@@ -33,7 +35,7 @@ if __name__ == '__main__':
     # --- Connect to open instance of XL, Load the correct PHPP Shape file
     # -------------------------------------------------------------------------
     xl = xl_app.XLConnection = xl_app.XLConnection(_output=print)
-    shape_file_dir = pathlib.Path("PHX", "to_PHPP", "phpp_localization")
+    shape_file_dir = pathlib.Path(folders.python_package_path, "PHX", "to_PHPP", "phpp_localization")
     phpp_shape_file = phpp_app.get_shape_file(xl, shape_file_dir)
     phpp_shape = PhppShape.parse_file(phpp_shape_file)
     phpp_conn = phpp_app.PHPPConnection(xl, phpp_shape)
