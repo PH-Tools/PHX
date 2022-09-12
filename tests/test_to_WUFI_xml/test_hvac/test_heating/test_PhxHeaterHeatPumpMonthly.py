@@ -6,10 +6,8 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 def test_default_PhxHeaterHeatPumpMonthly(reset_class_counters):
     h1 = heating.PhxHeaterHeatPumpMonthly()
     h1.usage_profile.space_heating = True
-    sys = _base.PhxMechanicalSubSystem()
-    sys.device = h1
     coll = collection.PhxMechanicalSystemCollection()
-    coll.add_new_mech_subsystem(sys.identifier, sys)
+    coll.add_new_mech_device(h1.identifier, h1)
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [
         '<Systems count="1">',

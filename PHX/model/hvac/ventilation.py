@@ -52,7 +52,10 @@ class PhxDeviceVentilator(PhxDeviceVentilation):
     device_type: DeviceType = field(init=False, default=DeviceType.VENTILATION)
     params: PhxDeviceVentilatorParams = field(
         default_factory=PhxDeviceVentilatorParams)
-
+    
+    def __post_init__(self):
+        super().__post_init__()
+    
     def __add__(self, other: PhxDeviceVentilator) -> PhxDeviceVentilator:
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))

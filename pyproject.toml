@@ -8,7 +8,7 @@ filterwarnings = [
 
 [tool.coverage.run]
 # --- For testing...
-command_line = "-m pytest tests"
+command_line = "-m pytest . tests/test_to_WUFI_xml"
 source = ["honeybee_ph"]
 # ---
 branch = true

@@ -1,14 +1,12 @@
-from PHX.model.hvac import cooling, _base, collection
+from PHX.model.hvac import cooling, collection
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
 def test_default_PhxCoolingDehumidification(reset_class_counters):
     d1 = cooling.PhxCoolingDehumidification()
-    sys = _base.PhxMechanicalSubSystem()
-    sys.device = d1
     coll = collection.PhxMechanicalSystemCollection()
-    coll.add_new_mech_subsystem(sys.identifier, sys)
+    coll.add_new_mech_device(d1.identifier, d1)
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [
         '<Systems count="1">',

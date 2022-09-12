@@ -63,11 +63,27 @@ def _reset_phx_class_counters():
     
     components.PhxComponentBase._count = 0
     elec_equip.PhxElectricalDevice._count = 0
-    PhxRoomVentilation._count = 0
+    elec_equip.PhxDeviceDishwasher._count = 0
+    elec_equip.PhxDeviceClothesWasher._count = 0
+    elec_equip.PhxDeviceClothesDryer._count = 0
+    elec_equip.PhxDeviceRefrigerator._count = 0
+    elec_equip.PhxDeviceFreezer._count = 0
+    elec_equip.PhxDeviceFridgeFreezer._count = 0
+    elec_equip.PhxDeviceCooktop._count = 0
+    elec_equip.PhxDeviceMEL._count = 0
+    elec_equip.PhxDeviceLightingInterior._count = 0
+    elec_equip.PhxDeviceLightingExterior._count = 0
+    elec_equip.PhxDeviceLightingGarage._count = 0
+    elec_equip.PhxDeviceCustomElec._count = 0
+    elec_equip.PhxDeviceCustomLighting._count = 0
+    elec_equip.PhxDeviceCustomMEL._count = 0
+    
     _base.PhxMechanicalDevice._count = 0
-    _base.PhxMechanicalSubSystem._count = 0
-
     collection.PhxMechanicalSystemCollection._count = 0
+
+    PhxRoomVentilation._count = 0
+    ventilation.PhxDeviceVentilation._count = 0
+    ventilation.PhxDeviceVentilator._count = 0
 
     cooling.PhxCoolingDevice._count = 0
     cooling.PhxCoolingVentilation._count = 0
@@ -127,51 +143,17 @@ def reset_class_counters():
     ),
     (
         Path('tests', '_source_hbjson',
-             'Default_Room_Multiple_Zones_with_Apertures_Single_BldgSegment.hbjson'),
+             'Multi_Room_Complete.hbjson'),
         Path('tests', '_reference_xml',
-             'Default_Room_Multiple_Zones_with_Apertures_Single_BldgSegment.xml')
-    ),
-    (
-        Path('tests', '_source_hbjson',
-             'Default_Room_Multiple_Zones_with_Apertures.hbjson'),
-        Path('tests', '_reference_xml',
-             'Default_Room_Multiple_Zones_with_Apertures.xml')
-    ),
-    (
-        Path('tests', '_source_hbjson',
-             'Default_Room_Single_Zone_with_Apertures.hbjson'),
-        Path('tests', '_reference_xml',
-             'Default_Room_Single_Zone_with_Apertures.xml')
-    ),
-    (
-        Path('tests', '_source_hbjson',
-             'Default_Room_Single_Zone_with_Shades.hbjson'),
-        Path('tests', '_reference_xml',
-             'Default_Room_Single_Zone_with_Shades.xml')
-    ),
-    (
-        Path('tests', '_source_hbjson',
-             'Default_Room_Multiple_Zones_with_Apertures_default_Climate.hbjson'),
-        Path('tests', '_reference_xml',
-             'Default_Room_Multiple_Zones_with_Apertures_default_Climate.xml')
-    ),
-    (
-        Path('tests', '_source_hbjson',
-             'Default_Room_Single_Zone_with_Rooms.hbjson'),
-        Path('tests', '_reference_xml',
-             'Default_Room_Single_Zone_with_Rooms.xml')
-    ),
-    (
-        Path('tests', '_source_hbjson',
-             'Default_Room_Single_Zone_with_Ventilation.hbjson'),
-        Path('tests', '_reference_xml',
-             'Default_Room_Single_Zone_with_Ventilation.xml')
+             'Multi_Room_Complete.xml')
     ),
 ])
 def to_xml_reference_cases(request):
     """Yields file-paths to reference test-cases"""
     _reload_phx_classes()
+    _reset_phx_class_counters()
     try:
         yield request.param
     finally:
         _reload_phx_classes()
+        _reset_phx_class_counters()

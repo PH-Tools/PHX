@@ -88,9 +88,9 @@ class PhxMechanicalSystemCollection:
             * (hvac.PhxMechanicalDevice): The Mechanical Device found with the
                 matching ID-Number. Or Error if not found.
         """
-        for sys in self._devices.values():
-            if sys.id_num == _id_num:
-                return sys
+        for device in self._devices.values():
+            if device.id_num == _id_num:
+                return device
 
         raise NoVentUnitFoundError(_id_num)
 

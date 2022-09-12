@@ -3,7 +3,6 @@
 
 """DEV SANDBOX: convert an HBJSON file over to WUFI XML format."""
 
-import importlib
 import pathlib
 
 from rich import print
@@ -12,34 +11,20 @@ from PHX.from_HBJSON import read_HBJSON_file, create_project
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 from PHX.model import (building, project, geometry, schedules, certification,
                        constructions, elec_equip, components)
+from tests.conftest import _reload_phx_classes, _reset_phx_class_counters
 
 SOURCE_DIR = pathlib.Path("tests", "_source_hbjson")
-SOURCE_DIR = pathlib.Path("sample", "hbjson")
 source_file_names = [
-    # "Multi_Room_Complete.hbjson",
-    "220819_Chapman.hbjson",
+    "Default_Model_Single_Zone.hbjson",
+    "Multi_Room_Complete.hbjson",
 ]
 SOURCE_FILES = [pathlib.Path(SOURCE_DIR, n) for n in source_file_names]
 TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 
-def reload_PHX():
-    """Reload all the PHX model modules to reset counters. This is only needed 
-    so that the tests align when converting multiple models in one run."""
-    importlib.reload(geometry)
-    importlib.reload(building)
-    importlib.reload(project)
-    importlib.reload(geometry)
-    importlib.reload(schedules)
-    importlib.reload(certification)
-    importlib.reload(constructions)
-    importlib.reload(elec_equip)
-    importlib.reload(components)
-
-
-
 def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
     # -- Re-set all the PHX modules (counters)
-    reload_PHX()
+    _reload_phx_classes()
+    _reset_phx_class_counters()
 
     target_file = pathlib.Path(_target_dir, _source.stem + '.xml')
 

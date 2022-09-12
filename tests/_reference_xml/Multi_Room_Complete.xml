@@ -56,7 +56,7 @@
 			<Remarks></Remarks>
 			<PlugIn></PlugIn>
 			<Graphics_3D>
-				<Vertices count="64">
+				<Vertices count="44">
 					<Vertix index="0">
 						<IdentNr>3</IdentNr>
 						<X>0.0</X>
@@ -154,295 +154,175 @@
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="16">
-						<IdentNr>27</IdentNr>
-						<X>0.0</X>
-						<Y>4.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="17">
-						<IdentNr>28</IdentNr>
-						<X>0.0</X>
-						<Y>4.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="18">
-						<IdentNr>29</IdentNr>
-						<X>0.0</X>
-						<Y>0.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="19">
-						<IdentNr>30</IdentNr>
-						<X>0.0</X>
-						<Y>0.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="20">
 						<IdentNr>33</IdentNr>
 						<X>0.0</X>
 						<Y>3.3416407865</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="21">
+					<Vertix index="17">
 						<IdentNr>34</IdentNr>
 						<X>0.0</X>
 						<Y>3.3416407865</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="22">
+					<Vertix index="18">
 						<IdentNr>35</IdentNr>
 						<X>0.0</X>
 						<Y>0.6583592135</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="23">
+					<Vertix index="19">
 						<IdentNr>36</IdentNr>
 						<X>0.0</X>
 						<Y>0.6583592135</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="24">
-						<IdentNr>39</IdentNr>
-						<X>5.0</X>
-						<Y>4.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="25">
-						<IdentNr>40</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="26">
-						<IdentNr>41</IdentNr>
-						<X>0.0</X>
-						<Y>0.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="27">
-						<IdentNr>42</IdentNr>
-						<X>0.0</X>
-						<Y>4.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="28">
-						<IdentNr>45</IdentNr>
-						<X>0.0</X>
-						<Y>4.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="29">
-						<IdentNr>46</IdentNr>
-						<X>0.0</X>
-						<Y>0.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="30">
-						<IdentNr>47</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="31">
-						<IdentNr>48</IdentNr>
-						<X>5.0</X>
-						<Y>4.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="32">
-						<IdentNr>51</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="33">
-						<IdentNr>52</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="34">
+					<Vertix index="20">
 						<IdentNr>53</IdentNr>
 						<X>12.0</X>
 						<Y>0.0</Y>
 						<Z>0.0</Z>
 					</Vertix>
-					<Vertix index="35">
+					<Vertix index="21">
 						<IdentNr>54</IdentNr>
 						<X>12.0</X>
 						<Y>0.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
-					<Vertix index="36">
+					<Vertix index="22">
 						<IdentNr>57</IdentNr>
 						<X>6.1521286236</X>
 						<Y>0.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="37">
+					<Vertix index="23">
 						<IdentNr>58</IdentNr>
 						<X>6.1521286236</X>
 						<Y>0.0</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="38">
+					<Vertix index="24">
 						<IdentNr>59</IdentNr>
 						<X>10.8478713764</X>
 						<Y>0.0</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="39">
+					<Vertix index="25">
 						<IdentNr>60</IdentNr>
 						<X>10.8478713764</X>
 						<Y>0.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="40">
-						<IdentNr>63</IdentNr>
-						<X>12.0</X>
-						<Y>0.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="41">
-						<IdentNr>64</IdentNr>
-						<X>12.0</X>
-						<Y>0.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="42">
+					<Vertix index="26">
 						<IdentNr>65</IdentNr>
 						<X>12.0</X>
 						<Y>4.0</Y>
 						<Z>0.0</Z>
 					</Vertix>
-					<Vertix index="43">
+					<Vertix index="27">
 						<IdentNr>66</IdentNr>
 						<X>12.0</X>
 						<Y>4.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
-					<Vertix index="44">
+					<Vertix index="28">
 						<IdentNr>69</IdentNr>
 						<X>12.0</X>
 						<Y>0.6583592135</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="45">
+					<Vertix index="29">
 						<IdentNr>70</IdentNr>
 						<X>12.0</X>
 						<Y>0.6583592135</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="46">
+					<Vertix index="30">
 						<IdentNr>71</IdentNr>
 						<X>12.0</X>
 						<Y>3.3416407865</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="47">
+					<Vertix index="31">
 						<IdentNr>72</IdentNr>
 						<X>12.0</X>
 						<Y>3.3416407865</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="48">
-						<IdentNr>75</IdentNr>
-						<X>12.0</X>
-						<Y>4.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="49">
-						<IdentNr>76</IdentNr>
-						<X>12.0</X>
-						<Y>4.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="50">
-						<IdentNr>77</IdentNr>
-						<X>5.0</X>
-						<Y>4.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="51">
-						<IdentNr>78</IdentNr>
-						<X>5.0</X>
-						<Y>4.0</Y>
-						<Z>3.0</Z>
-					</Vertix>
-					<Vertix index="52">
+					<Vertix index="32">
 						<IdentNr>81</IdentNr>
 						<X>10.8478713764</X>
 						<Y>4.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="53">
+					<Vertix index="33">
 						<IdentNr>82</IdentNr>
 						<X>10.8478713764</X>
 						<Y>4.0</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="54">
+					<Vertix index="34">
 						<IdentNr>83</IdentNr>
 						<X>6.1521286236</X>
 						<Y>4.0</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
-					<Vertix index="55">
+					<Vertix index="35">
 						<IdentNr>84</IdentNr>
 						<X>6.1521286236</X>
 						<Y>4.0</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
-					<Vertix index="56">
-						<IdentNr>87</IdentNr>
-						<X>12.0</X>
-						<Y>4.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="57">
-						<IdentNr>88</IdentNr>
-						<X>12.0</X>
+					<Vertix index="36">
+						<IdentNr>99</IdentNr>
+						<X>0.0</X>
 						<Y>0.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="58">
-						<IdentNr>89</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="59">
-						<IdentNr>90</IdentNr>
-						<X>5.0</X>
-						<Y>4.0</Y>
-						<Z>0.0</Z>
-					</Vertix>
-					<Vertix index="60">
-						<IdentNr>93</IdentNr>
-						<X>5.0</X>
-						<Y>4.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
-					<Vertix index="61">
-						<IdentNr>94</IdentNr>
+					<Vertix index="37">
+						<IdentNr>100</IdentNr>
+						<X>0.0</X>
+						<Y>-1.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="38">
+						<IdentNr>101</IdentNr>
+						<X>5.0</X>
+						<Y>-1.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="39">
+						<IdentNr>102</IdentNr>
 						<X>5.0</X>
 						<Y>0.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
-					<Vertix index="62">
-						<IdentNr>95</IdentNr>
-						<X>12.0</X>
+					<Vertix index="40">
+						<IdentNr>105</IdentNr>
+						<X>5.0</X>
 						<Y>0.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
-					<Vertix index="63">
-						<IdentNr>96</IdentNr>
+					<Vertix index="41">
+						<IdentNr>106</IdentNr>
+						<X>5.0</X>
+						<Y>-1.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="42">
+						<IdentNr>107</IdentNr>
 						<X>12.0</X>
-						<Y>4.0</Y>
+						<Y>-1.0</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="43">
+						<IdentNr>108</IdentNr>
+						<X>12.0</X>
+						<Y>0.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
 				</Vertices>
-				<Polygons count="16">
+				<Polygons count="18">
 					<Polygon index="0">
 						<IdentNr>1</IdentNr>
 						<NormalVectorX>0.0</NormalVectorX>
@@ -479,10 +359,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">27</IdentNr>
-							<IdentNr index="1">28</IdentNr>
-							<IdentNr index="2">29</IdentNr>
-							<IdentNr index="3">30</IdentNr>
+							<IdentNr index="0">18</IdentNr>
+							<IdentNr index="1">17</IdentNr>
+							<IdentNr index="2">4</IdentNr>
+							<IdentNr index="3">3</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="1">
 							<IdentNr index="0">6</IdentNr>
@@ -494,8 +374,8 @@
 						<NormalVectorY>-1.0</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">51</IdentNr>
-							<IdentNr index="1">52</IdentNr>
+							<IdentNr index="0">6</IdentNr>
+							<IdentNr index="1">5</IdentNr>
 							<IdentNr index="2">53</IdentNr>
 							<IdentNr index="3">54</IdentNr>
 						</IdentNrPoints>
@@ -509,8 +389,8 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">63</IdentNr>
-							<IdentNr index="1">64</IdentNr>
+							<IdentNr index="0">54</IdentNr>
+							<IdentNr index="1">53</IdentNr>
 							<IdentNr index="2">65</IdentNr>
 							<IdentNr index="3">66</IdentNr>
 						</IdentNrPoints>
@@ -524,10 +404,10 @@
 						<NormalVectorY>1.0</NormalVectorY>
 						<NormalVectorZ>-0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">75</IdentNr>
-							<IdentNr index="1">76</IdentNr>
-							<IdentNr index="2">77</IdentNr>
-							<IdentNr index="3">78</IdentNr>
+							<IdentNr index="0">66</IdentNr>
+							<IdentNr index="1">65</IdentNr>
+							<IdentNr index="2">16</IdentNr>
+							<IdentNr index="3">15</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="1">
 							<IdentNr index="0">14</IdentNr>
@@ -539,10 +419,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>-1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">39</IdentNr>
-							<IdentNr index="1">40</IdentNr>
-							<IdentNr index="2">41</IdentNr>
-							<IdentNr index="3">42</IdentNr>
+							<IdentNr index="0">16</IdentNr>
+							<IdentNr index="1">5</IdentNr>
+							<IdentNr index="2">4</IdentNr>
+							<IdentNr index="3">17</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -552,10 +432,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>-1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">87</IdentNr>
-							<IdentNr index="1">88</IdentNr>
-							<IdentNr index="2">89</IdentNr>
-							<IdentNr index="3">90</IdentNr>
+							<IdentNr index="0">65</IdentNr>
+							<IdentNr index="1">53</IdentNr>
+							<IdentNr index="2">5</IdentNr>
+							<IdentNr index="3">16</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -565,10 +445,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">45</IdentNr>
-							<IdentNr index="1">46</IdentNr>
-							<IdentNr index="2">47</IdentNr>
-							<IdentNr index="3">48</IdentNr>
+							<IdentNr index="0">18</IdentNr>
+							<IdentNr index="1">3</IdentNr>
+							<IdentNr index="2">6</IdentNr>
+							<IdentNr index="3">15</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -578,10 +458,10 @@
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
-							<IdentNr index="0">93</IdentNr>
-							<IdentNr index="1">94</IdentNr>
-							<IdentNr index="2">95</IdentNr>
-							<IdentNr index="3">96</IdentNr>
+							<IdentNr index="0">15</IdentNr>
+							<IdentNr index="1">6</IdentNr>
+							<IdentNr index="2">54</IdentNr>
+							<IdentNr index="3">66</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -663,10 +543,36 @@
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
+					<Polygon index="16">
+						<IdentNr>17</IdentNr>
+						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">99</IdentNr>
+							<IdentNr index="1">100</IdentNr>
+							<IdentNr index="2">101</IdentNr>
+							<IdentNr index="3">102</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="17">
+						<IdentNr>18</IdentNr>
+						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">105</IdentNr>
+							<IdentNr index="1">106</IdentNr>
+							<IdentNr index="2">107</IdentNr>
+							<IdentNr index="3">108</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
 				</Polygons>
 			</Graphics_3D>
 			<Building>
-				<Components count="4">
+				<Components count="6">
 					<Component index="0">
 						<IdentNr>41</IdentNr>
 						<Name>Merged_Component</Name>
@@ -743,6 +649,38 @@
 							<IdentNr index="5">14</IdentNr>
 						</IdentNrPolygons>
 					</Component>
+					<Component index="4">
+						<IdentNr>49</IdentNr>
+						<Name>Shade_e67e28da</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>1</IdentNrColorI>
+						<IdentNrColorE>1</IdentNrColorE>
+						<InnerAttachment>-1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">17</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+					<Component index="5">
+						<IdentNr>50</IdentNr>
+						<Name>Shade_b24a0fd7</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>1</IdentNrColorI>
+						<IdentNrColorE>1</IdentNrColorE>
+						<InnerAttachment>-1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">18</IdentNr>
+						</IdentNrPolygons>
+					</Component>
 				</Components>
 				<Zones count="1">
 					<Zone index="0">
@@ -751,10 +689,10 @@
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="2">
 							<Room index="0">
-								<Name>101-Room_27</Name>
+								<Name>101-Room_7</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<IdentNrVentilationUnit>0</IdentNrVentilationUnit>
 								<Quantity>1</Quantity>
 								<AreaRoom unit="m²">9.0</AreaRoom>
 								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
@@ -762,10 +700,10 @@
 								<DesignVolumeFlowRateExhaust unit="m³/h">14.2</DesignVolumeFlowRateExhaust>
 							</Room>
 							<Room index="1">
-								<Name>102-Room_28</Name>
+								<Name>102-Room_8</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<IdentNrVentilationUnit>0</IdentNrVentilationUnit>
 								<Quantity>1</Quantity>
 								<AreaRoom unit="m²">9.0</AreaRoom>
 								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
@@ -863,7 +801,7 @@
 				<Selection>1</Selection>
 				<Latitude_DB unit="°">40.6</Latitude_DB>
 				<Longitude_DB unit="°">-73.8</Longitude_DB>
-				<HeightNN_DB unit="m">None</HeightNN_DB>
+				<HeightNN_DB unit="m">0.0</HeightNN_DB>
 				<dUTC_DB>-4</dUTC_DB>
 				<Albedo choice="User defined">-2</Albedo>
 				<GroundReflShort unit="-">0.2</GroundReflShort>
@@ -874,8 +812,8 @@
 				<Unit_CO2concentration choice="ppmv">48</Unit_CO2concentration>
 				<PH_ClimateLocation>
 					<Selection>1</Selection>
-					<DailyTemperatureSwingSummer>8</DailyTemperatureSwingSummer>
-					<AverageWindSpeed>4</AverageWindSpeed>
+					<DailyTemperatureSwingSummer>8.0</DailyTemperatureSwingSummer>
+					<AverageWindSpeed>4.0</AverageWindSpeed>
 					<Latitude>40.6</Latitude>
 					<Longitude>-73.8</Longitude>
 					<HeightNNWeatherStation>3.0</HeightNNWeatherStation>
@@ -887,141 +825,141 @@
 					<DepthGroundwater>3</DepthGroundwater>
 					<FlowRateGroundwater>0.05</FlowRateGroundwater>
 					<TemperatureMonthly count="12">
-						<Item index="0">1.2</Item>
-						<Item index="1">-0.2</Item>
-						<Item index="2">5.6</Item>
-						<Item index="3">10.9</Item>
-						<Item index="4">16.1</Item>
-						<Item index="5">21.7</Item>
-						<Item index="6">25.0</Item>
-						<Item index="7">24.8</Item>
-						<Item index="8">19.9</Item>
-						<Item index="9">14.0</Item>
-						<Item index="10">7.3</Item>
-						<Item index="11">3.3</Item>
+						<Item index="0">0.0</Item>
+						<Item index="1">0.0</Item>
+						<Item index="2">0.0</Item>
+						<Item index="3">0.0</Item>
+						<Item index="4">0.0</Item>
+						<Item index="5">0.0</Item>
+						<Item index="6">0.0</Item>
+						<Item index="7">0.0</Item>
+						<Item index="8">0.0</Item>
+						<Item index="9">0.0</Item>
+						<Item index="10">0.0</Item>
+						<Item index="11">0.0</Item>
 					</TemperatureMonthly>
 					<DewPointTemperatureMonthly count="12">
-						<Item index="0">-4.3</Item>
-						<Item index="1">-7.4</Item>
-						<Item index="2">0.3</Item>
-						<Item index="3">4.7</Item>
-						<Item index="4">9.1</Item>
-						<Item index="5">15.8</Item>
-						<Item index="6">20.3</Item>
-						<Item index="7">17.1</Item>
-						<Item index="8">13.2</Item>
-						<Item index="9">7.9</Item>
-						<Item index="10">2.1</Item>
-						<Item index="11">-2.8</Item>
+						<Item index="0">0.0</Item>
+						<Item index="1">0.0</Item>
+						<Item index="2">0.0</Item>
+						<Item index="3">0.0</Item>
+						<Item index="4">0.0</Item>
+						<Item index="5">0.0</Item>
+						<Item index="6">0.0</Item>
+						<Item index="7">0.0</Item>
+						<Item index="8">0.0</Item>
+						<Item index="9">0.0</Item>
+						<Item index="10">0.0</Item>
+						<Item index="11">0.0</Item>
 					</DewPointTemperatureMonthly>
 					<SkyTemperatureMonthly count="12">
-						<Item index="0">-17.4</Item>
-						<Item index="1">-20.0</Item>
-						<Item index="2">-10.9</Item>
-						<Item index="3">-4.8</Item>
-						<Item index="4">1.0</Item>
-						<Item index="5">9.8</Item>
-						<Item index="6">14.5</Item>
-						<Item index="7">8.4</Item>
-						<Item index="8">5.8</Item>
-						<Item index="9">-2.8</Item>
-						<Item index="10">-8.6</Item>
-						<Item index="11">-11.4</Item>
+						<Item index="0">0.0</Item>
+						<Item index="1">0.0</Item>
+						<Item index="2">0.0</Item>
+						<Item index="3">0.0</Item>
+						<Item index="4">0.0</Item>
+						<Item index="5">0.0</Item>
+						<Item index="6">0.0</Item>
+						<Item index="7">0.0</Item>
+						<Item index="8">0.0</Item>
+						<Item index="9">0.0</Item>
+						<Item index="10">0.0</Item>
+						<Item index="11">0.0</Item>
 					</SkyTemperatureMonthly>
 					<NorthSolarRadiationMonthly count="12">
-						<Item index="0">21</Item>
-						<Item index="1">29</Item>
-						<Item index="2">34</Item>
-						<Item index="3">39</Item>
-						<Item index="4">56</Item>
-						<Item index="5">60</Item>
-						<Item index="6">59</Item>
-						<Item index="7">50</Item>
-						<Item index="8">34</Item>
-						<Item index="9">30</Item>
-						<Item index="10">20</Item>
-						<Item index="11">16</Item>
+						<Item index="0">0.0</Item>
+						<Item index="1">0.0</Item>
+						<Item index="2">0.0</Item>
+						<Item index="3">0.0</Item>
+						<Item index="4">0.0</Item>
+						<Item index="5">0.0</Item>
+						<Item index="6">0.0</Item>
+						<Item index="7">0.0</Item>
+						<Item index="8">0.0</Item>
+						<Item index="9">0.0</Item>
+						<Item index="10">0.0</Item>
+						<Item index="11">0.0</Item>
 					</NorthSolarRadiationMonthly>
 					<EastSolarRadiationMonthly count="12">
-						<Item index="0">32</Item>
-						<Item index="1">46</Item>
-						<Item index="2">57</Item>
-						<Item index="3">65</Item>
-						<Item index="4">82</Item>
-						<Item index="5">76</Item>
-						<Item index="6">78</Item>
-						<Item index="7">84</Item>
-						<Item index="8">60</Item>
-						<Item index="9">54</Item>
-						<Item index="10">33</Item>
-						<Item index="11">28</Item>
+						<Item index="0">0.0</Item>
+						<Item index="1">0.0</Item>
+						<Item index="2">0.0</Item>
+						<Item index="3">0.0</Item>
+						<Item index="4">0.0</Item>
+						<Item index="5">0.0</Item>
+						<Item index="6">0.0</Item>
+						<Item index="7">0.0</Item>
+						<Item index="8">0.0</Item>
+						<Item index="9">0.0</Item>
+						<Item index="10">0.0</Item>
+						<Item index="11">0.0</Item>
 					</EastSolarRadiationMonthly>
 					<SouthSolarRadiationMonthly count="12">
-						<Item index="0">83</Item>
-						<Item index="1">106</Item>
-						<Item index="2">103</Item>
-						<Item index="3">86</Item>
-						<Item index="4">80</Item>
-						<Item index="5">73</Item>
-						<Item index="6">78</Item>
-						<Item index="7">104</Item>
-						<Item index="8">97</Item>
-						<Item index="9">129</Item>
-						<Item index="10">87</Item>
-						<Item index="11">87</Item>
+						<Item index="0">0.0</Item>
+						<Item index="1">0.0</Item>
+						<Item index="2">0.0</Item>
+						<Item index="3">0.0</Item>
+						<Item index="4">0.0</Item>
+						<Item index="5">0.0</Item>
+						<Item index="6">0.0</Item>
+						<Item index="7">0.0</Item>
+						<Item index="8">0.0</Item>
+						<Item index="9">0.0</Item>
+						<Item index="10">0.0</Item>
+						<Item index="11">0.0</Item>
 					</SouthSolarRadiationMonthly>
 					<WestSolarRadiationMonthly count="12">
-						<Item index="0">48</Item>
-						<Item index="1">70</Item>
-						<Item index="2">92</Item>
-						<Item index="3">95</Item>
-						<Item index="4">114</Item>
-						<Item index="5">121</Item>
-						<Item index="6">120</Item>
-						<Item index="7">130</Item>
-						<Item index="8">91</Item>
-						<Item index="9">94</Item>
-						<Item index="10">47</Item>
-						<Item index="11">45</Item>
+						<Item index="0">0.0</Item>
+						<Item index="1">0.0</Item>
+						<Item index="2">0.0</Item>
+						<Item index="3">0.0</Item>
+						<Item index="4">0.0</Item>
+						<Item index="5">0.0</Item>
+						<Item index="6">0.0</Item>
+						<Item index="7">0.0</Item>
+						<Item index="8">0.0</Item>
+						<Item index="9">0.0</Item>
+						<Item index="10">0.0</Item>
+						<Item index="11">0.0</Item>
 					</WestSolarRadiationMonthly>
 					<GlobalSolarRadiationMonthly count="12">
-						<Item index="0">50</Item>
-						<Item index="1">72</Item>
-						<Item index="2">111</Item>
-						<Item index="3">133</Item>
-						<Item index="4">170</Item>
-						<Item index="5">176</Item>
-						<Item index="6">177</Item>
-						<Item index="7">182</Item>
-						<Item index="8">124</Item>
-						<Item index="9">109</Item>
-						<Item index="10">62</Item>
-						<Item index="11">46</Item>
+						<Item index="0">0.0</Item>
+						<Item index="1">0.0</Item>
+						<Item index="2">0.0</Item>
+						<Item index="3">0.0</Item>
+						<Item index="4">0.0</Item>
+						<Item index="5">0.0</Item>
+						<Item index="6">0.0</Item>
+						<Item index="7">0.0</Item>
+						<Item index="8">0.0</Item>
+						<Item index="9">0.0</Item>
+						<Item index="10">0.0</Item>
+						<Item index="11">0.0</Item>
 					</GlobalSolarRadiationMonthly>
-					<TemperatureHeating1>-6.7</TemperatureHeating1>
-					<NorthSolarRadiationHeating1>46</NorthSolarRadiationHeating1>
-					<EastSolarRadiationHeating1>80</EastSolarRadiationHeating1>
-					<SouthSolarRadiationHeating1>200</SouthSolarRadiationHeating1>
-					<WestSolarRadiationHeating1>113</WestSolarRadiationHeating1>
-					<GlobalSolarRadiationHeating1>121</GlobalSolarRadiationHeating1>
-					<TemperatureHeating2>-4.2</TemperatureHeating2>
-					<NorthSolarRadiationHeating2>16</NorthSolarRadiationHeating2>
-					<EastSolarRadiationHeating2>22</EastSolarRadiationHeating2>
-					<SouthSolarRadiationHeating2>46</SouthSolarRadiationHeating2>
-					<WestSolarRadiationHeating2>26</WestSolarRadiationHeating2>
-					<GlobalSolarRadiationHeating2>38</GlobalSolarRadiationHeating2>
-					<TemperatureCooling>26.1</TemperatureCooling>
-					<NorthSolarRadiationCooling>64</NorthSolarRadiationCooling>
-					<EastSolarRadiationCooling>106</EastSolarRadiationCooling>
-					<SouthSolarRadiationCooling>132</SouthSolarRadiationCooling>
-					<WestSolarRadiationCooling>159</WestSolarRadiationCooling>
-					<GlobalSolarRadiationCooling>230</GlobalSolarRadiationCooling>
-					<TemperatureCooling2>26.1</TemperatureCooling2>
-					<NorthSolarRadiationCooling2>64</NorthSolarRadiationCooling2>
-					<EastSolarRadiationCooling2>106</EastSolarRadiationCooling2>
-					<SouthSolarRadiationCooling2>132</SouthSolarRadiationCooling2>
-					<WestSolarRadiationCooling2>159</WestSolarRadiationCooling2>
-					<GlobalSolarRadiationCooling2>230</GlobalSolarRadiationCooling2>
+					<TemperatureHeating1>0.0</TemperatureHeating1>
+					<NorthSolarRadiationHeating1>0.0</NorthSolarRadiationHeating1>
+					<EastSolarRadiationHeating1>0.0</EastSolarRadiationHeating1>
+					<SouthSolarRadiationHeating1>0.0</SouthSolarRadiationHeating1>
+					<WestSolarRadiationHeating1>0.0</WestSolarRadiationHeating1>
+					<GlobalSolarRadiationHeating1>0.0</GlobalSolarRadiationHeating1>
+					<TemperatureHeating2>0.0</TemperatureHeating2>
+					<NorthSolarRadiationHeating2>0.0</NorthSolarRadiationHeating2>
+					<EastSolarRadiationHeating2>0.0</EastSolarRadiationHeating2>
+					<SouthSolarRadiationHeating2>0.0</SouthSolarRadiationHeating2>
+					<WestSolarRadiationHeating2>0.0</WestSolarRadiationHeating2>
+					<GlobalSolarRadiationHeating2>0.0</GlobalSolarRadiationHeating2>
+					<TemperatureCooling>0.0</TemperatureCooling>
+					<NorthSolarRadiationCooling>0.0</NorthSolarRadiationCooling>
+					<EastSolarRadiationCooling>0.0</EastSolarRadiationCooling>
+					<SouthSolarRadiationCooling>0.0</SouthSolarRadiationCooling>
+					<WestSolarRadiationCooling>0.0</WestSolarRadiationCooling>
+					<GlobalSolarRadiationCooling>0.0</GlobalSolarRadiationCooling>
+					<TemperatureCooling2>0.0</TemperatureCooling2>
+					<NorthSolarRadiationCooling2>0.0</NorthSolarRadiationCooling2>
+					<EastSolarRadiationCooling2>0.0</EastSolarRadiationCooling2>
+					<SouthSolarRadiationCooling2>0.0</SouthSolarRadiationCooling2>
+					<WestSolarRadiationCooling2>0.0</WestSolarRadiationCooling2>
+					<GlobalSolarRadiationCooling2>0.0</GlobalSolarRadiationCooling2>
 					<SelectionPECO2Factor>6</SelectionPECO2Factor>
 					<PEFactorsUserDef count="16">
 						<PEF0 unit="kWh/kWh">1.1</PEF0>
@@ -1105,10 +1043,10 @@
 								<CoverageDehumidification>1.0</CoverageDehumidification>
 							</ZoneCoverage>
 						</ZonesCoverage>
-						<Devices count="2">
+						<Devices count="3">
 							<Device index="0">
 								<Name>Ventilator: 83%-HR, 0%-MR</Name>
-								<IdentNr>1</IdentNr>
+								<IdentNr>0</IdentNr>
 								<SystemType>1</SystemType>
 								<TypeDevice>1</TypeDevice>
 								<UsedFor_Heating>false</UsedFor_Heating>
@@ -1132,8 +1070,39 @@
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
+								<Name>5679498c-665d-4c93-b6db-8dc5f7af8b01</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>true</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+									<InConditionedSpace>true</InConditionedSpace>
+									<AnnualCOP>None</AnnualCOP>
+									<TotalSystemPerformanceRatioHeatGenerator>None</TotalSystemPerformanceRatioHeatGenerator>
+									<HPWH_EF>None</HPWH_EF>
+									<HPType>5</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+							</Device>
+							<Device index="2">
 								<Name>_unnamed_hw_tank_</Name>
-								<IdentNr>3</IdentNr>
+								<IdentNr>1</IdentNr>
 								<SystemType>8</SystemType>
 								<TypeDevice>8</TypeDevice>
 								<UsedFor_Heating>false</UsedFor_Heating>

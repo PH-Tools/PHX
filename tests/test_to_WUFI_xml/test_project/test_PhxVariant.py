@@ -23,7 +23,7 @@ def test_default_PhxProject(reset_class_counters):
         '<Selection>1</Selection>',
         '<Latitude_DB unit="°">40.6</Latitude_DB>',
         '<Longitude_DB unit="°">-73.8</Longitude_DB>',
-        '<HeightNN_DB unit="m">3.0</HeightNN_DB>',
+        '<HeightNN_DB unit="m">None</HeightNN_DB>',
         '<dUTC_DB>-4</dUTC_DB>',
         '<Albedo choice="User defined">-2</Albedo>',
         '<GroundReflShort unit="-">0.2</GroundReflShort>',

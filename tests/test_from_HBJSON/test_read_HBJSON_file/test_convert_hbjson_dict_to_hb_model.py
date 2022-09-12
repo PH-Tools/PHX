@@ -55,8 +55,7 @@ def hb_rooms_are_equal(hb_room_1, hb_room_2):
 @pytest.mark.parametrize("filename,results",
                          [
                              ('Default_Model_Single_Zone.hbjson', None),
-                             ('Default_Room_Single_Zone_with_Apertures.hbjson', None),
-                             ('Default_Room_Single_Zone_with_Shades.hbjson', None),
+                             ('Multi_Room_Complete.hbjson', None),
                          ])
 def test_read_default_single_zone_model_no_conversion(filename, results):
     file_path = Path('tests', '_source_hbjson', filename)
@@ -72,5 +71,5 @@ def test_read_default_single_zone_model_no_conversion(filename, results):
     assert m1.units == m2.units
     assert m1.tolerance == m2.tolerance
     assert m1.angle_tolerance == m2.angle_tolerance
-    for room1, room2 in zip(sorted(m1.rooms), sorted(m2.rooms)):
+    for room1, room2 in zip(sorted(m1.rooms, key=lambda r: r.display_name), sorted(m2.rooms, key=lambda r: r.display_name)):
         assert hb_rooms_are_equal(room1, room2)

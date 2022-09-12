@@ -141,32 +141,3 @@ def test_add_mixed_PhxMechanicalEquipment(reset_class_counters):
     assert mech_equip_4.usage_profile.ventilation == True
     assert mech_equip_4.usage_profile.humidification == False
     assert mech_equip_4.usage_profile.dehumidification == True
-
-
-def test_default_PhxMechanicalSubSystem(reset_class_counters):
-    sys_1 = _base.PhxMechanicalSubSystem()
-    sys_2 = _base.PhxMechanicalSubSystem()
-
-    assert sys_1 != sys_2
-    assert sys_1.id_num == 1
-    assert sys_1.system_type == hvac.DeviceType.ELECTRIC
-    assert str(sys_1)
-    assert repr(sys_1)
-
-    assert sys_2.id_num == 2
-    assert sys_2.system_type == hvac.DeviceType.ELECTRIC
-    assert str(sys_2)
-    assert repr(sys_2)
-
-
-def test_set_PhxMechanicalSubSystem_identifier(reset_class_counters):
-    sys_1 = _base.PhxMechanicalSubSystem()
-
-    sys_1.identifier = 'this is a test'
-    assert sys_1.identifier == 'this is a test'
-
-    sys_1.identifier = 12
-    assert sys_1.identifier == '12'
-
-    sys_1.identifier = None
-    assert sys_1.identifier == '12'

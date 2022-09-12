@@ -6,12 +6,24 @@
 from typing import List, Union, Tuple
 from functools import partial
 
-from honeybee import room, face
-from honeybee.boundarycondition import Outdoors, Ground
-from honeybee_energy.boundarycondition import Adiabatic
-from honeybee_energy.load import infiltration, people, equipment, hotwater
+try:  # import the core honeybee dependencies
+    from honeybee.typing import clean_ep_string
+except ImportError as e:
+    raise ImportError('\nFailed to import honeybee:\n\t{}'.format(e))
+
+try:
+    from honeybee import room, face
+    from honeybee.boundarycondition import Outdoors, Ground
+    from honeybee_energy.boundarycondition import Adiabatic
+    from honeybee_energy import shw
+    from honeybee_energy.load import people, equipment, infiltration
+    from honeybee_energy.schedule.ruleset import ScheduleRuleset
+    from honeybee_energy.lib.scheduletypelimits import schedule_type_limit_by_identifier
+except ImportError as e:
+    raise ImportError('\nFailed to import honeybee_energy:\n\t{}'.format(e))
 
 from PHX.model import project
+
 
 HB_BC = Union[Outdoors, Ground, Adiabatic]
 
@@ -81,7 +93,7 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
 
     # Build up the new object's attributes
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
-    new_hb_ppl = _hb_rooms[0].properties.energy.people.duplicate()
+    new_hb_ppl = _hb_rooms[0].properties.energy.people.duplicate() # type: ignore
     new_hb_ppl.people_per_area = total_hb_people / total_floor_area
     new_hb_ppl.properties.ph.number_bedrooms = total_ph_bedrooms
     new_hb_ppl.properties.ph.number_people = total_ph_people
@@ -128,24 +140,38 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
     return new_infil
 
 
-def merge_shw(_hb_rooms: List[room.Room]) -> hotwater.ServiceHotWater:
-    """
+def merge_shw(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
+    """Merge together several Honeybee-Energy SHW System System objects.
     
     Arguments:
     ----------
-        *
+        * _hb_rooms (List[room.Room]): The list of Honeybee Rooms to get the 
+            SHW System System from.
     
     Returns:
     --------
-        *
+        * (shw.SHWSystem): A single new Honeybee-Energy 
+            SHW System System Object.   
     """
-    new_shw: hotwater.ServiceHotWater = _hb_rooms[0].properties.energy.shw.duplicate()
 
-    # -- Merge the SHWSystemPhProperties
-    new_prop = sum(hb_room.properties.energy.shw.properties.ph for hb_room in _hb_rooms)
-    new_shw.properties._ph = new_prop
+    # -- Find the first HBE SHWSystem System in the list of HB-Rooms, and use that as the 'base'
+    for room in _hb_rooms:
+        if room.properties.energy.shw: #type: ignore
+            new_shw: shw.SHWSystem = room.properties.energy.shw.duplicate() # type: ignore
+            break
+    else:
+        # -- If no SHWSystem found anywhere, return a new default HBE SHWSystem System
+        return shw.SHWSystem(
+            identifier=clean_ep_string('_default_shw_system_'),
+            equipment_type='Electric_WaterHeater',
+        )
+
+    # -- Merge the SHWSystemPhProperties and then apply it to the new HBE SHWSystem System
+    new_prop = sum(hb_room.properties.energy.shw.properties.ph for hb_room in _hb_rooms) # type: ignore
+    new_shw.properties._ph = new_prop # type: ignore
 
     return new_shw
+
 
 def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     """Returns a new HB-ElectricEquipment-Obj with it's values set from a list of input HB-Rooms.
