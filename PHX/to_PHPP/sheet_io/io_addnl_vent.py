@@ -309,9 +309,8 @@ class AddnlVent:
             for item in vent_duct.create_xl_items(self.shape.name, _row_num=i):
                 self.xl.write_xl_item(item)
 
-    def activate_variants(self, variants_worksheet_name:str, vent_unit_range:str, 
-                        duct_length_range:str, duct_insul_thickness_range: str) -> None:
-        """Link the Vent unit, duct length and duct insulation thickness to the Variants worksheet."""
+    def activate_variants(self, variants_worksheet_name:str, vent_unit_range:str) -> None:
+        """Link the Vent unit to the Variants worksheet."""
 
         # -- Ventilator Unit
         start_row=self.vent_units.find_section_first_entry_row()
@@ -322,30 +321,6 @@ class AddnlVent:
                     self.shape.name,
                     f'{self.shape.units.inputs.unit_selected.column}{i}',
                     f'={variants_worksheet_name}!{vent_unit_range}',
-                )
-            )
-
-        # -- Ducts
-        start_row=self.vent_ducts.find_section_first_entry_row()
-        end_row=self.vent_ducts.find_section_last_entry_row()
-        
-        # -- Duct Length
-        for i in range(start_row, end_row + 1):
-            self.xl.write_xl_item(
-                xl_data.XlItem(
-                    self.shape.name,
-                    f'{self.shape.ducts.inputs.sup_air_duct_len.column}{i}',
-                    f'={variants_worksheet_name}!{duct_length_range}',
-                )
-            )
-
-        # -- Duct Thickness
-        for i in range(start_row, end_row + 1):
-            self.xl.write_xl_item(
-                xl_data.XlItem(
-                    self.shape.name,
-                    f'{self.shape.ducts.inputs.insul_thickness.column}{i}',
-                    f'={variants_worksheet_name}!{duct_insul_thickness_range}',
                 )
             )
 

@@ -148,9 +148,7 @@
                 "air_change_rate": "Air change rate at pressurisation test (n50)",
                 "design_flow_rate": "Design air flow rate (maximum)",
                 "install_location": "Installation site ventilation unit",
-                "ventilator_unit": "Ventilation unit selection",
-                "duct_length": "Duct Length (ea)",
-                "duct_insul_thickness": "Duct Insuation Thickness"
+                "ventilator_unit": "Ventilation unit selection"
             }
         },
         "summer_ventilation": null,

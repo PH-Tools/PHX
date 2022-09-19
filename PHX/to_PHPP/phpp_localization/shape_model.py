@@ -63,8 +63,6 @@ class VariantVentilationInputItemNames(BaseModel):
     design_flow_rate:str
     install_location: str
     ventilator_unit: str
-    duct_length: str
-    duct_insul_thickness: str
 
 class VariantVentilation(BaseModel):
     locator_col_header: str
