@@ -17,4 +17,4 @@ from inside `./docs/sphinx/` folder, run:
 This will generate the new html files and store them in `./docs/build/html/...`
 
 ## Step 3: Cleanup
-Be sure to delete the `./docs/sphinx/build/` and `./docs/source/_rst/...` directories when done, or whenever regenerating the docs.
+Be sure to delete the `./docs/sphinx/build/` and `./docs/sphinx/source/_rst/...` directories when done, or whenever regenerating the docs.
