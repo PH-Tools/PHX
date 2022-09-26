@@ -101,6 +101,8 @@ class BranchPipingInput:
         return getattr(self.shape.branch_piping.input_rows_offset, _field_name).unit
 
     def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+        """Returns a list of Branch Piping Xl-Write items."""
+        
         XLItemDHW = partial(xl_data.XlItem, _sheet_name)
         return [
             XLItemDHW(

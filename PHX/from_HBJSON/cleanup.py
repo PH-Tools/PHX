@@ -22,6 +22,7 @@ try:
 except ImportError as e:
     raise ImportError('\nFailed to import honeybee_energy:\n\t{}'.format(e))
 
+from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
 from PHX.model import project
 
 
@@ -141,7 +142,7 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
 
 
 def merge_shw(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
-    """Merge together several Honeybee-Energy SHW System System objects.
+    """Merge together several HB-Room's Honeybee-Energy SHW System objects (if they exist).
     
     Arguments:
     ----------
@@ -150,8 +151,7 @@ def merge_shw(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
     
     Returns:
     --------
-        * (shw.SHWSystem): A single new Honeybee-Energy 
-            SHW System System Object.   
+        * (shw.SHWSystem): A single new Honeybee-Energy SHW System Object.   
     """
 
     # -- Find the first HBE SHWSystem System in the list of HB-Rooms, and use that as the 'base'
@@ -167,7 +167,10 @@ def merge_shw(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
         )
 
     # -- Merge the SHWSystemPhProperties and then apply it to the new HBE SHWSystem System
-    new_prop = sum(hb_room.properties.energy.shw.properties.ph for hb_room in _hb_rooms) # type: ignore
+    shw_props: List[SHWSystemPhProperties] = [hb_room.properties.energy.shw.properties.ph # type: ignore
+                                                for hb_room in _hb_rooms 
+                                                if hb_room.properties.energy.shw] # type: ignore
+    new_prop = sum(shw_props) # type: ignore
     new_shw.properties._ph = new_prop # type: ignore
 
     return new_shw
