@@ -106,18 +106,20 @@ class BranchPipingInput:
         
         XLItemDHW = partial(xl_data.XlItem, _sheet_name)
         return [
+            # -- Branch Piping
             XLItemDHW(
-                self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.diameter.row),
+                self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.diameter.row), # type: ignore
                 sum(s.diameter * s.length for s in self.phx_pipe) / sum(s.length for s in self.phx_pipe),
                     "M", 
                     self._get_target_unit('diameter')
             ),
             XLItemDHW(
-                    self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.total_length.row),
+                    self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.total_length.row), # type: ignore
                     sum(s.length for s in self.phx_pipe),
                     "M", 
                     self._get_target_unit('total_length')
                 ),
+            # -- Add Tapping Points
             XLItemDHW(
                 self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.num_taps),
                 self.num_tap_points,
