@@ -115,26 +115,6 @@ def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHea
 
     return phx_hw_heater
 
-
-def build_phx_hw_heating_sys(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHeatingDevice:
-    """
-
-    Arguments:
-    ----------
-        * _hbph_heater (hot_water.PhHotWaterHeater): The Honeybee-PH Hot-Water heater
-            to use as the source for the PHX Heater.
-
-    Returns:
-    --------
-        * (hvac.PhxHeatingDevice): The new PHX Water-Heating Device.
-    """
-
-    phx_dhw_heater = build_phx_hw_heater(_hbph_heater)
-
-    # TODO: Distribution...
-
-    return phx_dhw_heater
-
 # -- Piping ----
 
 def build_phx_piping(_hbph_pipe: hot_water.PhPipeElement) -> hvac.PhxPipeElement:

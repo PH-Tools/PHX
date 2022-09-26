@@ -7,7 +7,8 @@ from __future__ import annotations
 from typing import ClassVar, List, Dict
 from dataclasses import dataclass, field
 
-from PHX.model import building, phx_site, schedules
+from PHX.model import building as phx_building
+from PHX.model import phx_site, schedules
 from PHX.model import certification, constructions, geometry
 from PHX.model.hvac import collection
 
@@ -19,8 +20,7 @@ class PhxVariant:
     name: str = "unnamed_variant"
     remarks: str = ""
     plugin: str = ""
-    building: building.PhxBuilding = field(
-        default_factory=building.PhxBuilding)
+    building: phx_building.PhxBuilding = field(default_factory=phx_building.PhxBuilding)
     
     phius_certification: certification.PhxPhiusCertification = field(
         default_factory=certification.PhxPhiusCertification)

@@ -82,10 +82,11 @@ class RecircPipingInput:
 class BranchPipingInput:
     """Model class for a single DHW Branch Pipe Element."""
 
-    __slots__ = ('shape', 'phx_pipe', 'pipe_group_num')
+    __slots__ = ('shape', 'phx_pipe', 'pipe_group_num', 'num_tap_points')
     shape: shape_model.Dhw
     phx_pipe: List[piping.PhxPipeSegment]
     pipe_group_num: int
+    num_tap_points: int
     
     @property
     def input_column(self) -> str:
@@ -117,4 +118,8 @@ class BranchPipingInput:
                     "M", 
                     self._get_target_unit('total_length')
                 ),
+            XLItemDHW(
+                self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.num_taps),
+                self.num_tap_points,
+            ),
         ]

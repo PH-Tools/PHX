@@ -434,7 +434,7 @@ def add_dhw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
                 continue
 
             # -- Build a new PHX-HW-Heater from the Honeybee-PH HW-Heater
-            phx_hw_heater = create_shw.build_phx_hw_heating_sys(heater)
+            phx_hw_heater = create_shw.build_phx_hw_heater(heater)
             _variant.mech_systems.add_new_mech_device(heater.identifier, phx_hw_heater)
 
 
@@ -449,6 +449,8 @@ def add_dhw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Ro
                 create_shw.build_phx_piping(branch_piping_element)
             )
         
+        _variant.mech_systems._distribution_num_hw_tap_points = space.host.properties.energy.shw.properties.ph.number_tap_points
+
         for recirc_piping_element in space.host.properties.energy.shw.properties.ph.recirc_piping:
             _variant.mech_systems.add_recirc_piping(
                 create_shw.build_phx_piping(recirc_piping_element)

@@ -47,6 +47,7 @@ class PhxMechanicalSystemCollection:
 
     _devices: Dict[str, AnyMechDevice] = field(default_factory=dict)
     _distribution_piping_branches: Dict[str, Any] = field(default_factory=dict)
+    _distribution_num_hw_tap_points: int = 1
     _distribution_piping_recirc: Dict[str, Any] = field(default_factory=dict)
     _distribution_ducting: Dict[str, Any] = field(default_factory=dict)
 

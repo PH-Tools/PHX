@@ -623,7 +623,8 @@ class PHPPConnection:
                     hot_water_piping.BranchPipingInput(
                         self.shape.DHW,
                         phx_branch_piping,  # type: piping.PhxPipeSegment
-                        i
+                        i,
+                        variant.mech_systems._distribution_num_hw_tap_points
                     )
                 )
             self.hot_water.write_branch_piping(branch_piping_inputs)

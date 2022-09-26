@@ -63,7 +63,7 @@ if __name__ == '__main__':
         # phpp_conn.write_project_airtightness(phx_project)
         # phpp_conn.write_project_volume(phx_project)
         phpp_conn.write_project_hot_water(phx_project)
-        phpp_conn.write_project_res_elec_appliances(phx_project)
+        # phpp_conn.write_project_res_elec_appliances(phx_project)
         
         # phpp_conn.activate_variant_assemblies()
         # phpp_conn.activate_variant_windows()
