@@ -4,7 +4,7 @@ from PHX.from_WUFI_XML import read_WUFI_XML_file
 from PHX.to_WUFI_XML import xml_builder
 
 
-def test_xml_output(to_xml_reference_cases):
+def test_xml_output(to_xml_reference_cases):    
     # -- Get the test-case file paths
     hbjson_file, xml_file = to_xml_reference_cases
 
