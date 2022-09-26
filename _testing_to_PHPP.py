@@ -12,8 +12,11 @@ from PHX.to_PHPP.phpp_localization.shape_model import PhppShape
 
 # --- Input file Path
 # -------------------------------------------------------------------------
+# SOURCE_FILE = pathlib.Path(
+#     "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Default_Model_Single_Zone.hbjson"
+# )
 SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Default_Model_Single_Zone.hbjson"
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/220926_Penziner.hbjson"
 )
 
 if __name__ == '__main__':
