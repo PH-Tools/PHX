@@ -3,7 +3,7 @@ The Passive House Exchange (PHX) model standard and libraries enable users to mo
 
 This library can be used as part of a [Honeybee-PH plugin](https://github.com/PH-Tools/honeybee_ph) workflow, or on its own using the command-line or other user-created GUI tools. Certain workflows have been created for use within the [Rhino-3D](https://www.rhino3d.com/) software which are the most typical workflow.
 
-## Packages Inluded:
+## Packages:
 - **from_HBJSON:** Modules used to create a new PHX model from an existing HBJSON file which has been created using the [Honeybee-PH plugin](https://github.com/PH-Tools/honeybee_ph).
 
 - **from_WUFI_XML:** Modules used to create a new PHX model from an existing WUFI-Passive XML file.
