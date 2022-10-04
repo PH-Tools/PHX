@@ -402,10 +402,10 @@ class PHPPConnection:
                             host_polygon.display_name
                         )
                         phpp_id_frame = self.components.frames.get_frame_phpp_id_by_name(
-                            phx_aperture.window_type.display_name
+                            phx_aperture.window_type.frame_type_display_name
                         )
                         phpp_id_glazing = self.components.glazings.get_glazing_phpp_id_by_name(
-                            phx_aperture.window_type.display_name
+                            phx_aperture.window_type.glazing_type_display_name
                         )
 
                         phpp_windows.append(

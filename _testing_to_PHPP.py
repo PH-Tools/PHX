@@ -16,7 +16,7 @@ from PHX.to_PHPP.phpp_localization.shape_model import PhppShape
 #     "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Default_Model_Single_Zone.hbjson"
 # )
 SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/220926_Penziner.hbjson"
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/221004_Penziner.hbjson"
 )
 
 if __name__ == '__main__':
@@ -47,14 +47,14 @@ if __name__ == '__main__':
 
     with phpp_conn.xl.in_silent_mode():
         # phpp_conn.xl.unprotect_all_sheets()
-        phpp_conn.write_certification_config(phx_project)
+        # phpp_conn.write_certification_config(phx_project)
         # phpp_conn.write_climate_data(phx_project)
         # phpp_conn.write_project_constructions(phx_project)
         # phpp_conn.write_project_tfa(phx_project)
         # phpp_conn.write_project_opaque_surfaces(phx_project)
         # phpp_conn.write_project_thermal_bridges(phx_project)
-        # phpp_conn.write_project_window_components(phx_project)
-        # phpp_conn.write_project_window_surfaces(phx_project)
+        phpp_conn.write_project_window_components(phx_project)
+        phpp_conn.write_project_window_surfaces(phx_project)
         # phpp_conn.write_project_window_shading(phx_project)
         # phpp_conn.write_project_ventilation_components(phx_project)
         # phpp_conn.write_project_ventilators(phx_project)

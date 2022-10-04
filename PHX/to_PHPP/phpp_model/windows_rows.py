@@ -54,8 +54,8 @@ class WindowRow:
             XLItemWindows(create_range("quantity"), 1),
             XLItemWindows(create_range("description"), self.phx_polygon.display_name),
             XLItemWindows(create_range("host"), self.phpp_host_surface_id_name),
-            XLItemWindows(create_range("glazing_id"), self.phpp_id_frame),
-            XLItemWindows(create_range("frame_id"), self.phpp_id_glazing),
+            XLItemWindows(create_range("glazing_id"), self.phpp_id_glazing),
+            XLItemWindows(create_range("frame_id"), self.phpp_id_frame),
             XLItemWindows(create_range("width"), self.phx_polygon.width, "M", self._get_target_unit("width")),
             XLItemWindows(create_range("height"), self.phx_polygon.height, "M", self._get_target_unit("height")),
 

@@ -76,6 +76,8 @@ class PhxConstructionWindow:
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
     display_name: str = ""
+    _glazing_type_display_name: str = ""
+    _frame_type_display_name: str = ""
 
     use_detailed_uw: bool = True
     use_detailed_frame: bool = True
@@ -100,3 +102,19 @@ class PhxConstructionWindow:
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
+
+    @property
+    def glazing_type_display_name(self) -> str:
+        return self._glazing_type_display_name or self.display_name
+
+    @glazing_type_display_name.setter
+    def glazing_type_display_name(self, _in:str) -> None:
+        self._glazing_type_display_name = _in
+
+    @property
+    def frame_type_display_name(self) -> str:
+        return self._frame_type_display_name or self.display_name
+
+    @frame_type_display_name.setter
+    def frame_type_display_name(self, _in: str) -> None:
+        self._frame_type_display_name = _in

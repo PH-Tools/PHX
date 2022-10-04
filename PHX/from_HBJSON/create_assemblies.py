@@ -136,6 +136,7 @@ def build_phx_window_type_from_hb_win_construction(_hb_win_const: window.WindowC
     # -- Glass ----------------------------------------------------------------
     if ph_params.ph_glazing:
         # -- Use Detailed PH-Params
+        phx_window_type.glazing_type_display_name = ph_params.ph_glazing.display_name
         phx_window_type.u_value_glass = ph_params.ph_glazing.u_factor
         phx_window_type.glass_g_value = ph_params.ph_glazing.g_value
     else:
@@ -146,6 +147,7 @@ def build_phx_window_type_from_hb_win_construction(_hb_win_const: window.WindowC
     # -- Frames ---------------------------------------------------------------
     if ph_params.ph_frame:
         # -- Use Detailed PH-Params
+        phx_window_type.frame_type_display_name = ph_params.ph_frame.display_name
         phx_window_type.frame_top.u_value = ph_params.ph_frame.top.u_factor
         phx_window_type.frame_top.width = ph_params.ph_frame.top.width
         phx_window_type.frame_top.psi_glazing = ph_params.ph_frame.top.psi_glazing

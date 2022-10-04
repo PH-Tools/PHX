@@ -44,7 +44,7 @@ class FrameRow:
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemCompo = partial(xl_data.XlItem, _sheet_name)
         xl_item_list: List[xl_data.XlItem] = [
-            XLItemCompo(create_range('description'), self.phx_construction.display_name),
+            XLItemCompo(create_range('description'), self.phx_construction.frame_type_display_name),
             XLItemCompo(create_range('u_value_left'), self.phx_construction.frame_left.u_value, "W/M2K", self._get_target_unit("u_value_left")),
             XLItemCompo(create_range('u_value_right'), self.phx_construction.frame_right.u_value, "W/M2K", self._get_target_unit("u_value_right")),
             XLItemCompo(create_range('u_value_bottom'), self.phx_construction.frame_bottom.u_value, "W/M2K", self._get_target_unit("u_value_bottom")),
