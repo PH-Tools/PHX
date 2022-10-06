@@ -45,22 +45,36 @@ class ConstructorBlock:
 
         # -- Build all the layers of the assembly
         for i, layer in enumerate(self.phx_construction.layers, start=8):
-            layer_items: List[xl_data.XlItem] = [
-                XLItemUValues(create_range('sec_1_description', i),
-                    layer.material.display_name),
-                XLItemUValues(create_range('sec_1_conductivity', i),
-                    layer.material.conductivity,
-                    "W/MK",
-                    self._get_target_unit('sec_1_conductivity')
-                ),
-                XLItemUValues(create_range(
-                    'thickness', i),
-                    layer.thickness_mm,
-                    "MM",
-                    self._get_target_unit('thickness')
-                ),
-            ]
-            xl_items_list.extend(layer_items)
+            xl_items_list.append(XLItemUValues(create_range(
+                        'thickness', i),
+                        layer.thickness_mm,
+                        "MM",
+                        self._get_target_unit('thickness')
+                    )
+                )
+            
+            # -- add in each of the PhxMaterials found in the PhxLayer.materials collection
+            for j, material in enumerate(layer.materials, start=1):
+                layer_items: List[xl_data.XlItem] = [
+                    XLItemUValues(create_range(f'sec_{j}_description', i),
+                        material.display_name),
+                    XLItemUValues(create_range(f'sec_{j}_conductivity', i),
+                        material.conductivity,
+                        "W/MK",
+                        self._get_target_unit(f'sec_{j}_conductivity')
+                    ),
+                ]
+                # -- Only add the percentage info for sections 2 and 3...
+                if j > 1:
+                    layer_items.append(
+                        XLItemUValues(create_range(
+                                f'sec_{j}_percentage', 
+                                getattr(self.shape.constructor.inputs, f'sec_{j}_percentage').row
+                                ),
+                                material.percentage_of_assembly
+                            )
+                        )
+                xl_items_list.extend(layer_items)
 
         return xl_items_list
 

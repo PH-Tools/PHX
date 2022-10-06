@@ -16,7 +16,7 @@ from PHX.model import constructions, project
 
 
 def _conductivity_from_r_value(_r_value: float, _thickness: float) -> float:
-    """Returns a conductivity value, given a known r-value and thickness
+    """Returns a material conductivity value (W/mk), given a known r-value (M2K/W) and thickness (M).
 
     Arguments:
     ----------
@@ -29,6 +29,62 @@ def _conductivity_from_r_value(_r_value: float, _thickness: float) -> float:
     """
     conductivity = _thickness / _r_value
     return conductivity
+
+
+def build_phx_material_from_hb_EnergyMaterial(_hb_material: EnergyMaterial) -> constructions.PhxMaterial:
+    """Returns a new PhxMaterial, with attributes based on a Honeybee-Energy EnergyMaterial.
+
+    Arguments:
+    ----------
+        * _hb_material (EnergyMaterialNoMass): The Honeybee-Energy EnergyMaterialNoMass
+        * _thickness (float): The thickness of the material layer. 
+
+    Returns:
+    --------
+        * (constructions.PhxMaterial): The new PhxMaterial with attributes based on the
+            Honeybee-Energy EnergyMaterial.
+    """
+    new_mat = constructions.PhxMaterial()
+    new_mat.display_name = _hb_material.display_name
+    new_mat.conductivity = _hb_material.conductivity
+    new_mat.density = _hb_material.density
+    new_mat.heat_capacity = _hb_material.specific_heat
+    new_mat.percentage_of_assembly = _hb_material.properties.ph.percentage_of_assembly # type: ignore
+    
+    # -- Defaults
+    new_mat.porosity = 0.95
+    new_mat.water_vapor_resistance = 1.0
+    new_mat.reference_water = 0.0
+
+    return new_mat
+
+
+def build_phx_material_from_hb_EnergyMaterialNoMass(_hb_material: EnergyMaterialNoMass, _thickness: float) -> constructions.PhxMaterial:
+    """Returns a new PhxMaterial, with attributes based on a Honeybee-Energy EnergyMaterialNoMass.
+    Note that a thickness is required in order to determine the material conductivity.
+
+    Arguments:
+    ----------
+        * _hb_material (EnergyMaterialNoMass): The Honeybee-Energy EnergyMaterialNoMass
+        * _thickness (float): The thickness of the material layer. 
+
+    Returns:
+    --------
+        * (constructions.PhxMaterial): The new PhxMaterial with attributes based on the
+            Honeybee-Energy EnergyMaterialNoMass.
+    """
+    new_mat = constructions.PhxMaterial()
+    new_mat.display_name = _hb_material.display_name
+    new_mat.conductivity = _conductivity_from_r_value(_hb_material.r_value, _thickness)
+    new_mat.density = _hb_material.mass_area_density
+    new_mat.heat_capacity = _hb_material.area_heat_capacity
+
+    # -- Defaults
+    new_mat.water_vapor_resistance = 1.0
+    new_mat.porosity = 0.95
+    new_mat.reference_water = 0.0
+
+    return new_mat
 
 
 def build_layer_from_hb_material(_hb_material: Union[EnergyMaterial, EnergyMaterialNoMass]) -> constructions.PhxLayer:
@@ -46,32 +102,23 @@ def build_layer_from_hb_material(_hb_material: Union[EnergyMaterial, EnergyMater
 
     if isinstance(_hb_material, EnergyMaterial):
         new_layer.thickness_m = _hb_material.thickness
-        new_layer.material.display_name = _hb_material.display_name
-        new_layer.material.conductivity = _hb_material.conductivity
-        new_layer.material.density = _hb_material.density
-        new_layer.material.heat_capacity = _hb_material.specific_heat
 
-        # -- Defaults
-        new_layer.material.porosity = 0.95
-        new_layer.material.water_vapor_resistance = 1.0
-        new_layer.material.reference_water = 0.0
+        if _hb_material.properties.ph.base_materials: # type: ignore
+            ## -- Layer is a heterogeneous material layer (ie: stud + insulation)
+            for hb_sub_material in _hb_material.properties.ph.base_materials: # type: ignore
+                new_layer.add_material( build_phx_material_from_hb_EnergyMaterial(hb_sub_material) )
+        else:
+            # -- Layer is homogeneous, use the base HB Material
+            new_layer.add_material( build_phx_material_from_hb_EnergyMaterial(_hb_material) )
 
     elif isinstance(_hb_material, EnergyMaterialNoMass):
+        # -- NoMass layers cannot be heterogeneous (yet....)
         new_layer.thickness_m = 0.1  # 0.1m = 4". Use as default since No-Mass has no thickness
-        new_layer.material.display_name = _hb_material.display_name
-        new_layer.material.conductivity = _conductivity_from_r_value(
-            _hb_material.r_value, new_layer.thickness_m)
-        new_layer.material.density = _hb_material.mass_area_density
-        new_layer.material.heat_capacity = _hb_material.area_heat_capacity
-
-        # -- Defaults
-        new_layer.material.water_vapor_resistance = 1.0
-        new_layer.material.porosity = 0.95
-        new_layer.material.reference_water = 0.0
+        new_layer.add_material( build_phx_material_from_hb_EnergyMaterialNoMass(_hb_material, new_layer.thickness_m) )
 
     else:
         raise TypeError(
-            f"Unrecognized Material type: {type(_hb_material)}.")
+            f"Error: Unsupported Material type: '{type(_hb_material)}'.")
 
     return new_layer
 

@@ -123,6 +123,7 @@
     },
     "VARIANTS": {
         "name": "Variants",
+        "active_value_column": "D",
         "input_header": {
             "locator_col_header": "A",
             "locator_string_header": "Input variables"
@@ -290,7 +291,15 @@
                 },
                 "variants_layer_name": "E",
                 "variants_conductivity": "F",
-                "variants_thickness": "G"
+                "variants_thickness": "G",
+                "sec_2_percentage": {
+                    "column": "O",
+                    "row": 17
+                },
+                "sec_3_percentage": {
+                    "column": "Q",
+                    "row": 17
+                }
             }
         }
     },
@@ -606,6 +615,9 @@
                 "comfort_temp": {
                     "column": "BR",
                     "unit": "F"
+                },
+                "variant_input": {
+                    "column": "F"
                 }
             }
         },
@@ -934,6 +946,52 @@
     },
     "DHW": {
         "name": "DHW+Distribution",
+        "recirc_piping": {
+            "locator_col_header": "D",
+            "locator_string_header": "DHW distribution",
+            "locator_col_entry": "E",
+            "locator_string_entry": "DHW circulation pipes",
+            "input_rows_offset": {
+                "total_length": {
+                    "row": 1,
+                    "unit": "FT"
+                },
+                "diameter": {
+                    "row": 2,
+                    "unit": "IN"
+                },
+                "insul_thickness": {
+                    "row": 3,
+                    "unit": "IN"
+                },
+                "insul_reflective": {
+                    "row": 4
+                },
+                "insul_conductivity": {
+                    "row": 5,
+                    "unit": "HR-FT2-F/BTU-IN"
+                }
+            },
+            "input_col_start": "J"
+        },
+        "branch_piping": {
+            "locator_col_header": "D",
+            "locator_string_header": "DHW distribution",
+            "locator_col_entry": "E",
+            "locator_string_entry": "DHW individual pipes",
+            "input_rows_offset": {
+                "diameter": {
+                    "row": 1,
+                    "unit": "IN"
+                },
+                "total_length": {
+                    "row": 2,
+                    "unit": "FT"
+                },
+                "num_taps": 3
+            },
+            "input_col_start": "J"
+        },
         "tanks": {
             "locator_col_header": "D",
             "locator_string_header": "Storage heat losses",

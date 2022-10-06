@@ -291,7 +291,15 @@
                 },
                 "variants_layer_name": "E",
                 "variants_conductivity": "F",
-                "variants_thickness": "G"
+                "variants_thickness": "G",
+                "sec_2_percentage": {
+                    "column": "O",
+                    "row": 17
+                },
+                "sec_3_percentage": {
+                    "column": "Q",
+                    "row": 17
+                }
             }
         }
     },

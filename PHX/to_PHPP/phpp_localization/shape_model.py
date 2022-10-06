@@ -176,6 +176,8 @@ class UValuesConstructorInputs(BaseModel):
     variants_layer_name: str
     variants_conductivity: str
     variants_thickness: str
+    sec_2_percentage: InputItem
+    sec_3_percentage: InputItem
 
 
 class UValuesConstructor(BaseModel):

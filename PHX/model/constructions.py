@@ -4,7 +4,7 @@
 """PHX Construction, Materials Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Union
+from typing import ClassVar, Union, List, Optional
 from dataclasses import dataclass, field
 import uuid
 
@@ -18,12 +18,21 @@ class PhxMaterial:
     heat_capacity: float = 0.0
     water_vapor_resistance: float = 0.0
     reference_water: float = 0.0
+    percentage_of_assembly: float = 1.0
 
 
 @dataclass
 class PhxLayer:
     thickness_m: float = 0.0
-    material: PhxMaterial = field(default_factory=PhxMaterial)
+    materials: List[PhxMaterial] = field(default_factory=list)
+
+    @property
+    def material(self) -> PhxMaterial:
+        """Return the first PhxMaterial from the self.materials collection."""
+        return self.materials[0]
+
+    def add_material(self, _material: PhxMaterial) -> None:
+        self.materials.append(_material)
 
     @property
     def thickness_mm(self):
