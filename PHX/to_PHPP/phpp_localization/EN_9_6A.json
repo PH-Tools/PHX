@@ -119,6 +119,12 @@
             "input_column": "N",
             "input_row_offset": 0,
             "unit": "C"
+        },
+        "mechanical_cooling": {
+            "locator_col": "M",
+            "locator_string": "Mechanical cooling:",
+            "input_column": "N",
+            "input_row_offset": 0
         }
     },
     "VARIANTS": {

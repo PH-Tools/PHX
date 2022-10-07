@@ -43,6 +43,7 @@ class Verification(BaseModel):
     num_of_units: VerificationInputItem
     setpoint_winter: VerificationInputItem
     setpoint_summer: VerificationInputItem
+    mechanical_cooling: VerificationInputItem
 
 
 # -----------------------------------------------------------------------------
