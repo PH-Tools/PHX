@@ -79,9 +79,11 @@ class UValues:
         if not row:
             return
 
+        id_num_offset = self.shape.constructor.inputs.phpp_id_num_col_offset
+        if_num_column = col_offset(str(self.shape.constructor.inputs.display_name.column), id_num_offset)
         prefix = self.xl.get_data(
             self.shape.name,
-            f'{col_offset(str(self.shape.constructor.inputs.display_name.column), -1)}{row}'
+            f'{if_num_column}{row}'
         )
 
         return f'{prefix}-{_name}'

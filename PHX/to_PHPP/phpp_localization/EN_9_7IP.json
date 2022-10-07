@@ -170,6 +170,7 @@
             }
         },
         "ud_block": {
+            "start_row": 62,
             "locator_col_header": "",
             "locator_string_header": "",
             "input_columns": {
@@ -299,7 +300,8 @@
                 "sec_3_percentage": {
                     "column": "Q",
                     "row": 17
-                }
+                },
+                "phpp_id_num_col_offset": -1
             }
         }
     },

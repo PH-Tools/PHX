@@ -145,6 +145,7 @@ class ClimateUDBlockRows(BaseModel):
 
 
 class ClimateUDBlock(BaseModel):
+    start_row: int
     locator_col_header: str
     locator_string_header: str
     input_columns: ClimateUDBlockCol
@@ -178,6 +179,7 @@ class UValuesConstructorInputs(BaseModel):
     variants_thickness: str
     sec_2_percentage: InputItem
     sec_3_percentage: InputItem
+    phpp_id_num_col_offset: int
 
 
 class UValuesConstructor(BaseModel):
