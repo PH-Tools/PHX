@@ -1,5 +1,5 @@
 {
-  "tolerance": 0.0001, 
+  "tolerance": 0.001, 
   "units": "Meters", 
   "properties": {
     "ph": {
@@ -41,7 +41,7 @@
             "PHIUS2021_cooling_load": 10.0
           }, 
           "name": "Unnamed_Bldg_Segment", 
-          "identifier": "e7be9684-4863-40e2-9c45-a9cf5ec10fe3", 
+          "identifier": "cc8c8e51-5ff1-4b10-84d7-2eca31f2386d", 
           "site": {
             "climate": {
               "monthly_radiation": {
@@ -87,8 +87,8 @@
                   "june": 0.0, 
                   "november": 0.0
                 }, 
-                "identifier": "1775cbb6-d58f-4e30-8987-b6c27221717a", 
-                "display_name": "1775cbb6-d58f-4e30-8987-b6c27221717a", 
+                "identifier": "6408cc68-249d-4a68-a319-3981965e7a1e", 
+                "display_name": "6408cc68-249d-4a68-a319-3981965e7a1e", 
                 "glob": {
                   "february": 0.0, 
                   "july": 0.0, 
@@ -134,8 +134,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "791dfe0a-fc00-4def-9826-69a14a090436", 
-                  "display_name": "791dfe0a-fc00-4def-9826-69a14a090436", 
+                  "identifier": "d5b782e3-f8ab-492c-aad1-3082aff7912c", 
+                  "display_name": "d5b782e3-f8ab-492c-aad1-3082aff7912c", 
                   "rad_south": 0.0, 
                   "rad_north": 0.0, 
                   "sky_temp": null
@@ -147,8 +147,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "6d5e77a3-51ce-4918-a106-8d2063aa9238", 
-                  "display_name": "6d5e77a3-51ce-4918-a106-8d2063aa9238", 
+                  "identifier": "e79afa0c-c69a-41c7-9314-c00b928d8ea3", 
+                  "display_name": "e79afa0c-c69a-41c7-9314-c00b928d8ea3", 
                   "rad_south": 0.0, 
                   "rad_north": 0.0, 
                   "sky_temp": null
@@ -160,14 +160,14 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "8802ec51-e31f-4427-b8da-3988d41e225b", 
-                  "display_name": "8802ec51-e31f-4427-b8da-3988d41e225b", 
+                  "identifier": "2022702e-cfe3-440b-a87f-618052e91206", 
+                  "display_name": "2022702e-cfe3-440b-a87f-618052e91206", 
                   "rad_south": 0.0, 
                   "rad_north": 0.0, 
                   "sky_temp": null
                 }, 
-                "identifier": "b720ee4f-f2ae-43c9-9464-7a1388c0a122", 
-                "display_name": "b720ee4f-f2ae-43c9-9464-7a1388c0a122", 
+                "identifier": "be7568c5-8033-41a3-9e73-73b40a4ea7cc", 
+                "display_name": "be7568c5-8033-41a3-9e73-73b40a4ea7cc", 
                 "cooling_load_2": {
                   "temp": 0.0, 
                   "rad_global": 0.0, 
@@ -175,8 +175,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "0316043a-b523-46cd-81a0-a3636cf02b60", 
-                  "display_name": "0316043a-b523-46cd-81a0-a3636cf02b60", 
+                  "identifier": "1b40c9a7-120d-4e2c-acb6-88d02ce6af96", 
+                  "display_name": "1b40c9a7-120d-4e2c-acb6-88d02ce6af96", 
                   "rad_south": 0.0, 
                   "rad_north": 0.0, 
                   "sky_temp": null
@@ -225,8 +225,8 @@
                   "june": 0.0, 
                   "november": 0.0
                 }, 
-                "identifier": "377fcb78-e893-4c09-9c0f-81a385ea5814", 
-                "display_name": "377fcb78-e893-4c09-9c0f-81a385ea5814", 
+                "identifier": "048d17ec-5965-4986-88c9-8e2a7feb26c9", 
+                "display_name": "048d17ec-5965-4986-88c9-8e2a7feb26c9", 
                 "dewpoints": {
                   "february": 0.0, 
                   "july": 0.0, 
@@ -242,7 +242,7 @@
                   "november": 0.0
                 }
               }, 
-              "identifier": "506ed383-8249-4743-aa8d-3dd6ddb72579", 
+              "identifier": "584fce28-2618-47a5-b5ff-961ccc7ef1e2", 
               "display_name": "New York", 
               "summer_daily_temperature_swing": 8.0, 
               "station_elevation": 0.0
@@ -252,47 +252,33 @@
               "latitude": 40.600000000000001, 
               "longitude": -73.799999999999997, 
               "hours_from_UTC": -4, 
-              "identifier": "fb48eafd-fab3-4a84-9067-bdfd568cca8b", 
-              "display_name": "fb48eafd-fab3-4a84-9067-bdfd568cca8b", 
+              "identifier": "f1dd6a21-d1f9-4a8e-a266-b14ed80f2837", 
+              "display_name": "f1dd6a21-d1f9-4a8e-a266-b14ed80f2837", 
               "climate_zone": 1
             }, 
-            "identifier": "986986ed-c200-4421-9ea8-4949645f7a0c", 
-            "display_name": "986986ed-c200-4421-9ea8-4949645f7a0c", 
+            "identifier": "c28540f7-0b4e-43f0-adcb-38775ecad290", 
+            "display_name": "c28540f7-0b4e-43f0-adcb-38775ecad290", 
             "phpp_library_codes": {
               "country_code": "US-United States of America", 
               "region_code": "New York", 
               "dataset_name": "US0055b-New York", 
-              "identifier": "92403886-df3d-4841-be3d-8e547daf5a4a", 
+              "identifier": "c777fb30-bf3c-4ffb-8286-cb46dc1d78d6", 
               "display_name": "US0055b-New York"
             }
           }, 
           "phi_certification": {
-            "_certification_class": {
-              "value": "1-CLASSIC"
-            }, 
-            "_occupancy_type": {
-              "value": "1-STANDARD (ONLY FOR RESIDENTIAL BUILDINGS)"
-            }, 
-            "_enerphit_type": {
-              "value": "2-ENERGY DEMAND METHOD"
-            }, 
-            "_building_category_type": {
-              "value": "1-RESIDENTIAL BUILDING"
-            }, 
-            "_ihg_type": {
-              "value": "2-STANDARD"
-            }, 
-            "_primary_energy_type": {
-              "value": "2-PER (RENEWABLE)"
-            }, 
-            "_certification_type": {
-              "value": "1-PASSIVE HOUSE"
-            }, 
-            "_building_use_type": {
-              "value": "10-DWELLING"
-            }, 
-            "_retrofit_type": {
-              "value": "1-NEW BUILDING"
+            "phpp_version": 9, 
+            "attributes": {
+              "phpp_version": 9, 
+              "building_use_type": "10-DWELLING", 
+              "retrofit_type": "1-NEW BUILDING", 
+              "primary_energy_type": "2-PER (RENEWABLE)", 
+              "certification_class": "1-CLASSIC", 
+              "certification_type": "1-PASSIVE HOUSE", 
+              "building_category_type": "1-RESIDENTIAL BUILDING", 
+              "occupancy_type": "1-STANDARD (ONLY FOR RESIDENTIAL BUILDINGS)", 
+              "enerphit_type": "2-ENERGY DEMAND METHOD", 
+              "ihg_type": "2-STANDARD"
             }
           }, 
           "source_energy_factors": {
@@ -323,7 +309,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_5_16a6b8d6 Ideal Loads Air System", 
+          "identifier": "Room_1_d5f95662 Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": false, 
           "cooling_limit": {
@@ -375,7 +361,7 @@
             "ph": {
               "id_num": 0, 
               "operating_days_wk": 7.0, 
-              "operating_weeks_year": 52, 
+              "operating_weeks_year": 52.0, 
               "operating_periods": {
                 "collection": []
               }, 
@@ -593,7 +579,7 @@
             "ph": {
               "id_num": 0, 
               "operating_days_wk": 7.0, 
-              "operating_weeks_year": 52, 
+              "operating_weeks_year": 52.0, 
               "operating_periods": {
                 "collection": []
               }, 
@@ -765,7 +751,7 @@
             "ph": {
               "id_num": 0, 
               "operating_days_wk": 7.0, 
-              "operating_weeks_year": 52, 
+              "operating_weeks_year": 52.0, 
               "operating_periods": {
                 "collection": []
               }, 
@@ -800,7 +786,7 @@
             "ph": {
               "id_num": 0, 
               "operating_days_wk": 7.0, 
-              "operating_weeks_year": 52, 
+              "operating_weeks_year": 52.0, 
               "operating_periods": {
                 "collection": []
               }, 
@@ -993,7 +979,7 @@
             "ph": {
               "id_num": 0, 
               "operating_days_wk": 7.0, 
-              "operating_weeks_year": 52, 
+              "operating_weeks_year": 52.0, 
               "operating_periods": {
                 "collection": []
               }, 
@@ -1186,7 +1172,7 @@
             "ph": {
               "id_num": 0, 
               "operating_days_wk": 7.0, 
-              "operating_weeks_year": 52, 
+              "operating_weeks_year": 52.0, 
               "operating_periods": {
                 "collection": []
               }, 
@@ -1384,7 +1370,7 @@
             "ph": {
               "id_num": 0, 
               "operating_days_wk": 7.0, 
-              "operating_weeks_year": 52, 
+              "operating_weeks_year": 52.0, 
               "operating_periods": {
                 "collection": []
               }, 
@@ -1779,6 +1765,14 @@
             "density": 1.28, 
             "conductivity": 0.55600000000000005, 
             "solar_absorptance": 0.69999999999999996, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic Ceiling Air Gap", 
@@ -1791,6 +1785,14 @@
             "density": 368.0, 
             "conductivity": 0.059999999999999998, 
             "solar_absorptance": 0.20000000000000001, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic Acoustic Tile", 
@@ -1803,6 +1805,14 @@
             "density": 1920.0, 
             "conductivity": 0.90000000000000002, 
             "solar_absorptance": 0.65000000000000002, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic Brick", 
@@ -1815,6 +1825,14 @@
             "density": 1280.0, 
             "conductivity": 0.53000000000000003, 
             "solar_absorptance": 0.80000000000000004, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic LW Concrete", 
@@ -1827,6 +1845,14 @@
             "density": 1120.0, 
             "conductivity": 0.16, 
             "solar_absorptance": 0.65000000000000002, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic Roof Membrane", 
@@ -1845,6 +1871,14 @@
             "density": 800.0, 
             "conductivity": 0.16, 
             "solar_absorptance": 0.5, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic Gypsum Board", 
@@ -1857,6 +1891,14 @@
             "density": 43.0, 
             "conductivity": 0.029999999999999999, 
             "solar_absorptance": 0.69999999999999996, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic 50mm Insulation", 
@@ -1869,6 +1911,14 @@
             "density": 2240.0, 
             "conductivity": 1.95, 
             "solar_absorptance": 0.80000000000000004, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic HW Concrete", 
@@ -1881,6 +1931,14 @@
             "density": 1.28, 
             "conductivity": 0.66700000000000004, 
             "solar_absorptance": 0.69999999999999996, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic Wall Air Gap", 
@@ -1893,6 +1951,14 @@
             "density": 7690.0, 
             "conductivity": 45.0, 
             "solar_absorptance": 0.5, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic Painted Metal", 
@@ -1905,6 +1971,14 @@
             "density": 43.0, 
             "conductivity": 0.029999999999999999, 
             "solar_absorptance": 0.69999999999999996, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic 25mm Insulation", 
@@ -1917,6 +1991,14 @@
             "density": 608.0, 
             "conductivity": 0.14999999999999999, 
             "solar_absorptance": 0.5, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
             "thermal_absorptance": 0.90000000000000002, 
             "type": "EnergyMaterial", 
             "identifier": "Generic 25mm Wood", 
@@ -2203,19 +2285,19 @@
       "type": "ModelRadianceProperties"
     }
   }, 
-  "version": "1.50.2", 
-  "identifier": "unnamed_97a211c7", 
+  "version": "1.51.3", 
+  "identifier": "unnamed_2af84725", 
   "display_name": "unnamed", 
   "rooms": [
     {
       "properties": {
         "ph": {
           "type": "RoomPhPropertiesAbridged", 
-          "ph_bldg_segment_id": "e7be9684-4863-40e2-9c45-a9cf5ec10fe3", 
+          "ph_bldg_segment_id": "cc8c8e51-5ff1-4b10-84d7-2eca31f2386d", 
           "spaces": []
         }, 
         "energy": {
-          "hvac": "Room_5_16a6b8d6 Ideal Loads Air System", 
+          "hvac": "Room_1_d5f95662 Ideal Loads Air System", 
           "type": "RoomEnergyPropertiesAbridged", 
           "program_type": "Generic Office Program"
         }, 
@@ -2224,8 +2306,8 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_5_16a6b8d6", 
-      "display_name": "Room_5", 
+      "identifier": "Room_1_d5f95662", 
+      "display_name": "Room_1", 
       "faces": [
         {
           "boundary_condition": {
@@ -2293,8 +2375,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_5_16a6b8d6..Face0", 
-          "display_name": "Room_5_16a6b8d6..Face0", 
+          "identifier": "Room_1_d5f95662..Face0", 
+          "display_name": "Room_1_d5f95662..Face0", 
           "type": "Face"
         }, 
         {
@@ -2363,8 +2445,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_5_16a6b8d6..Face1", 
-          "display_name": "Room_5_16a6b8d6..Face1", 
+          "identifier": "Room_1_d5f95662..Face1", 
+          "display_name": "Room_1_d5f95662..Face1", 
           "type": "Face"
         }, 
         {
@@ -2433,8 +2515,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_5_16a6b8d6..Face2", 
-          "display_name": "Room_5_16a6b8d6..Face2", 
+          "identifier": "Room_1_d5f95662..Face2", 
+          "display_name": "Room_1_d5f95662..Face2", 
           "type": "Face"
         }, 
         {
@@ -2503,8 +2585,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_5_16a6b8d6..Face3", 
-          "display_name": "Room_5_16a6b8d6..Face3", 
+          "identifier": "Room_1_d5f95662..Face3", 
+          "display_name": "Room_1_d5f95662..Face3", 
           "type": "Face"
         }, 
         {
@@ -2568,8 +2650,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_5_16a6b8d6..Face4", 
-          "display_name": "Room_5_16a6b8d6..Face4", 
+          "identifier": "Room_1_d5f95662..Face4", 
+          "display_name": "Room_1_d5f95662..Face4", 
           "type": "Face"
         }, 
         {
@@ -2638,8 +2720,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_5_16a6b8d6..Face5", 
-          "display_name": "Room_5_16a6b8d6..Face5", 
+          "identifier": "Room_1_d5f95662..Face5", 
+          "display_name": "Room_1_d5f95662..Face5", 
           "type": "Face"
         }
       ], 
