@@ -71,6 +71,12 @@ class Ventilation:
             self.shape.airtightness_n50.locator_col,
             self.shape.airtightness_n50.locator_string
         )
+        self.io_net_volume = VentilationInputLocation(
+            self.xl,
+            self.shape.name,
+            self.shape.airtightness_Vn50.locator_col,
+            self.shape.airtightness_Vn50.locator_string
+        )
         self.io_multi_vent_worksheet_on = VentilationInputLocation(
             self.xl,
             self.shape.name,
@@ -100,7 +106,7 @@ class Ventilation:
         self._write_input(self.io_air_change_rate, _phpp_model_obj)
 
     def write_Vn50_volume(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
-        self._write_input(self.io_air_change_rate, _phpp_model_obj)
+        self._write_input(self.io_net_volume, _phpp_model_obj)
 
     def write_multi_vent_worksheet_on(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
         self._write_input(self.io_multi_vent_worksheet_on, _phpp_model_obj)

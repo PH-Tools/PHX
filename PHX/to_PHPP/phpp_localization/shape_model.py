@@ -43,6 +43,7 @@ class Verification(BaseModel):
     num_of_units: VerificationInputItem
     setpoint_winter: VerificationInputItem
     setpoint_summer: VerificationInputItem
+    mechanical_cooling: VerificationInputItem
 
 
 # -----------------------------------------------------------------------------
@@ -145,6 +146,7 @@ class ClimateUDBlockRows(BaseModel):
 
 
 class ClimateUDBlock(BaseModel):
+    start_row: int
     locator_col_header: str
     locator_string_header: str
     input_columns: ClimateUDBlockCol
@@ -176,6 +178,9 @@ class UValuesConstructorInputs(BaseModel):
     variants_layer_name: str
     variants_conductivity: str
     variants_thickness: str
+    sec_2_percentage: InputItem
+    sec_3_percentage: InputItem
+    phpp_id_num_col_offset: int
 
 
 class UValuesConstructor(BaseModel):

@@ -13,8 +13,8 @@ from honeybee_energy_ph.hvac.ventilation import PhVentilationSystem
 from honeybee_energy_ph.hvac.heating import PhHeatingSystem
 from honeybee_energy_ph.hvac.cooling import PhCoolingSystem
 
-from PHX.model import phx_site, project, ground, constructions
-from PHX.model.enums import phi_certification, phius_certification
+from PHX.model import phx_site, project, ground, constructions, certification
+from PHX.model.enums import phi_certification_phpp_9, phi_certification_phpp_10, phius_certification
 from PHX.from_HBJSON import create_building, create_hvac, create_shw, create_elec_equip
 
 
@@ -91,6 +91,51 @@ def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room:
     return None
 
 
+def set_phx_phpp9_settings(_phx_settings: certification.PhxPhiCertificationSettings, _hbph_settings:phi.PhiCertification) -> None:
+    """Set the values of the PHX-PHI Settings object for PHPP-v9 Settings.
+    
+    Arguments:
+    ----------
+        * _phx_settings: certification.PhxPhiCertificationSettings
+        * _hbph_settings:phi.PhiCertification)
+    
+    Returns:
+    --------
+        * None
+    """
+    phpp_9_attrs: phi.PHPPSettings9 = _hbph_settings.attributes
+    _phx_settings.phi_building_category_type = phi_certification_phpp_9.PhiCertBuildingCategoryType(phpp_9_attrs.building_category_type.number)
+    _phx_settings.phi_building_use_type = phi_certification_phpp_9.PhiCertBuildingUseType(phpp_9_attrs.building_use_type.number)
+    _phx_settings.phi_building_ihg_type = phi_certification_phpp_9.PhiCertIHGType(phpp_9_attrs.ihg_type.number)
+    _phx_settings.phi_building_occupancy_type = phi_certification_phpp_9.PhiCertOccupancyType(phpp_9_attrs.occupancy_type.number)
+
+    _phx_settings.phi_certification_type = phi_certification_phpp_9.PhiCertType(phpp_9_attrs.certification_type.number)
+    _phx_settings.phi_certification_class = phi_certification_phpp_9.PhiCertClass(phpp_9_attrs.certification_class.number)
+    _phx_settings.phi_pe_type = phi_certification_phpp_9.PhiCertificationPEType(phpp_9_attrs.primary_energy_type.number)
+    _phx_settings.phi_enerphit_type = phi_certification_phpp_9.PhiCertEnerPHitType(phpp_9_attrs.enerphit_type.number)
+    _phx_settings.phi_retrofit_type = phi_certification_phpp_9.PhiCertRetrofitType(phpp_9_attrs.retrofit_type.number)
+
+def set_phx_phpp10_settings(_phx_settings: certification.PhxPhiCertificationSettings, _hbph_settings:phi.PhiCertification) -> None:
+    """Set the values of the PHX-PHI Settings object for PHPP-v10 Settings.
+    
+    Arguments:
+    ----------
+        * _phx_settings: certification.PhxPhiCertificationSettings
+        * _hbph_settings:phi.PhiCertification)
+    
+    Returns:
+    --------
+        * None
+    """
+    phpp_10_attrs: phi.PHPPSettings10 = _hbph_settings.attributes
+    _phx_settings.phi_building_use_type = phi_certification_phpp_10.PhiCertBuildingUseType(phpp_10_attrs.building_use_type.number)
+    _phx_settings.phi_building_ihg_type = phi_certification_phpp_10.PhiCertIHGType(phpp_10_attrs.ihg_type.number)
+
+    _phx_settings.phi_certification_type = phi_certification_phpp_10.PhiCertType(phpp_10_attrs.certification_type.number)
+    _phx_settings.phi_certification_class = phi_certification_phpp_10.PhiCertClass(phpp_10_attrs.certification_class.number)
+    _phx_settings.phi_pe_type = phi_certification_phpp_10.PhiCertificationPEType(phpp_10_attrs.primary_energy_type.number)
+    _phx_settings.phi_retrofit_type = phi_certification_phpp_10.PhiCertRetrofitType(phpp_10_attrs.retrofit_type.number)
+
 def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Set all the PhxPhiCertificationCriteria on a PhxVariant based on a Honeybee-Room's Building Segment.
 
@@ -104,20 +149,16 @@ def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: r
         * None
     """
     # alias cus' all this shit is deep in there...
-    hbph_phi_cert: phi.PhiCertification = _hb_room.properties.ph.ph_bldg_segment.phi_certification  # type: ignore
-    phx_phi_cert_settings = _variant.phi_certification.phi_certification_settings # type: ignore
+    hbph_settings: phi.PhiCertification = _hb_room.properties.ph.ph_bldg_segment.phi_certification  # type: ignore
+    phx_settings = _variant.phi_certification.phi_certification_settings # type: ignore
 
-    # certification settings / types
-    phx_phi_cert_settings.phi_building_category_type = phi_certification.PhiCertificationBuildingCategoryType(hbph_phi_cert.building_category_type.number)
-    phx_phi_cert_settings.phi_building_use_type = phi_certification.PhiCertificationBuildingUseType(hbph_phi_cert.building_use_type.number)
-    phx_phi_cert_settings.phi_building_ihg_type = phi_certification.PhiCertificationIHGType(hbph_phi_cert.ihg_type.number)
-    phx_phi_cert_settings.phi_building_occupancy_type = phi_certification.PhiCertificationOccupancyType(hbph_phi_cert.occupancy_type.number)
-
-    phx_phi_cert_settings.phi_certification_type = phi_certification.PhiCertificationType(hbph_phi_cert.certification_type.number)
-    phx_phi_cert_settings.phi_certification_class = phi_certification.PhiCertificationClass(hbph_phi_cert.certification_class.number)
-    phx_phi_cert_settings.phi_pe_type = phi_certification.PhiCertificationPEType(hbph_phi_cert.primary_energy_type.number)
-    phx_phi_cert_settings.phi_enerphit_type = phi_certification.PhiCertificationEnerPHitType(hbph_phi_cert.enerphit_type.number)
-    phx_phi_cert_settings.phi_retrofit_type = phi_certification.PhiCertificationRetrofitType(hbph_phi_cert.retrofit_type.number)
+    if hbph_settings.attributes.phpp_version == 10:
+        set_phx_phpp10_settings(phx_settings, hbph_settings)
+    elif hbph_settings.attributes.phpp_version == 9:
+        set_phx_phpp9_settings(phx_settings, hbph_settings)
+    else:
+        msg = f"Error: Unknown PHPP Settings Version? Got: '{hbph_settings.attributes.phpp_version}'"
+        raise Exception(msg)
 
     return None
 
