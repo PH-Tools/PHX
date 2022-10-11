@@ -21,7 +21,7 @@ class Climate:
 
     def get_start_rows(self) -> List[int]:
         # TODO: make this find the right starting rows.
-        return [61]
+        return [self.shape.ud_block.start_row]
 
     def write_climate_block(self, _climate_entry: climate_entry.ClimateDataBlock) -> None:
         if not self.weather_data_start_rows:

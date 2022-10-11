@@ -431,7 +431,7 @@ class PHPPConnection:
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
         # Get all the Window worksheet names in order
         window_names = self.windows.get_all_window_names()
-
+        
         # Get all the PHX Aperture objects
         phx_aperture_dict: Dict[str, components.PhxApertureElement] = {}
         for phx_variant in phx_project.variants:

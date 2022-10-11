@@ -99,7 +99,7 @@ class Windows:
         # Get all the window names from the description row
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
-            _col=col_offset(self.shape.window_rows.locator_col_entry,1),
+            _col=self.shape.window_rows.inputs.description.column, # type: ignore
             _row_start=self.first_entry_row,
             _row_end=self.end_entry_row
         )
