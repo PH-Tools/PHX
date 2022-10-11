@@ -574,7 +574,7 @@
 			<Building>
 				<Components count="6">
 					<Component index="0">
-						<IdentNr>33</IdentNr>
+						<IdentNr>41</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -595,7 +595,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="1">
-						<IdentNr>34</IdentNr>
+						<IdentNr>42</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -612,7 +612,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="2">
-						<IdentNr>35</IdentNr>
+						<IdentNr>43</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
@@ -629,7 +629,7 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="3">
-						<IdentNr>40</IdentNr>
+						<IdentNr>48</IdentNr>
 						<Name>Merged_Component</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
@@ -650,8 +650,8 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="4">
-						<IdentNr>41</IdentNr>
-						<Name>Shade_1386f05d</Name>
+						<IdentNr>49</IdentNr>
+						<Name>Shade_f8b0153c</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -666,8 +666,8 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="5">
-						<IdentNr>42</IdentNr>
-						<Name>Shade_cf60eb9b</Name>
+						<IdentNr>50</IdentNr>
+						<Name>Shade_2b23ce42</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -1070,7 +1070,7 @@
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
-								<Name>d66e39ba-fe39-4388-ad97-bbde1d23da47</Name>
+								<Name>e7244824-5229-41bb-b4dc-3c03e5995a3f</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>

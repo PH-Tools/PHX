@@ -29,7 +29,12 @@ class PhxLayer:
     @property
     def material(self) -> PhxMaterial:
         """Return the first PhxMaterial from the self.materials collection."""
-        return self.materials[0]
+        if not self.materials:
+            # -- Return a default PhxMaterial if no materials are set.
+            return PhxMaterial() 
+        else:
+            # -- Otherwise return the first material in the collection.
+            return self.materials[0]
 
     def add_material(self, _material: PhxMaterial) -> None:
         self.materials.append(_material)
@@ -38,6 +43,7 @@ class PhxLayer:
     def thickness_mm(self):
         """Returns the thickness of the layer in MM"""
         return self.thickness_m * 1000
+
 
 @dataclass
 class PhxConstructionOpaque:
@@ -67,6 +73,7 @@ class PhxConstructionOpaque:
 
     def __hash__(self):
         return hash(self.identifier)
+
 
 # ------------------------------------------------------------
 # Windows
