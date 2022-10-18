@@ -9,7 +9,7 @@ def test_default_PhxLocation(reset_class_counters):
     result = generate_WUFI_XML_from_object(l1, _header="")
 
     assert xml_string_to_list(result) == [
-            '<Selection>1</Selection>',
+            '<Selection>2</Selection>',
             '<Latitude_DB unit="°">40.6</Latitude_DB>',
             '<Longitude_DB unit="°">-73.8</Longitude_DB>',
             '<HeightNN_DB unit="m">None</HeightNN_DB>',
@@ -22,7 +22,7 @@ def test_default_PhxLocation(reset_class_counters):
             '<CO2concenration unit="mg/m³">350</CO2concenration>',
             '<Unit_CO2concentration choice="ppmv">48</Unit_CO2concentration>',
             '<PH_ClimateLocation>',
-            '<Selection>1</Selection>',
+            '<Selection>6</Selection>',
             '<DailyTemperatureSwingSummer>8.0</DailyTemperatureSwingSummer>',
             '<AverageWindSpeed>4.0</AverageWindSpeed>',
             '<Latitude>40.6</Latitude>',
