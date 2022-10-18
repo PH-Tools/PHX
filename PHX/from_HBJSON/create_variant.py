@@ -115,6 +115,7 @@ def set_phx_phpp9_settings(_phx_settings: certification.PhxPhiCertificationSetti
     _phx_settings.phi_enerphit_type = phi_certification_phpp_9.PhiCertEnerPHitType(phpp_9_attrs.enerphit_type.number)
     _phx_settings.phi_retrofit_type = phi_certification_phpp_9.PhiCertRetrofitType(phpp_9_attrs.retrofit_type.number)
 
+
 def set_phx_phpp10_settings(_phx_settings: certification.PhxPhiCertificationSettings, _hbph_settings:phi.PhiCertification) -> None:
     """Set the values of the PHX-PHI Settings object for PHPP-v10 Settings.
     
@@ -135,6 +136,7 @@ def set_phx_phpp10_settings(_phx_settings: certification.PhxPhiCertificationSett
     _phx_settings.phi_certification_class = phi_certification_phpp_10.PhiCertClass(phpp_10_attrs.certification_class.number)
     _phx_settings.phi_pe_type = phi_certification_phpp_10.PhiCertificationPEType(phpp_10_attrs.primary_energy_type.number)
     _phx_settings.phi_retrofit_type = phi_certification_phpp_10.PhiCertRetrofitType(phpp_10_attrs.retrofit_type.number)
+
 
 def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Set all the PhxPhiCertificationCriteria on a PhxVariant based on a Honeybee-Room's Building Segment.

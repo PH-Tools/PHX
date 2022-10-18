@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""PHX Location and Climate Dataclasses"""
+"""PHX Site (Location and Climate) Dataclasses"""
 
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Union, Optional
+
+from PHX.model.enums.phx_site import SiteSelection, SiteClimateSelection, SiteEnergyFactorSelection
 
 
 @dataclass
@@ -33,14 +35,14 @@ class PhxCO2Factor:
     fuel_name: str = ''
 
 
-PhxEnergyFactor = Union[PhxPEFactor, PhxCO2Factor]
+PhxEnergyFactorAlias = Union[PhxPEFactor, PhxCO2Factor]
 
 
 @dataclass
 class PhxSiteEnergyFactors:
-    selection_pe_co2_factor: int = 6
-    pe_factors: dict[str, PhxEnergyFactor] = field(default_factory=dict)
-    co2_factors: dict[str, PhxEnergyFactor] = field(default_factory=dict)
+    selection_pe_co2_factor: SiteEnergyFactorSelection = SiteEnergyFactorSelection.USER_DEFINED
+    pe_factors: dict[str, PhxEnergyFactorAlias] = field(default_factory=dict)
+    co2_factors: dict[str, PhxEnergyFactorAlias] = field(default_factory=dict)
 
     def __post_init__(self):
         self.pe_factors = {
@@ -61,7 +63,7 @@ class PhxSiteEnergyFactors:
             "OIL_CGS_35_CHP": PhxPEFactor(1.1, "kWh/kWh", "OIL_CGS_35_CHP"),
             "OIL_CGS_0_CHP": PhxPEFactor(1.5, "kWh/kWh", "OIL_CGS_0_CHP"),
         }
-        self.co2_factors: dict[str, PhxEnergyFactor] = {
+        self.co2_factors: dict[str, PhxEnergyFactorAlias] = {
             "OIL": PhxCO2Factor(309.9966, "g/kWh", "OIL"),
             "NATURAL_GAS": PhxCO2Factor(250.0171, "g/kWh", "NATURAL_GAS"),
             "LPG": PhxCO2Factor(270.0102, "g/kWh", "LPG"),
@@ -105,7 +107,7 @@ class PhxClimatePeakLoad:
 class PhxClimate:
     """Monthly Climate Date for the building location."""
     station_elevation: float = 3.0
-    selection: int = 6
+    selection: SiteClimateSelection = SiteClimateSelection.USER_DEFINED
     daily_temp_swing: float = 8.0
     avg_wind_speed: float = 4.0
 
@@ -137,7 +139,7 @@ class PhxSite:
     display_name: str = "New York"
 
     source: str = "__unknown__"
-    selection: int = 1
+    selection: SiteSelection = SiteSelection.USER_DEFINED
     
     location: PhxLocation = field(default_factory=PhxLocation)
     climate: PhxClimate = field(default_factory=PhxClimate)

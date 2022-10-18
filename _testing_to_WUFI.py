@@ -18,8 +18,7 @@ source_file_names = [
     "Default_Model_Single_Zone.hbjson",
     "Multi_Room_Complete.hbjson",
 ]
-SOURCE_FILES = [pathlib.Path(SOURCE_DIR, n) for n in source_file_names]
-TARGET_DIR = pathlib.Path("tests", "_reference_xml")
+SOURCE_DIR = pathlib.Path("sample", "hbjson")
 
 def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
     # -- Re-set all the PHX modules (counters)

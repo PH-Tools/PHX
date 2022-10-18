@@ -17,11 +17,11 @@ class PhiusCertificationBuildingUseType(Enum):
     UNDEFINED =7
 
 class PhiusCertificationBuildingStatus(Enum):
-        IN_PLANNING = 1
-        UNDER_CONSTRUCTION = 2
-        COMPLETE = 3
+    IN_PLANNING = 1
+    UNDER_CONSTRUCTION = 2
+    COMPLETE = 3
 
 class PhiusCertificationBuildingType(Enum):
-        NEW_CONSTRUCTION =1
-        RETROFIT = 2
-        MIXED =3
+    NEW_CONSTRUCTION =1
+    RETROFIT = 2
+    MIXED =3

@@ -257,7 +257,7 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
 
 def _PH_ClimateLocation(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
 
-    def _in_wufi_order(_factor_dict: dict) -> List[phx_site.PhxEnergyFactor]:
+    def _in_wufi_order(_factor_dict: dict) -> List[phx_site.PhxEnergyFactorAlias]:
         """Returns the PE /CO2 conversion factors in WUFI-specific order."""
         fuel_order = ["OIL", "NATURAL_GAS", "LPG", "HARD_COAL", "WOOD", "ELECTRICITY_MIX",
                       "ELECTRICITY_PV", "HARD_COAL_CGS_70_CHP", "HARD_COAL_CGS_35_CHP",
@@ -267,7 +267,7 @@ def _PH_ClimateLocation(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
         return [_factor_dict[fuel_name] for fuel_name in fuel_order]
 
     return [
-        XML_Node('Selection', _phx_site.selection),
+        XML_Node('Selection', _phx_site.climate.selection.value),
         XML_Node('DailyTemperatureSwingSummer',
                  _phx_site.climate.daily_temp_swing),
         XML_Node('AverageWindSpeed', _phx_site.climate.avg_wind_speed),
@@ -362,7 +362,7 @@ def _PH_ClimateLocation(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
                  _phx_site.climate.peak_cooling_2.radiation_global),
 
         XML_Node('SelectionPECO2Factor',
-                 _phx_site.energy_factors.selection_pe_co2_factor),
+                 _phx_site.energy_factors.selection_pe_co2_factor.value),
         XML_List('PEFactorsUserDef', [XML_Node(f"PEF{i}", factor.value, "unit", factor.unit)
                                       for i, factor in enumerate(_in_wufi_order(_phx_site.energy_factors.pe_factors))]),
         XML_List('CO2FactorsUserDef', [XML_Node(f"CO2F{i}", factor.value, "unit", factor.unit)
@@ -372,7 +372,7 @@ def _PH_ClimateLocation(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
 
 def _PhxSite(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
     return [
-        XML_Node('Selection', _phx_site.selection),
+        XML_Node('Selection', _phx_site.selection.value),
         # XML_Node('IDNr_DB', _climate.),
         # XML_Node('Name_DB', _climate.),
         # XML_Node('Comment_DB', _climate.),
