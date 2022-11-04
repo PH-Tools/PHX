@@ -52,8 +52,20 @@ def _transfer_attributes(_hbeph_obj: _base._PhHVACBase,
 # -----------------------------------------------------------------------------
 # -- Ventilation
 
+def _default_ventilator_name(_hr:float, _mr:float) -> str:
+    """Return a Ventilation Unit name
+    
+    Arguments:
+    ----------
+        * _hr (float): The Heat Recovery efficiency of the unit.    
+        * _mr (float): The Moisture Recovery efficiency of the unit.    
+    Returns:
+    --------
+        * (str)
+    """
+    return f"Ventilator: {_hr*100 :0.0f}%-HR, {_mr*100 :0.0f}%-MR"
 
-def build_phx_ventilator(_hbeph_vent: ventilation.PhVentilationSystem) -> hvac.PhxDeviceVentilator:
+def build_phx_ventilator(_hbeph_vent_sys: ventilation.PhVentilationSystem) -> hvac.PhxDeviceVentilator:
     """Returns a new Fresh-Air Ventilator built from the hb-energy hvac parameters.
 
     This will look at the Space's Host-Room .properties.energy.hvac for data.
@@ -69,15 +81,26 @@ def build_phx_ventilator(_hbeph_vent: ventilation.PhVentilationSystem) -> hvac.P
     """
 
     phx_vent = hvac.PhxDeviceVentilator()
+    _id_num = phx_vent.id_num # preserver so 'transfer_attributes' doesn't kill it...
 
-    if not _hbeph_vent.ventilation_unit:
+    if not _hbeph_vent_sys.ventilation_unit:
         return phx_vent
-    phx_vent = _transfer_attributes(_hbeph_vent, phx_vent)
-    phx_vent = _transfer_attributes(_hbeph_vent.ventilation_unit, phx_vent)
+    phx_vent = _transfer_attributes(_hbeph_vent_sys, phx_vent)
+    phx_vent = _transfer_attributes(_hbeph_vent_sys.ventilation_unit, phx_vent)
 
-    phx_vent.display_name = 'Ventilator:'\
-        f' {_hbeph_vent.ventilation_unit.sensible_heat_recovery*100 :0.0f}%-HR,'\
-        f' {_hbeph_vent.ventilation_unit.latent_heat_recovery*100 :0.0f}%-MR'
+    # -- Sort out the Display name to use
+    if not _hbeph_vent_sys.ventilation_unit:
+        ventilator_name = _default_ventilator_name(0.0, 0.0)
+    elif _hbeph_vent_sys.ventilation_unit.display_name == "_unnamed_ventilator_":
+        ventilator_name = _default_ventilator_name(
+            _hbeph_vent_sys.ventilation_unit.sensible_heat_recovery,
+            _hbeph_vent_sys.ventilation_unit.latent_heat_recovery
+        )
+    else:
+        ventilator_name = _hbeph_vent_sys.ventilation_unit.display_name
+
+    phx_vent.display_name = ventilator_name
+    phx_vent.id_num = _id_num
 
     return phx_vent
 

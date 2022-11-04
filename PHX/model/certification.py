@@ -6,6 +6,7 @@
 from __future__ import annotations
 from typing import ClassVar
 from dataclasses import dataclass, field
+from enum import Enum
 
 from PHX.model import ground
 from PHX.model.enums import phi_certification_phpp_9, phius_certification
@@ -77,16 +78,16 @@ class PhxPhiusCertification:
 # -----------------------------------------------------------------------------
 @dataclass
 class PhxPhiCertificationSettings:
-    phi_building_category_type = phi_certification_phpp_9.PhiCertBuildingCategoryType.RESIDENTIAL_BUILDING
-    phi_building_use_type = phi_certification_phpp_9.PhiCertBuildingUseType.DWELLING
-    phi_building_ihg_type = phi_certification_phpp_9.PhiCertIHGType.STANDARD
-    phi_building_occupancy_type = phi_certification_phpp_9.PhiCertOccupancyType.STANDARD
+    phi_building_category_type: Enum = phi_certification_phpp_9.PhiCertBuildingCategoryType.RESIDENTIAL_BUILDING
+    phi_building_use_type: Enum = phi_certification_phpp_9.PhiCertBuildingUseType.DWELLING
+    phi_building_ihg_type: Enum = phi_certification_phpp_9.PhiCertIHGType.STANDARD
+    phi_building_occupancy_type: Enum = phi_certification_phpp_9.PhiCertOccupancyType.STANDARD
 
-    phi_certification_type = phi_certification_phpp_9.PhiCertType.PASSIVE_HOUSE
-    phi_certification_class = phi_certification_phpp_9.PhiCertClass.CLASSIC
-    phi_pe_type = phi_certification_phpp_9.PhiCertificationPEType.PER
-    phi_enerphit_type = phi_certification_phpp_9.PhiCertEnerPHitType.BY_DEMAND
-    phi_retrofit_type = phi_certification_phpp_9.PhiCertRetrofitType.NEW_BUILDING
+    phi_certification_type: Enum = phi_certification_phpp_9.PhiCertType.PASSIVE_HOUSE
+    phi_certification_class: Enum = phi_certification_phpp_9.PhiCertClass.CLASSIC
+    phi_pe_type: Enum = phi_certification_phpp_9.PhiCertificationPEType.PER
+    phi_enerphit_type: Enum = phi_certification_phpp_9.PhiCertEnerPHitType.BY_DEMAND
+    phi_retrofit_type: Enum = phi_certification_phpp_9.PhiCertRetrofitType.NEW_BUILDING
 
 @dataclass
 class PhxPhiCertification:

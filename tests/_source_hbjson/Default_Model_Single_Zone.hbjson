@@ -41,7 +41,7 @@
             "PHIUS2021_cooling_load": 10.0
           }, 
           "name": "Unnamed_Bldg_Segment", 
-          "identifier": "cc8c8e51-5ff1-4b10-84d7-2eca31f2386d", 
+          "identifier": "09601d72-9c9e-424c-81fa-cf4e51ea901f", 
           "site": {
             "climate": {
               "monthly_radiation": {
@@ -87,8 +87,8 @@
                   "june": 0.0, 
                   "november": 0.0
                 }, 
-                "identifier": "6408cc68-249d-4a68-a319-3981965e7a1e", 
-                "display_name": "6408cc68-249d-4a68-a319-3981965e7a1e", 
+                "identifier": "0a5ec7ad-7ea9-4610-9d3d-17ab3f26e49a", 
+                "display_name": "0a5ec7ad-7ea9-4610-9d3d-17ab3f26e49a", 
                 "glob": {
                   "february": 0.0, 
                   "july": 0.0, 
@@ -134,8 +134,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "d5b782e3-f8ab-492c-aad1-3082aff7912c", 
-                  "display_name": "d5b782e3-f8ab-492c-aad1-3082aff7912c", 
+                  "identifier": "b9284f38-942d-4f37-b379-0e94da807008", 
+                  "display_name": "b9284f38-942d-4f37-b379-0e94da807008", 
                   "rad_south": 0.0, 
                   "rad_north": 0.0, 
                   "sky_temp": null
@@ -147,8 +147,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "e79afa0c-c69a-41c7-9314-c00b928d8ea3", 
-                  "display_name": "e79afa0c-c69a-41c7-9314-c00b928d8ea3", 
+                  "identifier": "8fc4d9cc-e7b3-4bfd-a467-dd94392d3a1b", 
+                  "display_name": "8fc4d9cc-e7b3-4bfd-a467-dd94392d3a1b", 
                   "rad_south": 0.0, 
                   "rad_north": 0.0, 
                   "sky_temp": null
@@ -160,14 +160,14 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "2022702e-cfe3-440b-a87f-618052e91206", 
-                  "display_name": "2022702e-cfe3-440b-a87f-618052e91206", 
+                  "identifier": "a2133888-4777-49ae-8b56-da3af1c20cef", 
+                  "display_name": "a2133888-4777-49ae-8b56-da3af1c20cef", 
                   "rad_south": 0.0, 
                   "rad_north": 0.0, 
                   "sky_temp": null
                 }, 
-                "identifier": "be7568c5-8033-41a3-9e73-73b40a4ea7cc", 
-                "display_name": "be7568c5-8033-41a3-9e73-73b40a4ea7cc", 
+                "identifier": "ee7e7d37-2462-41a2-a214-fc3ba79a6a5e", 
+                "display_name": "ee7e7d37-2462-41a2-a214-fc3ba79a6a5e", 
                 "cooling_load_2": {
                   "temp": 0.0, 
                   "rad_global": 0.0, 
@@ -175,8 +175,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "1b40c9a7-120d-4e2c-acb6-88d02ce6af96", 
-                  "display_name": "1b40c9a7-120d-4e2c-acb6-88d02ce6af96", 
+                  "identifier": "074b0f2f-8ce0-41bc-b5e4-6a0f364a4f88", 
+                  "display_name": "074b0f2f-8ce0-41bc-b5e4-6a0f364a4f88", 
                   "rad_south": 0.0, 
                   "rad_north": 0.0, 
                   "sky_temp": null
@@ -225,8 +225,8 @@
                   "june": 0.0, 
                   "november": 0.0
                 }, 
-                "identifier": "048d17ec-5965-4986-88c9-8e2a7feb26c9", 
-                "display_name": "048d17ec-5965-4986-88c9-8e2a7feb26c9", 
+                "identifier": "8ebf4222-cb67-4fbb-9fc1-2880240d580b", 
+                "display_name": "8ebf4222-cb67-4fbb-9fc1-2880240d580b", 
                 "dewpoints": {
                   "february": 0.0, 
                   "july": 0.0, 
@@ -242,7 +242,7 @@
                   "november": 0.0
                 }
               }, 
-              "identifier": "584fce28-2618-47a5-b5ff-961ccc7ef1e2", 
+              "identifier": "9306ca07-7a09-45ec-ab1a-664b4e3264dc", 
               "display_name": "New York", 
               "summer_daily_temperature_swing": 8.0, 
               "station_elevation": 0.0
@@ -252,17 +252,17 @@
               "latitude": 40.600000000000001, 
               "longitude": -73.799999999999997, 
               "hours_from_UTC": -4, 
-              "identifier": "f1dd6a21-d1f9-4a8e-a266-b14ed80f2837", 
-              "display_name": "f1dd6a21-d1f9-4a8e-a266-b14ed80f2837", 
+              "identifier": "63bcd7d7-36fe-4e2a-be02-755d286658b8", 
+              "display_name": "63bcd7d7-36fe-4e2a-be02-755d286658b8", 
               "climate_zone": 1
             }, 
-            "identifier": "c28540f7-0b4e-43f0-adcb-38775ecad290", 
-            "display_name": "c28540f7-0b4e-43f0-adcb-38775ecad290", 
+            "identifier": "78ce7456-e86e-4e5f-a86d-eb12778e2b29", 
+            "display_name": "78ce7456-e86e-4e5f-a86d-eb12778e2b29", 
             "phpp_library_codes": {
               "country_code": "US-United States of America", 
               "region_code": "New York", 
               "dataset_name": "US0055b-New York", 
-              "identifier": "c777fb30-bf3c-4ffb-8286-cb46dc1d78d6", 
+              "identifier": "2014f607-d604-4fad-b839-2f17c8989173", 
               "display_name": "US0055b-New York"
             }
           }, 
@@ -309,7 +309,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_1_d5f95662 Ideal Loads Air System", 
+          "identifier": "Room_5_ed68d949 Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": false, 
           "cooling_limit": {
@@ -1609,6 +1609,15 @@
           }, 
           {
             "materials": [
+              "Generic Painted Metal", 
+              "Generic 25mm Insulation", 
+              "Generic Painted Metal"
+            ], 
+            "identifier": "Generic Exterior Door", 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "materials": [
               "Generic Low-e Glass", 
               "Generic Window Air Gap", 
               "Generic Clear Glass"
@@ -1678,15 +1687,6 @@
               "Generic LW Concrete"
             ], 
             "identifier": "Generic Exposed Floor", 
-            "type": "OpaqueConstructionAbridged"
-          }, 
-          {
-            "materials": [
-              "Generic Painted Metal", 
-              "Generic 25mm Insulation", 
-              "Generic Painted Metal"
-            ], 
-            "identifier": "Generic Exterior Door", 
             "type": "OpaqueConstructionAbridged"
           }, 
           {
@@ -1866,26 +1866,6 @@
             "type": "EnergyWindowMaterialGas"
           }, 
           {
-            "specific_heat": 1090.0, 
-            "thickness": 0.012699999999999999, 
-            "density": 800.0, 
-            "conductivity": 0.16, 
-            "solar_absorptance": 0.5, 
-            "properties": {
-              "ph": {
-                "percentage_of_assembly": 1.0, 
-                "base_material_dict": {}, 
-                "id_num": 0
-              }, 
-              "type": "EnergyMaterialProperties"
-            }, 
-            "thermal_absorptance": 0.90000000000000002, 
-            "type": "EnergyMaterial", 
-            "identifier": "Generic Gypsum Board", 
-            "roughness": "MediumSmooth", 
-            "visible_absorptance": 0.5
-          }, 
-          {
             "specific_heat": 1210.0, 
             "thickness": 0.050000000000000003, 
             "density": 43.0, 
@@ -1924,6 +1904,26 @@
             "identifier": "Generic HW Concrete", 
             "roughness": "MediumRough", 
             "visible_absorptance": 0.80000000000000004
+          }, 
+          {
+            "specific_heat": 1090.0, 
+            "thickness": 0.012699999999999999, 
+            "density": 800.0, 
+            "conductivity": 0.16, 
+            "solar_absorptance": 0.5, 
+            "properties": {
+              "ph": {
+                "percentage_of_assembly": 1.0, 
+                "base_material_dict": {}, 
+                "id_num": 0
+              }, 
+              "type": "EnergyMaterialProperties"
+            }, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "type": "EnergyMaterial", 
+            "identifier": "Generic Gypsum Board", 
+            "roughness": "MediumSmooth", 
+            "visible_absorptance": 0.5
           }, 
           {
             "specific_heat": 1000.0, 
@@ -1967,7 +1967,7 @@
           }, 
           {
             "specific_heat": 1210.0, 
-            "thickness": 0.050000000000000003, 
+            "thickness": 0.025000000000000001, 
             "density": 43.0, 
             "conductivity": 0.029999999999999999, 
             "solar_absorptance": 0.69999999999999996, 
@@ -2286,18 +2286,18 @@
     }
   }, 
   "version": "1.51.3", 
-  "identifier": "unnamed_2af84725", 
+  "identifier": "unnamed_239af720", 
   "display_name": "unnamed", 
   "rooms": [
     {
       "properties": {
         "ph": {
           "type": "RoomPhPropertiesAbridged", 
-          "ph_bldg_segment_id": "cc8c8e51-5ff1-4b10-84d7-2eca31f2386d", 
+          "ph_bldg_segment_id": "09601d72-9c9e-424c-81fa-cf4e51ea901f", 
           "spaces": []
         }, 
         "energy": {
-          "hvac": "Room_1_d5f95662 Ideal Loads Air System", 
+          "hvac": "Room_5_ed68d949 Ideal Loads Air System", 
           "type": "RoomEnergyPropertiesAbridged", 
           "program_type": "Generic Office Program"
         }, 
@@ -2306,8 +2306,8 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_1_d5f95662", 
-      "display_name": "Room_1", 
+      "identifier": "Room_5_ed68d949", 
+      "display_name": "Room_5", 
       "faces": [
         {
           "boundary_condition": {
@@ -2375,8 +2375,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_d5f95662..Face0", 
-          "display_name": "Room_1_d5f95662..Face0", 
+          "identifier": "Room_5_ed68d949..Face0", 
+          "display_name": "Room_5_ed68d949..Face0", 
           "type": "Face"
         }, 
         {
@@ -2445,8 +2445,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_d5f95662..Face1", 
-          "display_name": "Room_1_d5f95662..Face1", 
+          "identifier": "Room_5_ed68d949..Face1", 
+          "display_name": "Room_5_ed68d949..Face1", 
           "type": "Face"
         }, 
         {
@@ -2515,8 +2515,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_d5f95662..Face2", 
-          "display_name": "Room_1_d5f95662..Face2", 
+          "identifier": "Room_5_ed68d949..Face2", 
+          "display_name": "Room_5_ed68d949..Face2", 
           "type": "Face"
         }, 
         {
@@ -2585,8 +2585,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_d5f95662..Face3", 
-          "display_name": "Room_1_d5f95662..Face3", 
+          "identifier": "Room_5_ed68d949..Face3", 
+          "display_name": "Room_5_ed68d949..Face3", 
           "type": "Face"
         }, 
         {
@@ -2650,8 +2650,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_d5f95662..Face4", 
-          "display_name": "Room_1_d5f95662..Face4", 
+          "identifier": "Room_5_ed68d949..Face4", 
+          "display_name": "Room_5_ed68d949..Face4", 
           "type": "Face"
         }, 
         {
@@ -2720,8 +2720,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_1_d5f95662..Face5", 
-          "display_name": "Room_1_d5f95662..Face5", 
+          "identifier": "Room_5_ed68d949..Face5", 
+          "display_name": "Room_5_ed68d949..Face5", 
           "type": "Face"
         }
       ], 

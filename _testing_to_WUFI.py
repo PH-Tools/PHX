@@ -14,11 +14,12 @@ from PHX.model import (building, project, geometry, schedules, certification,
 from tests.conftest import _reload_phx_classes, _reset_phx_class_counters
 
 SOURCE_DIR = pathlib.Path("tests", "_source_hbjson")
-source_file_names = [
+SOURCE_FILE_NAMES = [
     "Default_Model_Single_Zone.hbjson",
     "Multi_Room_Complete.hbjson",
 ]
-SOURCE_DIR = pathlib.Path("sample", "hbjson")
+SOURCE_FILES = [SOURCE_DIR / file for file in SOURCE_FILE_NAMES]
+TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 
 def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
     # -- Re-set all the PHX modules (counters)
@@ -53,4 +54,4 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
 
 if __name__ == '__main__':
     for source_file in SOURCE_FILES:
-        generate_xml_file(source_file, TARGET_DIR)
+        generate_xml_file(pathlib.Path(source_file), TARGET_DIR)

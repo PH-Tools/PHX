@@ -91,7 +91,7 @@ def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room:
     return None
 
 
-def set_phx_phpp9_settings(_phx_settings: certification.PhxPhiCertificationSettings, _hbph_settings:phi.PhiCertification) -> None:
+def set_phx_phpp9_settings(_phx_settings: certification.PhxPhiCertificationSettings, _attributes:phi.PHPPSettings9) -> None:
     """Set the values of the PHX-PHI Settings object for PHPP-v9 Settings.
     
     Arguments:
@@ -103,20 +103,19 @@ def set_phx_phpp9_settings(_phx_settings: certification.PhxPhiCertificationSetti
     --------
         * None
     """
-    phpp_9_attrs: phi.PHPPSettings9 = _hbph_settings.attributes
-    _phx_settings.phi_building_category_type = phi_certification_phpp_9.PhiCertBuildingCategoryType(phpp_9_attrs.building_category_type.number)
-    _phx_settings.phi_building_use_type = phi_certification_phpp_9.PhiCertBuildingUseType(phpp_9_attrs.building_use_type.number)
-    _phx_settings.phi_building_ihg_type = phi_certification_phpp_9.PhiCertIHGType(phpp_9_attrs.ihg_type.number)
-    _phx_settings.phi_building_occupancy_type = phi_certification_phpp_9.PhiCertOccupancyType(phpp_9_attrs.occupancy_type.number)
+    _phx_settings.phi_building_category_type = phi_certification_phpp_9.PhiCertBuildingCategoryType(_attributes.building_category_type.number)
+    _phx_settings.phi_building_use_type = phi_certification_phpp_9.PhiCertBuildingUseType(_attributes.building_use_type.number)
+    _phx_settings.phi_building_ihg_type = phi_certification_phpp_9.PhiCertIHGType(_attributes.ihg_type.number)
+    _phx_settings.phi_building_occupancy_type = phi_certification_phpp_9.PhiCertOccupancyType(_attributes.occupancy_type.number)
 
-    _phx_settings.phi_certification_type = phi_certification_phpp_9.PhiCertType(phpp_9_attrs.certification_type.number)
-    _phx_settings.phi_certification_class = phi_certification_phpp_9.PhiCertClass(phpp_9_attrs.certification_class.number)
-    _phx_settings.phi_pe_type = phi_certification_phpp_9.PhiCertificationPEType(phpp_9_attrs.primary_energy_type.number)
-    _phx_settings.phi_enerphit_type = phi_certification_phpp_9.PhiCertEnerPHitType(phpp_9_attrs.enerphit_type.number)
-    _phx_settings.phi_retrofit_type = phi_certification_phpp_9.PhiCertRetrofitType(phpp_9_attrs.retrofit_type.number)
+    _phx_settings.phi_certification_type = phi_certification_phpp_9.PhiCertType(_attributes.certification_type.number)
+    _phx_settings.phi_certification_class = phi_certification_phpp_9.PhiCertClass(_attributes.certification_class.number)
+    _phx_settings.phi_pe_type = phi_certification_phpp_9.PhiCertificationPEType(_attributes.primary_energy_type.number)
+    _phx_settings.phi_enerphit_type = phi_certification_phpp_9.PhiCertEnerPHitType(_attributes.enerphit_type.number)
+    _phx_settings.phi_retrofit_type = phi_certification_phpp_9.PhiCertRetrofitType(_attributes.retrofit_type.number)
 
 
-def set_phx_phpp10_settings(_phx_settings: certification.PhxPhiCertificationSettings, _hbph_settings:phi.PhiCertification) -> None:
+def set_phx_phpp10_settings(_phx_settings: certification.PhxPhiCertificationSettings, _attributes:phi.PHPPSettings10) -> None:
     """Set the values of the PHX-PHI Settings object for PHPP-v10 Settings.
     
     Arguments:
@@ -128,14 +127,13 @@ def set_phx_phpp10_settings(_phx_settings: certification.PhxPhiCertificationSett
     --------
         * None
     """
-    phpp_10_attrs: phi.PHPPSettings10 = _hbph_settings.attributes
-    _phx_settings.phi_building_use_type = phi_certification_phpp_10.PhiCertBuildingUseType(phpp_10_attrs.building_use_type.number)
-    _phx_settings.phi_building_ihg_type = phi_certification_phpp_10.PhiCertIHGType(phpp_10_attrs.ihg_type.number)
+    _phx_settings.phi_building_use_type = phi_certification_phpp_10.PhiCertBuildingUseType(_attributes.building_use_type.number)
+    _phx_settings.phi_building_ihg_type = phi_certification_phpp_10.PhiCertIHGType(_attributes.ihg_type.number)
 
-    _phx_settings.phi_certification_type = phi_certification_phpp_10.PhiCertType(phpp_10_attrs.certification_type.number)
-    _phx_settings.phi_certification_class = phi_certification_phpp_10.PhiCertClass(phpp_10_attrs.certification_class.number)
-    _phx_settings.phi_pe_type = phi_certification_phpp_10.PhiCertificationPEType(phpp_10_attrs.primary_energy_type.number)
-    _phx_settings.phi_retrofit_type = phi_certification_phpp_10.PhiCertRetrofitType(phpp_10_attrs.retrofit_type.number)
+    _phx_settings.phi_certification_type = phi_certification_phpp_10.PhiCertType(_attributes.certification_type.number)
+    _phx_settings.phi_certification_class = phi_certification_phpp_10.PhiCertClass(_attributes.certification_class.number)
+    _phx_settings.phi_pe_type = phi_certification_phpp_10.PhiCertificationPEType(_attributes.primary_energy_type.number)
+    _phx_settings.phi_retrofit_type = phi_certification_phpp_10.PhiCertRetrofitType(_attributes.retrofit_type.number)
 
 
 def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
@@ -155,9 +153,9 @@ def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     phx_settings = _variant.phi_certification.phi_certification_settings # type: ignore
 
     if hbph_settings.attributes.phpp_version == 10:
-        set_phx_phpp10_settings(phx_settings, hbph_settings)
+        set_phx_phpp10_settings(phx_settings, hbph_settings.attributes)
     elif hbph_settings.attributes.phpp_version == 9:
-        set_phx_phpp9_settings(phx_settings, hbph_settings)
+        set_phx_phpp9_settings(phx_settings, hbph_settings.attributes)
     else:
         msg = f"Error: Unknown PHPP Settings Version? Got: '{hbph_settings.attributes.phpp_version}'"
         raise Exception(msg)
@@ -332,25 +330,28 @@ def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room
         * None
     """
 
-    for space in _hb_room.properties.ph.spaces: # type: ignore
+    for hbph_space in _hb_room.properties.ph.spaces: # type: ignore
         # -- Get the Honeybee-PH Ventilation system from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
-        vent_sys: PhVentilationSystem = space.host.properties.energy.hvac.properties.ph.ventilation_system
-
-        if not vent_sys:
+        hbph_vent_sys: PhVentilationSystem = hbph_space.host.properties.energy.hvac.properties.ph.ventilation_system
+        
+        if not hbph_vent_sys:
             continue
 
         # -- Get or Build the PHX Ventilation Device
         # -- If the ventilator already exists, just use that one.
-        phx_ventilator = _variant.mech_systems.get_mech_device_by_key(vent_sys.key)
+        phx_ventilator = _variant.mech_systems.get_mech_device_by_key(hbph_vent_sys.key)
         if not phx_ventilator:
             # -- otherwise, build a new PH-Ventilator from the HB-hvac
-            phx_ventilator = create_hvac.build_phx_ventilation_sys(vent_sys)
-            _variant.mech_systems.add_new_mech_device(vent_sys.key, phx_ventilator)
-
-        vent_sys.id_num = phx_ventilator.id_num
-        vent_sys.ventilation_unit.id_num = phx_ventilator.id_num
+            phx_ventilator = create_hvac.build_phx_ventilation_sys(hbph_vent_sys)
+            _variant.mech_systems.add_new_mech_device(hbph_vent_sys.key, phx_ventilator)
+        
+        # -- Re-set the HBPH Ventilator and sys id_num to keep everything aligned
+        hbph_vent_sys.id_num = phx_ventilator.id_num
+        
+        if hbph_vent_sys.ventilation_unit:
+            hbph_vent_sys.ventilation_unit.id_num = phx_ventilator.id_num
 
     return None
 

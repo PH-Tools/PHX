@@ -3,6 +3,15 @@ from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
+def test_PhxRoomVentilator_id_num_increment(reset_class_counters):
+    v1 = ventilation.PhxDeviceVentilator()
+    assert v1.id_num == 1
+    v2 = ventilation.PhxDeviceVentilator()
+    assert v2.id_num == 2
+    v3 = ventilation.PhxDeviceVentilator()
+    assert v3.id_num == 3
+
+
 def test_default_PhxRoomVentilation(reset_class_counters):
     v1 = ventilation.PhxDeviceVentilator()
     coll = collection.PhxMechanicalSystemCollection()

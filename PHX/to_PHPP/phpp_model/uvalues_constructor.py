@@ -4,7 +4,7 @@
 """Data-entry constructor for the U-Values Worksheet."""
 
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 from functools import partial
 
 from PHX.model import constructions
@@ -30,6 +30,15 @@ class ConstructorBlock:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.constructor.inputs, _field_name).unit
 
+    def is_mass_material(self, _layer: constructions.PhxLayer) -> bool:
+        """Return True if the Layer is an SD 'Mass' Layer."""
+        
+        for material in _layer.materials:
+            if material.display_name == "MAT_Mass" and material.conductivity == 100:
+                return True
+        
+        return False
+
     def create_xl_items(self, _sheet_name: str, _start_row: int) -> List[xl_data.XlItem]:
         """Convert the PHX-Construction into a list of XLItems for writing to the PHPP."""
                 
@@ -45,6 +54,9 @@ class ConstructorBlock:
 
         # -- Build all the layers of the assembly
         for i, layer in enumerate(self.phx_construction.layers, start=8):
+            if self.is_mass_material(layer):
+                continue
+            
             xl_items_list.append(XLItemUValues(create_range(
                         'thickness', i),
                         layer.thickness_mm,

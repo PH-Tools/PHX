@@ -651,7 +651,7 @@
 					</Component>
 					<Component index="4">
 						<IdentNr>49</IdentNr>
-						<Name>Shade_f8b0153c</Name>
+						<Name>Shade_fff3abd8</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -667,7 +667,7 @@
 					</Component>
 					<Component index="5">
 						<IdentNr>50</IdentNr>
-						<Name>Shade_2b23ce42</Name>
+						<Name>Shade_1a19f10c</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -689,10 +689,10 @@
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="2">
 							<Room index="0">
-								<Name>101-Room_3</Name>
+								<Name>101-Room_7</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>0</IdentNrVentilationUnit>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
 								<Quantity>1</Quantity>
 								<AreaRoom unit="m²">9.0</AreaRoom>
 								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
@@ -700,10 +700,10 @@
 								<DesignVolumeFlowRateExhaust unit="m³/h">14.2</DesignVolumeFlowRateExhaust>
 							</Room>
 							<Room index="1">
-								<Name>102-Room_4</Name>
+								<Name>102-Room_8</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>0</IdentNrVentilationUnit>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
 								<Quantity>1</Quantity>
 								<AreaRoom unit="m²">9.0</AreaRoom>
 								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
@@ -1045,8 +1045,8 @@
 						</ZonesCoverage>
 						<Devices count="3">
 							<Device index="0">
-								<Name>Ventilator: 83%-HR, 0%-MR</Name>
-								<IdentNr>0</IdentNr>
+								<Name>Test_Unit</Name>
+								<IdentNr>1</IdentNr>
 								<SystemType>1</SystemType>
 								<TypeDevice>1</TypeDevice>
 								<UsedFor_Heating>false</UsedFor_Heating>
@@ -1070,7 +1070,7 @@
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
-								<Name>e7244824-5229-41bb-b4dc-3c03e5995a3f</Name>
+								<Name>8e8ac95c-f8e7-430d-8a34-a55b28c5c790</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>

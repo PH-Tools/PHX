@@ -487,6 +487,7 @@ class PHPPConnection:
         for phx_variant in phx_project.variants:
             for zone in phx_variant.building.zones:
                 for room in zone.wufi_rooms:
+                    # -- Find the right Ventilator assigned to the Space.
                     try:
                         phx_mech_ventilator = phx_variant.mech_systems.get_mech_device_by_id(
                             room.vent_unit_id_num
