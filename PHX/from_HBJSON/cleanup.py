@@ -42,7 +42,7 @@ def _get_room_exposed_faces(_hb_room: room.Room, _bc_types: Tuple = (Outdoors, G
     --------
         * list[face.Face]: The list of Exposed Honeybee Faces.
     """
-
+    
     exposed_faces = []
     for original_face in _hb_room.faces:
         if not isinstance(original_face.boundary_condition, _bc_types):
@@ -50,14 +50,19 @@ def _get_room_exposed_faces(_hb_room: room.Room, _bc_types: Tuple = (Outdoors, G
 
         new_face = original_face.duplicate()
         new_face._properties._duplicate_extension_attr(original_face._properties)
-
+        
         # -- Note, this is required if the user has set custom .energy constructions
         # -- or other custom face-specific attributes
         # -- Duplicate any extensions like .ph, .energy or .radiance
         for extension_name in original_face.properties._extension_attributes:
-            original_extension = getattr(original_face._properties, f'_{extension_name}')
-            new_extension = original_extension.duplicate()
-            setattr(new_face._properties, f'_{extension_name}', new_extension)
+            # -- use try except to avoid the bug introduced in HB v1.5
+            # TODO: fix Honeybee and then remove this try...except...
+            try:
+                original_extension = getattr(original_face._properties, f'_{extension_name}', None)
+                new_extension = original_extension.duplicate()
+                setattr(new_face._properties, f'_{extension_name}', new_extension)
+            except:
+                pass
 
         exposed_faces.append(new_face)
 
