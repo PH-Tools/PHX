@@ -37,7 +37,10 @@ def _run_subprocess(commands):
     stdout, stderr = process.communicate()
 
     if stderr:
-        raise Exception(stderr)
+        if "Defaulting to Windows directory." in str(stderr):
+            print("Warning: {}".format(stderr))
+        else:
+            raise Exception(stderr)
 
     for _ in str(stdout).split('\\n'):
         print(_)
