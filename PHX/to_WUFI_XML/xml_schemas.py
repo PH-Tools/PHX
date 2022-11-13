@@ -872,7 +872,7 @@ def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
     return [
         XML_Node("SolarThermalStorageCapacity", _t.params.storage_capacity),
         XML_Node("StorageLossesStandby", _t.params.standby_losses),
-        XML_Node("TotalSolarThermalStorageLosses", _t.params.solar_losses),
+        XML_Node("TotalSolarThermalStorageLosses", _t.params.standby_losses),
         XML_Node("InputOption", _t.params.input_option.value),
         XML_Node("AverageHeatReleaseStorage", _t.params.storage_loss_rate),
         XML_Node("TankRoomTemp ", _t.params.room_temp),
