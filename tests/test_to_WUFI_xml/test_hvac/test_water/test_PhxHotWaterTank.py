@@ -39,7 +39,7 @@ def test_default_PhxHotWaterTank(reset_class_counters):
         '<PH_Parameters>',
         '<SolarThermalStorageCapacity>0.0</SolarThermalStorageCapacity>',
         '<StorageLossesStandby>4.0</StorageLossesStandby>',
-        '<TotalSolarThermalStorageLosses>0.0</TotalSolarThermalStorageLosses>',
+        '<TotalSolarThermalStorageLosses>4.0</TotalSolarThermalStorageLosses>',
         '<InputOption>1</InputOption>',
         '<AverageHeatReleaseStorage>0.0</AverageHeatReleaseStorage>',
         '<TankRoomTemp >20.0</TankRoomTemp >',
