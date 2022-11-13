@@ -6,7 +6,7 @@
 from typing import Union, Optional
 import string
 
-from honeybee_ph_utils import units
+from ph_units.converter import convert
 
 xl_writable = Optional[Union[str, float, int, list, tuple]]
 xl_range_value = Optional[Union[str, float, int]]
@@ -36,9 +36,9 @@ class XlItem:
             return self._write_value
 
         if isinstance(self._write_value, (tuple, list)):
-            return [units.convert(v, self.input_unit, self.target_unit) for v in self._write_value]
+            return [convert(v, self.input_unit, self.target_unit) for v in self._write_value]
         else:
-            return units.convert(self._write_value, self.input_unit, self.target_unit)
+            return convert(self._write_value, self.input_unit, self.target_unit)
 
     def __str__(self):
         return f'{self.__class__.__name__}({self.sheet_name}, {self.xl_range}, {self.write_value})'
