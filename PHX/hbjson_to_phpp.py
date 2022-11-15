@@ -26,7 +26,6 @@ if __name__ == '__main__':
         f"> Reading in the HBJSON file: ./{SOURCE_FILE}")
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(SOURCE_FILE)
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
-    hb_model.convert_to_units("Meters")
     
     # --- Generate the PhxProject file.
     # -------------------------------------------------------------------------

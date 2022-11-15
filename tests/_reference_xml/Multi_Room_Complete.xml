@@ -651,7 +651,7 @@
 					</Component>
 					<Component index="4">
 						<IdentNr>49</IdentNr>
-						<Name>Shade_9f0bb8b7</Name>
+						<Name>Shade_2b51331d</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -667,7 +667,7 @@
 					</Component>
 					<Component index="5">
 						<IdentNr>50</IdentNr>
-						<Name>Shade_7cf1a9a5</Name>
+						<Name>Shade_c27f2fac</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -689,7 +689,7 @@
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="2">
 							<Room index="0">
-								<Name>101-Room_3</Name>
+								<Name>101-Room_7</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
 								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
@@ -700,7 +700,7 @@
 								<DesignVolumeFlowRateExhaust unit="m³/h">14.2</DesignVolumeFlowRateExhaust>
 							</Room>
 							<Room index="1">
-								<Name>102-Room_4</Name>
+								<Name>102-Room_8</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
 								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
@@ -1070,7 +1070,7 @@
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
-								<Name>ec68c4bd-f227-44f6-9436-e7336acfac22</Name>
+								<Name>5af285ae-7e7c-42fd-934a-e08de5ebfe73</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>

@@ -136,16 +136,12 @@ def reset_class_counters():
 
 @pytest.fixture(params=[
     (
-        Path('tests', '_source_hbjson',
-             'Default_Model_Single_Zone.hbjson'),
-        Path('tests', '_reference_xml',
-             'Default_Model_Single_Zone.xml')
+        Path('tests', '_source_hbjson', 'Default_Model_Single_Zone.hbjson'),
+        Path('tests', '_reference_xml', 'Default_Model_Single_Zone.xml')
     ),
     (
-        Path('tests', '_source_hbjson',
-             'Multi_Room_Complete.hbjson'),
-        Path('tests', '_reference_xml',
-             'Multi_Room_Complete.xml')
+        Path('tests', '_source_hbjson', 'Multi_Room_Complete.hbjson'),
+        Path('tests', '_reference_xml', 'Multi_Room_Complete.xml')
     ),
 ])
 def to_xml_reference_cases(request):
