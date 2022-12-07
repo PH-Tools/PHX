@@ -79,7 +79,7 @@ class Surfaces:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data):
+        for i, val in enumerate(xl_data, start=1):
             if val == self.shape.surface_rows.locator_string_header:
                 return i
 
@@ -102,7 +102,7 @@ class Surfaces:
 
         for i, val in enumerate(xl_data, start=self.section_header_row):
             try:
-                val = str(int(val))  # Value comes in as  "1.0" from Excel?
+                val = str(int(val))  # type: ignore - Value comes in as  "1.0" from Excel?
             except:
                 continue
 
@@ -142,8 +142,8 @@ class Surfaces:
             self.shape.name,
             f"{col_offset(str(self.shape.surface_rows.inputs.description.column), -1)}{row}",
         )
-        print(f"Getting PHPP Surface id for {_name}")
-        name = f"{int(prefix)}-{_name}"
+        self.xl.output(f"Getting PHPP Surface id for {_name}")
+        name = f"{int(str(prefix))}-{_name}"
 
         # -- Save in cache
         self.surface_cache[_name] = name
@@ -155,8 +155,20 @@ class ThermalBridges:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Areas):
         self.xl = _xl
         self.shape = _shape
-        self.section_header_row: Optional[int] = None
-        self.section_first_entry_row: Optional[int] = None
+        self._section_header_row: Optional[int] = None
+        self._section_first_entry_row: Optional[int] = None
+
+    @property
+    def section_header_row(self) -> int:
+        if not self._section_header_row:
+            self._section_header_row = self.find_section_header_row()
+        return self._section_header_row
+
+    @property
+    def section_first_entry_row(self) -> int:
+        if not self._section_first_entry_row:
+            self._section_first_entry_row = self.find_section_first_entry_row()
+        return self._section_first_entry_row
 
     def find_section_header_row(self, _row_start: int = 100, _row_end: int = 500) -> int:
         """Return the row number of the 'Thermal Bridge input' section header."""
@@ -189,9 +201,6 @@ class ThermalBridges:
     def find_section_first_entry_row(self) -> int:
         """Return the row number of the very first user-input entry row in the 'Thermal Bridge input' section."""
 
-        if not self.section_header_row:
-            self.section_header_row = self.find_section_header_row()
-
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.thermal_bridge_rows.locator_col_entry,
@@ -201,7 +210,7 @@ class ThermalBridges:
 
         for i, val in enumerate(xl_data, start=self.section_header_row):
             try:
-                val = str(int(val))  # Value comes in as  "1.0" from Excel?
+                val = str(int(val))  # type: ignore - Value comes in as  "1.0" from Excel?
             except:
                 continue
 
@@ -225,20 +234,20 @@ class Areas:
     def write_thermal_bridges(
         self, _tbs: List[areas_thermal_bridges.ThermalBridgeRow]
     ) -> None:
-        if not self.thermal_bridges.section_first_entry_row:
-            self.thermal_bridges.section_first_entry_row = (
-                self.thermal_bridges.find_section_first_entry_row()
-            )
+        # if not self.thermal_bridges.section_first_entry_row:
+        #     self.thermal_bridges.section_first_entry_row = (
+        #         self.thermal_bridges.find_section_first_entry_row()
+        #     )
 
         for i, tb in enumerate(_tbs, start=self.thermal_bridges.section_first_entry_row):
             for item in tb.create_xl_items(self.shape.name, _row_num=i):
                 self.xl.write_xl_item(item)
 
     def write_surfaces(self, _surfaces: List[areas_surface.SurfaceRow]) -> None:
-        if not self.surfaces.section_first_entry_row:
-            self.surfaces.section_first_entry_row = (
-                self.surfaces.find_section_first_entry_row()
-            )
+        # if not self.surfaces.section_first_entry_row:
+        #     self.surfaces.section_first_entry_row = (
+        #         self.surfaces.find_section_first_entry_row()
+        #     )
 
         for i, surface in enumerate(
             _surfaces, start=self.surfaces.section_first_entry_row

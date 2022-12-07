@@ -60,6 +60,8 @@ class WriteValueError(Exception):
 
 
 # -----------------------------------------------------------------------------
+
+
 def silent_print(_input: Any) -> None:
     """Default 'output' for XLConnection."""
     return
@@ -198,12 +200,31 @@ class XLConnection:
 
         self.get_sheet_by_name(_sheet_name).clear()
 
+    def get_last_used_row_num_in_column(self, _sheet_name: str, _col: str) -> int:
+        """Return the row number of the last cell in a column with a value in it.
+
+        Arguments:
+        ----------
+            * _sheet_name (str): The name of the Worksheet to read from.
+            * _col (str): The Alpha character of the column to read.
+
+        Returns:
+        --------
+            * (int): The number of the last row in the column with a value.
+        """
+        sheet = self.get_sheet_by_name(_sheet_name)
+        sheet.activate()
+        col_range = sheet.range(f"{_col}:{_col}")
+        col_last_cell_range = sheet.range(col_range.last_cell.address)
+        group_last_cell_range = col_last_cell_range.end("up")  # same as 'Ctrl-Up'
+        return group_last_cell_range.row
+
     def get_single_column_data(
         self,
         _sheet_name: str,
         _col: str,
-        _row_start: int = 1,
-        _row_end: int = 100,
+        _row_start: Optional[int] = None,
+        _row_end: Optional[int] = None,
     ) -> List[xl_data.xl_range_value]:
         """Return a list with the values read from a single column of the excel document.
 
@@ -211,36 +232,66 @@ class XLConnection:
         ----------
             * _sheet_name: (str) The Excel Worksheet to read from.
             * _col: (str) The Column letter to read.
-            * _row_start: (int) default=1
-            * _row_end: (int) default=100
+            * _row_start: (Optional[int]) default=None
+            * _row_end: (Optional[int]) default=None
         Returns:
         --------
             (List[xl_range_value]): The data from Excel worksheet, as a list.
         """
 
-        return (
-            self.get_sheet_by_name(_sheet_name)
-            .range(f"{_col}{_row_start}:{_col}{_row_end}")
-            .value
-        )
+        if not _row_start or not _row_end:
+            _row_start = 1
+            _row_end = self.get_last_used_row_num_in_column(_sheet_name, _col)
+
+        address = f"{_col}{_row_start}:{_col}{_row_end}"
+        self.output(f"Reading: '{address}' data on sheet: '{_sheet_name}'")
+
+        sheet = self.get_sheet_by_name(_sheet_name)
+        sheet.activate()
+        col_range = sheet.range(f"{address}")
+        return col_range.value  # type: ignore
+
+    def get_last_used_column_in_row(self, _sheet_name: str, _row: int) -> str:
+        """Return the column letter of the last cell in a column with a value in it.
+
+        Arguments:
+        ----------
+            * _sheet_name (str): The name of the Worksheet to read from.
+            * _col (str): The Alpha character of the column to read.
+
+        Returns:
+        --------
+            * (str): The Letter of the last column in the row with a value.
+        """
+        sheet = self.get_sheet_by_name(_sheet_name)
+        sheet.activate()
+        row_range = sheet.range(f"{_row}:{_row}")
+        row_last_cell_range = sheet.range(row_range.last_cell.address)
+        group_last_cell_range = row_last_cell_range.end("left")  # same as 'Ctrl-Left'
+        return xl_data.xl_chr(xl_data.xl_ord("A") + group_last_cell_range.column - 1)
 
     def get_single_row_data(
         self, _sheet_name: str, _row_number: int
-    ) -> List[xl_data.xl_range_value]:
-        """
+    ) -> List[xl_data.xl_range_single_value]:
+        """Return all the data from a single Row in the Excel Workbook.
 
         Arguments:
         ----------
             * _sheet_name (str): The name of the sheet to read
-            * _row_number (int): The row to read
+            * _row_number (int): The row number to read
 
         Returns:
         --------
-            * (List[xl_data.xl_range_value]) The data read from XL.
+            * (List[xl_data.xl_range_single_value]) A List of the data read from XL.
         """
 
-        sht = self.get_sheet_by_name(_sheet_name)
-        return sht.range((_row_number, 1), (_row_number, 500)).value
+        self.output(f"Reading: Row-{_row_number} on sheet: '{_sheet_name}'")
+
+        sheet = self.get_sheet_by_name(_sheet_name)
+        sheet.activate()
+        last_col_letter = self.get_last_used_column_in_row(_sheet_name, _row_number)
+        row_range = sheet.range(f"A{_row_number}:{last_col_letter}{_row_number}")
+        return row_range.value  # type: ignore
 
     def get_multiple_column_data(
         self,
@@ -249,8 +300,8 @@ class XLConnection:
         _col_end: str,
         _row_start: int = 1,
         _row_end: int = 100,
-    ) -> List[List[xl_data.xl_range_value]]:
-        """Return a list with the values read from a specified block of the xl document.
+    ) -> xl_data.xl_range_value:
+        """Return a list of lists with the values read from a specified block of the xl document.
 
         Arguments:
         ----------
@@ -268,8 +319,7 @@ class XLConnection:
         if _col_start == _col_end:
             raise ReadMultipleColumnsError(_col_start, _col_end)
 
-        # -- Use xl.Range() instead of ord() since ord('KL') and similar will fail
-        # rng = xw.Range(f"{_col_end}1:{_col_start}1")
+        # -- Use xl.Range() instead of ord() since ord('KL') will fail
         rng: xl_Range_Protocol = self.xl.Range(f"{_col_end}1:{_col_start}1")
         _ndim = len(rng.columns)
 
@@ -306,7 +356,7 @@ class XLConnection:
             )
             xl_sheet = self.get_sheet_by_name(_xl_item.sheet_name)
             xl_range = xl_sheet.range(_xl_item.xl_range)
-            xl_range.value = _xl_item.write_value
+            xl_range.value = _xl_item.write_value  # type: ignore
 
             if _xl_item.font_color or _xl_item.range_color:
                 xl_range.color = _xl_item.range_color

@@ -36,7 +36,7 @@ def get_data_worksheet(_xl: xl_app.XLConnection) -> Sheet:
 def get_phpp_version(_xl: xl_app.XLConnection,
                      _search_col: str = "A",
                      _row_start: int = 1,
-                     _row_end: int = 5) -> Tuple[str, str]:
+                     _row_end: int = 10) -> Tuple[str, str]:
     """Find the PHPP Version and Language of the active xl-file.
 
     Arguments:
@@ -44,7 +44,7 @@ def get_phpp_version(_xl: xl_app.XLConnection,
         * _xl (xl_app.XLConnection):
         * _search_col (str)
         * _row_start (int) default=1
-        * _row_end (int) default=5
+        * _row_end (int) default=10
 
     Returns:
     --------
@@ -74,7 +74,7 @@ def get_phpp_version(_xl: xl_app.XLConnection,
 
    # -- Pull the search row data from the Active XL Instance
     data = _xl.get_single_row_data(data_worksheet.name, data_row)
-    data = [_ for _ in data if _ is not None]
+    data = [_ for _ in data if _ is not None and _ is not ""]
 
     # -- Find the right Versions number
     version = str(data[1]).upper().strip().replace(" ", "").replace(".", "_")

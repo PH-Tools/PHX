@@ -45,9 +45,9 @@ if __name__ == "__main__":
     phpp_conn = phpp_app.PHPPConnection(xl, phpp_shape)
 
     try:
-        xl.output(
-            f"[bold green]> connected to excel doc: {phpp_conn.xl.wb.name}[/bold green]"
-        )
+        clr = "bold green"
+        msg = f"[{clr}]> connected to excel doc: {phpp_conn.xl.wb.name}[/{clr}]"
+        xl.output(msg)
     except xl_app.NoActiveExcelRunningError as e:
         raise e
 
@@ -56,10 +56,10 @@ if __name__ == "__main__":
         # phpp_conn.write_certification_config(phx_project)
         # phpp_conn.write_climate_data(phx_project)
         # phpp_conn.write_project_constructions(phx_project)
-        # phpp_conn.write_project_tfa(phx_project)
-        # phpp_conn.write_project_opaque_surfaces(phx_project)
+        phpp_conn.write_project_tfa(phx_project)
+        phpp_conn.write_project_opaque_surfaces(phx_project)
         # phpp_conn.write_project_thermal_bridges(phx_project)
-        phpp_conn.write_project_window_components(phx_project)
+        # phpp_conn.write_project_window_components(phx_project)
         # phpp_conn.write_project_window_surfaces(phx_project)
         # phpp_conn.write_project_window_shading(phx_project)
         # phpp_conn.write_project_ventilation_components(phx_project)

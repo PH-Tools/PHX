@@ -9,7 +9,14 @@ import string
 from ph_units import converter
 
 xl_writable = Optional[Union[str, float, int, List, Tuple]]
-xl_range_value = Optional[Union[str, float, int]]
+xl_range_single_value = Union[str, float, int, None]
+xl_range_list1D_value = Union[List[str], List[float], List[int], List[None]]
+xl_range_list2D_value = Union[
+    List[List[str]], List[List[float]], List[List[int]], List[List[None]]
+]
+xl_range_value = Union[
+    xl_range_single_value, xl_range_list1D_value, xl_range_list2D_value
+]
 
 
 def xl_ord(_col: str) -> int:

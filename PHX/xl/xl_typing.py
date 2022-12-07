@@ -31,12 +31,23 @@ class xl_RangeColumns_Protocol:
         ...
 
 
+class xl_CellRange_Protocol:
+    def __init__(self):
+        self.address: str
+
+
 class xl_Range_Protocol:
     def __init__(self):
-        self.value: xl_data.xl_writable
+        self.value: xl_data.xl_range_value
         self.color: Optional[Tuple[int, ...]]
         self.font: xl_Range_Font = xl_Range_Font()
         self.columns: xl_RangeColumns_Protocol = xl_RangeColumns_Protocol()
+        self.last_cell: xl_CellRange_Protocol
+        self.row: int
+        self.column: int
+
+    def end(self, *args, **kwargs) -> "xl_Range_Protocol":
+        return xl_Range_Protocol()
 
     def options(self, ndim: int) -> "xl_Range_Protocol":
         return xl_Range_Protocol()
@@ -48,6 +59,8 @@ class xl_Range_Protocol:
 class xl_API_Protocol:
     def __init__(self, sheet):
         self.sheet: "xl_Sheet_Protocol" = sheet
+        self.rows: Dict
+        self.Rows: Dict
 
     def unprotect(self):
         self.sheet.protected = False
@@ -79,6 +92,9 @@ class xl_Sheet_Protocol:
 
     def clear(self) -> None:
         return None
+
+    def activate(self) -> None:
+        ...
 
 
 class xl_Sheets_Protocol:
