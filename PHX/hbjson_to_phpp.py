@@ -38,7 +38,7 @@ if __name__ == "__main__":
     # -------------------------------------------------------------------------
     xl = xl_app.XLConnection(xl_framework=xw, output=print)
     shape_file_dir = pathlib.Path(
-        folders.python_package_path, "PHX", "to_PHPP", "phpp_localization"
+        folders.python_package_path, "PHX", "PHPP", "phpp_localization"
     )
     phpp_shape_file = phpp_app.get_shape_file(xl, shape_file_dir)
     phpp_shape = PhppShape.parse_file(phpp_shape_file)
