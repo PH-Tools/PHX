@@ -20,18 +20,15 @@ except ImportError:
 try:  # import the core honeybee dependencies
     from honeybee.config import folders as hb_folders
 except ImportError as e:
-    raise ImportError('\nFailed to import honeybee:\n\t{}'.format(e))
+    raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
 
 
 def _run_subprocess(commands):
     # type: (List[str]) -> None
     """Run a python subprocess using the supplied commands"""
-    use_shell = True if os.name == 'nt' else False
+    use_shell = True if os.name == "nt" else False
     process = subprocess.Popen(
-        commands,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        shell=use_shell
+        commands, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=use_shell
     )
 
     stdout, stderr = process.communicate()
@@ -42,7 +39,7 @@ def _run_subprocess(commands):
         else:
             raise Exception(stderr)
 
-    for _ in str(stdout).split('\\n'):
+    for _ in str(stdout).split("\\n"):
         print(_)
 
 
@@ -65,13 +62,16 @@ def convert_hbjson_to_WUFI_XML(_hbjson_file, _save_file_name, _save_folder):
 
     # -- Specify the path to the subprocess python script to run
     run_file_path = os.path.join(
-        hb_folders.python_package_path,  'PHX', 'hbjson_to_wufi_xml.py')
+        hb_folders.python_package_path, "PHX", "hbjson_to_wufi_xml.py"
+    )
 
     # -- check the file paths
-    assert os.path.isfile(
-        _hbjson_file), 'No HBJSON file found at {}.'.format(_hbjson_file)
-    assert os.path.isfile(
-        run_file_path), 'No Python file to run found at: {}'.format(run_file_path)
+    assert os.path.isfile(_hbjson_file), "No HBJSON file found at {}.".format(
+        _hbjson_file
+    )
+    assert os.path.isfile(run_file_path), "No Python file to run found at: {}".format(
+        run_file_path
+    )
 
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, convert to WUFI XML
@@ -80,7 +80,7 @@ def convert_hbjson_to_WUFI_XML(_hbjson_file, _save_file_name, _save_folder):
         run_file_path,
         _hbjson_file,
         _save_file_name,
-        _save_folder
+        _save_folder,
     ]
     _run_subprocess(commands)
 
@@ -90,20 +90,22 @@ def convert_hbjson_to_WUFI_XML(_hbjson_file, _save_file_name, _save_folder):
     return directory, file_name
 
 
-def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"):
+def write_hbjson_to_phpp(
+    _hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"
+):
     # type: (str, str, str) -> None
     """Read in an hbjson file and write out to a PHPP file.
 
     Arguments:
     ---------
         * _hbjson (str): File path to an HBJSON file to be read in and converted to a PHX-Model.
-        
-        * _lbt_python_site_packages_path (str): The full path to the LBT Python-3 Site-packages 
+
+        * _lbt_python_site_packages_path (str): The full path to the LBT Python-3 Site-packages
             folder where PHX and Honeybee-PH are installed
-        
-        * _activate_variants (str): Default="False". Set True if you would like to 
+
+        * _activate_variants (str): Default="False". Set True if you would like to
             connect all of the various PHPP inputs to the 'Variants' worksheet. This
-            is used when testing various combinations of attributes during the 
+            is used when testing various combinations of attributes during the
             early design phase. Note that if activated, any inputs will get overwritten
             when the connection to the 'Variants' worksheet is made.
             Note: Args must be strings, not actual boolean True/False.
@@ -111,15 +113,20 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate
 
     # -- Specify the path to the subprocess python script to run
     run_file_path = os.path.join(
-        hb_folders.python_package_path, 'PHX', 'hbjson_to_phpp.py')
+        hb_folders.python_package_path, "PHX", "hbjson_to_phpp.py"
+    )
 
     # -- check the file paths
     if not os.path.isfile(_hbjson_file):
-        raise Exception('\nNo HBJSON file found at {}?'.format(_hbjson_file))
+        raise Exception("\nNo HBJSON file found at {}?".format(_hbjson_file))
     if not os.path.isfile(run_file_path):
-        raise Exception('\nNo Python file to run found at: {}?'.format(run_file_path))
+        raise Exception("\nNo Python file to run found at: {}?".format(run_file_path))
     if not os.path.exists(_lbt_python_site_packages_path):
-        raise Exception('\nNo Python site_packages folder found at: {}?'.format(_lbt_python_site_packages_path))
+        raise Exception(
+            "\nNo Python site_packages folder found at: {}?".format(
+                _lbt_python_site_packages_path
+            )
+        )
 
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, write our to PHPP
@@ -128,6 +135,6 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate
         run_file_path,
         _hbjson_file,
         _lbt_python_site_packages_path,
-        _activate_variants
+        _activate_variants,
     ]
     _run_subprocess(commands)

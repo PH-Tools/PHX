@@ -13,10 +13,11 @@ class XML_Node:
     """A single node text/numeric item. Optional Attribute data"""
 
     def __init__(
-        self, _node_name: str,
+        self,
+        _node_name: str,
         _node_value: xml_valid,
         _attr_name: Optional[str] = None,
-        _attr_value: xml_valid = None
+        _attr_value: xml_valid = None,
     ):
         self.node_name = _node_name
         self.node_value = _node_value
@@ -28,10 +29,11 @@ class XML_List:
     """A List of XML Writable objects. Used to add 'count' info to the list parent node"""
 
     def __init__(
-        self, _node_name: str,
+        self,
+        _node_name: str,
         _node_items: Collection,
         _attr_name: str = "count",
-        _attr_value: xml_valid = None
+        _attr_value: xml_valid = None,
     ):
         self.node_name = _node_name
         self.node_items = _node_items
@@ -69,7 +71,7 @@ class XML_Object:
             * _node_object (Any): The Honeybee Object to write to the node.
             * _attr_name (Optional[str]): Optional XML node attribute name.
             * _attr_value (Optional[str]): Optional XML node attribute value.
-            * _schema_name (Optional[str]): Optional explicit name for xml_schema 
+            * _schema_name (Optional[str]): Optional explicit name for xml_schema
                 function to use when writing to XML. If None is passed, uses the
                 class name preceded by and underscore.
         """

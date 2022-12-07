@@ -18,7 +18,9 @@ class NoXMLSchemaFoundError(Exception):
         super(NoXMLSchemaFoundError, self).__init__(self.message)
 
 
-def get_PHX_object_conversion_schema(_phx_object, _schema_name: Optional[str] = None) -> Callable[[Any], List[xml_writable]]:
+def get_PHX_object_conversion_schema(
+    _phx_object, _schema_name: Optional[str] = None
+) -> Callable[[Any], List[xml_writable]]:
     """Returns the appropriate XML write schema function for the PHX-object.
 
     Arguments:
@@ -34,7 +36,7 @@ def get_PHX_object_conversion_schema(_phx_object, _schema_name: Optional[str] = 
 
     Raises:
     -------
-        * (NoXMLSchemaFoundError): If no valid XML conversion schema is found for the 
+        * (NoXMLSchemaFoundError): If no valid XML conversion schema is found for the
             designated object.
     """
 
@@ -45,13 +47,14 @@ def get_PHX_object_conversion_schema(_phx_object, _schema_name: Optional[str] = 
     # -- Schema Function
     schema_function = getattr(xml_schemas, _schema_name, None)
     if not schema_function:
-        raise NoXMLSchemaFoundError(
-            xml_schemas, _phx_object, _schema_name)
+        raise NoXMLSchemaFoundError(xml_schemas, _phx_object, _schema_name)
 
     return schema_function
 
 
-def convert_HB_object_to_xml_writables_list(_phx_object, _schema_nm: Optional[str] = None) -> List[xml_writable]:
+def convert_HB_object_to_xml_writables_list(
+    _phx_object, _schema_nm: Optional[str] = None
+) -> List[xml_writable]:
     """Returns a list of the PHX-Object's Properties in WUFI-XML format.
 
         * _phx_object (Any): The PHX-Object to convert into XML text.

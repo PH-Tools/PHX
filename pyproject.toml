@@ -8,8 +8,8 @@ filterwarnings = [
 
 [tool.coverage.run]
 # --- For testing...
-command_line = "-m pytest . tests/test_to_WUFI_xml"
-source = ["honeybee_ph"]
+command_line = "-m pytest . tests"
+source = ["PHX"]
 # ---
 branch = true
 cover_pylib = false
@@ -24,3 +24,6 @@ fail_under = 100
 
 [tool.coverage.html]
 directory = "_coverage_html"
+
+[tool.black]
+line-length = 90

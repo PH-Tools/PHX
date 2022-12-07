@@ -12,10 +12,9 @@ from PHX.from_HBJSON import read_HBJSON_file, create_project
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 
 
-
 class InputFileError(Exception):
     def __init__(self, path):
-        self.msg = f'\nError: Cannot find HBJSON file: {path}'
+        self.msg = f"\nError: Cannot find HBJSON file: {path}"
         super().__init__(self.msg)
 
 
@@ -33,13 +32,13 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
             - [1] (pathlib.Path): The WUFI XML Target file path.
     """
 
-    print('> Resolving file paths...')
+    print("> Resolving file paths...")
     src = pathlib.Path(_args[1])
     if not src.exists():
         raise InputFileError(src)
 
     target_dir = pathlib.Path(_args[3])
-    target_file = f'{_args[2]}.xml'
+    target_file = f"{_args[2]}.xml"
 
     if not target_dir.exists():
         mkdir(target_dir)
@@ -49,7 +48,7 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
     return src, target
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("- " * 50)
 
     # --- Input / Output file Path
@@ -63,10 +62,10 @@ if __name__ == '__main__':
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
 
     # --- Generate the WUFI Project file.
-    print(
-        f'> Generating the PHX-Project from the Honeybee-Model: "{hb_model}"')
+    print(f'> Generating the PHX-Project from the Honeybee-Model: "{hb_model}"')
     phx_Project = create_project.convert_hb_model_to_PhxProject(
-        hb_model, group_components=True)
+        hb_model, group_components=True
+    )
 
     # --- Output the WUFI Project as an XML Text File
     # ---------------------------------------------------------------------------
