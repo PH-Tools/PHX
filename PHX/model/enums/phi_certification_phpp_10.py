@@ -7,18 +7,18 @@ from enum import Enum
 
 
 class PhiCertBuildingUseType(Enum):
-        DWELLING = 10
-        OTHER_RES = 12
-        OFFICE = 20
-        SCHOOL_HALF_DAY = 21
-        SCHOOL_FULL_DAY = 22
-        OTHER_NONRES = 23
+    DWELLING = 10
+    OTHER_RES = 12
+    OFFICE = 20
+    SCHOOL_HALF_DAY = 21
+    SCHOOL_FULL_DAY = 22
+    OTHER_NONRES = 23
 
 
 class PhiCertIHGType(Enum):
-        STANDARD = 2
-        RES_CUSTOM = 3
-        NONRES_CUSTOM = 4
+    STANDARD = 2
+    RES_CUSTOM = 3
+    NONRES_CUSTOM = 4
 
 
 class PhiCertType(Enum):

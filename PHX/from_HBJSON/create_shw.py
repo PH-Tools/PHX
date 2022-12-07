@@ -8,7 +8,8 @@ from honeybee_energy_ph.hvac import hot_water
 from PHX.model.enums.hvac import PhxHotWaterTankType
 from PHX.model.hvac import piping
 
-# -- Storage -- 
+# -- Storage --
+
 
 def build_phx_hw_tank(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTank:
     """Returns a new PHX Hot-Water Tank based on the Honeybee-PH Hot Water Tank input.
@@ -30,9 +31,9 @@ def build_phx_hw_tank(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTank:
 
     phx_tank.params.tank_type = PhxHotWaterTankType.from_hbph_type(_hbph_tank.tank_type)
     phx_tank.params.in_conditioned_space = _hbph_tank.in_conditioned_space
-    
+
     phx_tank.params.solar_connection = _hbph_tank.solar_connection
-    phx_tank.params.solar_losses = _hbph_tank.solar_losses    
+    phx_tank.params.solar_losses = _hbph_tank.solar_losses
 
     phx_tank.params.storage_capacity = _hbph_tank.storage_capacity
     phx_tank.params.storage_loss_rate = _hbph_tank.storage_loss_rate
@@ -65,9 +66,13 @@ def build_phx_hw_storage(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTan
 
     return phx_storage_tank
 
+
 # -- Heaters ----
 
-def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHeatingDevice:
+
+def build_phx_hw_heater(
+    _hbph_heater: hot_water.PhHotWaterHeater,
+) -> hvac.PhxHeatingDevice:
     """Returns a new PHX Hot-Water Heater based on the Honeybee-PH Hot Water Heater input.
 
     Arguments:
@@ -82,11 +87,11 @@ def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHea
 
     # -- Get the right constructor based on the type of heater
     heaters = {
-        'PhSHWHeaterElectric': hvac.PhxHeaterElectric,
-        'PhSHWHeaterBoiler': hvac.PhxHeaterBoilerFossil,
-        'PhSHWHeaterBoilerWood': hvac.PhxHeaterBoilerWood,
-        'PhSHWHeaterDistrict': hvac.PhxHeaterDistrictHeat,
-        'PhSHWHeaterHeatPump': hvac.PhxHeaterHeatPumpHotWater,
+        "PhSHWHeaterElectric": hvac.PhxHeaterElectric,
+        "PhSHWHeaterBoiler": hvac.PhxHeaterBoilerFossil,
+        "PhSHWHeaterBoilerWood": hvac.PhxHeaterBoilerWood,
+        "PhSHWHeaterDistrict": hvac.PhxHeaterDistrictHeat,
+        "PhSHWHeaterHeatPump": hvac.PhxHeaterHeatPumpHotWater,
     }
 
     # -- Build the basic heater and set basic data
@@ -97,7 +102,7 @@ def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHea
     # -- Pull out all the detailed data which varies depending on the 'type'
     for attr_name in vars(phx_hw_heater).keys():
         try:
-            if attr_name.startswith('_'):
+            if attr_name.startswith("_"):
                 attr_name = attr_name[1:]
             setattr(phx_hw_heater, attr_name, getattr(_hbph_heater, attr_name))
         except AttributeError:
@@ -105,7 +110,7 @@ def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHea
 
     for attr_name in vars(phx_hw_heater.params).keys():
         try:
-            if attr_name.startswith('_'):
+            if attr_name.startswith("_"):
                 attr_name = attr_name[1:]
             setattr(phx_hw_heater.params, attr_name, getattr(_hbph_heater, attr_name))
         except AttributeError:
@@ -115,25 +120,24 @@ def build_phx_hw_heater(_hbph_heater: hot_water.PhHotWaterHeater) -> hvac.PhxHea
 
     return phx_hw_heater
 
+
 # -- Piping ----
+
 
 def build_phx_piping(_hbph_pipe: hot_water.PhPipeElement) -> hvac.PhxPipeElement:
     """Create a new PHX Water Pipe based on an input Honeybee-PH Water Pipe.
-    
+
     Arguments:
     ----------
-        * _hbph_pipe: (hot_water.PhPipeElement): The Honeybee-PH Pipe to use as 
+        * _hbph_pipe: (hot_water.PhPipeElement): The Honeybee-PH Pipe to use as
             the source.
-    
+
     Returns:
     --------
         * (hvac.PhxPipeElement): The new PhxPipeElement created.
     """
 
-    phx_pipe = piping.PhxPipeElement(
-        _hbph_pipe.identifier,
-        _hbph_pipe.display_name
-    )
+    phx_pipe = piping.PhxPipeElement(_hbph_pipe.identifier, _hbph_pipe.display_name)
     for segment in _hbph_pipe.segments:
         phx_pipe.add_segment(
             piping.PhxPipeSegment(

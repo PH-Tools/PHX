@@ -11,8 +11,10 @@ from typing import ClassVar, Collection, List, Union, Optional
 
 class PolygonEdgeError(Exception):
     def __init__(self, _polygon: PhxPolygonRectangular, _segment_name: str):
-        self.msg = f"Error: Cannot create PhxPolygonRectangle {_polygon}"\
+        self.msg = (
+            f"Error: Cannot create PhxPolygonRectangle {_polygon}"
             f"segment {_segment_name}. Missing 1 or more vertices?"
+        )
         super().__init__(self.msg)
 
 
@@ -26,10 +28,12 @@ class PhxVertix:
     z: float = 0.0
 
     def __eq__(self, other: PhxVertix) -> bool:
-        return (self.x == other.x) and \
-            (self.y == other.y) and \
-            (self.z == other.z) and \
-            (self.id_num == other.id_num)
+        return (
+            (self.x == other.x)
+            and (self.y == other.y)
+            and (self.z == other.z)
+            and (self.id_num == other.id_num)
+        )
 
     def __post_init__(self):
         PhxVertix._count += 1
@@ -54,9 +58,7 @@ class PhxVector:
     def from_2_points(cls, _start_pt: PhxVertix, _end_pt: PhxVertix) -> PhxVector:
         """Return a new PhxVector based on a start and end point."""
         return cls(
-            _end_pt.x - _start_pt.x,
-            _end_pt.y - _start_pt.y,
-            _end_pt.z - _start_pt.z
+            _end_pt.x - _start_pt.x, _end_pt.y - _start_pt.y, _end_pt.z - _start_pt.z
         )
 
     def scale(self, _factor: float) -> None:
@@ -83,9 +85,9 @@ class PhxLineSegment:
         return abs(
             math.sqrt(
                 (
-                    (self.vertix_2.x - self.vertix_1.x)**2 +
-                    (self.vertix_2.y - self.vertix_1.y)**2 +
-                    (self.vertix_2.z - self.vertix_1.z)**2
+                    (self.vertix_2.x - self.vertix_1.x) ** 2
+                    + (self.vertix_2.y - self.vertix_1.y) ** 2
+                    + (self.vertix_2.z - self.vertix_1.z) ** 2
                 )
             )
         )
@@ -94,6 +96,7 @@ class PhxLineSegment:
 @dataclass
 class PhxPolygon:
     """A Polygon surface defined by 3 or more vertices."""
+
     _count: ClassVar[int] = 0
 
     _display_name: str
@@ -149,9 +152,11 @@ class PhxPolygon:
 
         try:
             angle = math.acos(
-                (a.x * b.x + a.y * b.y + a.z * b.z) /
-                (math.sqrt(a.x**2 + a.y**2 + a.z**2) *
-                 math.sqrt(b.x**2 + b.y**2 + b.z**2))
+                (a.x * b.x + a.y * b.y + a.z * b.z)
+                / (
+                    math.sqrt(a.x**2 + a.y**2 + a.z**2)
+                    * math.sqrt(b.x**2 + b.y**2 + b.z**2)
+                )
             )
         except ZeroDivisionError:
             angle = 0.0
@@ -175,7 +180,9 @@ class PhxPolygon:
         return False
 
     @property
-    def cardinal_orientation_angle(self, _reference_vector: Optional[PhxVector] = None) -> float:
+    def cardinal_orientation_angle(
+        self, _reference_vector: Optional[PhxVector] = None
+    ) -> float:
         """Calculate polygon normal's horizontal angle off a reference. By default, the
         reference vector will be (x=0,y=1,z=0) assuming north is y-direction.
 
@@ -184,7 +191,7 @@ class PhxPolygon:
 
         Arguments:
         ----------
-            * _reference_vector: (PhxVector) The reference vector representing 
+            * _reference_vector: (PhxVector) The reference vector representing
                 'North'. By default, will use (x=0, y=1, z=0) as the north vector.
 
         Returns:
@@ -238,28 +245,28 @@ class PhxPolygonRectangular(PhxPolygon):
     def edge_top(self) -> PhxLineSegment:
         """Returns the PhxLineSegment representing the 'Top' side of the Polygon (viewed from outside)."""
         if not self.vertix_upper_right or not self.vertix_upper_left:
-            raise PolygonEdgeError(self, 'top')
+            raise PolygonEdgeError(self, "top")
         return PhxLineSegment(self.vertix_upper_right, self.vertix_upper_left)
 
     @property
     def edge_left(self) -> PhxLineSegment:
         """Returns the PhxLineSegment representing the 'Left' side of the Polygon (viewed from outside)."""
         if not self.vertix_upper_left or not self.vertix_lower_left:
-            raise PolygonEdgeError(self, 'left')
+            raise PolygonEdgeError(self, "left")
         return PhxLineSegment(self.vertix_upper_left, self.vertix_lower_left)
 
     @property
     def edge_bottom(self) -> PhxLineSegment:
         """Returns the PhxLineSegment representing the 'Bottom' side of the Polygon (viewed from outside)."""
         if not self.vertix_lower_left or not self.vertix_lower_right:
-            raise PolygonEdgeError(self, 'bottom')
+            raise PolygonEdgeError(self, "bottom")
         return PhxLineSegment(self.vertix_lower_left, self.vertix_lower_right)
 
     @property
     def edge_right(self) -> PhxLineSegment:
         """Returns the PhxLineSegment representing the 'Right' side of the Polygon (viewed from outside)."""
         if not self.vertix_lower_right or not self.vertix_upper_right:
-            raise PolygonEdgeError(self, 'right')
+            raise PolygonEdgeError(self, "right")
         return PhxLineSegment(self.vertix_lower_right, self.vertix_upper_right)
 
     @property
@@ -273,7 +280,7 @@ class PhxPolygonRectangular(PhxPolygon):
     def add_vertix(self, _phx_vertix: PhxVertix) -> None:
         print(
             f'Method "add_vertix()" is not allowed for {self.__class__.__name__} objects.'
-            f'Please assign the vertix corners directly (vertix_upper_left-left, vertix_lower_left-right, etc..)'
+            f"Please assign the vertix corners directly (vertix_upper_left-left, vertix_lower_left-right, etc..)"
         )
 
     @property
@@ -297,11 +304,9 @@ class PhxGraphics3D:
     def vertices(self) -> List[PhxVertix]:
         """Returns a sorted list with all of the unique vertix objects of all the polygons in the collection."""
         return sorted(
-            {vertix
-             for polygon in self.polygons
-             for vertix in polygon.vertices
-             },
-            key=lambda _: _.id_num)
+            {vertix for polygon in self.polygons for vertix in polygon.vertices},
+            key=lambda _: _.id_num,
+        )
 
     def add_polygons(self, _polygons: Union[Collection[PhxPolygon], PhxPolygon]) -> None:
         """Adds a new Polygon object to the collection"""
@@ -321,7 +326,7 @@ class PhxGraphics3D:
 
         Returns:
         --------
-            * List[PhxPolygon]: A sorted (by display_name) list of all the 
+            * List[PhxPolygon]: A sorted (by display_name) list of all the
                 polygons with matching id_nums.
         """
 
@@ -329,8 +334,7 @@ class PhxGraphics3D:
             _ids = {_ids}
 
         return sorted(
-            [p for p in self.polygons if p.id_num in _ids],
-            key=lambda _: _.display_name
+            [p for p in self.polygons if p.id_num in _ids], key=lambda _: _.display_name
         )
 
     def __bool__(self) -> bool:

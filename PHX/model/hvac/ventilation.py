@@ -33,16 +33,21 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.sensible_heat_recovery = (
-            self.sensible_heat_recovery + other.sensible_heat_recovery) / 2
+            self.sensible_heat_recovery + other.sensible_heat_recovery
+        ) / 2
         new_obj.latent_heat_recovery = (
-            self.latent_heat_recovery + other.latent_heat_recovery) / 2
+            self.latent_heat_recovery + other.latent_heat_recovery
+        ) / 2
         new_obj.quantity = self.quantity + other.quantity
         new_obj.electric_efficiency = (
-            self.electric_efficiency + other.electric_efficiency) / 2
+            self.electric_efficiency + other.electric_efficiency
+        ) / 2
         new_obj.frost_protection_reqd = any(
-            [self.frost_protection_reqd, other.frost_protection_reqd])
+            [self.frost_protection_reqd, other.frost_protection_reqd]
+        )
         new_obj.temperature_below_defrost_used = (
-            self.temperature_below_defrost_used + other.temperature_below_defrost_used) / 2
+            self.temperature_below_defrost_used + other.temperature_below_defrost_used
+        ) / 2
         return new_obj
 
 
@@ -50,15 +55,15 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
 class PhxDeviceVentilator(PhxDeviceVentilation):
     system_type: SystemType = field(init=False, default=SystemType.VENTILATION)
     device_type: DeviceType = field(init=False, default=DeviceType.VENTILATION)
-    params: PhxDeviceVentilatorParams = field(
-        default_factory=PhxDeviceVentilatorParams)
-    
+    params: PhxDeviceVentilatorParams = field(default_factory=PhxDeviceVentilatorParams)
+
     def __post_init__(self):
         super().__post_init__()
-    
+
     def __add__(self, other: PhxDeviceVentilator) -> PhxDeviceVentilator:
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         return new_obj
+
 
 AnyPhxVentilation = PhxDeviceVentilator

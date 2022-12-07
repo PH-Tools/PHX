@@ -7,7 +7,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Union, Optional
 
-from PHX.model.enums.phx_site import SiteSelection, SiteClimateSelection, SiteEnergyFactorSelection
+from PHX.model.enums.phx_site import (
+    SiteSelection,
+    SiteClimateSelection,
+    SiteEnergyFactorSelection,
+)
 
 
 @dataclass
@@ -22,17 +26,19 @@ class PhxGround:
 @dataclass
 class PhxPEFactor:
     """Conversion Factors for Site-Energy->Primary-Energy"""
+
     value: float = 0.0
-    unit: str = ''
-    fuel_name: str = ''
+    unit: str = ""
+    fuel_name: str = ""
 
 
 @dataclass
 class PhxCO2Factor:
     """Conversion Factors for Site->CO2"""
+
     value: float = 0.0
-    unit: str = ''
-    fuel_name: str = ''
+    unit: str = ""
+    fuel_name: str = ""
 
 
 PhxEnergyFactorAlias = Union[PhxPEFactor, PhxCO2Factor]
@@ -40,7 +46,9 @@ PhxEnergyFactorAlias = Union[PhxPEFactor, PhxCO2Factor]
 
 @dataclass
 class PhxSiteEnergyFactors:
-    selection_pe_co2_factor: SiteEnergyFactorSelection = SiteEnergyFactorSelection.USER_DEFINED
+    selection_pe_co2_factor: SiteEnergyFactorSelection = (
+        SiteEnergyFactorSelection.USER_DEFINED
+    )
     pe_factors: dict[str, PhxEnergyFactorAlias] = field(default_factory=dict)
     co2_factors: dict[str, PhxEnergyFactorAlias] = field(default_factory=dict)
 
@@ -71,8 +79,12 @@ class PhxSiteEnergyFactors:
             "WOOD": PhxCO2Factor(53.4289, "g/kWh", "WOOD"),
             "ELECTRICITY_MIX": PhxCO2Factor(680.0068, "g/kWh", "ELECTRICITY_MIX"),
             "ELECTRICITY_PV": PhxCO2Factor(250.0171, "g/kWh", "ELECTRICITY_PV"),
-            "HARD_COAL_CGS_70_CHP": PhxCO2Factor(239.9864, "g/kWh", "HARD_COAL_CGS_70_CHP"),
-            "HARD_COAL_CGS_35_CHP": PhxCO2Factor(319.9932, "g/kWh", "HARD_COAL_CGS_35_CHP"),
+            "HARD_COAL_CGS_70_CHP": PhxCO2Factor(
+                239.9864, "g/kWh", "HARD_COAL_CGS_70_CHP"
+            ),
+            "HARD_COAL_CGS_35_CHP": PhxCO2Factor(
+                319.9932, "g/kWh", "HARD_COAL_CGS_35_CHP"
+            ),
             "HARD_COAL_CGS_0_CHP": PhxCO2Factor(409.9966, "g/kWh", "HARD_COAL_CGS_0_CHP"),
             "GAS_CGS_70_CHP": PhxCO2Factor(-70.0102, "g/kWh", "GAS_CGS_70_CHP"),
             "GAS_CGS_35_CHP": PhxCO2Factor(129.9898, "g/kWh", "GAS_CGS_35_CHP"),
@@ -86,6 +98,7 @@ class PhxSiteEnergyFactors:
 @dataclass
 class PhxLocation:
     """The physical location of the building."""
+
     latitude: float = 40.6
     longitude: float = -73.8
     site_elevation: Optional[float] = None
@@ -106,6 +119,7 @@ class PhxClimatePeakLoad:
 @dataclass
 class PhxClimate:
     """Monthly Climate Date for the building location."""
+
     station_elevation: float = 3.0
     selection: SiteClimateSelection = SiteClimateSelection.USER_DEFINED
     daily_temp_swing: float = 8.0
@@ -126,24 +140,26 @@ class PhxClimate:
     peak_cooling_1: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)
     peak_cooling_2: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)
 
+
 @dataclass
 class PhxPHPPCodes:
     country_code: str = "US-United States of America"
     region_code: str = "New York"
     dataset_name = "US0055b-New York"
-    
+
 
 @dataclass
 class PhxSite:
     """The climate and location date for the building's site."""
+
     display_name: str = "New York"
 
     source: str = "__unknown__"
     selection: SiteSelection = SiteSelection.USER_DEFINED
-    
+
     location: PhxLocation = field(default_factory=PhxLocation)
     climate: PhxClimate = field(default_factory=PhxClimate)
     phpp_codes: PhxPHPPCodes = field(default_factory=PhxPHPPCodes)
     ground: PhxGround = field(default_factory=PhxGround)
-    
+
     energy_factors: PhxSiteEnergyFactors = field(default_factory=PhxSiteEnergyFactors)

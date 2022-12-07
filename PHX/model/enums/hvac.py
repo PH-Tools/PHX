@@ -6,6 +6,7 @@
 from enum import Enum
 from honeybee_energy_ph.hvac.hot_water import PhSHWTankType
 
+
 class FuelType(Enum):
     GAS = 1
     OIL = 2

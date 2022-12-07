@@ -6,11 +6,17 @@
 from honeybee import model, shade
 
 from PHX.model import components, project
-from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceOpacity, ComponentColor
+from PHX.model.enums.building import (
+    ComponentExposureExterior,
+    ComponentFaceOpacity,
+    ComponentColor,
+)
 from PHX.from_HBJSON import create_geometry
 
 
-def create_new_component_from_orphaned_shade(_shade: shade.Shade) -> components.PhxComponentOpaque:
+def create_new_component_from_orphaned_shade(
+    _shade: shade.Shade,
+) -> components.PhxComponentOpaque:
     """Returns a new PHX-Component for based on the Honeybee-Shade.
 
     Arguments:
@@ -38,8 +44,10 @@ def create_new_component_from_orphaned_shade(_shade: shade.Shade) -> components.
     return new_compo
 
 
-def add_hb_model_shades_to_variant(_var: project.PhxVariant, _hb_model: model.Model) -> None:
-    """"Create shading PhxComponents from an HB-model's orphaned shades and add to the PhxVariant.
+def add_hb_model_shades_to_variant(
+    _var: project.PhxVariant, _hb_model: model.Model
+) -> None:
+    """ "Create shading PhxComponents from an HB-model's orphaned shades and add to the PhxVariant.
 
     Arguments:
     ----------

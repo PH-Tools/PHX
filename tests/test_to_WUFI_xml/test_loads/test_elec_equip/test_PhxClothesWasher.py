@@ -7,17 +7,17 @@ def test_default_PhxDeviceClothesWasher(reset_class_counters):
     d1 = elec_equip.PhxDeviceClothesWasher()
     result = generate_WUFI_XML_from_object(d1, "", "_PhxElectricalDevice")
     assert xml_string_to_list(result) == [
-        '<Comment></Comment>',
-        '<ReferenceQuantity>1</ReferenceQuantity>',
-        '<Quantity>1</Quantity>',
-        '<InConditionedSpace>true</InConditionedSpace>',
-        '<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>',
-        '<EnergyDemandNorm>100</EnergyDemandNorm>',
-        '<EnergyDemandNormUse>100</EnergyDemandNormUse>',
-        '<CEF_CombinedEnergyFactor>0</CEF_CombinedEnergyFactor>',
-        '<Type>2</Type>',
-        '<Connection>1</Connection>',
-        '<UtilizationFactor>1</UtilizationFactor>',
-        '<CapacityClothesWasher>0.0814</CapacityClothesWasher>',
-        '<MEF_ModifiedEnergyFactor>2.38</MEF_ModifiedEnergyFactor>'
+        "<Comment></Comment>",
+        "<ReferenceQuantity>1</ReferenceQuantity>",
+        "<Quantity>1</Quantity>",
+        "<InConditionedSpace>true</InConditionedSpace>",
+        "<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>",
+        "<EnergyDemandNorm>100</EnergyDemandNorm>",
+        "<EnergyDemandNormUse>100</EnergyDemandNormUse>",
+        "<CEF_CombinedEnergyFactor>0</CEF_CombinedEnergyFactor>",
+        "<Type>2</Type>",
+        "<Connection>1</Connection>",
+        "<UtilizationFactor>1</UtilizationFactor>",
+        "<CapacityClothesWasher>0.0814</CapacityClothesWasher>",
+        "<MEF_ModifiedEnergyFactor>2.38</MEF_ModifiedEnergyFactor>",
     ]

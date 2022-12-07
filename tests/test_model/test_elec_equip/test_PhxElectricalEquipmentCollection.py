@@ -20,4 +20,4 @@ def test_add_single_equip_to_collection(reset_class_counters):
     assert len(collection_1.devices) == 1
     assert collection_1.device_key_in_collection(str(ee_1.identifier))
     assert collection_1.get_equipment_by_key(str(ee_1.identifier)) == ee_1
-    assert collection_1.get_equipment_by_key('not in collection') == None
+    assert collection_1.get_equipment_by_key("not in collection") == None

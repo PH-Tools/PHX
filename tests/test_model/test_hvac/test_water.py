@@ -79,7 +79,7 @@ def test_add_default_PhxHotWaterTank(reset_class_counters):
 
 def test_add_mixed_PhxHotWaterTank(reset_class_counters):
     d1 = water.PhxHotWaterTank()
-    d1.quantity=10
+    d1.quantity = 10
     d1.params = water.PhxHotWaterTankParams(
         solar_losses=4,
         storage_loss_rate=2,
@@ -90,7 +90,7 @@ def test_add_mixed_PhxHotWaterTank(reset_class_counters):
         water_temp=4,
     )
     d2 = water.PhxHotWaterTank()
-    d2.quantity=11
+    d2.quantity = 11
     d2.params = water.PhxHotWaterTankParams(
         solar_losses=4,
         storage_loss_rate=4,

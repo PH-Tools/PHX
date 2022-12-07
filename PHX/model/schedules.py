@@ -29,7 +29,7 @@ class Vent_UtilPeriods:
 class UtilizationPatternVent:
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
-    name: str = '__unamed_vent_pattern__'
+    name: str = "__unamed_vent_pattern__"
     identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
     operating_hours: float = 24.0
     operating_days: float = 7.0
@@ -41,7 +41,9 @@ class UtilizationPatternVent:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
-    def force_max_utilization_hours(self, _max_hours: float = 24.0, _tol: int = 2) -> None:
+    def force_max_utilization_hours(
+        self, _max_hours: float = 24.0, _tol: int = 2
+    ) -> None:
         """Ensure that the total utilization hours never exceed target (default=24).
         Will adjust the minimum daily_op_sched as needed.
         """
@@ -60,7 +62,8 @@ class UtilizationPatternVent:
 @dataclass
 class UtilizationPatternVentCollection:
     patterns: Dict[Union[str, uuid.UUID], UtilizationPatternVent] = field(
-        init=False, default_factory=dict)
+        init=False, default_factory=dict
+    )
 
     def add_new_util_pattern(self, _util_pattern: UtilizationPatternVent) -> None:
         """Add a new Utilization Pattern to the Collection.

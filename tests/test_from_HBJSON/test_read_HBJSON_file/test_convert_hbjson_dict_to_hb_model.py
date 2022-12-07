@@ -20,20 +20,26 @@ def hb_rooms_are_equal(hb_room_1, hb_room_2):
     assert hb_room_1.exterior_wall_area == hb_room_2.exterior_wall_area
     assert hb_room_1.exterior_aperture_area == hb_room_2.exterior_aperture_area
     assert hb_room_1.exterior_wall_aperture_area == hb_room_2.exterior_wall_aperture_area
-    assert hb_room_1.exterior_skylight_aperture_area == hb_room_2.exterior_skylight_aperture_area
+    assert (
+        hb_room_1.exterior_skylight_aperture_area
+        == hb_room_2.exterior_skylight_aperture_area
+    )
     assert hb_room_1.average_floor_height == hb_room_2.average_floor_height
     assert hb_room_1.user_data == hb_room_2.user_data
-    for face1, face2 in zip(sorted(hb_room_1.faces, key=lambda f: f.identifier), sorted(hb_room_2.faces, key=lambda f: f.identifier)):
+    for face1, face2 in zip(
+        sorted(hb_room_1.faces, key=lambda f: f.identifier),
+        sorted(hb_room_2.faces, key=lambda f: f.identifier),
+    ):
         assert face1.identifier == face2.identifier
         assert face1.display_name == face2.display_name
         assert face1.type == face2.type
-        #assert face1.boundary_condition == face2.boundary_condition
-        #assert face1.apertures == face2.apertures
+        # assert face1.boundary_condition == face2.boundary_condition
+        # assert face1.apertures == face2.apertures
         assert face1.doors == face2.doors
-        #assert face1.sub_faces == face2.sub_faces
+        # assert face1.sub_faces == face2.sub_faces
         assert face1.indoor_shades == face2.indoor_shades
         assert face1.outdoor_shades == face2.outdoor_shades
-        #assert face1.parent == face2.parent
+        # assert face1.parent == face2.parent
         assert face1.has_parent == face2.has_parent
         assert face1.has_sub_faces == face2.has_sub_faces
         assert face1.can_be_ground == face2.can_be_ground
@@ -52,13 +58,15 @@ def hb_rooms_are_equal(hb_room_1, hb_room_2):
     return True
 
 
-@pytest.mark.parametrize("filename,results",
-                         [
-                             ('Default_Model_Single_Zone.hbjson', None),
-                             ('Multi_Room_Complete.hbjson', None),
-                         ])
+@pytest.mark.parametrize(
+    "filename,results",
+    [
+        ("Default_Model_Single_Zone.hbjson", None),
+        ("Multi_Room_Complete.hbjson", None),
+    ],
+)
 def test_read_default_single_zone_model_no_conversion(filename, results):
-    file_path = Path('tests', '_source_hbjson', filename)
+    file_path = Path("tests", "_source_hbjson", filename)
 
     d1 = read_HBJSON_file.read_hb_json_from_file(file_path)
     m1 = read_HBJSON_file.convert_hbjson_dict_to_hb_model(d1)
@@ -71,5 +79,8 @@ def test_read_default_single_zone_model_no_conversion(filename, results):
     assert m1.units == m2.units
     assert m1.tolerance == m2.tolerance
     assert m1.angle_tolerance == m2.angle_tolerance
-    for room1, room2 in zip(sorted(m1.rooms, key=lambda r: r.display_name), sorted(m2.rooms, key=lambda r: r.display_name)):
+    for room1, room2 in zip(
+        sorted(m1.rooms, key=lambda r: r.display_name),
+        sorted(m2.rooms, key=lambda r: r.display_name),
+    ):
         assert hb_rooms_are_equal(room1, room2)

@@ -15,8 +15,12 @@ def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
     This function will determine the peak flow by-person, by-area, by-zone, and by-ach
     and return the sum of all four flow-rate types.
     """
-    (flow_per_person, flow_per_area,
-        air_changes_per_hour, flow_per_zone) = hb_room_vent_flowrates(_space.host)
+    (
+        flow_per_person,
+        flow_per_area,
+        air_changes_per_hour,
+        flow_per_zone,
+    ) = hb_room_vent_flowrates(_space.host)
     # TODO: Unweighted or weighted? Which is right?
     ref_flr_area = _space.floor_area
 
@@ -61,20 +65,24 @@ def create_room_from_space(_space: space.Space) -> ventilation.PhxRoomVentilatio
     space_peak_flow_rate = calc_space_ventilation_flow_rate(_space)
     new_room.flow_rates.flow_supply = space_peak_flow_rate
     new_room.flow_rates.flow_extract = space_peak_flow_rate
-    new_room.vent_pattern_id_num = _space.host.properties.energy.ventilation.schedule.properties.ph.id_num
+    new_room.vent_pattern_id_num = (
+        _space.host.properties.energy.ventilation.schedule.properties.ph.id_num
+    )
 
     # -- TODO: FIX THIS TO A BETTER TECHNIQUE SOMEDAY, OVERRIDE WITH LOCAL INFO, IF ANY
     if _space.properties.ph._v_sup is not None:
         new_room.flow_rates.flow_supply = _space.properties.ph._v_sup * 3_600
-    
+
     if _space.properties.ph._v_eta is not None:
         new_room.flow_rates.flow_extract = _space.properties.ph._v_eta * 3_600
-    
+
     if _space.properties.ph._v_tran is not None:
         new_room.flow_rates.flow_transfer = _space.properties.ph._v_tran * 3_600
 
     # -- Ventilation Equipment
     if _space.host.properties.energy.hvac.properties.ph.ventilation_system:
-        new_room.vent_unit_id_num = _space.host.properties.energy.hvac.properties.ph.ventilation_system.id_num
+        new_room.vent_unit_id_num = (
+            _space.host.properties.energy.hvac.properties.ph.ventilation_system.id_num
+        )
 
     return new_room

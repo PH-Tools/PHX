@@ -13,9 +13,11 @@ from PHX.model import geometry
 
 class InvalidRectangularFaceError(Exception):
     def __init__(self, _hb_face: Union[aperture.Aperture, face.Face, shade.Shade]):
-        self.msg = f"Error: Cannot create a PhxPolygonRectangular for the"\
-            f"Honeybee Face: {_hb_face.display_name}. Must have at least 4 vertices?"\
+        self.msg = (
+            f"Error: Cannot create a PhxPolygonRectangular for the"
+            f"Honeybee Face: {_hb_face.display_name}. Must have at least 4 vertices?"
             f"Only {len(_hb_face.vertices)} vertices found?"
+        )
         super().__init__(self.msg)
 
 
@@ -24,11 +26,7 @@ class InvalidRectangularFaceError(Exception):
 
 def create_PhxVertix_from_lbt_Point3D(_lbt_Point3D: Point3D) -> geometry.PhxVertix:
     """Returns a new PhxVertix object with attributes based on an LBT-Point3D."""
-    return geometry.PhxVertix(
-        _lbt_Point3D.x,
-        _lbt_Point3D.y,
-        _lbt_Point3D.z
-    )
+    return geometry.PhxVertix(_lbt_Point3D.x, _lbt_Point3D.y, _lbt_Point3D.z)
 
 
 def create_PhxVector_from_lbt_Vector3D(_lbt_vector3d: Vector3D) -> geometry.PhxVector:
@@ -46,11 +44,13 @@ def create_PhxPlane_from_lbt_Plane(_lbt_plane: Plane) -> geometry.PhxPlane:
         create_PhxVector_from_lbt_Vector3D(_lbt_plane.n),
         create_PhxVertix_from_lbt_Point3D(_lbt_plane.o),
         create_PhxVector_from_lbt_Vector3D(_lbt_plane.x),
-        create_PhxVector_from_lbt_Vector3D(_lbt_plane.y)
+        create_PhxVector_from_lbt_Vector3D(_lbt_plane.y),
     )
 
 
-def create_PhxPolygon_from_hb_Face(_hb_face: Union[aperture.Aperture, face.Face, shade.Shade]) -> geometry.PhxPolygon:
+def create_PhxPolygon_from_hb_Face(
+    _hb_face: Union[aperture.Aperture, face.Face, shade.Shade]
+) -> geometry.PhxPolygon:
     """Return a new PhxPolygon based on an input honeybee-Face.
 
     Arguments:
@@ -67,7 +67,7 @@ def create_PhxPolygon_from_hb_Face(_hb_face: Union[aperture.Aperture, face.Face,
         _hb_face.geometry.area,
         create_PhxVertix_from_lbt_Point3D(_hb_face.geometry.center),
         create_PhxVector_from_lbt_Vector3D(_hb_face.normal),
-        create_PhxPlane_from_lbt_Plane(_hb_face.geometry.plane)
+        create_PhxPlane_from_lbt_Plane(_hb_face.geometry.plane),
     )
 
     for v in _hb_face.vertices:
@@ -76,7 +76,9 @@ def create_PhxPolygon_from_hb_Face(_hb_face: Union[aperture.Aperture, face.Face,
     return phx_polygon
 
 
-def create_PhxPolygonRectangular_from_hb_Face(_hb_face: Union[aperture.Aperture, face.Face, shade.Shade]) -> geometry.PhxPolygonRectangular:
+def create_PhxPolygonRectangular_from_hb_Face(
+    _hb_face: Union[aperture.Aperture, face.Face, shade.Shade]
+) -> geometry.PhxPolygonRectangular:
     """Return a new PhxPolygonRectangular based on an input honeybee-Face.
 
     Arguments:
@@ -97,16 +99,20 @@ def create_PhxPolygonRectangular_from_hb_Face(_hb_face: Union[aperture.Aperture,
         _hb_face.geometry.area,
         center=create_PhxVertix_from_lbt_Point3D(_hb_face.geometry.center),
         normal_vector=create_PhxVector_from_lbt_Vector3D(_hb_face.normal),
-        plane=create_PhxPlane_from_lbt_Plane(_hb_face.geometry.plane)
+        plane=create_PhxPlane_from_lbt_Plane(_hb_face.geometry.plane),
     )
 
     phx_polygon.vertix_upper_left = create_PhxVertix_from_lbt_Point3D(
-        _hb_face.geometry.upper_left_corner)
+        _hb_face.geometry.upper_left_corner
+    )
     phx_polygon.vertix_lower_left = create_PhxVertix_from_lbt_Point3D(
-        _hb_face.geometry.lower_left_corner)
+        _hb_face.geometry.lower_left_corner
+    )
     phx_polygon.vertix_lower_right = create_PhxVertix_from_lbt_Point3D(
-        _hb_face.geometry.lower_right_corner)
+        _hb_face.geometry.lower_right_corner
+    )
     phx_polygon.vertix_upper_right = create_PhxVertix_from_lbt_Point3D(
-        _hb_face.geometry.upper_right_corner)
+        _hb_face.geometry.upper_right_corner
+    )
 
     return phx_polygon

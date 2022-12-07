@@ -11,10 +11,11 @@ import uuid
 @dataclass
 class PhxElectricalDevice:
     """Base class for PHX Electrical Equipment (dishwashers, laundry, lighting, etc.)"""
+
     _count: ClassVar[int] = 0
 
     identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
-    display_name: str = '_unnamed_equipment_'
+    display_name: str = "_unnamed_equipment_"
     id_num: int = field(init=False, default=0)
     comment: str = ""
     reference_quantity: int = 1
@@ -36,7 +37,7 @@ class PhxDeviceDishwasher(PhxElectricalDevice):
         self.display_name = "Kitchen Dishwasher"
         self.capacity_type: int = 1
         self.capacity: float = 1
-        self.water_connection: int = 1 # DHW Connection
+        self.water_connection: int = 1  # DHW Connection
 
 
 class PhxDeviceClothesWasher(PhxElectricalDevice):
@@ -136,6 +137,7 @@ class PhxDeviceCustomMEL(PhxElectricalDevice):
 @dataclass
 class PhxElectricDeviceCollection:
     """A collection of all the PhxElectricalDevices (laundry, lighting, etc.) in the Zone"""
+
     _devices: dict = field(default_factory=dict)
 
     @property
@@ -158,7 +160,7 @@ class PhxElectricDeviceCollection:
         Arguments:
         ----------
             * _key (str): The key to use when storing the new electric-equipment
-            * _devices (PhxElectricalDevice): The new PhxElectricalDevice to 
+            * _devices (PhxElectricalDevice): The new PhxElectricalDevice to
                 add to the collection.
 
         Returns:

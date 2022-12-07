@@ -11,7 +11,11 @@ from functools import reduce
 import operator
 
 from PHX.model import loads, elec_equip, geometry
-from PHX.model.components import PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
+from PHX.model.components import (
+    PhxComponentAperture,
+    PhxComponentOpaque,
+    PhxComponentThermalBridge,
+)
 from PHX.model.enums.building import ComponentFaceOpacity
 
 
@@ -27,7 +31,8 @@ class PhxZone:
     specific_heat_capacity: float = 132
     wufi_rooms: List[loads.PhxRoomVentilation] = field(default_factory=list)
     elec_equipment_collection: elec_equip.PhxElectricDeviceCollection = field(
-        default_factory=elec_equip.PhxElectricDeviceCollection)
+        default_factory=elec_equip.PhxElectricDeviceCollection
+    )
     res_occupant_quantity: int = 0
     res_number_bedrooms: int = 0
 
@@ -52,7 +57,9 @@ class PhxBuilding:
         """Returns the total net-volume of all the zones in the PhxBuilding."""
         return sum(z.volume_net for z in self.zones)
 
-    def add_components(self, _components: Union[PhxComponentOpaque, Sequence[PhxComponentOpaque]]) -> None:
+    def add_components(
+        self, _components: Union[PhxComponentOpaque, Sequence[PhxComponentOpaque]]
+    ) -> None:
         """Add a new PhxComponentOpaque to the PhxBuilding."""
         if not isinstance(_components, Sequence):
             _components = (_components,)
@@ -68,14 +75,19 @@ class PhxBuilding:
         for zone in _zones:
             self.zones.append(zone)
 
-    def add_thermal_bridges(self, _thermal_bridges: Union[PhxComponentThermalBridge, Sequence[PhxComponentThermalBridge]]) -> None:
+    def add_thermal_bridges(
+        self,
+        _thermal_bridges: Union[
+            PhxComponentThermalBridge, Sequence[PhxComponentThermalBridge]
+        ],
+    ) -> None:
         """Add a new PhxComponentThermalBridge (or list of Bridges) to the PhxBuilding."""
         if not isinstance(_thermal_bridges, Sequence):
             _thermal_bridges = (_thermal_bridges,)
-        
+
         for tb in _thermal_bridges:
             self._thermal_bridges[tb.identifier] = tb
-        
+
         return None
 
     def merge_opaque_components_by_assembly(self) -> None:
@@ -88,8 +100,7 @@ class PhxBuilding:
         # -- Create new components from the group
         grouped_opaque_components: List[PhxComponentOpaque] = []
         for component_group in new_component_groups.values():
-            grouped_opaque_components.append(
-                reduce(operator.add, component_group))
+            grouped_opaque_components.append(reduce(operator.add, component_group))
 
         # -- Reset the Building's Components
         self._components = grouped_opaque_components
@@ -106,8 +117,7 @@ class PhxBuilding:
             # -- Create new components from the groups
             grouped_aperture_components = []
             for component_group in new_component_groups.values():
-                grouped_aperture_components.append(
-                    reduce(operator.add, component_group))
+                grouped_aperture_components.append(reduce(operator.add, component_group))
 
             # -- Reset the Components's Apertures
             c.apertures = grouped_aperture_components
@@ -125,8 +135,7 @@ class PhxBuilding:
             * (List[Union[PhxComponentOpaque, PhxComponentAperture]]) A list of all
                 the opaque and aperture components.
         """
-        all_components: List[Union[PhxComponentOpaque,
-                                   PhxComponentAperture]] = []
+        all_components: List[Union[PhxComponentOpaque, PhxComponentAperture]] = []
         for c in self._components:
             all_components += c.apertures
             all_components.append(c)
@@ -141,8 +150,7 @@ class PhxBuilding:
             * (List[PhxComponentOpaque]) A sorted list of all the opaque components.
         """
         return sorted(
-            [c for c in self._components if not c.is_shade],
-            key=lambda _: _.display_name
+            [c for c in self._components if not c.is_shade], key=lambda _: _.display_name
         )
 
     @property
@@ -154,8 +162,7 @@ class PhxBuilding:
             * (List[PhxComponentOpaque]) A sorted list of all the shading components.
         """
         return sorted(
-            [c for c in self._components if c.is_shade],
-            key=lambda _: _.display_name
+            [c for c in self._components if c.is_shade], key=lambda _: _.display_name
         )
 
     @property

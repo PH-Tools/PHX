@@ -21,15 +21,18 @@ class PhxVariant:
     remarks: str = ""
     plugin: str = ""
     building: phx_building.PhxBuilding = field(default_factory=phx_building.PhxBuilding)
-    
+
     phius_certification: certification.PhxPhiusCertification = field(
-        default_factory=certification.PhxPhiusCertification)
+        default_factory=certification.PhxPhiusCertification
+    )
     phi_certification: certification.PhxPhiCertification = field(
-        default_factory=certification.PhxPhiCertification)
-    
+        default_factory=certification.PhxPhiCertification
+    )
+
     site: phx_site.PhxSite = field(default_factory=phx_site.PhxSite)
     mech_systems: collection.PhxMechanicalSystemCollection = field(
-        default_factory=collection.PhxMechanicalSystemCollection)
+        default_factory=collection.PhxMechanicalSystemCollection
+    )
 
     @property
     def graphics3D(self):
@@ -73,11 +76,14 @@ class PhxProject:
     name: str = "unnamed_project"
 
     assembly_types: Dict[str, constructions.PhxConstructionOpaque] = field(
-        default_factory=dict)
+        default_factory=dict
+    )
     window_types: Dict[str, constructions.PhxConstructionWindow] = field(
-        default_factory=dict)
+        default_factory=dict
+    )
     utilization_patterns_ventilation: schedules.UtilizationPatternVentCollection = field(
-        default_factory=schedules.UtilizationPatternVentCollection)
+        default_factory=schedules.UtilizationPatternVentCollection
+    )
     utilization_patterns_ph: List = field(default_factory=list)
     variants: List[PhxVariant] = field(default_factory=list)
 

@@ -20,6 +20,7 @@ class PhxHeatingDevice(_base.PhxMechanicalDevice):
 # -----------------------------------------------------------------------------
 # Electric
 
+
 @dataclass
 class PhxHeaterElectricParams(_base.PhxMechanicalDeviceParams):
     pass
@@ -29,8 +30,7 @@ class PhxHeaterElectricParams(_base.PhxMechanicalDeviceParams):
 class PhxHeaterElectric(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.ELECTRIC)
     device_type: DeviceType = field(init=False, default=DeviceType.ELECTRIC)
-    params: PhxHeaterElectricParams = field(
-        default_factory=PhxHeaterElectricParams)
+    params: PhxHeaterElectricParams = field(default_factory=PhxHeaterElectricParams)
 
 
 # -----------------------------------------------------------------------------
@@ -89,15 +89,15 @@ class PhxHeaterBoilerFossil(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.BOILER)
     device_type: DeviceType = field(init=False, default=DeviceType.BOILER)
     params: PhxHeaterBoilerFossilParams = field(
-        default_factory=PhxHeaterBoilerFossilParams)
+        default_factory=PhxHeaterBoilerFossilParams
+    )
 
 
 @dataclass
 class PhxHeaterBoilerWood(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.BOILER)
     device_type: DeviceType = field(init=False, default=DeviceType.BOILER)
-    params: PhxHeaterBoilerWoodParams = field(
-        default_factory=PhxHeaterBoilerWoodParams)
+    params: PhxHeaterBoilerWoodParams = field(default_factory=PhxHeaterBoilerWoodParams)
 
 
 PhxHeaterBoiler = Union[PhxHeaterBoilerFossil, PhxHeaterBoilerWood]
@@ -117,7 +117,8 @@ class PhxHeaterDistrictHeat(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.DISTRICT_HEAT)
     device_type: DeviceType = field(init=False, default=DeviceType.DISTRICT_HEAT)
     params: PhxHeaterDistrictHeatParams = field(
-        default_factory=PhxHeaterDistrictHeatParams)
+        default_factory=PhxHeaterDistrictHeatParams
+    )
 
 
 # -----------------------------------------------------------------------------
@@ -188,7 +189,8 @@ class PhxHeaterHeatPumpAnnual(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     params: PhxHeaterHeatPumpAnnualParams = field(
-        default_factory=PhxHeaterHeatPumpAnnualParams)
+        default_factory=PhxHeaterHeatPumpAnnualParams
+    )
 
 
 @dataclass
@@ -196,7 +198,8 @@ class PhxHeaterHeatPumpMonthly(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     params: PhxHeaterHeatPumpMonthlyParams = field(
-        default_factory=PhxHeaterHeatPumpMonthlyParams)
+        default_factory=PhxHeaterHeatPumpMonthlyParams
+    )
 
 
 @dataclass
@@ -204,7 +207,8 @@ class PhxHeaterHeatPumpHotWater(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     params: PhxHeaterHeatPumpHotWaterParams = field(
-        default_factory=PhxHeaterHeatPumpHotWaterParams)
+        default_factory=PhxHeaterHeatPumpHotWaterParams
+    )
 
 
 @dataclass
@@ -212,15 +216,20 @@ class PhxHeaterHeatPumpCombined(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     params: PhxHeaterHeatPumpCombinedParams = field(
-        default_factory=PhxHeaterHeatPumpCombinedParams)
+        default_factory=PhxHeaterHeatPumpCombinedParams
+    )
 
 
-PhxHeaterHeatPump = Union[PhxHeaterHeatPumpAnnual, PhxHeaterHeatPumpMonthly,
-                          PhxHeaterHeatPumpHotWater, PhxHeaterHeatPumpCombined]
+PhxHeaterHeatPump = Union[
+    PhxHeaterHeatPumpAnnual,
+    PhxHeaterHeatPumpMonthly,
+    PhxHeaterHeatPumpHotWater,
+    PhxHeaterHeatPumpCombined,
+]
 
 AnyPhxHeater = Union[
     PhxHeaterElectric,
-    PhxHeaterBoilerFossil, 
+    PhxHeaterBoilerFossil,
     PhxHeaterBoilerWood,
     PhxHeaterDistrictHeat,
     PhxHeaterHeatPumpAnnual,

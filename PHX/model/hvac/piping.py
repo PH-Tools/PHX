@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
+
 @dataclass
 class PhxPipeSegment:
     """An individual Pipe Segment."""
@@ -27,6 +28,7 @@ class PhxPipeSegment:
     @property
     def length(self) -> float:
         return self.geometry.length
+
 
 @dataclass
 class PhxPipeElement:

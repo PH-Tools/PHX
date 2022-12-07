@@ -14,6 +14,7 @@ def test_default_PhxCoolingDevice(reset_class_counters):
 
 # -- Ventilation Cooling ------------------------------------------------------
 
+
 def test_default_PhxCoolingVentilationParams(reset_class_counters):
     p1 = cooling.PhxCoolingVentilationParams()
     p2 = cooling.PhxCoolingVentilationParams()
@@ -160,7 +161,7 @@ def test_mixed_PhxCoolingRecirculationParams(reset_class_counters):
         capacity=20,
         annual_COP=6,
         flow_rate_m3_hr=100,
-        flow_rate_variable=True
+        flow_rate_variable=True,
     )
     p2 = cooling.PhxCoolingRecirculationParams(
         single_speed=False,
@@ -168,7 +169,7 @@ def test_mixed_PhxCoolingRecirculationParams(reset_class_counters):
         capacity=10,
         annual_COP=4,
         flow_rate_m3_hr=50,
-        flow_rate_variable=False
+        flow_rate_variable=False,
     )
 
     p3 = p1 + p2
@@ -229,7 +230,7 @@ def test_add_mixed_PhxCoolingRecirculation(reset_class_counters):
         capacity=20,
         annual_COP=6,
         flow_rate_m3_hr=100,
-        flow_rate_variable=True
+        flow_rate_variable=True,
     )
     dev_2 = cooling.PhxCoolingRecirculation()
     dev_2.params = cooling.PhxCoolingRecirculationParams(
@@ -238,7 +239,7 @@ def test_add_mixed_PhxCoolingRecirculation(reset_class_counters):
         capacity=10,
         annual_COP=4,
         flow_rate_m3_hr=50,
-        flow_rate_variable=False
+        flow_rate_variable=False,
     )
 
     dev_3 = dev_1 + dev_2
@@ -283,14 +284,8 @@ def test_default_PhxCoolingDehumidificationParams(reset_class_counters):
 
 
 def test_mixed_PhxCoolingDehumidificationParams(reset_class_counters):
-    p1 = cooling.PhxCoolingDehumidificationParams(
-        annual_COP=6,
-        useful_heat_loss=False
-    )
-    p2 = cooling.PhxCoolingDehumidificationParams(
-        annual_COP=4,
-        useful_heat_loss=True
-    )
+    p1 = cooling.PhxCoolingDehumidificationParams(annual_COP=6, useful_heat_loss=False)
+    p2 = cooling.PhxCoolingDehumidificationParams(annual_COP=4, useful_heat_loss=True)
 
     p3 = p1 + p2
     assert p3 != p2 != p1
@@ -337,14 +332,12 @@ def test_add_default_PhxCoolingDehumidification(reset_class_counters):
 def test_add_mixed_PhxCoolingDehumidification(reset_class_counters):
     dev_1 = cooling.PhxCoolingDehumidification()
     dev_1.params = cooling.PhxCoolingDehumidificationParams(
-        annual_COP=6,
-        useful_heat_loss=False
+        annual_COP=6, useful_heat_loss=False
     )
 
     dev_2 = cooling.PhxCoolingDehumidification()
     dev_2.params = cooling.PhxCoolingDehumidificationParams(
-        annual_COP=4,
-        useful_heat_loss=True
+        annual_COP=4, useful_heat_loss=True
     )
 
     dev_3 = dev_1 + dev_2

@@ -7,8 +7,13 @@ from __future__ import annotations
 from typing import ClassVar, Collection, List, Set, Union, Optional
 
 from PHX.model import geometry, constructions
-from PHX.model.enums.building import (ComponentExposureExterior, ComponentFaceType, 
-                                        ComponentFaceOpacity, ComponentColor, ThermalBridgeType)
+from PHX.model.enums.building import (
+    ComponentExposureExterior,
+    ComponentFaceType,
+    ComponentFaceOpacity,
+    ComponentColor,
+    ThermalBridgeType,
+)
 
 
 class PhxComponentBase:
@@ -39,11 +44,15 @@ class PhxComponentOpaque(PhxComponentBase):
         self.face_opacity: ComponentFaceOpacity = ComponentFaceOpacity.OPAQUE
         self.color_interior: ComponentColor = ComponentColor.EXT_WALL_INNER
         self.color_exterior: ComponentColor = ComponentColor.EXT_WALL_INNER
-        self.exposure_exterior: ComponentExposureExterior = ComponentExposureExterior.EXTERIOR
+        self.exposure_exterior: ComponentExposureExterior = (
+            ComponentExposureExterior.EXTERIOR
+        )
         self.exposure_interior: int = 1
         self.interior_attachment_id: int = -1
 
-        self.assembly: constructions.PhxConstructionOpaque = constructions.PhxConstructionOpaque()
+        self.assembly: constructions.PhxConstructionOpaque = (
+            constructions.PhxConstructionOpaque()
+        )
         self.assembly_type_id_num: int = -1
 
         self.apertures: List[PhxComponentAperture] = []
@@ -57,8 +66,10 @@ class PhxComponentOpaque(PhxComponentBase):
     @property
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
-        return f'{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-'\
-            f'{self.exposure_exterior}-{self.assembly_type_id_num}'
+        return (
+            f"{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-"
+            f"{self.exposure_exterior}-{self.assembly_type_id_num}"
+        )
 
     @property
     def is_shade(self) -> bool:
@@ -68,8 +79,9 @@ class PhxComponentOpaque(PhxComponentBase):
             return False
         return True
 
-    def add_polygons(self,
-                     _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]) -> None:
+    def add_polygons(
+        self, _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]
+    ) -> None:
         """Adds a new Polygon or Polygons to the Component's collection.
 
         Arguments:
@@ -100,11 +112,11 @@ class PhxComponentOpaque(PhxComponentBase):
         """
         new_compo = self.__class__()
         for attr_name, attr_val in vars(self).items():
-            if attr_name.startswith('_'):
+            if attr_name.startswith("_"):
                 continue
             setattr(new_compo, attr_name, attr_val)
 
-        new_compo.display_name = 'Merged_Component'
+        new_compo.display_name = "Merged_Component"
         new_compo.polygons = self.polygons + other.polygons
         for phx_aperture in new_compo.apertures:
             phx_aperture.host = new_compo
@@ -143,7 +155,8 @@ class PhxComponentOpaque(PhxComponentBase):
             if _id_num in polygon.child_polygon_ids:
                 return polygon
         raise Exception(
-            f'Error: Cannot find a host polygon for the child id_num: {_id_num}')
+            f"Error: Cannot find a host polygon for the child id_num: {_id_num}"
+        )
 
 
 class PhxApertureShadingDimensions(PhxComponentBase):
@@ -158,20 +171,22 @@ class PhxApertureShadingDimensions(PhxComponentBase):
         self.o_reveal: Optional[float] = None
         self.d_over: Optional[float] = None
         self.o_over: Optional[float] = None
-        
+
 
 class PhxApertureElement(PhxComponentBase):
     """A single sash / element of an Aperture Component."""
-    
+
     def __init__(self, _host: PhxComponentAperture):
         super().__init__()
 
-        self.host:PhxComponentAperture = _host
+        self.host: PhxComponentAperture = _host
         self.display_name: str = ""
         self.polygon: Optional[geometry.PhxPolygonRectangular] = None
         self.winter_shading_factor: float = 0.75
         self.summer_shading_factor: float = 0.75
-        self.shading_dimensions: PhxApertureShadingDimensions = PhxApertureShadingDimensions()
+        self.shading_dimensions: PhxApertureShadingDimensions = (
+            PhxApertureShadingDimensions()
+        )
 
 
 class PhxComponentAperture(PhxComponentBase):
@@ -187,13 +202,17 @@ class PhxComponentAperture(PhxComponentBase):
         self.face_opacity: ComponentFaceOpacity = ComponentFaceOpacity.TRANSPARENT
         self.color_interior: ComponentColor = ComponentColor.WINDOW
         self.color_exterior: ComponentColor = ComponentColor.WINDOW
-        self.exposure_exterior: ComponentExposureExterior = ComponentExposureExterior.EXTERIOR
+        self.exposure_exterior: ComponentExposureExterior = (
+            ComponentExposureExterior.EXTERIOR
+        )
         self.exposure_interior: int = 1
         self.interior_attachment_id: int = -1
 
-        self.window_type: constructions.PhxConstructionWindow = constructions.PhxConstructionWindow()
+        self.window_type: constructions.PhxConstructionWindow = (
+            constructions.PhxConstructionWindow()
+        )
         self.window_type_id_num: int = -1
-        self.variant_type_name: str = '_unnamed_type_'
+        self.variant_type_name: str = "_unnamed_type_"
 
         self.elements: List[PhxApertureElement] = []
 
@@ -209,8 +228,10 @@ class PhxComponentAperture(PhxComponentBase):
     @property
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
-        return f'{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-'\
-            f'{self.exposure_exterior}-{self.window_type_id_num}-{self.variant_type_name}'
+        return (
+            f"{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-"
+            f"{self.exposure_exterior}-{self.window_type_id_num}-{self.variant_type_name}"
+        )
 
     def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:
         """Add one or more new 'Elements' (Sashes) to the Aperture"""
@@ -233,11 +254,11 @@ class PhxComponentAperture(PhxComponentBase):
         """
         new_compo = self.__class__(_host=self.host)
         for attr_name, attr_val in vars(self).items():
-            if attr_name.startswith('_'):
+            if attr_name.startswith("_"):
                 continue
             setattr(new_compo, attr_name, attr_val)
 
-        new_compo.display_name = 'Merged_Component'
+        new_compo.display_name = "Merged_Component"
         new_compo.elements = self.elements + other.elements
         for element in new_compo.elements:
             element.host = new_compo

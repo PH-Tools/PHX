@@ -50,7 +50,8 @@ class PhxCoolingVentilation(PhxCoolingDevice):
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     cooling_type: CoolingType = field(init=False, default=CoolingType.VENTILATION)
     params: PhxCoolingVentilationParams = field(
-        default_factory=PhxCoolingVentilationParams)
+        default_factory=PhxCoolingVentilationParams
+    )
 
     def __add__(self, other: PhxCoolingVentilation) -> PhxCoolingVentilation:
         base = super().__add__(other)
@@ -78,7 +79,9 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
     def total_system_perf_ratio(self):
         return 1 / self.annual_COP
 
-    def __add__(self, other: PhxCoolingRecirculationParams) -> PhxCoolingRecirculationParams:
+    def __add__(
+        self, other: PhxCoolingRecirculationParams
+    ) -> PhxCoolingRecirculationParams:
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.hp_type = self.hp_type
@@ -87,7 +90,8 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
         new_obj.flow_rate_m3_hr = (self.flow_rate_m3_hr + other.flow_rate_m3_hr) / 2
         new_obj.capacity = (self.capacity + other.capacity) / 2
         new_obj.flow_rate_variable = any(
-            [self.flow_rate_variable, other.flow_rate_variable])
+            [self.flow_rate_variable, other.flow_rate_variable]
+        )
         new_obj.annual_COP = (self.annual_COP + other.annual_COP) / 2
         return new_obj
 
@@ -98,7 +102,8 @@ class PhxCoolingRecirculation(PhxCoolingDevice):
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     cooling_type: CoolingType = field(init=False, default=CoolingType.RECIRCULATION)
     params: PhxCoolingRecirculationParams = field(
-        default_factory=PhxCoolingRecirculationParams)
+        default_factory=PhxCoolingRecirculationParams
+    )
 
     def __add__(self, other: PhxCoolingRecirculation) -> PhxCoolingRecirculation:
         base = super().__add__(other)
@@ -122,7 +127,9 @@ class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
     def total_system_perf_ratio(self):
         return 1 / self.annual_COP
 
-    def __add__(self, other: PhxCoolingDehumidificationParams) -> PhxCoolingDehumidificationParams:
+    def __add__(
+        self, other: PhxCoolingDehumidificationParams
+    ) -> PhxCoolingDehumidificationParams:
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.hp_type = self.hp_type
@@ -137,7 +144,8 @@ class PhxCoolingDehumidification(PhxCoolingDevice):
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     cooling_type: CoolingType = field(init=False, default=CoolingType.DEHUMIDIFICATION)
     params: PhxCoolingDehumidificationParams = field(
-        default_factory=PhxCoolingDehumidificationParams)
+        default_factory=PhxCoolingDehumidificationParams
+    )
 
     def __add__(self, other: PhxCoolingDehumidification) -> PhxCoolingDehumidification:
         base = super().__add__(other)
@@ -173,8 +181,7 @@ class PhxCoolingPanel(PhxCoolingDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
     cooling_type: CoolingType = field(init=False, default=CoolingType.PANEL)
-    params: PhxCoolingPanelParams = field(
-        default_factory=PhxCoolingPanelParams)
+    params: PhxCoolingPanelParams = field(default_factory=PhxCoolingPanelParams)
 
     def __add__(self, other: PhxCoolingPanel) -> PhxCoolingPanel:
         base = super().__add__(other)
@@ -189,5 +196,5 @@ AnyPhxCooling = Union[
     PhxCoolingVentilation,
     PhxCoolingRecirculation,
     PhxCoolingDehumidification,
-    PhxCoolingPanel
+    PhxCoolingPanel,
 ]

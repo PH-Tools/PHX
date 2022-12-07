@@ -27,7 +27,9 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
         return False
     elif _hb_room.properties.energy.ventilation.schedule is None:
         return False
-    elif not _hb_room.properties.energy.ventilation.schedule.properties.ph.daily_operating_periods:
+    elif (
+        not _hb_room.properties.energy.ventilation.schedule.properties.ph.daily_operating_periods
+    ):
         return False
     else:
         return True
@@ -36,13 +38,13 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
 def _get_room_vent_pattern_key(_hb_room: room.Room) -> str:
     """Returns the right 'key' for the Honeybee Room's ventilation pattern.
 
-    When translating HB-Style ventilation over, each HB-Room will get a different 
-    utilization-pattern key since the schedule-periods will be dependant on the rooms' occupancy 
+    When translating HB-Style ventilation over, each HB-Room will get a different
+    utilization-pattern key since the schedule-periods will be dependant on the rooms' occupancy
     and size.
 
-    Is there a way to 'group' HB-Style ventilation patterns ahead of time? 
+    Is there a way to 'group' HB-Style ventilation patterns ahead of time?
 
-    If there is detailed PH-Style ventilation schedule info, that can be used instead 
+    If there is detailed PH-Style ventilation schedule info, that can be used instead
     of the HB-Style.
 
     Arguments:
@@ -61,11 +63,13 @@ def _get_room_vent_pattern_key(_hb_room: room.Room) -> str:
         return _hb_room.properties.energy.ventilation.identifier
 
 
-def _create_vent_pattern_from_hb_style(_hb_room: room.Room) -> schedules.UtilizationPatternVent:
-    """Returns a new PHX Utilization Pattern (Vent) based on the HB-Room's E+ 
+def _create_vent_pattern_from_hb_style(
+    _hb_room: room.Room,
+) -> schedules.UtilizationPatternVent:
+    """Returns a new PHX Utilization Pattern (Vent) based on the HB-Room's E+
     HB-Style info found on the energy.ventilation
 
-    This is used when no detailed PH-Style info is set by the user and you want to 
+    This is used when no detailed PH-Style info is set by the user and you want to
     convert over an existing E+/HB style ventilation object to PH-Style.
 
     Arguments:
@@ -81,26 +85,46 @@ def _create_vent_pattern_from_hb_style(_hb_room: room.Room) -> schedules.Utiliza
 
     wufi_sched = calc_four_part_vent_sched_values_from_hb_room(_hb_room)
 
-    new_util_pattern.operating_periods.high.period_operating_hours = wufi_sched.high.period_operating_hours
-    new_util_pattern.operating_periods.high.period_operation_speed = wufi_sched.high.period_speed
-    new_util_pattern.operating_periods.standard.period_operating_hours = wufi_sched.standard.period_operating_hours
-    new_util_pattern.operating_periods.standard.period_operation_speed = wufi_sched.standard.period_speed
-    new_util_pattern.operating_periods.basic.period_operating_hours = wufi_sched.basic.period_operating_hours
-    new_util_pattern.operating_periods.basic.period_operation_speed = wufi_sched.basic.period_speed
-    new_util_pattern.operating_periods.minimum.period_operating_hours = wufi_sched.minimum.period_operating_hours
-    new_util_pattern.operating_periods.minimum.period_operation_speed = wufi_sched.minimum.period_speed
+    new_util_pattern.operating_periods.high.period_operating_hours = (
+        wufi_sched.high.period_operating_hours
+    )
+    new_util_pattern.operating_periods.high.period_operation_speed = (
+        wufi_sched.high.period_speed
+    )
+    new_util_pattern.operating_periods.standard.period_operating_hours = (
+        wufi_sched.standard.period_operating_hours
+    )
+    new_util_pattern.operating_periods.standard.period_operation_speed = (
+        wufi_sched.standard.period_speed
+    )
+    new_util_pattern.operating_periods.basic.period_operating_hours = (
+        wufi_sched.basic.period_operating_hours
+    )
+    new_util_pattern.operating_periods.basic.period_operation_speed = (
+        wufi_sched.basic.period_speed
+    )
+    new_util_pattern.operating_periods.minimum.period_operating_hours = (
+        wufi_sched.minimum.period_operating_hours
+    )
+    new_util_pattern.operating_periods.minimum.period_operation_speed = (
+        wufi_sched.minimum.period_speed
+    )
 
     # -- Keep all the IDs in alignment....
     new_util_pattern.identifier = _hb_room.properties.energy.ventilation.identifier
     new_util_pattern.id_num = new_util_pattern._count
-    _hb_room.properties.energy.ventilation.schedule.properties.ph.id_num = new_util_pattern.id_num  # <--- Important!
+    _hb_room.properties.energy.ventilation.schedule.properties.ph.id_num = (
+        new_util_pattern.id_num
+    )  # <--- Important!
     new_util_pattern.name = _hb_room.properties.energy.ventilation.display_name
 
     return new_util_pattern
 
 
-def _create_vent_pattern_from_ph_style(_hb_room: room.Room) -> schedules.UtilizationPatternVent:
-    """Returns a new PHX Utilization Pattern (Vent) based on the HB-Room's detailed 
+def _create_vent_pattern_from_ph_style(
+    _hb_room: room.Room,
+) -> schedules.UtilizationPatternVent:
+    """Returns a new PHX Utilization Pattern (Vent) based on the HB-Room's detailed
     PH-Style info found on the energy.ventilation.schedule.properties.ph
 
     Arguments:
@@ -121,22 +145,27 @@ def _create_vent_pattern_from_ph_style(_hb_room: room.Room) -> schedules.Utiliza
     new_util_pattern.operating_weeks = ph_sched_props.operating_weeks_year
 
     for op_period in ph_sched_props.daily_operating_periods:
-        phx_vent_util_period = getattr(
-            new_util_pattern.operating_periods, op_period.name)
+        phx_vent_util_period = getattr(new_util_pattern.operating_periods, op_period.name)
         phx_vent_util_period.period_operating_hours = op_period.operation_hours
         phx_vent_util_period.period_operation_speed = op_period.operation_fraction
         setattr(new_util_pattern.operating_periods, op_period.name, phx_vent_util_period)
 
     # -- Keep all the IDs in alignment....
-    new_util_pattern.identifier = _hb_room.properties.energy.ventilation.schedule.identifier
+    new_util_pattern.identifier = (
+        _hb_room.properties.energy.ventilation.schedule.identifier
+    )
     new_util_pattern.id_num = new_util_pattern._count
-    _hb_room.properties.energy.ventilation.schedule.properties.ph.id_num = new_util_pattern.id_num  # <--- Important!
+    _hb_room.properties.energy.ventilation.schedule.properties.ph.id_num = (
+        new_util_pattern.id_num
+    )  # <--- Important!
     new_util_pattern.name = _hb_room.properties.energy.ventilation.schedule.display_name
 
     return new_util_pattern
 
 
-def build_util_pat_from_hb_room(_hb_room: room.Room) -> Optional[schedules.UtilizationPatternVent]:
+def build_util_pat_from_hb_room(
+    _hb_room: room.Room,
+) -> Optional[schedules.UtilizationPatternVent]:
     """Build a new Ventilation Utilization Schedule based on a Honeybee-Room's energy.ventilation values.
 
     Arguments:
@@ -170,9 +199,9 @@ def build_util_pat_from_hb_room(_hb_room: room.Room) -> Optional[schedules.Utili
 
 
 def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
-    """Add a default ventilation.schedule to the HB Model's Rooms if they have None. 
+    """Add a default ventilation.schedule to the HB Model's Rooms if they have None.
 
-    Some HB Programs do not have a ventilation.schedule. I *think* this means 
+    Some HB Programs do not have a ventilation.schedule. I *think* this means
     constant operation. So add the constant value (1) default ventilation schedule to the room.
 
     Arguments:
@@ -182,13 +211,14 @@ def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
 
     Returns:
     --------
-        * model.Model: The Honeybee Model with new ventilation schedules added to 
+        * model.Model: The Honeybee Model with new ventilation schedules added to
             any Rooms which were missing them.
     """
 
-    type_limit = schedule_type_limit_by_identifier('Fractional')
+    type_limit = schedule_type_limit_by_identifier("Fractional")
     default_ventilation_schedule = ruleset.ScheduleRuleset.from_constant_value(
-        'default_schedule', 1.0, type_limit)
+        "default_schedule", 1.0, type_limit
+    )
 
     for hb_room in _hb_model.rooms:
         if hb_room.properties.energy.ventilation.schedule is None:
@@ -199,7 +229,9 @@ def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
     return _hb_model
 
 
-def build_util_patterns_ventilation_from_HB_Model(_project: project.PhxProject, _hb_model: model.Model) -> None:
+def build_util_patterns_ventilation_from_HB_Model(
+    _project: project.PhxProject, _hb_model: model.Model
+) -> None:
     """Build the Utilization Pattern collection for Ventilation patterns and add to the PHX-Project.
 
     Arguments:
@@ -218,7 +250,9 @@ def build_util_patterns_ventilation_from_HB_Model(_project: project.PhxProject, 
     # -- NEXT: Build up the new Ventilation Patterns from the Room's data
     for hb_room in _hb_model.rooms:
         vent_pattern_id = _get_room_vent_pattern_key(hb_room)
-        if _project.utilization_patterns_ventilation.key_is_in_collection(vent_pattern_id):
+        if _project.utilization_patterns_ventilation.key_is_in_collection(
+            vent_pattern_id
+        ):
             # -- This is just to help speed things up.
             # -- Don't re-make the util-pattern if it is already in collection.
             continue

@@ -13,6 +13,7 @@ def test_PhxHeatingDevice(reset_class_counters):
 # -----------------------------------------------------------------------------
 # Electric
 
+
 def test_default_PhxHeaterElectric(reset_class_counters):
     d1 = heating.PhxHeaterElectric()
     d2 = heating.PhxHeaterElectric()
@@ -23,6 +24,7 @@ def test_default_PhxHeaterElectric(reset_class_counters):
 
 # -----------------------------------------------------------------------------
 # Boilers
+
 
 def test_default_PhxHeaterBoilerFossil(reset_class_counters):
     d1 = heating.PhxHeaterBoilerFossil()
@@ -59,6 +61,7 @@ def test_PhxHeaterBoilerWood_set_fuel(reset_class_counters):
     assert d1.params.fuel == hvac.FuelType.WOOD_LOG
     assert d2.params.fuel == hvac.FuelType.WOOD_PELLET
 
+
 # -----------------------------------------------------------------------------
 # District Heat
 
@@ -69,6 +72,7 @@ def test_default_PhxHeaterDistrictHeat(reset_class_counters):
 
     assert d1.id_num == 1
     assert d2.id_num == 2
+
 
 # -----------------------------------------------------------------------------
 # Heat Pumps

@@ -8,7 +8,7 @@ from PHX.model import geometry
 
 def phx_polygon_vertical_north_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -16,7 +16,7 @@ def phx_polygon_vertical_north_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(5, 10, 5))
@@ -29,7 +29,7 @@ def phx_polygon_vertical_north_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_vertical_east_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -37,7 +37,7 @@ def phx_polygon_vertical_east_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(10, 5, 5))
@@ -50,7 +50,7 @@ def phx_polygon_vertical_east_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_vertical_south_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -58,7 +58,7 @@ def phx_polygon_vertical_south_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(5, 0, 5))
@@ -71,7 +71,7 @@ def phx_polygon_vertical_south_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_vertical_west_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -79,7 +79,7 @@ def phx_polygon_vertical_west_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(0, 5, 5))
@@ -92,7 +92,7 @@ def phx_polygon_vertical_west_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_horizontal_upward_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -100,7 +100,7 @@ def phx_polygon_horizontal_upward_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(5, 5, 10))
@@ -113,7 +113,7 @@ def phx_polygon_horizontal_upward_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_horizontal_downward_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -121,7 +121,7 @@ def phx_polygon_horizontal_downward_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(5, 5, 0))
@@ -137,7 +137,7 @@ def phx_polygon_horizontal_downward_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_30_rotated_vertical_northeast_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -145,7 +145,7 @@ def phx_polygon_30_rotated_vertical_northeast_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(8.830127, 7.366025, 5))
@@ -158,7 +158,7 @@ def phx_polygon_30_rotated_vertical_northeast_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_30_rotated_vertical_southeast_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -166,7 +166,7 @@ def phx_polygon_30_rotated_vertical_southeast_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(7, 0.535898, 5))
@@ -179,7 +179,7 @@ def phx_polygon_30_rotated_vertical_southeast_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_30_rotated_vertical_southwest_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -187,7 +187,7 @@ def phx_polygon_30_rotated_vertical_southwest_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(0.169873, 2.366025, 5))
@@ -200,7 +200,7 @@ def phx_polygon_30_rotated_vertical_southwest_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_30_rotated_vertical_northwest_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -208,7 +208,7 @@ def phx_polygon_30_rotated_vertical_northwest_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(2, 9.196152, 5))
@@ -221,7 +221,7 @@ def phx_polygon_30_rotated_vertical_northwest_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_30_rotated_horizontal_upward_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -229,7 +229,7 @@ def phx_polygon_30_rotated_horizontal_upward_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(4.5, 4.866025, 10))
@@ -242,7 +242,7 @@ def phx_polygon_30_rotated_horizontal_upward_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_30_rotated_horizontal_downward_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -250,7 +250,7 @@ def phx_polygon_30_rotated_horizontal_downward_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(4.5, 4.866025, 0))
@@ -263,9 +263,10 @@ def phx_polygon_30_rotated_horizontal_downward_facing() -> geometry.PhxPolygon:
 
 # -- Truncated Square Pyramid (sides sloped, top and bottom horizontal) -------
 
+
 def phx_polygon_sq_pyramid_vertical_north_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -273,7 +274,7 @@ def phx_polygon_sq_pyramid_vertical_north_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(5, 8.914214, 5))
@@ -286,7 +287,7 @@ def phx_polygon_sq_pyramid_vertical_north_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_sq_pyramid_vertical_east_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -294,7 +295,7 @@ def phx_polygon_sq_pyramid_vertical_east_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(8.914214, 5, 5))
@@ -307,7 +308,7 @@ def phx_polygon_sq_pyramid_vertical_east_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_sq_pyramid_vertical_south_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -315,7 +316,7 @@ def phx_polygon_sq_pyramid_vertical_south_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(5, 1.085786, 5))
@@ -328,7 +329,7 @@ def phx_polygon_sq_pyramid_vertical_south_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_sq_pyramid_vertical_west_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -336,7 +337,7 @@ def phx_polygon_sq_pyramid_vertical_west_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(1.085786, 5, 5))
@@ -349,7 +350,7 @@ def phx_polygon_sq_pyramid_vertical_west_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_sq_pyramid_horizontal_upward_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -357,7 +358,7 @@ def phx_polygon_sq_pyramid_horizontal_upward_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(5, 5, 10))
@@ -370,7 +371,7 @@ def phx_polygon_sq_pyramid_horizontal_upward_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_sq_pyramid_horizontal_downward_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -378,7 +379,7 @@ def phx_polygon_sq_pyramid_horizontal_downward_facing() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(5, 5, 0))
@@ -391,7 +392,7 @@ def phx_polygon_sq_pyramid_horizontal_downward_facing() -> geometry.PhxPolygon:
 
 def phx_polygon_sq_pyramid_rotated_vertical_northeast_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -399,7 +400,7 @@ def phx_polygon_sq_pyramid_rotated_vertical_northeast_facing() -> geometry.PhxPo
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(7.889808, 6.823132, 5))
@@ -412,7 +413,7 @@ def phx_polygon_sq_pyramid_rotated_vertical_northeast_facing() -> geometry.PhxPo
 
 def phx_polygon_sq_pyramid_rotated_vertical_southeast_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -420,7 +421,7 @@ def phx_polygon_sq_pyramid_rotated_vertical_southeast_facing() -> geometry.PhxPo
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(6.457107, 1.476217, 5))
@@ -433,7 +434,7 @@ def phx_polygon_sq_pyramid_rotated_vertical_southeast_facing() -> geometry.PhxPo
 
 def phx_polygon_sq_pyramid_rotated_vertical_southwest_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -441,7 +442,7 @@ def phx_polygon_sq_pyramid_rotated_vertical_southwest_facing() -> geometry.PhxPo
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(1.110192, 2.908919, 5))
@@ -454,7 +455,7 @@ def phx_polygon_sq_pyramid_rotated_vertical_southwest_facing() -> geometry.PhxPo
 
 def phx_polygon_sq_pyramid_rotated_vertical_northwest_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -462,7 +463,7 @@ def phx_polygon_sq_pyramid_rotated_vertical_northwest_facing() -> geometry.PhxPo
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(2.542893, 8.255834, 5))
@@ -475,7 +476,7 @@ def phx_polygon_sq_pyramid_rotated_vertical_northwest_facing() -> geometry.PhxPo
 
 def phx_polygon_sq_pyramid_rotated_horizontal_upward_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -483,7 +484,7 @@ def phx_polygon_sq_pyramid_rotated_horizontal_upward_facing() -> geometry.PhxPol
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(4.5, 4.866025, 10))
@@ -496,7 +497,7 @@ def phx_polygon_sq_pyramid_rotated_horizontal_upward_facing() -> geometry.PhxPol
 
 def phx_polygon_sq_pyramid_rotated_horizontal_downward_facing() -> geometry.PhxPolygon:
     phx_polygon = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -504,7 +505,7 @@ def phx_polygon_sq_pyramid_rotated_horizontal_downward_facing() -> geometry.PhxP
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     phx_polygon.add_vertix(geometry.PhxVertix(4.5, 4.866025, 0))
@@ -519,10 +520,10 @@ def phx_polygon_sq_pyramid_rotated_horizontal_downward_facing() -> geometry.PhxP
 def phx_polygons() -> Dict[str, Dict[str, geometry.PhxPolygon]]:
 
     horizontal: Dict[str, geometry.PhxPolygon] = {
-        'downward': phx_polygon_horizontal_downward_facing(),
-        'upward': phx_polygon_horizontal_upward_facing(),
-        'downward_rotated': phx_polygon_30_rotated_horizontal_downward_facing(),
-        'upward_rotated': phx_polygon_30_rotated_horizontal_upward_facing(),
+        "downward": phx_polygon_horizontal_downward_facing(),
+        "upward": phx_polygon_horizontal_upward_facing(),
+        "downward_rotated": phx_polygon_30_rotated_horizontal_downward_facing(),
+        "upward_rotated": phx_polygon_30_rotated_horizontal_upward_facing(),
     }
 
     vertical: Dict[str, geometry.PhxPolygon] = {
@@ -552,7 +553,7 @@ def phx_polygons() -> Dict[str, Dict[str, geometry.PhxPolygon]]:
     }
 
     return {
-        'horizontal': horizontal,
-        'vertical': vertical,
-        'sq_pyramid': sq_pyramid,
+        "horizontal": horizontal,
+        "vertical": vertical,
+        "sq_pyramid": sq_pyramid,
     }

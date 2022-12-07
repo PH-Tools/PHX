@@ -31,7 +31,7 @@ class PhxLayer:
         """Return the first PhxMaterial from the self.materials collection."""
         if not self.materials:
             # -- Return a default PhxMaterial if no materials are set.
-            return PhxMaterial() 
+            return PhxMaterial()
         else:
             # -- Otherwise return the first material in the collection.
             return self.materials[0]
@@ -49,8 +49,7 @@ class PhxLayer:
 class PhxConstructionOpaque:
     _count: ClassVar[int] = 0
 
-    _identifier: Union[uuid.UUID, str] = field(
-        init=False, default_factory=uuid.uuid4)
+    _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
     id_num: int = field(init=False, default=0)
     display_name: str = ""
     layer_order: int = 2  # Outside to Inside
@@ -102,14 +101,10 @@ class PhxConstructionWindow:
     u_value_glass: float = 1.0
     u_value_frame: float = 1.0
 
-    frame_top: PhxWindowFrameElement = field(
-        default_factory=PhxWindowFrameElement)
-    frame_right: PhxWindowFrameElement = field(
-        default_factory=PhxWindowFrameElement)
-    frame_bottom: PhxWindowFrameElement = field(
-        default_factory=PhxWindowFrameElement)
-    frame_left: PhxWindowFrameElement = field(
-        default_factory=PhxWindowFrameElement)
+    frame_top: PhxWindowFrameElement = field(default_factory=PhxWindowFrameElement)
+    frame_right: PhxWindowFrameElement = field(default_factory=PhxWindowFrameElement)
+    frame_bottom: PhxWindowFrameElement = field(default_factory=PhxWindowFrameElement)
+    frame_left: PhxWindowFrameElement = field(default_factory=PhxWindowFrameElement)
     frame_factor: float = 0.75
 
     glass_mean_emissivity: float = 0.1
@@ -124,7 +119,7 @@ class PhxConstructionWindow:
         return self._glazing_type_display_name or self.display_name
 
     @glazing_type_display_name.setter
-    def glazing_type_display_name(self, _in:str) -> None:
+    def glazing_type_display_name(self, _in: str) -> None:
         self._glazing_type_display_name = _in
 
     @property

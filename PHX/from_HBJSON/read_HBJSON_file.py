@@ -11,6 +11,7 @@ import honeybee
 import honeybee_ph
 import honeybee_energy
 import honeybee_energy_ph
+
 # -- Dev Note: Do not remove --
 
 import os
@@ -23,8 +24,10 @@ from honeybee import model
 
 class HBJSONModelReadError(Exception):
     def __init__(self, _in):
-        self.message = f"Error: Can only convert a Honeybee 'Model' to WUFI XML.\n"\
+        self.message = (
+            f"Error: Can only convert a Honeybee 'Model' to WUFI XML.\n"
             "Got a Honeybee object of type: {_in}."
+        )
 
         super(HBJSONModelReadError, self).__init__(self.message)
 
@@ -42,13 +45,15 @@ def read_hb_json_from_file(_file_address: pathlib.Path) -> Dict:
     """
 
     if not os.path.isfile(_file_address):
-        raise FileNotFoundError("Error: {} is not a valid file path?".format(_file_address))
+        raise FileNotFoundError(
+            "Error: {} is not a valid file path?".format(_file_address)
+        )
 
     with open(_file_address) as json_file:
         data = json.load(json_file)
 
-    if data.get('type', None) != 'Model':
-        raise HBJSONModelReadError(data.get('type', None))
+    if data.get("type", None) != "Model":
+        raise HBJSONModelReadError(data.get("type", None))
     else:
         return data
 
