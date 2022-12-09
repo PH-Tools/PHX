@@ -3,11 +3,9 @@
 
 """Class for managing the Excel Application Connection and common read/write operations."""
 
-from typing import Optional, List, Set, Callable, Any
+from typing import Optional, List, Set, Callable, Any, Union, Dict
 from contextlib import contextmanager
 import os
-
-import xlwings as xw
 
 from PHX.xl import xl_data
 from PHX.xl.xl_typing import (
@@ -71,6 +69,8 @@ def silent_print(_input: Any) -> None:
 
 
 class XLConnection:
+    """An Excel connection Facade / Interface."""
+
     def __init__(self, xl_framework, output: Optional[Callable] = silent_print):
         """Facade class for Excel Interop
 
@@ -86,22 +86,10 @@ class XLConnection:
         self.xl: xl_Framework_Protocol = xl_framework
         self._output = output
 
-    def output(self, _input):
-        """Used to set the output method. Default is None (silent).
-
-        Arguments:
-        ----------
-            * _input (SupportsString): The string to output.
-
-        Returns:
-        --------
-            * (None)
-        """
-        try:
-            self._output(str(_input))  # type: ignore
-        except:
-            # If _input=None, ignore...
-            pass
+    @property
+    def os_is_windows(self) -> bool:
+        """Return True if the current OS is Windows. False if it is Mac/Linux"""
+        return os.name == "nt"
 
     @property
     def wb(self) -> xl_Book_Protocol:
@@ -110,30 +98,60 @@ class XLConnection:
         except:
             raise NoActiveExcelRunningError
 
-    @contextmanager
-    def in_silent_mode(self):
-        """Context Manager which turns off screen-refresh and auto-calc in the
-        Excel App in order to help speed up read/write. Turns back on screen-refresh
-        and auto-calc in the Excel App when done or on any error.
-        """
-        try:
-            self.wb.app.screen_updating = False
-            self.wb.app.display_alerts = False
-            self.wb.app.calculation = "manual"
-            yield
-        finally:
-            self.wb.app.screen_updating = True
-            self.wb.app.display_alerts = True
-            self.wb.app.calculation = "automatic"
-            self.wb.app.calculate()
+    def autofit_columns(self, _sheet_name: str) -> None:
+        """Runs autofit on all the columns in a sheet."""
+        sht = self.get_sheet_by_name(_sheet_name)
+        sht.activate()
+        sht.autofit(axis="c")  # by-columns
 
-    def unprotect_all_sheets(self) -> None:
-        """Walk through all the sheets and unprotect them all."""
-        for sheet in self.wb.sheets:
-            if os.name != "nt":
-                sheet.api.unprotect()
-            else:
-                sheet.api.Unprotect()
+    def autofit_rows(self, _sheet_name: str) -> None:
+        """Runs autofit on all the rows in a sheet."""
+        sht = self.get_sheet_by_name(_sheet_name)
+        sht.activate()
+        sht.autofit(axis="r")  # by-rows
+
+    def clear_range_data(self, _sheet_name: str, _range: str) -> None:
+        """Sets the specified excel sheet's range to 'None'
+
+        Arguments:
+        ---------
+            * _sheet_name: (str) The name of the worksheet
+            * _range: (str) The cell range to write to (ie: "A1") or a set of ranges (ie: "A1:B4")
+        """
+        self.get_sheet_by_name(_sheet_name).range(_range).value = None
+
+    def clear_sheet_contents(self, _sheet_name: str) -> None:
+        """Clears the content of the whole sheet but leaves the formatting."""
+        self.get_sheet_by_name(_sheet_name).clear_contents()
+
+    def clear_sheet_formats(self, _sheet_name: str) -> None:
+        """Clears the format of the whole sheet but leaves the content."""
+        self.get_sheet_by_name(_sheet_name).clear_formats()
+
+    def clear_sheet_all(self, _sheet_name: str) -> None:
+        """Clears the content and formatting of the whole sheet."""
+        self.get_sheet_by_name(_sheet_name).clear()
+
+    def create_new_worksheet(self, _sheet_name: str) -> None:
+        """Try and add a new Worksheet to the Workbook."""
+        try:
+            self.wb.sheets.add(_sheet_name)
+            self.output(f"Adding '{_sheet_name}' to Workbook")
+        except ValueError:
+            self.output(f"Worksheet '{_sheet_name}' already in Workbook.")
+
+        self.get_sheet_by_name(_sheet_name).clear()
+
+    def find_row(
+        self,
+        _search_item: xl_data.xl_range_single_value,
+        _data: List[xl_data.xl_range_single_value],
+        _start: int = 0,
+    ) -> Optional[int]:
+        for i, _ in enumerate(_data, start=_start):
+            if _search_item == _:
+                return i
+        return None
 
     def get_row_num_of_value_in_column(
         self, sheet_name: str, row_start: int, row_end: int, col: str, find: str
@@ -190,16 +208,6 @@ class XLConnection:
         """
         return self.wb.sheets[_sheet_name]
 
-    def create_new_worksheet(self, _sheet_name: str) -> None:
-        """Try and add a new Worksheet to the Workbook."""
-        try:
-            self.wb.sheets.add(_sheet_name)
-            self.output(f"Adding '{_sheet_name}' to Workbook")
-        except ValueError:
-            self.output(f"Worksheet '{_sheet_name}' already in Workbook.")
-
-        self.get_sheet_by_name(_sheet_name).clear()
-
     def get_last_used_row_num_in_column(self, _sheet_name: str, _col: str) -> int:
         """Return the row number of the last cell in a column with a value in it.
 
@@ -225,7 +233,7 @@ class XLConnection:
         _col: str,
         _row_start: Optional[int] = None,
         _row_end: Optional[int] = None,
-    ) -> List[xl_data.xl_range_value]:
+    ) -> List[xl_data.xl_range_single_value]:
         """Return a list with the values read from a single column of the excel document.
 
         Arguments:
@@ -239,8 +247,9 @@ class XLConnection:
             (List[xl_range_value]): The data from Excel worksheet, as a list.
         """
 
-        if not _row_start or not _row_end:
+        if not _row_start:
             _row_start = 1
+        if not _row_end:
             _row_end = self.get_last_used_row_num_in_column(_sheet_name, _col)
 
         address = f"{_col}{_row_start}:{_col}{_row_end}"
@@ -343,22 +352,136 @@ class XLConnection:
         self.output(f"Reading: {_sheet_name}:{_range}")
         return self.get_sheet_by_name(_sheet_name).range(_range).value
 
-    def write_xl_item(self, _xl_item: xl_data.XlItem) -> None:
+    def get_data_by_columns(
+        self, _sheet_name: str, _range_address: str
+    ) -> List[List[xl_data.xl_range_single_value]]:
+        """Returns a List of column data, each column in a list.
+        ie: "A1:D12" -> [[A1, A2, ... A12], [B1, B2, ... B12], ... [D1, D2, ... D12]]
+
+        Arguments:
+        ----------
+            * _sheet_name: (str) The name of the worksheet to read from
+            * _range_address: (str) The range read. ie: "A1:D56"
+
+        Returns:
+        --------
+            * (List[List[xl_data.xl_range_single_value]])
+        """
+        sheet = self.get_sheet_by_name(_sheet_name)
+        rng = sheet.range(_range_address).options(transpose=True)
+        return rng.value  # type: ignore
+
+    def get_data_with_column_letters(
+        self, _sheet_name: str, _range_address: str
+    ) -> Dict[str, List[xl_data.xl_range_single_value]]:
+        """Returns a Dict of column data, key'd by the Column Letter.
+        ie: "A1:D12"->{"A":[A1, A2,...A12], "B":[...], ..."D":[D1., D2,...D12]}
+
+        Arguments:
+        ----------
+            * _sheet_name: (str) The name of the worksheet to read from
+            * _range_address: (str) The range read. ie: "A1:D56"
+
+        Returns:
+        --------
+            * (Dict[str, List[xl_data.xl_range_single_value]])
+        """
+
+        raw_data = self.get_data_by_columns(_sheet_name, _range_address)
+
+        # -- Shape the data into a dict, key'd by Column Letter
+        # -- ie: {"P":["some", ...], "Q":["data", ...], ...}
+        rng = self.xl.Range(_range_address)
+        start_col_letter = xl_data.xl_col_num_as_chr(rng.column)
+        start_col_number = xl_data.xl_ord(start_col_letter)
+        return {
+            xl_data.xl_chr(i): data_list
+            for i, data_list in enumerate(raw_data, start=start_col_number)
+        }
+
+    def group_rows(self, _sheet_name: str, _row_start: int, _row_end: int) -> None:
+        """Group one or more rows."""
+        sht = self.get_sheet_by_name(_sheet_name)
+        sht.activate()
+        if self.os_is_windows:
+            sht.api.Rows(f"{_row_start}:{_row_end}").Group()
+        else:
+            sht.api.rows[f"{_row_start}:{_row_end}"].group()
+        return None
+
+    def hide_group_details(self, _sheet_name: str) -> None:
+        """Hide (collapse) all the 'Groups' on the specified worksheet."""
+        sheet = self.get_sheet_by_name(_sheet_name)
+        if self.os_is_windows:
+            pass
+        else:
+            sheet.api.outline_object.show_levels(row_levels=1)
+
+    @contextmanager
+    def in_silent_mode(self):
+        """Context Manager which turns off screen-refresh and auto-calc in the
+        Excel App in order to help speed up read/write. Turns back on screen-refresh
+        and auto-calc in the Excel App when done or on any error.
+        """
+        try:
+            self.wb.app.screen_updating = False
+            self.wb.app.display_alerts = False
+            self.wb.app.calculation = "manual"
+            yield
+        finally:
+            self.wb.app.screen_updating = True
+            self.wb.app.display_alerts = True
+            self.wb.app.calculation = "automatic"
+            self.wb.app.calculate()
+
+    def output(self, _input):
+        """Used to set the output method. Default is None (silent).
+
+        Arguments:
+        ----------
+            * _input (SupportsString): The string to output.
+
+        Returns:
+        --------
+            * (None)
+        """
+        try:
+            self._output(str(_input))  # type: ignore
+        except:
+            # If _input=None, ignore...
+            pass
+
+    def unprotect_all_sheets(self) -> None:
+        """Walk through all the sheets and unprotect them all."""
+        for sheet in self.wb.sheets:
+            if self.os_is_windows:
+                sheet.api.Unprotect()
+            else:
+                sheet.api.unprotect()
+
+    def write_xl_item(self, _xl_item: Union[xl_data.XlItem, xl_data.XLItem_List]) -> None:
         """Writes a single XLItem to the worksheet
 
         Arguments:
         ---------
             * _xl_item: (XLItem) The XLItem with a sheet_name, range and value to write.
         """
+
+        self.output(f"{_xl_item.sheet_name}:{_xl_item.xl_range}={_xl_item.write_value}")
+
         try:
-            self.output(
-                f"{_xl_item.sheet_name}:{_xl_item.xl_range}={_xl_item.write_value}"
-            )
             xl_sheet = self.get_sheet_by_name(_xl_item.sheet_name)
             xl_range = xl_sheet.range(_xl_item.xl_range)
             xl_range.value = _xl_item.write_value  # type: ignore
 
-            if _xl_item.font_color or _xl_item.range_color:
+            if _xl_item.has_color:
+                if _xl_item.value_is_iterable:
+                    # -- color all the columns
+                    for i in range(len(_xl_item.write_value)):  # type: ignore
+                        _xl_range = xl_range.offset(column_offset=i)
+                        _xl_range.color = _xl_item.range_color
+                        _xl_range.font.color = _xl_item.font_color
+            else:
                 xl_range.color = _xl_item.range_color
                 xl_range.font.color = _xl_item.font_color
 
@@ -368,25 +491,3 @@ class XLConnection:
             raise WriteValueError(
                 _xl_item.write_value, _xl_item.xl_range, _xl_item.sheet_name, e
             )
-
-    def clear_range_data(self, _sheet_name: str, _range: str) -> None:
-        """Sets the specified excel sheet's range to 'None'
-
-        Arguments:
-        ---------
-            * _sheet_name: (str) The name of the worksheet
-            * _range: (str) The cell range to write to (ie: "A1") or a set of ranges (ie: "A1:B4")
-        """
-        self.get_sheet_by_name(_sheet_name).range(_range).value = None
-
-    def clear_sheet_contents(self, _sheet_name: str) -> None:
-        """Clears the content of the whole sheet but leaves the formatting."""
-        self.get_sheet_by_name(_sheet_name).clear_contents()
-
-    def clear_sheet_formats(self, _sheet_name: str) -> None:
-        """Clears the format of the whole sheet but leaves the content."""
-        self.get_sheet_by_name(_sheet_name).clear_formats()
-
-    def clear_sheet_all(self, _sheet_name: str) -> None:
-        """Clears the content and formatting of the whole sheet."""
-        self.get_sheet_by_name(_sheet_name).clear()

@@ -39,6 +39,13 @@ def xl_chr(_i: int) -> str:
     return "".join(reversed(letters))
 
 
+def xl_col_num_as_chr(_i: int) -> str:
+    """Return the character for an Excel Column Num (1-based).
+    ie: 1->"A", 2->"B", etc..
+    """
+    return xl_chr(_i + 64)
+
+
 def col_offset(_col: str, _offset: int) -> str:
     """Return a column character, offset from the base by a specified amount."""
     base = xl_ord(_col)
@@ -95,11 +102,29 @@ class XlItem:
         else:
             return converter.convert(self._write_value, self.input_unit, self.target_unit)
 
+    @property
+    def has_color(self) -> bool:
+        """Return True if the Item has font or background color values."""
+        if self.font_color or self.range_color:
+            return True
+        return False
+
+    @property
+    def value_is_iterable(self) -> bool:
+        """Return True is the item's value is a List or Tuple"""
+        return isinstance(self.write_value, (List, Tuple))
+
     def __str__(self):
         return f"{self.__class__.__name__}({self.sheet_name}, {self.xl_range}, {self.write_value})"
 
     def __repr__(self):
         return f"{self.__class__.__name__}(sheet_name={self.sheet_name}, range={self.xl_range}, value={self.write_value})"
+
+    def __len__(self) -> int:
+        try:
+            return len(self.write_value)  # type: ignore
+        except:
+            return 0
 
 
 class XLItem_List:
@@ -160,6 +185,30 @@ class XLItem_List:
     @property
     def xl_col_alpha(self) -> str:
         return self.items[0].xl_col_alpha
+
+    @property
+    def range_color(self):
+        return self.items[0].range_color
+
+    @property
+    def font_color(self):
+        return self.items[0].font_color
+
+    @property
+    def has_color(self) -> bool:
+        """Return True if any of the Items has font or background color values."""
+        for item in self.items:
+            if item.font_color or item.range_color:
+                return True
+        return False
+
+    @property
+    def value_is_iterable(self) -> bool:
+        """Return True."""
+        return True
+
+    def __len__(self) -> int:
+        return len(self._items)
 
 
 def merge_xl_item_row(

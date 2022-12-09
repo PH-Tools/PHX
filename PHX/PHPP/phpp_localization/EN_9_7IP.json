@@ -1155,7 +1155,37 @@
     },
     "PER": {
         "name": "PER",
-        "columns": {}
+        "locator_col": "P",
+        "heating": {
+            "locator_string_heading": "Heating",
+            "locator_string_start": "Electricity (HP compact unit)",
+            "locator_string_end": "Aux. electricity (heating, wintertime ventilation)"
+        },
+        "cooling": {
+            "locator_string_heading": "Cooling and dehumidification",
+            "locator_string_start": "Electricity cooling (heat pump)",
+            "locator_string_end": "Auxiliary electricity (dehumidification)"
+        },
+        "dhw": {
+            "locator_string_heading": "DHW generation",
+            "locator_string_start": "Electricity (HP compact unit)",
+            "locator_string_end": "Aux. electricity (DHW + solar DHW)"
+        },
+        "household_electric": {
+            "locator_string_heading": "Household electricity",
+            "locator_string_start": "Electricity (household or non-residential lighting, etc.)",
+            "locator_string_end": "Auxiliary electricity (other)"
+        },
+        "additional_gas": {
+            "locator_string_heading": "Gas / RE gas dry/cook",
+            "locator_string_start": "Gas / RE gas dry/cook",
+            "locator_string_end": null
+        },
+        "energy_generation": {
+            "locator_string_heading": "Energy generation",
+            "locator_string_start": "PV electricity",
+            "locator_string_end": null
+        }
     },
     "HP": {
         "name": "HP",

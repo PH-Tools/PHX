@@ -45,11 +45,12 @@ class xl_Range_Protocol:
         self.last_cell: xl_CellRange_Protocol
         self.row: int
         self.column: int
+        self.rows: str
 
     def end(self, *args, **kwargs) -> "xl_Range_Protocol":
         return xl_Range_Protocol()
 
-    def options(self, ndim: int) -> "xl_Range_Protocol":
+    def options(self, *args, **kwargs) -> "xl_Range_Protocol":
         return xl_Range_Protocol()
 
     def offset(self, row_offset: int = 0, column_offset: int = 0) -> "xl_Range_Protocol":
@@ -60,12 +61,15 @@ class xl_API_Protocol:
     def __init__(self, sheet):
         self.sheet: "xl_Sheet_Protocol" = sheet
         self.rows: Dict
-        self.Rows: Dict
+        self.outline_object: Any
 
-    def unprotect(self):
+    def Rows(*args, **kwargs) -> Any:
+        ...
+
+    def unprotect(self) -> None:
         self.sheet.protected = False
 
-    def Unprotect(self):
+    def Unprotect(self) -> None:
         self.sheet.protected = False
 
 
@@ -94,6 +98,9 @@ class xl_Sheet_Protocol:
         return None
 
     def activate(self) -> None:
+        ...
+
+    def autofit(self, *args, **kwargs) -> None:
         ...
 
 

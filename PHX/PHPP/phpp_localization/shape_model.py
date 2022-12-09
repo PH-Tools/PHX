@@ -730,9 +730,24 @@ class ColPer(BaseModel):
     ...
 
 
+# -----------------------------------------------------------------------------
+
+
+class PerDataBlock(BaseModel):
+    locator_string_heading: str
+    locator_string_start: str
+    locator_string_end: Optional[str]
+
+
 class Per(BaseModel):
     name: str
-    columns: ColPer
+    locator_col: str
+    heating: PerDataBlock
+    cooling: PerDataBlock
+    dhw: PerDataBlock
+    household_electric: PerDataBlock
+    additional_gas: PerDataBlock
+    energy_generation: PerDataBlock
 
 
 class ColHp(BaseModel):
