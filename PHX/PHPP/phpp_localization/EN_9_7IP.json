@@ -944,6 +944,59 @@
             }
         }
     },
+    "HEATING_DEMAND": {
+        "name": "Heating SI",
+        "col_kWh_year": "O",
+        "col_kWh_m2_year": "Q",
+        "row_total_losses_transmission": 27,
+        "row_total_losses_ventilation": 43,
+        "row_total_losses": 48,
+        "row_total_gains_solar": 61,
+        "row_total_gains_internal": 65,
+        "row_utilization_factor": 72,
+        "row_useful_gains": 74,
+        "row_annual_demand": 77
+    },
+    "HEATING_PEAK_LOAD": {
+        "name": "Heating load SI",
+        "col_Watts1": "P",
+        "col_Watts2": "R",
+        "row_total_losses_transmission": 44,
+        "row_total_losses_ventilation": 58,
+        "row_total_losses": 63,
+        "row_total_gains_solar": 73,
+        "row_total_gains_internal": 78,
+        "row_total_gains": 83,
+        "row_total_load": 87
+    },
+    "COOLING_DEMAND": {
+        "name": "Cooling SI",
+        "col_kWh_year": "O",
+        "col_kWh_m2_year": "Q",
+        "row_total_losses_transmission": 28,
+        "row_total_losses_ventilation": 56,
+        "row_total_losses": 60,
+        "row_utilization_factor": 83,
+        "row_useful_losses": 85,
+        "row_total_gains_solar": 72,
+        "row_total_gains_internal": 76,
+        "row_total_gains": 79,
+        "row_annual_sensible_demand": 88,
+        "row_annual_latent_demand": 94,
+        "address_specific_latent_cooling_demand": "AM176",
+        "address_tfa": "O8"
+    },
+    "COOLING_PEAK_LOAD": {
+        "name": "Cooling load SI",
+        "col_Watts1": "P",
+        "col_Watts2": "R",
+        "row_total_losses_transmission": 33,
+        "row_total_losses_ventilation": 41,
+        "row_total_gains_solar": 52,
+        "row_total_gains_internal": 57,
+        "row_total_sensible_load": 60,
+        "row_total_latent_load": 91
+    },
     "SUMM_VENT": {
         "name": "SummVent",
         "columns": {}
@@ -1154,7 +1207,7 @@
         "columns": {}
     },
     "PER": {
-        "name": "PER",
+        "name": "PER SI",
         "locator_col": "P",
         "heating": {
             "locator_string_heading": "Heating",

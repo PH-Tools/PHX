@@ -538,6 +538,69 @@ class AddnlVent(BaseModel):
 # -----------------------------------------------------------------------------
 
 
+class HeatingDemand(BaseModel):
+    name: str
+    col_kWh_year: str
+    col_kWh_m2_year: str
+    row_total_losses_transmission: int
+    row_total_losses_ventilation: int
+    row_total_losses: int
+    row_total_gains_solar: int
+    row_total_gains_internal: int
+    row_utilization_factor: int
+    row_useful_gains: int
+    row_annual_demand: int
+
+
+class HeatingPeakLoad(BaseModel):
+    name: str
+    col_Watts1: str
+    col_Watts2: str
+    row_total_losses_transmission: int
+    row_total_losses_ventilation: int
+    row_total_losses: int
+    row_total_gains_solar: int
+    row_total_gains_internal: int
+    row_total_gains: int
+    row_total_load: int
+
+
+# -----------------------------------------------------------------------------
+
+
+class CoolingDemand(BaseModel):
+    name: str
+    col_kWh_year: str
+    col_kWh_m2_year: str
+    row_total_losses_transmission: int
+    row_total_losses_ventilation: int
+    row_total_losses: int
+    row_utilization_factor: int
+    row_useful_losses: int
+    row_total_gains_solar: int
+    row_total_gains_internal: int
+    row_total_gains: int
+    row_annual_sensible_demand: int
+    row_annual_latent_demand: int
+    address_specific_latent_cooling_demand: str
+    address_tfa: str
+
+
+class CoolingPeakLoad(BaseModel):
+    name: str
+    col_Watts1: str
+    col_Watts2: str
+    row_total_losses_transmission: int
+    row_total_losses_ventilation: int
+    row_total_gains_solar: int
+    row_total_gains_internal: int
+    row_total_sensible_load: int
+    row_total_latent_load: int
+
+
+# -----------------------------------------------------------------------------
+
+
 class ColSummVent(BaseModel):
     ...
 
@@ -796,6 +859,10 @@ class PhppShape(BaseModel):
     SHADING: Shading
     VENTILATION: Ventilation
     ADDNL_VENT: AddnlVent
+    HEATING_DEMAND: HeatingDemand
+    HEATING_PEAK_LOAD: HeatingPeakLoad
+    COOLING_DEMAND: CoolingDemand
+    COOLING_PEAK_LOAD: CoolingPeakLoad
     SUMM_VENT: SummVent
     COOLING_UNITS: CoolingUnits
     DHW: Dhw

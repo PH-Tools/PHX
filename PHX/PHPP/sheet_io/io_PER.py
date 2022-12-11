@@ -8,18 +8,7 @@ from typing import Optional, List, Dict, Any
 
 from PHX.xl import xl_app, xl_data
 from PHX.PHPP.phpp_localization import shape_model
-
-
-# -----------------------------------------------------------------------------
-
-
-class FindSectionMarkerException(Exception):
-    def __init__(self, search_string, _sheet_name, _col_letter):
-        self.msg = (
-            f"\n\tError: Cannot find the the marker: '{search_string}' "
-            f"in the worksheet '{_sheet_name}' column '{_col_letter}'?"
-        )
-        super().__init__(self.msg)
+from PHX.PHPP.sheet_io.io_exceptions import FindSectionMarkerException
 
 
 # -----------------------------------------------------------------------------
@@ -64,7 +53,8 @@ class BaseBlock:
         return self._phpp_data
 
     @property
-    def block_header_row(self):
+    def block_header_row(self) -> int:
+        """Return the Row number where the block 'Heading' is found."""
         if not self._block_header_row:
             self._block_header_row = self.find_block_header_row()
         return self._block_header_row
@@ -127,7 +117,13 @@ class BaseBlock:
     def get_site_energy_by_fuel_type(self) -> Dict[str, xl_data.xl_range_single_value]:
         """Return the Block's Site Energy as a dict of values."""
         use_types = self.phpp_data[self.host.shape.locator_col]
-        site_energy = self.phpp_data[self.host.column_site_demand]
+
+        # Override because they changed the location, but only for generation. Sigh.
+        column_site_demand = getattr(
+            self, "column_site_demand", self.host.column_site_demand
+        )
+
+        site_energy = self.phpp_data[column_site_demand]
         return {str(t): e for t, e in zip(use_types, site_energy)}
 
 
@@ -174,6 +170,8 @@ class EnergyGeneration(BaseBlock):
 
     def __init__(self, _host: PER, _xl: xl_app.XLConnection, _shape: shape_model.Per):
         super().__init__(_host, _xl, _shape.energy_generation)
+        # Override because they changed the location, but only for generation. Sigh.
+        self.column_site_demand: str = "S"
 
 
 # -----------------------------------------------------------------------------

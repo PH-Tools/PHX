@@ -949,6 +949,59 @@
             }
         }
     },
+    "HEATING_DEMAND": {
+        "name": "Heating",
+        "col_kWh_year": "O",
+        "col_kWh_m2_year": "Q",
+        "row_total_losses_transmission": 27,
+        "row_total_losses_ventilation": 43,
+        "row_total_losses": 45,
+        "row_total_gains_solar": 61,
+        "row_total_gains_internal": 65,
+        "row_utilization_factor": 72,
+        "row_useful_gains": 74,
+        "row_annual_demand": 78
+    },
+    "HEATING_PEAK_LOAD": {
+        "name": "Heating load",
+        "col_Watts1": "P",
+        "col_Watts2": "R",
+        "row_total_losses_transmission": 44,
+        "row_total_losses_ventilation": 57,
+        "row_total_losses": 60,
+        "row_total_gains_solar": 73,
+        "row_total_gains_internal": 77,
+        "row_total_gains": 80,
+        "row_total_load": 88
+    },
+    "COOLING_DEMAND": {
+        "name": "Cooling",
+        "col_kWh_year": "O",
+        "col_kWh_m2_year": "Q",
+        "row_total_losses_transmission": 29,
+        "row_total_losses_ventilation": 57,
+        "row_total_losses": 59,
+        "row_utilization_factor": 84,
+        "row_useful_losses": 86,
+        "row_total_gains_solar": 73,
+        "row_total_gains_internal": 77,
+        "row_total_gains": 79,
+        "row_annual_sensible_demand": 88,
+        "row_annual_latent_demand": 94,
+        "address_specific_latent_cooling_demand": "AN176",
+        "address_tfa": "O8"
+    },
+    "COOLING_PEAK_LOAD": {
+        "name": "Cooling load",
+        "col_Watts1": "P",
+        "col_Watts2": "R",
+        "row_total_losses_transmission": 35,
+        "row_total_losses_ventilation": 43,
+        "row_total_gains_solar": 56,
+        "row_total_gains_internal": 60,
+        "row_total_sensible_load": 64,
+        "row_total_latent_load": 93
+    },
     "SUMM_VENT": {
         "name": "SummVent",
         "columns": {}
