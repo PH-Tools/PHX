@@ -860,6 +860,33 @@ class Data(BaseModel):
 # -----------------------------------------------------------------------------
 
 
+class OverviewBasicData(BaseModel):
+    address_number_dwellings_res: str
+    address_number_dwellings_nonres: str
+    address_number_occupants_res: str
+    address_number_occupants_nonres: str
+    address_project_name: str
+
+
+class OverviewBuildingEnvelope(BaseModel):
+    address_area_envelope: str
+    address_area_tfa: str
+
+
+class OverviewVentilation(BaseModel):
+    address_vn50: str
+
+
+class Overview(BaseModel):
+    name: str
+    basic_data: OverviewBasicData
+    building_envelope: OverviewBuildingEnvelope
+    ventilation: OverviewVentilation
+
+
+# -----------------------------------------------------------------------------
+
+
 class PhppShape(BaseModel):
     VERIFICATION: Verification
     VARIANTS: Variants
@@ -890,3 +917,4 @@ class PhppShape(BaseModel):
     HP: Hp
     BOILER: Boiler
     DATA: Data
+    OVERVIEW: Overview

@@ -94,7 +94,7 @@ class XLConnection:
         # -- when type-hinting the actual attribute though.
         self.xl: xl_Framework_Protocol = xl_framework
         self._output = output
-        self.output(f"> connected to excel doc: {self.xl.books.active.name}")
+        self.output(f"> connected to excel doc: {self.wb}")
 
     @property
     def os_is_windows(self) -> bool:

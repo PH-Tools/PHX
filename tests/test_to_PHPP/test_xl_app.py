@@ -41,10 +41,8 @@ def test_xl_app_get_WorkBook_fail():
 
     mock_xw.books = None  # type: ignore #<---------
 
-    app = xl_app.XLConnection(xl_framework=mock_xw)
-
     with pytest.raises(xl_app.NoActiveExcelRunningError):
-        assert app.wb
+        app = xl_app.XLConnection(xl_framework=mock_xw)
 
 
 # -----------------------------------------------------------------------------

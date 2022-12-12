@@ -49,6 +49,7 @@ class PHPPConnection:
         self.electricity = sheet_io.Electricity(self.xl, self.shape.ELECTRICITY)
         self.variants = sheet_io.Variants(self.xl, self.shape.VARIANTS)
         self.per = sheet_io.PER(self.xl, self.shape.PER)
+        self.overview = sheet_io.Overview(self.xl, self.shape.OVERVIEW)
 
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
         for phx_variant in phx_project.variants:

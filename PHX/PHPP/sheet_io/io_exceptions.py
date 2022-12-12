@@ -22,3 +22,13 @@ class PerReferenceAreaException(Exception):
             f"worksheet at location '{_search_address}'?"
         )
         super().__init__(self.msg)
+
+
+class ReadDataException(Exception):
+    def __init__(self, _sheet_name, _read_address):
+        """Raised when there is an error reading a value from Excel."""
+        self.msg = (
+            f"\n\tError: Cannot read the value from '{_sheet_name}' "
+            f"worksheet at location '{_read_address}'?"
+        )
+        super().__init__(self.msg)

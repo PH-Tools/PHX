@@ -1272,5 +1272,22 @@
             "locator_string_entry": "",
             "input_column": {}
         }
+    },
+    "OVERVIEW": {
+        "name": "Overview",
+        "basic_data": {
+            "address_number_dwellings_res": "C27",
+            "address_number_dwellings_nonres": "E27",
+            "address_number_occupants_res": "C28",
+            "address_number_occupants_nonres": "E28",
+            "address_project_name": "C11"
+        },
+        "building_envelope": {
+            "address_area_envelope": "C105",
+            "address_area_tfa": "E105"
+        },
+        "ventilation": {
+            "address_vn50": "C362"
+        }
     }
 }
