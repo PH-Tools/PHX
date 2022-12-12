@@ -57,6 +57,15 @@ class WriteValueError(Exception):
         super().__init__(self.msg)
 
 
+class XlReadException(Exception):
+    def __init__(self, _range: str):
+        self.msg = (
+            f"\n\tError: 'get_single_data_item()' can only be used on a"
+            f"single range. Got range: '{_range}'. Please use 'get_data()' instead."
+        )
+        super().__init__(self.msg)
+
+
 # -----------------------------------------------------------------------------
 
 
@@ -85,6 +94,7 @@ class XLConnection:
         # -- when type-hinting the actual attribute though.
         self.xl: xl_Framework_Protocol = xl_framework
         self._output = output
+        self.output(f"> connected to excel doc: {self.xl.books.active.name}")
 
     @property
     def os_is_windows(self) -> bool:
@@ -105,7 +115,7 @@ class XLConnection:
         sht.autofit(axis="c")  # by-columns
 
     def autofit_rows(self, _sheet_name: str) -> None:
-        """Runs autofit on all the rows in a sheet."""
+        """Runs autofit on the rows in a sheet."""
         sht = self.get_sheet_by_name(_sheet_name)
         sht.activate()
         sht.autofit(axis="r")  # by-rows
@@ -343,7 +353,7 @@ class XLConnection:
         Arguments:
         ----------
             * _sheet_name: (str) The name of the worksheet to read from.
-            * _range: (str) The cell range to write to (ie: "A1") or a set of ranges (ie: "A1:B4")
+            * _range: (str) The cell range to read from (ie: "A1") or a set of ranges (ie: "A1:B4")
 
         Returns:
         ---------
@@ -351,6 +361,26 @@ class XLConnection:
         """
         self.output(f"Reading: {_sheet_name}:{_range}")
         return self.get_sheet_by_name(_sheet_name).range(_range).value
+
+    def get_single_data_item(
+        self, _sheet_name: str, _range: str
+    ) -> xl_data.xl_range_single_value:
+        """Return a single value from the Excel document.
+
+        Arguments:
+        ----------
+            * _sheet_name: (str) The name of the worksheet to read from.
+            * _range: (str) The cell range to read from to (ie: "A1")
+
+        Returns:
+        ---------
+            * (xl_writable): The resultant value returned from excel.
+        """
+
+        if ":" in _range:
+            raise XlReadException(_range)
+        self.output(f"Reading: {_sheet_name}:{_range}")
+        return self.get_sheet_by_name(_sheet_name).range(_range).value  # type: ignore
 
     def get_data_by_columns(
         self, _sheet_name: str, _range_address: str

@@ -1209,6 +1209,16 @@
     "PER": {
         "name": "PER",
         "locator_col": "P",
+        "columns": {
+            "final_energy": "T",
+            "per_energy": "W",
+            "pe_energy": "Y",
+            "co2_emissions": "AA"
+        },
+        "addresses": {
+            "tfa": "Z7",
+            "footprint": "Z8"
+        },
         "heating": {
             "locator_string_heading": "Heating",
             "locator_string_start": "Electricity (HP compact unit)",

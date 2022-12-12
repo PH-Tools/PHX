@@ -789,11 +789,19 @@ class IhgNonRes(BaseModel):
     columns: ColIhgNonRes
 
 
-class ColPer(BaseModel):
-    ...
-
-
 # -----------------------------------------------------------------------------
+
+
+class PerColumns(BaseModel):
+    final_energy: str
+    per_energy: str
+    pe_energy: str
+    co2_emissions: str
+
+
+class PerAddresses(BaseModel):
+    tfa: str
+    footprint: str
 
 
 class PerDataBlock(BaseModel):
@@ -805,12 +813,17 @@ class PerDataBlock(BaseModel):
 class Per(BaseModel):
     name: str
     locator_col: str
+    columns: PerColumns
+    addresses: PerAddresses
     heating: PerDataBlock
     cooling: PerDataBlock
     dhw: PerDataBlock
     household_electric: PerDataBlock
     additional_gas: PerDataBlock
     energy_generation: PerDataBlock
+
+
+# -----------------------------------------------------------------------------
 
 
 class ColHp(BaseModel):
