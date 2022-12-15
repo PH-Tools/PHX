@@ -511,9 +511,9 @@ class XLConnection:
                         _xl_range = xl_range.offset(column_offset=i)
                         _xl_range.color = _xl_item.range_color
                         _xl_range.font.color = _xl_item.font_color
-            else:
-                xl_range.color = _xl_item.range_color
-                xl_range.font.color = _xl_item.font_color
+                else:
+                    xl_range.color = _xl_item.range_color
+                    xl_range.font.color = _xl_item.font_color
 
         except AttributeError as e:
             raise AttributeError(e)

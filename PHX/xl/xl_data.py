@@ -105,7 +105,7 @@ class XlItem:
     @property
     def has_color(self) -> bool:
         """Return True if the Item has font or background color values."""
-        if self.font_color or self.range_color:
+        if self.font_color and self.range_color:
             return True
         return False
 

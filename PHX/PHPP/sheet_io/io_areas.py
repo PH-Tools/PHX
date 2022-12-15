@@ -138,12 +138,23 @@ class Surfaces:
             )
 
         # -- Figure out the right full PHPP name, with the ID-number prefix
-        prefix = self.xl.get_data(
-            self.shape.name,
-            f"{col_offset(str(self.shape.surface_rows.inputs.description.column), -1)}{row}",
-        )
+        prefix_range = f"{col_offset(str(self.shape.surface_rows.inputs.description.column), -1)}{row}"
+        prefix_value = self.xl.get_data(self.shape.name, prefix_range)
+
+        try:
+            prefix_value = str(prefix_value)  # prefix_value comes in from excel as "1.0"
+            prefix_value = float(prefix_value)  # Can't convert "1.0" -> 1 directly??
+            prefix_value = int(prefix_value)
+        except:
+            msg = (
+                f"\n\tError: Something went wrong trying to find the PHPP-ID "
+                f"number for the surface: '{_name}'? Expected to find an integer "
+                f"value but got: '{prefix_value}' at {self.shape.name}:{prefix_range}"
+            )
+            raise Exception(msg)
+
         self.xl.output(f"Getting PHPP Surface id for {_name}")
-        name = f"{int(str(prefix))}-{_name}"
+        name = f"{prefix_value}-{_name}"
 
         # -- Save in cache
         self.surface_cache[_name] = name
