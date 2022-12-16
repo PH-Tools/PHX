@@ -13,7 +13,7 @@ import os
 import subprocess
 
 try:
-    from typing import List
+    from typing import List, Tuple, Any
 except ImportError:
     pass  # Python 2.7
 
@@ -24,8 +24,19 @@ except ImportError as e:
 
 
 def _run_subprocess(commands):
-    # type: (List[str]) -> None
-    """Run a python subprocess using the supplied commands"""
+    # type: (List[str]) -> Tuple[Any, Any]
+    """Run a python subprocess.Popen, using the supplied commands
+
+    Arguments:
+    ----------
+        * commands: (List[str]): A list of the commands to pass to Popen
+
+    Returns:
+    --------
+        * Tuple:
+            - [0]: stdout
+            - [1]: stderr
+    """
     use_shell = True if os.name == "nt" else False
     process = subprocess.Popen(
         commands, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=use_shell
@@ -41,6 +52,8 @@ def _run_subprocess(commands):
 
     for _ in str(stdout).split("\\n"):
         print(_)
+
+    return stdout, stderr
 
 
 def convert_hbjson_to_WUFI_XML(_hbjson_file, _save_file_name, _save_folder):
@@ -93,7 +106,7 @@ def convert_hbjson_to_WUFI_XML(_hbjson_file, _save_file_name, _save_folder):
 def write_hbjson_to_phpp(
     _hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"
 ):
-    # type: (str, str, str) -> None
+    # type: (str, str, str) -> Tuple[Any, Any]
     """Read in an hbjson file and write out to a PHPP file.
 
     Arguments:
@@ -109,6 +122,11 @@ def write_hbjson_to_phpp(
             early design phase. Note that if activated, any inputs will get overwritten
             when the connection to the 'Variants' worksheet is made.
             Note: Args must be strings, not actual boolean True/False.
+    Returns:
+    --------
+        * Tuple:
+            - [0]: stdout
+            - [1]: stderr
     """
 
     # -- Specify the path to the subprocess python script to run
@@ -137,4 +155,5 @@ def write_hbjson_to_phpp(
         _lbt_python_site_packages_path,
         _activate_variants,
     ]
-    _run_subprocess(commands)
+    stdout, stderr = _run_subprocess(commands)
+    return stdout, stderr

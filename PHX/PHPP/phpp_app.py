@@ -3,34 +3,34 @@
 
 """Controller for managing the PHPP Connection."""
 
-
-from typing import List, Dict, Optional
+from typing import List, Dict
 
 from PHX.model import project, certification, building, components
 from PHX.model.hvac.collection import NoVentUnitFoundError
 
 from PHX.xl import xl_app
+from PHX.xl.xl_typing import xl_Sheet_Protocol
 from PHX.PHPP import sheet_io, phpp_localization
+from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.PHPP.phpp_model import (areas_surface, areas_data, areas_thermal_bridges,
                                     climate_entry, electricity_item, uvalues_constructor,
                                     component_glazing, component_frame, component_vent,
                                     ventilation_data, windows_rows, shading_rows,
                                     vent_space, vent_units, vent_ducts, verification_data,
-                                    hot_water_tank, hot_water_piping)
+                                    hot_water_tank, hot_water_piping, version)
 
 
 class PHPPConnection:
-
-    def __init__(self, _xl: xl_app.XLConnection, _phpp_shape: Optional[phpp_localization.PhppShape]=None):
-        # -- Get the localized (units, language) PHPP Shape with worksheet names and column locations
-        if not _phpp_shape:
-            self.shape: phpp_localization.PhppShape = phpp_localization.get_phpp_shape(_xl)
-        else:
-            self.shape: phpp_localization.PhppShape = _phpp_shape
-
+    """Interface for a PHPP Excel Document."""
+    
+    def __init__(self, _xl: xl_app.XLConnection):
         # -- Setup the Excel connection and facade object.
         self.xl = _xl
-
+        
+        # -- Get the localized (units, language) PHPP Shape with worksheet names and column locations
+        self.version = self.get_phpp_version()
+        self.shape: PhppShape = phpp_localization.get_phpp_shape(self.xl, self.version)
+        
         # -- Setup all the individual worksheet Classes.
         self.verification = sheet_io.Verification(self.xl, self.shape.VERIFICATION)
         self.climate = sheet_io.Climate(self.xl, self.shape.CLIMATE)
@@ -51,10 +51,117 @@ class PHPPConnection:
         self.per = sheet_io.PER(self.xl, self.shape.PER)
         self.overview = sheet_io.Overview(self.xl, self.shape.OVERVIEW)
 
+    def get_data_worksheet(self) -> xl_Sheet_Protocol:
+        """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""
+        valid_data_worksheet_names = ["Data", "Daten", "Datos"]
+        worksheet_names = self.xl.get_worksheet_names()
+        for worksheet_name in valid_data_worksheet_names:
+            if worksheet_name in worksheet_names:
+                return self.xl.get_sheet_by_name(worksheet_name)
+
+        raise Exception(
+            f"Error: Cannot find a '{valid_data_worksheet_names}' worksheet in the Excel file: {self.xl.wb.name}?"
+        )
+
+    def get_phpp_version(
+        self,
+        _search_col: str = "A",
+        _row_start: int = 1,
+        _row_end: int = 10,
+    ) -> version.PHPPVersion:
+        """Find the PHPP Version and Language of the active xl-file.
+
+        Arguments:
+        ----------
+            * _xl (xl_app.XLConnection):
+            * _search_col (str)
+            * _row_start (int) default=1
+            * _row_end (int) default=10
+
+        Returns:
+        --------
+            * PHPPVersion: The PHPPVersion with a number and Language for the Active PHPP.
+        """
+
+        # ---------------------------------------------------------------------
+        # -- Find the right 'Data' worksheet
+        data_worksheet: xl_Sheet_Protocol = self.get_data_worksheet()
+
+        # ---------------------------------------------------------------------
+        # -- Pull the search Column data from the Active XL Instance
+        data = self.xl.get_single_column_data(
+            _sheet_name=data_worksheet.name,
+            _col=_search_col,
+            _row_start=_row_start,
+            _row_end=_row_end,
+        )
+
+        for i, xl_rang_data in enumerate(data, start=_row_start):
+            if str(xl_rang_data).upper().strip().replace(" ", "").startswith("PHPP"):
+                data_row = i
+                break
+        else:
+            raise Exception(
+                f"Error: Cannot determine the PHPP Version? Expected 'PHPP' in"
+                f"col: {_search_col} of the {data_worksheet.name} worksheet?"
+            )
+
+        # ---------------------------------------------------------------------
+        # -- Pull the search row data from the Active XL Instance
+        data = self.xl.get_single_row_data(data_worksheet.name, data_row)
+        data = [_ for _ in data if _ is not None and _ is not ""] # Filter out all the blanks
+
+        # ---------------------------------------------------------------------
+        # -- Find the right Version number
+        raw_version_id: str = str(data[1]) # Use the second value in the row - data (will this always work?)
+        ver_major, ver_minor = raw_version_id.split(".")
+
+        # ---------------------------------------------------------------------
+        # - Figure out the PHPP language
+        # - In <v10 the actual language is not noted in the 'Data' worksheet, so 
+        # - use the PE factor name as a proxy
+        language_search_data = {
+            "1-PE-FAKTOREN": "DE",
+            "1-FACTORES EP": "ES",
+            "1-PE-FACTORS": "EN",
+        }
+        language = None
+        for search_string in language_search_data.keys():
+            if search_string in str(data[-1]).upper().strip():
+                language = language_search_data[search_string]
+                language = language.strip().replace(" ", "_").replace(".", "_")
+                break
+        if not language:
+            raise Exception(
+                "Error: Cannot determine the PHPP language? Only English, German and Spanish are supported."
+            )
+
+        # ---------------------------------------------------------------------
+        # -- Build the new PHPPVersion object
+        return version.PHPPVersion(ver_major, ver_minor, language)
+
+    def phpp_version_equals_phx_phi_cert_version(self, _phx_variant: project.PhxVariant) -> bool:
+        """Return True if the PHX PHI Certification Version and the PHPP Version match."""
+        if not int(_phx_variant.phi_certification_major_version) == int(self.version.number_major):
+            return False
+        return True
+
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
+        
         for phx_variant in phx_project.variants:
 
-            # # TODO: multiple variants?
+            # TODO: how to handle multiple variants?
+
+            if not self.phpp_version_equals_phx_phi_cert_version(phx_variant):
+                # -- If the versions don't match, don't try and write anything.
+                msg = (
+                    f"\n\tPHPPVersionWarning: the HBJSON PHI "
+                    f"Certification version (V={phx_variant.phi_certification_major_version}) "
+                    f"does not match the PHPP Version (V={self.version.number_major})? "
+                    f"Ignoring all writes to the '{self.shape.VERIFICATION.name}' worksheet.\n"
+                )
+                self.xl.output(msg)
+                return 
 
             # --- Building Type / Use
             self.verification.write_item(

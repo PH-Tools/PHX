@@ -42,6 +42,10 @@ class PhxVariant:
             phx_graphics3D.add_polygons(phx_component.polygons)
         return phx_graphics3D
 
+    @property
+    def phi_certification_major_version(self) -> int:
+        return self.phi_certification.version
+
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count

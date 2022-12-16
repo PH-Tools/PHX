@@ -110,3 +110,4 @@ class PhxPhiCertification:
     phi_certification_settings: PhxPhiCertificationSettings = field(
         default_factory=PhxPhiCertificationSettings
     )
+    version: int = 9

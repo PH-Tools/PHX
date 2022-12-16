@@ -231,11 +231,14 @@ def add_phi_certification_from_hb_room(
     """
     # alias cus' all this shit is deep in there...
     hbph_settings: phi.PhiCertification = _hb_room.properties.ph.ph_bldg_segment.phi_certification  # type: ignore
+    phx_phi_cert = _variant.phi_certification
     phx_settings = _variant.phi_certification.phi_certification_settings  # type: ignore
 
     if hbph_settings.attributes.phpp_version == 10:
+        phx_phi_cert.version = 10
         set_phx_phpp10_settings(phx_settings, hbph_settings.attributes)
     elif hbph_settings.attributes.phpp_version == 9:
+        phx_phi_cert.version = 9
         set_phx_phpp9_settings(phx_settings, hbph_settings.attributes)
     else:
         msg = f"Error: Unknown PHPP Settings Version? Got: '{hbph_settings.attributes.phpp_version}'"
