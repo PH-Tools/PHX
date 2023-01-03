@@ -20,8 +20,14 @@ class UValues:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.UValues):
         self.xl = _xl
         self.shape = _shape
-        self.constructor_start_rows: List[int] = []
+        self._constructor_start_rows: List[int] = []
         self.cache = {}
+
+    @property
+    def constructor_start_rows(self) -> List[int]:
+        if not self._constructor_start_rows:
+            self._constructor_start_rows = self.get_start_rows()
+        return self._constructor_start_rows
 
     def get_start_rows(self, _row_start: int = 1, _row_end: int = 1730) -> List[int]:
         """Reads through the U-Values worksheet and finds each of the constructor 'start' (title) rows.
@@ -103,8 +109,9 @@ class UValues:
     def write_construction_blocks(
         self, _const_blocks: List[uvalues_constructor.ConstructorBlock]
     ) -> None:
-        if not self.constructor_start_rows:
-            self.constructor_start_rows = self.get_start_rows()
+        """Write all of the Constructions to the U-Values blocks."""
+
+        self.clear_constructor_data(clear_name=True)
 
         assert len(_const_blocks) <= len(
             self.constructor_start_rows
@@ -116,9 +123,6 @@ class UValues:
 
     def get_used_constructor_names(self) -> List[str]:
         """Return a list of the used construction names."""
-
-        if not self.constructor_start_rows:
-            self.constructor_start_rows = self.get_start_rows()
 
         name_col = self.shape.constructor.inputs.display_name.column
 
@@ -135,10 +139,6 @@ class UValues:
 
     def clear_constructor_data(self, clear_name: bool = True):
         """Remove all of the existing input data from the constructor."""
-
-        if not self.constructor_start_rows:
-            self.constructor_start_rows = self.get_start_rows()
-
         for row_num in self.constructor_start_rows:
             # -- main body data
             data_block_start = (
@@ -171,9 +171,6 @@ class UValues:
 
     def activate_variants(self, _assembly_phpp_ids: List[VariantAssemblyLayerName]):
         """Connect all the links to make the 'Variants' page drive the input values."""
-
-        if not self.constructor_start_rows:
-            self.constructor_start_rows = self.get_start_rows()
 
         self.clear_constructor_data(clear_name=False)
 
