@@ -111,13 +111,13 @@ class XLConnection:
     def autofit_columns(self, _sheet_name: str) -> None:
         """Runs autofit on all the columns in a sheet."""
         sht = self.get_sheet_by_name(_sheet_name)
-        sht.activate()
+        # sht.activate()
         sht.autofit(axis="c")  # by-columns
 
     def autofit_rows(self, _sheet_name: str) -> None:
         """Runs autofit on the rows in a sheet."""
         sht = self.get_sheet_by_name(_sheet_name)
-        sht.activate()
+        # sht.activate()
         sht.autofit(axis="r")  # by-rows
 
     def clear_range_data(self, _sheet_name: str, _range: str) -> None:
@@ -231,7 +231,7 @@ class XLConnection:
             * (int): The number of the last row in the column with a value.
         """
         sheet = self.get_sheet_by_name(_sheet_name)
-        sheet.activate()
+        # sheet.activate()
         col_range = sheet.range(f"{_col}:{_col}")
         col_last_cell_range = sheet.range(col_range.last_cell.address)
         group_last_cell_range = col_last_cell_range.end("up")  # same as 'Ctrl-Up'
@@ -266,7 +266,7 @@ class XLConnection:
         self.output(f"Reading: '{address}' data on sheet: '{_sheet_name}'")
 
         sheet = self.get_sheet_by_name(_sheet_name)
-        sheet.activate()
+        # sheet.activate()
         col_range = sheet.range(f"{address}")
         return col_range.value  # type: ignore
 
@@ -283,7 +283,7 @@ class XLConnection:
             * (str): The Letter of the last column in the row with a value.
         """
         sheet = self.get_sheet_by_name(_sheet_name)
-        sheet.activate()
+        # sheet.activate()
         row_range = sheet.range(f"{_row}:{_row}")
         row_last_cell_range = sheet.range(row_range.last_cell.address)
         group_last_cell_range = row_last_cell_range.end("left")  # same as 'Ctrl-Left'
@@ -307,7 +307,7 @@ class XLConnection:
         self.output(f"Reading: Row-{_row_number} on sheet: '{_sheet_name}'")
 
         sheet = self.get_sheet_by_name(_sheet_name)
-        sheet.activate()
+        # sheet.activate()
         last_col_letter = self.get_last_used_column_in_row(_sheet_name, _row_number)
         row_range = sheet.range(f"A{_row_number}:{last_col_letter}{_row_number}")
         return row_range.value  # type: ignore
@@ -432,7 +432,7 @@ class XLConnection:
     def group_rows(self, _sheet_name: str, _row_start: int, _row_end: int) -> None:
         """Group one or more rows."""
         sht = self.get_sheet_by_name(_sheet_name)
-        sht.activate()
+        # sht.activate()
         if self.os_is_windows:
             sht.api.Rows(f"{_row_start}:{_row_end}").Group()
         else:
