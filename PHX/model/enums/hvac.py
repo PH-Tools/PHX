@@ -76,3 +76,9 @@ class PhxHotWaterTankType(Enum):
             "2-DHW ONLY": cls.DHW_ONLY,
         }
         return _mapping[_hbph_type]
+
+
+class PhxExhaustVentType(Enum):
+    DRYER = 1
+    KITCHEN_HOOD = 2
+    USER_DEFINED = 3

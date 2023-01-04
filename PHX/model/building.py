@@ -16,6 +16,7 @@ from PHX.model.components import (
     PhxComponentOpaque,
     PhxComponentThermalBridge,
 )
+from PHX.model.hvac import collection
 from PHX.model.enums.building import ComponentFaceOpacity
 
 
@@ -35,6 +36,9 @@ class PhxZone:
     )
     res_occupant_quantity: int = 0
     res_number_bedrooms: int = 0
+    exhaust_ventilator_collection: collection.PhxExhaustVentilatorCollection = field(
+        default_factory=collection.PhxExhaustVentilatorCollection
+    )
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
@@ -184,4 +188,6 @@ class PhxBuilding:
         return [poly for component in self.all_components for poly in component.polygons]
 
     def __bool__(self) -> bool:
-        return bool(self.opaque_components) or bool(self.zones)
+        return (
+            bool(self.opaque_components) or bool(self.zones) or bool(self.thermal_bridges)
+        )

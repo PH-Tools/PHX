@@ -284,6 +284,14 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     # -- NOTE: this has to be done AFTER the duplicate()
     # -- call, otherwise not all the spaces will transfer over properly.
     for hb_room in _hb_rooms:
+        # --
+        if len(hb_room.properties.ph.spaces) == 0:
+            print(
+                f"Warning: Room '{hb_room.display_name}' has no spaces?"
+                " Merge may not work correctly"
+            )
+
+        # --
         for existing_space in hb_room.properties.ph.spaces:
             # -- Preserve the original HB-Room's energy and ph properties over
             # -- on the space. We need to do this cus' the HB-Room is being removed

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""PHX  Mechanical Collection Classes."""
+"""PHX Mechanical Collection Classes."""
 
 from __future__ import annotations
 from dataclasses import dataclass, field
@@ -11,7 +11,7 @@ from collections import defaultdict
 from PHX.model import hvac
 from PHX.model.enums.hvac import DeviceType
 from PHX.model.hvac.heating import AnyPhxHeater
-from PHX.model.hvac.ventilation import AnyPhxVentilation
+from PHX.model.hvac.ventilation import AnyPhxVentilation, AnyPhxExhaustVent
 from PHX.model.hvac.cooling import AnyPhxCooling
 from PHX.model.hvac.water import AnyWaterTank
 
@@ -39,7 +39,7 @@ AnyMechDevice = Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxCooling, AnyWaterTa
 
 @dataclass
 class PhxMechanicalSystemCollection:
-    """A collection of all the mechanical devices (heating, cooling, etc) and distribution in the project"""
+    """A Collection of all the mechanical devices (heating, cooling, etc) and distribution in the project"""
 
     _count: ClassVar[int] = 0
 
@@ -200,3 +200,85 @@ class PhxMechanicalSystemCollection:
                 d[segment.diameter].append(segment)
 
         return list(d.values())
+
+
+@dataclass
+class PhxExhaustVentilatorCollection:
+    """A Collection of PHX Exhaust Ventilation Devices."""
+
+    _count: ClassVar[int] = 0
+
+    id_num: int = field(init=False, default=0)
+    display_name: str = "Exhaust Ventilator Collection"
+    _devices: Dict[str, AnyPhxExhaustVent] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        self.__class__._count += 1
+        self.id_num = self.__class__._count
+
+    @property
+    def devices(self) -> List[AnyPhxExhaustVent]:
+        return list(self._devices.values())
+
+    def device_in_collection(self, _device_key) -> bool:
+        """Return True if a PHX Exhaust Ventilator with the matching key is in the collection."""
+        return _device_key in self._devices.keys()
+
+    def get_ventilator_by_key(self, _key: str) -> Optional[AnyPhxExhaustVent]:
+        """Returns the PHX Exhaust Ventilator with the matching key, or None if not found.
+
+        Arguments:
+        ----------
+            * _key (str): The key to search the collection for.
+
+        Returns:
+        --------
+            * (Optional[hvac.ventilation.AnyPhxExhaustVent]) The Mechanical device with
+                the matching key, or None if not found.
+        """
+        return self._devices.get(_key, None)
+
+    def get_ventilator_by_id(self, _id_num: int) -> AnyPhxExhaustVent:
+        """Returns a PHX Exhaust Ventilator from the collection which has a matching id-num.
+
+        Arguments:
+        ----------
+            * _id_num (int): The Exhaust Ventilator id-number to search for.
+
+        Returns:
+        --------
+            * (hvac.ventilation.AnyPhxExhaustVent): The Exhaust Ventilator found with the
+                matching ID-Number. Or Error if not found.
+        """
+        for device in self._devices.values():
+            if device.id_num == _id_num:
+                return device
+
+        raise NoVentUnitFoundError(_id_num)
+
+    def add_new_ventilator(self, _key: str, _d: AnyPhxExhaustVent) -> None:
+        """Adds a new PHX Exhaust Ventilator to the collection.
+
+        Arguments:
+        ----------
+            * _key (str): The key to use when storing the new mechanical device
+            * _device (hvac.ventilation.AnyPhxExhaustVent): The new PHX exhaust ventilator
+                to add to the collection.
+
+        Returns:
+        --------
+            * None
+        """
+        self._devices[_key] = _d
+
+    def __iter__(self):
+        """Get each device in the PhxExhaustVentilatorCollection, one at a time."""
+        for _ in self.devices:
+            yield _
+
+    def __len__(self) -> int:
+        """Number of devices in the PhxExhaustVentilatorCollection"""
+        return len(self.devices)
+
+    def __bool__(self) -> bool:
+        return bool(self._devices)

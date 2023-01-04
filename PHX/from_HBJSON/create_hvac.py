@@ -136,6 +136,96 @@ def build_phx_ventilation_sys(
     return phx_ventilator
 
 
+def build_phx_exh_vent_dryer(
+    _hbeph_exhaust_vent: ventilation.ExhaustVentDryer,
+) -> hvac.PhxExhaustVentilatorDryer:
+    """Create a new PHX Exhaust Vent (Dryer) based on the attributes of an HBPH-Vent Dryer
+
+    Arguments:
+    ----------
+        * _hbeph_exhaust_vent (ventilation.ExhaustVentDryer): The HBPH Exhaust Vent. Device.
+
+    Returns:
+    --------
+        * (hvac.PhxExhaustVentilatorDryer): The new PHX Exhaust Vent Device (Dryer)
+    """
+
+    obj = hvac.PhxExhaustVentilatorDryer()
+    obj.display_name = _hbeph_exhaust_vent.display_name
+    obj.params.exhaust_flow_rate_m3h = _hbeph_exhaust_vent.exhaust_flow_rate_m3s * 60 * 60
+    return obj
+
+
+def build_phx_exh_vent_kitchen_vent(
+    _hbeph_exhaust_vent: ventilation.ExhaustVentKitchenHood,
+) -> hvac.PhxExhaustVentilatorRangeHood:
+    """Create a new PHX Exhaust Vent (Kitchen Hood) based on the attributes of an HBPH-Vent Kitchen Hood
+
+    Arguments:
+    ----------
+        * _hbeph_exhaust_vent (ventilation.ExhaustVentKitchenHood): The HBPH Exhaust Vent. Device.
+
+    Returns:
+    --------
+        * (hvac.PhxExhaustVentilatorRangeHood): The new PHX Exhaust Vent Device (Dryer)
+    """
+
+    obj = hvac.PhxExhaustVentilatorRangeHood()
+    obj.display_name = _hbeph_exhaust_vent.display_name
+    obj.params.exhaust_flow_rate_m3h = _hbeph_exhaust_vent.exhaust_flow_rate_m3s * 60 * 60
+    return obj
+
+
+def build_phx_exh_vent_use_defined(
+    _hbeph_exhaust_vent: ventilation.ExhaustVentUserDefined,
+) -> hvac.PhxExhaustVentilatorUserDefined:
+    """Create a new PHX Exhaust Vent (User Defined) based on the attributes of an HBPH-Vent User Defined
+
+    Arguments:
+    ----------
+        * _hbeph_exhaust_vent (ventilation.ExhaustVentUserDefined): The HBPH Exhaust Vent. Device.
+
+    Returns:
+    --------
+        * (hvac.PhxExhaustVentilatorUserDefined): The new PHX Exhaust Vent Device (Dryer)
+    """
+
+    obj = hvac.PhxExhaustVentilatorUserDefined()
+    obj.display_name = _hbeph_exhaust_vent.display_name
+    obj.params.exhaust_flow_rate_m3h = _hbeph_exhaust_vent.exhaust_flow_rate_m3s * 60 * 60
+    obj.params.annual_runtime_minutes = _hbeph_exhaust_vent.annual_runtime_minutes
+    return obj
+
+
+def build_phx_exhaust_vent_device(
+    _hbeph_exhaust_vent: ventilation._ExhaustVentilatorBase,
+) -> hvac.AnyPhxExhaustVent:
+    """Build a new PHX Ventilation Mechanical Device.
+
+    Arguments:
+    ----------
+        *_hbeph_exhaust_vent (ventilation._ExhaustVentilatorBase): The Honeybee-PH
+            Exhaust Ventilation Device to build the PHX-Ventilation Device from.
+
+    Returns:
+    --------
+        * (mech.AnyPhxExhaustVent): A new PHX Exhaust ventilation device.
+    """
+
+    # -- Mapping Honeybee-PH -> PHX types
+    phx_device_classes = {
+        "ExhaustVentDryer": build_phx_exh_vent_dryer,
+        "ExhaustVentKitchenHood": build_phx_exh_vent_kitchen_vent,
+        "ExhaustVentUserDefined": build_phx_exh_vent_use_defined,
+    }
+
+    # -- Get and build the right device type
+    phx_device = phx_device_classes[_hbeph_exhaust_vent.device_class_name](
+        _hbeph_exhaust_vent
+    )
+    return phx_device
+
+
 # -----------------------------------------------------------------------------
 # -- Heating
 

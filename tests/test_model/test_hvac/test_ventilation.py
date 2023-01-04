@@ -1,4 +1,6 @@
+import pytest
 from PHX.model.hvac import ventilation
+from PHX.model.enums.hvac import PhxExhaustVentType
 
 
 def test_add_default_PhxVentilatorParams(reset_class_counters):
@@ -98,3 +100,69 @@ def test_add_mixed_PhxVentilator(reset_class_counters):
     assert d3.params.electric_efficiency == 3
     assert d3.params.frost_protection_reqd == True
     assert d3.params.temperature_below_defrost_used == 0.0
+
+
+# -----------------------------------------------------------------------------
+# Exhaust
+
+
+def test_range_hood(reset_class_counters):
+    o1 = ventilation.PhxExhaustVentilatorRangeHood()
+    assert o1.params.exhaust_type == PhxExhaustVentType.KITCHEN_HOOD
+    assert str(o1)
+
+
+def test_add_error(reset_class_counters):
+    o1 = ventilation.PhxExhaustVentilatorRangeHood()
+    o2 = ventilation.PhxExhaustVentilatorDryer()
+
+    with pytest.raises(Exception):
+        o3 = o1 + o2
+
+
+def test_add_range_hoods(reset_class_counters):
+    o1 = ventilation.PhxExhaustVentilatorRangeHood()
+    o1.params.exhaust_flow_rate_m3h = 300
+
+    o2 = ventilation.PhxExhaustVentilatorRangeHood()
+    o2.params.exhaust_flow_rate_m3h = 450
+
+    o3 = o1 + o2
+    assert o3.params.exhaust_flow_rate_m3h == 750
+
+
+def test_dryer(reset_class_counters):
+    o1 = ventilation.PhxExhaustVentilatorDryer()
+    assert o1.params.exhaust_type == PhxExhaustVentType.DRYER
+    assert str(o1)
+
+
+def test_add_dryers(reset_class_counters):
+    o1 = ventilation.PhxExhaustVentilatorDryer()
+    o1.params.exhaust_flow_rate_m3h = 300
+
+    o2 = ventilation.PhxExhaustVentilatorDryer()
+    o2.params.exhaust_flow_rate_m3h = 450
+
+    o3 = o1 + o2
+    assert o3.params.exhaust_flow_rate_m3h == 750
+
+
+def test_user_determined(reset_class_counters):
+    o1 = ventilation.PhxExhaustVentilatorUserDefined()
+    assert o1.params.exhaust_type == PhxExhaustVentType.USER_DEFINED
+    assert str(o1)
+
+
+def test_add_user_determined(reset_class_counters):
+    o1 = ventilation.PhxExhaustVentilatorUserDefined()
+    o1.params.exhaust_flow_rate_m3h = 450
+    o1.params.annual_runtime_minutes = 50
+
+    o2 = ventilation.PhxExhaustVentilatorUserDefined()
+    o2.params.exhaust_flow_rate_m3h = 200
+    o2.params.annual_runtime_minutes = 40
+
+    o3 = o1 + o2
+    assert o3.params.exhaust_flow_rate_m3h == 650
+    assert o3.params.annual_runtime_minutes == pytest.approx(46.92307)

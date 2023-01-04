@@ -164,6 +164,15 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
                 for i, d in enumerate(_z.elec_equipment_collection.devices)
             ],
         ),
+        XML_List(
+            "ExhaustVents",
+            [
+                XML_Object(
+                    "ExhaustVent", v, "index", i, _schema_name="_PhxExhaustVentilator"
+                )
+                for i, v in enumerate(_z.exhaust_ventilator_collection.devices)
+            ],
+        ),
     ]
 
 
@@ -795,6 +804,17 @@ def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> List[xml_wr
         # XML_Node("Minimum_PP", _p.),
         # XML_Node("AuxiliaryEnergy", _p.),
         # XML_Node("AuxiliaryEnergyDHW", _p.),
+    ]
+
+
+def _PhxExhaustVentilator(_v: hvac.AnyPhxExhaustVent) -> List[xml_writable]:
+    return [
+        XML_Node("Name", _v.display_name),
+        XML_Node("Type", _v.params.exhaust_type.value),
+        XML_Node(
+            "ExhaustVolumeFlowRate", _v.params.exhaust_flow_rate_m3h, "unit", "m³/h"
+        ),
+        XML_Node("RunTimePerYear", _v.params.annual_runtime_minutes),
     ]
 
 

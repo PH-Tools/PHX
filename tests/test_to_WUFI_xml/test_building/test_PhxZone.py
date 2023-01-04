@@ -25,4 +25,5 @@ def test_default_PhxProject(reset_class_counters):
         '<OccupantQuantityUserDef unit="-">0</OccupantQuantityUserDef>',
         '<NumberBedrooms unit="-">0</NumberBedrooms>',
         '<HomeDevice count="0"/>',
+        '<ExhaustVents count="0"/>',
     ]

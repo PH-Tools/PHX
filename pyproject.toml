@@ -14,6 +14,7 @@ source = ["PHX"]
 branch = true
 cover_pylib = false
 omit = [
+    "*/__init__.py",
     "*.venv/*",
     "*.venv_mbair/*"
 ]
