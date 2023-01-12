@@ -3,6 +3,11 @@
 
 """Functions to create new Shade PhxComponents from HB-Model Orphaned-Shade Objects."""
 
+from collections import defaultdict
+from functools import reduce
+import operator
+from typing import List
+
 from honeybee import model, shade
 
 from PHX.model import components, project
@@ -49,6 +54,8 @@ def add_hb_model_shades_to_variant(
 ) -> None:
     """ "Create shading PhxComponents from an HB-model's orphaned shades and add to the PhxVariant.
 
+    This will group shade-faces by display-name and create a single component for each named-group.
+
     Arguments:
     ----------
         * _var (project.Variant): The PhxVariant to add the Shading Objects to.
@@ -59,9 +66,21 @@ def add_hb_model_shades_to_variant(
         * None
     """
 
+    # -- Group shades by their Display Name
+    shade_groups = defaultdict(list)
     for hb_shade_face in _hb_model.orphaned_shades:
-        _var.building.add_components(
+        shade_groups[hb_shade_face.display_name].append(
             create_new_component_from_orphaned_shade(hb_shade_face)
         )
+
+    # -- Create new components from the groups
+    grouped_shade_components: List[components.PhxComponentOpaque] = []
+    for shade_group in shade_groups.values():
+        merged_component = reduce(operator.add, shade_group)
+        merged_component.display_name = shade_group[0].display_name
+        grouped_shade_components.append(merged_component)
+
+    for shade_component in grouped_shade_components:
+        _var.building.add_components(shade_component)
 
     return None
