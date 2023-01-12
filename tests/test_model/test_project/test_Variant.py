@@ -1,4 +1,4 @@
-from PHX.model import project
+from PHX.model import project, building
 
 
 def test_blank_variant(reset_class_counters):
@@ -20,3 +20,13 @@ def test_blank_variant(reset_class_counters):
     assert not var.mech_systems.dhw_recirc_piping_segments_by_diam
     assert var.id_num == 1
     assert project.PhxVariant._count == 1
+
+
+def test_variant_with_zone(reset_class_counters):
+    var = project.PhxVariant()
+    assert not var.zones
+
+    z = building.PhxZone()
+    var.building.add_zones(z)
+
+    assert z in var.zones

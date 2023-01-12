@@ -2,17 +2,24 @@ import importlib
 from pathlib import Path
 import pytest
 
-from PHX.model import (building, project, geometry, schedules, certification,
-                       constructions, elec_equip, components)
+from PHX.model import (
+    building,
+    project,
+    geometry,
+    schedules,
+    certification,
+    constructions,
+    elec_equip,
+    components,
+)
 from PHX.model.loads.ventilation import PhxRoomVentilation
 from PHX.model.hvac import _base, cooling, collection, water, ventilation, heating
-
 
 
 @pytest.fixture
 def polygon_1x1x0() -> geometry.PhxPolygon:
     p1 = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -20,7 +27,7 @@ def polygon_1x1x0() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     p1.add_vertix(geometry.PhxVertix(0, 0, 0))
@@ -33,7 +40,7 @@ def polygon_1x1x0() -> geometry.PhxPolygon:
 @pytest.fixture
 def polygon_2x2x0() -> geometry.PhxPolygon:
     p1 = geometry.PhxPolygon(
-        'no_name',
+        "no_name",
         100.0,
         geometry.PhxVertix(1.0, 1.0, 0.0),
         geometry.PhxVector(0.0, 0.0, 1.0),
@@ -41,7 +48,7 @@ def polygon_2x2x0() -> geometry.PhxPolygon:
             geometry.PhxVector(0, 0, 1),
             geometry.PhxVertix(1, 1, 0),
             geometry.PhxVector(1, 0, 0),
-            geometry.PhxVector(0, 1, 0)
+            geometry.PhxVector(0, 1, 0),
         ),
     )
     p1.add_vertix(geometry.PhxVertix(0, 0, 0))
@@ -60,7 +67,7 @@ def _reset_phx_class_counters():
     constructions.PhxConstructionWindow._count = 0
     building.PhxZone._count = 0
     certification.PhxPhBuildingData._count = 0
-    
+
     components.PhxComponentBase._count = 0
     elec_equip.PhxElectricalDevice._count = 0
     elec_equip.PhxDeviceDishwasher._count = 0
@@ -77,7 +84,7 @@ def _reset_phx_class_counters():
     elec_equip.PhxDeviceCustomElec._count = 0
     elec_equip.PhxDeviceCustomLighting._count = 0
     elec_equip.PhxDeviceCustomMEL._count = 0
-    
+
     _base.PhxMechanicalDevice._count = 0
     collection.PhxMechanicalSystemCollection._count = 0
 
@@ -105,12 +112,14 @@ def _reset_phx_class_counters():
     water.PhxHotWaterTank._count = 0
 
     ventilation.PhxDeviceVentilation._count = 0
+    ventilation.PhxDeviceVentilator._count = 0
+    ventilation.PhxExhaustVentilatorBase._count = 0
 
 
 def _reload_phx_classes():
     """reload all of the PHX model classes. This is similar to the 'reset_class_counters
     except that it will reset all of the PHX modules back to starting position. This is
-    used for running the xml-reference-case testers, since otherwise the id-number 
+    used for running the xml-reference-case testers, since otherwise the id-number
     counters will not line up correctly.
     """
     importlib.reload(geometry)
@@ -134,16 +143,18 @@ def reset_class_counters():
         _reset_phx_class_counters()
 
 
-@pytest.fixture(params=[
-    (
-        Path('tests', '_source_hbjson', 'Default_Model_Single_Zone.hbjson'),
-        Path('tests', '_reference_xml', 'Default_Model_Single_Zone.xml')
-    ),
-    (
-        Path('tests', '_source_hbjson', 'Multi_Room_Complete.hbjson'),
-        Path('tests', '_reference_xml', 'Multi_Room_Complete.xml')
-    ),
-])
+@pytest.fixture(
+    params=[
+        (
+            Path("tests", "_source_hbjson", "Default_Model_Single_Zone.hbjson"),
+            Path("tests", "_reference_xml", "Default_Model_Single_Zone.xml"),
+        ),
+        (
+            Path("tests", "_source_hbjson", "Multi_Room_Complete.hbjson"),
+            Path("tests", "_reference_xml", "Multi_Room_Complete.xml"),
+        ),
+    ]
+)
 def to_xml_reference_cases(request):
     """Yields file-paths to reference test-cases"""
     _reload_phx_classes()

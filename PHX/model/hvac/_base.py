@@ -15,6 +15,7 @@ from PHX.model.enums.hvac import DeviceType, SystemType
 @dataclass
 class PhxUsageProfile:
     """Is the device used to provide..."""
+
     space_heating: bool = False
     dhw_heating: bool = False
     cooling: bool = False
@@ -36,6 +37,7 @@ class PhxUsageProfile:
 @dataclass
 class PhxMechanicalDeviceParams:
     """Base class PHX MechanicalEquipment Params"""
+
     aux_energy: Optional[float] = None
     aux_energy_dhw: Optional[float] = None
     solar_fraction: Optional[float] = None
@@ -56,11 +58,14 @@ class PhxMechanicalDeviceParams:
         new_obj = self.__class__()
         new_obj.aux_energy = new_obj.safe_add(self.aux_energy, other.aux_energy)
         new_obj.aux_energy_dhw = new_obj.safe_add(
-            self.aux_energy_dhw, other.aux_energy_dhw)
+            self.aux_energy_dhw, other.aux_energy_dhw
+        )
         new_obj.solar_fraction = new_obj.safe_add(
-            self.solar_fraction, other.solar_fraction)
+            self.solar_fraction, other.solar_fraction
+        )
         new_obj.in_conditioned_space = any(
-            [self.in_conditioned_space, other.in_conditioned_space])
+            [self.in_conditioned_space, other.in_conditioned_space]
+        )
         return new_obj
 
     def __radd__(self, other):
@@ -76,24 +81,24 @@ class PhxMechanicalDevice:
 
     This equipment will be part of a PhxMechanicalSubSystem along with distribution.
     """
+
     _count: ClassVar[int] = 0
 
     _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
     id_num: int = field(init=False, default=0)
     system_type: SystemType = SystemType.ANY
     device_type: DeviceType = DeviceType.ELECTRIC
-    display_name: str = '_unnamed_equipment_'
+    display_name: str = "_unnamed_equipment_"
     quantity: int = 0
     unit: float = 0.0
     percent_coverage: float = 0.0
     usage_profile: PhxUsageProfile = field(default_factory=PhxUsageProfile)
-    params: PhxMechanicalDeviceParams = field(
-        default_factory=PhxMechanicalDeviceParams)
+    params: PhxMechanicalDeviceParams = field(default_factory=PhxMechanicalDeviceParams)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
-    
+
     @property
     def identifier(self):
         return str(self._identifier)
@@ -143,4 +148,4 @@ class PhxMechanicalDevice:
         return cls(**native_args)
 
     def __str__(self):
-        return f'{self.__class__.__name__}()'
+        return f"{self.__class__.__name__}()"

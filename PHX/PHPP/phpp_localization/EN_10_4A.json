@@ -1016,7 +1016,7 @@
             "locator_col_header": "D",
             "locator_string_header": "DHW distribution",
             "locator_col_entry": "E",
-            "locator_string_entry": "DHW circulation pipes or, for heat interface units, flow and return",
+            "locator_string_entry": "DHW circulation pipes or, for heat interface units, forward and return flows",
             "input_rows_offset": {
                 "total_length": {
                     "row": 2,

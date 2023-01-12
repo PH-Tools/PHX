@@ -46,6 +46,10 @@ class PhxVariant:
     def phi_certification_major_version(self) -> int:
         return self.phi_certification.version
 
+    @property
+    def zones(self) -> List[phx_building.PhxZone]:
+        return self.building.zones
+
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
