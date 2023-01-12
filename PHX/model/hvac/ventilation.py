@@ -100,6 +100,7 @@ class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
 
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
+
         if (self.annual_runtime_minutes > 0) or (other.annual_runtime_minutes > 0):
             new_obj.annual_runtime_minutes = self._calc_flow_weighted_annual_minutes(
                 other
@@ -108,7 +109,6 @@ class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
         new_obj.exhaust_flow_rate_m3h = (
             self.exhaust_flow_rate_m3h + other.exhaust_flow_rate_m3h
         )
-
         return new_obj
 
 
@@ -130,6 +130,7 @@ class PhxExhaustVentilatorBase(_base.PhxMechanicalDevice):
         # -- counting happens at the parent class, not the child class.
         PhxExhaustVentilatorBase._count += 1
         self.id_num = PhxExhaustVentilatorBase._count
+        self.quantity = 1
 
 
 @dataclass
@@ -147,7 +148,9 @@ class PhxExhaustVentilatorRangeHood(PhxExhaustVentilatorBase):
     ) -> PhxExhaustVentilatorRangeHood:
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
-        new_obj.display_name = "Merged Range Hoods"
+        new_obj.quantity = self.quantity + other.quantity
+        new_obj.display_name = f"Kitchen Hoods ({new_obj.quantity})"
+
         return new_obj
 
     def __str__(self):
@@ -167,7 +170,8 @@ class PhxExhaustVentilatorDryer(PhxExhaustVentilatorBase):
     def __add__(self, other: PhxExhaustVentilatorDryer) -> PhxExhaustVentilatorDryer:
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
-        new_obj.display_name = "Merged Dryers"
+        new_obj.quantity = self.quantity + other.quantity
+        new_obj.display_name = f"Dryers ({new_obj.quantity})"
         return new_obj
 
     def __str__(self):
@@ -189,7 +193,8 @@ class PhxExhaustVentilatorUserDefined(PhxExhaustVentilatorBase):
     ) -> PhxExhaustVentilatorUserDefined:
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
-        new_obj.display_name = "Merged User-Defined Devices"
+        new_obj.quantity = self.quantity + other.quantity
+        new_obj.display_name = f"User-Determined ({new_obj.quantity})"
         return new_obj
 
     def __str__(self):

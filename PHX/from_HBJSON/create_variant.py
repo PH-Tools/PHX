@@ -7,7 +7,7 @@ from typing import Dict, Set
 
 from honeybee import room
 
-from honeybee_ph import site, phi, phius
+from honeybee_ph import site, phi, phius, space
 from honeybee_ph.properties.room import RoomPhProperties
 from honeybee_energy_ph.properties.load import equipment
 from honeybee_energy_ph.hvac.ventilation import (
@@ -516,7 +516,9 @@ def add_ventilation_systems_from_hb_rooms(
 
 
 def add_exhaust_vent_devices_from_hb_rooms(
-    _variant: project.PhxVariant, _hb_room: room.Room
+    _variant: project.PhxVariant,
+    _hb_room: room.Room,
+    _merge_devices: bool = True,
 ) -> None:
     """Add all the Exhaust Ventilation Equipment from the HB Room onto the new Variant/Zone.
 
@@ -524,39 +526,44 @@ def add_exhaust_vent_devices_from_hb_rooms(
     ----------
         * _variant (project.Variant): The PHX-Variant to add the new exhaust equipment to.
         * _hb_room (room.Room): The Honeybee-Room to use as the source.
+        * _merge_devices (bool): Default=True. Merge together the Exhaust Ventilation
+            Devices into a single device (per type)?
 
     Returns:
     --------
         * None
     """
 
-    ph_prop = _hb_room.properties.ph  # type: RoomPhProperties
-    for hbph_space in ph_prop.spaces:
+    def _get_all_exhaust_vent_devices(
+        _hph_space: space.Space,
+    ) -> Set[_ExhaustVentilatorBase]:
+        """Return a set of all the ExhaustVentilators found on a space's host HB Room."""
         # -- Get the Honeybee-PH Exhaust Vent Devices from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
-        hbph_exh_vent_devices: Set[
-            _ExhaustVentilatorBase
-        ] = hbph_space.host.properties.energy.hvac.properties.ph.exhaust_vent_devices
 
-        if not hbph_exh_vent_devices:
-            continue
+        return hbph_space.host.properties.energy.hvac.properties.ph.exhaust_vent_devices
 
-        for hbph_device in hbph_exh_vent_devices:
+    ph_prop = _hb_room.properties.ph  # type: RoomPhProperties
+    for hbph_space in ph_prop.spaces:
+        for hbph_device in _get_all_exhaust_vent_devices(hbph_space):
+            key = hbph_device.key
+
             # -- Get or Build the PHX Exhaust Ventilation Device
             # -- If the Device already exists, just use that one.
             for zone in _variant.zones:
+                # -- If the device is already in the Zone's collection, dont add another one.
+                if zone.exhaust_ventilator_collection.device_in_collection(key):
+                    continue
 
-                phx_device = zone.exhaust_ventilator_collection.get_ventilator_by_key(
-                    hbph_device.key
-                )
+                # -- Otherwise, build a new PHX-Exhaust Ventilator from the HBPH-Object
+                phx_device = create_hvac.build_phx_exhaust_vent_device(hbph_device)
 
-                if not phx_device:
-                    # -- otherwise, build a new PHX-Exhaust Ventilator from the HBPH-Object
-                    phx_device = create_hvac.build_phx_exhaust_vent_device(hbph_device)
-                    zone.exhaust_ventilator_collection.add_new_ventilator(
-                        hbph_device.key, phx_device
-                    )
+                #  -- And add the new ventilator to the Zone's set
+                zone.exhaust_ventilator_collection.add_new_ventilator(key, phx_device)
+
+                if _merge_devices:
+                    zone.exhaust_ventilator_collection.merge_all_devices()
 
     return None
 

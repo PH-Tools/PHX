@@ -4,14 +4,22 @@
 """PHX Mechanical Collection Classes."""
 
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import ClassVar, Dict, Optional, List, Any, Union
 from collections import defaultdict
+from copy import copy
+from dataclasses import dataclass, field
+from functools import reduce
+from typing import ClassVar, Dict, Optional, List, Any, Union
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import DeviceType
 from PHX.model.hvac.heating import AnyPhxHeater
-from PHX.model.hvac.ventilation import AnyPhxVentilation, AnyPhxExhaustVent
+from PHX.model.hvac.ventilation import (
+    AnyPhxVentilation,
+    AnyPhxExhaustVent,
+    PhxExhaustVentilatorRangeHood,
+    PhxExhaustVentilatorDryer,
+    PhxExhaustVentilatorUserDefined,
+)
 from PHX.model.hvac.cooling import AnyPhxCooling
 from PHX.model.hvac.water import AnyWaterTank
 
@@ -220,6 +228,25 @@ class PhxExhaustVentilatorCollection:
     def devices(self) -> List[AnyPhxExhaustVent]:
         return list(self._devices.values())
 
+    @property
+    def kitchen_hood_devices(self) -> List[PhxExhaustVentilatorRangeHood]:
+        """Return a List of all the Kitchen Hood devices"""
+        return [d for d in self.devices if isinstance(d, PhxExhaustVentilatorRangeHood)]
+
+    @property
+    def dryer_devices(self) -> List[PhxExhaustVentilatorDryer]:
+        """Return a List of all the Dryer devices"""
+        return [d for d in self.devices if isinstance(d, PhxExhaustVentilatorDryer)]
+
+    @property
+    def user_determined_devices(self) -> List[PhxExhaustVentilatorUserDefined]:
+        """Return a List of all the User-Determined devices"""
+        return [d for d in self.devices if isinstance(d, PhxExhaustVentilatorUserDefined)]
+
+    def clear_all_devices(self) -> None:
+        """Reset the collection to an empty dictionary."""
+        self._devices = {}
+
     def device_in_collection(self, _device_key) -> bool:
         """Return True if a PHX Exhaust Ventilator with the matching key is in the collection."""
         return _device_key in self._devices.keys()
@@ -270,6 +297,25 @@ class PhxExhaustVentilatorCollection:
             * None
         """
         self._devices[_key] = _d
+
+    def merge_all_devices(self):
+        """Merge all the devices in the collection together by type."""
+        kitchen_hood_devices = copy(self.kitchen_hood_devices)
+        dryer_devices = copy(self.dryer_devices)
+        user_determined_devices = copy(self.user_determined_devices)
+        self.clear_all_devices()
+
+        if kitchen_hood_devices:
+            kitchen_hoods = reduce(lambda d1, d2: d1 + d2, kitchen_hood_devices)
+            self.add_new_ventilator(kitchen_hoods.identifier, kitchen_hoods)
+
+        if dryer_devices:
+            dryers = reduce(lambda d1, d2: d1 + d2, dryer_devices)
+            self.add_new_ventilator(dryers.identifier, dryers)
+
+        if user_determined_devices:
+            ud_devices = reduce(lambda d1, d2: d1 + d2, user_determined_devices)
+            self.add_new_ventilator(ud_devices.identifier, ud_devices)
 
     def __iter__(self):
         """Get each device in the PhxExhaustVentilatorCollection, one at a time."""

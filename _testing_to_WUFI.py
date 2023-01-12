@@ -30,8 +30,12 @@ SOURCE_FILES = [SOURCE_DIR / file for file in SOURCE_FILE_NAMES]
 TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 
 # -- Temp
-# SOURCE_FILES = [pathlib.Path("sample/hbjson/testing_exhaust.hbjson")]
-# TARGET_DIR = pathlib.Path("sample")
+SOURCE_FILES = [
+    pathlib.Path(
+        "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/Arverne_D_230109.hbjson"
+    )
+]
+TARGET_DIR = pathlib.Path("sample")
 
 
 def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
