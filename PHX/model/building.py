@@ -17,7 +17,6 @@ from PHX.model.components import (
     PhxComponentThermalBridge,
 )
 from PHX.model.hvac import collection
-from PHX.model.enums.building import ComponentFaceOpacity
 
 
 @dataclass
@@ -39,6 +38,27 @@ class PhxZone:
     exhaust_ventilator_collection: collection.PhxExhaustVentilatorCollection = field(
         default_factory=collection.PhxExhaustVentilatorCollection
     )
+    _thermal_bridges: Dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
+
+    def add_thermal_bridges(
+        self,
+        _thermal_bridges: Union[
+            PhxComponentThermalBridge, Sequence[PhxComponentThermalBridge]
+        ],
+    ) -> None:
+        """Add a new PhxComponentThermalBridge (or list of Bridges) to the PhxZone."""
+        if not isinstance(_thermal_bridges, Sequence):
+            _thermal_bridges = (_thermal_bridges,)
+
+        for tb in _thermal_bridges:
+            self._thermal_bridges[tb.identifier] = tb
+
+        return None
+
+    @property
+    def thermal_bridges(self) -> ValuesView[PhxComponentThermalBridge]:
+        """Return all of the PhxComponentThermalBridge objects in the PhxZone."""
+        return self._thermal_bridges.values()
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
@@ -49,7 +69,6 @@ class PhxZone:
 class PhxBuilding:
     _components: List[PhxComponentOpaque] = field(default_factory=list)
     zones: List[PhxZone] = field(default_factory=list)
-    _thermal_bridges: Dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
 
     @property
     def weighted_net_floor_area(self) -> float:
@@ -78,21 +97,6 @@ class PhxBuilding:
 
         for zone in _zones:
             self.zones.append(zone)
-
-    def add_thermal_bridges(
-        self,
-        _thermal_bridges: Union[
-            PhxComponentThermalBridge, Sequence[PhxComponentThermalBridge]
-        ],
-    ) -> None:
-        """Add a new PhxComponentThermalBridge (or list of Bridges) to the PhxBuilding."""
-        if not isinstance(_thermal_bridges, Sequence):
-            _thermal_bridges = (_thermal_bridges,)
-
-        for tb in _thermal_bridges:
-            self._thermal_bridges[tb.identifier] = tb
-
-        return None
 
     def merge_opaque_components_by_assembly(self) -> None:
         """Merge together all the Opaque-Components in the Building if they gave the same Attributes."""
@@ -170,11 +174,6 @@ class PhxBuilding:
         )
 
     @property
-    def thermal_bridges(self) -> ValuesView[PhxComponentThermalBridge]:
-        """Return all of the PhxComponentThermalBridge objects in the PhxBuilding."""
-        return self._thermal_bridges.values()
-
-    @property
     def polygon_ids(self) -> Set[int]:
         """Return a Set of all the Polygon IDs of all Polygons from all the Components in the building."""
         p_ids = set()
@@ -188,6 +187,4 @@ class PhxBuilding:
         return [poly for component in self.all_components for poly in component.polygons]
 
     def __bool__(self) -> bool:
-        return (
-            bool(self.opaque_components) or bool(self.zones) or bool(self.thermal_bridges)
-        )
+        return bool(self.opaque_components) or bool(self.zones)

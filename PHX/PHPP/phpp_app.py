@@ -373,13 +373,14 @@ class PHPPConnection:
 
         thermal_bridges: List[areas_thermal_bridges.ThermalBridgeRow] = []
         for variant in phx_project.variants:
-            for phx_tb in variant.building.thermal_bridges:
-                thermal_bridges.append(
-                    areas_thermal_bridges.ThermalBridgeRow(
-                        self.shape.AREAS,
-                        phx_tb
+            for zone in variant.zones:
+                for phx_tb in zone.thermal_bridges:
+                    thermal_bridges.append(
+                        areas_thermal_bridges.ThermalBridgeRow(
+                            self.shape.AREAS,
+                            phx_tb
+                        )
                     )
-                )
 
         if len(thermal_bridges) >= 100:
             print(f"Warning: {len(thermal_bridges)} thermal bridges found in the model. Ensure that you have "

@@ -191,7 +191,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_8687dcf1..Face4</Name>
+						<Name>Room_7_7db2e0dd..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -207,7 +207,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_8687dcf1..Face5</Name>
+						<Name>Room_7_7db2e0dd..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -262,6 +262,7 @@
 						<NumberBedrooms unit="-">0</NumberBedrooms>
 						<HomeDevice count="0"/>
 						<ExhaustVents count="0"/>
+						<ThermalBridges count="0"/>
 					</Zone>
 				</Zones>
 			</Building>
@@ -485,6 +486,7 @@
 						<NumberUnits>1</NumberUnits>
 						<CountStories>1</CountStories>
 						<EnvelopeAirtightnessCoefficient>0.81576</EnvelopeAirtightnessCoefficient>
+						<SummerHRVHumidityRecovery choice="Always">4</SummerHRVHumidityRecovery>
 						<FoundationInterfaces count="1">
 							<FoundationInterface index="0">
 								<Name></Name>
