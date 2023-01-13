@@ -173,6 +173,25 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
                 for i, v in enumerate(_z.exhaust_ventilator_collection.devices)
             ],
         ),
+        XML_List(
+            "ThermalBridges",
+            [
+                XML_Object(
+                    "ThermalBridge", tb, "index", i, _schema_name="_PhxThermalBridge"
+                )
+                for i, tb in enumerate(_z.thermal_bridges)
+            ],
+        ),
+    ]
+
+
+def _PhxThermalBridge(_tb: components.PhxComponentThermalBridge) -> List[xml_writable]:
+    return [
+        XML_Node("Name", _tb.display_name),
+        XML_Node("Type", int(_tb.group_number.value) * -1),
+        XML_Node("Length", _tb.length),
+        XML_Node("PsiValue", _tb.psi_value),
+        XML_Node("IdentNrOptionalClimate", -1),
     ]
 
 
@@ -250,6 +269,7 @@ def _PhxPhBuildingData(
             "EnvelopeAirtightnessCoefficient",
             _phius_cert.ph_building_data.airtightness_q50,
         ),
+        XML_Node("SummerHRVHumidityRecovery", 4, "choice", "Always"),
         XML_List(
             "FoundationInterfaces",
             [

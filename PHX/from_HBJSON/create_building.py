@@ -6,6 +6,9 @@
 from typing import List, Union, Dict
 
 from honeybee import room, aperture, face
+from honeybee_ph import space
+from honeybee_energy.properties.room import RoomEnergyProperties
+from honeybee_energy_ph.properties.load.people import PeoplePhProperties
 
 from PHX.model import building, constructions, components
 from PHX.from_HBJSON import create_rooms, create_geometry
@@ -260,10 +263,9 @@ def create_zones_from_hb_room(_hb_room: room.Room) -> building.PhxZone:
     new_zone.id_num = building.PhxZone._count
     new_zone.display_name = _hb_room.display_name
 
-    # -- Sort the room order by full_name
-    sorted_spaces = sorted(
-        _hb_room.properties.ph.spaces, key=lambda space: space.full_name
-    )
+    # -- Sort the HB-Room's Spaces by their full_name
+    spaces: List[space.Space] = _hb_room.properties.ph.spaces  # type: ignore
+    sorted_spaces = sorted(spaces, key=lambda space: space.full_name)
 
     # -- Create a new WUFI-RoomVentilation for each space
     new_zone.wufi_rooms = [
@@ -277,13 +279,15 @@ def create_zones_from_hb_room(_hb_room: room.Room) -> building.PhxZone:
     )
     new_zone.volume_net = sum((rm.net_volume for rm in new_zone.wufi_rooms))
 
-    # Set the zone's occupancy based on the merged HB room
-    new_zone.res_occupant_quantity = (
-        _hb_room.properties.energy.people.properties.ph.number_people
-    )
-    new_zone.res_number_bedrooms = (
-        _hb_room.properties.energy.people.properties.ph.number_bedrooms
-    )
+    # -- Set the zone's occupancy based on the merged HB room
+    room_energy_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
+    hbph_people_prop: PeoplePhProperties = room_energy_prop.people.properties.ph  # type: ignore
+    new_zone.res_occupant_quantity = hbph_people_prop.number_people
+    new_zone.res_number_bedrooms = hbph_people_prop.number_bedrooms
+
+    # -- Set the Zones' thermal bridges
+    for phx_thermal_bridge in create_thermal_bridges_from_hb_room(_hb_room):
+        new_zone.add_thermal_bridges(phx_thermal_bridge)
 
     return new_zone
 

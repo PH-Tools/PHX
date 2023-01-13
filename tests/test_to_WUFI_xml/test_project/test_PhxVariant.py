@@ -135,6 +135,7 @@ def test_default_PhxProject(reset_class_counters):
         "<NumberUnits>1</NumberUnits>",
         "<CountStories>1</CountStories>",
         "<EnvelopeAirtightnessCoefficient>1.0</EnvelopeAirtightnessCoefficient>",
+        '<SummerHRVHumidityRecovery choice="Always">4</SummerHRVHumidityRecovery>',
         '<FoundationInterfaces count="0"/>',
         "</PH_Building>",
         "</PH_Buildings>",
