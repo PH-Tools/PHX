@@ -8,7 +8,7 @@ def test_blank_project(reset_class_counters):
     assert not proj.assembly_types
     assert not proj.window_types
     assert not proj.utilization_patterns_ventilation
-    assert not proj.utilization_patterns_ph
+    assert not proj.utilization_patterns_occupancy
     assert not proj.variants
 
 
