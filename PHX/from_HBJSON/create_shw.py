@@ -3,9 +3,10 @@
 
 """Functions to create PHX-Service Hot Water objects from Honeybee-Energy-PH SHW"""
 
-from PHX.model import hvac
 from honeybee_energy_ph.hvac import hot_water
+
 from PHX.model.enums.hvac import PhxHotWaterTankType
+from PHX.model import hvac
 from PHX.model.hvac import piping
 
 # -- Storage --
@@ -72,7 +73,7 @@ def build_phx_hw_storage(_hbph_tank: hot_water.PhSHWTank) -> hvac.PhxHotWaterTan
 
 def build_phx_hw_heater(
     _hbph_heater: hot_water.PhHotWaterHeater,
-) -> hvac.PhxHeatingDevice:
+) -> hvac.AnyPhxHotWaterHeater:
     """Returns a new PHX Hot-Water Heater based on the Honeybee-PH Hot Water Heater input.
 
     Arguments:
@@ -134,7 +135,7 @@ def build_phx_piping(_hbph_pipe: hot_water.PhPipeElement) -> hvac.PhxPipeElement
 
     Returns:
     --------
-        * (hvac.PhxPipeElement): The new PhxPipeElement created.
+        * (piping.PhxPipeElement): The new PhxPipeElement created.
     """
 
     phx_pipe = piping.PhxPipeElement(_hbph_pipe.identifier, _hbph_pipe.display_name)
