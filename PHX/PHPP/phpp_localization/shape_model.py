@@ -762,6 +762,9 @@ class UseNonRes(BaseModel):
     columns: ColUseNonRes
 
 
+# -----------------------------------------------------------------------------
+
+
 class ColElecNonRes(BaseModel):
     ...
 
@@ -771,13 +774,7 @@ class ElecNonRes(BaseModel):
     columns: ColElecNonRes
 
 
-class ColAuxElec(BaseModel):
-    ...
-
-
-class AuxElec(BaseModel):
-    name: str
-    columns: ColAuxElec
+# -----------------------------------------------------------------------------
 
 
 class ColIhgNonRes(BaseModel):
@@ -787,6 +784,18 @@ class ColIhgNonRes(BaseModel):
 class IhgNonRes(BaseModel):
     name: str
     columns: ColIhgNonRes
+
+
+# -----------------------------------------------------------------------------
+
+
+class ColAuxElec(BaseModel):
+    ...
+
+
+class AuxElec(BaseModel):
+    name: str
+    columns: ColAuxElec
 
 
 # -----------------------------------------------------------------------------

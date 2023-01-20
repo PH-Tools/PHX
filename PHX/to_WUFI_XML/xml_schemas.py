@@ -7,23 +7,26 @@ from typing import List, Optional
 import sys
 
 from PHX.model import (
+    building,
     certification,
+    components,
     constructions,
+    elec_equip,
     geometry,
     ground,
-    phx_site,
-    schedules,
     hvac,
     loads,
-    building,
-    elec_equip,
+    phx_site,
     project,
-    components,
+    schedules,
+    spaces,
 )
+from PHX.model.schedules.ventilation import PhxScheduleVentilation
 from PHX.to_WUFI_XML.xml_writables import XML_Node, XML_List, XML_Object, xml_writable
 
 TOL_LEV1 = 2  # Value tolerance for rounding. ie; 9.843181919194 -> 9.84
 TOL_LEV2 = 10  # Value tolerance for rounding. ie; 9.843181919194 -> 9.8431819192
+
 
 # -- PROJECT ------------------------------------------------------------------
 
@@ -39,11 +42,31 @@ def _PhxProject(_wufi_project: project.PhxProject) -> List[xml_writable]:
         XML_List(
             "UtilisationPatternsVentilation",
             [
-                XML_Object("UtilizationPatternVent", pat, "index", i)
-                for i, pat in enumerate(_wufi_project.utilization_patterns_ventilation)
+                XML_Object(
+                    _node_name="UtilizationPatternVent",
+                    _node_object=vent_pat,
+                    _attr_name="index",
+                    _attr_value=i,
+                    _schema_name="_UtilizationPatternVent",
+                )
+                for i, vent_pat in enumerate(
+                    _wufi_project.utilization_patterns_ventilation
+                )
             ],
         ),
-        XML_List("UtilizationPatternVent", _wufi_project.utilization_patterns_ph),
+        XML_List(
+            "UtilizationPatternsPH",
+            [
+                XML_Object(
+                    _node_name="UtilizationPattern",
+                    _node_object=util_pat,
+                    _attr_name="index",
+                    _attr_value=i,
+                    _schema_name="_UtilizationPattern",
+                )
+                for i, util_pat in enumerate(_wufi_project.utilization_patterns_occupancy)
+            ],
+        ),
         XML_List(
             "Variants",
             [
@@ -77,7 +100,7 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
         XML_Object("Graphics_3D", _variant.graphics3D),
         XML_Object("Building", _variant.building),
         XML_Object("ClimateLocation", _variant.site),
-        XML_Object("PassivehouseData", _variant.phius_certification),
+        XML_Object("PassivehouseData", _variant.phius_cert),
         XML_Object(
             "HVAC", _variant.mech_systems, _schema_name="_PhxMechanicalSystemCollection"
         ),
@@ -140,8 +163,8 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         XML_List(
             "RoomsVentilation",
             [
-                XML_Object("Room", rm, "index", i, _schema_name="_PhxRoomVentilation")
-                for i, rm in enumerate(_z.wufi_rooms)
+                XML_Object("Room", sp, "index", i, _schema_name="_PhxSpace")
+                for i, sp in enumerate(_z.spaces)
             ],
         ),
         XML_Node("GrossVolume_Selection", 6),
@@ -723,24 +746,24 @@ def _PhxConstructionWindow(
 # -- VENTILATION --------------------------------------------------------------
 
 
-def _PhxRoomVentilation(_r: loads.PhxRoomVentilation) -> List[xml_writable]:
+def _PhxSpace(_r: spaces.PhxSpace) -> List[xml_writable]:
     return [
         XML_Node("Name", _r.display_name),
         XML_Node("Type", _r.wufi_type),
-        XML_Node("IdentNrUtilizationPatternVent", _r.vent_pattern_id_num),
+        XML_Node("IdentNrUtilizationPatternVent", _r.ventilation.schedule.id_num),
         XML_Node("IdentNrVentilationUnit", _r.vent_unit_id_num),
         XML_Node("Quantity", _r.quantity),
         XML_Node("AreaRoom", _r.weighted_floor_area, "unit", "m²"),
         XML_Node("ClearRoomHeight", _r.clear_height, "unit", "m"),
         XML_Node(
             "DesignVolumeFlowRateSupply",
-            round(_r.flow_rates.flow_supply, TOL_LEV1),
+            round(_r.ventilation.load.flow_supply, TOL_LEV1),
             "unit",
             "m³/h",
         ),
         XML_Node(
             "DesignVolumeFlowRateExhaust",
-            round(_r.flow_rates.flow_extract, TOL_LEV1),
+            round(_r.ventilation.load.flow_extract, TOL_LEV1),
             "unit",
             "m³/h",
         ),
@@ -750,15 +773,13 @@ def _PhxRoomVentilation(_r: loads.PhxRoomVentilation) -> List[xml_writable]:
     ]
 
 
-def _UtilizationPatternVent(
-    _util_pat: schedules.UtilizationPatternVent,
-) -> List[xml_writable]:
-    op_periods = _util_pat.operating_periods
+def _UtilizationPatternVent(_vent_sched: PhxScheduleVentilation) -> List[xml_writable]:
+    op_periods = _vent_sched.operating_periods
     return [
-        XML_Node("Name", _util_pat.name),
-        XML_Node("IdentNr", _util_pat.id_num),
-        XML_Node("OperatingDays", _util_pat.operating_days),
-        XML_Node("OperatingWeeks", _util_pat.operating_weeks),
+        XML_Node("Name", _vent_sched.name),
+        XML_Node("IdentNr", _vent_sched.id_num),
+        XML_Node("OperatingDays", _vent_sched.operating_days),
+        XML_Node("OperatingWeeks", _vent_sched.operating_weeks),
         XML_Node("Maximum_DOS", round(op_periods.high.period_operating_hours, TOL_LEV1)),
         XML_Node("Maximum_PDF", round(op_periods.high.period_operation_speed, TOL_LEV1)),
         XML_Node(
@@ -1517,3 +1538,30 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> List[xml_writabl
     device_schema = getattr(sys.modules[__name__], f"_{_d.__class__.__name__}")
     appliance_specific_attributes = device_schema(_d)
     return common_attributes + appliance_specific_attributes
+
+
+# -- NON-RES PROGRAM DATA -----------------------------------------------------
+
+
+def _UtilizationPattern(_p) -> List[xml_writable]:
+    return [
+        XML_Node("IdentNr", ""),
+        XML_Node("Name", ""),
+        XML_Node("HeightUtilizationLevel", 1),
+        XML_Node("BeginUtilization", 0),
+        XML_Node("EndUtilization", 24),
+        XML_Node("AnnualUtilizationDays", 365),
+        XML_Node("IlluminationLevel", 300, "unit", "lux"),
+        XML_Node("RelativeAbsenteeism", "", "unit", "-"),
+        XML_Node("PartUseFactorPeriodForLighting", "", "unit", "-"),
+        XML_Node("AverageOccupancy", "", "unit", "m²/Person"),
+        XML_Node("RoomSetpointTemperature", "", "unit", "°C"),
+        XML_Node("HeatingTemperatureReduction", "", "unit", "°C"),
+        XML_Node("DailyUtilizationHours", "", "unit", "hrs/d"),
+        XML_Node("AnnualUtilizationHours", "", "unit", "hrs/yr"),
+        XML_Node("AnnualUtilizationHoursDaytime", "", "unit", "hrs/yr"),
+        XML_Node("AnnualUtilizationHoursNighttime", "", "unit", "hrs/yr"),
+        XML_Node("DailyHeatingOperationHours", "", "unit", "hrs/d"),
+        XML_Node("DailyVentilationOperatingHours", "", "unit", "hrs/d"),
+        XML_Node("NumberOfMaxTabsPerDay", "", "unit", "-"),
+    ]

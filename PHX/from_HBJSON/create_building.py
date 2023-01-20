@@ -4,14 +4,29 @@
 """Functions to create a new PhxBuilding from Honeybee-Rooms"""
 
 from typing import List, Union, Dict
+from functools import partial
 
 from honeybee import room, aperture, face
-from honeybee_ph import space
-from honeybee_energy.properties.room import RoomEnergyProperties
-from honeybee_energy_ph.properties.load.people import PeoplePhProperties
 
+from honeybee_energy.properties.room import RoomEnergyProperties
+from honeybee_energy.properties.aperture import ApertureEnergyProperties
+from honeybee_energy.properties.face import FaceEnergyProperties
+
+from honeybee_ph import space
+from honeybee_ph.properties.aperture import AperturePhProperties
+from honeybee_ph.properties.room import RoomPhProperties
+from honeybee_energy_ph.properties.load.people import PeoplePhProperties
+from honeybee_energy_ph.properties.construction.window import (
+    WindowConstructionPhProperties,
+)
+from honeybee_energy_ph.properties.construction.opaque import (
+    OpaqueConstructionPhProperties,
+)
+
+from PHX.from_HBJSON import create_geometry
+from PHX.from_HBJSON.create_rooms import create_room_from_space
 from PHX.model import building, constructions, components
-from PHX.from_HBJSON import create_rooms, create_geometry
+from PHX.model.utilization_patterns import UtilizationPatternCollection_Ventilation
 from PHX.model.enums.building import (
     ComponentExposureExterior,
     ComponentFaceOpacity,
@@ -118,20 +133,26 @@ def create_component_from_hb_aperture(
 
     Returns:
     --------
-        * componets.PhxComponentAperture: A new Transparent (window) Component.
+        * (building.PhxComponentAperture): A new Transparent (window) Component.
     """
+
+    # -- Type Aliases
+    hb_ap_prop_energy: ApertureEnergyProperties = _hb_aperture.properties.energy  # type: ignore
+    hb_ap_prop_ph: AperturePhProperties = _hb_aperture.properties.ph  # type: ignore
+    hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    hb_ap_const = hb_ap_prop_energy.construction
+    if not hasattr(hb_ap_const, "properties"):
+        msg = f"Error: Aperture Construction '{hb_ap_const.display_name}' is missing .properties?"
+        raise Exception(msg)
+    hb_ap_const_prop_ph: WindowConstructionPhProperties = hb_ap_const.properties.ph  # type: ignore
 
     # -- Create new Aperture
     phx_ap = components.PhxComponentAperture(_host=_host_compo)
     phx_ap.display_name = _hb_aperture.display_name
-    phx_ap.exposure_interior = _hb_room.properties.ph.id_num
-    phx_ap.window_type = _window_type_dict[
-        _hb_aperture.properties.energy.construction.identifier
-    ]
-    phx_ap.window_type_id_num = (
-        _hb_aperture.properties.energy.construction.properties.ph.id_num
-    )
-    phx_ap.variant_type_name = _hb_aperture.properties.ph.variant_type
+    phx_ap.exposure_interior = hb_room_prop_ph.id_num
+    phx_ap.window_type = _window_type_dict[hb_ap_prop_energy.construction.identifier]
+    phx_ap.window_type_id_num = hb_ap_const_prop_ph.id_num
+    phx_ap.variant_type_name = hb_ap_prop_ph.variant_type
 
     # -- Create new Aperture Element (Sash)
     new_phx_ap_element = components.PhxApertureElement(_host=phx_ap)
@@ -139,32 +160,17 @@ def create_component_from_hb_aperture(
     new_phx_ap_element.polygon = (
         create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture)
     )
-
-    if _hb_aperture.properties.ph.shading_dimensions:
-        new_phx_ap_element.shading_dimensions.h_hori = (
-            _hb_aperture.properties.ph.shading_dimensions.h_hori
-        )
-        new_phx_ap_element.shading_dimensions.d_hori = (
-            _hb_aperture.properties.ph.shading_dimensions.d_hori
-        )
-        new_phx_ap_element.shading_dimensions.o_reveal = (
-            _hb_aperture.properties.ph.shading_dimensions.o_reveal
-        )
-        new_phx_ap_element.shading_dimensions.d_reveal = (
-            _hb_aperture.properties.ph.shading_dimensions.d_reveal
-        )
-        new_phx_ap_element.shading_dimensions.o_over = (
-            _hb_aperture.properties.ph.shading_dimensions.o_over
-        )
-        new_phx_ap_element.shading_dimensions.d_over = (
-            _hb_aperture.properties.ph.shading_dimensions.d_over
-        )
-    new_phx_ap_element.winter_shading_factor = (
-        _hb_aperture.properties.ph.winter_shading_factor
-    )
-    new_phx_ap_element.summer_shading_factor = (
-        _hb_aperture.properties.ph.summer_shading_factor
-    )
+    # -- Set the shading object dimensions, if there are any
+    if hb_ap_prop_ph.shading_dimensions:
+        shading_dims = hb_ap_prop_ph.shading_dimensions
+        new_phx_ap_element.shading_dimensions.h_hori = shading_dims.h_hori
+        new_phx_ap_element.shading_dimensions.d_hori = shading_dims.d_hori
+        new_phx_ap_element.shading_dimensions.o_reveal = shading_dims.o_reveal
+        new_phx_ap_element.shading_dimensions.d_reveal = shading_dims.d_reveal
+        new_phx_ap_element.shading_dimensions.o_over = shading_dims.o_over
+        new_phx_ap_element.shading_dimensions.d_over = shading_dims.d_over
+    new_phx_ap_element.winter_shading_factor = hb_ap_prop_ph.winter_shading_factor
+    new_phx_ap_element.summer_shading_factor = hb_ap_prop_ph.summer_shading_factor
 
     phx_ap.add_elements((new_phx_ap_element,))
 
@@ -188,22 +194,27 @@ def create_components_from_hb_face(
 
     Returns:
     --------
-        * building.Component: The new Opaque Component.
+        * (components.PhxComponentOpaque): The new Opaque Component.
     """
 
+    # Type Aliases
+    hb_face_prop_energy: FaceEnergyProperties = _hb_face.properties.energy  # type: ignore
+    hb_face_const = hb_face_prop_energy.construction
+    if not hasattr(hb_face_const, "properties"):
+        msg = f"Error: Face Construction {hb_face_const.display_name} is missing .properties?"
+    hb_face_const_prop_ph: OpaqueConstructionPhProperties = hb_face_const.properties.ph  # type: ignore
+    hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+
+    # -- Build the new PHX Opaque Component
     opaque_compo = components.PhxComponentOpaque()
     opaque_compo.display_name = _hb_face.display_name
-    opaque_compo.assembly = _assembly_dict[
-        _hb_face.properties.energy.construction.identifier
-    ]
-    opaque_compo.assembly_type_id_num = (
-        _hb_face.properties.energy.construction.properties.ph.id_num
-    )
+    opaque_compo.assembly = _assembly_dict[hb_face_prop_energy.construction.identifier]
+    opaque_compo.assembly_type_id_num = hb_face_const_prop_ph.id_num
 
     opaque_compo.face_type = _hb_face_type_to_phx_enum(_hb_face)
     opaque_compo.face_opacity = _hb_face_opacity_to_phx_enum(_hb_face)
     opaque_compo.exposure_exterior = _hb_ext_exposure_to_phx_enum(_hb_face)
-    opaque_compo.exposure_interior = _hb_room.properties.ph.id_num
+    opaque_compo.exposure_interior = hb_room_prop_ph.id_num
     opaque_compo.color_interior = _hb_int_color_to_phx_enum(_hb_face)
     opaque_compo.color_exterior = _hb_ext_color_to_phx_enum(_hb_face)
 
@@ -237,7 +248,7 @@ def create_components_from_hb_room(
 
     Returns:
     --------
-        * list[components.PhxComponentOpaque]: A list of the new opaque PhxComponents.
+        * (List[components.PhxComponentOpaque]): A list of the new opaque PhxComponents.
     """
     return [
         create_components_from_hb_face(
@@ -247,7 +258,10 @@ def create_components_from_hb_room(
     ]
 
 
-def create_zones_from_hb_room(_hb_room: room.Room) -> building.PhxZone:
+def create_zones_from_hb_room(
+    _hb_room: room.Room,
+    _vent_sched_collection: UtilizationPatternCollection_Ventilation,
+) -> building.PhxZone:
     """Create a new PHX-Zone based on a honeybee-Room.
 
     Arguments:
@@ -256,7 +270,7 @@ def create_zones_from_hb_room(_hb_room: room.Room) -> building.PhxZone:
 
     Returns:
     --------
-        * building.Zone: The new PHX-Zone object.
+        * (building.PhxZone): The new PHX-Zone object.
     """
     new_zone = building.PhxZone()
 
@@ -267,19 +281,20 @@ def create_zones_from_hb_room(_hb_room: room.Room) -> building.PhxZone:
     spaces: List[space.Space] = _hb_room.properties.ph.spaces  # type: ignore
     sorted_spaces = sorted(spaces, key=lambda space: space.full_name)
 
-    # -- Create a new WUFI-RoomVentilation for each space
-    new_zone.wufi_rooms = [
-        create_rooms.create_room_from_space(sp) for sp in sorted_spaces
-    ]
+    # -- Create a new WUFI-Space (Room) for each HBPH-Space
+    _create_space = partial(
+        create_room_from_space, _vent_sched_collection=_vent_sched_collection
+    )
+    new_zone.spaces = [_create_space(sp) for sp in sorted_spaces]
 
     # -- Set Zone properties
     new_zone.volume_gross = _hb_room.volume
     new_zone.weighted_net_floor_area = sum(
-        (rm.weighted_floor_area for rm in new_zone.wufi_rooms)
+        (rm.weighted_floor_area for rm in new_zone.spaces)
     )
-    new_zone.volume_net = sum((rm.net_volume for rm in new_zone.wufi_rooms))
+    new_zone.volume_net = sum((rm.net_volume for rm in new_zone.spaces))
 
-    # -- Set the zone's occupancy based on the merged HB room
+    # -- Set the Zone's Level Occupancy based on the merged HB room
     room_energy_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
     hbph_people_prop: PeoplePhProperties = room_energy_prop.people.properties.ph  # type: ignore
     new_zone.res_occupant_quantity = hbph_people_prop.number_people
@@ -303,11 +318,16 @@ def create_thermal_bridges_from_hb_room(
 
     Returns:
     --------
-        * (List[components.PhxThermalBridge]): A list of the new Thermal Bridge objects.
+        * (List[components.PhxComponentThermalBridge]): A list of the new Thermal Bridge objects.
     """
+
+    # -- Type Aliases
+    hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+
+    # -- Create all the new Thermal Bridges
     phx_thermal_bridges = []
     for thermal_bridge in sorted(
-        _hb_room.properties.ph.ph_bldg_segment.thermal_bridges.values(),
+        hb_room_prop_ph.ph_bldg_segment.thermal_bridges.values(),
         key=lambda tb: tb.display_name,
     ):
         phx_tb = components.PhxComponentThermalBridge()

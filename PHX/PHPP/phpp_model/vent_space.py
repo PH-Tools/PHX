@@ -7,7 +7,8 @@ from dataclasses import dataclass
 from typing import List, Tuple
 from functools import partial
 
-from PHX.model import loads, schedules
+from PHX.model.spaces import PhxSpace
+from PHX.model.schedules.ventilation import PhxScheduleVentilation
 from PHX.xl import xl_data
 from PHX.xl.xl_data import xl_writable
 from PHX.PHPP.phpp_localization import shape_model
@@ -19,9 +20,9 @@ class VentSpaceRow:
 
     __slots__ = ("shape", "phx_room_vent", "phpp_row_ventilator", "phx_vent_pattern")
     shape: shape_model.AddnlVent
-    phx_room_vent: loads.PhxRoomVentilation
+    phx_room_vent: PhxSpace
     phpp_row_ventilator: xl_writable
-    phx_vent_pattern: schedules.UtilizationPatternVent
+    phx_vent_pattern: PhxScheduleVentilation
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
