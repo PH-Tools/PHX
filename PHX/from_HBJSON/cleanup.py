@@ -19,12 +19,13 @@ try:
     from honeybee_energy.load import people, equipment, infiltration
     from honeybee_energy.schedule.ruleset import ScheduleRuleset
     from honeybee_energy.lib.scheduletypelimits import schedule_type_limit_by_identifier
+    from honeybee_energy.properties.room import RoomEnergyProperties
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy:\n\t{}".format(e))
 
 from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
+from honeybee_energy_ph.properties.load.people import PeoplePhProperties
 from PHX.model import project
-
 
 HB_BC = Union[Outdoors, Ground, Adiabatic]
 
@@ -96,9 +97,16 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     total_ph_bedrooms = 0.0
     total_ph_people = 0.0
     for room in _hb_rooms:
-        hb_ppl_obj = room.properties.energy.people  # alias
-        total_ph_bedrooms += int(hb_ppl_obj.properties.ph.number_bedrooms)
-        total_ph_people += int(hb_ppl_obj.properties.ph.number_people)
+        hb_room_prop_energy: RoomEnergyProperties = room.properties.energy  # type: ignore
+        hb_ppl_obj = hb_room_prop_energy.people
+
+        # -- Sometimes there is no 'People'
+        if hb_ppl_obj is None:
+            continue
+
+        hbph_people_prop_ph: PeoplePhProperties = hb_ppl_obj.properties.ph  # type: ignore
+        total_ph_bedrooms += int(hbph_people_prop_ph.number_bedrooms)
+        total_ph_people += int(hbph_people_prop_ph.number_people)
         total_hb_people += hb_ppl_obj.people_per_area * room.floor_area
 
     # Build up the new object's attributes
