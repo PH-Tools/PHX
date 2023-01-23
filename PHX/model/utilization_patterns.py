@@ -76,6 +76,15 @@ class UtilizationPatternCollection_Ventilation:
     def __bool__(self):
         return bool(self.patterns)
 
+    def items(self):
+        return self.patterns.items()
+
+    def keys(self):
+        return self.patterns.keys()
+
+    def values(self):
+        return self.patterns.values()
+
 
 @dataclass
 class UtilizationPatternCollection_Occupancy:
@@ -91,12 +100,12 @@ class UtilizationPatternCollection_Occupancy:
     ) -> None:
         self.patterns[key] = value
 
-    def add_new_util_pattern(self, _util_pattern: PhxScheduleOccupancy) -> None:
+    def add_new_util_pattern(self, _util_pattern: Optional[PhxScheduleOccupancy]) -> None:
         """Add a new PhxScheduleOccupancy to the Collection.
 
         Arguments:
         ----------
-            * _util_pattern (PhxScheduleOccupancy): The PhxScheduleOccupancy
+            * _util_pattern (Optional[PhxScheduleOccupancy]): The PhxScheduleOccupancy
                 pattern to add to the collection.
 
         Returns:
@@ -138,3 +147,12 @@ class UtilizationPatternCollection_Occupancy:
 
     def __bool__(self):
         return bool(self.patterns)
+
+    def items(self):
+        return self.patterns.items()
+
+    def keys(self):
+        return self.patterns.keys()
+
+    def values(self):
+        return self.patterns.values()

@@ -22,6 +22,7 @@ from PHX.model import (
     spaces,
 )
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
+from PHX.model.schedules.occupancy import PhxScheduleOccupancy
 from PHX.to_WUFI_XML.xml_writables import XML_Node, XML_List, XML_Object, xml_writable
 
 TOL_LEV1 = 2  # Value tolerance for rounding. ie; 9.843181919194 -> 9.84
@@ -167,6 +168,13 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
                 for i, sp in enumerate(_z.spaces)
             ],
         ),
+        XML_List(
+            "LoadsPersonsPH",
+            [
+                XML_Object("LoadPerson", sp, "index", i, _schema_name="_LoadPerson")
+                for i, sp in enumerate(_z.spaces)
+            ],
+        ),
         XML_Node("GrossVolume_Selection", 6),
         XML_Node("GrossVolume", _z.volume_gross),
         XML_Node("NetVolume_Selection", 6),
@@ -300,6 +308,23 @@ def _PhxPhBuildingData(
                 for i, f in enumerate(_phius_cert.ph_building_data.foundations)
             ],
         ),
+        XML_Object(
+            "InternalGainsAdditionalData",
+            None,
+            _schema_name="_InternalGainsAdditionalData",
+        ),
+    ]
+
+
+def _InternalGainsAdditionalData(*args, **kwargs) -> List[xml_writable]:
+    print("here")
+    return [
+        XML_Node("EvaporationHeatPerPerson", 15, "unit", "W"),
+        XML_Node("HeatLossFluschingWC", True),
+        XML_Node("QuantityWCs", 1),
+        XML_Node("RoomCategory", 1),
+        XML_Node("UseDefaultValuesSchool", False),
+        XML_Node("MarginalPerformanceRatioDHW", None),
     ]
 
 
@@ -1543,25 +1568,35 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> List[xml_writabl
 # -- NON-RES PROGRAM DATA -----------------------------------------------------
 
 
-def _UtilizationPattern(_p) -> List[xml_writable]:
+def _UtilizationPattern(_p: PhxScheduleOccupancy) -> List[xml_writable]:
     return [
         XML_Node("IdentNr", ""),
-        XML_Node("Name", ""),
-        XML_Node("HeightUtilizationLevel", 1),
-        XML_Node("BeginUtilization", 0),
-        XML_Node("EndUtilization", 24),
-        XML_Node("AnnualUtilizationDays", 365),
+        XML_Node("Name", _p.display_name),
+        XML_Node("HeightUtilizationLevel", 0.5),
+        XML_Node("BeginUtilization", _p.start_hour),
+        XML_Node("EndUtilization", _p.end_hour),
+        XML_Node("AnnualUtilizationDays", round(_p.annual_utilization_days, TOL_LEV1)),
         XML_Node("IlluminationLevel", 300, "unit", "lux"),
-        XML_Node("RelativeAbsenteeism", "", "unit", "-"),
-        XML_Node("PartUseFactorPeriodForLighting", "", "unit", "-"),
-        XML_Node("AverageOccupancy", "", "unit", "m²/Person"),
-        XML_Node("RoomSetpointTemperature", "", "unit", "°C"),
-        XML_Node("HeatingTemperatureReduction", "", "unit", "°C"),
-        XML_Node("DailyUtilizationHours", "", "unit", "hrs/d"),
-        XML_Node("AnnualUtilizationHours", "", "unit", "hrs/yr"),
-        XML_Node("AnnualUtilizationHoursDaytime", "", "unit", "hrs/yr"),
-        XML_Node("AnnualUtilizationHoursNighttime", "", "unit", "hrs/yr"),
-        XML_Node("DailyHeatingOperationHours", "", "unit", "hrs/d"),
-        XML_Node("DailyVentilationOperatingHours", "", "unit", "hrs/d"),
-        XML_Node("NumberOfMaxTabsPerDay", "", "unit", "-"),
+        XML_Node("RelativeAbsenteeism", _p.relative_utilization_factor, "unit", "-"),
+        XML_Node("PartUseFactorPeriodForLighting", 1, "unit", "-"),
+        # XML_Node("AverageOccupancy", "", "unit", "m²/Person"),
+        # XML_Node("RoomSetpointTemperature", "", "unit", "°C"),
+        # XML_Node("HeatingTemperatureReduction", "", "unit", "°C"),
+        # XML_Node("DailyUtilizationHours", "", "unit", "hrs/d"),
+        # XML_Node("AnnualUtilizationHours", "", "unit", "hrs/yr"),
+        # XML_Node("AnnualUtilizationHoursDaytime", "", "unit", "hrs/yr"),
+        # XML_Node("AnnualUtilizationHoursNighttime", "", "unit", "hrs/yr"),
+        # XML_Node("DailyHeatingOperationHours", "", "unit", "hrs/d"),
+        # XML_Node("DailyVentilationOperatingHours", "", "unit", "hrs/d"),
+        # XML_Node("NumberOfMaxTabsPerDay", "", "unit", "-"),
+    ]
+
+
+def _LoadPerson(_sp: spaces.PhxSpace) -> List[xml_writable]:
+    return [
+        XML_Node("Name", _sp.display_name),
+        XML_Node("IdentNrUtilizationPattern", 1),
+        XML_Node("ChoiceActivityPersons", 3),
+        XML_Node("NumberOccupants", 1),
+        XML_Node("FloorAreaUtilizationZone", _sp.floor_area, "unit", "m²"),
     ]

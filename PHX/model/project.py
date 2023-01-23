@@ -120,7 +120,9 @@ class PhxProject:
         """Add a new Ventilation schedule to the project's collection."""
         self.utilization_patterns_ventilation.add_new_util_pattern(vent_sched)
 
-    def add_occupancy_sched_to_collection(self, vent_sched: PhxScheduleOccupancy) -> None:
+    def add_occupancy_sched_to_collection(
+        self, vent_sched: Optional[PhxScheduleOccupancy]
+    ) -> None:
         """Add a new Occupancy schedule to the project's collection."""
         self.utilization_patterns_occupancy.add_new_util_pattern(vent_sched)
 

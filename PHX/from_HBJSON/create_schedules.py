@@ -15,6 +15,7 @@ from honeybee_ph_utils.schedules import calc_four_part_vent_sched_values_from_hb
 
 from PHX.model import project
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
+from PHX.model.schedules.occupancy import PhxScheduleOccupancy
 
 
 def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
@@ -29,6 +30,7 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
     --------
         * (bool):
     """
+
     # -------------------------------------------------------------------------
     # -- Honeybee-Energy data might not be there...
     hbe_prop: Optional[RoomEnergyProperties] = _hb_room.properties.energy  # type: ignore
@@ -50,37 +52,6 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
 
     # -- So then the room must have the detailed data
     return True
-
-
-# def _get_room_vent_pattern_key(_hb_room: room.Room) -> str:
-#     """Returns the right 'key' for the Honeybee Room's ventilation pattern.
-
-#     When translating HB-Style ventilation over, each HB-Room will get a different
-#     ventilation-schedule key since the schedule-periods will be dependant on the rooms' occupancy
-#     and size.
-
-#     Is there a way to 'group' HB-Style ventilation patterns ahead of time?
-
-#     If there is detailed PH-Style ventilation schedule info, that can be used instead
-#     of the HB-Style.
-
-#     Arguments:
-#     ---------
-#         * _hb_room (room.Room): The Honeybee Room to look at.
-
-#     Returns:
-#     --------
-#         * (str): The ventilation schedule unique 'key'
-#     """
-
-#     if _room_has_ph_style_ventilation(_hb_room):
-#         hbe_room_energy_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-#         return hbe_room_energy_prop.ventilation.schedule.identifier
-#     else:
-#         # Room ventilation pattern needs to be created from the HB info and
-#         # take into account occupancy, size, etc...
-#         hbe_room_energy_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-#         return hbe_room_energy_prop.ventilation.identifier
 
 
 def _create_vent_schedule_from_hb_style(_hb_room: room.Room) -> PhxScheduleVentilation:
@@ -184,7 +155,7 @@ def build_ventilation_schedule_from_hb_room(
 
     Returns:
     --------
-        * (PhxScheduleVentilation | None): The new Ventilation Schedule or None
+        * (Optional[PhxScheduleVentilation]): The new Ventilation Schedule or None
             if no energy.ventilation or energy.ventilation.schedule is found on the room.
     """
 
@@ -212,6 +183,54 @@ def build_ventilation_schedule_from_hb_room(
     new_vent_schedule.force_max_utilization_hours()
 
     return new_vent_schedule
+
+
+def build_occupancy_schedule_from_hb_room(
+    _hb_room: room.Room,
+) -> Optional[PhxScheduleOccupancy]:
+    """Build a new PHX Occupancy Schedule based on a Honeybee-Room's energy.people values.
+
+    Arguments:
+    ----------
+        * _hb_room (room.Room): The Honeybee Room to build the schedules from.
+
+    Returns:
+    --------
+        * (Optional[PhxScheduleOccupancy]): The new PHX Occupancy Schedule or None.
+    """
+
+    # -- Make sure that the room has an occupancy schedule
+    hbe_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
+    if hbe_prop.people is None:
+        return None
+
+    if hbe_prop.people.occupancy_schedule is None:
+        return None
+
+    # -- Aliases
+    hbe_schedule = hbe_prop.people.occupancy_schedule
+    hbe_schedule_prop_ph: ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
+    daily_period = hbe_schedule_prop_ph.first_operating_period
+
+    # -- Build the new Schedule
+    new_phx_occ_schedule = PhxScheduleOccupancy()
+    new_phx_occ_schedule.identifier = hbe_schedule.identifier
+    new_phx_occ_schedule.display_name = hbe_schedule.display_name
+    new_phx_occ_schedule.annual_utilization_days = (
+        hbe_schedule_prop_ph.operating_days_year
+    )
+    new_phx_occ_schedule.relative_utilization_factor = (
+        hbe_schedule_prop_ph.annual_average_operating_fraction
+    )
+
+    if daily_period:
+        new_phx_occ_schedule.start_hour = daily_period.start_hour
+        new_phx_occ_schedule.end_hour = daily_period.end_hour
+    else:
+        new_phx_occ_schedule.start_hour = 0
+        new_phx_occ_schedule.end_hour = 24
+
+    return new_phx_occ_schedule
 
 
 def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
@@ -269,11 +288,6 @@ def add_all_HB_Model_ventilation_schedules_to_PHX_Project(
         hbe_room_energy_prop: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
         vent_schedule_id = hbe_room_energy_prop.ventilation.schedule.identifier
 
-        # print(hb_room.display_name)
-        # vent_schedule_id = _get_room_vent_pattern_key(hb_room)
-        print("vent_schedule_id=", vent_schedule_id)
-        # print(hb_room.properties.energy.ventilation.schedule.display_name)
-
         if _project.vent_sched_in_project_collection(vent_schedule_id):
             # -- This is just to help speed things up.
             # -- Don't re-make the util-pattern if it is already in collection.
@@ -281,3 +295,56 @@ def add_all_HB_Model_ventilation_schedules_to_PHX_Project(
 
         new_phx_vent_schedule = build_ventilation_schedule_from_hb_room(hb_room)
         _project.add_vent_sched_to_collection(new_phx_vent_schedule)
+
+
+def add_all_HB_Model_occupancy_schedules_to_PHX_Project(
+    _project: project.PhxProject, _hb_model: model.Model
+) -> None:
+    """Add all the Room's Occupancy Schedules to the project's Collection.
+
+    Arguments:
+    ----------
+        * _project (project.Project): The PHX-Project to add the new
+            Occupancy Schedules to.
+        * _hb_model (model.Model): Then Honeybee Model to build up the
+            new Occupancy Schedules from.
+
+    Returns:
+    --------
+        * None
+    """
+    for hb_room in _hb_model.rooms:
+        hbe_room_energy_prop: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
+
+        # -- Sometimes there is to 'People'
+        if hbe_room_energy_prop.people is None:
+            continue
+
+        occ_schedule_id = hbe_room_energy_prop.people.occupancy_schedule.identifier
+        if _project.occupancy_sched_in_project_collection(occ_schedule_id):
+            # -- This is just to help speed things up.
+            # -- Don't re-make the util-pattern if it is already in collection.
+            continue
+
+        new_phx_occ_schedule = build_occupancy_schedule_from_hb_room(hb_room)
+        _project.add_occupancy_sched_to_collection(new_phx_occ_schedule)
+
+
+def add_all_HB_schedules_to_PHX_Project(
+    _project: project.PhxProject, _hb_model: model.Model
+) -> None:
+    """Add all the schedules (Ventilation, Occupancy, Lighting) to the PHX Project's Collections.
+
+    Arguments:
+    ----------
+        * _project (project.Project): The PHX-Project to add the new
+            Schedules to.
+        * _hb_model (model.Model): Then Honeybee Model to build up the
+            new Schedules from.
+
+    Returns:
+    --------
+        * (None)
+    """
+    add_all_HB_Model_ventilation_schedules_to_PHX_Project(_project, _hb_model)
+    add_all_HB_Model_occupancy_schedules_to_PHX_Project(_project, _hb_model)
