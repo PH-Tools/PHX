@@ -18,7 +18,7 @@ SOURCE_FILE = pathlib.Path(
     "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Default_Model_Single_Zone.hbjson"
 )
 SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/testing_non_res_prog.hbjson"
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/2303_Citylight.hbjson"
 )
 
 if __name__ == "__main__":
@@ -66,9 +66,9 @@ if __name__ == "__main__":
         # phpp_conn.write_project_volume(phx_project)
         # phpp_conn.write_project_hot_water(phx_project)
         # phpp_conn.write_project_res_elec_appliances(phx_project)
-        phpp_conn.write_non_res_utilization_profiles(phx_project)
-        phpp_conn.write_non_res_space_lighting(phx_project)
-        phpp_conn.write_non_res_IHG(phx_project)
+        # phpp_conn.write_non_res_utilization_profiles(phx_project)
+        # phpp_conn.write_non_res_space_lighting(phx_project)
+        # phpp_conn.write_non_res_IHG(phx_project)
 
         # TODO: add custom any-range writer (User-Determined)
 
