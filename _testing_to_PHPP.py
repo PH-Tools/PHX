@@ -18,7 +18,7 @@ SOURCE_FILE = pathlib.Path(
     "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Default_Model_Single_Zone.hbjson"
 )
 SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/2303_Citylight.hbjson"
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/HarmsDavis_230201.hbjson"
 )
 
 if __name__ == "__main__":
