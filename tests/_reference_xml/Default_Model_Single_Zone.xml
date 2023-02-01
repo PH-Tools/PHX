@@ -48,7 +48,19 @@
 			<Minimum_PDF>0.71</Minimum_PDF>
 		</UtilizationPatternVent>
 	</UtilisationPatternsVentilation>
-	<UtilizationPatternsPH count="0"/>
+	<UtilizationPatternsPH count="1">
+		<UtilizationPattern index="0">
+			<IdentNr></IdentNr>
+			<Name>Generic Office Occupancy</Name>
+			<HeightUtilizationLevel>0.5</HeightUtilizationLevel>
+			<BeginUtilization>0</BeginUtilization>
+			<EndUtilization>24</EndUtilization>
+			<AnnualUtilizationDays>365.0</AnnualUtilizationDays>
+			<IlluminationLevel unit="lux">300</IlluminationLevel>
+			<RelativeAbsenteeism unit="-">0.0</RelativeAbsenteeism>
+			<PartUseFactorPeriodForLighting unit="-">1</PartUseFactorPeriodForLighting>
+		</UtilizationPattern>
+	</UtilizationPatternsPH>
 	<Variants count="1">
 		<Variant index="0">
 			<IdentNr>1</IdentNr>
@@ -191,7 +203,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_10_90696132..Face4</Name>
+						<Name>Room_5_45da05cd..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -207,7 +219,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_10_90696132..Face5</Name>
+						<Name>Room_5_45da05cd..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -247,6 +259,7 @@
 						<KindZone choice="Simulated zone">1</KindZone>
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="0"/>
+						<LoadsPersonsPH count="0"/>
 						<GrossVolume_Selection>6</GrossVolume_Selection>
 						<GrossVolume>60.0</GrossVolume>
 						<NetVolume_Selection>6</NetVolume_Selection>
@@ -494,6 +507,14 @@
 								<FloorSlabType choice="None">5</FloorSlabType>
 							</FoundationInterface>
 						</FoundationInterfaces>
+						<InternalGainsAdditionalData>
+							<EvaporationHeatPerPerson unit="W">15</EvaporationHeatPerPerson>
+							<HeatLossFluschingWC>true</HeatLossFluschingWC>
+							<QuantityWCs>1</QuantityWCs>
+							<RoomCategory>1</RoomCategory>
+							<UseDefaultValuesSchool>false</UseDefaultValuesSchool>
+							<MarginalPerformanceRatioDHW>None</MarginalPerformanceRatioDHW>
+						</InternalGainsAdditionalData>
 					</PH_Building>
 				</PH_Buildings>
 			</PassivehouseData>
