@@ -452,6 +452,31 @@ class PHPPConnection:
         return None
 
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
+        def _get_ap_element_from_dict(
+            _window_name: str, 
+            _dict: Dict[str, components.PhxApertureElement]
+        ) -> components.PhxApertureElement:
+            """When reading from excel, it MIGHT come in as a float. This means
+            that any windows with a numerical name (ie: '106', '205', etc) will get 
+            converted to a float in excel (ie: '106' -> 106.0) and get read back in
+            that way. To support names 106, 106.0, '106' and '106.0' properly, try them
+            with a fallback sequence.
+            """
+
+            try:
+                # If its a normal string name...
+                return _dict[_window_name]
+            except KeyError:
+                try:
+                    # If it is a 'float' name (ie: 106.1)
+                    return _dict[str(float(_window_name))]
+                except KeyError:
+                    try:
+                        # If it is an 'int' name (ie: 106)
+                        return _dict[str(int(float(_window_name)))]
+                    except KeyError as e:
+                        raise e
+
         # Get all the Window worksheet names in order
         window_names = self.windows.get_all_window_names()
         
@@ -461,13 +486,15 @@ class PHPPConnection:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
                     for phx_ap_element in phx_aperture.elements:
-                        phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element
+                        phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element 
 
         # Sort the phx apertures to match the window_names order
         phx_aperture_elements_in_order = (
-            phx_aperture_dict[window_name] for window_name in window_names)
+            _get_ap_element_from_dict(window_name, phx_aperture_dict) 
+            for window_name in window_names
+        )
 
-        # Write out all the Shading
+        # Write out all the data to the Shading Worksheet
         phpp_shading_rows: List[shading_rows.ShadingRow] = []
         for phx_aperture_element in phx_aperture_elements_in_order:
             phpp_shading_rows.append(
@@ -526,7 +553,7 @@ class PHPPConnection:
                         phpp_row_ventilator = None
 
                     phx_vent_pattern = phx_project.utilization_patterns_ventilation.get_pattern_by_id_num(
-                        room.vent_pattern_id_num
+                        room.ventilation.schedule.id_num
                     )
 
                     phpp_rm = vent_space.VentSpaceRow(
