@@ -111,19 +111,19 @@ class VentSpaceRow:
             ),
             XLItemAddnlVent(
                 create_range("V_sup"),
-                self.phx_room_vent.flow_rates.flow_supply,
+                self.phx_room_vent.ventilation.load.flow_supply,
                 "M3/HR",
                 self._get_target_unit("V_sup"),
             ),
             XLItemAddnlVent(
                 create_range("V_eta"),
-                self.phx_room_vent.flow_rates.flow_extract,
+                self.phx_room_vent.ventilation.load.flow_extract,
                 "M3/HR",
                 self._get_target_unit("V_eta"),
             ),
             XLItemAddnlVent(
                 create_range("V_trans"),
-                self.phx_room_vent.flow_rates.flow_transfer,
+                self.phx_room_vent.ventilation.load.flow_transfer,
                 "M3/HR",
                 self._get_target_unit("V_trans"),
             ),
