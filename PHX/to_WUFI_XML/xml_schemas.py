@@ -317,7 +317,6 @@ def _PhxPhBuildingData(
 
 
 def _InternalGainsAdditionalData(*args, **kwargs) -> List[xml_writable]:
-    print("here")
     return [
         XML_Node("EvaporationHeatPerPerson", 15, "unit", "W"),
         XML_Node("HeatLossFluschingWC", True),
