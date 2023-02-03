@@ -12,7 +12,7 @@ from honeybee_ph import site, phi, phius, space
 from honeybee_energy.properties.room import RoomEnergyProperties
 
 from honeybee_ph.properties.room import RoomPhProperties
-from honeybee_energy_ph.properties.load import equipment
+from honeybee_energy_ph.properties.load import equipment, people
 from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
 from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
 from honeybee_energy_ph.hvac.heating import PhHeatingSystem
@@ -278,18 +278,24 @@ def add_PhxPhBuildingData_from_hb_room(
     --------
         * None
     """
-    ph_bldg = _variant.phius_cert.ph_building_data  # alias
 
-    ph_bldg.num_of_units = _hb_room.properties.ph.ph_bldg_segment.num_dwelling_units  # type: ignore
+    # -- Type Aliases
+    ph_bldg = _variant.phius_cert.ph_building_data  # alias
+    hb_prop_energy: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
+
+    # -- Set the occupancy
+    if hb_prop_energy.people:
+        hb_ppl_prop_ph: people.PeoplePhProperties = hb_prop_energy.people.properties.ph  # type: ignore
+        ph_bldg.num_of_units = hb_ppl_prop_ph.number_dwelling_units
     ph_bldg.num_of_floors = _hb_room.properties.ph.ph_bldg_segment.num_floor_levels  # type: ignore
 
     # TODO: Foundations. For now: set to None
     ph_bldg.add_foundation(ground.PhxFoundation())
 
-    # Set the airtightness for Building
+    # -- Set the airtightness for Building
     ph_bldg.airtightness_q50 = _hb_room.properties.energy.infiltration.flow_per_exterior_area * 3600  # type: ignore
 
-    # Air temp Setpoints
+    # -- Set the air temp setpoints
     ph_bldg.setpoints.winter = _hb_room.properties.ph.ph_bldg_segment.set_points.winter  # type: ignore
     ph_bldg.setpoints.summer = _hb_room.properties.ph.ph_bldg_segment.set_points.summer  # type: ignore
 

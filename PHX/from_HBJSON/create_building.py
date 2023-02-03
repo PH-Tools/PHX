@@ -258,6 +258,19 @@ def create_components_from_hb_room(
     ]
 
 
+def set_zone_occupancy(_hb_room: room.Room, zone: building.PhxZone) -> building.PhxZone:
+    """Set the Zone's Residential Occupancy values."""
+    # -- Type Aliases
+    room_energy_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
+    hbph_people_prop: PeoplePhProperties = room_energy_prop.people.properties.ph  # type: ignore
+
+    zone.res_occupant_quantity = hbph_people_prop.number_people
+    zone.res_number_bedrooms = hbph_people_prop.number_bedrooms
+    zone.res_number_dwellings = hbph_people_prop.number_dwelling_units
+
+    return zone
+
+
 def create_zones_from_hb_room(
     _hb_room: room.Room,
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
@@ -294,11 +307,8 @@ def create_zones_from_hb_room(
     )
     new_zone.volume_net = sum((rm.net_volume for rm in new_zone.spaces))
 
-    # -- Set the Zone's Level Occupancy based on the merged HB room
-    room_energy_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-    hbph_people_prop: PeoplePhProperties = room_energy_prop.people.properties.ph  # type: ignore
-    new_zone.res_occupant_quantity = hbph_people_prop.number_people
-    new_zone.res_number_bedrooms = hbph_people_prop.number_bedrooms
+    # -- Set the Zone's Occupancy based on the merged HB room
+    new_zone = set_zone_occupancy(_hb_room, new_zone)
 
     # -- Set the Zones' thermal bridges
     for phx_thermal_bridge in create_thermal_bridges_from_hb_room(_hb_room):

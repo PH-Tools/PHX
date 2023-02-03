@@ -34,8 +34,9 @@ class PhxZone:
     elec_equipment_collection: elec_equip.PhxElectricDeviceCollection = field(
         default_factory=elec_equip.PhxElectricDeviceCollection
     )
-    res_occupant_quantity: int = 0
+    res_occupant_quantity: float = 0.0
     res_number_bedrooms: int = 0
+    res_number_dwellings: int = 0
     exhaust_ventilator_collection: collection.PhxExhaustVentilatorCollection = field(
         default_factory=collection.PhxExhaustVentilatorCollection
     )

@@ -149,11 +149,13 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
         * (people.People): A new Honeybee People object with values merged from the HB-Rooms.
     """
 
-    # Tally up all the values from all the rooms
-    total_hb_people = 0.0
-    total_ph_bedrooms = 0.0
+    # -- Tally up all the values from all the rooms
+    total_ph_bedrooms = 0
+    total_ph_dwellings = 0
     total_ph_people = 0.0
+    total_hb_people = 0.0
     for room in _hb_rooms:
+        # -- Type Aliases
         hb_room_prop_energy: RoomEnergyProperties = room.properties.energy  # type: ignore
         hb_ppl_obj = hb_room_prop_energy.people
 
@@ -163,15 +165,19 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
 
         hbph_people_prop_ph: PeoplePhProperties = hb_ppl_obj.properties.ph  # type: ignore
         total_ph_bedrooms += int(hbph_people_prop_ph.number_bedrooms)
-        total_ph_people += int(hbph_people_prop_ph.number_people)
+        total_ph_people += float(hbph_people_prop_ph.number_people)
+        total_ph_dwellings += int(hbph_people_prop_ph.number_dwelling_units)
         total_hb_people += hb_ppl_obj.people_per_area * room.floor_area
 
     # Build up the new object's attributes
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
-    new_hb_ppl = _hb_rooms[0].properties.energy.people.duplicate()  # type: ignore
+    new_hb_prop_energy = _hb_rooms[0].properties.energy  # type: RoomEnergyProperties
+    new_hb_ppl = new_hb_prop_energy.people.duplicate()  # type: people.People
+    new_hb_ppl_prop_ph = new_hb_ppl.properties.ph  # type: PeoplePhProperties
     new_hb_ppl.people_per_area = total_hb_people / total_floor_area
-    new_hb_ppl.properties.ph.number_bedrooms = total_ph_bedrooms
-    new_hb_ppl.properties.ph.number_people = total_ph_people
+    new_hb_ppl_prop_ph.number_bedrooms = total_ph_bedrooms
+    new_hb_ppl_prop_ph.number_people = total_ph_people
+    new_hb_ppl_prop_ph.number_dwelling_units = total_ph_dwellings
 
     return new_hb_ppl
 
@@ -371,9 +377,9 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
 
         rm_prop_ph: RoomPhProperties = hb_room.properties.ph  # type: ignore
         for existing_space in rm_prop_ph.spaces:
-            # -- Preserve the original HB-Room's energy and ph properties over
-            # -- on the space. We need to do this cus' the HB-Room is being removed
-            # -- and we want to preserve HVAC and program info for the spaces.
+            # -- Preserve the space host HB-Room's .energy and .ph properties over
+            # -- on the space itself. We need to do this cus' the host HB-Room is being
+            # -- removed and we want to preserve HVAC and program info for the spaces.
             existing_space.properties._energy = hb_room.properties._energy.duplicate(  # type: ignore
                 new_host=existing_space
             )
