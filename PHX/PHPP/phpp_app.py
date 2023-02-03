@@ -50,6 +50,9 @@ class PHPPConnection:
         self.variants = sheet_io.Variants(self.xl, self.shape.VARIANTS)
         self.per = sheet_io.PER(self.xl, self.shape.PER)
         self.overview = sheet_io.Overview(self.xl, self.shape.OVERVIEW)
+        self.use_non_res = sheet_io.UseNonRes(self.xl, self.shape.USE_NON_RES)
+        self.elec_non_res = sheet_io.ElecNonRes(self.xl, self.shape.ELEC_NON_RES)
+        self.ihg_non_res = sheet_io.IhgNonRes(self.xl, self.shape.IHG_NON_RES)
 
     def get_data_worksheet(self) -> xl_Sheet_Protocol:
         """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""
@@ -155,7 +158,7 @@ class PHPPConnection:
             if not self.phpp_version_equals_phx_phi_cert_version(phx_variant):
                 # -- If the versions don't match, don't try and write anything.
                 msg = (
-                    f"\n\tPHPPVersionWarning: the HBJSON PHI "
+                    f"\nPHPPVersionWarning: the HBJSON PHI "
                     f"Certification version (V={phx_variant.phi_certification_major_version}) "
                     f"does not match the PHPP Version (V={self.version.number_major})? "
                     f"Ignoring all writes to the '{self.shape.VERIFICATION.name}' worksheet.\n"
@@ -168,28 +171,28 @@ class PHPPConnection:
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_building_category_type',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_building_category_type
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_category_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_building_use_type',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_building_use_type
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_use_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_building_ihg_type',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_building_ihg_type
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_ihg_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_building_occupancy_type',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_building_occupancy_type
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_occupancy_type
                 )
             )
 
@@ -198,53 +201,53 @@ class PHPPConnection:
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_certification_type',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_certification_type
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_certification_class',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_certification_class
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_class
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_pe_type',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_pe_type
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_pe_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_enerphit_type',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_enerphit_type
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_enerphit_type
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type='phi_retrofit_type',
-                    input_enum_value=phx_variant.phi_certification.phi_certification_settings.phi_retrofit_type
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_retrofit_type
                 )
             )
 
             # ---- Model Parameters
-            if not phx_variant.phius_certification.ph_building_data:
+            if not phx_variant.phius_cert.ph_building_data:
                 continue
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type='num_of_units',
-                    input_data=phx_variant.phius_certification.ph_building_data.num_of_units
+                    input_data=phx_variant.phius_cert.ph_building_data.num_of_units
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type='setpoint_winter',
-                    input_data=phx_variant.phius_certification.ph_building_data.setpoints.winter,
+                    input_data=phx_variant.phius_cert.ph_building_data.setpoints.winter,
                     input_unit='C',
                     target_unit=self.shape.VERIFICATION.setpoint_winter.unit,
                 )
@@ -253,7 +256,7 @@ class PHPPConnection:
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type='setpoint_summer',
-                    input_data=phx_variant.phius_certification.ph_building_data.setpoints.summer,
+                    input_data=phx_variant.phius_cert.ph_building_data.setpoints.summer,
                     input_unit='C',
                     target_unit=self.shape.VERIFICATION.setpoint_summer.unit
                 )
@@ -449,6 +452,31 @@ class PHPPConnection:
         return None
 
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
+        def _get_ap_element_from_dict(
+            _window_name: str, 
+            _dict: Dict[str, components.PhxApertureElement]
+        ) -> components.PhxApertureElement:
+            """When reading from excel, it MIGHT come in as a float. This means
+            that any windows with a numerical name (ie: '106', '205', etc) will get 
+            converted to a float in excel (ie: '106' -> 106.0) and get read back in
+            that way. To support names 106, 106.0, '106' and '106.0' properly, try them
+            with a fallback sequence.
+            """
+
+            try:
+                # If its a normal string name...
+                return _dict[_window_name]
+            except KeyError:
+                try:
+                    # If it is a 'float' name (ie: 106.1)
+                    return _dict[str(float(_window_name))]
+                except KeyError:
+                    try:
+                        # If it is an 'int' name (ie: 106)
+                        return _dict[str(int(float(_window_name)))]
+                    except KeyError as e:
+                        raise e
+
         # Get all the Window worksheet names in order
         window_names = self.windows.get_all_window_names()
         
@@ -458,13 +486,15 @@ class PHPPConnection:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
                     for phx_ap_element in phx_aperture.elements:
-                        phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element
+                        phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element 
 
         # Sort the phx apertures to match the window_names order
         phx_aperture_elements_in_order = (
-            phx_aperture_dict[window_name] for window_name in window_names)
+            _get_ap_element_from_dict(window_name, phx_aperture_dict) 
+            for window_name in window_names
+        )
 
-        # Write out all the Shading
+        # Write out all the data to the Shading Worksheet
         phpp_shading_rows: List[shading_rows.ShadingRow] = []
         for phx_aperture_element in phx_aperture_elements_in_order:
             phpp_shading_rows.append(
@@ -506,7 +536,7 @@ class PHPPConnection:
         phpp_vent_rooms: List[vent_space.VentSpaceRow] = []
         for phx_variant in phx_project.variants:
             for zone in phx_variant.building.zones:
-                for room in zone.wufi_rooms:
+                for room in zone.spaces:
                     # -- Find the right Ventilator assigned to the Space.
                     try:
                         phx_mech_ventilator = phx_variant.mech_systems.get_mech_device_by_id(
@@ -523,7 +553,7 @@ class PHPPConnection:
                         phpp_row_ventilator = None
 
                     phx_vent_pattern = phx_project.utilization_patterns_ventilation.get_pattern_by_id_num(
-                        room.vent_pattern_id_num
+                        room.ventilation.schedule.id_num
                     )
 
                     phpp_rm = vent_space.VentSpaceRow(
@@ -567,7 +597,7 @@ class PHPPConnection:
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
 
-            if not variant.phius_certification.ph_building_data:
+            if not variant.phius_cert.ph_building_data:
                 continue
             bldg: building.PhxBuilding = variant.building
 
@@ -584,9 +614,9 @@ class PHPPConnection:
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
 
-            if not variant.phius_certification.ph_building_data:
+            if not variant.phius_cert.ph_building_data:
                 continue
-            ph_bldg: certification.PhxPhBuildingData = variant.phius_certification.ph_building_data
+            ph_bldg: certification.PhxPhBuildingData = variant.phius_cert.ph_building_data
 
             # TODO: Get the actual values from the Model somehow
             self.ventilation.write_wind_coeff_e(
@@ -681,6 +711,19 @@ class PHPPConnection:
             self.electricity.write_equipment(equipment_inputs)
 
         return None
+
+    def write_non_res_utilization_profiles(self, phx_project: project.PhxProject) -> None:
+        """Write out all of the Utilization patterns to the "Use non-res" Worksheet."""
+        for pattern in phx_project.utilization_patterns_occupancy:
+            print(pattern)
+
+    def write_non_res_space_lighting(self, phx_project: project.PhxProject) -> None:
+        """Write out all of the Space Lighting values to the "Electricity non-res" Worksheet."""
+        return
+
+    def write_non_res_IHG(self, phx_project: project.PhxProject) -> None:
+        """Write out all of the Occupancy patterns to the "IHG non-res" Worksheet."""
+        return
 
     def activate_variant_assemblies(self) -> None:
         """Remove all existing U-Value information and link assemblies to the Variants worksheet."""

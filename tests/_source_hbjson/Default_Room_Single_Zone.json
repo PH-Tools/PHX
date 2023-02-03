@@ -41,7 +41,7 @@
           "PHIUS2021_cooling_load": 10.0
         }, 
         "name": "Unnamed_Bldg_Segment", 
-        "identifier": "ddcadb7f-fa25-4725-abef-8e690e952299", 
+        "identifier": "2540fac7-791c-465f-a567-299516e6db10", 
         "site": {
           "climate": {
             "monthly_radiation": {
@@ -87,8 +87,8 @@
                 "june": 0.0, 
                 "november": 0.0
               }, 
-              "identifier": "8ca65f00-0dc5-4cd9-b2a8-ba0179944df6", 
-              "display_name": "8ca65f00-0dc5-4cd9-b2a8-ba0179944df6", 
+              "identifier": "0bd826df-3727-41cd-8e37-7428a3a3101d", 
+              "display_name": "0bd826df-3727-41cd-8e37-7428a3a3101d", 
               "glob": {
                 "february": 0.0, 
                 "july": 0.0, 
@@ -134,8 +134,8 @@
                 "dewpoint": null, 
                 "rad_west": 0.0, 
                 "ground_temp": null, 
-                "identifier": "7014b09d-6d80-4957-9f0e-ee4050b4e5d2", 
-                "display_name": "7014b09d-6d80-4957-9f0e-ee4050b4e5d2", 
+                "identifier": "d3eccae0-12d3-430c-a349-bba3993ba71a", 
+                "display_name": "d3eccae0-12d3-430c-a349-bba3993ba71a", 
                 "rad_south": 0.0, 
                 "rad_north": 0.0, 
                 "sky_temp": null
@@ -147,8 +147,8 @@
                 "dewpoint": null, 
                 "rad_west": 0.0, 
                 "ground_temp": null, 
-                "identifier": "3a0a7964-0917-4b1b-a824-8203a16722ed", 
-                "display_name": "3a0a7964-0917-4b1b-a824-8203a16722ed", 
+                "identifier": "a1e78531-c28f-49d5-a3fe-f4f3a393ee5d", 
+                "display_name": "a1e78531-c28f-49d5-a3fe-f4f3a393ee5d", 
                 "rad_south": 0.0, 
                 "rad_north": 0.0, 
                 "sky_temp": null
@@ -160,14 +160,14 @@
                 "dewpoint": null, 
                 "rad_west": 0.0, 
                 "ground_temp": null, 
-                "identifier": "2c00bb38-ef3c-48af-bad6-0c0e1636de05", 
-                "display_name": "2c00bb38-ef3c-48af-bad6-0c0e1636de05", 
+                "identifier": "27c9a46e-fafe-4cb3-b76e-863be95f1a6a", 
+                "display_name": "27c9a46e-fafe-4cb3-b76e-863be95f1a6a", 
                 "rad_south": 0.0, 
                 "rad_north": 0.0, 
                 "sky_temp": null
               }, 
-              "identifier": "f7f3841b-7145-45e3-addd-45806ef76e31", 
-              "display_name": "f7f3841b-7145-45e3-addd-45806ef76e31", 
+              "identifier": "dd28ab81-3c0c-4501-9322-3c46120fbf89", 
+              "display_name": "dd28ab81-3c0c-4501-9322-3c46120fbf89", 
               "cooling_load_2": {
                 "temp": 0.0, 
                 "rad_global": 0.0, 
@@ -175,8 +175,8 @@
                 "dewpoint": null, 
                 "rad_west": 0.0, 
                 "ground_temp": null, 
-                "identifier": "c041448c-976a-4d91-a3dc-4c07316f8665", 
-                "display_name": "c041448c-976a-4d91-a3dc-4c07316f8665", 
+                "identifier": "a7dbc6b9-178c-4cc1-9a0c-e6a67692f18b", 
+                "display_name": "a7dbc6b9-178c-4cc1-9a0c-e6a67692f18b", 
                 "rad_south": 0.0, 
                 "rad_north": 0.0, 
                 "sky_temp": null
@@ -225,8 +225,8 @@
                 "june": 0.0, 
                 "november": 0.0
               }, 
-              "identifier": "42c0cc0e-aaea-4dae-a532-55db321de3de", 
-              "display_name": "42c0cc0e-aaea-4dae-a532-55db321de3de", 
+              "identifier": "e140fba6-a842-4c3b-9348-048c62b82d82", 
+              "display_name": "e140fba6-a842-4c3b-9348-048c62b82d82", 
               "dewpoints": {
                 "february": 0.0, 
                 "july": 0.0, 
@@ -242,7 +242,7 @@
                 "november": 0.0
               }
             }, 
-            "identifier": "64a5864f-eb4f-476e-8f5d-26d735b044ba", 
+            "identifier": "e85be4d2-5776-48cf-ae5f-2f11a5375577", 
             "display_name": "New York", 
             "summer_daily_temperature_swing": 8.0, 
             "station_elevation": 0.0
@@ -252,17 +252,17 @@
             "latitude": 40.600000000000001, 
             "longitude": -73.799999999999997, 
             "hours_from_UTC": -4, 
-            "identifier": "a6a2eeb7-7195-4e9b-9708-e1de33836880", 
-            "display_name": "a6a2eeb7-7195-4e9b-9708-e1de33836880", 
+            "identifier": "877eb6a5-899d-495f-9f5b-afbedf8a6741", 
+            "display_name": "877eb6a5-899d-495f-9f5b-afbedf8a6741", 
             "climate_zone": 1
           }, 
-          "identifier": "a9f26a4c-4bad-4b47-9dfd-74e346fae5df", 
-          "display_name": "a9f26a4c-4bad-4b47-9dfd-74e346fae5df", 
+          "identifier": "2c714166-fc44-4436-9b6e-110df72eb64e", 
+          "display_name": "2c714166-fc44-4436-9b6e-110df72eb64e", 
           "phpp_library_codes": {
             "country_code": "US-United States of America", 
             "region_code": "New York", 
             "dataset_name": "US0055b-New York", 
-            "identifier": "780b5d16-3a1d-4aa2-b9a8-c678d4bdd52f", 
+            "identifier": "9027f8bd-9e70-49f8-a6c1-71acfc387778", 
             "display_name": "US0055b-New York"
           }
         }, 
@@ -306,7 +306,7 @@
           }, 
           "type": "IdealAirSystemProperties"
         }, 
-        "identifier": "Room_8_18ee760d Ideal Loads Air System", 
+        "identifier": "Room_6_c9541b06 Ideal Loads Air System", 
         "cooling_air_temperature": 13.0, 
         "demand_controlled_ventilation": false, 
         "cooling_limit": {
@@ -334,7 +334,7 @@
               "ph": {
                 "id_num": 0, 
                 "operating_days_wk": 7.0, 
-                "operating_weeks_year": 52.0, 
+                "operating_weeks_year": 52.142899999999997, 
                 "operating_periods": {
                   "collection": []
                 }, 
@@ -538,7 +538,7 @@
               "ph": {
                 "id_num": 0, 
                 "operating_days_wk": 7.0, 
-                "operating_weeks_year": 52.0, 
+                "operating_weeks_year": 52.142899999999997, 
                 "operating_periods": {
                   "collection": []
                 }, 
@@ -752,7 +752,7 @@
               "ph": {
                 "id_num": 0, 
                 "operating_days_wk": 7.0, 
-                "operating_weeks_year": 52.0, 
+                "operating_weeks_year": 52.142899999999997, 
                 "operating_periods": {
                   "collection": []
                 }, 
@@ -984,7 +984,7 @@
               "ph": {
                 "id_num": 0, 
                 "operating_days_wk": 7.0, 
-                "operating_weeks_year": 52.0, 
+                "operating_weeks_year": 52.142899999999997, 
                 "operating_periods": {
                   "collection": []
                 }, 
@@ -1203,9 +1203,10 @@
             "ph": {
               "type": "PeoplePhProperties", 
               "id_num": 0, 
-              "is_dwelling_unit": false, 
+              "_is_dwelling_unit": null, 
               "number_bedrooms": 0, 
-              "number_people": 0
+              "number_dwelling_units": 0, 
+              "number_people": 0.0
             }, 
             "type": "PeopleProperties"
           }, 
@@ -1225,7 +1226,7 @@
               "ph": {
                 "id_num": 0, 
                 "operating_days_wk": 7.0, 
-                "operating_weeks_year": 52.0, 
+                "operating_weeks_year": 52.142899999999997, 
                 "operating_periods": {
                   "collection": []
                 }, 
@@ -1283,7 +1284,7 @@
               "ph": {
                 "id_num": 0, 
                 "operating_days_wk": 7.0, 
-                "operating_weeks_year": 52.0, 
+                "operating_weeks_year": 52.142899999999997, 
                 "operating_periods": {
                   "collection": []
                 }, 
@@ -1496,7 +1497,7 @@
               "ph": {
                 "id_num": 0, 
                 "operating_days_wk": 7.0, 
-                "operating_weeks_year": 52.0, 
+                "operating_weeks_year": 52.142899999999997, 
                 "operating_periods": {
                   "collection": []
                 }, 
@@ -1671,8 +1672,8 @@
       "type": "RoomRadianceProperties"
     }
   }, 
-  "identifier": "Room_8_18ee760d", 
-  "display_name": "Room_8", 
+  "identifier": "Room_6_c9541b06", 
+  "display_name": "Room_6", 
   "faces": [
     {
       "boundary_condition": {
@@ -1740,8 +1741,8 @@
           "type": "FaceRadianceProperties"
         }
       }, 
-      "identifier": "Room_8_18ee760d..Face0", 
-      "display_name": "Room_8_18ee760d..Face0", 
+      "identifier": "Room_6_c9541b06..Face0", 
+      "display_name": "Room_6_c9541b06..Face0", 
       "type": "Face"
     }, 
     {
@@ -1810,8 +1811,8 @@
           "type": "FaceRadianceProperties"
         }
       }, 
-      "identifier": "Room_8_18ee760d..Face1", 
-      "display_name": "Room_8_18ee760d..Face1", 
+      "identifier": "Room_6_c9541b06..Face1", 
+      "display_name": "Room_6_c9541b06..Face1", 
       "type": "Face"
     }, 
     {
@@ -1880,8 +1881,8 @@
           "type": "FaceRadianceProperties"
         }
       }, 
-      "identifier": "Room_8_18ee760d..Face2", 
-      "display_name": "Room_8_18ee760d..Face2", 
+      "identifier": "Room_6_c9541b06..Face2", 
+      "display_name": "Room_6_c9541b06..Face2", 
       "type": "Face"
     }, 
     {
@@ -1950,8 +1951,8 @@
           "type": "FaceRadianceProperties"
         }
       }, 
-      "identifier": "Room_8_18ee760d..Face3", 
-      "display_name": "Room_8_18ee760d..Face3", 
+      "identifier": "Room_6_c9541b06..Face3", 
+      "display_name": "Room_6_c9541b06..Face3", 
       "type": "Face"
     }, 
     {
@@ -2015,8 +2016,8 @@
           "type": "FaceRadianceProperties"
         }
       }, 
-      "identifier": "Room_8_18ee760d..Face4", 
-      "display_name": "Room_8_18ee760d..Face4", 
+      "identifier": "Room_6_c9541b06..Face4", 
+      "display_name": "Room_6_c9541b06..Face4", 
       "type": "Face"
     }, 
     {
@@ -2085,8 +2086,8 @@
           "type": "FaceRadianceProperties"
         }
       }, 
-      "identifier": "Room_8_18ee760d..Face5", 
-      "display_name": "Room_8_18ee760d..Face5", 
+      "identifier": "Room_6_c9541b06..Face5", 
+      "display_name": "Room_6_c9541b06..Face5", 
       "type": "Face"
     }
   ], 

@@ -286,14 +286,14 @@ class PhxPolygonRectangular(PhxPolygon):
     @property
     def vertices(self) -> List[PhxVertix]:
         """Return a List of the PhxPolygonRectangle Vertices (counter-clockwise from upper-left)."""
-        corner_verts = [
+        corner_vertices = [
             self.vertix_upper_left,
             self.vertix_lower_left,
             self.vertix_lower_right,
             self.vertix_upper_right,
         ]
         # filter out any 'None' vertices
-        return [v for v in corner_verts if v]
+        return [v for v in corner_vertices if v]
 
 
 @dataclass

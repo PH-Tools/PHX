@@ -237,3 +237,11 @@ AnyPhxHeater = Union[
     PhxHeaterHeatPumpHotWater,
     PhxHeaterHeatPumpCombined,
 ]
+
+AnyPhxHotWaterHeater = Union[
+    PhxHeaterElectric,
+    PhxHeaterBoilerFossil,
+    PhxHeaterBoilerWood,
+    PhxHeaterDistrictHeat,
+    PhxHeaterHeatPumpHotWater,
+]

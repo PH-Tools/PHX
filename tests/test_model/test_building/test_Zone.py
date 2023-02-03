@@ -10,8 +10,8 @@ def test_default_zone(reset_class_counters):
     assert z2.id_num == 2
     assert z1 != z2
 
-    assert not z1.wufi_rooms
-    assert not z2.wufi_rooms
+    assert not z1.spaces
+    assert not z2.spaces
     assert not z1.elec_equipment_collection
     assert not z2.elec_equipment_collection
     assert not z1.exhaust_ventilator_collection

@@ -322,7 +322,7 @@ def build_phx_heating_device(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeati
     return phx_heater
 
 
-def build_phx_heating_sys(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeatingDevice:
+def build_phx_heating_sys(_htg_sys: heating.PhHeatingSystem) -> hvac.AnyPhxHeater:
     """
 
     Arguments:
@@ -408,7 +408,7 @@ def build_phx_cooling_device(_clg_sys: cooling.PhCoolingSystem) -> hvac.PhxCooli
     return phx_cooling
 
 
-def build_phx_cooling_sys(_htg_sys: cooling.PhCoolingSystem) -> hvac.PhxCoolingDevice:
+def build_phx_cooling_sys(_htg_sys: cooling.PhCoolingSystem) -> hvac.AnyPhxCooling:
     """
 
     Arguments:

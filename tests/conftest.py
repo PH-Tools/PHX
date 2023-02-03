@@ -11,9 +11,10 @@ from PHX.model import (
     constructions,
     elec_equip,
     components,
+    spaces,
 )
-from PHX.model.loads.ventilation import PhxRoomVentilation
 from PHX.model.hvac import _base, cooling, collection, water, ventilation, heating
+from PHX.model.schedules import ventilation as sched_ventilation
 
 
 @pytest.fixture
@@ -62,7 +63,7 @@ def _reset_phx_class_counters():
     project.PhxVariant._count = 0
     geometry.PhxPolygon._count = 0
     geometry.PhxVertix._count = 0
-    schedules.UtilizationPatternVent._count = 0
+    sched_ventilation.PhxScheduleVentilation._count = 0
     constructions.PhxConstructionOpaque._count = 0
     constructions.PhxConstructionWindow._count = 0
     building.PhxZone._count = 0
@@ -88,7 +89,7 @@ def _reset_phx_class_counters():
     _base.PhxMechanicalDevice._count = 0
     collection.PhxMechanicalSystemCollection._count = 0
 
-    PhxRoomVentilation._count = 0
+    spaces.PhxSpace._count = 0
     ventilation.PhxDeviceVentilation._count = 0
     ventilation.PhxDeviceVentilator._count = 0
 
@@ -122,15 +123,16 @@ def _reload_phx_classes():
     used for running the xml-reference-case testers, since otherwise the id-number
     counters will not line up correctly.
     """
-    importlib.reload(geometry)
     importlib.reload(building)
+    importlib.reload(certification)
+    importlib.reload(components)
+    importlib.reload(constructions)
+    importlib.reload(elec_equip)
+    importlib.reload(geometry)
     importlib.reload(project)
     importlib.reload(geometry)
     importlib.reload(schedules)
-    importlib.reload(certification)
-    importlib.reload(constructions)
-    importlib.reload(elec_equip)
-    importlib.reload(components)
+    importlib.reload(spaces)
 
 
 @pytest.fixture

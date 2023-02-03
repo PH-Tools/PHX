@@ -202,7 +202,7 @@ def build_phx_window_type_from_hb_win_construction(
     phx_window_type.id_num = constructions.PhxConstructionWindow._count
     phx_window_type.display_name = _hb_win_const.display_name
 
-    ph_params: WindowConstructionPhProperties = _hb_win_const.properties.ph
+    ph_params: WindowConstructionPhProperties = _hb_win_const.properties.ph  # type: ignore
 
     # -- Glass ----------------------------------------------------------------
     if ph_params.ph_glazing:

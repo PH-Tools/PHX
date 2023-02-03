@@ -4,19 +4,20 @@
 """PHX Building Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, List, Sequence, Union, Set, Dict, ValuesView
+from typing import ClassVar, List, Sequence, Union, Set, Dict, ValuesView, Any, Optional
 from dataclasses import dataclass, field
 from collections import defaultdict
 from functools import reduce
 import operator
 
-from PHX.model import loads, elec_equip, geometry
+from PHX.model import elec_equip, geometry, spaces
 from PHX.model.components import (
     PhxComponentAperture,
     PhxComponentOpaque,
     PhxComponentThermalBridge,
 )
 from PHX.model.hvac import collection
+from PHX.model.programs import occupancy
 
 
 @dataclass
@@ -29,16 +30,19 @@ class PhxZone:
     weighted_net_floor_area: float = 0.0
     clearance_height: float = 2.5
     specific_heat_capacity: float = 132
-    wufi_rooms: List[loads.PhxRoomVentilation] = field(default_factory=list)
+    spaces: List[spaces.PhxSpace] = field(default_factory=list)
     elec_equipment_collection: elec_equip.PhxElectricDeviceCollection = field(
         default_factory=elec_equip.PhxElectricDeviceCollection
     )
-    res_occupant_quantity: int = 0
+    res_occupant_quantity: float = 0.0
     res_number_bedrooms: int = 0
+    res_number_dwellings: int = 0
     exhaust_ventilator_collection: collection.PhxExhaustVentilatorCollection = field(
         default_factory=collection.PhxExhaustVentilatorCollection
     )
     _thermal_bridges: Dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
+    occupancy: Optional[occupancy.PhxProgramOccupancy] = None
+    lighting: Any = None
 
     def add_thermal_bridges(
         self,

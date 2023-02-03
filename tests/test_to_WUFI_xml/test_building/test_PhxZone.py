@@ -11,6 +11,7 @@ def test_default_PhxProject(reset_class_counters):
         '<KindZone choice="Simulated zone">1</KindZone>',
         "<IdentNr>1</IdentNr>",
         '<RoomsVentilation count="0"/>',
+        '<LoadsPersonsPH count="0"/>',
         "<GrossVolume_Selection>6</GrossVolume_Selection>",
         "<GrossVolume>0.0</GrossVolume>",
         "<NetVolume_Selection>6</NetVolume_Selection>",

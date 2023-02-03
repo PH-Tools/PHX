@@ -40,7 +40,7 @@ def test_default_PhxProject(reset_class_counters):
         "<Responsible_Email></Responsible_Email>",
         "</ProjectData>",
         '<UtilisationPatternsVentilation count="0"/>',
-        '<UtilizationPatternVent count="0"/>',
+        '<UtilizationPatternsPH count="0"/>',
         '<Variants count="0"/>',
         '<Assemblies count="0"/>',
         '<WindowTypes count="0"/>',

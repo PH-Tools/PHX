@@ -1,13 +1,15 @@
-from PHX.model import schedules
+from PHX.model.schedules import ventilation
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
 def test_default_PhxRoomVentilation(reset_class_counters):
-    s1 = schedules.UtilizationPatternVent()
-    result = generate_WUFI_XML_from_object(s1, _header="")
+    s1 = ventilation.PhxScheduleVentilation()
+    result = generate_WUFI_XML_from_object(
+        s1, _header="", _schema_name="_UtilizationPatternVent"
+    )
     assert xml_string_to_list(result) == [
-        "<Name>__unamed_vent_pattern__</Name>",
+        "<Name>__unnamed_vent_schedule__</Name>",
         "<IdentNr>1</IdentNr>",
         "<OperatingDays>7.0</OperatingDays>",
         "<OperatingWeeks>52.0</OperatingWeeks>",

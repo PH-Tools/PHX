@@ -3,8 +3,8 @@
 
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
-from typing import List, Union, Tuple
-from functools import partial
+from typing import List
+from functools import reduce
 
 try:  # import the core honeybee dependencies
     from honeybee.typing import clean_ep_string
@@ -13,70 +13,127 @@ except ImportError as e:
 
 try:
     from honeybee import room, face
-    from honeybee.boundarycondition import Outdoors, Ground
-    from honeybee_energy.boundarycondition import Adiabatic
+    from honeybee.properties import FaceProperties
     from honeybee_energy import shw
+    from honeybee.boundarycondition import Outdoors, Ground, Surface
+except ImportError as e:
+    raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
+
+try:
     from honeybee_energy.load import people, equipment, infiltration
-    from honeybee_energy.schedule.ruleset import ScheduleRuleset
-    from honeybee_energy.lib.scheduletypelimits import schedule_type_limit_by_identifier
+    from honeybee_energy.load.infiltration import Infiltration
     from honeybee_energy.properties.room import RoomEnergyProperties
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy:\n\t{}".format(e))
 
-from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
-from honeybee_energy_ph.properties.load.people import PeoplePhProperties
-from PHX.model import project
+try:
+    from honeybee_ph.properties.room import RoomPhProperties
+except ImportError as e:
+    raise ImportError("\nFailed to import honeybee_ph:\n\t{}".format(e))
 
-HB_BC = Union[Outdoors, Ground, Adiabatic]
+try:
+    from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
+    from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
+    from honeybee_energy_ph.properties.load.people import PeoplePhProperties
+except ImportError as e:
+    raise ImportError("\nFailed to import honeybee_energy_ph:\n\t{}".format(e))
+
+try:
+    from PHX.model import project
+except ImportError as e:
+    raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
 
 
-def _get_room_exposed_faces(
-    _hb_room: room.Room, _bc_types: Tuple = (Outdoors, Ground, Adiabatic)
-) -> List[face.Face3D]:
-    """Returns a list of the Honeybee Faces within the set of HB-Boundary Conditions specified.
+def _dup_face(_hb_face: face.Face) -> face.Face:
+    """Duplicate a Honeybee Face and all it's properties.
 
     Arguments:
     ----------
-        * _hb_room (room.Room): The Honeybee Room to get the faces of.
-        * _type (tuple[HB_BC]): A tuple of the allowable HB-Boundary Conditions.
-            default = (Outdoors, Ground, Adiabatic)
+        *_hb_face: (face.Face) The face to copy
 
     Returns:
     --------
-        * list[face.Face]: The list of Exposed Honeybee Faces.
+        * (face.Face): The duplicate face.
     """
 
-    exposed_faces = []
+    new_face = _hb_face.duplicate()
+    new_face._properties._duplicate_extension_attr(_hb_face._properties)
+
+    # -- Note, this is required if the user has set custom .energy constructions
+    # -- or other custom face-specific attributes
+    # -- Duplicate any extensions like .ph, .energy or .radiance
+    face_prop: FaceProperties = _hb_face.properties  # type: ignore
+    for extension_name in face_prop._extension_attributes:
+        # -- use try except to avoid the bug introduced in HB v1.5
+        # TODO: fix Honeybee and then remove this try...except...
+        try:
+            original_extension = getattr(_hb_face._properties, f"_{extension_name}", None)
+            new_extension = original_extension.duplicate()  # type: ignore
+            setattr(new_face._properties, f"_{extension_name}", new_extension)
+        except:
+            pass
+
+    return new_face
+
+
+def _get_thermal_envelope_faces(
+    _hb_room: room.Room, _all_room_ids: List[str]
+) -> List[face.Face]:
+    """Return a list of all the thermal-envelope faces for a Honeybee Room.
+
+    This will include all the 'Outdoor', 'Ground' and 'Adiabatic' faces.
+    If an 'Surface' faces are found, they will only be included IF they do NOT
+    have exposure to another HB-Room in the set. This will omit any 'interior'
+    surfaces, but will retain any surfaces which are exposed to an HB-Room which
+    is part of another set (building segment). ie: the floor of a residential
+    tower which is exposed to the ceiling of a commercial podium.
+
+    Arguments:
+    ----------
+        *_hb_room: (room.Room) The room to get the faces from.
+        * _all_room_ids: List[str] The list of all the room-group (building segment) IDs
+
+    Returns:
+    --------
+        * (List[face.Face]) A List of all the thermal boundary faces.
+    """
+
+    exposed_faces: List[face.Face] = []
     for original_face in _hb_room.faces:
-        if not isinstance(original_face.boundary_condition, _bc_types):
-            continue
 
-        new_face = original_face.duplicate()
-        new_face._properties._duplicate_extension_attr(original_face._properties)
+        # -- If it is a Surface exposure, but the face's adjacent zone is NOT part of
+        # -- the room group, it must be exposed to another zone (ie: the floor surface
+        # -- of a residential tower exposed to the commercial zone below). So
+        face_bc = original_face.boundary_condition
+        if isinstance(face_bc, Surface):
+            adjacent_room_name = face_bc.boundary_condition_objects[-1]
+            if adjacent_room_name in _all_room_ids:
+                continue
 
-        # -- Note, this is required if the user has set custom .energy constructions
-        # -- or other custom face-specific attributes
-        # -- Duplicate any extensions like .ph, .energy or .radiance
-        for extension_name in original_face.properties._extension_attributes:
-            # -- use try except to avoid the bug introduced in HB v1.5
-            # TODO: fix Honeybee and then remove this try...except...
-            try:
-                original_extension = getattr(
-                    original_face._properties, f"_{extension_name}", None
-                )
-                new_extension = original_extension.duplicate()
-                setattr(new_face._properties, f"_{extension_name}", new_extension)
-            except:
-                pass
-
-        exposed_faces.append(new_face)
+        exposed_faces.append(_dup_face(original_face))
 
     return exposed_faces
 
 
-def _get_room_exposed_face_area(_hb_room: room.Room, _bc_types: Tuple) -> float:
-    """Returns the total area of the 'exposed' faces in a HB-Room."""
-    return sum(f.area for f in _get_room_exposed_faces(_hb_room, _bc_types))
+def _get_room_exposed_face_area(_hb_room: room.Room) -> float:
+    """Returns the total surface area for all the 'exposed' faces (Ground / Outdoors) of a HB-Room
+    For Phius, infiltration-exposed surfaces include all, including 'Ground'
+    unlike for Honeybee where only 'Outdoors' count as 'exposed'
+
+    Arguments:
+    ----------
+        *_hb_room: (room.Room) The Honeybee Room to get the surfaces of.
+
+    Returns:
+    --------
+        * (float) The total surface area.
+    """
+
+    return sum(
+        fc.area
+        for fc in _hb_room.faces
+        if isinstance(fc.boundary_condition, (Outdoors, Ground))
+    )
 
 
 def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
@@ -92,11 +149,13 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
         * (people.People): A new Honeybee People object with values merged from the HB-Rooms.
     """
 
-    # Tally up all the values from all the rooms
-    total_hb_people = 0.0
-    total_ph_bedrooms = 0.0
+    # -- Tally up all the values from all the rooms
+    total_ph_bedrooms = 0
+    total_ph_dwellings = 0
     total_ph_people = 0.0
+    total_hb_people = 0.0
     for room in _hb_rooms:
+        # -- Type Aliases
         hb_room_prop_energy: RoomEnergyProperties = room.properties.energy  # type: ignore
         hb_ppl_obj = hb_room_prop_energy.people
 
@@ -106,15 +165,19 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
 
         hbph_people_prop_ph: PeoplePhProperties = hb_ppl_obj.properties.ph  # type: ignore
         total_ph_bedrooms += int(hbph_people_prop_ph.number_bedrooms)
-        total_ph_people += int(hbph_people_prop_ph.number_people)
+        total_ph_people += float(hbph_people_prop_ph.number_people)
+        total_ph_dwellings += int(hbph_people_prop_ph.number_dwelling_units)
         total_hb_people += hb_ppl_obj.people_per_area * room.floor_area
 
     # Build up the new object's attributes
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
-    new_hb_ppl = _hb_rooms[0].properties.energy.people.duplicate()  # type: ignore
+    new_hb_prop_energy = _hb_rooms[0].properties.energy  # type: RoomEnergyProperties
+    new_hb_ppl = new_hb_prop_energy.people.duplicate()  # type: people.People
+    new_hb_ppl_prop_ph = new_hb_ppl.properties.ph  # type: PeoplePhProperties
     new_hb_ppl.people_per_area = total_hb_people / total_floor_area
-    new_hb_ppl.properties.ph.number_bedrooms = total_ph_bedrooms
-    new_hb_ppl.properties.ph.number_people = total_ph_people
+    new_hb_ppl_prop_ph.number_bedrooms = total_ph_bedrooms
+    new_hb_ppl_prop_ph.number_people = total_ph_people
+    new_hb_ppl_prop_ph.number_dwelling_units = total_ph_dwellings
 
     return new_hb_ppl
 
@@ -132,27 +195,24 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
         * (infiltration.Infiltration): A new Honeybee Infiltration object
             with values merged from the HB-Rooms.
     """
-    # For Phius, infiltration-exposed surfaces include all, including 'Ground'
-    # unlike for Honeybee where only 'Outdoors' count as 'exposed'
-    get_rm_infil_exposed_face_area = partial(
-        _get_room_exposed_face_area, _bc_types=(Outdoors, Ground)
-    )
 
-    # Calculate the total airflow per room, total exposed area per room
+    # -- Calculate the total airflow per room, total exposed area per room
     total_m3_s = 0.0
     total_exposed_area = 0.0
     for room in _hb_rooms:
-        room_infil_exposed_area = get_rm_infil_exposed_face_area(room)
+        room_infil_exposed_area = _get_room_exposed_face_area(room)
+        room_prop_energy: RoomEnergyProperties = room.properties.energy  # type: ignore
         room_infil_m3_s = (
-            room_infil_exposed_area
-            * room.properties.energy.infiltration.flow_per_exterior_area
+            room_infil_exposed_area * room_prop_energy.infiltration.flow_per_exterior_area
         )
 
         total_exposed_area += room_infil_exposed_area
         total_m3_s += room_infil_m3_s
 
     # -- Set the new Infiltration Object's attr to the weighted average
-    new_infil = _hb_rooms[0].properties.energy.infiltration.duplicate()
+    reference_room = _hb_rooms[0]
+    reference_room_prop_energy: RoomEnergyProperties = reference_room.properties.energy  # type: ignore
+    new_infil: Infiltration = reference_room_prop_energy.infiltration.duplicate()  # type: ignore
     try:
         new_infil.flow_per_exterior_area = total_m3_s / total_exposed_area
     except ZeroDivisionError:
@@ -176,8 +236,9 @@ def merge_shw(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
 
     # -- Find the first HBE SHWSystem System in the list of HB-Rooms, and use that as the 'base'
     for room in _hb_rooms:
-        if room.properties.energy.shw:  # type: ignore
-            new_shw: shw.SHWSystem = room.properties.energy.shw.duplicate()  # type: ignore
+        room_prop_energy: RoomEnergyProperties = room.properties.energy  # type: ignore
+        if room_prop_energy.shw:
+            new_shw: shw.SHWSystem = room_prop_energy.shw.duplicate()
             break
     else:
         # -- If no SHWSystem found anywhere, return a new default HBE SHWSystem System
@@ -190,9 +251,10 @@ def merge_shw(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
     shw_props: List[SHWSystemPhProperties] = [
         hb_room.properties.energy.shw.properties.ph  # type: ignore
         for hb_room in _hb_rooms
-        if hb_room.properties.energy.shw
-    ]  # type: ignore
-    new_prop = sum(shw_props)  # type: ignore
+        if hb_room.properties.energy.shw  # type: ignore
+    ]
+
+    new_prop = reduce(lambda a, b: a + b, shw_props)
     new_shw.properties._ph = new_prop  # type: ignore
 
     return new_shw
@@ -216,12 +278,11 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     # -- Increase the quantity for each duplicate piece of equipment found.
     ph_equipment = {}
     for room in _hb_rooms:
-        for (
-            equip_key,
-            equip,
-        ) in (
-            room.properties.energy.electric_equipment.properties.ph.equipment_collection.items()
-        ):
+        room_prop_energy: RoomEnergyProperties = room.properties.energy  # type: ignore
+        room_ee_prop = room_prop_energy.electric_equipment.properties
+        room_ee_prop_ph: ElectricEquipmentPhProperties = room_ee_prop.ph  # type: ignore
+
+        for equip_key, equip in room_ee_prop_ph.equipment_collection.items():
             try:
                 ph_equipment[equip_key].quantity += 1
             except KeyError:
@@ -230,27 +291,43 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     # -- Calculate the total Watts of elec-equipment, total floor-area
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
     total_watts = sum(
-        (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area)
+        (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area)  # type: ignore
         for rm in _hb_rooms
     )
 
-    # -- Build a new HB-Elec-Equip with all the PH-Equipment in it.
-    new_hb_equip = _hb_rooms[0].properties.energy.electric_equipment.duplicate()
+    # -- Build a new HB-Elec-Equip from the reference room, add all the PH-Equipment to it.
+    reference_room = _hb_rooms[0]
+    reference_room_prop_energy: RoomEnergyProperties = reference_room.properties.energy  # type: ignore
+    ref_room_ee: equipment.ElectricEquipment = (
+        reference_room_prop_energy.electric_equipment
+    )
+
+    new_hb_equip: equipment.ElectricEquipment = ref_room_ee.duplicate()  # type: ignore
     new_hb_equip.watts_per_area = total_watts / total_floor_area
-    new_hb_equip.properties.ph.equipment_collection.remove_all_equipment()
+    new_hb_equip_prop_ph: ElectricEquipmentPhProperties = new_hb_equip.properties.ph  # type: ignore
+    new_hb_equip_prop_ph.equipment_collection.remove_all_equipment()
+
     for ph_item in ph_equipment.values():
-        new_hb_equip.properties.ph.equipment_collection.add_equipment(ph_item)
+        new_hb_equip_prop_ph.equipment_collection.add_equipment(ph_item)
 
     return new_hb_equip
+
+
+def check_room_has_spaces(_hb_room: room.Room) -> None:
+    rm_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    if len(rm_prop_ph.spaces) == 0:
+        print(
+            f"Warning: Room '{_hb_room.display_name}' has no spaces?"
+            " Merge may not work correctly"
+        )
 
 
 def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     """Merge together a group of Honeybee Rooms into a new single HB Room.
 
-    This will
-    ignore any 'interior' Honeybee-Faces with a 'Surface' boundary condition and will only
-    keep the 'exposed' Honeybee Faces with boundary_conditions of 'Outdoors', 'Ground'
-    and 'Adiabatic' to build the new Honeybee Room from.
+    This will ignore any 'interior' Honeybee-Faces with a 'Surface' boundary
+    condition and will only keep the 'exposed' Honeybee Faces with boundary_conditions
+    of 'Outdoors', 'Ground' and 'Adiabatic' to build the new Honeybee Room from.
 
     Arguments:
     ----------
@@ -263,13 +340,17 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     reference_room = _hb_rooms[0]
 
     # -------------------------------------------------------------------------
-    # -- Get only the 'exposed' faces to build a new HB-Room with
+    # Collect all the HB-Room names for Surface adjacency checking
+    all_hb_room_identifiers = [rm.identifier for rm in _hb_rooms]
+
+    # -------------------------------------------------------------------------
+    # -- Get only the 'exposed' thermal envelope faces to build a new HB-Room with
     exposed_faces = []
     for hb_room in _hb_rooms:
-        exposed_faces += _get_room_exposed_faces(hb_room)
+        exposed_faces += _get_thermal_envelope_faces(hb_room, all_hb_room_identifiers)
 
     new_room = room.Room(
-        identifier=reference_room.properties.ph.ph_bldg_segment.display_name,
+        identifier=reference_room.properties.ph.ph_bldg_segment.display_name,  # type: ignore
         faces=exposed_faces,
     )
 
@@ -277,14 +358,14 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     # -- Set the new Merged-Room's properties.ph and
     # -- properties.energy to match the 'reference' room to start with, but leave
     # -- off the PH-Spaces so they don't get duplicated
-    dup_ph_prop = reference_room._properties.ph.duplicate(
-        new_room._properties.ph, include_spaces=False
-    )
+    ref_rm_prop_ph: RoomPhProperties = reference_room.properties.ph  # type: ignore
+    new_rm_prop_ph: RoomPhProperties = new_room.properties.ph  # type: ignore
+    dup_ph_prop = ref_rm_prop_ph.duplicate(new_rm_prop_ph, include_spaces=False)
     setattr(new_room._properties, "_ph", dup_ph_prop)
 
-    dup_energy_prop = reference_room._properties.energy.duplicate(
-        new_room._properties.energy
-    )
+    ref_rm_prop_energy: RoomEnergyProperties = reference_room.properties.energy  # type: ignore
+    new_rm_prop_energy: RoomEnergyProperties = new_room.properties.energy  # type: ignore
+    dup_energy_prop = ref_rm_prop_energy.duplicate(new_rm_prop_energy)
     setattr(new_room._properties, "_energy", dup_energy_prop)
 
     # -------------------------------------------------------------------------
@@ -292,19 +373,14 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     # -- NOTE: this has to be done AFTER the duplicate()
     # -- call, otherwise not all the spaces will transfer over properly.
     for hb_room in _hb_rooms:
-        # --
-        if len(hb_room.properties.ph.spaces) == 0:
-            print(
-                f"Warning: Room '{hb_room.display_name}' has no spaces?"
-                " Merge may not work correctly"
-            )
+        check_room_has_spaces(hb_room)
 
-        # --
-        for existing_space in hb_room.properties.ph.spaces:
-            # -- Preserve the original HB-Room's energy and ph properties over
-            # -- on the space. We need to do this cus' the HB-Room is being removed
-            # -- and we want to preserve HVAC and program info for the spaces.
-            existing_space.properties._energy = hb_room.properties._energy.duplicate(
+        rm_prop_ph: RoomPhProperties = hb_room.properties.ph  # type: ignore
+        for existing_space in rm_prop_ph.spaces:
+            # -- Preserve the space host HB-Room's .energy and .ph properties over
+            # -- on the space itself. We need to do this cus' the host HB-Room is being
+            # -- removed and we want to preserve HVAC and program info for the spaces.
+            existing_space.properties._energy = hb_room.properties._energy.duplicate(  # type: ignore
                 new_host=existing_space
             )
             # TODO: Verify that this can be removed without causing any issues?
@@ -312,14 +388,16 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
             # existing_space.properties._ph = hb_room.properties._ph.duplicate(
             #     new_host=existing_space)
 
-            new_room.properties.ph.add_new_space(existing_space)
+            new_rm_prop_ph: RoomPhProperties = new_room.properties.ph  # type: ignore
+            new_rm_prop_ph.add_new_space(existing_space)
 
     # -------------------------------------------------------------------------
     # -- Merge the hb_rooms' load values
-    new_room.properties.energy.infiltration = merge_infiltrations(_hb_rooms)
-    new_room.properties.energy.people = merge_occupancies(_hb_rooms)
-    new_room.properties.energy.electric_equipment = merge_elec_equip(_hb_rooms)
-    new_room.properties.energy.shw = merge_shw(_hb_rooms)
+    new_rm_prop_energy: RoomEnergyProperties = new_room.properties.energy  # type: ignore
+    new_rm_prop_energy.infiltration = merge_infiltrations(_hb_rooms)
+    new_rm_prop_energy.people = merge_occupancies(_hb_rooms)
+    new_rm_prop_energy.electric_equipment = merge_elec_equip(_hb_rooms)
+    new_rm_prop_energy.shw = merge_shw(_hb_rooms)
 
     # -------------------------------------------------------------------------
     # -- TODO: Can I merge together the surfaces as well?

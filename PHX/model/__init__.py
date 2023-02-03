@@ -15,5 +15,5 @@ Project
             ├---Components
             ├---Shades (Components)
             └---Zones
-                └---Rooms
+                └---Spaces (Rooms)
 """
