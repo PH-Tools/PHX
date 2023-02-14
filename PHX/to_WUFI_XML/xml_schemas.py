@@ -263,6 +263,7 @@ def _PhxComponentAperture(_c: building.PhxComponentAperture) -> List[xml_writabl
             "IdentNrPolygons",
             [XML_Node("IdentNr", n, "index", i) for i, n in enumerate(_c.polygon_ids)],
         ),
+        XML_Node("DepthWindowReveal", 0.1016, "unit", "m"),
     ]
 
 

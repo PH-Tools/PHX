@@ -241,7 +241,7 @@ class PhxComponentAperture(PhxComponentBase):
 
         return None
 
-    def __add__(self, other) -> PhxComponentAperture:
+    def __add__(self, other: PhxComponentAperture) -> PhxComponentAperture:
         """Merge with another Component into a single new Component.
 
         Arguments:
@@ -258,7 +258,11 @@ class PhxComponentAperture(PhxComponentBase):
                 continue
             setattr(new_compo, attr_name, attr_val)
 
-        new_compo.display_name = "Merged_Component"
+        if self.window_type.display_name == other.window_type.display_name:
+            new_compo.display_name = self.window_type.display_name
+        else:
+            new_compo.display_name = "Merged_Aperture_Component"
+
         new_compo.elements = self.elements + other.elements
         for element in new_compo.elements:
             element.host = new_compo
