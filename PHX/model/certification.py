@@ -48,7 +48,6 @@ class PhxPhBuildingData:
 # -----------------------------------------------------------------------------
 @dataclass
 class PhxPhiusCertificationCriteria:
-    ph_certificate_criteria: int = 3
     ph_selection_target_data: int = 2
 
     phius_annual_heating_demand: float = 15.0
@@ -59,6 +58,9 @@ class PhxPhiusCertificationCriteria:
 
 @dataclass
 class PhxPhiusCertificationSettings:
+    phius_building_certification_program = (
+        phius_certification.PhiusCertificationProgram.PHIUS_2021_CORE
+    )
     phius_building_category_type = (
         phius_certification.PhiusCertificationBuildingCategoryType.RESIDENTIAL_BUILDING
     )

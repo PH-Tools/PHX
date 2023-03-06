@@ -337,7 +337,7 @@ def _PhxPhiusCertification(
     return [
         XML_Node(
             "PH_CertificateCriteria",
-            _phius_cert.phius_certification_criteria.ph_certificate_criteria,
+            _phius_cert.phius_certification_settings.phius_building_certification_program.value,
         ),
         XML_Node(
             "PH_SelectionTargetData",
@@ -735,7 +735,7 @@ def _PhxConstructionWindow(
     return [
         XML_Node("IdentNr", _wt.id_num),
         XML_Node("Name", _wt.display_name),
-        XML_Node("Uw_Detailed>", _wt.use_detailed_uw),
+        XML_Node("Uw_Detailed", _wt.use_detailed_uw),
         XML_Node("GlazingFrameDetailed", _wt.use_detailed_frame),
         XML_Node("FrameFactor", _wt.frame_factor),
         XML_Node("U_Value", _wt.u_value_window),

@@ -118,7 +118,7 @@ def test_default_PhxProject(reset_class_counters):
         "</PH_ClimateLocation>",
         "</ClimateLocation>",
         "<PassivehouseData>",
-        "<PH_CertificateCriteria>3</PH_CertificateCriteria>",
+        "<PH_CertificateCriteria>7</PH_CertificateCriteria>",
         "<PH_SelectionTargetData>2</PH_SelectionTargetData>",
         "<AnnualHeatingDemand>15.0</AnnualHeatingDemand>",
         "<AnnualCoolingDemand>15.0</AnnualCoolingDemand>",

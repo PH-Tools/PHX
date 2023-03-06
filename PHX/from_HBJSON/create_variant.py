@@ -92,20 +92,17 @@ def add_phius_certification_from_hb_room(
         * None
     """
 
-    # alias cus' all this shit is deep in there...
+    # -- alias cus' all this shit is deep in there...
     hbph_phius_cert: phius.PhiusCertification = _hb_room.properties.ph.ph_bldg_segment.phius_certification  # type: ignore # alias
     phx_phius_cert_criteria = _variant.phius_cert.phius_certification_criteria  # alias
     phx_phius_cert_settings = _variant.phius_cert.phius_certification_settings  # alias
 
-    # some random bullshit
-    phx_phius_cert_criteria.ph_certificate_criteria = (
-        hbph_phius_cert.certification_criteria
-    )
+    # -- some random bullshit
     phx_phius_cert_criteria.ph_selection_target_data = (
         hbph_phius_cert.localization_selection_type
     )
 
-    # certification thresholds (for Phius, they change)
+    # -- certification thresholds (for Phius, they change with climate)
     phx_phius_cert_criteria.phius_annual_heating_demand = (
         hbph_phius_cert.PHIUS2021_heating_demand
     )
@@ -119,7 +116,12 @@ def add_phius_certification_from_hb_room(
         hbph_phius_cert.PHIUS2021_cooling_load
     )
 
-    # certification settings / types
+    # -- certification settings / types
+    phx_phius_cert_settings.phius_building_certification_program = (
+        phius_certification.PhiusCertificationProgram(
+            hbph_phius_cert.certification_program.number
+        )
+    )
     phx_phius_cert_settings.phius_building_category_type = (
         phius_certification.PhiusCertificationBuildingCategoryType(
             hbph_phius_cert.building_category_type.number

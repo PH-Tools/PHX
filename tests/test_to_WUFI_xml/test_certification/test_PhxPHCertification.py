@@ -7,7 +7,7 @@ def test_default_PhxPHCertification(reset_class_counters):
     c1 = certification.PhxPhiusCertification()
     result = generate_WUFI_XML_from_object(c1, _header="")
     assert xml_string_to_list(result) == [
-        "<PH_CertificateCriteria>3</PH_CertificateCriteria>",
+        "<PH_CertificateCriteria>7</PH_CertificateCriteria>",
         "<PH_SelectionTargetData>2</PH_SelectionTargetData>",
         "<AnnualHeatingDemand>15.0</AnnualHeatingDemand>",
         "<AnnualCoolingDemand>15.0</AnnualCoolingDemand>",
@@ -47,7 +47,7 @@ def test_customized_PhxPhiusCertification(reset_class_counters):
     c1.phius_certification_criteria.phius_peak_cooling_load = 456.78
     result = generate_WUFI_XML_from_object(c1, _header="")
     assert xml_string_to_list(result) == [
-        "<PH_CertificateCriteria>3</PH_CertificateCriteria>",
+        "<PH_CertificateCriteria>7</PH_CertificateCriteria>",
         "<PH_SelectionTargetData>2</PH_SelectionTargetData>",
         "<AnnualHeatingDemand>123.45</AnnualHeatingDemand>",
         "<AnnualCoolingDemand>234.56</AnnualCoolingDemand>",

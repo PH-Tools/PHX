@@ -74,11 +74,11 @@ class xl_API_Protocol:
 
 
 class xl_Sheet_Protocol:
-    def __init__(self):
+    def __init__(self, name="Sheet1"):
         self.api = xl_API_Protocol(self)
         self.protected = True
         self._ranges = {}
-        self.name: str
+        self.name: str = name
 
     def range(self, cell1: str, cell2: Optional[str] = None) -> xl_Range_Protocol:
         if cell1 in self._ranges.keys():
@@ -89,13 +89,13 @@ class xl_Sheet_Protocol:
             return rng_obj
 
     def clear_contents(self) -> None:
-        return None
+        ...
 
     def clear_formats(self) -> None:
-        return None
+        ...
 
     def clear(self) -> None:
-        return None
+        ...
 
     def activate(self) -> None:
         ...
@@ -103,6 +103,8 @@ class xl_Sheet_Protocol:
     def autofit(self, *args, **kwargs) -> None:
         ...
 
+    def delete(self) -> None:
+        ...
 
 class xl_Sheets_Protocol:
     def __init__(self):
@@ -118,9 +120,9 @@ class xl_Sheets_Protocol:
         after: Optional[str] = None,
     ) -> xl_Sheet_Protocol:
         if name in self.storage.keys():
-            raise ValueError
+            return self.storage[str(name)]
         else:
-            new_sheet = xl_Sheet_Protocol()
+            new_sheet = xl_Sheet_Protocol(name=str(name))
             self.storage[str(name)] = new_sheet
             return new_sheet
 

@@ -11,6 +11,7 @@ from PHX.xl import xl_data
 from PHX.xl.xl_typing import (
     xl_Framework_Protocol,
     xl_Book_Protocol,
+    xl_Sheets_Protocol,
     xl_Sheet_Protocol,
     xl_Range_Protocol,
 )
@@ -97,6 +98,10 @@ class XLConnection:
         self.output(f"> connected to excel doc: {self.wb}")
 
     @property
+    def sheets(self) -> xl_Sheets_Protocol:
+        return self.wb.sheets
+
+    @property
     def os_is_windows(self) -> bool:
         """Return True if the current OS is Windows. False if it is Mac/Linux"""
         return os.name == "nt"
@@ -142,10 +147,10 @@ class XLConnection:
         """Clears the content and formatting of the whole sheet."""
         self.get_sheet_by_name(_sheet_name).clear()
 
-    def create_new_worksheet(self, _sheet_name: str) -> None:
+    def create_new_worksheet(self, _sheet_name: str, before: Optional[str]=None, after: Optional[str]=None) -> None:
         """Try and add a new Worksheet to the Workbook."""
         try:
-            self.wb.sheets.add(_sheet_name)
+            self.wb.sheets.add(_sheet_name, before, after)
             self.output(f"Adding '{_sheet_name}' to Workbook")
         except ValueError:
             self.output(f"Worksheet '{_sheet_name}' already in Workbook.")
@@ -205,18 +210,31 @@ class XLConnection:
         """
         return {sh.name for sh in self.wb.sheets}
 
-    def get_sheet_by_name(self, _sheet_name: str) -> xl_Sheet_Protocol:
+    def get_sheet_by_name(self, _sheet_name: Union[str, int]) -> xl_Sheet_Protocol:
         """Returns an Excel Sheet with the specified name, or KeyError if not found.
 
         Arguments:
         ----------
-            * _sheet_name: (str): The excel sheet name to locate.
+            * _sheet_name: (Union[str, int]): The excel sheet name or index num. to locate.
 
         Returns:
         --------
             * (xw.main.Sheet): The excel sheet found.
         """
+        if _sheet_name not in self.get_worksheet_names():
+            msg = f"Error: Key '{_sheet_name}' was not found in the Workbook '{self.wb.name}' Sheets?"
+            raise KeyError(msg)
+        
         return self.wb.sheets[_sheet_name]
+
+    def get_last_sheet(self) -> xl_Sheet_Protocol:
+        """Return the last Worksheet in the Workbook.
+
+        Returns:
+        --------
+            * (xl_Sheet_Protocol) The last Worksheet in the Workbook.
+        """
+        return self.wb.sheets[-1]
 
     def get_last_used_row_num_in_column(self, _sheet_name: str, _col: str) -> int:
         """Return the row number of the last cell in a column with a value in it.

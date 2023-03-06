@@ -9,7 +9,7 @@ def test_default_PhxConstructionWindow(reset_class_counters):
     assert xml_string_to_list(result) == [
         "<IdentNr>1</IdentNr>",
         "<Name></Name>",
-        "<Uw_Detailed>>true</Uw_Detailed>>",
+        "<Uw_Detailed>true</Uw_Detailed>",
         "<GlazingFrameDetailed>true</GlazingFrameDetailed>",
         "<FrameFactor>0.75</FrameFactor>",
         "<U_Value>1.0</U_Value>",
