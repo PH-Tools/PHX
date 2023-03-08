@@ -153,6 +153,7 @@ def create_component_from_hb_aperture(
     phx_ap.window_type = _window_type_dict[hb_ap_prop_energy.construction.identifier]
     phx_ap.window_type_id_num = hb_ap_const_prop_ph.id_num
     phx_ap.variant_type_name = hb_ap_prop_ph.variant_type
+    phx_ap.install_depth = hb_ap_prop_ph.install_depth
 
     # -- Create new Aperture Element (Sash)
     new_phx_ap_element = components.PhxApertureElement(_host=phx_ap)
