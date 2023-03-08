@@ -3,8 +3,10 @@
 
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
-from typing import List
+from collections import defaultdict
+from typing import List, Dict
 from functools import reduce
+
 
 try:  # import the core honeybee dependencies
     from honeybee.typing import clean_ep_string
@@ -34,7 +36,7 @@ except ImportError as e:
 try:
     from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
-    from honeybee_energy_ph.properties.load.people import PeoplePhProperties
+    from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy_ph:\n\t{}".format(e))
 
@@ -56,7 +58,7 @@ def _dup_face(_hb_face: face.Face) -> face.Face:
         * (face.Face): The duplicate face.
     """
 
-    new_face = _hb_face.duplicate()
+    new_face = _hb_face.duplicate() # type: face.Face # type: ignore
     new_face._properties._duplicate_extension_attr(_hb_face._properties)
 
     # -- Note, this is required if the user has set custom .energy constructions
@@ -136,6 +138,25 @@ def _get_room_exposed_face_area(_hb_room: room.Room) -> float:
     )
 
 
+def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellings]:
+    """
+    
+    Arguments:
+    ----------
+        * _hb_rooms (List[room.Room]): A list of the HB-Rooms
+    
+    Returns:
+    --------
+        * (List[PhDwellings])
+    """
+    dwellings = {
+                room.properties.energy.people.properties.ph.dwellings #type: ignore
+                for room in _hb_rooms
+                if room.properties.energy.people # type: ignore
+                } 
+    return list(dwellings)
+
+
 def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     """Returns a new HB-People-Obj with it's values set from a list of input HB-Rooms.
 
@@ -149,14 +170,20 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
         * (people.People): A new Honeybee People object with values merged from the HB-Rooms.
     """
 
-    # -- Tally up all the values from all the rooms
-    total_ph_bedrooms = 0
+    # -------------------------------------------------------------------------
+    # Calculate the total dwelling-unit count
     total_ph_dwellings = 0
+    for dwelling_obj in all_unique_ph_dwelling_objects(_hb_rooms):
+        total_ph_dwellings += int(dwelling_obj.num_dwellings)
+
+    # -------------------------------------------------------------------------
+    # -- Merge all the Rooms
+    total_ph_bedrooms = 0
     total_ph_people = 0.0
     total_hb_people = 0.0
-    for room in _hb_rooms:
+    for hb_room in _hb_rooms:
         # -- Type Aliases
-        hb_room_prop_energy: RoomEnergyProperties = room.properties.energy  # type: ignore
+        hb_room_prop_energy: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
         hb_ppl_obj = hb_room_prop_energy.people
 
         # -- Sometimes there is no 'People'
@@ -166,14 +193,15 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
         hbph_people_prop_ph: PeoplePhProperties = hb_ppl_obj.properties.ph  # type: ignore
         total_ph_bedrooms += int(hbph_people_prop_ph.number_bedrooms)
         total_ph_people += float(hbph_people_prop_ph.number_people)
-        total_ph_dwellings += int(hbph_people_prop_ph.number_dwelling_units)
-        total_hb_people += hb_ppl_obj.people_per_area * room.floor_area
+        total_hb_people += hb_ppl_obj.people_per_area * hb_room.floor_area
 
-    # Build up the new object's attributes
+
+    # -------------------------------------------------------------------------
+    # -- Build up the new Peopler object's attributes
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
-    new_hb_prop_energy = _hb_rooms[0].properties.energy  # type: RoomEnergyProperties
-    new_hb_ppl = new_hb_prop_energy.people.duplicate()  # type: people.People
-    new_hb_ppl_prop_ph = new_hb_ppl.properties.ph  # type: PeoplePhProperties
+    new_hb_prop_energy = _hb_rooms[0].properties.energy  # type: RoomEnergyProperties # type: ignore
+    new_hb_ppl = new_hb_prop_energy.people.duplicate()  # type: people.People # type: ignore
+    new_hb_ppl_prop_ph = new_hb_ppl.properties.ph  # type: PeoplePhProperties # type: ignore
     new_hb_ppl.people_per_area = total_hb_people / total_floor_area
     new_hb_ppl_prop_ph.number_bedrooms = total_ph_bedrooms
     new_hb_ppl_prop_ph.number_people = total_ph_people
