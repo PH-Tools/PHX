@@ -139,7 +139,7 @@ def _get_room_exposed_face_area(_hb_room: room.Room) -> float:
 
 
 def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellings]:
-    """
+    """Return a list of all the unique PhDwelling objects from a set of HB-Rooms.
     
     Arguments:
     ----------
@@ -171,10 +171,11 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     """
 
     # -------------------------------------------------------------------------
-    # Calculate the total dwelling-unit count
+    # Calculate the total dwelling-unit count. Ensure always at least 1 (even Non-Res)
     total_ph_dwellings = 0
     for dwelling_obj in all_unique_ph_dwelling_objects(_hb_rooms):
         total_ph_dwellings += int(dwelling_obj.num_dwellings)
+    merged_ph_dwellings = PhDwellings(_num_dwellings=max(total_ph_dwellings, 1))
 
     # -------------------------------------------------------------------------
     # -- Merge all the Rooms
@@ -195,9 +196,8 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
         total_ph_people += float(hbph_people_prop_ph.number_people)
         total_hb_people += hb_ppl_obj.people_per_area * hb_room.floor_area
 
-
     # -------------------------------------------------------------------------
-    # -- Build up the new Peopler object's attributes
+    # -- Build up the new People object's attributes
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
     new_hb_prop_energy = _hb_rooms[0].properties.energy  # type: RoomEnergyProperties # type: ignore
     new_hb_ppl = new_hb_prop_energy.people.duplicate()  # type: people.People # type: ignore
@@ -205,7 +205,7 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     new_hb_ppl.people_per_area = total_hb_people / total_floor_area
     new_hb_ppl_prop_ph.number_bedrooms = total_ph_bedrooms
     new_hb_ppl_prop_ph.number_people = total_ph_people
-    new_hb_ppl_prop_ph.number_dwelling_units = total_ph_dwellings
+    new_hb_ppl_prop_ph.dwellings = merged_ph_dwellings
 
     return new_hb_ppl
 
