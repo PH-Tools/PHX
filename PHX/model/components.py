@@ -213,6 +213,7 @@ class PhxComponentAperture(PhxComponentBase):
         )
         self.window_type_id_num: int = -1
         self.variant_type_name: str = "_unnamed_type_"
+        self.install_depth: float = 0.1016 #m
 
         self.elements: List[PhxApertureElement] = []
 
