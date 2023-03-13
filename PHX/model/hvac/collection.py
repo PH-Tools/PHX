@@ -58,10 +58,10 @@ class PhxMechanicalSystemCollection:
     zone_coverage: PhxZoneCoverage = field(default_factory=PhxZoneCoverage)
 
     _devices: Dict[str, AnyMechDevice] = field(default_factory=dict)
-    _distribution_piping_branches: Dict[str, Any] = field(default_factory=dict)
+    _distribution_piping_branches: Dict[str, hvac.PhxPipeElement] = field(default_factory=dict)
+    _distribution_piping_recirc: Dict[str, hvac.PhxPipeElement] = field(default_factory=dict)
     _distribution_num_hw_tap_points: int = 1
-    _distribution_piping_recirc: Dict[str, Any] = field(default_factory=dict)
-    _distribution_ducting: Dict[str, Any] = field(default_factory=dict)
+    _distribution_ducting: Dict[str, hvac.PhxDuctElement] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
@@ -127,6 +127,9 @@ class PhxMechanicalSystemCollection:
 
     def add_recirc_piping(self, _p: hvac.PhxPipeElement) -> None:
         self._distribution_piping_recirc[_p.identifier] = _p
+
+    def add_vent_ducting(self, _d: hvac.PhxDuctElement) -> None:
+        self._distribution_ducting[_d.identifier] = _d
 
     @property
     def ventilation_devices(self) -> List[hvac.AnyPhxVentilation]:
@@ -209,6 +212,10 @@ class PhxMechanicalSystemCollection:
 
         return list(d.values())
 
+    @property
+    def vent_ducting(self) -> List[hvac.PhxDuctElement]:
+        """Returns a list of all the Vent. Ducting in the collection."""
+        return list(self._distribution_ducting.values())
 
 @dataclass
 class PhxExhaustVentilatorCollection:

@@ -56,7 +56,7 @@ class PHPPConnection:
 
     def get_data_worksheet(self) -> xl_Sheet_Protocol:
         """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""
-        valid_data_worksheet_names = ["Data", "Daten", "Datos"]
+        valid_data_worksheet_names = ["DATA", "DATEN", "DATOS"]
         worksheet_names = self.xl.get_worksheet_names()
         for worksheet_name in valid_data_worksheet_names:
             if worksheet_name in worksheet_names:

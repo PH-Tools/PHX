@@ -15,10 +15,7 @@ from PHX.xl import xl_app
 # --- Input file Path
 # -------------------------------------------------------------------------
 SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Default_Model_Single_Zone.hbjson"
-)
-SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/Arapahoe_Cir_230206.hbjson"
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/utf_8_write.hbjson"
 )
 
 if __name__ == "__main__":
@@ -72,7 +69,7 @@ if __name__ == "__main__":
 
         # TODO: add custom any-range writer (User-Determined)
 
-        phpp_conn.activate_variant_assemblies()
-        phpp_conn.activate_variant_windows()
-        phpp_conn.activate_variant_ventilation()
-        phpp_conn.activate_variant_additional_vent()
+        # phpp_conn.activate_variant_assemblies()
+        # phpp_conn.activate_variant_windows()
+        # phpp_conn.activate_variant_ventilation()
+        # phpp_conn.activate_variant_additional_vent()

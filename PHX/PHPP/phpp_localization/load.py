@@ -29,8 +29,6 @@ def get_shape_filepath(version: version.PHPPVersion, _shape_file_directory: path
     --------
         * (pathlib.Path): The path to the correct PHPP Shape File.
     """
-    # phpp_version, phpp_language = get_phpp_version(_xl)
-    # shape_file_name = f"{phpp_language}_{phpp_version}.json"
     shape_file_name = phpp_version_as_file_name(version)
     shape_file_name = f"{shape_file_name}.json"
     shape_file_path = pathlib.Path(_shape_file_directory, shape_file_name)
