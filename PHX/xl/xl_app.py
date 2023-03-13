@@ -208,7 +208,7 @@ class XLConnection:
         --------
             * (Set[str])
         """
-        return {sh.name for sh in self.wb.sheets}
+        return {sh.name.upper() for sh in self.wb.sheets}
 
     def get_sheet_by_name(self, _sheet_name: Union[str, int]) -> xl_Sheet_Protocol:
         """Returns an Excel Sheet with the specified name, or KeyError if not found.
@@ -221,7 +221,7 @@ class XLConnection:
         --------
             * (xw.main.Sheet): The excel sheet found.
         """
-        if _sheet_name not in self.get_worksheet_names():
+        if str(_sheet_name).upper() not in self.get_worksheet_names():
             msg = f"Error: Key '{_sheet_name}' was not found in the Workbook '{self.wb.name}' Sheets?"
             raise KeyError(msg)
         
