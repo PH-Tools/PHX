@@ -64,6 +64,7 @@ def test_default_PhxCoolingVentilation(reset_class_counters):
         "<MinTemperatureCoolingCoilSupplyAir>12</MinTemperatureCoolingCoilSupplyAir>",
         "<SupplyAirCoolinCOP>4</SupplyAirCoolinCOP>",
         "</DistributionCooling>",
+        '<DistributionVentilation count="0"/>',
         "<UseDefaultValues>true</UseDefaultValues>",
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         "</PHDistribution>",

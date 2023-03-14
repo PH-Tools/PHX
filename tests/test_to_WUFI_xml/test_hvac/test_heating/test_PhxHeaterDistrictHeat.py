@@ -51,6 +51,7 @@ def test_default_PhxHeaterDistrictHeat(reset_class_counters):
         "</Devices>",
         "<PHDistribution>",
         "<DistributionCooling/>",
+        '<DistributionVentilation count="0"/>',
         "<UseDefaultValues>true</UseDefaultValues>",
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         "</PHDistribution>",

@@ -82,3 +82,8 @@ class PhxExhaustVentType(Enum):
     DRYER = 1
     KITCHEN_HOOD = 2
     USER_DEFINED = 3
+
+
+class PhxVentDuctType(Enum):
+    SUPPLY = 1
+    EXHAUST = 2

@@ -29,10 +29,10 @@ SOURCE_FILE_NAMES = [
 SOURCE_FILES = [SOURCE_DIR / file for file in SOURCE_FILE_NAMES]
 TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 
-# -- Temp"
+# -- Temp
 SOURCE_FILES = [
     pathlib.Path(
-        "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/utf_8_write.hbjson"
+        "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/ducting_test.hbjson"
     )
 ]
 TARGET_DIR = pathlib.Path("sample")

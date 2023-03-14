@@ -61,6 +61,7 @@ def test_default_PhxCoolingPanel(reset_class_counters):
         "<PanelCooling>true</PanelCooling>",
         "<DehumdificationCOP>4</DehumdificationCOP>",
         "</DistributionCooling>",
+        '<DistributionVentilation count="0"/>',
         "<UseDefaultValues>true</UseDefaultValues>",
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         "</PHDistribution>",

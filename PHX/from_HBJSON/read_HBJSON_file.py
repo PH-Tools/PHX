@@ -50,7 +50,6 @@ def read_hb_json_from_file(_file_address: pathlib.Path) -> Dict:
         )
 
     with open(_file_address) as json_file:
-        print(">>>>", json_file)
         data = json.load(json_file)
 
     if data.get("type", None) != "Model":

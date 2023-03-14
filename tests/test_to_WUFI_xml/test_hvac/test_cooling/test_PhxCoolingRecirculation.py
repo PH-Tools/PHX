@@ -66,6 +66,7 @@ def test_default_PhxCoolingRecirculation(reset_class_counters):
         "<RecirculationAirVolume>100</RecirculationAirVolume>",
         "<ControlledRecirculationVolumeFlow>true</ControlledRecirculationVolumeFlow>",
         "</DistributionCooling>",
+        '<DistributionVentilation count="0"/>',
         "<UseDefaultValues>true</UseDefaultValues>",
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         "</PHDistribution>",

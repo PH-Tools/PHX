@@ -1249,21 +1249,20 @@ def _DistributionHeating(_d):
     # ]
 
 
-def _Duct(_in):
+def _PhxDuctElement(_d: hvac.PhxDuctElement) -> List[xml_writable]:
     return [
-        # XML_Node("Name", _d.),
-        # XML_Node("IdentNr", _d.),
-        # XML_Node("DuctDiameter", _d.),
-        # XML_Node("DuctLength", _d.),
-        # XML_Node("InsulationThickness", _d.),
-        # XML_Node("ThermalConductivity", _d.),
-        # XML_Node("Quantity", _d.),
-        # XML_Node("DuctType", _d.),
-        # XML_Node("DuctShape", _d.),
-        # XML_Node("IsReflective", _d.),
-        # XML_Node("AssignedVentUnits", _d.),
-        # XML_Node("IdentNrVentUnit", _d.),
-        # XML_Node("/AssignedVentUnits", _d.),
+        XML_Node("Name", _d.display_name),
+        XML_Node("IdentNr", _d.id_num),
+        XML_Node("DuctDiameter", _d.diameter, "unit", "mm"),
+        XML_Node("DuctLength", _d.length, "unit", "m"),
+        XML_Node("InsulationThickness", _d.insulation_thickness, "unit", "mm"),
+        XML_Node("ThermalConductivity", _d.insulation_conductivity, "unit", "W/mK"),
+        XML_Node("Quantity", _d.quantity, "unit", "-"),
+        XML_Node("DuctType", _d.duct_type.value),
+        XML_Node("DuctShape", _d.duct_shape),
+        XML_Node("IsReflective", _d.is_reflective),
+        XML_List("AssignedVentUnits", [XML_Node('IdentNrVentUnit', id, 'index', i)
+                                             for i, id in enumerate(_d.assigned_vent_unit_ids)]),
     ]
 
 
@@ -1366,8 +1365,8 @@ def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
             TempDistributionCooling(_c.cooling_devices),
             _schema_name="_DistributionCooling",
         ),
-        # XML_List('DistributionVentilation', [XML_Object('Duct', None, 'index', i)
-        #                                      for i, d in enumerate([])]),
+        XML_List('DistributionVentilation', [XML_Object('Duct', d, 'index', i)
+                                             for i, d in enumerate(_c.vent_ducting)]),
         XML_Node("UseDefaultValues", True),
         XML_Node("DeviceInConditionedSpace", True),
     ]
