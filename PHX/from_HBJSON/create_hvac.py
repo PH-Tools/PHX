@@ -5,12 +5,12 @@
 
 from typing import TypeVar, Union
 
-from honeybee_energy_ph.hvac import ventilation, heating, cooling, _base
+from honeybee_energy_ph.hvac import ventilation, heating, cooling, _base, ducting
+from PHX.model.enums.hvac import PhxVentDuctType
 from PHX.model import hvac
 from PHX.model.hvac.heating import AnyPhxHeater
 from PHX.model.hvac.ventilation import AnyPhxVentilation
 from PHX.model.hvac.cooling import AnyPhxCooling
-
 
 T = TypeVar("T", bound=Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxCooling])
 
@@ -114,26 +114,43 @@ def build_phx_ventilator(
     return phx_vent
 
 
-def build_phx_ventilation_sys(
-    _hbeph_vent: ventilation.PhVentilationSystem,
-) -> hvac.PhxDeviceVentilator:
-    """Build a new PHX Ventilation Mechanical Device.
-
+def build_phx_duct(_hbph_duct: ducting.PhDuctElement, _vent_unit_id: int) -> hvac.PhxDuctElement:
+    """Return a new PHX Ventilation Duct based on an HB-PH Duct.
+    
     Arguments:
     ----------
-        *_hbeph_vent (ventilation.PhVentilationSystem): The Honeybee-PH Ventilation System
-            to build the PHX-Ventilation from.
-
+        * _hbph_duct (ducting.PhDuctElement): The HB-PH DuctElement to use as 
+            the source.
+        * _vent_unit_id (int): The ID-Number of the ventilation unit this duct 
+            is assigned to.
+    
     Returns:
     --------
-        * (mech.PhxDeviceVentilator): A new mech ventilation device.
+        * (hvac.PhxDuctElement)
     """
+    
+    phx_duct = hvac.PhxDuctElement(
+        _hbph_duct.identifier,
+        _hbph_duct.display_name,
+        _vent_unit_id,
+    )
 
-    phx_ventilator = build_phx_ventilator(_hbeph_vent)
+    phx_duct.duct_type = PhxVentDuctType(_hbph_duct.duct_type,)
 
-    # TODO: Distribution...
-
-    return phx_ventilator
+    for hbph_duct_segment in _hbph_duct.segments:
+        phx_duct.add_segment(
+            hvac.PhxDuctSegment(
+                hbph_duct_segment.identifier,
+                hbph_duct_segment.display_name,
+                hbph_duct_segment.geometry,
+                hbph_duct_segment.diameter,
+                hbph_duct_segment.insulation_thickness,
+                hbph_duct_segment.insulation_conductivity,
+                hbph_duct_segment.insulation_reflective
+            )
+        )
+    
+    return phx_duct
 
 
 def build_phx_exh_vent_dryer(

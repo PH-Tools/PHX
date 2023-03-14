@@ -509,6 +509,7 @@ def add_ventilation_systems_from_hb_rooms(
 
     ph_prop: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     for hbph_space in ph_prop.spaces:
+        # ---------------------------------------------------------------------
         # -- Get the Honeybee-PH Ventilation system from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
@@ -519,19 +520,29 @@ def add_ventilation_systems_from_hb_rooms(
         if not hbph_vent_sys:
             continue
 
+        # ---------------------------------------------------------------------
         # -- Get or Build the PHX Ventilation Device
         # -- If the ventilator already exists, just use that one.
         phx_ventilator = _variant.mech_systems.get_mech_device_by_key(hbph_vent_sys.key)
         if not phx_ventilator:
             # -- otherwise, build a new PH-Ventilator from the HB-hvac
-            phx_ventilator = create_hvac.build_phx_ventilation_sys(hbph_vent_sys)
+            phx_ventilator = create_hvac.build_phx_ventilator(hbph_vent_sys)
             _variant.mech_systems.add_new_mech_device(hbph_vent_sys.key, phx_ventilator)
 
+        # ---------------------------------------------------------------------
         # -- Re-set the HBPH Ventilator and sys id_num to keep everything aligned
         hbph_vent_sys.id_num = phx_ventilator.id_num
-
         if hbph_vent_sys.ventilation_unit:
             hbph_vent_sys.ventilation_unit.id_num = phx_ventilator.id_num
+
+        # ---------------------------------------------------------------------
+        # -- Add PHX Distribution Ducting from the HBPH Ducts
+        _variant.mech_systems.add_vent_ducting(
+            create_hvac.build_phx_duct(hbph_vent_sys.duct_01, phx_ventilator.id_num)
+        )
+        _variant.mech_systems.add_vent_ducting(
+            create_hvac.build_phx_duct(hbph_vent_sys.duct_02, phx_ventilator.id_num)
+        )
 
     return None
 

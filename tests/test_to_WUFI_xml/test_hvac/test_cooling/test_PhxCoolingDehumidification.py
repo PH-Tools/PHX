@@ -65,6 +65,7 @@ def test_default_PhxCoolingDehumidification(reset_class_counters):
         "<EER>None</EER>",
         "<DehumidificationElEnergy>None</DehumidificationElEnergy>",
         "</DistributionCooling>",
+        '<DistributionVentilation count="0"/>',
         "<UseDefaultValues>true</UseDefaultValues>",
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         "</PHDistribution>",

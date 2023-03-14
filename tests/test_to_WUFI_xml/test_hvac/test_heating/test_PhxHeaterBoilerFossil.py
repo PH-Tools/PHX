@@ -67,6 +67,7 @@ def test_default_PhxHeaterBoilerFossil(reset_class_counters):
         "</Devices>",
         "<PHDistribution>",
         "<DistributionCooling/>",
+        '<DistributionVentilation count="0"/>',
         "<UseDefaultValues>true</UseDefaultValues>",
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         "</PHDistribution>",

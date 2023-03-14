@@ -167,6 +167,7 @@ def test_default_PhxProject(reset_class_counters):
         '<Devices count="0"/>',
         "<PHDistribution>",
         "<DistributionCooling/>",
+        '<DistributionVentilation count="0"/>',
         "<UseDefaultValues>true</UseDefaultValues>",
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         "</PHDistribution>",
