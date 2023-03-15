@@ -18,6 +18,8 @@ def test_Duct_Schema(reset_class_counters):
         display_name="test_display_name",
         geometry=geom,
         diameter=25.4,
+        width=None,
+        height=None,
         insulation_thickness = 25.4,
         insulation_conductivity = 0.04,
         insulation_reflective = True
@@ -34,6 +36,8 @@ def test_Duct_Schema(reset_class_counters):
         '<Name>test_display_name</Name>',
         '<IdentNr>1</IdentNr>',
         '<DuctDiameter unit="mm">25.4</DuctDiameter>',
+        '<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>',
+        '<DuctShapeWidth unit="mm">0.0</DuctShapeWidth>',
         '<DuctLength unit="m">1.0</DuctLength>',
         '<InsulationThickness unit="mm">25.4</InsulationThickness>',
         '<ThermalConductivity unit="W/mK">0.04</ThermalConductivity>',

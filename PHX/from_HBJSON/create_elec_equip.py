@@ -52,10 +52,13 @@ def build_phx_elec_device(
             # try and set any Enums by number first...
             setattr(phx_device, attr_name, getattr(_hbph_device, attr_name).number)
         except AttributeError:
-            # then just set copy over any non-enum values
+            # ... then just set copy over any non-Enum values
             try:
                 setattr(phx_device, attr_name, getattr(_hbph_device, attr_name))
             except KeyError:
-                pass
+                raise 
+            except Exception as e:
+                msg = f"\n\tError setting attribute '{attr_name}' on '{phx_device.__class__.__name__}'?"
+                raise Exception(msg)
 
     return phx_device

@@ -9,7 +9,7 @@ def test_default_PhxLayer(reset_class_counters):
     assert xml_string_to_list(result) == [
         "<Thickness>0.0</Thickness>",
         "<Material>",
-        "<Mass></Mass>",
+        "<Name></Name>",
         "<ThermalConductivity>0.0</ThermalConductivity>",
         "<BulkDensity>0.0</BulkDensity>",
         "<Porosity>0.0</Porosity>",

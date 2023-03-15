@@ -5,7 +5,7 @@
 
 
 from __future__ import annotations
-from typing import Dict, List, Any, ClassVar
+from typing import Dict, List, Optional, ClassVar
 from dataclasses import dataclass, field
 
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
@@ -20,6 +20,8 @@ class PhxDuctSegment:
     display_name: str
     geometry: LineSegment3D
     diameter: float
+    height: Optional[float]
+    width: Optional[float]
     insulation_thickness: float
     insulation_conductivity: float
     insulation_reflective: bool
@@ -65,6 +67,20 @@ class PhxDuctElement:
         return weighted_total / self.length
 
     @property
+    def height(self) -> float: 
+        weighted_total = 0.0
+        for seg in self.segments:
+            weighted_total += seg.length * (seg.height or 0.0)
+        return weighted_total / self.length 
+    
+    @property
+    def width(self) -> float:
+        weighted_total = 0.0
+        for seg in self.segments:
+            weighted_total += seg.length * (seg.width or 0.0)
+        return weighted_total / self.length 
+
+    @property
     def insulation_thickness(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
@@ -80,8 +96,11 @@ class PhxDuctElement:
     
     @property
     def duct_shape(self) -> int:
-        return 1
-    
+        if self.height and self.width:
+            return 2 # Rectangular Duct
+        else:
+            return 1 # Round Duct
+
     @property
     def is_reflective(self) -> bool:
         return any({seg.insulation_reflective for seg in self.segments})

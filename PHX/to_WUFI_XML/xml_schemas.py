@@ -719,7 +719,7 @@ def _PhxLayer(_l: constructions.PhxLayer) -> List[xml_writable]:
 
 def _PhxMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
     return [
-        XML_Node("Mass", _m.display_name),
+        XML_Node("Name", _m.display_name),
         XML_Node("ThermalConductivity", _m.conductivity),
         XML_Node("BulkDensity", _m.density),
         XML_Node("Porosity", _m.porosity),
@@ -1254,6 +1254,8 @@ def _PhxDuctElement(_d: hvac.PhxDuctElement) -> List[xml_writable]:
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
         XML_Node("DuctDiameter", _d.diameter, "unit", "mm"),
+        XML_Node("DuctShapeHeight", _d.height, "unit", "mm"),
+        XML_Node("DuctShapeWidth", _d.width, "unit", "mm"),
         XML_Node("DuctLength", _d.length, "unit", "m"),
         XML_Node("InsulationThickness", _d.insulation_thickness, "unit", "mm"),
         XML_Node("ThermalConductivity", _d.insulation_conductivity, "unit", "W/mK"),
@@ -1551,10 +1553,10 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> List[xml_writabl
     common_attributes = [
         XML_Node("Comment", _d.comment),
         XML_Node("ReferenceQuantity", _d.reference_quantity),
-        XML_Node("Quantity", _d.quantity),
+        XML_Node("Quantity", _d.get_quantity()),
         XML_Node("InConditionedSpace", _d.in_conditioned_space),
         XML_Node("ReferenceEnergyDemandNorm", _d.reference_energy_norm),
-        XML_Node("EnergyDemandNorm", _d.energy_demand),
+        XML_Node("EnergyDemandNorm", _d.get_energy_demand()),
         XML_Node("EnergyDemandNormUse", _d.energy_demand_per_use),
         XML_Node("CEF_CombinedEnergyFactor", _d.combined_energy_factor),
     ]

@@ -144,6 +144,8 @@ def build_phx_duct(_hbph_duct: ducting.PhDuctElement, _vent_unit_id: int) -> hva
                 hbph_duct_segment.display_name,
                 hbph_duct_segment.geometry,
                 hbph_duct_segment.diameter,
+                hbph_duct_segment.height,
+                hbph_duct_segment.width,
                 hbph_duct_segment.insulation_thickness,
                 hbph_duct_segment.insulation_conductivity,
                 hbph_duct_segment.insulation_reflective

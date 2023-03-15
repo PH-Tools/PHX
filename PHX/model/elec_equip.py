@@ -30,6 +30,17 @@ class PhxElectricalDevice:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
+    def get_energy_demand(self) -> float:
+        """To allow for subclass custom behavior. Cannot use @property since 
+        it will not work with __setattr__ which is used during HBPH->PHX object creation.
+        """
+        return self.energy_demand
+    
+    def get_quantity(self) -> int:
+        """To allow for subclass custom behavior. Cannot use @property since 
+        it will not work with __setattr__ which is used during HBPH->PHX object creation.
+        """
+        return self.quantity
 
 class PhxDeviceDishwasher(PhxElectricalDevice):
     def __init__(self):
@@ -120,15 +131,31 @@ class PhxDeviceCustomElec(PhxElectricalDevice):
 
 
 class PhxDeviceCustomLighting(PhxElectricalDevice):
+    """Override so that WUFI output quantity shows up as 1"""
+    
     def __init__(self):
         self.display_name = "User defined - lighting"
         super().__init__()
+    
+    def get_energy_demand(self) -> float:
+        return self.energy_demand * self.quantity
+    
+    def get_quantity(self) -> int:
+        return 1
 
 
 class PhxDeviceCustomMEL(PhxElectricalDevice):
+    """Override so that WUFI output quantity shows up as 1"""
+
     def __init__(self):
         self.display_name = "User defined - Misc electrical loads"
         super().__init__()
+    
+    def get_energy_demand(self) -> float:
+        return self.energy_demand * self.quantity
+    
+    def get_quantity(self) -> int:
+        return 1
 
 
 # -----------------------------------------------------------------------------
