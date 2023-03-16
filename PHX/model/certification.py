@@ -14,8 +14,8 @@ from PHX.model.enums import phi_certification_phpp_9, phius_certification
 
 @dataclass
 class PhxSetpoints:
-    winter: float = 20  # deg. C
-    summer: float = 25  # deg. C
+    winter: float = 20.0  # deg. C
+    summer: float = 25.0  # deg. C
 
 
 @dataclass
@@ -34,6 +34,7 @@ class PhxPhBuildingData:
     wind_coefficient_f: float = 15
 
     setpoints: PhxSetpoints = field(default_factory=PhxSetpoints)
+    mech_room_temp: float = 20.0
 
     foundations: list[ground.PhxFoundation] = field(default_factory=list)
 

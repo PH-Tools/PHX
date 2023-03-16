@@ -203,7 +203,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_43bc1228..Face4</Name>
+						<Name>Room_204_872fda75..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -219,7 +219,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_43bc1228..Face5</Name>
+						<Name>Room_204_872fda75..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -515,6 +515,9 @@
 							<UseDefaultValuesSchool>false</UseDefaultValuesSchool>
 							<MarginalPerformanceRatioDHW>None</MarginalPerformanceRatioDHW>
 						</InternalGainsAdditionalData>
+						<MechanicalRoomTemperature>20.0</MechanicalRoomTemperature>
+						<IndoorTemperature>20.0</IndoorTemperature>
+						<OverheatingTemperatureThreshold>25.0</OverheatingTemperatureThreshold>
 					</PH_Building>
 				</PH_Buildings>
 			</PassivehouseData>

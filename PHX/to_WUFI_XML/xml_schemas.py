@@ -314,6 +314,9 @@ def _PhxPhBuildingData(
             None,
             _schema_name="_InternalGainsAdditionalData",
         ),
+        XML_Node("MechanicalRoomTemperature", _phius_cert.ph_building_data.mech_room_temp),
+        XML_Node("IndoorTemperature", _phius_cert.ph_building_data.setpoints.winter),
+        XML_Node("OverheatingTemperatureThreshold", _phius_cert.ph_building_data.setpoints.summer),
     ]
 
 

@@ -34,6 +34,9 @@ def test_default_PhxPHCertification(reset_class_counters):
         "<UseDefaultValuesSchool>false</UseDefaultValuesSchool>",
         "<MarginalPerformanceRatioDHW>None</MarginalPerformanceRatioDHW>",
         "</InternalGainsAdditionalData>",
+        "<MechanicalRoomTemperature>20.0</MechanicalRoomTemperature>",
+        "<IndoorTemperature>20.0</IndoorTemperature>",
+        "<OverheatingTemperatureThreshold>25.0</OverheatingTemperatureThreshold>",
         "</PH_Building>",
         "</PH_Buildings>",
     ]
@@ -74,6 +77,9 @@ def test_customized_PhxPhiusCertification(reset_class_counters):
         "<UseDefaultValuesSchool>false</UseDefaultValuesSchool>",
         "<MarginalPerformanceRatioDHW>None</MarginalPerformanceRatioDHW>",
         "</InternalGainsAdditionalData>",
+        "<MechanicalRoomTemperature>20.0</MechanicalRoomTemperature>",
+        "<IndoorTemperature>20.0</IndoorTemperature>",
+        "<OverheatingTemperatureThreshold>25.0</OverheatingTemperatureThreshold>",
         "</PH_Building>",
         "</PH_Buildings>",
     ]

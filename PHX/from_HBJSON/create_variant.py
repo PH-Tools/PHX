@@ -284,6 +284,7 @@ def add_PhxPhBuildingData_from_hb_room(
     # -- Type Aliases
     ph_bldg = _variant.phius_cert.ph_building_data  # alias
     hb_prop_energy: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
+    hb_prop_ph: RoomPhProperties = _hb_room.properties.ph # type: ignore
 
     # -- Set the occupancy
     if hb_prop_energy.people:
@@ -295,11 +296,12 @@ def add_PhxPhBuildingData_from_hb_room(
     ph_bldg.add_foundation(ground.PhxFoundation())
 
     # -- Set the airtightness for Building
-    ph_bldg.airtightness_q50 = _hb_room.properties.energy.infiltration.flow_per_exterior_area * 3600  # type: ignore
+    ph_bldg.airtightness_q50 = hb_prop_energy.infiltration.flow_per_exterior_area * 3600
 
     # -- Set the air temp setpoints
-    ph_bldg.setpoints.winter = _hb_room.properties.ph.ph_bldg_segment.set_points.winter  # type: ignore
-    ph_bldg.setpoints.summer = _hb_room.properties.ph.ph_bldg_segment.set_points.summer  # type: ignore
+    ph_bldg.setpoints.winter = hb_prop_ph.ph_bldg_segment.set_points.winter
+    ph_bldg.setpoints.summer = hb_prop_ph.ph_bldg_segment.set_points.summer
+    ph_bldg.mech_room_temp = hb_prop_ph.ph_bldg_segment.mech_room_temp
 
     return None
 
