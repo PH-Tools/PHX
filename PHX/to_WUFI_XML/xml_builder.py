@@ -122,6 +122,12 @@ def generate_WUFI_XML_from_object(
         * _phx_object (Any): The PHX Object to start from. All child objects will
             be included in the output as well.
 
+        * _header (str): Optional header for the XML doc. Default ="WUFIplusProject"
+
+        * _schema_name (str): Optional schema name for lookup. If not provided, will
+            try and use the name of the object preceded by an underscore. 
+            ie: "PhxZone" --> "_PhxZone", etc..
+
     Returns:
     --------
         * (str) The XML Nodes as text.

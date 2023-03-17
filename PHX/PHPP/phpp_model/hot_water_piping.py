@@ -50,7 +50,7 @@ class RecircPipingInput:
     def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemDHW = partial(xl_data.XlItem, _sheet_name)
-        total_length = sum(s.length for s in self.phx_pipe)
+        total_length = sum(s.length_m for s in self.phx_pipe)
 
         return [
             XLItemDHW(
@@ -61,13 +61,13 @@ class RecircPipingInput:
             ),
             XLItemDHW(
                 create_range("diameter"),
-                sum(s.diameter * s.length for s in self.phx_pipe) / total_length,
+                sum(s.diameter_m * s.length_m for s in self.phx_pipe) / total_length,
                 "M",
                 self._get_target_unit("diameter"),
             ),
             XLItemDHW(
                 create_range("insul_thickness"),
-                sum(s.insulation_thickness * s.length for s in self.phx_pipe)
+                sum(s.insulation_thickness_m * s.length_m for s in self.phx_pipe)
                 / total_length,
                 "M",
                 self._get_target_unit("insul_thickness"),
@@ -78,7 +78,7 @@ class RecircPipingInput:
             ),
             XLItemDHW(
                 create_range("insul_conductivity"),
-                sum(s.insulation_thickness * s.length for s in self.phx_pipe)
+                sum(s.insulation_thickness_m * s.length_m for s in self.phx_pipe)
                 / total_length,
                 "W/MK",
                 self._get_target_unit("insul_conductivity"),
@@ -119,14 +119,14 @@ class BranchPipingInput:
             # -- Branch Piping
             XLItemDHW(
                 self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.diameter.row),  # type: ignore
-                sum(s.diameter * s.length for s in self.phx_pipe)
-                / sum(s.length for s in self.phx_pipe),
+                sum(s.diameter_m * s.length_m for s in self.phx_pipe)
+                / sum(s.length_m for s in self.phx_pipe),
                 "M",
                 self._get_target_unit("diameter"),
             ),
             XLItemDHW(
                 self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.total_length.row),  # type: ignore
-                sum(s.length for s in self.phx_pipe),
+                sum(s.length_m for s in self.phx_pipe),
                 "M",
                 self._get_target_unit("total_length"),
             ),

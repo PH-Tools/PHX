@@ -192,7 +192,7 @@ class PhxMechanicalSystemCollection:
         d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
         for pipe in self.dhw_branch_piping:
             for segment in pipe.segments:
-                d[segment.diameter].append(segment)
+                d[segment.diameter_m].append(segment)
 
         return list(d.values())
 
@@ -208,7 +208,7 @@ class PhxMechanicalSystemCollection:
         d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
         for pipe in self.dhw_recirc_piping:
             for segment in pipe.segments:
-                d[segment.diameter].append(segment)
+                d[segment.diameter_m].append(segment)
 
         return list(d.values())
 
@@ -216,6 +216,37 @@ class PhxMechanicalSystemCollection:
     def vent_ducting(self) -> List[hvac.PhxDuctElement]:
         """Returns a list of all the Vent. Ducting in the collection."""
         return list(self._distribution_ducting.values())
+
+    @property
+    def dhw_recirc_total_length_m(self) -> float:
+        return sum(_.length_m for _ in self.dhw_recirc_piping)
+
+    @property
+    def dhw_recirc_weighted_heat_loss_coeff(self) -> Optional[float]:
+        """Return a length-weighted average pipe heat-loss coefficient."""
+        if not self.dhw_recirc_total_length_m:
+            return None
+
+        weighted_total = 0.0
+        for phx_pipe_element in self.dhw_recirc_piping:
+            weighted_total += phx_pipe_element.weighted_pipe_heat_loss_coefficient * phx_pipe_element.length_m
+        return weighted_total / self.dhw_recirc_total_length_m
+
+    @property
+    def dhw_branch_total_length_m(self) -> float:
+        return sum(_.length_m for _ in self.dhw_branch_piping)
+
+    @property
+    def dhw_branch_weighted_diameter_mm(self) -> Optional[float]:
+        """Return a length-weighted average diameter."""
+        if not self.dhw_branch_total_length_m:
+            return None
+        
+        weighted_total = 0.0
+        for phx_pipe_element in self.dhw_branch_piping:
+            weighted_total += phx_pipe_element.weighted_diameter_mm * phx_pipe_element.length_m
+        return weighted_total / self.dhw_branch_total_length_m
+
 
 @dataclass
 class PhxExhaustVentilatorCollection:

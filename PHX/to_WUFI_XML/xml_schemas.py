@@ -213,6 +213,8 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
                 for i, tb in enumerate(_z.thermal_bridges)
             ],
         ),
+        XML_Node("SummerNaturalVentilationDay", 0, "unit", "1/hr"),
+        XML_Node("SummerNaturalVentilationNight", 0, "unit", "1/hr"),
     ]
 
 
@@ -453,6 +455,7 @@ def _PH_ClimateLocation(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
         XML_Node("Longitude", _phx_site.location.longitude),
         XML_Node("HeightNNWeatherStation", _phx_site.climate.station_elevation),
         XML_Node("dUTC", _phx_site.location.hours_from_UTC),
+        XML_Node("HeightNNBuilding", _phx_site.location.site_elevation),
         XML_Node("ClimateZone", _phx_site.location.climate_zone),
         # -- Ground
         XML_Node(
@@ -859,10 +862,10 @@ def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> List[xml_wr
         XML_Node("FrostProtection", _p.frost_protection_reqd),
         XML_Node("TemperatureBelowDefrostUsed", _p.temperature_below_defrost_used),
         XML_Node("InConditionedSpace", _p.in_conditioned_space),
+        XML_Node("NoSummerBypass", False),
         # XML_Node("SubsoilHeatExchangeEfficiency", _p.),
         # XML_Node("VolumeFlowRateFrom", "unit","m³/h", _p.),
         # XML_Node("VolumeFlowRateTo", "unit","m³/h", _p.),
-        # XML_Node("NoSummerBypass", _p.),
         # XML_Node("Maximum_VOS", _p.),
         # XML_Node("Maximum_PP", _p.),
         # XML_Node("Standard_VOS", _p.),
@@ -1180,47 +1183,65 @@ def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
 
 
 class DistributionDHW:
-    def __init__(self):
-        raise NotImplementedError
+    """Manager class to organize the Hot-Water piping."""
+
+    def __init__(self, _phx_mech_collection: hvac.PhxMechanicalSystemCollection):
+        self.phx_mech_collection = _phx_mech_collection
+        
+        self.calc_method = 1 # Simplified individual pipes
+        self.pipe_material = 1 # Copper M
+        self.demand_recirc = True
+        self.num_bathrooms = 1
+        self.hot_water_fixtures = 1
+        self.all_pipes_insulated = True
+        self.units_or_floors = 1
+        self.pipe_diameter_m = 1 # 3/8" Copper
+        self.air_temp = 20 # Deg C
+        self.water_temp = 60 # Deg C
+        self.daily_recirc_hours = 24
 
 
-def _DistributionDHW(_d):
-    raise NotImplementedError
-    # return [
-    #     XML_Node("LengthCirculationPipes_WR", _d.),
+def _DistributionDHW(_d: DistributionDHW):
+    return [
+        # -- Settings
+        XML_Node("CalculationMethodIndividualPipes", _d.calc_method),
+        XML_Node("DemandRecirculation", _d.demand_recirc),
+        XML_Node("SelectionhotWaterFixtureEff", _d.hot_water_fixtures),
+        XML_Node("NumberOfBathrooms", _d.num_bathrooms),
+        XML_Node("AllPipesAreInsulated", _d.all_pipes_insulated),
+        XML_Node("SelectionUnitsOrFloors", _d.units_or_floors),
+        XML_Node("PipeMaterialSimplifiedMethod", _d.pipe_material),
+        XML_Node("PipeDiameterSimplifiedMethod", _d.pipe_diameter_m),
+
+        # -- Simplified Method
+        XML_Node("TemperatureRoom_WR", _d.air_temp),
+        XML_Node("DesignFlowTemperature_WR", _d.water_temp),
+        XML_Node("DailyRunningHoursCirculation_WR", _d.daily_recirc_hours),
+        XML_Node("LengthCirculationPipes_WR", _d.phx_mech_collection.dhw_recirc_total_length_m),
+        XML_Node("HeatLossCoefficient_WR", _d.phx_mech_collection.dhw_recirc_weighted_heat_loss_coeff),
+        XML_Node("LengthIndividualPipes_WR", _d.phx_mech_collection.dhw_branch_total_length_m),
+        XML_Node("ExteriorPipeDiameter_WR", _d.phx_mech_collection.dhw_branch_weighted_diameter_mm),
+
+    # -- Detailed Methods (Not Implemented Yet)
+        # XML_Node("HeatReleaseStorage_WR", _d.),
+        # XML_Node("HotWaterFixtureEffectiveness", _d.),
     #     XML_Node("LengthCirculationPipes_CR1", _d.),
     #     XML_Node("LengthCirculationPipes_CR2", _d.),
-    #     XML_Node("HeatLossCoefficient_WR", _d.),
     #     XML_Node("HeatLossCoefficient_CR1", _d.),
     #     XML_Node("HeatLossCoefficient_CR2", _d.),
-    #     XML_Node("TemperatureRoom_WR", _d.),
     #     XML_Node("TemperatureRoom_CR1", _d.),
     #     XML_Node("TemperatureRoom_CR2", _d.),
-    #     XML_Node("DesignFlowTemperature_WR", _d.),
     #     XML_Node("DesignFlowTemperature_CR1", _d.),
     #     XML_Node("DesignFlowTemperature_CR2", _d.),
-    #     XML_Node("DailyRunningHoursCirculation_WR", _d.),
     #     XML_Node("DailyRunningHoursCirculation_CR1", _d.),
     #     XML_Node("DailyRunningHoursCirculation_CR2", _d.),
-    #     XML_Node("LengthIndividualPipes_WR", _d.),
     #     XML_Node("LengthIndividualPipes_CR1", _d.),
     #     XML_Node("LengthIndividualPipes_CR2", _d.),
-    #     XML_Node("ExteriorPipeDiameter_WR", _d.),
     #     XML_Node("ExteriorPipeDiameter_CR1", _d.),
     #     XML_Node("ExteriorPipeDiameter_CR2", _d.),
-    #     XML_Node("HeatReleaseStorage_WR", _d.),
     #     XML_Node("HeatReleaseStorage_CR1", _d.),
     #     XML_Node("HeatReleaseStorage_CR2", _d.),
-    #     XML_Node("CalculationMethodIndividualPipes", _d.),
-    #     XML_Node("PipeMaterialSimplifiedMethod", _d.),
-    #     XML_Node("PipeDiameterSimplifiedMethod", _d.),
-    #     XML_Node("HotWaterFixtureEffectiveness", _d.),
-    #     XML_Node("DemandRecirculation", _d.),
-    #     XML_Node("SelectionhotWaterFixtureEff", _d.),
-    #     XML_Node("NumberOfBathrooms", _d.),
-    #     XML_Node("AllPipesAreInsulated", _d.),
-    #     XML_Node("SelectionUnitsOrFloors", _d.),
-    # ]
+    ]
 
 
 class DistributionHeating:
@@ -1363,7 +1384,7 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
 
 def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
     return [
-        # XML_Object('DistributionDHW', DistributionDHW()),
+        XML_Object('DistributionDHW', DistributionDHW(_c)),
         # XML_Object('DistributionHeating', DistributionHeating()),
         XML_Object(
             "DistributionCooling",

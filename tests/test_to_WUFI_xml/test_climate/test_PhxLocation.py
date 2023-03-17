@@ -28,6 +28,7 @@ def test_default_PhxLocation(reset_class_counters):
         "<Longitude>-73.8</Longitude>",
         "<HeightNNWeatherStation>3.0</HeightNNWeatherStation>",
         "<dUTC>-4</dUTC>",
+        '<HeightNNBuilding>None</HeightNNBuilding>',
         "<ClimateZone>1</ClimateZone>",
         "<GroundThermalConductivity>2</GroundThermalConductivity>",
         "<GroundHeatCapacitiy>1000</GroundHeatCapacitiy>",

@@ -664,7 +664,7 @@
 					</Component>
 					<Component index="4">
 						<IdentNr>49</IdentNr>
-						<Name>Shade_6de4ef8d</Name>
+						<Name>Shade_e2d36c9f</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -680,7 +680,7 @@
 					</Component>
 					<Component index="5">
 						<IdentNr>50</IdentNr>
-						<Name>Shade_e66e26af</Name>
+						<Name>Shade_3c25ea82</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -702,7 +702,7 @@
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="2">
 							<Room index="0">
-								<Name>101-Room_206</Name>
+								<Name>101-Room_3</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
 								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
@@ -713,7 +713,7 @@
 								<DesignVolumeFlowRateExhaust unit="m³/h">13.71</DesignVolumeFlowRateExhaust>
 							</Room>
 							<Room index="1">
-								<Name>102-Room_207</Name>
+								<Name>102-Room_4</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
 								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
@@ -726,14 +726,14 @@
 						</RoomsVentilation>
 						<LoadsPersonsPH count="2">
 							<LoadPerson index="0">
-								<Name>101-Room_206</Name>
+								<Name>101-Room_3</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>1</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">9.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 							<LoadPerson index="1">
-								<Name>102-Room_207</Name>
+								<Name>102-Room_4</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>1</NumberOccupants>
@@ -826,62 +826,64 @@
 						<ExhaustVents count="0"/>
 						<ThermalBridges count="8">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__3e47aa46</Name>
+								<Name>_unnamed_bldg_segment__012c10c8</Name>
 								<Type>-15</Type>
-								<Length>10.733126291998989</Length>
+								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__62266042</Name>
+								<Name>_unnamed_bldg_segment__17aaa9e4</Name>
 								<Type>-15</Type>
 								<Length>9.391485505499118</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__a97b8318</Name>
-								<Type>-15</Type>
-								<Length>14.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__b20d51e3</Name>
-								<Type>-15</Type>
-								<Length>22.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__e01700c8</Name>
+								<Name>_unnamed_bldg_segment__33c09412</Name>
 								<Type>-15</Type>
 								<Length>16.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
-							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__e615119c</Name>
+							<ThermalBridge index="3">
+								<Name>_unnamed_bldg_segment__85d8b272</Name>
+								<Type>-15</Type>
+								<Length>9.391485505499118</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="4">
+								<Name>_unnamed_bldg_segment__958b1534</Name>
 								<Type>-15</Type>
 								<Length>18.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
+							<ThermalBridge index="5">
+								<Name>_unnamed_bldg_segment__97c1f9f4</Name>
+								<Type>-15</Type>
+								<Length>10.733126291998989</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
 							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__f1f4b587</Name>
+								<Name>_unnamed_bldg_segment__b2e6e059</Name>
 								<Type>-15</Type>
 								<Length>13.416407864998739</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="7">
-								<Name>_unnamed_bldg_segment__feb7b55d</Name>
+								<Name>_unnamed_bldg_segment__d666cfa4</Name>
 								<Type>-15</Type>
-								<Length>9.391485505499118</Length>
+								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 						</ThermalBridges>
+						<SummerNaturalVentilationDay unit="1/hr">0</SummerNaturalVentilationDay>
+						<SummerNaturalVentilationNight unit="1/hr">0</SummerNaturalVentilationNight>
 					</Zone>
 				</Zones>
 			</Building>
@@ -906,6 +908,7 @@
 					<Longitude>-73.8</Longitude>
 					<HeightNNWeatherStation>3.0</HeightNNWeatherStation>
 					<dUTC>-4</dUTC>
+					<HeightNNBuilding>0.0</HeightNNBuilding>
 					<ClimateZone>1</ClimateZone>
 					<GroundThermalConductivity>2</GroundThermalConductivity>
 					<GroundHeatCapacitiy>1000</GroundHeatCapacitiy>
@@ -1167,10 +1170,11 @@
 									<FrostProtection>true</FrostProtection>
 									<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>true</InConditionedSpace>
+									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
-								<Name>db096a27-dd42-4b1c-9b88-16e7c6bb57ab</Name>
+								<Name>02cfd85d-4554-4218-b6da-70605469fc9c</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
@@ -1227,10 +1231,27 @@
 							</Device>
 						</Devices>
 						<PHDistribution>
+							<DistributionDHW>
+								<CalculationMethodIndividualPipes>1</CalculationMethodIndividualPipes>
+								<DemandRecirculation>true</DemandRecirculation>
+								<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>
+								<NumberOfBathrooms>1</NumberOfBathrooms>
+								<AllPipesAreInsulated>true</AllPipesAreInsulated>
+								<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>
+								<PipeMaterialSimplifiedMethod>1</PipeMaterialSimplifiedMethod>
+								<PipeDiameterSimplifiedMethod>1</PipeDiameterSimplifiedMethod>
+								<TemperatureRoom_WR>20</TemperatureRoom_WR>
+								<DesignFlowTemperature_WR>60</DesignFlowTemperature_WR>
+								<DailyRunningHoursCirculation_WR>24</DailyRunningHoursCirculation_WR>
+								<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>
+								<HeatLossCoefficient_WR>None</HeatLossCoefficient_WR>
+								<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>
+								<ExteriorPipeDiameter_WR>None</ExteriorPipeDiameter_WR>
+							</DistributionDHW>
 							<DistributionCooling/>
 							<DistributionVentilation count="2">
 								<Duct index="0">
-									<Name>3db1d936</Name>
+									<Name>003d4ef3</Name>
 									<IdentNr>3</IdentNr>
 									<DuctDiameter unit="mm">160.0</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
@@ -1247,7 +1268,7 @@
 									</AssignedVentUnits>
 								</Duct>
 								<Duct index="1">
-									<Name>46311532</Name>
+									<Name>093871d9</Name>
 									<IdentNr>4</IdentNr>
 									<DuctDiameter unit="mm">160.0</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>

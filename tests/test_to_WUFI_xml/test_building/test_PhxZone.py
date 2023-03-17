@@ -28,4 +28,6 @@ def test_default_PhxProject(reset_class_counters):
         '<HomeDevice count="0"/>',
         '<ExhaustVents count="0"/>',
         '<ThermalBridges count="0"/>',
+        '<SummerNaturalVentilationDay unit="1/hr">0</SummerNaturalVentilationDay>',
+        '<SummerNaturalVentilationNight unit="1/hr">0</SummerNaturalVentilationNight>',
     ]
