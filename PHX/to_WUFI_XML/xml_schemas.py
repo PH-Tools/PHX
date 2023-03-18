@@ -24,6 +24,7 @@ from PHX.model import (
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
 from PHX.model.schedules.occupancy import PhxScheduleOccupancy
 from PHX.to_WUFI_XML.xml_writables import XML_Node, XML_List, XML_Object, xml_writable
+from PHX.model.enums.foundations import FoundationType
 
 TOL_LEV1 = 2  # Value tolerance for rounding. ie; 9.843181919194 -> 9.84
 TOL_LEV2 = 10  # Value tolerance for rounding. ie; 9.843181919194 -> 9.8431819192
@@ -274,7 +275,7 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
 
 def _PhxPhBuildingData(
     _phius_cert: certification.PhxPhiusCertification,
-) -> List[xml_writable]:
+) -> List[xml_writable]:    
     return [
         XML_Node("IdentNr", _phius_cert.ph_building_data._count),
         XML_Node(
@@ -307,7 +308,7 @@ def _PhxPhBuildingData(
         XML_List(
             "FoundationInterfaces",
             [
-                XML_Object("FoundationInterface", f, "index", i)
+                XML_Object("FoundationInterface", f, "index", i, _schema_name="_PhxFoundation")
                 for i, f in enumerate(_phius_cert.ph_building_data.foundations)
             ],
         ),
@@ -378,46 +379,113 @@ def _PhxPhiusCertification(
 
 # -- FOUNDATIONS --------------------------------------------------------------
 
+def _PhxHeatedBasement(_f: ground.PhxHeatedBasement):
+    return [
+        XML_Node("FloorSlabArea_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabArea", _f.floor_slab_area_m2),
+        XML_Node("FloorSlabPerimeter_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabPerimeter", _f.floor_slab_exposed_perimeter_m),
+        XML_Node("U_ValueBasementSlab_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementSlab", _f.floor_slab_u_value),
+
+        XML_Node("DepthBasementBelowGroundSurface_Selection", 6), # 6=user-defined
+        XML_Node("DepthBasementBelowGroundSurface", _f.slab_depth_below_grade_m),
+        
+        # XML_Node("HeightBasementWallAboveGrade_Selection", 6), #6=user-defined
+        # XML_Node("HeightBasementWallAboveGrade", _f.ab),
+
+        XML_Node("U_ValueBasementWall_Selection", 6), #6=user-defined
+        XML_Node("U_ValueBasementWall", _f.basement_wall_u_value),
+    ]
+
+def _PhxUnHeatedBasement(_f: ground.PhxUnHeatedBasement):
+    return [
+        XML_Node("DepthBasementBelowGroundSurface_Selection", 6), # 6=User defined
+        XML_Node("DepthBasementBelowGroundSurface", _f.slab_depth_below_grade_m),
+        XML_Node("HeightBasementWallAboveGrade_Selection", 6), # 6=User defined
+        XML_Node("HeightBasementWallAboveGrade", _f.basement_wall_height_above_grade_m),    
+        XML_Node("FloorSlabArea_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabArea", _f.floor_ceiling_area_m2),
+        XML_Node("U_ValueBasementSlab_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementSlab", _f.floor_slab_u_value),
+        XML_Node("FloorCeilingArea_Selection", 6), # 6=User defined
+        XML_Node("FloorCeilingArea", _f.floor_ceiling_area_m2),
+        XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 6), # 6=User defined
+        XML_Node("U_ValueCeilingToUnheatedCellar", _f.ceiling_u_value),
+        XML_Node("U_ValueBasementWall_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementWall", _f.basement_wall_uValue_below_grade),
+        XML_Node("U_ValueWallAboveGround_Selection", 6), # 6=User defined
+        XML_Node("U_ValueWallAboveGround", _f.basement_wall_uValue_above_grade),
+        XML_Node("FloorSlabPerimeter_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabPerimeter", _f.floor_slab_exposed_perimeter_m),
+        XML_Node("BasementVolume_Selection", 6), # 6=User defined
+        XML_Node("BasementVolume", _f.basement_volume_m3),
+    ]
+
+def _PhxSlabOnGrade(_f: ground.PhxSlabOnGrade):
+    return [
+        XML_Node("FloorSlabArea_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabArea", _f.floor_slab_area_m2),
+        XML_Node("U_ValueBasementSlab_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementSlab", _f.floor_slab_u_value),
+        XML_Node("FloorSlabPerimeter_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabPerimeter", _f.floor_slab_exposed_perimeter_m),
+        XML_Node("PositionPerimeterInsulation", _f._perim_insulation_position.value),
+        XML_Node("PerimeterInsulationWidthDepth", _f.perim_insulation_width_or_depth_m),
+        XML_Node("ConductivityPerimeterInsulation", _f.perim_insulation_conductivity),
+        XML_Node("ThicknessPerimeterInsulation", _f.perim_insulation_thickness_m),
+    ]
+
+def _PhxVentedCrawlspace(_f: ground.PhxVentedCrawlspace):
+    return [
+        XML_Node("FloorCeilingArea_Selection", 6), # 6=user-defined
+        XML_Node("FloorCeilingArea", _f.crawlspace_floor_slab_area_m2),
+        XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 6), # 6=User defined
+        XML_Node("U_ValueCeilingToUnheatedCellar", _f.ceiling_above_crawlspace_u_value),
+        XML_Node("FloorSlabPerimeter_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabPerimeter", _f.crawlspace_floor_exposed_perimeter_m),
+        XML_Node("HeightBasementWallAboveGrade_Selection", 6), # 6=User defined
+        XML_Node("HeightBasementWallAboveGrade", _f.crawlspace_wall_height_above_grade_m),
+        XML_Node("U_ValueCrawlspaceFloor_Selection", 6), # 6=user-defined
+        XML_Node("U_ValueCrawlspaceFloor", _f.crawlspace_floor_u_value),
+        XML_Node("CrawlspaceVentOpenings_Selection", 6), # 6=user-defined
+        XML_Node("CrawlspaceVentOpenings", _f.crawlspace_vent_opening_are_m2),
+        XML_Node("U_ValueWallAboveGround_Selection", 6), # 6=user-defined
+        XML_Node("U_ValueWallAboveGround", _f.crawlspace_wall_u_value),
+    ]
 
 def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
-    return [
-        XML_Node("Name", ""),
-        XML_Node(
-            "SettingFloorSlabType", _f.floor_setting_num, "choice", _f.floor_setting_str
-        ),
-        XML_Node("FloorSlabType", _f.floor_type_num, "choice", _f.floor_type_str),
-        # XML_Node("PositionPerimeterInsulation", 1),
-        # XML_Node("PerimeterInsulationWidthDepth", 1),
-        # XML_Node("ThicknessPerimeterInsulation", 1),
-        # XML_Node("ConductivityPerimeterInsulation", 1),
-        # XML_Node("PhaseShiftMonths", 1),
-        # XML_Node("HarmonicFraction", 1),
-        # XML_Node("BasementVentilationACH", 1),
-        # XML_Node("DepthBasementBelowGroundSurface_Selection", 1),
-        # XML_Node("DepthBasementBelowGroundSurface", 1),
-        # XML_Node("HeightBasementWallAboveGrade_Selection", 1),
-        # XML_Node("HeightBasementWallAboveGrade", 1),
-        # XML_Node("CrawlspaceVentOpenings_Selection", 1),
-        # XML_Node("CrawlspaceVentOpenings", 1),
-        # XML_Node("FloorSlabArea_Selection", 1),
-        # XML_Node("FloorSlabArea", 1),
-        # XML_Node("U_ValueBasementSlab_Selection", 1),
-        # XML_Node("U_ValueBasementSlab", 1),
-        # XML_Node("FloorCeilingArea_Selection", 1),
-        # XML_Node("FloorCeilingArea", 1),
-        # XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 1),
-        # XML_Node("U_ValueCeilingToUnheatedCellar", 1),
-        # XML_Node("U_ValueBasementWall_Selection", 1),
-        # XML_Node("U_ValueBasementWall", 1),
-        # XML_Node("U_ValueWallAboveGround_Selection", 1),
-        # XML_Node("U_ValueWallAboveGround", 1),
-        # XML_Node("FloorSlabPerimeter_Selection", 1),
-        # XML_Node("FloorSlabPerimeter", 1),
-        # XML_Node("BasementVolume_Selection", 1),
-        # XML_Node("BasementVolume", 1),
-        # XML_Node("U_ValueCrawlspaceFloor_Selection", 1),
-        # XML_Node("U_ValueCrawlspaceFloor", 1),
+    common_attributes = [
+        XML_Node("Name", _f.display_name),
+        XML_Node("SettingFloorSlabType", _f.foundation_setting_num.value),
+        XML_Node("FloorSlabType", _f.foundation_type_num.value),
     ]
+
+    if _f.foundation_type_num == FoundationType.NONE:
+        foundation_specific_attributes: List[xml_writable] = []
+    else:
+        foundation_schema = getattr(sys.modules[__name__], f"_{_f.__class__.__name__}")
+        foundation_specific_attributes = foundation_schema(_f)
+
+    return common_attributes + foundation_specific_attributes
+
+    # -- Settings: Others
+    # XML_Node("BasementVentilationACH", 1),
+
+
+    # XML_Node("CrawlspaceVentOpenings_Selection", 1),
+    # XML_Node("CrawlspaceVentOpenings", 1),
+    # XML_Node("FloorCeilingArea_Selection", 1),
+    # XML_Node("FloorCeilingArea", 1),
+    # XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 1),
+    # XML_Node("U_ValueCeilingToUnheatedCellar", 1),
+
+    # XML_Node("U_ValueWallAboveGround_Selection", 1),
+    # XML_Node("U_ValueWallAboveGround", 1),
+    # XML_Node("BasementVolume_Selection", 1),
+    # XML_Node("BasementVolume", 1),
+    # XML_Node("U_ValueCrawlspaceFloor_Selection", 1),
+    # XML_Node("U_ValueCrawlspaceFloor", 1),
 
 
 # -- CLIMATE ------------------------------------------------------------------

@@ -6,12 +6,11 @@
 from typing import Dict, Set
 
 from honeybee import room
-
-from honeybee_ph import site, phi, phius, space
-
 from honeybee_energy.properties.room import RoomEnergyProperties
 
+from honeybee_ph import site, phi, phius, space
 from honeybee_ph.properties.room import RoomPhProperties
+
 from honeybee_energy_ph.properties.load import equipment, people
 from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
 from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
@@ -22,14 +21,14 @@ from honeybee_energy_ph.hvac.ventilation import (
     _ExhaustVentilatorBase,
 )
 
-from PHX.model import phx_site, project, ground, constructions, certification
+from PHX.model import phx_site, project, constructions, certification
 from PHX.model.utilization_patterns import UtilizationPatternCollection_Ventilation
 from PHX.model.enums import (
     phi_certification_phpp_9,
     phi_certification_phpp_10,
     phius_certification,
 )
-from PHX.from_HBJSON import create_building, create_hvac, create_elec_equip
+from PHX.from_HBJSON import create_building, create_hvac, create_elec_equip, create_foundations
 from PHX.from_HBJSON.create_shw import (
     build_phx_piping,
     build_phx_piping,
@@ -290,10 +289,12 @@ def add_PhxPhBuildingData_from_hb_room(
     if hb_prop_energy.people:
         hb_ppl_prop_ph: people.PeoplePhProperties = hb_prop_energy.people.properties.ph  # type: ignore
         ph_bldg.num_of_units = hb_ppl_prop_ph.number_dwelling_units
-    ph_bldg.num_of_floors = _hb_room.properties.ph.ph_bldg_segment.num_floor_levels  # type: ignore
-
-    # TODO: Foundations. For now: set to None
-    ph_bldg.add_foundation(ground.PhxFoundation())
+    ph_bldg.num_of_floors = hb_prop_ph.ph_bldg_segment.num_floor_levels  # type: ignore
+    
+    # -- Add Foundations
+    for hbph_foundation in hb_prop_ph.ph_foundations:
+        phx_foundation = create_foundations.create_phx_foundation_from_hbph(hbph_foundation)
+        ph_bldg.add_foundation(phx_foundation)
 
     # -- Set the airtightness for Building
     ph_bldg.airtightness_q50 = hb_prop_energy.infiltration.flow_per_exterior_area * 3600

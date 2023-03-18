@@ -30,6 +30,7 @@ except ImportError as e:
 
 try:
     from honeybee_ph.properties.room import RoomPhProperties
+    from honeybee_ph.foundations import PhFoundation
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_ph:\n\t{}".format(e))
 
@@ -350,6 +351,34 @@ def check_room_has_spaces(_hb_room: room.Room) -> None:
         )
 
 
+def merge_foundations(_hb_rooms: List[room.Room]) -> Dict[str, PhFoundation]:
+    """
+    
+    Arguments:
+    ----------
+        *
+    
+    Returns:
+    --------
+        *
+    """
+
+    # -- Group by Identifier
+    foundation_groups = {}
+    for rm in _hb_rooms:
+        for foundation in rm.properties.ph.ph_foundations:
+            foundation_groups[foundation.identifier] = foundation
+    
+    # -- Warn if more than 3 of them
+    if len(foundation_groups) > 3:
+        msg = f"\tWarning: WUFI-Passive only allows 3 Foundation types. "\
+            f" {len(foundation_groups)} found on the Building Segment '"\
+            f"{_hb_rooms[0].properties.ph.ph_bldg_segment.display_name}'?"
+        print(msg)
+
+    return foundation_groups
+
+
 def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     """Merge together a group of Honeybee Rooms into a new single HB Room.
 
@@ -389,6 +418,7 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     ref_rm_prop_ph: RoomPhProperties = reference_room.properties.ph  # type: ignore
     new_rm_prop_ph: RoomPhProperties = new_room.properties.ph  # type: ignore
     dup_ph_prop = ref_rm_prop_ph.duplicate(new_rm_prop_ph, include_spaces=False)
+    dup_ph_prop._ph_foundations = merge_foundations(_hb_rooms)
     setattr(new_room._properties, "_ph", dup_ph_prop)
 
     ref_rm_prop_energy: RoomEnergyProperties = reference_room.properties.energy  # type: ignore
