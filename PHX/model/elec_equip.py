@@ -42,6 +42,7 @@ class PhxElectricalDevice:
         """
         return self.quantity
 
+
 class PhxDeviceDishwasher(PhxElectricalDevice):
     def __init__(self):
         super().__init__()
@@ -158,6 +159,42 @@ class PhxDeviceCustomMEL(PhxElectricalDevice):
         return 1
 
 
+class PhxElevatorHydraulic(PhxElectricalDevice):
+    
+    def __init__(self):
+        self.display_name = "User defined - Misc electrical loads"
+        super().__init__()
+    
+    def get_energy_demand(self) -> float:
+        return self.energy_demand * self.quantity
+    
+    def get_quantity(self) -> int:
+        return 1
+    
+class PhxElevatorGearedTraction(PhxElectricalDevice):
+    
+    def __init__(self):
+        self.display_name = "User defined - Misc electrical loads"
+        super().__init__()
+    
+    def get_energy_demand(self) -> float:
+        return self.energy_demand * self.quantity
+    
+    def get_quantity(self) -> int:
+        return 1  
+    
+class PhxElevatorGearlessTraction(PhxElectricalDevice):
+    
+    def __init__(self):
+        self.display_name = "User defined - Misc electrical loads"
+        super().__init__()
+
+    def get_energy_demand(self) -> float:
+        return self.energy_demand * self.quantity
+    
+    def get_quantity(self) -> int:
+        return 1
+    
 # -----------------------------------------------------------------------------
 
 

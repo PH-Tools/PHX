@@ -134,3 +134,27 @@ def test_PhxCustomMEL(reset_class_counters):
     assert obj_1 != obj_2
     assert obj_1.id_num == 1
     assert obj_2.id_num == 2
+
+def test_PhxElevatorHydraulic(reset_class_counters):
+    obj_1 = elec_equip.PhxElevatorHydraulic()
+    obj_2 = elec_equip.PhxElevatorHydraulic()
+
+    assert obj_1 != obj_2
+    assert obj_1.id_num == 1
+    assert obj_2.id_num == 2
+
+def test_PhxElevatorGearedTraction(reset_class_counters):
+    obj_1 = elec_equip.PhxElevatorGearedTraction()
+    obj_2 = elec_equip.PhxElevatorGearedTraction()
+
+    assert obj_1 != obj_2
+    assert obj_1.id_num == 1
+    assert obj_2.id_num == 2
+
+def test_PhxElevatorGearlessTraction(reset_class_counters):
+    obj_1 = elec_equip.PhxElevatorGearlessTraction()
+    obj_2 = elec_equip.PhxElevatorGearlessTraction()
+
+    assert obj_1 != obj_2
+    assert obj_1.id_num == 1
+    assert obj_2.id_num == 2

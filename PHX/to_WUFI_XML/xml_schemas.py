@@ -1640,6 +1640,21 @@ def _PhxDeviceCustomMEL(_d: elec_equip.PhxDeviceCustomMEL) -> List[xml_writable]
         XML_Node("Type", 18),
     ]
 
+def _PhxElevatorHydraulic(_d: elec_equip.PhxElevatorHydraulic) -> List[xml_writable]:
+    return [
+        XML_Node("Type", 11),
+    ]
+
+def _PhxElevatorGearedTraction(_d: elec_equip.PhxElevatorGearedTraction) -> List[xml_writable]:
+    return [
+        XML_Node("Type", 11),
+    ]
+
+def _PhxElevatorGearlessTraction(_d: elec_equip.PhxElevatorGearlessTraction) -> List[xml_writable]:
+    return [
+        XML_Node("Type", 11),
+    ]
+
 
 def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> List[xml_writable]:
     common_attributes = [

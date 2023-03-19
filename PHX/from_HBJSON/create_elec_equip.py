@@ -37,6 +37,9 @@ def build_phx_elec_device(
         "PhCustomAnnualElectric": elec_equip.PhxDeviceCustomElec,
         "PhCustomAnnualLighting": elec_equip.PhxDeviceCustomLighting,
         "PhCustomAnnualMEL": elec_equip.PhxDeviceCustomMEL,
+        "PhElevatorHydraulic": elec_equip.PhxElevatorHydraulic,
+        "PhElevatorGearedTraction": elec_equip.PhxElevatorGearedTraction,
+        "PhElevatorGearlessTraction": elec_equip.PhxElevatorGearlessTraction,
     }
 
     # -- Build the basic device
