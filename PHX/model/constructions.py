@@ -61,7 +61,7 @@ class PhxConstructionOpaque:
         self.id_num = self.__class__._count
 
     @property
-    def identifier(self):
+    def identifier(self) -> str:
         return str(self._identifier)
 
     @identifier.setter
@@ -70,7 +70,7 @@ class PhxConstructionOpaque:
             return
         self._identifier = str(_in)
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.identifier)
 
 
@@ -90,6 +90,7 @@ class PhxWindowFrameElement:
 class PhxConstructionWindow:
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
+    _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
     display_name: str = ""
     _glazing_type_display_name: str = ""
     _frame_type_display_name: str = ""
@@ -110,6 +111,8 @@ class PhxConstructionWindow:
     glass_mean_emissivity: float = 0.1
     glass_g_value: float = 0.4
 
+    id_num_shade: int = -1
+
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
@@ -129,3 +132,13 @@ class PhxConstructionWindow:
     @frame_type_display_name.setter
     def frame_type_display_name(self, _in: str) -> None:
         self._frame_type_display_name = _in
+    
+    @property
+    def identifier(self) -> str:
+        return str(self._identifier)
+
+    @identifier.setter
+    def identifier(self, _in: str):
+        if not _in:
+            return
+        self._identifier = str(_in)

@@ -42,8 +42,12 @@ class ComponentColor(Enum):
     GROUND_ABOVE = 13
     GROUND_BENEATH = 14
 
-
 class ThermalBridgeType(Enum):
     AMBIENT = 15
     PERIMETER = 16
     UNDERGROUND = 17
+
+class SpecificHeatCapacity(Enum):
+    LIGHTWEIGHT = 1
+    MIXED = 2
+    MASSIVE = 3

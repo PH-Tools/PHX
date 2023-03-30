@@ -11,7 +11,7 @@ from PHX.model import (
     constructions,
     elec_equip,
     components,
-    spaces,
+    spaces, shades,
 )
 from PHX.model.hvac import _base, cooling, collection, water, ventilation, heating, ducting
 from PHX.model.schedules import ventilation as sched_ventilation
@@ -118,6 +118,8 @@ def _reset_phx_class_counters():
 
     ducting.PhxDuctElement._count = 0
 
+    shades.PhxWindowShade._count = 0
+
 def _reload_phx_classes():
     """reload all of the PHX model classes. This is similar to the 'reset_class_counters
     except that it will reset all of the PHX modules back to starting position. This is
@@ -134,6 +136,7 @@ def _reload_phx_classes():
     importlib.reload(geometry)
     importlib.reload(schedules)
     importlib.reload(spaces)
+    importlib.reload(shades)
 
 
 @pytest.fixture

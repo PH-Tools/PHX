@@ -8,6 +8,7 @@ from functools import partial
 
 from honeybee import room, aperture, face
 
+from honeybee_energy.construction import windowshade, window
 from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_energy.properties.aperture import ApertureEnergyProperties
 from honeybee_energy.properties.face import FaceEnergyProperties
@@ -33,6 +34,7 @@ from PHX.model.enums.building import (
     ComponentColor,
     ComponentFaceType,
     ThermalBridgeType,
+    SpecificHeatCapacity,
 )
 
 
@@ -116,6 +118,15 @@ def _hb_ext_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
     return mapping[str(_hb_face.type)][str(_hb_face.boundary_condition)]
 
 
+def _get_hb_aperture_construction(_hb_aperture) -> window.WindowConstruction:
+    """Return the Construction of the Aperture."""
+    if hasattr(_hb_aperture.construction, "window_construction"):
+        # -- its a WindowConstructionShade, so pull out the normal construction
+        return _hb_aperture.construction.window_construction
+    else:
+        return _hb_aperture.construction
+
+
 def create_component_from_hb_aperture(
     _host_compo: components.PhxComponentOpaque,
     _hb_aperture: aperture.Aperture,
@@ -140,17 +151,14 @@ def create_component_from_hb_aperture(
     hb_ap_prop_energy: ApertureEnergyProperties = _hb_aperture.properties.energy  # type: ignore
     hb_ap_prop_ph: AperturePhProperties = _hb_aperture.properties.ph  # type: ignore
     hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
-    hb_ap_const = hb_ap_prop_energy.construction
-    if not hasattr(hb_ap_const, "properties"):
-        msg = f"Error: Aperture Construction '{hb_ap_const.display_name}' is missing .properties?"
-        raise Exception(msg)
-    hb_ap_const_prop_ph: WindowConstructionPhProperties = hb_ap_const.properties.ph  # type: ignore
+    hb_ap_const = _get_hb_aperture_construction(hb_ap_prop_energy)
+    hb_ap_const_prop_ph = hb_ap_const.properties.ph
 
     # -- Create new Aperture
     phx_ap = components.PhxComponentAperture(_host=_host_compo)
     phx_ap.display_name = _hb_aperture.display_name
     phx_ap.exposure_interior = hb_room_prop_ph.id_num
-    phx_ap.window_type = _window_type_dict[hb_ap_prop_energy.construction.identifier]
+    phx_ap.window_type = _window_type_dict[hb_ap_const.identifier]
     phx_ap.window_type_id_num = hb_ap_const_prop_ph.id_num
     phx_ap.variant_type_name = hb_ap_prop_ph.variant_type
     phx_ap.install_depth = hb_ap_prop_ph.install_depth
@@ -161,6 +169,7 @@ def create_component_from_hb_aperture(
     new_phx_ap_element.polygon = (
         create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture)
     )
+    
     # -- Set the shading object dimensions, if there are any
     if hb_ap_prop_ph.shading_dimensions:
         shading_dims = hb_ap_prop_ph.shading_dimensions
@@ -292,8 +301,8 @@ def create_zones_from_hb_room(
     new_zone.display_name = _hb_room.display_name
 
     # -- Sort the HB-Room's Spaces by their full_name
-    spaces: List[space.Space] = _hb_room.properties.ph.spaces  # type: ignore
-    sorted_spaces = sorted(spaces, key=lambda space: space.full_name)
+    rm_prop_ph = _hb_room.properties.ph # type: RoomPhProperties # type: ignore
+    sorted_spaces = sorted(rm_prop_ph.spaces, key=lambda space: space.full_name)
 
     # -- Create a new WUFI-Space (Room) for each HBPH-Space
     _create_space = partial(
@@ -307,6 +316,9 @@ def create_zones_from_hb_room(
         (rm.weighted_floor_area for rm in new_zone.spaces)
     )
     new_zone.volume_net = sum((rm.net_volume for rm in new_zone.spaces))
+    new_zone.specific_heat_capacity = SpecificHeatCapacity(
+        rm_prop_ph.specific_heat_capacity.number
+    )
 
     # -- Set the Zone's Occupancy based on the merged HB room
     new_zone = set_zone_occupancy(_hb_room, new_zone)

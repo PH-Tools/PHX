@@ -4,22 +4,22 @@
 """PHX Project Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, List, Dict, Optional
+from typing import ClassVar, List, Dict, Optional, Any
 from dataclasses import dataclass, field
 
-from PHX.model.phx_site import PhxSite
+from PHX.model.building import PhxBuilding, PhxZone
 from PHX.model.certification import PhxPhiusCertification, PhxPhiCertification
 from PHX.model.constructions import PhxConstructionOpaque, PhxConstructionWindow
 from PHX.model.geometry import PhxGraphics3D
-from PHX.model.building import PhxBuilding, PhxZone
+from PHX.model.hvac.collection import PhxMechanicalSystemCollection
+from PHX.model.phx_site import PhxSite
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
 from PHX.model.schedules.occupancy import PhxScheduleOccupancy
+from PHX.model.shades import PhxWindowShade
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Occupancy,
     UtilizationPatternCollection_Ventilation,
 )
-from PHX.model.hvac.collection import PhxMechanicalSystemCollection
-
 
 @dataclass
 class PhxVariant:
@@ -88,6 +88,7 @@ class PhxProject:
     name: str = "unnamed_project"
     assembly_types: Dict[str, PhxConstructionOpaque] = field(default_factory=dict)
     window_types: Dict[str, PhxConstructionWindow] = field(default_factory=dict)
+    shade_types: Dict[str, PhxWindowShade] = field(default_factory=dict)
     utilization_patterns_ventilation: UtilizationPatternCollection_Ventilation = field(
         default_factory=UtilizationPatternCollection_Ventilation
     )
@@ -105,6 +106,14 @@ class PhxProject:
     def add_new_variant(self, _variant: PhxVariant) -> None:
         """Adds a new PHX Variant to the Project."""
         self.variants.append(_variant)
+
+    def add_new_window_type(self, _window_type: PhxConstructionWindow) -> None:
+        """Adds a new PhxConstructionWindow to the Project's collection"""
+        self.window_types[_window_type.identifier] = _window_type
+    
+    def add_new_shade_type(self, _shade_type: PhxWindowShade) -> None:
+        """Adds a new PhxWindowShade to the Project's collection"""
+        self.shade_types[_shade_type.identifier] = _shade_type
 
     def vent_sched_in_project_collection(self, _key: str) -> bool:
         """See if the project Ventilation schedule collection already includes the specified key."""

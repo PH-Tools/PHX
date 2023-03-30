@@ -19,7 +19,7 @@ from PHX.model import (
     phx_site,
     project,
     schedules,
-    spaces,
+    spaces, shades,
 )
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
 from PHX.model.schedules.occupancy import PhxScheduleOccupancy
@@ -90,6 +90,13 @@ def _PhxProject(_wufi_project: project.PhxProject) -> List[xml_writable]:
                 for i, wt_id in enumerate(_wufi_project.window_types.values())
             ],
         ),
+        XML_List(
+            "SolarProtectionTypes",
+            [
+                XML_Object("SolarProtectionType", type_id, "index", i, _schema_name="_PhxWindowShade")
+                for i, type_id in enumerate(_wufi_project.shade_types.values())
+            ],
+        ),
     ]
 
 
@@ -158,6 +165,12 @@ def _PhxBuilding(_b: building.PhxBuilding) -> List[xml_writable]:
 
 
 def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
+    _spec_cap_WH_m2k = {
+        1: 60,
+        2: 132,
+        3: 204,
+    }
+    
     return [
         XML_Node("Name", _z.display_name),
         XML_Node("KindZone", 1, "choice", "Simulated zone"),
@@ -184,8 +197,8 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         XML_Node("FloorArea", _z.weighted_net_floor_area),
         XML_Node("ClearanceHeight_Selection", 1),
         XML_Node("ClearanceHeight", _z.clearance_height),
-        XML_Node("SpecificHeatCapacity_Selection", 2),
-        XML_Node("SpecificHeatCapacity", _z.specific_heat_capacity),
+        XML_Node("SpecificHeatCapacity_Selection", _z.specific_heat_capacity.value),
+        XML_Node("SpecificHeatCapacity", _spec_cap_WH_m2k[_z.specific_heat_capacity.value]),
         XML_Node("IdentNrPH_Building", 1),
         XML_Node("OccupantQuantityUserDef", int(_z.res_occupant_quantity), "unit", "-"),
         XML_Node("NumberBedrooms", int(_z.res_number_bedrooms), "unit", "-"),
@@ -267,6 +280,8 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
             [XML_Node("IdentNr", n, "index", i) for i, n in enumerate(_c.polygon_ids)],
         ),
         XML_Node("DepthWindowReveal", _c.install_depth, "unit", "m"),
+        XML_Node("IdentNrSolarProtection", _c.id_num_shade),
+        XML_Node("IdentNrOverhang", -1),
     ]
 
 
@@ -398,6 +413,7 @@ def _PhxHeatedBasement(_f: ground.PhxHeatedBasement):
         XML_Node("U_ValueBasementWall", _f.basement_wall_u_value),
     ]
 
+
 def _PhxUnHeatedBasement(_f: ground.PhxUnHeatedBasement):
     return [
         XML_Node("DepthBasementBelowGroundSurface_Selection", 6), # 6=User defined
@@ -422,6 +438,7 @@ def _PhxUnHeatedBasement(_f: ground.PhxUnHeatedBasement):
         XML_Node("BasementVolume", _f.basement_volume_m3),
     ]
 
+
 def _PhxSlabOnGrade(_f: ground.PhxSlabOnGrade):
     return [
         XML_Node("FloorSlabArea_Selection", 6), # 6=User defined
@@ -435,6 +452,7 @@ def _PhxSlabOnGrade(_f: ground.PhxSlabOnGrade):
         XML_Node("ConductivityPerimeterInsulation", _f.perim_insulation_conductivity),
         XML_Node("ThicknessPerimeterInsulation", _f.perim_insulation_thickness_m),
     ]
+
 
 def _PhxVentedCrawlspace(_f: ground.PhxVentedCrawlspace):
     return [
@@ -453,6 +471,7 @@ def _PhxVentedCrawlspace(_f: ground.PhxVentedCrawlspace):
         XML_Node("U_ValueWallAboveGround_Selection", 6), # 6=user-defined
         XML_Node("U_ValueWallAboveGround", _f.crawlspace_wall_u_value),
     ]
+
 
 def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
     common_attributes = [
@@ -839,6 +858,21 @@ def _PhxConstructionWindow(
         XML_Node("Frame_Psi_Bottom", _wt.frame_bottom.psi_install),
         XML_Node("Frame_U_Bottom", _wt.frame_bottom.u_value),
         XML_Node("Glazing_Psi_Bottom", _wt.frame_bottom.psi_glazing),
+    ]
+
+
+def _PhxWindowShade(_s: shades.PhxWindowShade) -> List[xml_writable]:
+    return [
+      XML_Node("IdentNr", _s.id_num),
+      XML_Node("Name", _s.display_name),
+      XML_Node("OperationMode", _s.operation_mode),
+      XML_Node("MaxRedFactorRadiation", _s.reduction_factor),
+      XML_Node("ExternalEmissivity", _s.external_emissivity),
+      XML_Node("EquivalentAbsorptivity", _s.absorptivity),
+      XML_Node("ThermalResistanceSupplement", _s.thermal_resistance_supplement),
+      XML_Node("ThermalResistanceCavity", _s.thermal_resistance_cavity),
+      XML_Node("RadiationLimitValue", _s.radiation_limit),
+      XML_Node("ExcludeWeekends", _s.exclude_weekends),
     ]
 
 

@@ -44,4 +44,5 @@ def test_default_PhxProject(reset_class_counters):
         '<Variants count="0"/>',
         '<Assemblies count="0"/>',
         '<WindowTypes count="0"/>',
+        '<SolarProtectionTypes count="0"/>'
     ]

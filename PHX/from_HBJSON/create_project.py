@@ -62,7 +62,7 @@ def convert_hb_model_to_PhxProject(
 
     phx_project = PhxProject()
     create_assemblies.build_opaque_assemblies_from_HB_model(phx_project, _hb_model)
-    create_assemblies.build_transparent_assemblies_from_HB_Model(phx_project, _hb_model)
+    create_assemblies.build_transparent_assembly_types_from_HB_Model(phx_project, _hb_model)
     create_schedules.add_all_HB_schedules_to_PHX_Project(phx_project, _hb_model)
 
     # -- TODO: Make all these operations if..else... with flags in the func arguments.

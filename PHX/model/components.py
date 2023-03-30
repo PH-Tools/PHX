@@ -218,6 +218,11 @@ class PhxComponentAperture(PhxComponentBase):
         self.elements: List[PhxApertureElement] = []
 
     @property
+    def id_num_shade(self) -> int:
+        """Return the ID-Number of the Component Construction's Shade-Type, or -1 if None."""
+        return self.window_type.id_num_shade
+
+    @property
     def polygons(self) -> List[geometry.PhxPolygonRectangular]:
         return [e.polygon for e in self.elements if e.polygon]
 
