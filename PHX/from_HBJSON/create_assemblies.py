@@ -3,18 +3,18 @@
 
 """Functions used to create Project elements from the Honeybee-Model"""
 
-from typing import Union
+from typing import Union, Optional
 
 from honeybee import model
 from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
-from honeybee_energy.construction import window
+from honeybee_energy.construction import window, windowshade
 
 from honeybee_energy_ph.properties.construction.window import (
     WindowConstructionPhProperties,
 )
 from honeybee_ph_utils import iso_10077_1
 
-from PHX.model import constructions, project
+from PHX.model import constructions, project, shades
 
 
 def _conductivity_from_r_value(_r_value: float, _thickness: float) -> float:
@@ -179,8 +179,10 @@ def build_opaque_assemblies_from_HB_model(
     return None
 
 
-def build_phx_window_type_from_hb_win_construction(
+def build_phx_window_type_from_HB_WindowConstruction(
+    _project: project.PhxProject, 
     _hb_win_const: window.WindowConstruction,
+    _shade_const: Optional[windowshade.WindowConstructionShade]
 ) -> constructions.PhxConstructionWindow:
     """Create a new PHX-WindowType based on a HB-Window-Construction.
 
@@ -201,6 +203,7 @@ def build_phx_window_type_from_hb_win_construction(
     phx_window_type = constructions.PhxConstructionWindow()
     phx_window_type.id_num = constructions.PhxConstructionWindow._count
     phx_window_type.display_name = _hb_win_const.display_name
+    phx_window_type.identifier = _hb_win_const.identifier
 
     ph_params: WindowConstructionPhProperties = _hb_win_const.properties.ph  # type: ignore
 
@@ -272,10 +275,15 @@ def build_phx_window_type_from_hb_win_construction(
         phx_window_type.frame_factor = 0.75
         phx_window_type.u_value_window = _hb_win_const.u_factor
 
+    # -- Add Shading, if any --------------------------------------------------
+    if _shade_const:
+        phx_shade = _project.shade_types[_shade_const.shade_material.identifier]
+        phx_window_type.id_num_shade = phx_shade.id_num
+
     return phx_window_type
 
 
-def build_transparent_assemblies_from_HB_Model(
+def build_transparent_assembly_types_from_HB_Model(
     _project: project.PhxProject, _hb_model: model.Model
 ) -> None:
     """Create PHX-WindowTypes (constructions) from an HB Model and add to the PHX-Project
@@ -284,31 +292,63 @@ def build_transparent_assemblies_from_HB_Model(
 
     Arguments:
     ----------
-        * _project (_project: project.PhxProject): The PhxProject to store the new window type on.
+        * _project (_project: project.PhxProject): The PhxProject to store the new window-type on.
         * _hb_model (model.Model): The Honeybee Model to use as the source.
 
     Returns:
     --------
         * None
     """
+    apertures = (aperture for room in _hb_model.rooms for face in room.faces for aperture in face.apertures)
+    for aperture in apertures:
+        # -- If it is a WindowConstructionShade, pull out the normal WindowConstruction
+        if hasattr(aperture.properties.energy.construction, "window_construction"):
+            # -- It is a WindowConstructionShade
+            hb_win_construction = aperture.properties.energy.construction.window_construction
+            hb_shade_construction = aperture.properties.energy.construction
+        else:
+            # -- It is a normal WindowConstruction
+            hb_win_construction = aperture.properties.energy.construction
+            hb_shade_construction = None
 
-    for room in _hb_model.rooms:
-        for face in room.faces:
-            for aperture in face._apertures:
-                hb_win_construction = aperture.properties.energy.construction
+        # --- Build all the PHX Shades first since the window needs to know their ID num
+        if hb_shade_construction and hb_shade_construction.shade_material.identifier not in _project.shade_types:
+            phx_shade_type = build_phx_shade_type_from_HB_WindowConstructionShade(hb_shade_construction)
+            _project.add_new_shade_type(phx_shade_type)
 
-                if hb_win_construction.identifier not in _project.window_types:
+        # --- Build the PHX Windows
+        if hb_win_construction.identifier not in _project.window_types:
+            phx_aperture_constr = build_phx_window_type_from_HB_WindowConstruction(
+                _project, hb_win_construction, hb_shade_construction)
+            _project.add_new_window_type(phx_aperture_constr)
 
-                    phx_aperture_constr = build_phx_window_type_from_hb_win_construction(
-                        hb_win_construction
-                    )
-
-                    _project.window_types[
-                        hb_win_construction.identifier
-                    ] = phx_aperture_constr
-
-                hb_win_construction.properties.ph.id_num = _project.window_types[
-                    hb_win_construction.identifier
-                ].id_num
+        # -- Keep all the IDs aligned
+        phx_win_type = _project.window_types[hb_win_construction.identifier]
+        hb_win_construction.properties.ph.id_num = phx_win_type.id_num
 
     return None
+
+
+def build_phx_shade_type_from_HB_WindowConstructionShade(
+        _hb_const: windowshade.WindowConstructionShade) -> shades.PhxWindowShade:
+    """Create a new PhxWindowShade object with attributes based on an HBE-WindowConstructionShade.
+    
+    Arguments:
+    ----------
+        * _hb_const: (windowshade.WindowConstructionShade) The source HBE-WindowConstructionShade.
+    
+    Returns:
+    --------
+        * (shades.PhxWindowShade): The new PHX Window Shade type.
+    """
+    _hb_shade_material = _hb_const.shade_material
+    
+    phx_shade = shades.PhxWindowShade()
+    phx_shade.display_name = _hb_shade_material.display_name
+    phx_shade.identifier = _hb_shade_material.identifier
+    phx_shade.reduction_factor = _hb_shade_material.solar_transmittance #TODO: Phius Shade Method?
+
+    # -- Keep the IDs aligned
+    _hb_const.properties.ph.id_num = phx_shade.id_num
+
+    return phx_shade

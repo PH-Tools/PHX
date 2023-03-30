@@ -18,7 +18,7 @@ from PHX.model.components import (
 )
 from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
-
+from PHX.model.enums.building import SpecificHeatCapacity
 
 @dataclass
 class PhxZone:
@@ -29,7 +29,7 @@ class PhxZone:
     volume_net: float = 0.0
     weighted_net_floor_area: float = 0.0
     clearance_height: float = 2.5
-    specific_heat_capacity: float = 132
+    specific_heat_capacity: SpecificHeatCapacity = SpecificHeatCapacity.LIGHTWEIGHT
     spaces: List[spaces.PhxSpace] = field(default_factory=list)
     elec_equipment_collection: elec_equip.PhxElectricDeviceCollection = field(
         default_factory=elec_equip.PhxElectricDeviceCollection

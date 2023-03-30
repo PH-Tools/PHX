@@ -203,7 +203,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_39e2bddc..Face4</Name>
+						<Name>Room_1_e780e628..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -219,7 +219,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_39e2bddc..Face5</Name>
+						<Name>Room_1_e780e628..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -268,8 +268,8 @@
 						<FloorArea>0</FloorArea>
 						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
 						<ClearanceHeight>2.5</ClearanceHeight>
-						<SpecificHeatCapacity_Selection>2</SpecificHeatCapacity_Selection>
-						<SpecificHeatCapacity>132</SpecificHeatCapacity>
+						<SpecificHeatCapacity_Selection>1</SpecificHeatCapacity_Selection>
+						<SpecificHeatCapacity>60</SpecificHeatCapacity>
 						<IdentNrPH_Building>1</IdentNrPH_Building>
 						<OccupantQuantityUserDef unit="-">0</OccupantQuantityUserDef>
 						<NumberBedrooms unit="-">0</NumberBedrooms>
@@ -300,7 +300,7 @@
 					<AverageWindSpeed>4.0</AverageWindSpeed>
 					<Latitude>40.6</Latitude>
 					<Longitude>-73.8</Longitude>
-					<HeightNNWeatherStation>3.0</HeightNNWeatherStation>
+					<HeightNNWeatherStation>0.0</HeightNNWeatherStation>
 					<dUTC>-4</dUTC>
 					<HeightNNBuilding>None</HeightNNBuilding>
 					<ClimateZone>1</ClimateZone>
@@ -734,4 +734,5 @@
 		</Assembly>
 	</Assemblies>
 	<WindowTypes count="0"/>
+	<SolarProtectionTypes count="0"/>
 </WUFIplusProject>

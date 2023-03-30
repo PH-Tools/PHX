@@ -219,7 +219,7 @@ def build_phx_exh_vent_use_defined(
 def build_phx_exhaust_vent_device(
     _hbeph_exhaust_vent: ventilation._ExhaustVentilatorBase,
 ) -> hvac.AnyPhxExhaustVent:
-    """Build a new PHX Ventilation Mechanical Device.
+    """Build a new PHX Exhaust Ventilation Mechanical Device.
 
     Arguments:
     ----------

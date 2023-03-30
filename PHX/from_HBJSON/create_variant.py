@@ -320,7 +320,10 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
         * None
     """
 
+    # -- aliases
+    phx_climate = _variant.site.climate
     ud_site: site.Site = _hb_room.properties.ph.ph_bldg_segment.site  # type: ignore
+    ud_ground = ud_site.climate.ground
 
     # -- Location
     _variant.site.location.latitude = ud_site.location.latitude
@@ -330,10 +333,9 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     _variant.site.location.hours_from_UTC = ud_site.location.hours_from_UTC
 
     # -- Basics
-    _variant.site.climate.daily_temp_swing = (
-        ud_site.climate.summer_daily_temperature_swing
-    )
-    _variant.site.climate.avg_wind_speed = ud_site.climate.average_wind_speed
+    phx_climate.station_elevation = ud_site.climate.station_elevation
+    phx_climate.daily_temp_swing = ud_site.climate.summer_daily_temperature_swing
+    phx_climate.avg_wind_speed = ud_site.climate.average_wind_speed
 
     # -- PHPP Stuff
     _variant.site.phpp_codes.country_code = ud_site.phpp_library_codes.country_code
@@ -341,105 +343,99 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     _variant.site.phpp_codes.dataset_name = ud_site.phpp_library_codes.dataset_name
 
     # -- Ground
-    _variant.site.ground.ground_thermal_conductivity = (
-        ud_site.climate.ground.ground_thermal_conductivity
-    )
-    _variant.site.ground.ground_heat_capacity = (
-        ud_site.climate.ground.ground_heat_capacity
-    )
-    _variant.site.ground.ground_density = ud_site.climate.ground.ground_density
-    _variant.site.ground.depth_groundwater = ud_site.climate.ground.depth_groundwater
-    _variant.site.ground.flow_rate_groundwater = (
-        ud_site.climate.ground.flow_rate_groundwater
-    )
+    _variant.site.ground.ground_thermal_conductivity = ud_ground.ground_thermal_conductivity
+    _variant.site.ground.ground_heat_capacity = ud_ground.ground_heat_capacity
+    _variant.site.ground.ground_density = ud_ground.ground_density
+    _variant.site.ground.depth_groundwater = ud_ground.depth_groundwater
+    _variant.site.ground.flow_rate_groundwater = ud_ground.flow_rate_groundwater
 
     # -- Monthly Values
-    _variant.site.climate.temperature_air = ud_site.climate.monthly_temps.air_temps.values
-    _variant.site.climate.temperature_dewpoint = (
+    phx_climate.temperature_air = ud_site.climate.monthly_temps.air_temps.values
+    phx_climate.temperature_dewpoint = (
         ud_site.climate.monthly_temps.dewpoints.values
     )
-    _variant.site.climate.temperature_sky = ud_site.climate.monthly_temps.sky_temps.values
+    phx_climate.temperature_sky = ud_site.climate.monthly_temps.sky_temps.values
 
-    _variant.site.climate.radiation_north = ud_site.climate.monthly_radiation.north.values
-    _variant.site.climate.radiation_east = ud_site.climate.monthly_radiation.east.values
-    _variant.site.climate.radiation_south = ud_site.climate.monthly_radiation.south.values
-    _variant.site.climate.radiation_west = ud_site.climate.monthly_radiation.west.values
-    _variant.site.climate.radiation_global = ud_site.climate.monthly_radiation.glob.values
+    phx_climate.radiation_north = ud_site.climate.monthly_radiation.north.values
+    phx_climate.radiation_east = ud_site.climate.monthly_radiation.east.values
+    phx_climate.radiation_south = ud_site.climate.monthly_radiation.south.values
+    phx_climate.radiation_west = ud_site.climate.monthly_radiation.west.values
+    phx_climate.radiation_global = ud_site.climate.monthly_radiation.glob.values
 
     # -- Peak Load Values
-    _variant.site.climate.peak_heating_1.temperature_air = (
+    phx_climate.peak_heating_1.temperature_air = (
         ud_site.climate.peak_loads.heat_load_1.temp
     )
-    _variant.site.climate.peak_heating_1.radiation_north = (
+    phx_climate.peak_heating_1.radiation_north = (
         ud_site.climate.peak_loads.heat_load_1.rad_north
     )
-    _variant.site.climate.peak_heating_1.radiation_east = (
+    phx_climate.peak_heating_1.radiation_east = (
         ud_site.climate.peak_loads.heat_load_1.rad_east
     )
-    _variant.site.climate.peak_heating_1.radiation_south = (
+    phx_climate.peak_heating_1.radiation_south = (
         ud_site.climate.peak_loads.heat_load_1.rad_south
     )
-    _variant.site.climate.peak_heating_1.radiation_west = (
+    phx_climate.peak_heating_1.radiation_west = (
         ud_site.climate.peak_loads.heat_load_1.rad_west
     )
-    _variant.site.climate.peak_heating_1.radiation_global = (
+    phx_climate.peak_heating_1.radiation_global = (
         ud_site.climate.peak_loads.heat_load_1.rad_global
     )
 
-    _variant.site.climate.peak_heating_2.temperature_air = (
+    phx_climate.peak_heating_2.temperature_air = (
         ud_site.climate.peak_loads.heat_load_2.temp
     )
-    _variant.site.climate.peak_heating_2.radiation_north = (
+    phx_climate.peak_heating_2.radiation_north = (
         ud_site.climate.peak_loads.heat_load_2.rad_north
     )
-    _variant.site.climate.peak_heating_2.radiation_east = (
+    phx_climate.peak_heating_2.radiation_east = (
         ud_site.climate.peak_loads.heat_load_2.rad_east
     )
-    _variant.site.climate.peak_heating_2.radiation_south = (
+    phx_climate.peak_heating_2.radiation_south = (
         ud_site.climate.peak_loads.heat_load_2.rad_south
     )
-    _variant.site.climate.peak_heating_2.radiation_west = (
+    phx_climate.peak_heating_2.radiation_west = (
         ud_site.climate.peak_loads.heat_load_2.rad_west
     )
-    _variant.site.climate.peak_heating_2.radiation_global = (
+    phx_climate.peak_heating_2.radiation_global = (
         ud_site.climate.peak_loads.heat_load_2.rad_global
     )
 
-    _variant.site.climate.peak_cooling_1.temperature_air = (
+    phx_climate.peak_cooling_1.temperature_air = (
         ud_site.climate.peak_loads.cooling_load_1.temp
     )
-    _variant.site.climate.peak_cooling_1.radiation_north = (
+    phx_climate.peak_cooling_1.radiation_north = (
         ud_site.climate.peak_loads.cooling_load_1.rad_north
     )
-    _variant.site.climate.peak_cooling_1.radiation_east = (
+    phx_climate.peak_cooling_1.radiation_east = (
         ud_site.climate.peak_loads.cooling_load_1.rad_east
     )
-    _variant.site.climate.peak_cooling_1.radiation_south = (
+    phx_climate.peak_cooling_1.radiation_south = (
         ud_site.climate.peak_loads.cooling_load_1.rad_south
     )
-    _variant.site.climate.peak_cooling_1.radiation_west = (
+    phx_climate.peak_cooling_1.radiation_west = (
         ud_site.climate.peak_loads.cooling_load_1.rad_west
     )
-    _variant.site.climate.peak_cooling_1.radiation_global = (
+    phx_climate.peak_cooling_1.radiation_global = (
         ud_site.climate.peak_loads.cooling_load_1.rad_global
     )
 
-    _variant.site.climate.peak_cooling_2.temperature_air = (
+    phx_climate.peak_cooling_2.temperature_air = (
         ud_site.climate.peak_loads.cooling_load_2.temp
     )
-    _variant.site.climate.peak_cooling_2.radiation_north = (
+    phx_climate.peak_cooling_2.radiation_north = (
         ud_site.climate.peak_loads.cooling_load_2.rad_north
     )
-    _variant.site.climate.peak_cooling_2.radiation_east = (
+    phx_climate.peak_cooling_2.radiation_east = (
         ud_site.climate.peak_loads.cooling_load_2.rad_east
     )
-    _variant.site.climate.peak_cooling_2.radiation_south = (
+    phx_climate.peak_cooling_2.radiation_south = (
         ud_site.climate.peak_loads.cooling_load_2.rad_south
     )
-    _variant.site.climate.peak_cooling_2.radiation_west = (
+    phx_climate.peak_cooling_2.radiation_west = (
         ud_site.climate.peak_loads.cooling_load_2.rad_west
     )
-    _variant.site.climate.peak_cooling_2.radiation_global = (
+    phx_climate.peak_cooling_2.radiation_global = (
         ud_site.climate.peak_loads.cooling_load_2.rad_global
     )
 
@@ -540,12 +536,14 @@ def add_ventilation_systems_from_hb_rooms(
 
         # ---------------------------------------------------------------------
         # -- Add PHX Distribution Ducting from the HBPH Ducts
-        _variant.mech_systems.add_vent_ducting(
-            create_hvac.build_phx_duct(hbph_vent_sys.duct_01, phx_ventilator.id_num)
-        )
-        _variant.mech_systems.add_vent_ducting(
-            create_hvac.build_phx_duct(hbph_vent_sys.duct_02, phx_ventilator.id_num)
-        )
+        for hbph_supply_duct in hbph_vent_sys.supply_ducting:
+            _variant.mech_systems.add_vent_ducting(
+                create_hvac.build_phx_duct(hbph_supply_duct, phx_ventilator.id_num)
+            )
+        for hbph_exhaust_duct in hbph_vent_sys.exhaust_ducting:
+            _variant.mech_systems.add_vent_ducting(
+                create_hvac.build_phx_duct(hbph_exhaust_duct, phx_ventilator.id_num)
+            )
 
     return None
 
