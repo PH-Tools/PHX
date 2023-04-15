@@ -15,7 +15,7 @@ from PHX.xl import xl_app
 # --- Input file Path
 # -------------------------------------------------------------------------
 SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/HarmsDavis_2302328.hbjson"
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/Pratt_Wellness_Ctr_230412.hbjson"
 )
 
 if __name__ == "__main__":
@@ -46,8 +46,8 @@ if __name__ == "__main__":
 
     with phpp_conn.xl.in_silent_mode():
         phpp_conn.xl.unprotect_all_sheets()
-        # phpp_conn.write_certification_config(phx_project)
-        # phpp_conn.write_climate_data(phx_project)
+        phpp_conn.write_certification_config(phx_project)
+        phpp_conn.write_climate_data(phx_project)
         phpp_conn.write_project_constructions(phx_project)
         phpp_conn.write_project_tfa(phx_project)
         phpp_conn.write_project_opaque_surfaces(phx_project)

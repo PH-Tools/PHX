@@ -1,5 +1,5 @@
+black==23.1.0
 coverage
-black
 pytest
 pytest-cov
 rich

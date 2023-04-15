@@ -15,6 +15,7 @@ class Mock_XL_Framework(xl_typing.xl_Framework_Protocol):
             "Sheet1": xl_typing.xl_Sheet_Protocol(),
             "Sheet2": xl_typing.xl_Sheet_Protocol(),
         }
+        self.apps = xl_typing.xl_apps_Protocol()
 
 
 # -----------------------------------------------------------------------------
@@ -39,9 +40,9 @@ def test_xl_app_get_WorkBook_success():
 def test_xl_app_get_WorkBook_fail():
     mock_xw = Mock_XL_Framework()
 
-    mock_xw.books = None  # type: ignore #<---------
+    mock_xw.books = None  # type: ignore #<--------- This should cause the error
 
-    with pytest.raises(xl_app.NoActiveExcelRunningError):
+    with pytest.raises(Exception):
         app = xl_app.XLConnection(xl_framework=mock_xw)
 
 

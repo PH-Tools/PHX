@@ -6,14 +6,17 @@
 from typing import Optional, List, Set, Callable, Any, Union, Dict
 from contextlib import contextmanager
 import os
+import pathlib
 
 from PHX.xl import xl_data
 from PHX.xl.xl_typing import (
     xl_Framework_Protocol,
     xl_Book_Protocol,
+    xl_Books_Protocol,
     xl_Sheets_Protocol,
     xl_Sheet_Protocol,
     xl_Range_Protocol,
+    xl_apps_Protocol,
 )
 
 # -----------------------------------------------------------------------------
@@ -67,6 +70,12 @@ class XlReadException(Exception):
         super().__init__(self.msg)
 
 
+class NoSuchFileError(Exception):
+    def __init__(self, _file: pathlib.Path):
+        self.msg = f"\n\tError: Cannot locate the file \n{_file}?"
+        super().__init__(self.msg)
+
+
 # -----------------------------------------------------------------------------
 
 
@@ -81,42 +90,95 @@ def silent_print(_input: Any) -> None:
 class XLConnection:
     """An Excel connection Facade / Interface."""
 
-    def __init__(self, xl_framework, output: Optional[Callable] = silent_print):
+    def __init__(
+        self,
+        xl_framework,
+        output: Callable[[str], Any] = silent_print,
+        xl_file_path: Optional[pathlib.Path] = None,
+    ) -> None:
         """Facade class for Excel Interop
 
         Arguments:
         ----------
             * xl (xl_Framework_Protocol): The Excel framework to use to interact with XL.
-            * _output (Callable[[Any], None]): The output function to use.
-                Default is silent (no output), or provide 'print' for standard-out, etc.
+
+            * output (Callable[[str], Any]): The output function to use. Default is silent
+                (no output), or provide the standard python 'print' for standard-out, etc.
+
+            * xl_file_path (Optional[pathlib.Path]): The full path to an XL file to use. If none,
+                will default to the 'active' xl workbook.
         """
         # -- Note: can not type-hint xl_framework in the Class argument line
         # -- cus' Python-3.7 doesn't have Protocols yet. It does see to work
         # -- when type-hinting the actual attribute though.
         self.xl: xl_Framework_Protocol = xl_framework
-        self._output = output
-        self.output(f"> connected to excel doc: {self.wb}")
+        self._output: Callable[[str], Any] = output
+        self.xl_file_path: Optional[pathlib.Path] = xl_file_path
+
+        self._wb: Optional[xl_Book_Protocol] = None
+        self.output(f"> connected to excel doc: '{self.wb.fullname}'")
 
     @property
-    def sheets(self) -> xl_Sheets_Protocol:
-        return self.wb.sheets
+    def excel_running(self) -> bool:
+        """Returns True if Excel is currently running, False if not"""
+        return self.apps.count > 0
+
+    def start_excel_app(self) -> None:
+        """Starts Excel Application if it is not currently running."""
+        if not self.excel_running:
+            self.apps.add()
+
+    @property
+    def apps(self) -> xl_apps_Protocol:
+        """Return the right 'apps' object (os dependant)."""
+        if self.os_is_windows:
+            return self.xl.Apps
+        else:
+            return self.xl.apps
+
+    @property
+    def books(self) -> xl_Books_Protocol:
+        """Return the right 'apps' object (os dependant)."""
+        if self.os_is_windows:
+            return self.xl.Books
+        else:
+            return self.xl.books
 
     @property
     def os_is_windows(self) -> bool:
         """Return True if the current OS is Windows. False if it is Mac/Linux"""
         return os.name == "nt"
 
+    def get_workbook(self) -> xl_Book_Protocol:
+        """Return the right Workbook, depending on the App state."""
+        if not self.excel_running:
+            self.start_excel_app()
+
+        # -- If a specific file path is provided, open that one
+        if self.xl_file_path:
+            if not self.xl_file_path.exists():
+                raise NoSuchFileError(self.xl_file_path)
+            return self.books.open(self.xl_file_path)
+
+        # -- If no books are open yet, create and return a new one
+        if self.books.count == 0:
+            return self.books.add()
+
+        # -- Otherwise, just return the Active workbook
+        return self.books.active
+
     @property
     def wb(self) -> xl_Book_Protocol:
-        try:
-            return self.xl.books.active
-        except:
-            raise NoActiveExcelRunningError
+        """Returns the Workbook of the active Excel Instance."""
+        if self._wb is not None:  # -- Cache
+            return self._wb
+        else:
+            self._wb = self.get_workbook()
+            return self._wb
 
     def autofit_columns(self, _sheet_name: str) -> None:
         """Runs autofit on all the columns in a sheet."""
         sht = self.get_sheet_by_name(_sheet_name)
-        # sht.activate()
         sht.autofit(axis="c")  # by-columns
 
     def autofit_rows(self, _sheet_name: str) -> None:
@@ -147,7 +209,9 @@ class XLConnection:
         """Clears the content and formatting of the whole sheet."""
         self.get_sheet_by_name(_sheet_name).clear()
 
-    def create_new_worksheet(self, _sheet_name: str, before: Optional[str]=None, after: Optional[str]=None) -> None:
+    def create_new_worksheet(
+        self, _sheet_name: str, before: Optional[str] = None, after: Optional[str] = None
+    ) -> None:
         """Try and add a new Worksheet to the Workbook."""
         try:
             self.wb.sheets.add(_sheet_name, before, after)
@@ -224,7 +288,7 @@ class XLConnection:
         if str(_sheet_name).upper() not in self.get_worksheet_names():
             msg = f"Error: Key '{_sheet_name}' was not found in the Workbook '{self.wb.name}' Sheets?"
             raise KeyError(msg)
-        
+
         return self.wb.sheets[_sheet_name]
 
     def get_last_sheet(self) -> xl_Sheet_Protocol:
@@ -494,7 +558,7 @@ class XLConnection:
             * (None)
         """
         try:
-            self._output(str(_input))  # type: ignore
+            self._output(str(_input))
         except:
             # If _input=None, ignore...
             pass

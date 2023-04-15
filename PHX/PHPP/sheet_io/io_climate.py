@@ -40,3 +40,48 @@ class Climate:
         start_row = 9
         for item in _active_climate.create_xl_items(self.shape.name, start_row):
             self.xl.write_xl_item(item)
+
+    def read_active_country(self) -> str:
+        return str(
+            self.xl.get_single_data_item(self.shape.name, self.shape.named_ranges.country)
+        )
+
+    def read_active_region(self) -> str:
+        return str(
+            self.xl.get_single_data_item(self.shape.name, self.shape.named_ranges.region)
+        )
+
+    def read_active_data_set(self) -> str:
+        return str(
+            self.xl.get_single_data_item(
+                self.shape.name, self.shape.named_ranges.data_set
+            )
+        )
+
+    def read_station_elevation(self) -> str:
+        return str(
+            self.xl.get_single_data_item(
+                self.shape.name, self.shape.defined_ranges.weather_station_altitude
+            )
+        )
+
+    def read_site_elevation(self) -> str:
+        return str(
+            self.xl.get_single_data_item(
+                self.shape.name, self.shape.defined_ranges.site_altitude
+            )
+        )
+
+    def read_latitude(self) -> float:
+        return float(
+            self.xl.get_single_data_item(
+                self.shape.name, self.shape.defined_ranges.latitude
+            )
+        )
+
+    def read_longitude(self) -> float:
+        return float(
+            self.xl.get_single_data_item(
+                self.shape.name, self.shape.defined_ranges.longitude
+            )
+        )

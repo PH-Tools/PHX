@@ -245,6 +245,18 @@
                     "unit": "C"
                 }
             }
+        },
+        "named_ranges": {
+            "country": "Klima_Region",
+            "region": "Klima_Region2",
+            "data_set": "Klima_Standort"
+        },
+        "defined_ranges": {
+            "climate_zone": "D13",
+            "weather_station_altitude": "D17",
+            "site_altitude": "D18",
+            "latitude": "F25",
+            "longitude": "H25"
         }
     },
     "UVALUES": {

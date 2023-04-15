@@ -100,6 +100,20 @@ class Variants(BaseModel):
 # -----------------------------------------------------------------------------
 
 
+class ClimateNamedRanges(BaseModel):
+    country: str
+    region: str
+    data_set: str
+
+
+class ClimateDefinedRanges(BaseModel):
+    climate_zone: str
+    weather_station_altitude: str
+    site_altitude: str
+    latitude: str
+    longitude: str
+
+
 class ClimateActiveDatasetCol(BaseModel):
     country: str
     region: str
@@ -164,6 +178,8 @@ class Climate(BaseModel):
     name: str
     active_dataset: ClimateActiveDataset
     ud_block: ClimateUDBlock
+    named_ranges: Optional[ClimateNamedRanges]
+    defined_ranges: Optional[ClimateDefinedRanges]
 
 
 # -----------------------------------------------------------------------------
