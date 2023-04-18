@@ -33,7 +33,7 @@ class HeatingPeakLoad:
             "gains_solar": self.xl.get_data(self.shape.name, pS),
             "gains_internal": self.xl.get_data(self.shape.name, pI),
             "gains_total": self.xl.get_data(self.shape.name, pG),
-            "peak_load": self.xl.get_data(self.shape.name, pH),
+            "peak_heating_load": self.xl.get_data(self.shape.name, pH),
         }
 
     def get_load_W2(self) -> Dict[str, Any]:
@@ -52,5 +52,5 @@ class HeatingPeakLoad:
             "gains_solar": self.xl.get_data(self.shape.name, pS),
             "gains_internal": self.xl.get_data(self.shape.name, pI),
             "gains_total": self.xl.get_data(self.shape.name, pG),
-            "peak_load": self.xl.get_data(self.shape.name, pH),
+            "peak_heating_load": self.xl.get_data(self.shape.name, pH),
         }

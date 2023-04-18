@@ -30,8 +30,8 @@ class CoolingPeakLoad:
             "losses_ventilation": self.xl.get_data(self.shape.name, pV),
             "gains_solar": self.xl.get_data(self.shape.name, pS),
             "gains_internal": self.xl.get_data(self.shape.name, pI),
-            "peak_load_sensible": self.xl.get_data(self.shape.name, pC),
-            "peak_load_latent": self.xl.get_data(self.shape.name, pD),
+            "peak_sensible_cooling_load": self.xl.get_data(self.shape.name, pC),
+            "peak_latent_cooling_load": self.xl.get_data(self.shape.name, pD),
         }
 
     def get_load_W2(self) -> Dict[str, Any]:
@@ -47,6 +47,6 @@ class CoolingPeakLoad:
             "losses_ventilation": self.xl.get_data(self.shape.name, pV),
             "gains_solar": self.xl.get_data(self.shape.name, pS),
             "gains_internal": self.xl.get_data(self.shape.name, pI),
-            "peak_load_sensible": self.xl.get_data(self.shape.name, pC),
-            "peak_load_latent": self.xl.get_data(self.shape.name, pD),
+            "peak_sensible_cooling_load": self.xl.get_data(self.shape.name, pC),
+            "peak_latent_cooling_load": self.xl.get_data(self.shape.name, pD),
         }

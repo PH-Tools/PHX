@@ -136,19 +136,13 @@ class XLConnection:
 
     @property
     def apps(self) -> xl_apps_Protocol:
-        """Return the right 'apps' object (os dependant)."""
-        if self.os_is_windows:
-            return self.xl.Apps
-        else:
-            return self.xl.apps
+        """Return the xl framework 'apps' object."""
+        return self.xl.apps
 
     @property
     def books(self) -> xl_Books_Protocol:
-        """Return the right 'apps' object (os dependant)."""
-        if self.os_is_windows:
-            return self.xl.Books
-        else:
-            return self.xl.books
+        """Return the xl framework 'books' object."""
+        return self.xl.books
 
     @property
     def os_is_windows(self) -> bool:
