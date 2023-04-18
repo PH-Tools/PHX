@@ -118,6 +118,12 @@ class XLConnection:
         self._wb: Optional[xl_Book_Protocol] = None
         self.output(f"> connected to excel doc: '{self.wb.fullname}'")
 
+    def activate_new_workbook(self) -> xl_Book_Protocol:
+        """Create a new blank workbook and set as the 'Active' book. Returns the new book."""
+        new_book = self.books.add()
+        self._wb = new_book
+        return new_book
+
     @property
     def excel_running(self) -> bool:
         """Returns True if Excel is currently running, False if not"""
@@ -150,7 +156,7 @@ class XLConnection:
         return os.name == "nt"
 
     def get_workbook(self) -> xl_Book_Protocol:
-        """Return the right Workbook, depending on the App state."""
+        """Return the right Workbook, depending on the App state and user inputs."""
         if not self.excel_running:
             self.start_excel_app()
 
@@ -160,7 +166,7 @@ class XLConnection:
                 raise NoSuchFileError(self.xl_file_path)
             return self.books.open(self.xl_file_path)
 
-        # -- If no books are open yet, create and return a new one
+        # -- If no books are open yet, create a new one and return it
         if self.books.count == 0:
             return self.books.add()
 
