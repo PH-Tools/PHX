@@ -4,14 +4,25 @@
 """Controller Class for the PHPP "U-Values" worksheet."""
 
 from __future__ import annotations
-from typing import List, Optional
+from typing import List, Optional, Generator
 
-from PHX.xl import xl_data
+from PHX.xl import xl_data, xl_app
 from PHX.xl.xl_data import col_offset
+
 from PHX.PHPP.phpp_model import uvalues_constructor
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.sheet_io.io_variants import VariantAssemblyLayerName
-from PHX.xl import xl_app
+
+from PHX.model.constructions import PhxConstructionOpaque
+
+
+class NoEmptyConstructorError(Exception):
+    def __init__(self):
+        """Raises if there are no empty COnstructors in the worksheet."""
+        self.msg = (
+            "No empty constructors found. Please remove some constructors and try again."
+        )
+        super().__init__(self.msg)
 
 
 class UValues:
@@ -23,11 +34,26 @@ class UValues:
         self._constructor_start_rows: List[int] = []
         self.cache = {}
 
+    # -------------------------------------------------------------------------
+    # -- Getters
+
     @property
-    def constructor_start_rows(self) -> List[int]:
+    def all_constructor_start_rows(self) -> List[int]:
+        """Return a list of all of the PHPP Constructor starting rows"""
         if not self._constructor_start_rows:
             self._constructor_start_rows = self.get_start_rows()
         return self._constructor_start_rows
+
+    @property
+    def used_constructor_start_rows(self) -> Generator[int, None, None]:
+        """Return the PHPP Constructors that have any data in them, one at a time."""
+        for row_num in self.all_constructor_start_rows:
+            name_col = self.shape.constructor.inputs.display_name.column
+            name_range = (
+                f"{name_col}{row_num + self.shape.constructor.inputs.name_row_offset}"
+            )
+            if self.xl.get_data(self.shape.name, name_range):
+                yield row_num
 
     def get_start_rows(self, _row_start: int = 1, _row_end: int = 1730) -> List[int]:
         """Reads through the U-Values worksheet and finds each of the constructor 'start' (title) rows.
@@ -62,7 +88,11 @@ class UValues:
         return constructors
 
     def get_constructor_phpp_id_by_name(
-        self, _name, _row_start: int = 1, _row_end: int = 1730, _use_cache: bool = False
+        self,
+        _name: str,
+        _row_start: int = 1,
+        _row_end: int = 1730,
+        _use_cache: bool = False,
     ) -> Optional[str]:
         """Returns the full PHPP-style value for the constructor with a specified name.
 
@@ -106,80 +136,146 @@ class UValues:
 
         return name_with_id
 
-    def write_construction_blocks(
-        self, _const_blocks: List[uvalues_constructor.ConstructorBlock]
-    ) -> None:
-        """Write all of the Constructions to the U-Values blocks."""
-
-        self.clear_constructor_data(clear_name=True)
-
-        assert len(_const_blocks) <= len(
-            self.constructor_start_rows
-        ), f"Error: Too many U-Value Constructions: {len(self.constructor_start_rows)}"
-
-        for construction, start_row in zip(_const_blocks, self.constructor_start_rows):
-            for item in construction.create_xl_items(self.shape.name, start_row):
-                self.xl.write_xl_item(item)
-
     def get_used_constructor_names(self) -> List[str]:
         """Return a list of the used construction names."""
 
         name_col = self.shape.constructor.inputs.display_name.column
 
         construction_names = []
-        for row_num in self.constructor_start_rows:
+        for row_num in self.all_constructor_start_rows:
             assembly_name = self.xl.get_data(
                 _sheet_name=self.shape.name,
-                _range=f"{name_col}{row_num + 2}",
+                _range=f"{name_col}{row_num + self.shape.constructor.inputs.name_row_offset}",
             )
             if assembly_name:
                 construction_names.append(assembly_name)
 
         return sorted(construction_names)
 
-    def clear_constructor_data(self, clear_name: bool = True):
-        """Remove all of the existing input data from the constructor."""
-        for row_num in self.constructor_start_rows:
-            # -- main body data
-            data_block_start = (
-                f"{self.shape.constructor.inputs.sec_1_description.column}{row_num + 8}"
-            )
-            data_block_end = (
-                f"{self.shape.constructor.inputs.thickness.column}{row_num + 15}"
-            )
-            data_block_range = f"{data_block_start}:{data_block_end}"
-            self.xl.write_xl_item(xl_data.XlItem(self.shape.name, data_block_range, None))
+    def get_constructor_r_si_type(self, _row_num: int) -> str:
+        """Return "Wall", "Roof" or "Floor" depending on the constructor type."""
+        col = self.shape.constructor.inputs.r_si.column
+        row_num = _row_num + self.shape.constructor.inputs.rsi_row_offset
+        return str(self.xl.get_data(self.shape.name, f"{col}{row_num}"))
 
-            # -- surface films
+    def get_constructor_r_se_type(self, _row_num: int) -> str:
+        """Return "Ground", "Outdoor air" or "Ventilated" depending on the constructor type."""
+        col = self.shape.constructor.inputs.r_se.column
+        row_num = _row_num + self.shape.constructor.inputs.rse_row_offset
+        return str(self.xl.get_data(self.shape.name, f"{col}{row_num}"))
+
+    def get_constructor_name(self, _row_num: int) -> str:
+        """Return the name of the constructor at the specified row."""
+        col = self.shape.constructor.inputs.display_name.column
+        row_num = _row_num + self.shape.constructor.inputs.name_row_offset
+        return str(self.xl.get_data(self.shape.name, f"{col}{row_num}"))
+
+    def get_first_empty_constructor_start_row(self) -> int:
+        """Return the first empty constructor's row number."""
+        for row_num in self.all_constructor_start_rows:
+            name = self.get_constructor_name(row_num)
+            if not self.get_constructor_name(row_num) or name == "None":
+                return row_num
+        else:
+            raise NoEmptyConstructorError
+
+    # -------------------------------------------------------------------------
+    # -- Writers
+
+    def write_single_PHX_construction(self, _phx_construction, _start_row):
+        """Write a single PHX Construction to the PHPP worksheet."""
+        new_constructor = uvalues_constructor.ConstructorBlock(
+            self.shape, _phx_construction
+        )
+        self.write_single_constructor_block(new_constructor, _start_row)
+
+    def write_single_constructor_block(
+        self, _construction: uvalues_constructor.ConstructorBlock, _start_row: int
+    ) -> None:
+        """Write a single Construction with all the layers to the PHPP worksheet."""
+        for item in _construction.create_xl_items(self.shape.name, _start_row):
+            self.xl.write_xl_item(item)
+
+    def write_constructor_blocks(
+        self, _const_blocks: List[uvalues_constructor.ConstructorBlock]
+    ) -> None:
+        """Write a list of ConstructorBlocks to the U-Values worksheet."""
+
+        self.clear_all_constructor_data(_clear_name=True)
+
+        assert len(_const_blocks) <= len(
+            self.all_constructor_start_rows
+        ), f"Error: Too many U-Value Constructions: {len(self.all_constructor_start_rows)}"
+
+        for construction, start_row in zip(
+            _const_blocks, self.all_constructor_start_rows
+        ):
+            self.write_single_constructor_block(construction, start_row)
+
+    def add_new_phx_construction(self, _phx_construction: PhxConstructionOpaque) -> str:
+        """Add a new PHX Construction to the PHPP worksheet in the first empty slot found.
+
+        Returns:
+        --------
+            * (str): The PHPP-id of the new construction.
+        """
+        new_constructor = uvalues_constructor.ConstructorBlock(
+            self.shape, _phx_construction
+        )
+        self.write_single_constructor_block(
+            new_constructor, self.get_first_empty_constructor_start_row()
+        )
+
+        return self.get_constructor_phpp_id_by_name(_phx_construction.display_name)
+
+    # -------------------------------------------------------------------------
+    # -- Removers
+
+    def clear_single_constructor_data(self, _row_num, _clear_name: bool = False) -> None:
+        """Clears the existing data from a single constructor block."""
+        # -- main body data
+        data_block_start = f"{self.shape.constructor.inputs.sec_1_description.column}{_row_num + self.shape.constructor.inputs.first_layer_row_offset}"
+        data_block_end = f"{self.shape.constructor.inputs.thickness.column}{_row_num + self.shape.constructor.inputs.last_layer_row_offset}"
+        data_block_range = f"{data_block_start}:{data_block_end}"
+        self.xl.write_xl_item(xl_data.XlItem(self.shape.name, data_block_range, None))
+
+        # -- surface films
+        self.xl.write_xl_item(
+            xl_data.XlItem(
+                self.shape.name,
+                f"{self.shape.constructor.inputs.r_si.column}{_row_num + 4}:{self.shape.constructor.inputs.r_se.column}{_row_num + 5}",
+                None,
+            )
+        )
+
+        # -- Assembly Name (Sometimes, like with Variants, will want to keep this)
+        if _clear_name:
             self.xl.write_xl_item(
                 xl_data.XlItem(
                     self.shape.name,
-                    f"{self.shape.constructor.inputs.r_si.column}{row_num + 4}:{self.shape.constructor.inputs.r_se.column}{row_num + 5}",
+                    f"{self.shape.constructor.inputs.display_name.column}{_row_num + self.shape.constructor.inputs.name_row_offset}",
                     None,
                 )
             )
 
-            # -- Assembly Name (Sometimes, like with Variants, will want to keep this)
-            if clear_name:
-                self.xl.write_xl_item(
-                    xl_data.XlItem(
-                        self.shape.name,
-                        f"{self.shape.constructor.inputs.display_name.column}{row_num + 2}",
-                        None,
-                    )
-                )
+    def clear_all_constructor_data(self, _clear_name: bool = True):
+        """Remove all of the existing input data from all of the constructors in the PHPP."""
+        for row_num in self.all_constructor_start_rows:
+            self.clear_single_constructor_data(row_num, _clear_name)
+
+    # -------------------------------------------------------------------------
 
     def activate_variants(self, _assembly_phpp_ids: List[VariantAssemblyLayerName]):
         """Connect all the links to make the 'Variants' page drive the input values."""
 
-        self.clear_constructor_data(clear_name=False)
+        self.clear_all_constructor_data(_clear_name=False)
 
         name_col = self.shape.constructor.inputs.display_name.column
 
-        for row_num in self.constructor_start_rows:
+        for row_num in self.all_constructor_start_rows:
             assembly_name = self.xl.get_data(
                 _sheet_name=self.shape.name,
-                _range=f"{name_col}{row_num + 2}",
+                _range=f"{name_col}{row_num + self.shape.constructor.inputs.name_row_offset}",
             )
 
             # -- Find the matching PHPP-ID name from the Variants
@@ -190,7 +286,7 @@ class UValues:
                     self.xl.write_xl_item(
                         xl_data.XlItem(
                             self.shape.name,
-                            f"{self.shape.constructor.inputs.variants_layer_name}{row_num + 8}",
+                            f"{self.shape.constructor.inputs.variants_layer_name}{row_num + self.shape.constructor.inputs.first_layer_row_offset}",
                             variant_layer_id.phpp_id,
                         )
                     )
@@ -199,8 +295,8 @@ class UValues:
                     self.xl.write_xl_item(
                         xl_data.XlItem(
                             self.shape.name,
-                            f"{self.shape.constructor.inputs.sec_1_conductivity.column}{row_num + 8}",
-                            f"={self.shape.constructor.inputs.variants_conductivity}{row_num + 8}",
+                            f"{self.shape.constructor.inputs.sec_1_conductivity.column}{row_num + self.shape.constructor.inputs.first_layer_row_offset}",
+                            f"={self.shape.constructor.inputs.variants_conductivity}{row_num + self.shape.constructor.inputs.first_layer_row_offset}",
                         )
                     )
 
@@ -208,8 +304,8 @@ class UValues:
                     self.xl.write_xl_item(
                         xl_data.XlItem(
                             self.shape.name,
-                            f"{self.shape.constructor.inputs.thickness.column}{row_num + 8}",
-                            f"={self.shape.constructor.inputs.variants_thickness}{row_num + 8}",
+                            f"{self.shape.constructor.inputs.thickness.column}{row_num + self.shape.constructor.inputs.first_layer_row_offset}",
+                            f"={self.shape.constructor.inputs.variants_thickness}{row_num + self.shape.constructor.inputs.first_layer_row_offset}",
                         )
                     )
 
@@ -217,7 +313,7 @@ class UValues:
                     self.xl.write_xl_item(
                         xl_data.XlItem(
                             self.shape.name,
-                            f"{self.shape.constructor.inputs.r_si.column}{row_num + 4}:{self.shape.constructor.inputs.r_se.column}{row_num + 5}",
+                            f"{self.shape.constructor.inputs.r_si.column}{row_num + self.shape.constructor.inputs.rse_row_offset}:{self.shape.constructor.inputs.r_se.column}{row_num + self.shape.constructor.inputs.rsi_row_offset}",
                             0,
                         )
                     )

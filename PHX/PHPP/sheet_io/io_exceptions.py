@@ -32,3 +32,14 @@ class ReadDataException(Exception):
             f"worksheet at location '{_read_address}'?"
         )
         super().__init__(self.msg)
+
+
+class PHPPDataMissingException(Exception):
+    def __init__(self, _sheet_name, _read_address):
+        """Raised when there a required field returns 'None'."""
+        self.msg = (
+            f"Error: Required value missing in PHPP "
+            f"worksheet '{_sheet_name}' at cell '{_read_address}'. "
+            "Please correct the PHPP."
+        )
+        super().__init__(self.msg)

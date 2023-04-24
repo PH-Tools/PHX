@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import List
 from functools import partial
 
-from PHX.model import constructions
+from PHX.model.constructions import PhxConstructionWindow
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
@@ -22,7 +22,7 @@ class GlazingRow:
         "phx_construction",
     )
     shape: shape_model.Components
-    phx_construction: constructions.PhxConstructionWindow
+    phx_construction: PhxConstructionWindow
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""

@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import List
 from functools import partial
 
-from PHX.model import constructions
+from PHX.model.constructions import PhxConstructionOpaque, PhxLayer
 
 from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
@@ -17,9 +17,8 @@ from PHX.PHPP.phpp_localization import shape_model
 class ConstructorBlock:
     """A single U-Value/Constructor entry block."""
 
-    __slots__ = ("shape", "phx_construction")
     shape: shape_model.UValues
-    phx_construction: constructions.PhxConstructionOpaque
+    phx_construction: PhxConstructionOpaque = PhxConstructionOpaque()
 
     def _create_range(self, _field_name: str, _row_offset: int, _start_row: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -30,7 +29,7 @@ class ConstructorBlock:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.constructor.inputs, _field_name).unit
 
-    def is_mass_material(self, _layer: constructions.PhxLayer) -> bool:
+    def is_mass_material(self, _layer: PhxLayer) -> bool:
         """Return True if the Layer is an SD 'Mass' Layer."""
 
         for material in _layer.materials:
@@ -48,18 +47,30 @@ class ConstructorBlock:
         # -- Build the basic assembly attributes
         xl_items_list: List[xl_data.XlItem] = [
             XLItemUValues(
-                create_range("display_name", 2), self.phx_construction.display_name
+                create_range(
+                    "display_name", self.shape.constructor.inputs.name_row_offset
+                ),
+                self.phx_construction.display_name,
             ),
             XLItemUValues(
-                create_range("r_si", 4), 0.0, "M2K/W", self._get_target_unit("r_si")
+                create_range("r_si", self.shape.constructor.inputs.rse_row_offset),
+                0.0,
+                "M2K/W",
+                self._get_target_unit("r_si"),
             ),
             XLItemUValues(
-                create_range("r_se", 5), 0.0, "M2K/W", self._get_target_unit("r_se")
+                create_range("r_se", self.shape.constructor.inputs.rsi_row_offset),
+                0.0,
+                "M2K/W",
+                self._get_target_unit("r_se"),
             ),
         ]
 
         # -- Build all the layers of the assembly
-        for i, layer in enumerate(self.phx_construction.layers, start=8):
+        for i, layer in enumerate(
+            self.phx_construction.layers,
+            start=self.shape.constructor.inputs.first_layer_row_offset,
+        ):
             if self.is_mass_material(layer):
                 continue
 

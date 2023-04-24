@@ -4,8 +4,9 @@
 """Model class for a PHPP Areas / Surface-Entry row"""
 
 from dataclasses import dataclass
-from typing import List, Optional
 from functools import partial
+import re
+from typing import List, Optional, Dict
 
 from PHX.model import components, geometry
 from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType
@@ -82,3 +83,80 @@ class SurfaceRow:
             XLItemAreas(create_range("absorptivity"), 0.6),
             XLItemAreas(create_range("emissivity"), 0.9),
         ]
+
+
+@dataclass
+class ExistingSurfaceRow:
+    """The data from an existing PHPP Surface Entry row."""
+
+    __slots__ = ("shape", "data", "group_type_exposure_map")
+    shape: shape_model.Areas
+    data: list
+    group_type_exposure_map: Dict[int, str]  # From io_areas.Areas() parent class
+
+    @property
+    def name(self) -> str:
+        l = self.shape.surface_rows.inputs.description.column
+        i = xl_data.xl_ord(str(l)) - 65
+        return self.data[i]
+
+    @property
+    def no_name(self) -> bool:
+        """Return True if the name in the row-data is "-" or None."""
+        return self.name == "-" or self.name is None
+
+    @property
+    def face_group_type_phpp_string(self) -> str:
+        """Return the face's Group-Type string from the row-data."""
+        col_letter = self.shape.surface_rows.inputs.group_number.column
+        col_number_as_index = xl_data.xl_ord(str(col_letter)) - 65
+        return str(self.data[col_number_as_index])
+
+    @property
+    def face_group_type_phpp_number(self) -> int:
+        """Return the face's Group-Type number as an int from the Group-Type string."""
+        result = re.split(r"\D+", self.face_group_type_phpp_string, 2)
+        if not result:
+            msg = f"Error getting Group-Type number? Could not find a number in the Group-Type string {self.face_group_type_phpp_string}?"
+            raise Exception(msg)
+
+        try:
+            return int(result[0])
+        except:
+            msg = (
+                f"Error getting Group-Type number? Could not convert {result[0]} to int?"
+            )
+            raise Exception(msg)
+
+    @property
+    def face_exposure_phpp_letter(self) -> str:
+        """Return the face's exposure-type letter ("A", "B", etc..) based on the group_type_phpp_number"""
+        return self.group_type_exposure_map[self.face_group_type_phpp_number]
+
+    @property
+    def face_type(self):
+        """Return the face type enum (WALL, FLOOR, etc..) based on the group_type_phpp_number."""
+        type_map = {
+            2: ComponentFaceType.WINDOW,
+            3: ComponentFaceType.WINDOW,
+            4: ComponentFaceType.WINDOW,
+            5: ComponentFaceType.WINDOW,
+            6: ComponentFaceType.WINDOW,
+            7: ComponentFaceType.WINDOW,
+            8: ComponentFaceType.WALL,
+            9: ComponentFaceType.WALL,
+            10: ComponentFaceType.ROOF_CEILING,
+            11: ComponentFaceType.FLOOR,
+        }
+        return type_map[self.face_group_type_phpp_number]
+
+    @property
+    def face_exposure(self):
+        """Return the exposure type enum (EXTERIOR, GROUND, SURFACE) based on the face_exposure_phpp_letter"""
+        type_map = {
+            "A": ComponentExposureExterior.EXTERIOR,
+            "B": ComponentExposureExterior.GROUND,
+        }
+        return type_map.get(
+            self.face_exposure_phpp_letter, ComponentExposureExterior.SURFACE
+        )

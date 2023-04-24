@@ -8,7 +8,9 @@ from typing import List, Optional
 
 from PHX.xl import xl_app
 from PHX.xl.xl_data import col_offset
-from PHX.PHPP.phpp_model import component_frame, component_glazing, component_vent
+from PHX.PHPP.phpp_model.component_vent import VentilatorRow
+from PHX.PHPP.phpp_model.component_glazing import GlazingRow
+from PHX.PHPP.phpp_model.component_frame import FrameRow
 from PHX.PHPP.phpp_localization import shape_model
 
 
@@ -16,11 +18,34 @@ class Glazings:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
-        self.section_header_row: Optional[int] = None
-        self.section_first_entry_row: Optional[int] = None
+        self._section_header_row: Optional[int] = None
+        self._section_first_entry_row: Optional[int] = None
+        self._section_last_entry_row: Optional[int] = None
         self.cache = {}
 
+    @property
+    def section_header_row(self) -> int:
+        """Return the row number of the Glazings section header."""
+        if not self._section_header_row:
+            self._section_header_row = self.find_section_header_row()
+        return self._section_header_row
+
+    @property
+    def section_first_entry_row(self) -> int:
+        """Return the row number of the very first user-input entry row in the Glazing input section."""
+        if not self._section_first_entry_row:
+            self._section_first_entry_row = self.find_section_first_entry_row()
+        return self._section_first_entry_row
+
+    @property
+    def section_last_entry_row(self) -> int:
+        """Return the row number of the very last user-input entry row in the Glazing input section."""
+        if not self._section_last_entry_row:
+            self._section_last_entry_row = self.find_section_last_entry_row()
+        return self._section_last_entry_row
+
     def find_section_header_row(self, _row_start: int = 1, _row_end: int = 100) -> int:
+        """Return the row number of the Glazings section header."""
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.glazings.locator_col_header,
@@ -38,9 +63,7 @@ class Glazings:
         )
 
     def find_section_first_entry_row(self) -> int:
-        if not self.section_header_row:
-            self.section_header_row = self.find_section_header_row()
-
+        """Return the row number of the very first user-input entry row in the Glazing input section."""
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.glazings.locator_col_entry,
@@ -57,14 +80,51 @@ class Glazings:
             f" entry start on the '{self.shape.name}' sheet, column {self.shape.glazings.locator_col_entry}?"
         )
 
-    def find_section_shape(self) -> None:
-        self.section_start_row = self.find_section_header_row()
-        self.section_first_entry_row = self.find_section_first_entry_row()
+    def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+        """Return the last row of the glazing input section."""
+        if not _start_row:
+            _start_row = self.section_first_entry_row
+        elif _start_row > 10_000:
+            raise Exception(
+                f"Error: Cannot find the last row in the '{self.shape.name}' sheet, column {self.shape.glazings.locator_col_entry}?"
+            )
+
+        _row_end = _start_row + 500
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.glazings.locator_col_entry,
+            _row_start=_start_row,
+            _row_end=_row_end,
+        )
+
+        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+            if not val:
+                return i - 1
+        else:
+            return self.find_section_last_entry_row(_row_end)
+
+    def find_first_empty_row(self) -> int:
+        """Return the first empty row in the glazing input section."""
+        search_col = str(self.shape.glazings.inputs.description.column)
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=search_col,
+            _row_start=self.section_first_entry_row,
+            _row_end=self.section_last_entry_row,
+        )
+
+        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+            if not val:
+                return i
+
+        raise Exception(
+            f"Error: Cannot find the first empty row in the '{self.shape.name}' sheet, column {search_col}?"
+        )
 
     def get_glazing_phpp_id_by_name(
         self, _name: str, _use_cache: bool = False
     ) -> Optional[str]:
-
+        """Return the PHPP Glazing ID for the given name."""
         if _use_cache:
             try:
                 return self.cache[_name]
@@ -75,7 +135,7 @@ class Glazings:
             sheet_name=self.shape.name,
             row_start=1,
             row_end=500,
-            col=self.shape.glazings.inputs.description.column,
+            col=str(self.shape.glazings.inputs.description.column),
             find=_name,
         )
 
@@ -84,23 +144,53 @@ class Glazings:
 
         prefix = self.xl.get_data(
             self.shape.name,
-            f"{col_offset(self.shape.glazings.inputs.description.column, -1)}{row}",
+            f"{col_offset(str(self.shape.glazings.inputs.description.column), -1)}{row}",
         )
-        print(f"Getting PHPP Glazing id for {_name}")
+        print(f"Getting PHPP Glazing PHPP-id for {_name}")
         name_with_id = f"{prefix}-{_name}"
 
         self.cache[_name] = name_with_id
 
         return name_with_id
 
+    def get_glazing_phpp_id_by_row_num(self, _row_num: int) -> str:
+        """Return the PHPP Glazing ID ("01ud-MyGlass", etc..) for the given row number."""
+        id_col = str(self.shape.glazings.inputs.id.column)
+        id_num = self.xl.get_data(self.shape.name, f"{id_col}{_row_num}")
+        name_col = str(self.shape.glazings.inputs.description.column)
+        id_name = self.xl.get_data(self.shape.name, f"{name_col}{_row_num}")
+        return f"{id_num}-{id_name}"
+
 
 class Frames:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
-        self.section_header_row: Optional[int] = None
-        self.section_first_entry_row: Optional[int] = None
+        self._section_header_row: Optional[int] = None
+        self._section_first_entry_row: Optional[int] = None
+        self._section_last_entry_row: Optional[int] = None
         self.cache = {}
+
+    @property
+    def section_header_row(self) -> int:
+        """Return the row number of the 'Frames' section header."""
+        if not self._section_header_row:
+            self._section_header_row = self.find_section_header_row()
+        return self._section_header_row
+
+    @property
+    def section_first_entry_row(self) -> int:
+        """Return the row number of the very first user-input entry row in the Frames input section."""
+        if not self._section_first_entry_row:
+            self._section_first_entry_row = self.find_section_first_entry_row()
+        return self._section_first_entry_row
+
+    @property
+    def section_last_entry_row(self) -> int:
+        """Return the row number of the very last user-input entry row in the Frames input section."""
+        if not self._section_last_entry_row:
+            self._section_last_entry_row = self.find_section_last_entry_row()
+        return self._section_last_entry_row
 
     def find_section_header_row(self, _row_start: int = 1, _row_end: int = 100) -> int:
         xl_data = self.xl.get_single_column_data(
@@ -109,6 +199,7 @@ class Frames:
             _row_start=_row_start,
             _row_end=_row_end,
         )
+        """Return the row number of the 'Frames' section header."""
 
         for i, val in enumerate(xl_data):
             if self.shape.frames.locator_string_header == val:
@@ -120,9 +211,7 @@ class Frames:
         )
 
     def find_section_first_entry_row(self) -> int:
-        if not self.section_header_row:
-            self.section_header_row = self.find_section_header_row()
-
+        """Return the row number of the very first user-input entry row in the Frames input section."""
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.frames.locator_col_entry,
@@ -139,9 +228,46 @@ class Frames:
             f"entry start on the 'Components' sheet, column {self.shape.frames.locator_col_entry}?"
         )
 
-    def find_section_shape(self) -> None:
-        self.section_start_row = self.find_section_header_row()
-        self.section_first_entry_row = self.find_section_first_entry_row()
+    def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+        """Return the last row of the Frames input section."""
+        if not _start_row:
+            _start_row = self.section_first_entry_row
+        elif _start_row > 10_000:
+            raise Exception(
+                f"Error: Cannot find the last row in the '{self.shape.name}' sheet, column {self.shape.frames.locator_col_entry}?"
+            )
+
+        _row_end = _start_row + 500
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.frames.locator_col_entry,
+            _row_start=_start_row,
+            _row_end=_row_end,
+        )
+
+        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+            if not val:
+                return i - 1
+        else:
+            return self.find_section_last_entry_row(_row_end)
+
+    def find_first_empty_row(self) -> int:
+        """Return the first empty row in the frames input section."""
+        search_col = str(self.shape.frames.inputs.description.column)
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=search_col,
+            _row_start=self.section_first_entry_row,
+            _row_end=self.section_last_entry_row,
+        )
+
+        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+            if not val:
+                return i
+
+        raise Exception(
+            f"Error: Cannot find the first empty row in the '{self.shape.name}' sheet, column {search_col}?"
+        )
 
     def get_frame_phpp_id_by_name(
         self,
@@ -150,7 +276,7 @@ class Frames:
         _row_end: int = 500,
         _use_cache: bool = False,
     ) -> str:
-
+        """Return the PHPP ID of a Frame component by name."""
         # -- Try and use the Cached value first
         if _use_cache:
             try:
@@ -162,7 +288,7 @@ class Frames:
             sheet_name=self.shape.name,
             row_start=_row_start,
             row_end=_row_end,
-            col=self.shape.frames.inputs.description.column,
+            col=str(self.shape.frames.inputs.description.column),
             find=_name,
         )
 
@@ -174,7 +300,7 @@ class Frames:
             raise Exception(msg)
         prefix = self.xl.get_data(
             self.shape.name,
-            f"{col_offset(self.shape.frames.inputs.description.column, -1)}{row}",
+            f"{col_offset(str(self.shape.frames.inputs.description.column), -1)}{row}",
         )
         print(f"Getting PHPP Frame id for {_name}")
         name_with_id = f"{prefix}-{_name}"
@@ -182,15 +308,69 @@ class Frames:
 
         return name_with_id
 
+    def get_frame_phpp_id_by_row_num(self, _row_num: int) -> str:
+        """Return the PHPP Frame ID ("01ud-MyFrame", etc..) for the given row number."""
+        id_col = str(self.shape.frames.inputs.id.column)
+        id_num = self.xl.get_data(self.shape.name, f"{id_col}{_row_num}")
+        name_col = str(self.shape.frames.inputs.description.column)
+        id_name = self.xl.get_data(self.shape.name, f"{name_col}{_row_num}")
+        return f"{id_num}-{id_name}"
+
 
 class Ventilators:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
-        self.section_header_row: Optional[int] = None
-        self.section_first_entry_row: Optional[int] = None
+        self._section_header_row: Optional[int] = None
+        self._section_first_entry_row: Optional[int] = None
+        self._section_last_entry_row: Optional[int] = None
+
+    @property
+    def section_header_row(self) -> int:
+        """Return the row number of the 'Ventilators' section header."""
+        if not self._section_header_row:
+            self._section_header_row = self.find_section_header_row()
+        return self._section_header_row
+
+    @property
+    def section_first_entry_row(self) -> int:
+        """Return the row number of the very first user-input entry row in the Ventilators input section."""
+        if not self._section_first_entry_row:
+            self._section_first_entry_row = self.find_section_first_entry_row()
+        return self._section_first_entry_row
+
+    @property
+    def section_last_entry_row(self) -> int:
+        """Return the row number of the very last user-input entry row in the Ventilators input section."""
+        if not self._section_last_entry_row:
+            self._section_last_entry_row = self.find_section_last_entry_row()
+        return self._section_last_entry_row
+
+    def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+        """Return the last row of the Ventilators input section."""
+        if not _start_row:
+            _start_row = self.section_first_entry_row
+        elif _start_row > 10_000:
+            raise Exception(
+                f"Error: Cannot find the last row in the '{self.shape.name}' sheet, column {self.shape.ventilators.locator_col_entry}?"
+            )
+
+        _row_end = _start_row + 500
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.ventilators.locator_col_entry,
+            _row_start=_start_row,
+            _row_end=_row_end,
+        )
+
+        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+            if not val:
+                return i - 1
+        else:
+            return self.find_section_last_entry_row(_row_end)
 
     def find_section_header_row(self, _row_start: int = 1, _row_end: int = 100) -> int:
+        """Return the row number of the 'Ventilators' section header."""
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.ventilators.locator_col_header,
@@ -208,9 +388,7 @@ class Ventilators:
         )
 
     def find_section_first_entry_row(self) -> int:
-        if not self.section_header_row:
-            self.section_header_row = self.find_section_header_row()
-
+        """Return the first row of the Ventilators input section."""
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.ventilators.locator_col_entry,
@@ -227,18 +405,33 @@ class Ventilators:
             f"the '{self.shape.name}' sheet, column {self.shape.ventilators.locator_col_entry}?"
         )
 
-    def find_section_shape(self) -> None:
-        self.section_start_row = self.find_section_header_row()
-        self.section_first_entry_row = self.find_section_first_entry_row()
+    def find_first_empty_row(self) -> int:
+        """Return the first empty row in the Ventilators input section."""
+        search_col = str(self.shape.ventilators.inputs.display_name.column)
+        xl_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=search_col,
+            _row_start=self.section_first_entry_row,
+            _row_end=self.section_last_entry_row,
+        )
+
+        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+            if not val:
+                return i
+
+        raise Exception(
+            f"Error: Cannot find the first empty row in the '{self.shape.name}' sheet, column {search_col}?"
+        )
 
     def get_ventilator_phpp_id_by_name(
         self, _name: str, _row_start: int = 1, _row_end: int = 500
     ) -> str:
+        """Return the PHPP ID of a Ventilator component by name."""
         row = self.xl.get_row_num_of_value_in_column(
             sheet_name=self.shape.name,
             row_start=_row_start,
             row_end=_row_end,
-            col=self.shape.ventilators.inputs.display_name.column,
+            col=str(self.shape.ventilators.inputs.display_name.column),
             find=_name,
         )
 
@@ -250,9 +443,17 @@ class Ventilators:
 
         prefix = self.xl.get_data(
             self.shape.name,
-            f"{col_offset(self.shape.ventilators.inputs.display_name.column, -1)}{row}",
+            f"{col_offset(str(self.shape.ventilators.inputs.display_name.column), -1)}{row}",
         )
         return f"{prefix}-{_name}"
+
+    def get_ventilator_phpp_id_by_row_num(self, _row_num: int) -> str:
+        """Return the PHPP Ventilator ID ("01ud-MyVentilator", etc..) for the given row number."""
+        id_col = str(self.shape.ventilators.inputs.id.column)
+        id_num = self.xl.get_data(self.shape.name, f"{id_col}{_row_num}")
+        name_col = str(self.shape.ventilators.inputs.display_name.column)
+        id_name = self.xl.get_data(self.shape.name, f"{name_col}{_row_num}")
+        return f"{id_num}-{id_name}"
 
 
 class Components:
@@ -265,40 +466,67 @@ class Components:
         self.frames = Frames(self.xl, self.shape)
         self.ventilators = Ventilators(self.xl, self.shape)
 
-    def write_glazings(self, _glazing_rows: List[component_glazing.GlazingRow]) -> None:
-        if not self.glazings.section_first_entry_row:
-            self.glazings.section_first_entry_row = (
-                self.glazings.find_section_first_entry_row()
-            )
+    @property
+    def first_empty_glazing_row_num(self) -> int:
+        """Return the row number of the first empty row in the Glazings section."""
+        return self.glazings.find_first_empty_row()
 
+    @property
+    def first_empty_frame_row_num(self) -> int:
+        """Return the row number of the first empty row in the Frames section."""
+        return self.frames.find_first_empty_row()
+
+    def write_single_glazing(self, _row_num: int, _glazing_row: GlazingRow) -> str:
+        """Write a single GlazingRow object to the PHPP "Components" worksheet.
+
+        Return:
+        ------
+            * (str): The PHPP ID-name of the glazing component written to the PHPP.
+        """
+
+        for item in _glazing_row.create_xl_items(self.shape.name, _row_num=_row_num):
+            self.xl.write_xl_item(item)
+        return self.glazings.get_glazing_phpp_id_by_row_num(_row_num)
+
+    def write_glazings(self, _glazing_rows: List[GlazingRow]) -> None:
+        """Write a list of GlazingRow objects to the PHPP "Components" worksheet."""
         for i, glazing_row in enumerate(
             _glazing_rows, start=self.glazings.section_first_entry_row
         ):
-            for item in glazing_row.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+            self.write_single_glazing(i, glazing_row)
 
-    def write_frames(self, _frame_row: List[component_frame.FrameRow]) -> None:
-        if not self.frames.section_first_entry_row:
-            self.frames.section_first_entry_row = (
-                self.frames.find_section_first_entry_row()
-            )
+    def write_single_frame(self, _row_num: int, _frame_row: FrameRow) -> str:
+        """Write a single FrameRow object to the PHPP "Components" worksheet.
 
-        for i, frame_row in enumerate(
-            _frame_row, start=self.frames.section_first_entry_row
-        ):
-            for item in frame_row.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+        Return:
+        ------
+            * (str): The PHPP ID-name of the frame component written to the PHPP.
+        """
+        for item in _frame_row.create_xl_items(self.shape.name, _row_num=_row_num):
+            self.xl.write_xl_item(item)
+        return self.frames.get_frame_phpp_id_by_row_num(_row_num)
 
-    def write_ventilators(
-        self, _ventilator_row: List[component_vent.VentilatorRow]
-    ) -> None:
-        if not self.ventilators.section_first_entry_row:
-            self.ventilators.section_first_entry_row = (
-                self.ventilators.find_section_first_entry_row()
-            )
+    def write_frames(self, _frame_row: List[FrameRow]) -> None:
+        """Write a list of FrameRow objects to the PHPP "Components" worksheet."""
+        start = self.frames.section_first_entry_row
+        for i, frame_row in enumerate(_frame_row, start=start):
+            self.write_single_frame(i, frame_row)
 
-        for i, ventilator_row in enumerate(
-            _ventilator_row, start=self.ventilators.section_first_entry_row
-        ):
-            for item in ventilator_row.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+    def write_single_ventilator(
+        self, _row_num: int, _ventilator_row: VentilatorRow
+    ) -> str:
+        """Write a single VentilatorRow object to the PHPP "Components" worksheet.
+
+        Return:
+        ------
+            * (str): The PHPP ID-name of the ventilator component written to the PHPP.
+        """
+        for item in _ventilator_row.create_xl_items(self.shape.name, _row_num=_row_num):
+            self.xl.write_xl_item(item)
+        return self.ventilators.get_ventilator_phpp_id_by_row_num(_row_num)
+
+    def write_ventilators(self, _ventilator_row: List[VentilatorRow]) -> None:
+        """Write a list of VentilatorRow objects to the PHPP "Components" worksheet."""
+        start = self.ventilators.section_first_entry_row
+        for i, ventilator_row in enumerate(_ventilator_row, start):
+            self.write_single_ventilator(i, ventilator_row)

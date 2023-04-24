@@ -401,7 +401,7 @@ class XLConnection:
         _col_end: str,
         _row_start: int = 1,
         _row_end: int = 100,
-    ) -> xl_data.xl_range_value:
+    ) -> xl_data.xl_range_list2D_value:
         """Return a list of lists with the values read from a specified block of the xl document.
 
         Arguments:

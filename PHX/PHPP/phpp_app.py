@@ -294,7 +294,7 @@ class PHPPConnection:
                     phx_construction=phx_construction)
             )
 
-        self.u_values.write_construction_blocks(construction_blocks)
+        self.u_values.write_constructor_blocks(construction_blocks)
         return None
 
     def write_project_window_components(self, phx_project: project.PhxProject) -> None:

@@ -319,7 +319,12 @@
                     "column": "Q",
                     "row": 17
                 },
-                "phpp_id_num_col_offset": -1
+                "phpp_id_num_col_offset": -1,
+                "name_row_offset": 2,
+                "rsi_row_offset": 4,
+                "rse_row_offset": 5,
+                "first_layer_row_offset": 8,
+                "last_layer_row_offset": 15
             }
         }
     },
@@ -411,6 +416,19 @@
                     "unit": null
                 }
             }
+        },
+        "defined_ranges": {
+            "treated_floor_area": "N8",
+            "window_area_north": "N9",
+            "window_area_east": "N10",
+            "window_area_south": "N11",
+            "window_area_west": "N12",
+            "window_area_horizontal": "N13",
+            "door_area": "N14",
+            "exposed_wall_area": "N15",
+            "ground_wall_area": "N16",
+            "roof_ceiling_area": "N17",
+            "floor_area": "N18"
         }
     },
     "GROUND": {
@@ -425,6 +443,10 @@
             "locator_col_entry": "ID",
             "locator_string_entry": "01ud",
             "inputs": {
+                "id": {
+                    "column": "ID",
+                    "unit": null
+                },
                 "description": {
                     "column": "IE",
                     "unit": null
@@ -445,6 +467,10 @@
             "locator_col_entry": "IK",
             "locator_string_entry": "01ud",
             "inputs": {
+                "id": {
+                    "column": "IK",
+                    "unit": null
+                },
                 "description": {
                     "column": "IL",
                     "unit": null
@@ -521,6 +547,10 @@
             "locator_col_entry": "JG",
             "locator_string_entry": "01ud",
             "inputs": {
+                "id": {
+                    "column": "JG",
+                    "unit": null
+                },
                 "display_name": {
                     "column": "JH",
                     "unit": null
@@ -592,6 +622,18 @@
                     "column": "M",
                     "unit": null
                 },
+                "orientation_angle": {
+                    "column": "N",
+                    "unit": null
+                },
+                "vertical_angle": {
+                    "column": "O",
+                    "unit": null
+                },
+                "orientation_label": {
+                    "column": "P",
+                    "unit": null
+                },
                 "width": {
                     "column": "Q",
                     "unit": "FT"
@@ -627,6 +669,26 @@
                 "psi_i_top": {
                     "column": "AD",
                     "unit": "BTU/HR-FT-F"
+                },
+                "window_area": {
+                    "column": "AF",
+                    "unit": "M2"
+                },
+                "glazing_area": {
+                    "column": "AG",
+                    "unit": "M2"
+                },
+                "glazing_fraction": {
+                    "column": "AI",
+                    "unit": null
+                },
+                "u_w": {
+                    "column": null,
+                    "unit": "W/M2K"
+                },
+                "u_w_installed": {
+                    "column": "AH",
+                    "unit": "W/M2K"
                 },
                 "comfort_exempt": {
                     "column": "BR",
@@ -1208,7 +1270,38 @@
     },
     "ELEC_NON_RES": {
         "name": "Electricity non-res",
-        "columns": {}
+        "lighting_rows": {
+            "locator_col_header": "C",
+            "locator_string_header": "Lighting",
+            "locator_col_entry": "C",
+            "locator_string_entry": "Room / Zone",
+            "locator_string_exit": "Total net floor area",
+            "inputs": {
+                "room_zone_name": "C",
+                "net_floor_area": "D",
+                "utilization_profile": "F",
+                "room_has_window": "K",
+                "room_angle_from_north": "H",
+                "room_orientation": "I",
+                "factor": null,
+                "glazing_light_transmission": "J",
+                "room_depth": "M",
+                "room_width": "N",
+                "room_height": "O",
+                "lintel_height": "P",
+                "window_width": "Q",
+                "daily_utilization": "T",
+                "nominal_illumination": null,
+                "installed_power": "U",
+                "lighting_control": "W",
+                "motion_detector_used": "X",
+                "utilization_hours_year": "AA",
+                "ud_annual_full_load_hours": "AB",
+                "annual_full_load_hours": "Z",
+                "daily_full_load_hours": "AD",
+                "annual_energy_demand": "AE"
+            }
+        }
     },
     "AUX_ELEC": {
         "name": "Aux Electricity",

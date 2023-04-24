@@ -44,6 +44,21 @@ class PhxLayer:
         """Returns the thickness of the layer in MM"""
         return self.thickness_m * 1000
 
+    @classmethod
+    def from_total_u_value(cls, _total_u_value: float) -> PhxLayer:
+        """Returns a new PhxLayer with a single material with the given U-Value.
+        note that this will assign a default thickness of 1m to the layer.
+        """
+        obj = cls()
+        obj.thickness_m = 1
+
+        new_mat = PhxMaterial()
+        new_mat.conductivity = obj.thickness_m * _total_u_value
+        new_mat.display_name = "Material"
+        obj.materials.append(new_mat)
+
+        return obj
+
 
 @dataclass
 class PhxConstructionOpaque:
@@ -73,6 +88,16 @@ class PhxConstructionOpaque:
     def __hash__(self) -> int:
         return hash(self.identifier)
 
+    @classmethod
+    def from_total_u_value(
+        cls, _total_u_value: float, _display_name: str = ""
+    ) -> PhxConstructionOpaque:
+        """Returns a new PhxConstructionOpaque with a single layer with the given U-Value."""
+        obj = cls()
+        obj.display_name = _display_name or f"U-Value: {_total_u_value}"
+        obj.layers.append(PhxLayer.from_total_u_value(_total_u_value))
+        return obj
+
 
 # ------------------------------------------------------------
 # Windows
@@ -84,6 +109,16 @@ class PhxWindowFrameElement:
     u_value: float = 1.0  # W/m2k
     psi_glazing: float = 0.00  # W/mk
     psi_install: float = 0.00  # W/mk
+
+    @classmethod
+    def from_total_u_value(cls, _total_u_value: float) -> PhxWindowFrameElement:
+        """Returns a new PhxWindowFrameElement with u-values set to a single value."""
+        obj = cls()
+        obj.width = 0.1  # m
+        obj.u_value = _total_u_value
+        obj.psi_glazing = 0.0
+        obj.psi_install = 0.0
+        return obj
 
 
 @dataclass
@@ -132,7 +167,7 @@ class PhxConstructionWindow:
     @frame_type_display_name.setter
     def frame_type_display_name(self, _in: str) -> None:
         self._frame_type_display_name = _in
-    
+
     @property
     def identifier(self) -> str:
         return str(self._identifier)
@@ -142,3 +177,26 @@ class PhxConstructionWindow:
         if not _in:
             return
         self._identifier = str(_in)
+
+    @classmethod
+    def from_total_u_value(
+        cls, _total_u_value: float, _g_value: float = 0.4, _display_name: str = ""
+    ) -> PhxConstructionWindow:
+        """Returns a new PhxConstructionWindow with all u-values set to a single value."""
+        obj = cls()
+        obj.display_name = _display_name or f"U-Value: {_total_u_value}"
+        obj.frame_type_display_name = _display_name or f"U-Value: {_total_u_value}"
+        obj.glazing_type_display_name = _display_name or f"U-Value: {_total_u_value}"
+
+        obj.u_value_window = _total_u_value
+        obj.u_value_glass = _total_u_value
+        obj.u_value_frame = _total_u_value
+
+        obj.glass_g_value = _g_value
+
+        obj.frame_top = PhxWindowFrameElement.from_total_u_value(_total_u_value)
+        obj.frame_right = PhxWindowFrameElement.from_total_u_value(_total_u_value)
+        obj.frame_bottom = PhxWindowFrameElement.from_total_u_value(_total_u_value)
+        obj.frame_left = PhxWindowFrameElement.from_total_u_value(_total_u_value)
+
+        return obj

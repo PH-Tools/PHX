@@ -204,6 +204,11 @@ class UValuesConstructorInputs(BaseModel):
     sec_2_percentage: InputItem
     sec_3_percentage: InputItem
     phpp_id_num_col_offset: int
+    name_row_offset: int
+    rse_row_offset: int
+    rsi_row_offset: int
+    first_layer_row_offset: int
+    last_layer_row_offset: int
 
 
 class UValuesConstructor(BaseModel):
@@ -266,11 +271,26 @@ class AreasSurfaceRows(BaseModel):
     inputs: AreasSurfaceInputs
 
 
+class AreasDefinedRanges(BaseModel):
+    treated_floor_area: str
+    window_area_north: str
+    window_area_east: str
+    window_area_south: str
+    window_area_west: str
+    window_area_horizontal: str
+    door_area: str
+    exposed_wall_area: str
+    ground_wall_area: str
+    roof_ceiling_area: str
+    floor_area: str
+
+
 class Areas(BaseModel):
     name: str
     surface_rows: AreasSurfaceRows
     tfa_input: AreasDataInput
     thermal_bridge_rows: AreasThermalBridgeRows
+    defined_ranges: AreasDefinedRanges
 
 
 # -----------------------------------------------------------------------------
@@ -289,12 +309,14 @@ class Ground(BaseModel):
 
 
 class ComponentsGlazingsInputs(BaseModel):
+    id: InputItem
     description: InputItem
     g_value: InputItem
     u_value: InputItem
 
 
 class ComponentsFramesInputs(BaseModel):
+    id: InputItem
     description: InputItem
     u_value_left: InputItem
     u_value_right: InputItem
@@ -315,6 +337,7 @@ class ComponentsFramesInputs(BaseModel):
 
 
 class ComponentsVentilatorsInputs(BaseModel):
+    id: InputItem
     display_name: InputItem
     sensible_heat_recovery: InputItem
     latent_heat_recovery: InputItem
@@ -367,6 +390,9 @@ class Components(BaseModel):
 class WindowWindowRowsColumns(BaseModel):
     quantity: InputItem
     description: InputItem
+    orientation_angle: InputItem
+    vertical_angle: InputItem
+    orientation_label: InputItem
     width: InputItem
     height: InputItem
     host: InputItem
@@ -376,6 +402,11 @@ class WindowWindowRowsColumns(BaseModel):
     psi_i_right: InputItem
     psi_i_bottom: InputItem
     psi_i_top: InputItem
+    window_area: InputItem
+    glazing_area: InputItem
+    glazing_fraction: InputItem
+    u_w: InputItem
+    u_w_installed: InputItem
     comfort_exempt: InputItem
     comfort_temp: InputItem
     variant_input: InputItem
@@ -781,13 +812,44 @@ class UseNonRes(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColElecNonRes(BaseModel):
-    ...
+class InputsLightingRowsElecNonRes(BaseModel):
+    room_zone_name: str
+    net_floor_area: str
+    utilization_profile: str
+    room_has_window: str
+    room_angle_from_north: str
+    room_orientation: str
+    factor: str
+    glazing_light_transmission: str
+    room_depth: str
+    room_width: str
+    room_height: str
+    lintel_height: str
+    window_width: str
+    daily_utilization: str
+    nominal_illumination: str
+    installed_power: str
+    lighting_control: str
+    motion_detector_used: str
+    utilization_hours_year: str
+    ud_annual_full_load_hours: str
+    annual_full_load_hours: str
+    daily_full_load_hours: str
+    annual_energy_demand: str
+
+
+class LightingRowsElecNonRes(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    locator_col_entry: str
+    locator_string_entry: str
+    locator_string_exit: str
+    inputs: InputsLightingRowsElecNonRes
 
 
 class ElecNonRes(BaseModel):
     name: str
-    columns: ColElecNonRes
+    lighting_rows: LightingRowsElecNonRes
 
 
 # -----------------------------------------------------------------------------

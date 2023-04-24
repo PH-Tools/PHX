@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from PHX.xl.xl_app import XLConnection
 from PHX.PHPP.phpp_localization import shape_model as shp
-from PHX.PHPP.sheet_io.io_exceptions import ReadDataException
+from PHX.PHPP.sheet_io.io_exceptions import PHPPDataMissingException
 
 
 class OverviewBasicData:
@@ -23,50 +23,49 @@ class OverviewBasicData:
         """
         address_res = self.shape.address_number_dwellings_res
         val_res = self.xl.get_single_data_item(self.host.worksheet_name, address_res)
+        if val_res:
+            return int(val_res)
+
         address_nonres = self.shape.address_number_dwellings_nonres
         val_nonres = self.xl.get_single_data_item(
             self.host.worksheet_name, address_nonres
         )
-
-        if val_res:
-            return int(val_res)
-        elif val_nonres:
+        if val_nonres:
             return int(val_nonres)
-        else:
-            raise ReadDataException(
-                self.host.worksheet_name, [address_res, address_nonres]
-            )
+
+        raise PHPPDataMissingException(
+            self.host.worksheet_name, [address_res, address_nonres]
+        )
 
     def get_num_occupants(self) -> float:
         """Return the number of occupants.
 
-        They put res and non-res occupancy on different columns?
+        Note: They put res and non-res occupancy on different columns?
         """
         address_res = self.shape.address_number_occupants_res
         val_res = self.xl.get_single_data_item(self.host.worksheet_name, address_res)
+        if val_res:
+            return float(val_res)
+
         address_nonres = self.shape.address_number_occupants_nonres
         val_nonres = self.xl.get_single_data_item(
             self.host.worksheet_name, address_nonres
         )
-
-        if val_res:
-            return float(val_res)
-        elif val_nonres:
+        if val_nonres:
             return float(val_nonres)
-        else:
-            raise ReadDataException(
-                self.host.worksheet_name, [address_res, address_nonres]
-            )
+
+        raise PHPPDataMissingException(
+            self.host.worksheet_name, [address_res, address_nonres]
+        )
 
     def get_project_name(self) -> str:
         """Return the name of the Project / Building"""
         address = self.shape.address_project_name
         val = self.xl.get_single_data_item(self.host.worksheet_name, address)
+        if val:
+            return str(val)
 
-        if not val:
-            raise ReadDataException(self.host.worksheet_name, address)
-
-        return str(val)
+        raise PHPPDataMissingException(self.host.worksheet_name, address)
 
 
 class OverviewVentilation:
@@ -75,15 +74,14 @@ class OverviewVentilation:
         self.xl = _xl
         self.shape = _shape
 
-    def get_vn50(self):
+    def get_vn50(self) -> float:
         """Return the Total Net Interior Volume (Vn50)"""
         address = self.shape.address_vn50
         val = self.xl.get_single_data_item(self.host.worksheet_name, address)
+        if val:
+            return float(val)
 
-        try:
-            return float(val)  # type: ignore
-        except:
-            raise ReadDataException(self.host.worksheet_name, address)
+        raise PHPPDataMissingException(self.host.worksheet_name, address)
 
 
 class OverviewBuildingEnvelope:
@@ -98,20 +96,19 @@ class OverviewBuildingEnvelope:
         """Return the Total Envelope Area [M2]"""
         address = self.shape.address_area_envelope
         val = self.xl.get_single_data_item(self.host.worksheet_name, address)
-        try:
-            return float(val)  # type: ignore
-        except:
-            raise ReadDataException(self.host.worksheet_name, address)
+        if val:
+            return float(val)
+
+        raise PHPPDataMissingException(self.host.worksheet_name, address)
 
     def get_area_tfa(self) -> float:
         """Return the Total TFA [M2]"""
         address = self.shape.address_area_tfa
         val = self.xl.get_single_data_item(self.host.worksheet_name, address)
+        if val:
+            return float(val)
 
-        try:
-            return float(val)  # type: ignore
-        except:
-            raise ReadDataException(self.host.worksheet_name, address)
+        raise PHPPDataMissingException(self.host.worksheet_name, address)
 
 
 class Overview:

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""Valid 'types' for Mech Equipment Options."""
+"""Valid 'types' for Building Elements."""
 
 from enum import Enum
 
@@ -42,10 +42,12 @@ class ComponentColor(Enum):
     GROUND_ABOVE = 13
     GROUND_BENEATH = 14
 
+
 class ThermalBridgeType(Enum):
     AMBIENT = 15
     PERIMETER = 16
     UNDERGROUND = 17
+
 
 class SpecificHeatCapacity(Enum):
     LIGHTWEIGHT = 1
