@@ -1345,8 +1345,8 @@
             "locator_string_end": "Solar thermal system"
         },
         "household_electric": {
-            "locator_string_heading": "Household electricity + Auxiliary electricity (other)",
-            "locator_string_start": "Household electricity (lighting, electrical devices, etc.)",
+            "locator_string_heading": "Occupant electricity + auxiliary electricity (other)",
+            "locator_string_start": "User electricity (lighting, electrical devices, etc.)",
             "locator_string_end": "Auxiliary electricity (other)"
         },
         "additional_gas": {
