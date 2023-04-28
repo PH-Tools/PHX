@@ -16,6 +16,23 @@ This library can be used as part of a [Honeybee-PH plugin](https://github.com/PH
 
 - **to_WUFI_XML:** Libraries to allow for the export of a WUFI-Passive XML file with all of the PHX model data. This XML file can then be opened from within the WUFI-Passive application.
 
+## Setting up a development environment with Docker
+* Make sure you have [Docker installed](https://docs.docker.com/get-docker/) on your machine.
+* Clone the repository to your local machine using Git. For example, you can run the following command in your terminal: 
+`git clone https://github.com/PH-Tools/PHX.git `
+* Navigate to the project directory:
+`cd PHX`
+* Create a Docker container:
+` docker run -it --name phx-dev -v /opt/phx -v /$(pwd):/opt python:3.7 bash `
+* Navigate to the project directory in the Docker contianer:
+`cd opt`
+* Install the required dependencies:
+` pip install -r dev-requirements.txt && pip install -e . `
+* Run the unit tests to make sure everything is working properly:
+`pytest`
+* Starts a Docker container 
+`docker container start -i phx-dev `
+
 # More Information:
 For more information on the use of these tools, check out the the Passive House Tools website:
 http://www.PassiveHouseTools.com
