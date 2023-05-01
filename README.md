@@ -23,9 +23,13 @@ This library can be used as part of a [Honeybee-PH plugin](https://github.com/PH
 * Navigate to the project directory:
 `cd PHX`
 * Create a Docker container:
-` docker run -it --name phx-dev -v /opt/phx -v /$(pwd):/opt python:3.7 bash `
-* Navigate to the project directory in the Docker contianer:
-`cd opt`
+
+* For Windows:
+`CMD: docker run -it --name phx-dev dev -w /opt -v %cd%:/opt python:3.7 bash `
+`PoweShell: docker run -it --name phx-dev -w /opt -v ${PWD}:/opt python:3.7 bash `
+
+* For Linux:
+`docker run -it --name phx-dev -w /opt -v $(PWD):/opt python:3.7 bash `
 * Install the required dependencies:
 ` pip install -r dev-requirements.txt && pip install -e . `
 * Run the unit tests to make sure everything is working properly:
