@@ -12,25 +12,40 @@ from PHX.xl import xl_app
 from PHX.xl.xl_typing import xl_Sheet_Protocol
 from PHX.PHPP import sheet_io, phpp_localization
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
-from PHX.PHPP.phpp_model import (areas_surface, areas_data, areas_thermal_bridges,
-                                    climate_entry, electricity_item, uvalues_constructor,
-                                    component_glazing, component_frame, component_vent,
-                                    ventilation_data, windows_rows, shading_rows,
-                                    vent_space, vent_units, vent_ducts, verification_data,
-                                    hot_water_tank, hot_water_piping, version)
+from PHX.PHPP.phpp_model import (
+    areas_surface,
+    areas_data,
+    areas_thermal_bridges,
+    climate_entry,
+    electricity_item,
+    uvalues_constructor,
+    component_glazing,
+    component_frame,
+    component_vent,
+    ventilation_data,
+    windows_rows,
+    shading_rows,
+    vent_space,
+    vent_units,
+    vent_ducts,
+    verification_data,
+    hot_water_tank,
+    hot_water_piping,
+    version,
+)
 
 
 class PHPPConnection:
     """Interface for a PHPP Excel Document."""
-    
+
     def __init__(self, _xl: xl_app.XLConnection):
         # -- Setup the Excel connection and facade object.
         self.xl = _xl
-        
+
         # -- Get the localized (units, language) PHPP Shape with worksheet names and column locations
         self.version = self.get_phpp_version()
         self.shape: PhppShape = phpp_localization.get_phpp_shape(self.xl, self.version)
-        
+
         # -- Setup all the individual worksheet Classes.
         self.verification = sheet_io.Verification(self.xl, self.shape.VERIFICATION)
         self.climate = sheet_io.Climate(self.xl, self.shape.CLIMATE)
@@ -41,9 +56,13 @@ class PHPPConnection:
         self.shading = sheet_io.Shading(self.xl, self.shape.SHADING)
         self.addnl_vent = sheet_io.AddnlVent(self.xl, self.shape.ADDNL_VENT)
         self.heating = sheet_io.HeatingDemand(self.xl, self.shape.HEATING_DEMAND)
-        self.heating_load = sheet_io.HeatingPeakLoad(self.xl, self.shape.HEATING_PEAK_LOAD)
+        self.heating_load = sheet_io.HeatingPeakLoad(
+            self.xl, self.shape.HEATING_PEAK_LOAD
+        )
         self.cooling = sheet_io.CoolingDemand(self.xl, self.shape.COOLING_DEMAND)
-        self.cooling_load = sheet_io.CoolingPeakLoad(self.xl, self.shape.COOLING_PEAK_LOAD)
+        self.cooling_load = sheet_io.CoolingPeakLoad(
+            self.xl, self.shape.COOLING_PEAK_LOAD
+        )
         self.ventilation = sheet_io.Ventilation(self.xl, self.shape.VENTILATION)
         self.hot_water = sheet_io.HotWater(self.xl, self.shape.DHW)
         self.electricity = sheet_io.Electricity(self.xl, self.shape.ELECTRICITY)
@@ -112,16 +131,20 @@ class PHPPConnection:
         # ---------------------------------------------------------------------
         # -- Pull the search row data from the Active XL Instance
         data = self.xl.get_single_row_data(data_worksheet.name, data_row)
-        data = [_ for _ in data if _ is not None and _ is not ""] # Filter out all the blanks
+        data = [
+            _ for _ in data if _ is not None and _ is not ""
+        ]  # Filter out all the blanks
 
         # ---------------------------------------------------------------------
         # -- Find the right Version number
-        raw_version_id: str = str(data[1]) # Use the second value in the row - data (will this always work?)
+        raw_version_id: str = str(
+            data[1]
+        )  # Use the second value in the row - data (will this always work?)
         ver_major, ver_minor = raw_version_id.split(".")
 
         # ---------------------------------------------------------------------
         # - Figure out the PHPP language
-        # - In <v10 the actual language is not noted in the 'Data' worksheet, so 
+        # - In <v10 the actual language is not noted in the 'Data' worksheet, so
         # - use the PE factor name as a proxy
         language_search_data = {
             "1-PE-FAKTOREN": "DE",
@@ -143,16 +166,18 @@ class PHPPConnection:
         # -- Build the new PHPPVersion object
         return version.PHPPVersion(ver_major, ver_minor, language)
 
-    def phpp_version_equals_phx_phi_cert_version(self, _phx_variant: project.PhxVariant) -> bool:
+    def phpp_version_equals_phx_phi_cert_version(
+        self, _phx_variant: project.PhxVariant
+    ) -> bool:
         """Return True if the PHX PHI Certification Version and the PHPP Version match."""
-        if not int(_phx_variant.phi_certification_major_version) == int(self.version.number_major):
+        if not int(_phx_variant.phi_certification_major_version) == int(
+            self.version.number_major
+        ):
             return False
         return True
 
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
-        
         for phx_variant in phx_project.variants:
-
             # TODO: how to handle multiple variants?
 
             if not self.phpp_version_equals_phx_phi_cert_version(phx_variant):
@@ -164,35 +189,35 @@ class PHPPConnection:
                     f"Ignoring all writes to the '{self.shape.VERIFICATION.name}' worksheet.\n"
                 )
                 self.xl.output(msg)
-                return 
+                return
 
             # --- Building Type / Use
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_building_category_type',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_category_type
+                    input_type="phi_building_category_type",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_category_type,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_building_use_type',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_use_type
+                    input_type="phi_building_use_type",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_use_type,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_building_ihg_type',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_ihg_type
+                    input_type="phi_building_ihg_type",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_ihg_type,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_building_occupancy_type',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_occupancy_type
+                    input_type="phi_building_occupancy_type",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_occupancy_type,
                 )
             )
 
@@ -200,36 +225,36 @@ class PHPPConnection:
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_certification_type',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_type
+                    input_type="phi_certification_type",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_type,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_certification_class',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_class
+                    input_type="phi_certification_class",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_class,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_pe_type',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_pe_type
+                    input_type="phi_pe_type",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_pe_type,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_enerphit_type',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_enerphit_type
+                    input_type="phi_enerphit_type",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_enerphit_type,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
-                    input_type='phi_retrofit_type',
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_retrofit_type
+                    input_type="phi_retrofit_type",
+                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_retrofit_type,
                 )
             )
 
@@ -239,26 +264,26 @@ class PHPPConnection:
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
-                    input_type='num_of_units',
-                    input_data=phx_variant.phius_cert.ph_building_data.num_of_units
+                    input_type="num_of_units",
+                    input_data=phx_variant.phius_cert.ph_building_data.num_of_units,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
-                    input_type='setpoint_winter',
+                    input_type="setpoint_winter",
                     input_data=phx_variant.phius_cert.ph_building_data.setpoints.winter,
-                    input_unit='C',
+                    input_unit="C",
                     target_unit=self.shape.VERIFICATION.setpoint_winter.unit,
                 )
             )
             self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
-                    input_type='setpoint_summer',
+                    input_type="setpoint_summer",
                     input_data=phx_variant.phius_cert.ph_building_data.setpoints.summer,
-                    input_unit='C',
-                    target_unit=self.shape.VERIFICATION.setpoint_summer.unit
+                    input_unit="C",
+                    target_unit=self.shape.VERIFICATION.setpoint_summer.unit,
                 )
             )
 
@@ -270,15 +295,13 @@ class PHPPConnection:
         for phx_variant in phx_project.variants:
             # -- Write the actual weather station data
             weather_station_data = climate_entry.ClimateDataBlock(
-                shape=self.shape.CLIMATE,
-                phx_site=phx_variant.site
+                shape=self.shape.CLIMATE, phx_site=phx_variant.site
             )
             self.climate.write_climate_block(weather_station_data)
 
             # -- Set the active weather station
             active_climate_data = climate_entry.ClimateSettings(
-                shape=self.shape.CLIMATE,
-                phx_site=phx_variant.site
+                shape=self.shape.CLIMATE, phx_site=phx_variant.site
             )
             self.climate.write_active_climate(active_climate_data)
         return None
@@ -290,8 +313,8 @@ class PHPPConnection:
         for phx_construction in phx_project.assembly_types.values():
             construction_blocks.append(
                 uvalues_constructor.ConstructorBlock(
-                    shape=self.shape.UVALUES,
-                    phx_construction=phx_construction)
+                    shape=self.shape.UVALUES, phx_construction=phx_construction
+                )
             )
 
         self.u_values.write_constructor_blocks(construction_blocks)
@@ -305,19 +328,21 @@ class PHPPConnection:
         for phx_construction in phx_project.window_types.values():
             glazing_component_rows.append(
                 component_glazing.GlazingRow(
-                    shape=self.shape.COMPONENTS,
-                    phx_construction=phx_construction)
+                    shape=self.shape.COMPONENTS, phx_construction=phx_construction
+                )
             )
             frame_component_rows.append(
                 component_frame.FrameRow(
-                    shape=self.shape.COMPONENTS,
-                    phx_construction=phx_construction)
+                    shape=self.shape.COMPONENTS, phx_construction=phx_construction
+                )
             )
         self.components.write_glazings(glazing_component_rows)
         self.components.write_frames(frame_component_rows)
         return None
 
-    def write_project_ventilation_components(self, phx_project: project.PhxProject) -> None:
+    def write_project_ventilation_components(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write all of the ventilators from a PhxProject to the PHPP 'Components' worksheet."""
 
         phpp_ventilator_rows: List[component_vent.VentilatorRow] = []
@@ -336,10 +361,10 @@ class PHPPConnection:
             self.areas.write_item(
                 areas_data.AreasInput(
                     shape=self.shape.AREAS,
-                    input_type='tfa_input',
+                    input_type="tfa_input",
                     input_data=phx_variant.building.weighted_net_floor_area,
-                    input_unit='M2',
-                    target_unit=self.shape.AREAS.tfa_input.unit
+                    input_unit="M2",
+                    target_unit=self.shape.AREAS.tfa_input.unit,
                 )
             )
         return None
@@ -357,16 +382,17 @@ class PHPPConnection:
                             phx_polygon,
                             opaque_component,
                             self.u_values.get_constructor_phpp_id_by_name(
-                                opaque_component.assembly.display_name,
-                                _use_cache=True
-                                )
+                                opaque_component.assembly.display_name, _use_cache=True
+                            ),
                         )
                     )
 
         if len(surfaces) >= 100:
-            print(f"Warning: {len(surfaces)} surfaces found in the model. Ensure that you have "
-                  "added enough rows to the 'Areas' worksheet to handle that many surfaces. "
-                  "By default the PHPP can only have 100 surfaces input.")
+            print(
+                f"Warning: {len(surfaces)} surfaces found in the model. Ensure that you have "
+                "added enough rows to the 'Areas' worksheet to handle that many surfaces. "
+                "By default the PHPP can only have 100 surfaces input."
+            )
 
         self.areas.write_surfaces(surfaces)
         return None
@@ -379,16 +405,15 @@ class PHPPConnection:
             for zone in variant.zones:
                 for phx_tb in zone.thermal_bridges:
                     thermal_bridges.append(
-                        areas_thermal_bridges.ThermalBridgeRow(
-                            self.shape.AREAS,
-                            phx_tb
-                        )
+                        areas_thermal_bridges.ThermalBridgeRow(self.shape.AREAS, phx_tb)
                     )
 
         if len(thermal_bridges) >= 100:
-            print(f"Warning: {len(thermal_bridges)} thermal bridges found in the model. Ensure that you have "
-                  "added enough rows to the 'Areas' worksheet to handle that many thermal bridges. "
-                  "By default the PHPP can only have 100 thermal bridges input.")
+            print(
+                f"Warning: {len(thermal_bridges)} thermal bridges found in the model. Ensure that you have "
+                "added enough rows to the 'Areas' worksheet to handle that many thermal bridges. "
+                "By default the PHPP can only have 100 thermal bridges input."
+            )
 
         self.areas.write_thermal_bridges(thermal_bridges)
         return None
@@ -418,17 +443,20 @@ class PHPPConnection:
                         host_polygon = phx_component.get_host_polygon_by_child_id_num(
                             ap_polygon.id_num
                         )
-                        phpp_host_surface_id_name = self.areas.surfaces.get_surface_phpp_id_by_name(
-                            host_polygon.display_name,
-                            _use_cache=True
+                        phpp_host_surface_id_name = (
+                            self.areas.surfaces.get_surface_phpp_id_by_name(
+                                host_polygon.display_name, _use_cache=True
+                            )
                         )
                         phpp_id_frame = self.components.frames.get_frame_phpp_id_by_name(
                             phx_aperture.window_type.frame_type_display_name,
                             _use_cache=True,
                         )
-                        phpp_id_glazing = self.components.glazings.get_glazing_phpp_id_by_name(
-                            phx_aperture.window_type.glazing_type_display_name,
-                            _use_cache=True,
+                        phpp_id_glazing = (
+                            self.components.glazings.get_glazing_phpp_id_by_name(
+                                phx_aperture.window_type.glazing_type_display_name,
+                                _use_cache=True,
+                            )
                         )
 
                         phpp_windows.append(
@@ -439,25 +467,28 @@ class PHPPConnection:
                                 phpp_host_surface_id_name=phpp_host_surface_id_name,
                                 phpp_id_frame=phpp_id_frame,
                                 phpp_id_glazing=phpp_id_glazing,
-                                phpp_id_variant_type=window_type_phpp_ids[phx_aperture.variant_type_name].phpp_id
+                                phpp_id_variant_type=window_type_phpp_ids[
+                                    phx_aperture.variant_type_name
+                                ].phpp_id,
                             )
                         )
 
         if len(phpp_windows) >= 150:
-            print(f"Warning: {len(phpp_windows)} windows found in the model. Ensure that you have "
-                  "added enough rows to the 'Windows' worksheet to handle that many windows. "
-                  "By default the PHPP can only have 150 windows input.")
+            print(
+                f"Warning: {len(phpp_windows)} windows found in the model. Ensure that you have "
+                "added enough rows to the 'Windows' worksheet to handle that many windows. "
+                "By default the PHPP can only have 150 windows input."
+            )
 
         self.windows.write_windows(phpp_windows)
         return None
 
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
         def _get_ap_element_from_dict(
-            _window_name: str, 
-            _dict: Dict[str, components.PhxApertureElement]
+            _window_name: str, _dict: Dict[str, components.PhxApertureElement]
         ) -> components.PhxApertureElement:
             """When reading from excel, it MIGHT come in as a float. This means
-            that any windows with a numerical name (ie: '106', '205', etc) will get 
+            that any windows with a numerical name (ie: '106', '205', etc) will get
             converted to a float in excel (ie: '106' -> 106.0) and get read back in
             that way. To support names 106, 106.0, '106' and '106.0' properly, try them
             with a fallback sequence.
@@ -479,18 +510,18 @@ class PHPPConnection:
 
         # Get all the Window worksheet names in order
         window_names = self.windows.get_all_window_names()
-        
+
         # Get all the PHX Aperture objects
         phx_aperture_dict: Dict[str, components.PhxApertureElement] = {}
         for phx_variant in phx_project.variants:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
                     for phx_ap_element in phx_aperture.elements:
-                        phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element 
+                        phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element
 
         # Sort the phx apertures to match the window_names order
         phx_aperture_elements_in_order = (
-            _get_ap_element_from_dict(window_name, phx_aperture_dict) 
+            _get_ap_element_from_dict(window_name, phx_aperture_dict)
             for window_name in window_names
         )
 
@@ -502,7 +533,7 @@ class PHPPConnection:
                     self.shape.SHADING,
                     phx_aperture_element.shading_dimensions,
                     phx_aperture_element.winter_shading_factor,
-                    phx_aperture_element.summer_shading_factor
+                    phx_aperture_element.summer_shading_factor,
                 )
             )
         self.shading.write_shading(phpp_shading_rows)
@@ -517,8 +548,10 @@ class PHPPConnection:
         phpp_vent_unit_rows: List[vent_units.VentUnitRow] = []
         for phx_variant in phx_project.variants:
             for phx_ventilator in phx_variant.mech_systems.ventilation_devices:
-                phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
-                    phx_ventilator.display_name
+                phpp_id_ventilator = (
+                    self.components.ventilators.get_ventilator_phpp_id_by_name(
+                        phx_ventilator.display_name
+                    )
                 )
                 new_vent_row = vent_units.VentUnitRow(
                     shape=self.shape.ADDNL_VENT,
@@ -539,14 +572,20 @@ class PHPPConnection:
                 for room in zone.spaces:
                     # -- Find the right Ventilator assigned to the Space.
                     try:
-                        phx_mech_ventilator = phx_variant.mech_systems.get_mech_device_by_id(
-                            room.vent_unit_id_num
+                        phx_mech_ventilator = (
+                            phx_variant.mech_systems.get_mech_device_by_id(
+                                room.vent_unit_id_num
+                            )
                         )
-                        phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
-                            phx_mech_ventilator.display_name
+                        phpp_id_ventilator = (
+                            self.components.ventilators.get_ventilator_phpp_id_by_name(
+                                phx_mech_ventilator.display_name
+                            )
                         )
-                        phpp_row_ventilator = self.addnl_vent.vent_units.get_vent_unit_num_by_phpp_id(
-                            phpp_id_ventilator
+                        phpp_row_ventilator = (
+                            self.addnl_vent.vent_units.get_vent_unit_num_by_phpp_id(
+                                phpp_id_ventilator
+                            )
                         )
                     except NoVentUnitFoundError:
                         # If no ventilation system / unit has not been applied yet
@@ -565,9 +604,11 @@ class PHPPConnection:
                     phpp_vent_rooms.append(phpp_rm)
 
         if len(phpp_vent_rooms) >= 30:
-            print(f"Warning: {len(phpp_vent_rooms)} spaces found in the model. Ensure that you have "
-                  "added enough rows to the 'Additional Vent' worksheet to handle that many spaces. "
-                  "By default the PHPP can only have 30 spaces input.")
+            print(
+                f"Warning: {len(phpp_vent_rooms)} spaces found in the model. Ensure that you have "
+                "added enough rows to the 'Additional Vent' worksheet to handle that many spaces. "
+                "By default the PHPP can only have 30 spaces input."
+            )
 
         self.addnl_vent.write_spaces(phpp_vent_rooms)
         return None
@@ -580,14 +621,12 @@ class PHPPConnection:
                 # TODO: Get the actual type from the model someplace?
                 # TODO: How to combine Variants?
                 ventilation_data.VentilationInputItem.vent_type(
-                    self.shape.VENTILATION,
-                    "1-Balanced PH ventilation with HR"
+                    self.shape.VENTILATION, "1-Balanced PH ventilation with HR"
                 )
             )
             self.ventilation.write_multi_vent_worksheet_on(
                 ventilation_data.VentilationInputItem.multi_unit_on(
-                    self.shape.VENTILATION,
-                    "x"
+                    self.shape.VENTILATION, "x"
                 )
             )
         return None
@@ -603,8 +642,7 @@ class PHPPConnection:
 
             self.ventilation.write_Vn50_volume(
                 ventilation_data.VentilationInputItem.airtightness_Vn50(
-                    self.shape.VENTILATION,
-                    bldg.net_volume
+                    self.shape.VENTILATION, bldg.net_volume
                 )
             )
 
@@ -621,20 +659,17 @@ class PHPPConnection:
             # TODO: Get the actual values from the Model somehow
             self.ventilation.write_wind_coeff_e(
                 ventilation_data.VentilationInputItem.wind_coeff_e(
-                    self.shape.VENTILATION,
-                    ph_bldg.wind_coefficient_e
+                    self.shape.VENTILATION, ph_bldg.wind_coefficient_e
                 )
             )
             self.ventilation.write_wind_coeff_f(
                 ventilation_data.VentilationInputItem.wind_coeff_f(
-                    self.shape.VENTILATION,
-                    ph_bldg.wind_coefficient_f
+                    self.shape.VENTILATION, ph_bldg.wind_coefficient_f
                 )
             )
             self.ventilation.write_airtightness_n50(
                 ventilation_data.VentilationInputItem.airtightness_n50(
-                    self.shape.VENTILATION,
-                    ph_bldg.airtightness_n50
+                    self.shape.VENTILATION, ph_bldg.airtightness_n50
                 )
             )
         return None
@@ -645,17 +680,21 @@ class PHPPConnection:
             # -- Tanks
             # Use only the first 2 tanks for PHPP
             if len(variant.mech_systems.dhw_tank_devices) > 2:
-                print(f'Warning: PHPP only allows 2 tanks.'
-                      f'{len(variant.mech_systems.dhw_tank_devices)} tank'
-                      f'found in the Variant "{variant.name}"')
+                print(
+                    f"Warning: PHPP only allows 2 tanks."
+                    f"{len(variant.mech_systems.dhw_tank_devices)} tank"
+                    f'found in the Variant "{variant.name}"'
+                )
 
             tank_inputs = []
-            for i, phx_dhw_tank in enumerate(variant.mech_systems.dhw_tank_devices[:2], start=1):
+            for i, phx_dhw_tank in enumerate(
+                variant.mech_systems.dhw_tank_devices[:2], start=1
+            ):
                 tank_inputs.append(
                     hot_water_tank.TankInput(
                         self.shape.DHW,
                         phx_dhw_tank,  # type: water.PhxHotWaterTank
-                        i
+                        i,
                     )
                 )
             self.hot_water.write_tanks(tank_inputs)
@@ -664,10 +703,12 @@ class PHPPConnection:
             branch_piping_inputs = []
             branch_pipe_groups = variant.mech_systems.dhw_branch_piping_segments_by_diam
             if len(branch_pipe_groups) > 5:
-                print('Warning: PHPP only allows 5 groups of DHW branch piping. '
-                      f'{len(branch_pipe_groups)} piping groups '
-                      f'found in the Variant "{variant.name}". '
-                      'Using only then first 5 piping groups.')
+                print(
+                    "Warning: PHPP only allows 5 groups of DHW branch piping. "
+                    f"{len(branch_pipe_groups)} piping groups "
+                    f'found in the Variant "{variant.name}". '
+                    "Using only then first 5 piping groups."
+                )
 
             for i, phx_branch_piping in enumerate(branch_pipe_groups[:5]):
                 branch_piping_inputs.append(
@@ -675,7 +716,7 @@ class PHPPConnection:
                         self.shape.DHW,
                         phx_branch_piping,  # type: piping.PhxPipeSegment
                         i,
-                        variant.mech_systems._distribution_num_hw_tap_points
+                        variant.mech_systems._distribution_num_hw_tap_points,
                     )
                 )
             self.hot_water.write_branch_piping(branch_piping_inputs)
@@ -684,17 +725,19 @@ class PHPPConnection:
             recirc_piping_inputs = []
             recirc_pipe_groups = variant.mech_systems.dhw_recirc_piping_segments_by_diam
             if len(recirc_pipe_groups) > 5:
-                print('Warning: PHPP only allows 5 groups of DHW Recirc. piping. '
-                      f'{len(recirc_pipe_groups)} piping groups '
-                      f'found in the Variant "{variant.name}". '
-                      'Using only then first 5 piping groups.')
+                print(
+                    "Warning: PHPP only allows 5 groups of DHW Recirc. piping. "
+                    f"{len(recirc_pipe_groups)} piping groups "
+                    f'found in the Variant "{variant.name}". '
+                    "Using only then first 5 piping groups."
+                )
 
             for i, phx_recirc_piping in enumerate(recirc_pipe_groups[:5]):
                 recirc_piping_inputs.append(
                     hot_water_piping.RecircPipingInput(
                         self.shape.DHW,
                         phx_recirc_piping,  # type: piping.PhxPipeSegment
-                        i
+                        i,
                     )
                 )
             self.hot_water.write_recirc_piping(recirc_piping_inputs)
@@ -730,10 +773,14 @@ class PHPPConnection:
 
         # -- Collect all the assemblies from the U-Values page
         # -- and add each one to the Variants assembly-layers section
-        for i, assembly_name in enumerate(self.u_values.get_used_constructor_names(), start=0):
+        for i, assembly_name in enumerate(
+            self.u_values.get_used_constructor_names(), start=0
+        ):
             if i > 25:
-                print("WARNING: The Variants worksheet can only handle 26 different assemblies."
-                      "You will have to set up the assembly-layer Variants links manually.")
+                print(
+                    "WARNING: The Variants worksheet can only handle 26 different assemblies."
+                    "You will have to set up the assembly-layer Variants links manually."
+                )
                 continue
             self.variants.write_assembly_layer(assembly_name, i)
 
@@ -764,11 +811,13 @@ class PHPPConnection:
 
         # -- Find the locations of the Ventilation input items
         input_item_rows = self.variants.get_ventilation_input_item_rows()
-        vent_unit_row = input_item_rows[self.shape.VARIANTS.ventilation.input_item_names.ventilator_unit]
+        vent_unit_row = input_item_rows[
+            self.shape.VARIANTS.ventilation.input_item_names.ventilator_unit
+        ]
 
         self.addnl_vent.activate_variants(
             variants_worksheet_name=self.shape.VARIANTS.name,
-            vent_unit_range=f'{self.shape.VARIANTS.active_value_column}{vent_unit_row}',
+            vent_unit_range=f"{self.shape.VARIANTS.active_value_column}{vent_unit_row}",
         )
 
         return None

@@ -15,7 +15,7 @@ from PHX.xl import xl_app
 # --- Input file Path
 # -------------------------------------------------------------------------
 SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/HarmsDavis_230425.hbjson"
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/230427_Adelphi_Townhouse.hbjson"
 )
 
 if __name__ == "__main__":

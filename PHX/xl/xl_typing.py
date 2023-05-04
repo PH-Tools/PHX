@@ -42,7 +42,7 @@ class xl_Range_Protocol:
         return xl_Range_Protocol()
 
     def options(self, *args, **kwargs) -> "xl_Range_Protocol":
-        return xl_Range_Protocol()
+        return self
 
     def offset(self, row_offset: int = 0, column_offset: int = 0) -> "xl_Range_Protocol":
         return xl_Range_Protocol()
@@ -68,7 +68,7 @@ class xl_Sheet_Protocol:
     def __init__(self, name="Sheet1"):
         self.api = xl_API_Protocol(self)
         self.protected = True
-        self._ranges = {}
+        self._ranges: Dict[str, xl_Range_Protocol] = {}
         self.name: str = name
 
     def range(self, cell1: str, cell2: Optional[str] = None) -> xl_Range_Protocol:
@@ -149,22 +149,23 @@ class xl_Books_Protocol:
         ...
 
 
-class xl_apps_Protocol:
-    def __init__(self):
-        self.count: int = 1
-
-    def add(self) -> None:
-        ...
-
-
 class xl_app_Protocol:
     def __init__(self):
         self.screen_updating: bool = True
         self.display_alerts: bool = True
         self.calculation: str = "automatic"
+        self.visible: bool = False
 
     def calculate(self) -> None:
         return None
+
+
+class xl_apps_Protocol:
+    def __init__(self):
+        self.count: int = 1
+
+    def add(self) -> xl_app_Protocol:
+        ...
 
 
 class xl_Framework_Protocol:

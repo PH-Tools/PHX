@@ -16,6 +16,7 @@ from PHX.xl.xl_typing import (
     xl_Sheets_Protocol,
     xl_Sheet_Protocol,
     xl_Range_Protocol,
+    xl_app_Protocol,
     xl_apps_Protocol,
 )
 
@@ -129,10 +130,20 @@ class XLConnection:
         """Returns True if Excel is currently running, False if not"""
         return self.apps.count > 0
 
-    def start_excel_app(self) -> None:
-        """Starts Excel Application if it is not currently running."""
-        if not self.excel_running:
-            self.apps.add()
+    def start_excel_app(self) -> Optional[xl_app_Protocol]:
+        """Starts Excel Application, if it is not currently running."""
+        if self.excel_running:
+            return None
+
+        print("adding a new app to the self.apps....")
+        new_ap = self.apps.add()
+        new_ap.visible = True
+
+        if os.name == "nt":
+            # Need to add a default workbook on Windows
+            new_ap.books.add()
+
+        return new_ap
 
     @property
     def apps(self) -> xl_apps_Protocol:
@@ -152,6 +163,7 @@ class XLConnection:
     def get_workbook(self) -> xl_Book_Protocol:
         """Return the right Workbook, depending on the App state and user inputs."""
         if not self.excel_running:
+            print("no Excel running, staring a new Application instance.")
             self.start_excel_app()
 
         # -- If a specific file path is provided, open that one
@@ -571,19 +583,28 @@ class XLConnection:
             else:
                 sheet.api.unprotect()
 
-    def write_xl_item(self, _xl_item: Union[xl_data.XlItem, xl_data.XLItem_List]) -> None:
+    def write_xl_item(
+        self,
+        _xl_item: Union[xl_data.XlItem, xl_data.XLItem_List],
+        _transpose: bool = False,
+    ) -> None:
         """Writes a single XLItem to the worksheet
 
         Arguments:
         ---------
             * _xl_item: (XLItem) The XLItem with a sheet_name, range and value to write.
+            * _transpose: (bool) Transpose the data before writing. Default=False. Set
+                to true if you are passing in a list of items and want them to be
+                written as rows instead of as columns.
         """
 
-        self.output(f"{_xl_item.sheet_name}:{_xl_item.xl_range}={_xl_item.write_value}")
+        self.output(
+            f"Writing: {_xl_item.sheet_name}:{_xl_item.xl_range}={_xl_item.write_value}"
+        )
 
         try:
             xl_sheet = self.get_sheet_by_name(_xl_item.sheet_name)
-            xl_range = xl_sheet.range(_xl_item.xl_range)
+            xl_range = xl_sheet.range(_xl_item.xl_range).options(transpose=_transpose)
             xl_range.value = _xl_item.write_value  # type: ignore
 
             if _xl_item.has_color:

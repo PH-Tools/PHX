@@ -128,6 +128,10 @@ def test_xl_app_write_int_value(test_input):
     xl_item = xl_data.XlItem("Sheet1", "A1", test_input)
     app.write_xl_item(xl_item)
 
+    _sheet = app.get_sheet_by_name("Sheet1")
+    _range = _sheet.range("A1")
+    assert _range.value == test_input
+
     assert app.get_sheet_by_name("Sheet1").range("A1").value == test_input
 
 
