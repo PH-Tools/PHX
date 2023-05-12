@@ -15,7 +15,7 @@ from PHX.xl import xl_app
 # --- Input file Path
 # -------------------------------------------------------------------------
 SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/230427_Adelphi_Townhouse.hbjson"
+    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/Arapahoe_Cir_230508.hbjson"
 )
 
 if __name__ == "__main__":
@@ -51,21 +51,21 @@ if __name__ == "__main__":
         phpp_conn.write_project_constructions(phx_project)
         phpp_conn.write_project_tfa(phx_project)
         phpp_conn.write_project_opaque_surfaces(phx_project)
-        phpp_conn.write_project_thermal_bridges(phx_project)
+        # phpp_conn.write_project_thermal_bridges(phx_project)
         phpp_conn.write_project_window_components(phx_project)
         phpp_conn.write_project_window_surfaces(phx_project)
         phpp_conn.write_project_window_shading(phx_project)
-        phpp_conn.write_project_ventilation_components(phx_project)
-        phpp_conn.write_project_ventilators(phx_project)
-        phpp_conn.write_project_spaces(phx_project)
-        phpp_conn.write_project_ventilation_type(phx_project)
-        phpp_conn.write_project_airtightness(phx_project)
-        phpp_conn.write_project_volume(phx_project)
-        phpp_conn.write_project_hot_water(phx_project)
-        phpp_conn.write_project_res_elec_appliances(phx_project)
-        phpp_conn.write_non_res_utilization_profiles(phx_project)
-        phpp_conn.write_non_res_space_lighting(phx_project)
-        phpp_conn.write_non_res_IHG(phx_project)
+        # phpp_conn.write_project_ventilation_components(phx_project)
+        # phpp_conn.write_project_ventilators(phx_project)
+        # phpp_conn.write_project_spaces(phx_project)
+        # phpp_conn.write_project_ventilation_type(phx_project)
+        # phpp_conn.write_project_airtightness(phx_project)
+        # phpp_conn.write_project_volume(phx_project)
+        # phpp_conn.write_project_hot_water(phx_project)
+        # phpp_conn.write_project_res_elec_appliances(phx_project)
+        # phpp_conn.write_non_res_utilization_profiles(phx_project)
+        # phpp_conn.write_non_res_space_lighting(phx_project)
+        # phpp_conn.write_non_res_IHG(phx_project)
 
         # TODO: add custom any-range writer (User-Determined)
 
