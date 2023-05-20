@@ -13,7 +13,7 @@ def test_xml_output(to_xml_reference_cases):
 
     # -- PhxProject file.
     phx_project = create_project.convert_hb_model_to_PhxProject(
-        hb_model, group_components=True
+        hb_model, _group_components=True
     )
 
     # -- WUFI text

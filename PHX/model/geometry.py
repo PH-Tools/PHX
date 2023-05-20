@@ -228,6 +228,10 @@ class PhxPolygon:
         for child_id in _child_ids:
             self.child_polygon_ids.append(child_id)
 
+    def set_vertex(self, _phx_vertix: PhxVertix, index: int):
+        """Set a vertex at a specific index."""
+        self.vertices[index] = _phx_vertix
+
 
 @dataclass
 class PhxPolygonRectangular(PhxPolygon):
@@ -237,6 +241,13 @@ class PhxPolygonRectangular(PhxPolygon):
     vertix_lower_left: Optional[PhxVertix] = field(init=False, default=None)
     vertix_lower_right: Optional[PhxVertix] = field(init=False, default=None)
     vertix_upper_right: Optional[PhxVertix] = field(init=False, default=None)
+
+    VERTEX_ORDER = [
+        "vertix_upper_left",
+        "vertix_lower_left",
+        "vertix_lower_right",
+        "vertix_upper_right",
+    ]
 
     def __post_init__(self):
         super().__post_init__()
@@ -286,14 +297,14 @@ class PhxPolygonRectangular(PhxPolygon):
     @property
     def vertices(self) -> List[PhxVertix]:
         """Return a List of the PhxPolygonRectangle Vertices (counter-clockwise from upper-left)."""
-        corner_vertices = [
-            self.vertix_upper_left,
-            self.vertix_lower_left,
-            self.vertix_lower_right,
-            self.vertix_upper_right,
-        ]
+        corner_vertices = [getattr(self, v) for v in self.VERTEX_ORDER]
         # filter out any 'None' vertices
         return [v for v in corner_vertices if v]
+
+    def set_vertex(self, _phx_vertix: PhxVertix, index: int):
+        """Set a vertex at a specific index."""
+        vert_name = self.VERTEX_ORDER[index]
+        setattr(self, vert_name, _phx_vertix)
 
 
 @dataclass

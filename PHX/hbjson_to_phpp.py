@@ -30,7 +30,7 @@ if __name__ == "__main__":
     # --- Generate the PhxProject file.
     # -------------------------------------------------------------------------
     phx_project = create_project.convert_hb_model_to_PhxProject(
-        hb_model, group_components=True
+        hb_model, _group_components=True
     )
 
     # --- Connect to open instance of XL, Load the correct PHPP Shape file

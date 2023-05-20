@@ -3,17 +3,20 @@
 
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
-from collections import defaultdict
 from typing import List, Dict
 from functools import reduce
 
+try:
+    from ladybug_geometry.geometry2d.pointvector import Vector2D
+    from ladybug_geometry.geometry2d.polygon import Polygon2D
+    from ladybug_geometry.geometry3d.plane import Plane
+    from ladybug_geometry.geometry3d.face import Face3D
+except ImportError as e:
+    raise ImportError("\nFailed to import ladybug_geometry:\n\t{}".format(e))
 
 try:  # import the core honeybee dependencies
+    from honeybee.aperture import Aperture
     from honeybee.typing import clean_ep_string
-except ImportError as e:
-    raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
-
-try:
     from honeybee import room, face
     from honeybee.properties import FaceProperties
     from honeybee_energy import shw
@@ -43,6 +46,7 @@ except ImportError as e:
 
 try:
     from PHX.model import project
+    from PHX.from_HBJSON.cleanup_merge_faces import sort_faces, merge_hb_faces
 except ImportError as e:
     raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
 
@@ -59,7 +63,7 @@ def _dup_face(_hb_face: face.Face) -> face.Face:
         * (face.Face): The duplicate face.
     """
 
-    new_face = _hb_face.duplicate() # type: face.Face # type: ignore
+    new_face = _hb_face.duplicate()  # type: face.Face # type: ignore
     new_face._properties._duplicate_extension_attr(_hb_face._properties)
 
     # -- Note, this is required if the user has set custom .energy constructions
@@ -103,7 +107,6 @@ def _get_thermal_envelope_faces(
 
     exposed_faces: List[face.Face] = []
     for original_face in _hb_room.faces:
-
         # -- If it is a Surface exposure, but the face's adjacent zone is NOT part of
         # -- the room group, it must be exposed to another zone (ie: the floor surface
         # -- of a residential tower exposed to the commercial zone below). So
@@ -141,20 +144,20 @@ def _get_room_exposed_face_area(_hb_room: room.Room) -> float:
 
 def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellings]:
     """Return a list of all the unique PhDwelling objects from a set of HB-Rooms.
-    
+
     Arguments:
     ----------
         * _hb_rooms (List[room.Room]): A list of the HB-Rooms
-    
+
     Returns:
     --------
         * (List[PhDwellings])
     """
     dwellings = {
-                room.properties.energy.people.properties.ph.dwellings #type: ignore
-                for room in _hb_rooms
-                if room.properties.energy.people # type: ignore
-                } 
+        room.properties.energy.people.properties.ph.dwellings  # type: ignore
+        for room in _hb_rooms
+        if room.properties.energy.people  # type: ignore
+    }
     return list(dwellings)
 
 
@@ -200,9 +203,9 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     # -------------------------------------------------------------------------
     # -- Build up the new People object's attributes
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
-    new_hb_prop_energy = _hb_rooms[0].properties.energy  # type: RoomEnergyProperties # type: ignore
-    new_hb_ppl = new_hb_prop_energy.people.duplicate()  # type: people.People # type: ignore
-    new_hb_ppl_prop_ph = new_hb_ppl.properties.ph  # type: PeoplePhProperties # type: ignore
+    new_hb_prop_energy = _hb_rooms[0].properties.energy  # type: RoomEnergyProperties
+    new_hb_ppl = new_hb_prop_energy.people.duplicate()  # type: people.People
+    new_hb_ppl_prop_ph = new_hb_ppl.properties.ph  # type: PeoplePhProperties
     new_hb_ppl.people_per_area = total_hb_people / total_floor_area
     new_hb_ppl_prop_ph.number_bedrooms = total_ph_bedrooms
     new_hb_ppl_prop_ph.number_people = total_ph_people
@@ -353,11 +356,11 @@ def check_room_has_spaces(_hb_room: room.Room) -> None:
 
 def merge_foundations(_hb_rooms: List[room.Room]) -> Dict[str, PhFoundation]:
     """
-    
+
     Arguments:
     ----------
         *
-    
+
     Returns:
     --------
         *
@@ -368,18 +371,25 @@ def merge_foundations(_hb_rooms: List[room.Room]) -> Dict[str, PhFoundation]:
     for rm in _hb_rooms:
         for foundation in rm.properties.ph.ph_foundations:
             foundation_groups[foundation.identifier] = foundation
-    
+
     # -- Warn if more than 3 of them
     if len(foundation_groups) > 3:
-        msg = f"\tWarning: WUFI-Passive only allows 3 Foundation types. "\
-            f" {len(foundation_groups)} found on the Building Segment '"\
+        msg = (
+            f"\tWarning: WUFI-Passive only allows 3 Foundation types. "
+            f" {len(foundation_groups)} found on the Building Segment '"
             f"{_hb_rooms[0].properties.ph.ph_bldg_segment.display_name}'?"
+        )
         print(msg)
 
     return foundation_groups
 
 
-def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
+def merge_rooms(
+    _hb_rooms: List[room.Room],
+    _tolerance: float,
+    _angle_tolerance: float,
+    _merge_faces: bool = False,
+) -> room.Room:
     """Merge together a group of Honeybee Rooms into a new single HB Room.
 
     This will ignore any 'interior' Honeybee-Faces with a 'Surface' boundary
@@ -406,6 +416,17 @@ def merge_rooms(_hb_rooms: List[room.Room]) -> room.Room:
     for hb_room in _hb_rooms:
         exposed_faces += _get_thermal_envelope_faces(hb_room, all_hb_room_identifiers)
 
+    # -------------------------------------------------------------------------
+    # -- Try and merge the Faces to simplify the geometry
+    if _merge_faces:
+        face_groups = sort_faces(exposed_faces, _tolerance, _angle_tolerance)
+        merged_faces = []
+        for face_group in face_groups:
+            merged_faces.extend(merge_hb_faces(face_group, _tolerance, _angle_tolerance))
+        exposed_faces = merged_faces
+
+    # -------------------------------------------------------------------------
+    # Build the new room from the exposed (possibly merged) faces
     new_room = room.Room(
         identifier=reference_room.properties.ph.ph_bldg_segment.display_name,  # type: ignore
         faces=exposed_faces,
@@ -487,8 +508,246 @@ def weld_vertices(_variant: project.PhxVariant) -> project.PhxVariant:
         for polygon in component.polygons:
             for i, vert in enumerate(polygon.vertices):
                 try:
-                    vert = polygon.vertices[i] = unique_vertix_dict[vert.unique_key]
+                    # -- See if the vertex is already in the dict,
+                    # --if so, use that one.
+                    vertex_from_dict = unique_vertix_dict[vert.unique_key]
+                    polygon.set_vertex(vertex_from_dict, i)
                 except KeyError:
+                    # -- If the vertex is not in the dict, add it.
                     unique_vertix_dict[vert.unique_key] = vert
 
     return _variant
+
+
+# def sort_faces(
+#     _hb_faces: List[face.Face], _tolerance: float, _angle_tolerance: float
+# ) -> List[List[face.Face]]:
+#     """Sort Faces into groups that are a) the same type, b) co-planar, and c) touching."""
+
+#     # -- Group if same type
+#     faces_by_type = sort_faces_by_type(_hb_faces)
+
+#     # -- Group if co-planar
+#     b: List[List[face.Face]] = []
+#     for face_group in faces_by_type:
+#         b.extend(sort_faces_by_co_planar(face_group, _tolerance, _angle_tolerance))
+
+#     # -- Group if touching
+#     c: List[List[face.Face]] = []
+#     for face_group in b:
+#         c.extend(sort_faces_by_touching(face_group, _tolerance))
+
+#     return c
+
+
+# def _hb_face_type_unique_key(_hb_face: face.Face) -> str:
+#     """Return a unique key for the HB-Face's type."""
+#     face_type = str(_hb_face.type)
+#     face_bc = str(_hb_face.boundary_condition)
+#     const_name = _hb_face.properties.energy.construction.display_name
+#     normal = str(_hb_face.geometry.normal)
+#     return "{}_{}_{}_{}".format(face_type, face_bc, const_name, normal)
+
+
+# def sort_faces_by_type(_faces: List[face.Face]) -> List[List[face.Face]]:
+#     """Group HB-Faces by their type."""
+
+#     d = defaultdict(list)
+#     for face in _faces:
+#         key = _hb_face_type_unique_key(face)
+#         d[key].append(face.duplicate())
+#     return list(d.values())
+
+
+# def sort_faces_by_co_planar(
+#     _faces: List[face.Face], _tolerance: float, _angle_tolerance: float
+# ) -> ValuesView[List[face.Face]]:
+#     """Group HB-Faces with their co-planar neighbors."""
+
+#     d: Dict[int, List[face.Face]] = {}
+#     for f in _faces:
+#         if not d:
+#             d[id(f)] = [f]
+#         else:
+#             for k, v in d.items():
+#                 if f.geometry.plane.is_coplanar_tolerance(
+#                     v[0].geometry.plane, _tolerance, _angle_tolerance
+#                 ):
+#                     d[k].append(f)
+#                     break
+#             else:
+#                 d[id(f)] = [f]
+
+#     return d.values()
+
+
+# def _face_touching_any_in_group(
+#     _face_group: List[face.Face], _test_face: face.Face, _tolerance: float
+# ) -> bool:
+#     for _face in _face_group:
+#         for v in _test_face.vertices:
+#             if _face.geometry.is_point_on_face(v, _tolerance):
+#                 return True
+#     return False
+
+
+# def sort_faces_by_touching(
+#     _hb_faces: List[face.Face], _tolerance: float
+# ) -> List[List[face.Face]]:
+#     """Break up Faces into groups that are 'touching' one another."""
+
+#     d: Dict[int, List[face.Face]] = {}
+#     for _test_face in _hb_faces:
+#         if not d:
+#             d[id(_test_face)] = [_test_face]
+#         else:
+#             # --- Test each of the face's vertices against all the other faces
+#             # --- to see if any are touching or overlapping.
+#             for k, existing_face_group in d.items():
+#                 if _face_touching_any_in_group(
+#                     existing_face_group, _test_face, _tolerance
+#                 ):
+#                     d[k].append(_test_face)
+#                     break
+#             else:
+#                 # -- If it is not touching, add it to a new group.
+#                 d[id(_test_face)] = [_test_face]
+
+#     return list(d.values())
+
+
+# def _get_polygon2d_in_reference_space(
+#     _polygon2d: Polygon2D, _poly2d_plane: Plane, _base_plane: Plane
+# ) -> Polygon2D:
+#     """Return a Polygon2D in the reference space of the base polygon."""
+
+#     base_plane_origin = copy(_base_plane.xyz_to_xy(_base_plane.o))
+
+#     # -- Create a Vector2D from each face's origin to the base-geom's origin
+#     face_origin_in_base_plane_space = _base_plane.xyz_to_xy(_poly2d_plane.o)
+#     mv_x = face_origin_in_base_plane_space.x - base_plane_origin.x
+#     mv_y = face_origin_in_base_plane_space.y - base_plane_origin.y
+#     move_vec = Vector2D(mv_x, mv_y)  # type: ignore
+
+#     # ------------------------------------------------------------------------
+#     # -- Move the face's Polygon2D into the base polygon's space
+#     return _polygon2d.move(move_vec)
+
+
+# def _create_new_Face3D(
+#     _poly2D: Polygon2D, _base_plane: Plane, _ref_face: face.Face
+# ) -> face.Face:
+#     """Create a new Face from a Polygon2D and a reference HB-Face."""
+#     new_face = face.Face(
+#         identifier=_ref_face.identifier,
+#         geometry=Face3D(
+#             boundary=tuple(_base_plane.xy_to_xyz(v) for v in _poly2D.vertices),
+#             plane=_ref_face.geometry.plane,
+#         ),
+#         type=_ref_face.type,
+#         boundary_condition=_ref_face.boundary_condition,
+#     )
+#     new_face.display_name = _ref_face.display_name
+#     new_face._user_data = (
+#         None if _ref_face.user_data is None else _ref_face.user_data.copy()
+#     )
+#     new_face._properties._duplicate_extension_attr(_ref_face._properties)
+
+#     return new_face
+
+
+# def _add_sub_face(_face: face.Face, _aperture: Aperture):
+#     """Add an HB-sub-face (either HB-Aperture or HB-Door) to a parent Face.
+
+#     NOTE: this method is copied from honeybee's Grasshopper component "HB Add Subface"
+#     """
+#     if isinstance(_aperture, Aperture):  # the sub-face is an Aperture
+#         _face.add_aperture(_aperture)
+#     else:  # the sub-face is a Door
+#         _face.add_door(_aperture)
+
+#     return _face
+
+
+# def _check_and_add_sub_face(
+#     _face: face.Face,
+#     _apertures: List,
+#     _tolerance: float,
+#     _angle_tolerance: float,
+# ):
+#     """Check whether a HB-sub-face is valid for an HB-face and, if so, add it.
+
+#     NOTE: this method is copied from honeybee's Grasshopper component "HB Add Subface"
+#     """
+#     for aperture in _apertures:
+#         if _face.geometry.is_sub_face(aperture.geometry, _tolerance, _angle_tolerance):
+#             _add_sub_face(_face, aperture)
+
+
+# def _merge_hb_face_group(
+#     _faces: List[face.Face], _tolerance: float, _angle_tolerance: float
+# ) -> List[face.Face]:
+#     """Merge a group of HB-Faces into the fewest number of faces possible."""
+
+#     if not _faces:
+#         return []
+
+#     if len(_faces) == 1:
+#         return _faces
+
+#     # -------------------------------------------------------------------------
+#     # -- Before anything else, preserve all the Apertures for adding back in later
+#     apertures = []
+#     for f in _faces:
+#         apertures.extend([ap.duplicate() for ap in f.apertures])
+
+#     # -------------------------------------------------------------------------
+#     # -- This will be the reference face for everything else to match
+#     reference_face = _faces.pop(0).duplicate()  # type: face.Face
+#     reference_plane = copy(reference_face.geometry.plane)
+#     polygons_in_ref_space = [
+#         reference_face.geometry.polygon2d,
+#     ]
+
+#     # -------------------------------------------------------------------------
+#     # -- Get all the Polygon2Ds in the same reference space
+#     poly2ds = (f.geometry.polygon2d for f in _faces)
+#     planes = (f.geometry.plane for f in _faces)
+#     for poly2d_plane, poly2d in zip(planes, poly2ds):
+#         polygons_in_ref_space.append(
+#             _get_polygon2d_in_reference_space(poly2d, poly2d_plane, reference_plane)
+#         )
+
+#     # -------------------------------------------------------------------------
+#     # -- Merge all the new Polygon2Ds together.
+#     merged_polygons = Polygon2D.boolean_union_all(polygons_in_ref_space, _tolerance)
+
+#     # -- Create new faces for each of the merged Polygon2Ds
+#     faces: List[face.Face] = []
+#     for p in merged_polygons:
+#         faces.append(_create_new_Face3D(p, reference_plane, reference_face))
+
+#     # -------------------------------------------------------------------------
+#     # -- Add the apertures back in
+#     faces_with_apertures_: List[face.Face] = []
+#     for fce in faces:
+#         _check_and_add_sub_face(fce, apertures, _tolerance, _angle_tolerance)
+#         faces_with_apertures_.append(fce)
+
+#     return faces_with_apertures_
+
+
+# def merge_all_hb_faces(
+#     _hb_faces: List[face.Face], _tolerance: float, _angle_tolerance: float
+# ) -> List[face.Face]:
+#     """Merge together any HB-Face3Ds that have matching properties and are touching."""
+
+#     # -- break up the faces by their 'type' and surface normal
+#     face_groups = sort_faces(_hb_faces, _tolerance, _angle_tolerance)
+
+#     # -- Create new merged faces
+#     new_faces = []
+#     for face_group in face_groups:
+#         new_faces.extend(_merge_hb_face_group(face_group, _tolerance, _angle_tolerance))
+
+#     return new_faces

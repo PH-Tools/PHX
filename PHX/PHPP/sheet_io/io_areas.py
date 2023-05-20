@@ -142,7 +142,7 @@ class Surfaces:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+        for i, val in enumerate(xl_data, start=_start_row):
             try:
                 # -- See if the row has a number
                 int(val)  # type: ignore

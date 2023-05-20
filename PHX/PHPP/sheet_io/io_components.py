@@ -97,7 +97,7 @@ class Glazings:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+        for i, val in enumerate(xl_data, start=_start_row):
             if not val:
                 return i - 1
         else:

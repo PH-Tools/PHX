@@ -140,16 +140,11 @@ class Windows:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data, start=self.first_entry_row):
+        for i, val in enumerate(xl_data, start=_start_row):
             if self.shape.window_rows_end.locator_string_entry in str(val):
                 return i + 2
         else:
             return self.find_last_entry_row(_row_end)
-
-        raise Exception(
-            f"Error: Cannot find the '{self.shape.window_rows_end.locator_string_entry}' "
-            f"marker on the '{self.shape.name}' sheet, column {self.shape.window_rows_end.locator_col_entry}?"
-        )
 
     def set_single_window_construction_ids(
         self,

@@ -28,8 +28,9 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
     Returns:
     --------
         * Tuple
-            - [0] (pathlib.Path): The HBJSON Source file path.
-            - [1] (pathlib.Path): The WUFI XML Target file path.
+            - [1] (str): The HBJSON Source file path.
+            - [2] (str): The WUFI XML Target file name.
+            - [3] (str): The WUFI XML Target directory path.
     """
 
     print("> Resolving file paths...")
@@ -37,8 +38,8 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
     if not src.exists():
         raise InputFileError(src)
 
-    target_dir = pathlib.Path(_args[3])
     target_file = f"{_args[2]}.xml"
+    target_dir = pathlib.Path(_args[3])
 
     if not target_dir.exists():
         mkdir(target_dir)
@@ -48,12 +49,44 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
     return src, target
 
 
+def group_components(_args: List[str]) -> bool:
+    """Return the group_components boolean from the sys.args Tuple.
+
+    Arguments:
+    ----------
+        * _args (Tuple): sys.args Tuple of inputs.
+            - [4] (str): "True" or "False" string.
+
+    Returns:
+    --------
+        * bool: True if the user wants to group components.
+    """
+    return _args[4].lower() == "true"
+
+
+def merge_faces(_args: List[str]) -> bool:
+    """Return the merge_faces boolean from the sys.args Tuple.
+
+    Arguments:
+    ----------
+        * _args (Tuple): sys.args Tuple of inputs.
+            - [5] (str): "True" or "False" string.
+
+    Returns:
+    --------
+        * bool: True if the user wants to merge faces.
+    """
+    return _args[5].lower() == "true"
+
+
 if __name__ == "__main__":
     print("- " * 50)
 
     # --- Input / Output file Path
     # -----------------------------------------------------------------------------
     SOURCE_FILE, TARGET_FILE_XML = resolve_paths(sys.argv)
+    GROUP_COMPONENTS = group_components(sys.argv)
+    MERGE_FACES = merge_faces(sys.argv)
 
     # --- Read in the existing HB_JSON and re-build the HB Objects
     # -----------------------------------------------------------------------------
@@ -64,7 +97,9 @@ if __name__ == "__main__":
     # --- Generate the WUFI Project file.
     print(f'> Generating the PHX-Project from the Honeybee-Model: "{hb_model}"')
     phx_Project = create_project.convert_hb_model_to_PhxProject(
-        hb_model, group_components=True
+        hb_model,
+        _group_components=GROUP_COMPONENTS,
+        _merge_faces=MERGE_FACES,
     )
 
     # --- Output the WUFI Project as an XML Text File

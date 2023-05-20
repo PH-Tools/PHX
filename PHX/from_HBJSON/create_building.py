@@ -169,7 +169,7 @@ def create_component_from_hb_aperture(
     new_phx_ap_element.polygon = (
         create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture)
     )
-    
+
     # -- Set the shading object dimensions, if there are any
     if hb_ap_prop_ph.shading_dimensions:
         shading_dims = hb_ap_prop_ph.shading_dimensions
@@ -218,6 +218,7 @@ def create_components_from_hb_face(
     # -- Build the new PHX Opaque Component
     opaque_compo = components.PhxComponentOpaque()
     opaque_compo.display_name = _hb_face.display_name
+
     opaque_compo.assembly = _assembly_dict[hb_face_prop_energy.construction.identifier]
     opaque_compo.assembly_type_id_num = hb_face_const_prop_ph.id_num
 
@@ -301,7 +302,7 @@ def create_zones_from_hb_room(
     new_zone.display_name = _hb_room.display_name
 
     # -- Sort the HB-Room's Spaces by their full_name
-    rm_prop_ph = _hb_room.properties.ph # type: RoomPhProperties # type: ignore
+    rm_prop_ph = _hb_room.properties.ph  # type: RoomPhProperties # type: ignore
     sorted_spaces = sorted(rm_prop_ph.spaces, key=lambda space: space.full_name)
 
     # -- Create a new WUFI-Space (Room) for each HBPH-Space

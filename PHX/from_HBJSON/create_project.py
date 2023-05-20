@@ -45,15 +45,19 @@ def sort_hb_rooms_by_bldg_segment(_hb_rooms: Tuple[room.Room]) -> List[List[room
 
 
 def convert_hb_model_to_PhxProject(
-    _hb_model: model.Model, group_components: bool = False
+    _hb_model: model.Model, _group_components: bool = True, _merge_faces: bool = False
 ) -> PhxProject:
     """Return a complete WUFI Project object with values based on the HB Model
 
     Arguments:
     ----------
         * _hb_model (model.Model): The Honeybee Model to base the WUFI Project on
-        * group_components (bool): default=False. Set to true to have the converter
+
+        * _group_components (bool): default=True. Set to true to have the converter
             group the components by assembly-type.
+
+        * _merge_faces (bool): default=False. Set to true to have the converter try and
+            group together co-planar faces in the output room.
 
     Returns:
     --------
@@ -62,7 +66,9 @@ def convert_hb_model_to_PhxProject(
 
     phx_project = PhxProject()
     create_assemblies.build_opaque_assemblies_from_HB_model(phx_project, _hb_model)
-    create_assemblies.build_transparent_assembly_types_from_HB_Model(phx_project, _hb_model)
+    create_assemblies.build_transparent_assembly_types_from_HB_Model(
+        phx_project, _hb_model
+    )
     create_schedules.add_all_HB_schedules_to_PHX_Project(phx_project, _hb_model)
 
     # -- TODO: Make all these operations if..else... with flags in the func arguments.
@@ -71,14 +77,16 @@ def convert_hb_model_to_PhxProject(
     # -- then create a new variant from the merged room.
     # -- try and weld the vertices too in order to reduce load-time.
     for room_group in sort_hb_rooms_by_bldg_segment(_hb_model.rooms):
-        merged_hb_room = cleanup.merge_rooms(room_group)
+        merged_hb_room = cleanup.merge_rooms(
+            room_group, _hb_model.tolerance, _hb_model.angle_tolerance, _merge_faces
+        )
 
         new_variant = create_variant.from_hb_room(
             merged_hb_room,
             phx_project.assembly_types,
             phx_project.window_types,
             phx_project.utilization_patterns_ventilation,
-            group_components,
+            _group_components,
         )
 
         new_variant = cleanup.weld_vertices(new_variant)

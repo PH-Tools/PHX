@@ -32,7 +32,7 @@ TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 # -- Temp
 SOURCE_FILES = [
     pathlib.Path(
-        "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/duct_test.hbjson"
+        "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/Arverne_D_230519.hbjson"
     )
 ]
 TARGET_DIR = pathlib.Path("sample")
@@ -55,7 +55,7 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
     # --- Generate the PhxProject file.
     # -------------------------------------------------------------------------
     phx_project = create_project.convert_hb_model_to_PhxProject(
-        hb_model, group_components=True
+        hb_model, _group_components=True, _merge_faces=True
     )
 
     # --- Output the WUFI Project as an XML Text File
