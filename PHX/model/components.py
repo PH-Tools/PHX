@@ -213,7 +213,8 @@ class PhxComponentAperture(PhxComponentBase):
         )
         self.window_type_id_num: int = -1
         self.variant_type_name: str = "_unnamed_type_"
-        self.install_depth: float = 0.1016 #m
+        self.install_depth: float = 0.1016  # m
+        self.default_monthly_shading_correction_factor: float = 0.5
 
         self.elements: List[PhxApertureElement] = []
 
@@ -261,7 +262,7 @@ class PhxComponentAperture(PhxComponentBase):
         new_compo = self.__class__(_host=self.host)
         for attr_name, attr_val in vars(self).items():
             if attr_name.startswith("_"):
-                continue
+                continue  # Ignore private attributes
             setattr(new_compo, attr_name, attr_val)
 
         if self.window_type.display_name == other.window_type.display_name:

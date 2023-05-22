@@ -203,7 +203,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_576a2758..Face4</Name>
+						<Name>Room_1_12cb48c0..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -219,7 +219,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_576a2758..Face5</Name>
+						<Name>Room_1_12cb48c0..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -517,6 +517,7 @@
 						<OverheatingTemperatureThreshold>25.0</OverheatingTemperatureThreshold>
 					</PH_Building>
 				</PH_Buildings>
+				<UseWUFIMeanMonthShading>true</UseWUFIMeanMonthShading>
 			</PassivehouseData>
 			<HVAC>
 				<Systems count="1">

@@ -39,6 +39,7 @@ def test_default_PhxPHCertification(reset_class_counters):
         "<OverheatingTemperatureThreshold>25.0</OverheatingTemperatureThreshold>",
         "</PH_Building>",
         "</PH_Buildings>",
+        "<UseWUFIMeanMonthShading>true</UseWUFIMeanMonthShading>",
     ]
 
 
@@ -82,4 +83,5 @@ def test_customized_PhxPhiusCertification(reset_class_counters):
         "<OverheatingTemperatureThreshold>25.0</OverheatingTemperatureThreshold>",
         "</PH_Building>",
         "</PH_Buildings>",
+        "<UseWUFIMeanMonthShading>true</UseWUFIMeanMonthShading>",
     ]

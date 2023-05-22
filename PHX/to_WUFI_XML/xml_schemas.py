@@ -19,7 +19,8 @@ from PHX.model import (
     phx_site,
     project,
     schedules,
-    spaces, shades,
+    spaces,
+    shades,
 )
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
 from PHX.model.schedules.occupancy import PhxScheduleOccupancy
@@ -93,7 +94,13 @@ def _PhxProject(_wufi_project: project.PhxProject) -> List[xml_writable]:
         XML_List(
             "SolarProtectionTypes",
             [
-                XML_Object("SolarProtectionType", type_id, "index", i, _schema_name="_PhxWindowShade")
+                XML_Object(
+                    "SolarProtectionType",
+                    type_id,
+                    "index",
+                    i,
+                    _schema_name="_PhxWindowShade",
+                )
                 for i, type_id in enumerate(_wufi_project.shade_types.values())
             ],
         ),
@@ -170,7 +177,7 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         2: 132,
         3: 204,
     }
-    
+
     return [
         XML_Node("Name", _z.display_name),
         XML_Node("KindZone", 1, "choice", "Simulated zone"),
@@ -198,7 +205,9 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         XML_Node("ClearanceHeight_Selection", 1),
         XML_Node("ClearanceHeight", _z.clearance_height),
         XML_Node("SpecificHeatCapacity_Selection", _z.specific_heat_capacity.value),
-        XML_Node("SpecificHeatCapacity", _spec_cap_WH_m2k[_z.specific_heat_capacity.value]),
+        XML_Node(
+            "SpecificHeatCapacity", _spec_cap_WH_m2k[_z.specific_heat_capacity.value]
+        ),
         XML_Node("IdentNrPH_Building", 1),
         XML_Node("OccupantQuantityUserDef", int(_z.res_occupant_quantity), "unit", "-"),
         XML_Node("NumberBedrooms", int(_z.res_number_bedrooms), "unit", "-"),
@@ -282,6 +291,9 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
         XML_Node("DepthWindowReveal", _c.install_depth, "unit", "m"),
         XML_Node("IdentNrSolarProtection", _c.id_num_shade),
         XML_Node("IdentNrOverhang", -1),
+        XML_Node(
+            "DefaultCorrectionShadingMonth", _c.default_monthly_shading_correction_factor
+        ),
     ]
 
 
@@ -290,7 +302,7 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
 
 def _PhxPhBuildingData(
     _phius_cert: certification.PhxPhiusCertification,
-) -> List[xml_writable]:    
+) -> List[xml_writable]:
     return [
         XML_Node("IdentNr", _phius_cert.ph_building_data._count),
         XML_Node(
@@ -323,7 +335,9 @@ def _PhxPhBuildingData(
         XML_List(
             "FoundationInterfaces",
             [
-                XML_Object("FoundationInterface", f, "index", i, _schema_name="_PhxFoundation")
+                XML_Object(
+                    "FoundationInterface", f, "index", i, _schema_name="_PhxFoundation"
+                )
                 for i, f in enumerate(_phius_cert.ph_building_data.foundations)
             ],
         ),
@@ -332,9 +346,14 @@ def _PhxPhBuildingData(
             None,
             _schema_name="_InternalGainsAdditionalData",
         ),
-        XML_Node("MechanicalRoomTemperature", _phius_cert.ph_building_data.mech_room_temp),
+        XML_Node(
+            "MechanicalRoomTemperature", _phius_cert.ph_building_data.mech_room_temp
+        ),
         XML_Node("IndoorTemperature", _phius_cert.ph_building_data.setpoints.winter),
-        XML_Node("OverheatingTemperatureThreshold", _phius_cert.ph_building_data.setpoints.summer),
+        XML_Node(
+            "OverheatingTemperatureThreshold",
+            _phius_cert.ph_building_data.setpoints.summer,
+        ),
     ]
 
 
@@ -389,63 +408,62 @@ def _PhxPhiusCertification(
                 for i, obj in enumerate(_temp_bldg_data_list)
             ],
         ),
+        XML_Node("UseWUFIMeanMonthShading", _phius_cert.use_monthly_shading),
     ]
 
 
 # -- FOUNDATIONS --------------------------------------------------------------
 
+
 def _PhxHeatedBasement(_f: ground.PhxHeatedBasement):
     return [
-        XML_Node("FloorSlabArea_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabArea_Selection", 6),  # 6=User defined
         XML_Node("FloorSlabArea", _f.floor_slab_area_m2),
-        XML_Node("FloorSlabPerimeter_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabPerimeter_Selection", 6),  # 6=User defined
         XML_Node("FloorSlabPerimeter", _f.floor_slab_exposed_perimeter_m),
-        XML_Node("U_ValueBasementSlab_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementSlab_Selection", 6),  # 6=User defined
         XML_Node("U_ValueBasementSlab", _f.floor_slab_u_value),
-
-        XML_Node("DepthBasementBelowGroundSurface_Selection", 6), # 6=user-defined
+        XML_Node("DepthBasementBelowGroundSurface_Selection", 6),  # 6=user-defined
         XML_Node("DepthBasementBelowGroundSurface", _f.slab_depth_below_grade_m),
-        
         # XML_Node("HeightBasementWallAboveGrade_Selection", 6), #6=user-defined
         # XML_Node("HeightBasementWallAboveGrade", _f.ab),
-
-        XML_Node("U_ValueBasementWall_Selection", 6), #6=user-defined
+        XML_Node("U_ValueBasementWall_Selection", 6),  # 6=user-defined
         XML_Node("U_ValueBasementWall", _f.basement_wall_u_value),
     ]
 
 
 def _PhxUnHeatedBasement(_f: ground.PhxUnHeatedBasement):
     return [
-        XML_Node("DepthBasementBelowGroundSurface_Selection", 6), # 6=User defined
+        XML_Node("DepthBasementBelowGroundSurface_Selection", 6),  # 6=User defined
         XML_Node("DepthBasementBelowGroundSurface", _f.slab_depth_below_grade_m),
-        XML_Node("HeightBasementWallAboveGrade_Selection", 6), # 6=User defined
-        XML_Node("HeightBasementWallAboveGrade", _f.basement_wall_height_above_grade_m),    
-        XML_Node("FloorSlabArea_Selection", 6), # 6=User defined
+        XML_Node("HeightBasementWallAboveGrade_Selection", 6),  # 6=User defined
+        XML_Node("HeightBasementWallAboveGrade", _f.basement_wall_height_above_grade_m),
+        XML_Node("FloorSlabArea_Selection", 6),  # 6=User defined
         XML_Node("FloorSlabArea", _f.floor_ceiling_area_m2),
-        XML_Node("U_ValueBasementSlab_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementSlab_Selection", 6),  # 6=User defined
         XML_Node("U_ValueBasementSlab", _f.floor_slab_u_value),
-        XML_Node("FloorCeilingArea_Selection", 6), # 6=User defined
+        XML_Node("FloorCeilingArea_Selection", 6),  # 6=User defined
         XML_Node("FloorCeilingArea", _f.floor_ceiling_area_m2),
-        XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 6), # 6=User defined
+        XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 6),  # 6=User defined
         XML_Node("U_ValueCeilingToUnheatedCellar", _f.ceiling_u_value),
-        XML_Node("U_ValueBasementWall_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementWall_Selection", 6),  # 6=User defined
         XML_Node("U_ValueBasementWall", _f.basement_wall_uValue_below_grade),
-        XML_Node("U_ValueWallAboveGround_Selection", 6), # 6=User defined
+        XML_Node("U_ValueWallAboveGround_Selection", 6),  # 6=User defined
         XML_Node("U_ValueWallAboveGround", _f.basement_wall_uValue_above_grade),
-        XML_Node("FloorSlabPerimeter_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabPerimeter_Selection", 6),  # 6=User defined
         XML_Node("FloorSlabPerimeter", _f.floor_slab_exposed_perimeter_m),
-        XML_Node("BasementVolume_Selection", 6), # 6=User defined
+        XML_Node("BasementVolume_Selection", 6),  # 6=User defined
         XML_Node("BasementVolume", _f.basement_volume_m3),
     ]
 
 
 def _PhxSlabOnGrade(_f: ground.PhxSlabOnGrade):
     return [
-        XML_Node("FloorSlabArea_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabArea_Selection", 6),  # 6=User defined
         XML_Node("FloorSlabArea", _f.floor_slab_area_m2),
-        XML_Node("U_ValueBasementSlab_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementSlab_Selection", 6),  # 6=User defined
         XML_Node("U_ValueBasementSlab", _f.floor_slab_u_value),
-        XML_Node("FloorSlabPerimeter_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabPerimeter_Selection", 6),  # 6=User defined
         XML_Node("FloorSlabPerimeter", _f.floor_slab_exposed_perimeter_m),
         XML_Node("PositionPerimeterInsulation", _f._perim_insulation_position.value),
         XML_Node("PerimeterInsulationWidthDepth", _f.perim_insulation_width_or_depth_m),
@@ -456,19 +474,19 @@ def _PhxSlabOnGrade(_f: ground.PhxSlabOnGrade):
 
 def _PhxVentedCrawlspace(_f: ground.PhxVentedCrawlspace):
     return [
-        XML_Node("FloorCeilingArea_Selection", 6), # 6=user-defined
+        XML_Node("FloorCeilingArea_Selection", 6),  # 6=user-defined
         XML_Node("FloorCeilingArea", _f.crawlspace_floor_slab_area_m2),
-        XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 6), # 6=User defined
+        XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 6),  # 6=User defined
         XML_Node("U_ValueCeilingToUnheatedCellar", _f.ceiling_above_crawlspace_u_value),
-        XML_Node("FloorSlabPerimeter_Selection", 6), # 6=User defined
+        XML_Node("FloorSlabPerimeter_Selection", 6),  # 6=User defined
         XML_Node("FloorSlabPerimeter", _f.crawlspace_floor_exposed_perimeter_m),
-        XML_Node("HeightBasementWallAboveGrade_Selection", 6), # 6=User defined
+        XML_Node("HeightBasementWallAboveGrade_Selection", 6),  # 6=User defined
         XML_Node("HeightBasementWallAboveGrade", _f.crawlspace_wall_height_above_grade_m),
-        XML_Node("U_ValueCrawlspaceFloor_Selection", 6), # 6=user-defined
+        XML_Node("U_ValueCrawlspaceFloor_Selection", 6),  # 6=user-defined
         XML_Node("U_ValueCrawlspaceFloor", _f.crawlspace_floor_u_value),
-        XML_Node("CrawlspaceVentOpenings_Selection", 6), # 6=user-defined
+        XML_Node("CrawlspaceVentOpenings_Selection", 6),  # 6=user-defined
         XML_Node("CrawlspaceVentOpenings", _f.crawlspace_vent_opening_are_m2),
-        XML_Node("U_ValueWallAboveGround_Selection", 6), # 6=user-defined
+        XML_Node("U_ValueWallAboveGround_Selection", 6),  # 6=user-defined
         XML_Node("U_ValueWallAboveGround", _f.crawlspace_wall_u_value),
     ]
 
@@ -490,7 +508,6 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
 
     # -- Settings: Others
     # XML_Node("BasementVentilationACH", 1),
-
 
     # XML_Node("CrawlspaceVentOpenings_Selection", 1),
     # XML_Node("CrawlspaceVentOpenings", 1),
@@ -863,16 +880,16 @@ def _PhxConstructionWindow(
 
 def _PhxWindowShade(_s: shades.PhxWindowShade) -> List[xml_writable]:
     return [
-      XML_Node("IdentNr", _s.id_num),
-      XML_Node("Name", _s.display_name),
-      XML_Node("OperationMode", _s.operation_mode),
-      XML_Node("MaxRedFactorRadiation", _s.reduction_factor),
-      XML_Node("ExternalEmissivity", _s.external_emissivity),
-      XML_Node("EquivalentAbsorptivity", _s.absorptivity),
-      XML_Node("ThermalResistanceSupplement", _s.thermal_resistance_supplement),
-      XML_Node("ThermalResistanceCavity", _s.thermal_resistance_cavity),
-      XML_Node("RadiationLimitValue", _s.radiation_limit),
-      XML_Node("ExcludeWeekends", _s.exclude_weekends),
+        XML_Node("IdentNr", _s.id_num),
+        XML_Node("Name", _s.display_name),
+        XML_Node("OperationMode", _s.operation_mode),
+        XML_Node("MaxRedFactorRadiation", _s.reduction_factor),
+        XML_Node("ExternalEmissivity", _s.external_emissivity),
+        XML_Node("EquivalentAbsorptivity", _s.absorptivity),
+        XML_Node("ThermalResistanceSupplement", _s.thermal_resistance_supplement),
+        XML_Node("ThermalResistanceCavity", _s.thermal_resistance_cavity),
+        XML_Node("RadiationLimitValue", _s.radiation_limit),
+        XML_Node("ExcludeWeekends", _s.exclude_weekends),
     ]
 
 
@@ -1289,17 +1306,17 @@ class DistributionDHW:
 
     def __init__(self, _phx_mech_collection: hvac.PhxMechanicalSystemCollection):
         self.phx_mech_collection = _phx_mech_collection
-        
-        self.calc_method = 1 # Simplified individual pipes
-        self.pipe_material = 1 # Copper M
+
+        self.calc_method = 1  # Simplified individual pipes
+        self.pipe_material = 1  # Copper M
         self.demand_recirc = True
         self.num_bathrooms = 1
         self.hot_water_fixtures = 1
         self.all_pipes_insulated = True
         self.units_or_floors = 1
-        self.pipe_diameter_m = 1 # 3/8" Copper
-        self.air_temp = 20 # Deg C
-        self.water_temp = 60 # Deg C
+        self.pipe_diameter_m = 1  # 3/8" Copper
+        self.air_temp = 20  # Deg C
+        self.water_temp = 60  # Deg C
         self.daily_recirc_hours = 24
 
 
@@ -1314,35 +1331,43 @@ def _DistributionDHW(_d: DistributionDHW):
         XML_Node("SelectionUnitsOrFloors", _d.units_or_floors),
         XML_Node("PipeMaterialSimplifiedMethod", _d.pipe_material),
         XML_Node("PipeDiameterSimplifiedMethod", _d.pipe_diameter_m),
-
         # -- Simplified Method
         XML_Node("TemperatureRoom_WR", _d.air_temp),
         XML_Node("DesignFlowTemperature_WR", _d.water_temp),
         XML_Node("DailyRunningHoursCirculation_WR", _d.daily_recirc_hours),
-        XML_Node("LengthCirculationPipes_WR", _d.phx_mech_collection.dhw_recirc_total_length_m),
-        XML_Node("HeatLossCoefficient_WR", _d.phx_mech_collection.dhw_recirc_weighted_heat_loss_coeff),
-        XML_Node("LengthIndividualPipes_WR", _d.phx_mech_collection.dhw_branch_total_length_m),
-        XML_Node("ExteriorPipeDiameter_WR", _d.phx_mech_collection.dhw_branch_weighted_diameter_mm),
-
-    # -- Detailed Methods (Not Implemented Yet)
+        XML_Node(
+            "LengthCirculationPipes_WR", _d.phx_mech_collection.dhw_recirc_total_length_m
+        ),
+        XML_Node(
+            "HeatLossCoefficient_WR",
+            _d.phx_mech_collection.dhw_recirc_weighted_heat_loss_coeff,
+        ),
+        XML_Node(
+            "LengthIndividualPipes_WR", _d.phx_mech_collection.dhw_branch_total_length_m
+        ),
+        XML_Node(
+            "ExteriorPipeDiameter_WR",
+            _d.phx_mech_collection.dhw_branch_weighted_diameter_mm,
+        ),
+        # -- Detailed Methods (Not Implemented Yet)
         # XML_Node("HeatReleaseStorage_WR", _d.),
         # XML_Node("HotWaterFixtureEffectiveness", _d.),
-    #     XML_Node("LengthCirculationPipes_CR1", _d.),
-    #     XML_Node("LengthCirculationPipes_CR2", _d.),
-    #     XML_Node("HeatLossCoefficient_CR1", _d.),
-    #     XML_Node("HeatLossCoefficient_CR2", _d.),
-    #     XML_Node("TemperatureRoom_CR1", _d.),
-    #     XML_Node("TemperatureRoom_CR2", _d.),
-    #     XML_Node("DesignFlowTemperature_CR1", _d.),
-    #     XML_Node("DesignFlowTemperature_CR2", _d.),
-    #     XML_Node("DailyRunningHoursCirculation_CR1", _d.),
-    #     XML_Node("DailyRunningHoursCirculation_CR2", _d.),
-    #     XML_Node("LengthIndividualPipes_CR1", _d.),
-    #     XML_Node("LengthIndividualPipes_CR2", _d.),
-    #     XML_Node("ExteriorPipeDiameter_CR1", _d.),
-    #     XML_Node("ExteriorPipeDiameter_CR2", _d.),
-    #     XML_Node("HeatReleaseStorage_CR1", _d.),
-    #     XML_Node("HeatReleaseStorage_CR2", _d.),
+        #     XML_Node("LengthCirculationPipes_CR1", _d.),
+        #     XML_Node("LengthCirculationPipes_CR2", _d.),
+        #     XML_Node("HeatLossCoefficient_CR1", _d.),
+        #     XML_Node("HeatLossCoefficient_CR2", _d.),
+        #     XML_Node("TemperatureRoom_CR1", _d.),
+        #     XML_Node("TemperatureRoom_CR2", _d.),
+        #     XML_Node("DesignFlowTemperature_CR1", _d.),
+        #     XML_Node("DesignFlowTemperature_CR2", _d.),
+        #     XML_Node("DailyRunningHoursCirculation_CR1", _d.),
+        #     XML_Node("DailyRunningHoursCirculation_CR2", _d.),
+        #     XML_Node("LengthIndividualPipes_CR1", _d.),
+        #     XML_Node("LengthIndividualPipes_CR2", _d.),
+        #     XML_Node("ExteriorPipeDiameter_CR1", _d.),
+        #     XML_Node("ExteriorPipeDiameter_CR2", _d.),
+        #     XML_Node("HeatReleaseStorage_CR1", _d.),
+        #     XML_Node("HeatReleaseStorage_CR2", _d.),
     ]
 
 
@@ -1389,8 +1414,13 @@ def _PhxDuctElement(_d: hvac.PhxDuctElement) -> List[xml_writable]:
         XML_Node("DuctType", _d.duct_type.value),
         XML_Node("DuctShape", _d.duct_shape),
         XML_Node("IsReflective", _d.is_reflective),
-        XML_List("AssignedVentUnits", [XML_Node('IdentNrVentUnit', id, 'index', i)
-                                             for i, id in enumerate(_d.assigned_vent_unit_ids)]),
+        XML_List(
+            "AssignedVentUnits",
+            [
+                XML_Node("IdentNrVentUnit", id, "index", i)
+                for i, id in enumerate(_d.assigned_vent_unit_ids)
+            ],
+        ),
     ]
 
 
@@ -1486,15 +1516,17 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
 
 def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
     return [
-        XML_Object('DistributionDHW', DistributionDHW(_c)),
+        XML_Object("DistributionDHW", DistributionDHW(_c)),
         # XML_Object('DistributionHeating', DistributionHeating()),
         XML_Object(
             "DistributionCooling",
             TempDistributionCooling(_c.cooling_devices),
             _schema_name="_DistributionCooling",
         ),
-        XML_List('DistributionVentilation', [XML_Object('Duct', d, 'index', i)
-                                             for i, d in enumerate(_c.vent_ducting)]),
+        XML_List(
+            "DistributionVentilation",
+            [XML_Object("Duct", d, "index", i) for i, d in enumerate(_c.vent_ducting)],
+        ),
         XML_Node("UseDefaultValues", True),
         XML_Node("DeviceInConditionedSpace", True),
     ]
@@ -1674,17 +1706,24 @@ def _PhxDeviceCustomMEL(_d: elec_equip.PhxDeviceCustomMEL) -> List[xml_writable]
         XML_Node("Type", 18),
     ]
 
+
 def _PhxElevatorHydraulic(_d: elec_equip.PhxElevatorHydraulic) -> List[xml_writable]:
     return [
         XML_Node("Type", 11),
     ]
 
-def _PhxElevatorGearedTraction(_d: elec_equip.PhxElevatorGearedTraction) -> List[xml_writable]:
+
+def _PhxElevatorGearedTraction(
+    _d: elec_equip.PhxElevatorGearedTraction,
+) -> List[xml_writable]:
     return [
         XML_Node("Type", 11),
     ]
 
-def _PhxElevatorGearlessTraction(_d: elec_equip.PhxElevatorGearlessTraction) -> List[xml_writable]:
+
+def _PhxElevatorGearlessTraction(
+    _d: elec_equip.PhxElevatorGearlessTraction,
+) -> List[xml_writable]:
     return [
         XML_Node("Type", 11),
     ]

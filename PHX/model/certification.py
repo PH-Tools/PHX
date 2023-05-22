@@ -87,6 +87,7 @@ class PhxPhiusCertification:
 
     # TODO: Refactor this out to someplace more general than inside Phius....
     ph_building_data: PhxPhBuildingData = field(default_factory=PhxPhBuildingData)
+    use_monthly_shading: bool = True
 
 
 # -----------------------------------------------------------------------------
