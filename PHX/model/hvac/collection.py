@@ -58,8 +58,12 @@ class PhxMechanicalSystemCollection:
     zone_coverage: PhxZoneCoverage = field(default_factory=PhxZoneCoverage)
 
     _devices: Dict[str, AnyMechDevice] = field(default_factory=dict)
-    _distribution_piping_branches: Dict[str, hvac.PhxPipeElement] = field(default_factory=dict)
-    _distribution_piping_recirc: Dict[str, hvac.PhxPipeElement] = field(default_factory=dict)
+    _distribution_piping_branches: Dict[str, hvac.PhxPipeElement] = field(
+        default_factory=dict
+    )
+    _distribution_piping_recirc: Dict[str, hvac.PhxPipeElement] = field(
+        default_factory=dict
+    )
     _distribution_num_hw_tap_points: int = 1
     _distribution_ducting: Dict[str, hvac.PhxDuctElement] = field(default_factory=dict)
 
@@ -229,7 +233,10 @@ class PhxMechanicalSystemCollection:
 
         weighted_total = 0.0
         for phx_pipe_element in self.dhw_recirc_piping:
-            weighted_total += phx_pipe_element.weighted_pipe_heat_loss_coefficient * phx_pipe_element.length_m
+            weighted_total += (
+                phx_pipe_element.weighted_pipe_heat_loss_coefficient
+                * phx_pipe_element.length_m
+            )
         return weighted_total / self.dhw_recirc_total_length_m
 
     @property
@@ -241,10 +248,12 @@ class PhxMechanicalSystemCollection:
         """Return a length-weighted average diameter."""
         if not self.dhw_branch_total_length_m:
             return None
-        
+
         weighted_total = 0.0
         for phx_pipe_element in self.dhw_branch_piping:
-            weighted_total += phx_pipe_element.weighted_diameter_mm * phx_pipe_element.length_m
+            weighted_total += (
+                phx_pipe_element.weighted_diameter_mm * phx_pipe_element.length_m
+            )
         return weighted_total / self.dhw_branch_total_length_m
 
 
@@ -338,18 +347,22 @@ class PhxExhaustVentilatorCollection:
 
     def merge_all_devices(self):
         """Merge all the devices in the collection together by type."""
+        # -- Keep a copy of the devices the collection started with
         kitchen_hood_devices = copy(self.kitchen_hood_devices)
         dryer_devices = copy(self.dryer_devices)
         user_determined_devices = copy(self.user_determined_devices)
+
+        # -- start fresh
         self.clear_all_devices()
 
+        # -- Add back the merged devices
         if kitchen_hood_devices:
-            kitchen_hoods = reduce(lambda d1, d2: d1 + d2, kitchen_hood_devices)
-            self.add_new_ventilator(kitchen_hoods.identifier, kitchen_hoods)
+            kitchen_hood = reduce(lambda d1, d2: d1 + d2, kitchen_hood_devices)
+            self.add_new_ventilator(kitchen_hood.identifier, kitchen_hood)
 
         if dryer_devices:
-            dryers = reduce(lambda d1, d2: d1 + d2, dryer_devices)
-            self.add_new_ventilator(dryers.identifier, dryers)
+            dryer = reduce(lambda d1, d2: d1 + d2, dryer_devices)
+            self.add_new_ventilator(dryer.identifier, dryer)
 
         if user_determined_devices:
             ud_devices = reduce(lambda d1, d2: d1 + d2, user_determined_devices)

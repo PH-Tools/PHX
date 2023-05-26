@@ -149,6 +149,7 @@ def test_default_PhxProject(reset_class_counters):
         "<MechanicalRoomTemperature>20.0</MechanicalRoomTemperature>",
         "<IndoorTemperature>20.0</IndoorTemperature>",
         "<OverheatingTemperatureThreshold>25.0</OverheatingTemperatureThreshold>",
+        "<NonCombustibleMaterials>false</NonCombustibleMaterials>",
         "</PH_Building>",
         "</PH_Buildings>",
         "<UseWUFIMeanMonthShading>true</UseWUFIMeanMonthShading>",

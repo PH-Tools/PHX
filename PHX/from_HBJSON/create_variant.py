@@ -9,6 +9,7 @@ from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
 
 from honeybee_ph import site, phi, phius, space
+from honeybee_ph.bldg_segment import BldgSegment
 from honeybee_ph.properties.room import RoomPhProperties
 
 from honeybee_energy_ph.properties.load import equipment, people
@@ -28,7 +29,12 @@ from PHX.model.enums import (
     phi_certification_phpp_10,
     phius_certification,
 )
-from PHX.from_HBJSON import create_building, create_hvac, create_elec_equip, create_foundations
+from PHX.from_HBJSON import (
+    create_building,
+    create_hvac,
+    create_elec_equip,
+    create_foundations,
+)
 from PHX.from_HBJSON.create_shw import (
     build_phx_piping,
     build_phx_piping,
@@ -283,26 +289,30 @@ def add_PhxPhBuildingData_from_hb_room(
     # -- Type Aliases
     ph_bldg = _variant.phius_cert.ph_building_data  # alias
     hb_prop_energy: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-    hb_prop_ph: RoomPhProperties = _hb_room.properties.ph # type: ignore
+    hb_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    hbph_bldg_seg: BldgSegment = hb_prop_ph.ph_bldg_segment
 
     # -- Set the occupancy
     if hb_prop_energy.people:
         hb_ppl_prop_ph: people.PeoplePhProperties = hb_prop_energy.people.properties.ph  # type: ignore
         ph_bldg.num_of_units = hb_ppl_prop_ph.number_dwelling_units
-    ph_bldg.num_of_floors = hb_prop_ph.ph_bldg_segment.num_floor_levels  # type: ignore
-    
+    ph_bldg.num_of_floors = hbph_bldg_seg.num_floor_levels  # type: ignore
+
     # -- Add Foundations
     for hbph_foundation in hb_prop_ph.ph_foundations:
-        phx_foundation = create_foundations.create_phx_foundation_from_hbph(hbph_foundation)
+        phx_foundation = create_foundations.create_phx_foundation_from_hbph(
+            hbph_foundation
+        )
         ph_bldg.add_foundation(phx_foundation)
 
     # -- Set the airtightness for Building
     ph_bldg.airtightness_q50 = hb_prop_energy.infiltration.flow_per_exterior_area * 3600
 
     # -- Set the air temp setpoints
-    ph_bldg.setpoints.winter = hb_prop_ph.ph_bldg_segment.set_points.winter
-    ph_bldg.setpoints.summer = hb_prop_ph.ph_bldg_segment.set_points.summer
-    ph_bldg.mech_room_temp = hb_prop_ph.ph_bldg_segment.mech_room_temp
+    ph_bldg.setpoints.winter = hbph_bldg_seg.set_points.winter
+    ph_bldg.setpoints.summer = hbph_bldg_seg.set_points.summer
+    ph_bldg.mech_room_temp = hbph_bldg_seg.mech_room_temp
+    ph_bldg.non_combustible_materials = hbph_bldg_seg.non_combustible_materials
 
     return None
 
@@ -343,7 +353,9 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     _variant.site.phpp_codes.dataset_name = ud_site.phpp_library_codes.dataset_name
 
     # -- Ground
-    _variant.site.ground.ground_thermal_conductivity = ud_ground.ground_thermal_conductivity
+    _variant.site.ground.ground_thermal_conductivity = (
+        ud_ground.ground_thermal_conductivity
+    )
     _variant.site.ground.ground_heat_capacity = ud_ground.ground_heat_capacity
     _variant.site.ground.ground_density = ud_ground.ground_density
     _variant.site.ground.depth_groundwater = ud_ground.depth_groundwater
@@ -351,9 +363,7 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
 
     # -- Monthly Values
     phx_climate.temperature_air = ud_site.climate.monthly_temps.air_temps.values
-    phx_climate.temperature_dewpoint = (
-        ud_site.climate.monthly_temps.dewpoints.values
-    )
+    phx_climate.temperature_dewpoint = ud_site.climate.monthly_temps.dewpoints.values
     phx_climate.temperature_sky = ud_site.climate.monthly_temps.sky_temps.values
 
     phx_climate.radiation_north = ud_site.climate.monthly_radiation.north.values
@@ -596,8 +606,11 @@ def add_exhaust_vent_devices_from_hb_rooms(
                 #  -- And add the new ventilator to the Zone's set
                 zone.exhaust_ventilator_collection.add_new_ventilator(key, phx_device)
 
-                if _merge_devices:
-                    zone.exhaust_ventilator_collection.merge_all_devices()
+    # -- Once all the Exhaust Ventilators have been added to the Zones,
+    # -- merge them together
+    for zone in _variant.zones:
+        if _merge_devices:
+            zone.exhaust_ventilator_collection.merge_all_devices()
 
     return None
 
@@ -745,7 +758,6 @@ def add_dhw_heaters_from_hb_rooms(
 
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     for space in room_prop_ph.spaces:
-
         host_prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
         if not host_prop_energy.shw:
             continue
@@ -763,7 +775,6 @@ def add_dhw_heaters_from_hb_rooms(
 def add_dhw_piping_from_hb_rooms(
     _variant: project.PhxVariant, _hb_room: room.Room
 ) -> None:
-
     ph_prop: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     for space in ph_prop.spaces:
         prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore

@@ -35,6 +35,7 @@ class PhxPhBuildingData:
 
     setpoints: PhxSetpoints = field(default_factory=PhxSetpoints)
     mech_room_temp: float = 20.0
+    non_combustible_materials: bool = False
 
     foundations: list[ground.PhxFoundation] = field(default_factory=list)
 

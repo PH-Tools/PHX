@@ -354,6 +354,7 @@ def _PhxPhBuildingData(
             "OverheatingTemperatureThreshold",
             _phius_cert.ph_building_data.setpoints.summer,
         ),
+        XML_Node("NonCombustibleMaterials", _phius_cert.ph_building_data.non_combustible_materials),
     ]
 
 
