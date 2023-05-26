@@ -21,6 +21,7 @@ from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Ventilation,
 )
 
+
 @dataclass
 class PhxVariant:
     _count: ClassVar[int] = 0
@@ -75,7 +76,7 @@ class PhxProjectData:
     customer: ProjectData_Agent = field(default_factory=ProjectData_Agent)
     building: ProjectData_Agent = field(default_factory=ProjectData_Agent)
     owner: ProjectData_Agent = field(default_factory=ProjectData_Agent)
-    responsible: ProjectData_Agent = field(default_factory=ProjectData_Agent)
+    designer: ProjectData_Agent = field(default_factory=ProjectData_Agent)
 
     project_date: str = ""
     owner_is_client: bool = False
@@ -110,7 +111,7 @@ class PhxProject:
     def add_new_window_type(self, _window_type: PhxConstructionWindow) -> None:
         """Adds a new PhxConstructionWindow to the Project's collection"""
         self.window_types[_window_type.identifier] = _window_type
-    
+
     def add_new_shade_type(self, _shade_type: PhxWindowShade) -> None:
         """Adds a new PhxWindowShade to the Project's collection"""
         self.shade_types[_shade_type.identifier] = _shade_type

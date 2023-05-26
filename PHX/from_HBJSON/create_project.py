@@ -10,8 +10,9 @@ from honeybee import model
 from honeybee import room
 
 from honeybee_ph.properties.room import RoomPhProperties
+from honeybee_ph.team import ProjectTeam, ProjectTeamMember
 
-from PHX.model.project import PhxProject
+from PHX.model.project import PhxProject, PhxProjectData, ProjectData_Agent
 from PHX.from_HBJSON import cleanup, create_assemblies, create_variant, create_shades
 from PHX.from_HBJSON import create_schedules
 
@@ -44,6 +45,31 @@ def sort_hb_rooms_by_bldg_segment(_hb_rooms: Tuple[room.Room]) -> List[List[room
     return list(rooms_by_segment.values())
 
 
+def hb_team_member_to_phx_agent(
+    _hb_team_member: ProjectTeamMember,
+) -> ProjectData_Agent:
+    """Return a new PHX ProjectData_Agent with data based on a HB ProjectTeamMember."""
+    return ProjectData_Agent(
+        _hb_team_member.name,
+        _hb_team_member.street,
+        _hb_team_member.city,
+        _hb_team_member.post_code,
+        _hb_team_member.telephone,
+        _hb_team_member.email,
+    )
+
+
+def get_project_data_from_hb_model(_hb_model: model.Model) -> PhxProjectData:
+    """Return a new PhxProjectData with all team-member info based on an HB Model."""
+    hb_proj_team = _hb_model.properties.ph.team  # type: ProjectTeam
+    new_project_data = PhxProjectData()
+    new_project_data.customer = hb_team_member_to_phx_agent(hb_proj_team.customer)
+    new_project_data.owner = hb_team_member_to_phx_agent(hb_proj_team.owner)
+    new_project_data.building = hb_team_member_to_phx_agent(hb_proj_team.building)
+    new_project_data.designer = hb_team_member_to_phx_agent(hb_proj_team.designer)
+    return new_project_data
+
+
 def convert_hb_model_to_PhxProject(
     _hb_model: model.Model, _group_components: bool = True, _merge_faces: bool = False
 ) -> PhxProject:
@@ -65,6 +91,7 @@ def convert_hb_model_to_PhxProject(
     """
 
     phx_project = PhxProject()
+    phx_project.project_data = get_project_data_from_hb_model(_hb_model)
     create_assemblies.build_opaque_assemblies_from_HB_model(phx_project, _hb_model)
     create_assemblies.build_transparent_assembly_types_from_HB_Model(
         phx_project, _hb_model

@@ -111,8 +111,8 @@ def convert_hbjson_to_WUFI_XML(
 
     # -------------------------------------------------------------------------
     # -- return the dir and filename of the xml created
-    directory, file_name = os.path.split(_hbjson_file)
-    return directory, file_name
+    # directory, file_name = os.path.split(_hbjson_file)
+    return _save_folder, _save_file_name
 
 
 def write_hbjson_to_phpp(

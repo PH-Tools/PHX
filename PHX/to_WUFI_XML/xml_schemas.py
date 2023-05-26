@@ -143,13 +143,13 @@ def _PhxProjectData(_project_data: project.PhxProjectData) -> List[xml_writable]
         XML_Node("Owner_Street", _project_data.owner.street),
         XML_Node("Owner_Locality", _project_data.owner.city),
         XML_Node("Owner_PostalCode", _project_data.owner.post_code),
-        XML_Node("Responsible_Name", _project_data.responsible.name),
-        XML_Node("Responsible_Street", _project_data.responsible.street),
-        XML_Node("Responsible_Locality", _project_data.responsible.city),
-        XML_Node("Responsible_PostalCode", _project_data.responsible.post_code),
-        XML_Node("Responsible_Tel", _project_data.responsible.telephone),
-        XML_Node("Responsible_LicenseNr", _project_data.responsible.license_number),
-        XML_Node("Responsible_Email", _project_data.responsible.email),
+        XML_Node("Responsible_Name", _project_data.designer.name),
+        XML_Node("Responsible_Street", _project_data.designer.street),
+        XML_Node("Responsible_Locality", _project_data.designer.city),
+        XML_Node("Responsible_PostalCode", _project_data.designer.post_code),
+        XML_Node("Responsible_Tel", _project_data.designer.telephone),
+        XML_Node("Responsible_LicenseNr", _project_data.designer.license_number),
+        XML_Node("Responsible_Email", _project_data.designer.email),
     ]
 
 

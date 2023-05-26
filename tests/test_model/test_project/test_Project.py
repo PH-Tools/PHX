@@ -25,7 +25,7 @@ def test_project_data(reset_class_counters):
         "email",
         "license_number",
     ]
-    group_types = ["customer", "building", "owner", "responsible"]
+    group_types = ["customer", "building", "owner", "designer"]
     for group_name in group_types:
         gr_attr = getattr(proj.project_data, group_name)
         for field in fields:
@@ -59,13 +59,13 @@ def test_project_data(reset_class_counters):
     assert proj.project_data.owner.license_number == "owner_license_number"
 
     # --- Responsible
-    assert proj.project_data.responsible.name == "responsible_name"
-    assert proj.project_data.responsible.street == "responsible_street"
-    assert proj.project_data.responsible.city == "responsible_city"
-    assert proj.project_data.responsible.post_code == "responsible_post_code"
-    assert proj.project_data.responsible.telephone == "responsible_telephone"
-    assert proj.project_data.responsible.email == "responsible_email"
-    assert proj.project_data.responsible.license_number == "responsible_license_number"
+    assert proj.project_data.designer.name == "designer_name"
+    assert proj.project_data.designer.street == "designer_street"
+    assert proj.project_data.designer.city == "designer_city"
+    assert proj.project_data.designer.post_code == "designer_post_code"
+    assert proj.project_data.designer.telephone == "designer_telephone"
+    assert proj.project_data.designer.email == "designer_email"
+    assert proj.project_data.designer.license_number == "designer_license_number"
 
 
 def test_add_variant_to_project(reset_class_counters):
