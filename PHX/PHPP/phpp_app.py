@@ -131,9 +131,7 @@ class PHPPConnection:
         # ---------------------------------------------------------------------
         # -- Pull the search row data from the Active XL Instance
         data = self.xl.get_single_row_data(data_worksheet.name, data_row)
-        data = [
-            _ for _ in data if _ is not None and _ is not ""
-        ]  # Filter out all the blanks
+        data = [_ for _ in data if _ is not None and _ != ""]  # Filter out all the blanks
 
         # ---------------------------------------------------------------------
         # -- Find the right Version number
