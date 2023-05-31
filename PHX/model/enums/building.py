@@ -12,6 +12,8 @@ class ComponentFaceType(Enum):
     ROOF_CEILING = 3
     AIR_BOUNDARY = 3
     WINDOW = 4
+    ADIABATIC = 5
+    CUSTOM = 6
 
 
 class ComponentExposureExterior(Enum):

@@ -263,6 +263,14 @@ class AreasThermalBridgeRows(BaseModel):
     inputs: AreasThermalBridgeInputs
 
 
+class AreasSummaryRows(BaseModel):
+    temp_zones: str
+    area_type: str
+    group_number: str
+    area: str
+    average_u_value: str
+
+
 class AreasSurfaceRows(BaseModel):
     locator_col_header: str
     locator_string_header: str
@@ -287,6 +295,7 @@ class AreasDefinedRanges(BaseModel):
 
 class Areas(BaseModel):
     name: str
+    summary_rows: AreasSummaryRows
     surface_rows: AreasSurfaceRows
     tfa_input: AreasDataInput
     thermal_bridge_rows: AreasThermalBridgeRows

@@ -50,14 +50,19 @@ class AreasInputLocation:
 
 
 class Surfaces:
-    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Areas) -> None:
+    def __init__(
+        self,
+        _xl: xl_app.XLConnection,
+        _shape: shape_model.Areas,
+        _group_type_exposures: Dict[int, str],
+    ) -> None:
         self.xl = _xl
         self.shape = _shape
         self._section_header_row: Optional[int] = None
         self._section_first_entry_row: Optional[int] = None
         self._section_last_entry_row: Optional[int] = None
         self.surface_cache = {}
-        self.group_type_exposures: Dict[int, str] = {}
+        self.group_type_exposures = _group_type_exposures
 
     @property
     def section_header_row(self) -> int:
@@ -297,9 +302,9 @@ class Areas:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Areas) -> None:
         self.xl = _xl
         self.shape = _shape
-        self.surfaces = Surfaces(self.xl, self.shape)
-        self.thermal_bridges = ThermalBridges(self.xl, self.shape)
         self.group_type_exposures = self.get_group_type_exposures()
+        self.surfaces = Surfaces(self.xl, self.shape, self.group_type_exposures)
+        self.thermal_bridges = ThermalBridges(self.xl, self.shape)
 
     def write_thermal_bridges(
         self, _tbs: List[areas_thermal_bridges.ThermalBridgeRow]
@@ -340,16 +345,31 @@ class Areas:
         self.xl.write_xl_item(xl_item)
 
     def get_group_type_exposures(self) -> Dict[int, str]:
-        """Return the group type exposures from the PHPP Areas worksheet."""
-        data: List[List] = self.xl.get_data(self.shape.name, "K8:N27")
+        """Return the group type exposures dictionary from the PHPP Areas worksheet."""
+        zone_type_letters = self.xl.get_single_column_data(
+            self.shape.name,
+            self.shape.summary_rows.temp_zones,
+            1,
+            30,
+        )
+        zone_group_numbers = self.xl.get_single_column_data(
+            self.shape.name,
+            self.shape.summary_rows.group_number,
+            1,
+            30,
+        )
 
         d = {}
-        for row_data in data:
-            if not row_data[0]:
+        for group_num, temp_zone in zip(zone_group_numbers, zone_type_letters):
+            if not group_num or not temp_zone:
                 continue
-            d[int(row_data[-1])] = row_data[0]
 
-        self.surfaces.group_type_exposures = d
+            try:
+                d[int(group_num)] = temp_zone
+            except TypeError:
+                pass
+            except ValueError:
+                pass
         return d
 
     def get_total_wall_area(self) -> float:

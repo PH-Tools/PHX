@@ -330,6 +330,13 @@
     },
     "AREAS": {
         "name": "Areas",
+        "summary_rows": {
+            "temp_zones": "K",
+            "area_type": "L",
+            "group_number": "M",
+            "area": "N",
+            "average_u_value": "AG"
+        },
         "surface_rows": {
             "locator_col_header": "K",
             "locator_string_header": "Area input",
@@ -1272,7 +1279,7 @@
         "name": "Electricity non-res",
         "lighting_rows": {
             "locator_col_header": "C",
-            "locator_string_header": "Lighting",
+            "locator_string_header": "Lighting / non-residential",
             "locator_col_entry": "C",
             "locator_string_entry": "Room / Zone",
             "locator_string_exit": "Total net floor area",

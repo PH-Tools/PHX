@@ -147,6 +147,10 @@ class ExistingSurfaceRow:
             9: ComponentFaceType.WALL,
             10: ComponentFaceType.ROOF_CEILING,
             11: ComponentFaceType.FLOOR,
+            12: ComponentFaceType.CUSTOM,
+            13: ComponentFaceType.CUSTOM,
+            14: ComponentFaceType.CUSTOM,
+            18: ComponentFaceType.ADIABATIC,
         }
         return type_map[self.face_group_type_phpp_number]
 

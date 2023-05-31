@@ -335,6 +335,13 @@
     },
     "AREAS": {
         "name": "Areas",
+        "summary_rows": {
+            "temp_zones": "K",
+            "area_type": "M",
+            "group_number": "N",
+            "area": "L",
+            "average_u_value": "P"
+        },
         "surface_rows": {
             "locator_col_header": "K",
             "locator_string_header": "Area input",
