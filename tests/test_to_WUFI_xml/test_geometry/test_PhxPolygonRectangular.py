@@ -6,7 +6,7 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 def test_default_polygon_rectangular_no_vertices(reset_class_counters):
     p1 = geometry.PhxPolygonRectangular(
         _display_name="no_name",
-        area=100.0,
+        _area=100.0,
         center=geometry.PhxVertix(0.0, 0.0, 0.0),
         normal_vector=geometry.PhxVector(0.0, 0.0, 1.0),
         plane=geometry.PhxPlane(

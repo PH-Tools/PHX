@@ -48,7 +48,8 @@ class FrameRow:
         XLItemCompo = partial(xl_data.XlItem, _sheet_name)
         xl_item_list: List[xl_data.XlItem] = [
             XLItemCompo(
-                create_range("description"), self.phx_construction.frame_type_display_name
+                create_range("description"),
+                f"'{self.phx_construction.frame_type_display_name}",
             ),
             XLItemCompo(
                 create_range("u_value_left"),

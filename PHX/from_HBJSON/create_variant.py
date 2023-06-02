@@ -50,6 +50,7 @@ def add_building_from_hb_room(
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     group_components: bool = False,
+    _tolerance: float = 0.001,
 ) -> None:
     """Create the  PHX-Building with all Components and Zones based on a Honeybee-Room.
 
@@ -70,7 +71,7 @@ def add_building_from_hb_room(
     """
     _variant.building.add_components(
         create_building.create_components_from_hb_room(
-            _hb_room, _assembly_dict, _window_type_dict
+            _hb_room, _assembly_dict, _window_type_dict, _tolerance
         )
     )
     _variant.building.add_zones(
@@ -826,6 +827,7 @@ def from_hb_room(
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     group_components: bool = False,
+    _tolerance: float = 0.001,
 ) -> project.PhxVariant:
     """Create a new PHX-Variant based on a single PH/Honeybee Room.
 
@@ -857,12 +859,13 @@ def from_hb_room(
     add_dhw_piping_from_hb_rooms(new_variant, _hb_room)
     add_dhw_storage_from_hb_rooms(new_variant, _hb_room)
     add_building_from_hb_room(
-        new_variant,
-        _hb_room,
-        _assembly_dict,
-        _window_type_dict,
-        _vent_sched_collection,
-        group_components,
+        _variant=new_variant,
+        _hb_room=_hb_room,
+        _assembly_dict=_assembly_dict,
+        _window_type_dict=_window_type_dict,
+        _vent_sched_collection=_vent_sched_collection,
+        group_components=group_components,
+        _tolerance=_tolerance,
     )
     # -- Vent. Exhaust Equip must come after zones are instantiated, since these
     # -- devices are down at the zone level instead of up at the Variant level.

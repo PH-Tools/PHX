@@ -49,7 +49,7 @@ class GlazingRow:
         xl_item_list: List[xl_data.XlItem] = [
             XLItemCompo(
                 create_range("description"),
-                self.phx_construction.glazing_type_display_name,
+                f"'{self.phx_construction.glazing_type_display_name}",
             ),
             XLItemCompo(create_range("g_value"), self.phx_construction.glass_g_value),
             XLItemCompo(

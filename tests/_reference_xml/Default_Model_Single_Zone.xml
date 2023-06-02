@@ -203,7 +203,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_75c722b9..Face4</Name>
+						<Name>Room_1_2e52c27e..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -219,7 +219,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_75c722b9..Face5</Name>
+						<Name>Room_1_2e52c27e..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -235,7 +235,7 @@
 					</Component>
 					<Component index="2">
 						<IdentNr>9</IdentNr>
-						<Name>Merged_Component</Name>
+						<Name>WALL [Generic Exterior Wall]</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>2</IdentNrColorI>

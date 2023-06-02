@@ -7,8 +7,8 @@
         "type": "Face3D", 
         "plane": {
           "x": [
-            0.0, 
-            -1.0, 
+            0.17364817766693036, 
+            -0.98480775301220813, 
             0.0
           ], 
           "n": [
@@ -30,18 +30,18 @@
             3.0
           ], 
           [
-            0.0, 
-            -1.0, 
+            0.17364817766693033, 
+            -0.98480775301220802, 
             3.0
           ], 
           [
-            5.0, 
-            -1.0, 
+            5.0976869427279698, 
+            -0.11656686467755639, 
             3.0
           ], 
           [
-            5.0, 
-            0.0, 
+            4.9240387650610398, 
+            0.86824088833465163, 
             3.0
           ]
         ]
@@ -60,8 +60,8 @@
           "type": "ShadeRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Shade_3f4a6d9a", 
-      "display_name": "Shade_3f4a6d9a", 
+      "identifier": "Shade_871ce9d7", 
+      "display_name": "Shade_871ce9d7", 
       "type": "Shade"
     }, 
     {
@@ -69,8 +69,8 @@
         "type": "Face3D", 
         "plane": {
           "x": [
-            0.0, 
-            -1.0, 
+            0.17364817766693036, 
+            -0.98480775301220813, 
             0.0
           ], 
           "n": [
@@ -79,31 +79,31 @@
             1.0
           ], 
           "o": [
-            5.0, 
-            0.0, 
+            4.9240387650610398, 
+            0.86824088833465163, 
             3.0
           ], 
           "type": "Plane"
         }, 
         "boundary": [
           [
-            5.0, 
-            0.0, 
+            4.9240387650610398, 
+            0.86824088833465163, 
             3.0
           ], 
           [
-            5.0, 
-            -1.0, 
+            5.0976869427279698, 
+            -0.11656686467755639, 
             3.0
           ], 
           [
-            12.0, 
-            -1.0, 
+            11.991341213813426, 
+            1.098970378990956, 
             3.0
           ], 
           [
-            12.0, 
-            0.0, 
+            11.817693036146496, 
+            2.0837781320031641, 
             3.0
           ]
         ]
@@ -122,8 +122,8 @@
           "type": "ShadeRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Shade_ad45503e", 
-      "display_name": "Shade_ad45503e", 
+      "identifier": "Shade_5ebdb08e", 
+      "display_name": "Shade_5ebdb08e", 
       "type": "Shade"
     }
   ], 
@@ -172,91 +172,7 @@
           "non_combustible_materials": false, 
           "user_data": {}, 
           "thermal_bridges": {
-            "209946ec-8937-44ac-878c-c4e365e1c63a": {
-              "id_num": 0, 
-              "psi_value": 0.01, 
-              "user_data": {}, 
-              "geometry": {
-                "vertices": [
-                  [
-                    0.0, 
-                    3.3416407864998741, 
-                    0.49376941012509468
-                  ], 
-                  [
-                    0.0, 
-                    0.65835921350012616, 
-                    0.49376941012509468
-                  ], 
-                  [
-                    0.0, 
-                    0.65835921350012616, 
-                    2.5062305898749053
-                  ], 
-                  [
-                    0.0, 
-                    3.3416407864998741, 
-                    2.5062305898749053
-                  ], 
-                  [
-                    0.0, 
-                    3.3416407864998741, 
-                    0.49376941012509468
-                  ]
-                ], 
-                "type": "Polyline3D"
-              }, 
-              "fRsi_value": 0.75, 
-              "_group_type": {
-                "value": "15-AMBIENT"
-              }, 
-              "identifier": "209946ec-8937-44ac-878c-c4e365e1c63a", 
-              "display_name": "_unnamed_bldg_segment__f41c2931", 
-              "quantity": 1.0
-            }, 
-            "555ce730-6446-42e8-85b3-1b32524b3375": {
-              "id_num": 0, 
-              "psi_value": 0.01, 
-              "user_data": {}, 
-              "geometry": {
-                "vertices": [
-                  [
-                    6.1521286236252202, 
-                    0.0, 
-                    0.49376941012509468
-                  ], 
-                  [
-                    10.84787137637478, 
-                    0.0, 
-                    0.49376941012509468
-                  ], 
-                  [
-                    10.84787137637478, 
-                    0.0, 
-                    2.5062305898749053
-                  ], 
-                  [
-                    6.1521286236252202, 
-                    0.0, 
-                    2.5062305898749053
-                  ], 
-                  [
-                    6.1521286236252202, 
-                    0.0, 
-                    0.49376941012509468
-                  ]
-                ], 
-                "type": "Polyline3D"
-              }, 
-              "fRsi_value": 0.75, 
-              "_group_type": {
-                "value": "15-AMBIENT"
-              }, 
-              "identifier": "555ce730-6446-42e8-85b3-1b32524b3375", 
-              "display_name": "_unnamed_bldg_segment__059c1ec2", 
-              "quantity": 1.0
-            }, 
-            "cc6b6672-2442-4aab-8155-95a46a0aa73c": {
+            "27720a8b-ad1c-4abe-8f3b-34331cd0a121": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
@@ -294,11 +210,11 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "cc6b6672-2442-4aab-8155-95a46a0aa73c", 
-              "display_name": "_unnamed_bldg_segment__02b8e25f", 
+              "identifier": "27720a8b-ad1c-4abe-8f3b-34331cd0a121", 
+              "display_name": "_unnamed_bldg_segment__2ce520b3", 
               "quantity": 1.0
             }, 
-            "4c86f2b5-b91a-445f-8236-a2e39e6ca6ee": {
+            "ed6a339e-a3a3-42e5-b19e-2191d39b6c23": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
@@ -306,27 +222,27 @@
                 "vertices": [
                   [
                     5.0, 
-                    0.0, 
+                    4.0, 
                     0.0
                   ], 
                   [
                     5.0, 
-                    4.0, 
-                    0.0
-                  ], 
-                  [
-                    12.0, 
-                    4.0, 
-                    0.0
-                  ], 
-                  [
-                    12.0, 
                     0.0, 
                     0.0
                   ], 
                   [
                     5.0, 
                     0.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    4.0, 
                     0.0
                   ]
                 ], 
@@ -336,53 +252,11 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "4c86f2b5-b91a-445f-8236-a2e39e6ca6ee", 
-              "display_name": "_unnamed_bldg_segment__df2c847b", 
+              "identifier": "ed6a339e-a3a3-42e5-b19e-2191d39b6c23", 
+              "display_name": "_unnamed_bldg_segment__a3975e11", 
               "quantity": 1.0
             }, 
-            "3096d97e-b4ad-4b8d-a879-6959145cb5d6": {
-              "id_num": 0, 
-              "psi_value": 0.01, 
-              "user_data": {}, 
-              "geometry": {
-                "vertices": [
-                  [
-                    12.0, 
-                    0.0, 
-                    0.0
-                  ], 
-                  [
-                    12.0, 
-                    4.0, 
-                    0.0
-                  ], 
-                  [
-                    12.0, 
-                    4.0, 
-                    3.0
-                  ], 
-                  [
-                    12.0, 
-                    0.0, 
-                    3.0
-                  ], 
-                  [
-                    12.0, 
-                    0.0, 
-                    0.0
-                  ]
-                ], 
-                "type": "Polyline3D"
-              }, 
-              "fRsi_value": 0.75, 
-              "_group_type": {
-                "value": "15-AMBIENT"
-              }, 
-              "identifier": "3096d97e-b4ad-4b8d-a879-6959145cb5d6", 
-              "display_name": "_unnamed_bldg_segment__d6a972c8", 
-              "quantity": 1.0
-            }, 
-            "82ba31cf-de5b-4072-9733-7d69c81d3b76": {
+            "996ab1ab-3576-496b-a11d-8abdc298f2b9": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
@@ -420,11 +294,53 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "82ba31cf-de5b-4072-9733-7d69c81d3b76", 
-              "display_name": "_unnamed_bldg_segment__2ba8e07a", 
+              "identifier": "996ab1ab-3576-496b-a11d-8abdc298f2b9", 
+              "display_name": "_unnamed_bldg_segment__bf8eb388", 
               "quantity": 1.0
             }, 
-            "b8a3747e-feb3-400d-bc4f-dd277c5cc9d0": {
+            "34d4ae21-c213-4adf-a810-7d9837b89738": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    5.0, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    12.0, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    12.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    0.0, 
+                    0.0
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "34d4ae21-c213-4adf-a810-7d9837b89738", 
+              "display_name": "_unnamed_bldg_segment__06acc8b7", 
+              "quantity": 1.0
+            }, 
+            "a9d2318c-1669-49bc-bd2c-1fb63c9a67d1": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
@@ -462,11 +378,53 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "b8a3747e-feb3-400d-bc4f-dd277c5cc9d0", 
-              "display_name": "_unnamed_bldg_segment__680d4a6e", 
+              "identifier": "a9d2318c-1669-49bc-bd2c-1fb63c9a67d1", 
+              "display_name": "_unnamed_bldg_segment__4e1775f3", 
               "quantity": 1.0
             }, 
-            "417c30c3-be9b-4870-b402-3a6f764e3704": {
+            "3715f113-de5e-4cd2-a5d1-533f199f323e": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    0.0, 
+                    4.0, 
+                    0.0
+                  ], 
+                  [
+                    0.0, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    0.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    0.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    0.0, 
+                    4.0, 
+                    0.0
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "3715f113-de5e-4cd2-a5d1-533f199f323e", 
+              "display_name": "_unnamed_bldg_segment__a963ca8e", 
+              "quantity": 1.0
+            }, 
+            "87cdce9f-e4c1-4a2a-baf5-2554f6b55558": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
@@ -474,27 +432,111 @@
                 "vertices": [
                   [
                     12.0, 
-                    0.65835921350012616, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    12.0, 
+                    4.0, 
+                    0.0
+                  ], 
+                  [
+                    12.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    12.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    12.0, 
+                    0.0, 
+                    0.0
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "87cdce9f-e4c1-4a2a-baf5-2554f6b55558", 
+              "display_name": "_unnamed_bldg_segment__0f2fdec8", 
+              "quantity": 1.0
+            }, 
+            "70b2eced-1320-4339-805a-493bce9cbfe3": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    6.1521286236252202, 
+                    0.0, 
                     0.49376941012509468
                   ], 
                   [
-                    12.0, 
+                    10.84787137637478, 
+                    0.0, 
+                    0.49376941012509468
+                  ], 
+                  [
+                    10.84787137637478, 
+                    0.0, 
+                    2.5062305898749053
+                  ], 
+                  [
+                    6.1521286236252202, 
+                    0.0, 
+                    2.5062305898749053
+                  ], 
+                  [
+                    6.1521286236252202, 
+                    0.0, 
+                    0.49376941012509468
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "70b2eced-1320-4339-805a-493bce9cbfe3", 
+              "display_name": "_unnamed_bldg_segment__84895f57", 
+              "quantity": 1.0
+            }, 
+            "2ef05765-b916-4164-8a9b-24b795aab22f": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    0.0, 
                     3.3416407864998741, 
                     0.49376941012509468
                   ], 
                   [
-                    12.0, 
+                    0.0, 
+                    0.65835921350012616, 
+                    0.49376941012509468
+                  ], 
+                  [
+                    0.0, 
+                    0.65835921350012616, 
+                    2.5062305898749053
+                  ], 
+                  [
+                    0.0, 
                     3.3416407864998741, 
                     2.5062305898749053
                   ], 
                   [
-                    12.0, 
-                    0.65835921350012616, 
-                    2.5062305898749053
-                  ], 
-                  [
-                    12.0, 
-                    0.65835921350012616, 
+                    0.0, 
+                    3.3416407864998741, 
                     0.49376941012509468
                   ]
                 ], 
@@ -504,8 +546,50 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "417c30c3-be9b-4870-b402-3a6f764e3704", 
-              "display_name": "_unnamed_bldg_segment__48a1c1b7", 
+              "identifier": "2ef05765-b916-4164-8a9b-24b795aab22f", 
+              "display_name": "_unnamed_bldg_segment__7ef6ae32", 
+              "quantity": 1.0
+            }, 
+            "0602ed43-644c-408f-ba70-00da9adb5c56": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    5.0, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    5.0, 
+                    4.0, 
+                    0.0
+                  ], 
+                  [
+                    5.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    0.0, 
+                    0.0
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "0602ed43-644c-408f-ba70-00da9adb5c56", 
+              "display_name": "_unnamed_bldg_segment__54e4ff45", 
               "quantity": 1.0
             }
           }, 
@@ -630,7 +714,7 @@
           }, 
           "name": "Unnamed_Bldg_Segment", 
           "mech_room_temp": 20.0, 
-          "identifier": "ee456b90-6126-49a5-8c28-11715c31eb74", 
+          "identifier": "038d54dd-5253-4bb9-ab16-6fd39af3e05e", 
           "site": {
             "climate": {
               "user_data": {}, 
@@ -650,8 +734,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "a00eb37f-709d-48eb-9ee3-29406aa8deaf", 
-                  "display_name": "a00eb37f-709d-48eb-9ee3-29406aa8deaf"
+                  "identifier": "aef0268a-5127-4f5e-86f9-1e1be1f31e3e", 
+                  "display_name": "aef0268a-5127-4f5e-86f9-1e1be1f31e3e"
                 }, 
                 "south": {
                   "february": 0.0, 
@@ -667,8 +751,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "ce8c0782-729b-4418-a68e-d42d3a6b8ec2", 
-                  "display_name": "ce8c0782-729b-4418-a68e-d42d3a6b8ec2"
+                  "identifier": "99340c06-ea8b-4e07-bb1f-b0238b6f9c6e", 
+                  "display_name": "99340c06-ea8b-4e07-bb1f-b0238b6f9c6e"
                 }, 
                 "north": {
                   "february": 0.0, 
@@ -684,11 +768,11 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "e98a0bcd-1eea-4390-a06e-327c47743bfe", 
-                  "display_name": "e98a0bcd-1eea-4390-a06e-327c47743bfe"
+                  "identifier": "81f9f3e9-03dc-4ee3-8988-755a5d6954e6", 
+                  "display_name": "81f9f3e9-03dc-4ee3-8988-755a5d6954e6"
                 }, 
-                "identifier": "9608582c-dba4-4d3c-b021-49daee8fa3b3", 
-                "display_name": "9608582c-dba4-4d3c-b021-49daee8fa3b3", 
+                "identifier": "9c82974a-81ca-4206-a184-f36f36aec851", 
+                "display_name": "9c82974a-81ca-4206-a184-f36f36aec851", 
                 "glob": {
                   "february": 0.0, 
                   "july": 0.0, 
@@ -703,8 +787,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "07e1b285-a41e-4b28-bfe5-6ee27220b679", 
-                  "display_name": "07e1b285-a41e-4b28-bfe5-6ee27220b679"
+                  "identifier": "0ce94e03-02c9-45c0-ad4c-edc28f58e264", 
+                  "display_name": "0ce94e03-02c9-45c0-ad4c-edc28f58e264"
                 }, 
                 "west": {
                   "february": 0.0, 
@@ -720,16 +804,16 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "329b9ec3-aab6-40fe-bc10-8092e8e9efcb", 
-                  "display_name": "329b9ec3-aab6-40fe-bc10-8092e8e9efcb"
+                  "identifier": "fa358913-9b56-4343-98fa-3e521ff79e6c", 
+                  "display_name": "fa358913-9b56-4343-98fa-3e521ff79e6c"
                 }
               }, 
               "ground": {
                 "depth_groundwater": 3, 
                 "user_data": {}, 
                 "ground_thermal_conductivity": 2, 
-                "identifier": "90023d68-6fe9-4371-b77a-bf58b6ff0c61", 
-                "display_name": "90023d68-6fe9-4371-b77a-bf58b6ff0c61", 
+                "identifier": "55b9843a-0ccb-4e74-858b-01ba767101c5", 
+                "display_name": "55b9843a-0ccb-4e74-858b-01ba767101c5", 
                 "ground_heat_capacity": 1000, 
                 "ground_density": 2000, 
                 "flow_rate_groundwater": 0.050000000000000003
@@ -744,8 +828,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "02cf587f-ba04-4a65-8e7a-8a0794e2deb7", 
-                  "display_name": "02cf587f-ba04-4a65-8e7a-8a0794e2deb7", 
+                  "identifier": "94a9ffc4-d5c3-4f28-8d49-3e8d878aa758", 
+                  "display_name": "94a9ffc4-d5c3-4f28-8d49-3e8d878aa758", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
@@ -758,8 +842,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "b3f061e3-65fb-4b13-a7d7-418d53570c9f", 
-                  "display_name": "b3f061e3-65fb-4b13-a7d7-418d53570c9f", 
+                  "identifier": "3b0c005d-278e-4586-923a-f079ff557aff", 
+                  "display_name": "3b0c005d-278e-4586-923a-f079ff557aff", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
@@ -773,14 +857,14 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "6e1bffb3-c127-4a37-a400-c85f77e21c1a", 
-                  "display_name": "6e1bffb3-c127-4a37-a400-c85f77e21c1a", 
+                  "identifier": "4acf356b-67f0-4020-b19e-f6b184ed3904", 
+                  "display_name": "4acf356b-67f0-4020-b19e-f6b184ed3904", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
                 }, 
-                "identifier": "36a79006-2950-440e-9ebd-b7890314c2c4", 
-                "display_name": "36a79006-2950-440e-9ebd-b7890314c2c4", 
+                "identifier": "3ba1c745-da64-47a1-9535-458f059b07f2", 
+                "display_name": "3ba1c745-da64-47a1-9535-458f059b07f2", 
                 "cooling_load_2": {
                   "temp": 0.0, 
                   "user_data": {}, 
@@ -789,8 +873,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "e32c9276-b8e0-4741-8b3e-b6283e16f06d", 
-                  "display_name": "e32c9276-b8e0-4741-8b3e-b6283e16f06d", 
+                  "identifier": "913d508d-08ae-42cc-99a9-fd72c856af96", 
+                  "display_name": "913d508d-08ae-42cc-99a9-fd72c856af96", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
@@ -812,8 +896,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "da1e593e-abb5-45c3-b019-256c368a5871", 
-                  "display_name": "da1e593e-abb5-45c3-b019-256c368a5871"
+                  "identifier": "51826887-5cc6-4f6b-ba2e-d1ae90b2da83", 
+                  "display_name": "51826887-5cc6-4f6b-ba2e-d1ae90b2da83"
                 }, 
                 "sky_temps": {
                   "february": 0.0, 
@@ -829,8 +913,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "e7cffcb3-4f54-466f-bf25-a8864be9ad18", 
-                  "display_name": "e7cffcb3-4f54-466f-bf25-a8864be9ad18"
+                  "identifier": "35690207-050f-4dc7-80a1-b870e834e142", 
+                  "display_name": "35690207-050f-4dc7-80a1-b870e834e142"
                 }, 
                 "ground_temps": {
                   "february": 0.0, 
@@ -846,11 +930,11 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "10505974-8fc4-4244-bed5-dd74b9dde0c8", 
-                  "display_name": "10505974-8fc4-4244-bed5-dd74b9dde0c8"
+                  "identifier": "826d0b7e-3762-42c0-946d-0abeeeaffd6b", 
+                  "display_name": "826d0b7e-3762-42c0-946d-0abeeeaffd6b"
                 }, 
-                "identifier": "7ac0322b-f1ed-4f93-99bc-ec11d8226a0d", 
-                "display_name": "7ac0322b-f1ed-4f93-99bc-ec11d8226a0d", 
+                "identifier": "3a9ef49e-6033-4c7e-9cf9-f5f338cdf24b", 
+                "display_name": "3a9ef49e-6033-4c7e-9cf9-f5f338cdf24b", 
                 "dewpoints": {
                   "february": 0.0, 
                   "july": 0.0, 
@@ -865,11 +949,11 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "c91ec5cd-fb10-463c-b8db-d8288a8a25c5", 
-                  "display_name": "c91ec5cd-fb10-463c-b8db-d8288a8a25c5"
+                  "identifier": "1cf26286-9fc8-4073-a0f3-3737ccd67482", 
+                  "display_name": "1cf26286-9fc8-4073-a0f3-3737ccd67482"
                 }
               }, 
-              "identifier": "8f8c1419-401d-46ec-8317-ba95396d35fb", 
+              "identifier": "566582b0-32b5-463d-b3b6-e364ba7a6fe1", 
               "display_name": "_unnamed_climate_", 
               "summer_daily_temperature_swing": 8.0, 
               "station_elevation": 0.0
@@ -881,18 +965,18 @@
               "latitude": 40.600000000000001, 
               "longitude": -73.799999999999997, 
               "hours_from_UTC": -4, 
-              "identifier": "4193ec65-0626-45f9-ac9b-8e4bf214d723", 
+              "identifier": "3e40792f-ad02-4939-869a-51536199b3ce", 
               "display_name": "New_York", 
               "climate_zone": 1
             }, 
-            "identifier": "dcd17c62-4dda-4453-bd40-52961b6fb2d4", 
+            "identifier": "bd2fb629-78a5-452d-9ee9-841cc8d8a619", 
             "display_name": "_unnamed_", 
             "phpp_library_codes": {
               "user_data": {}, 
               "country_code": "US-United States of America", 
               "region_code": "New York", 
               "dataset_name": "US0055b-New York", 
-              "identifier": "98626611-378c-4da4-94ae-3479a3b4cb3e", 
+              "identifier": "776fdc92-39ae-4cbd-9784-6703537e8a8c", 
               "display_name": "US0055b-New York"
             }
           }, 
@@ -1024,7 +1108,7 @@
                   "temperature_below_defrost_used": -5.0, 
                   "frost_protection_reqd": true, 
                   "in_conditioned_space": true, 
-                  "identifier": "4a9ee40c-9d05-4a9e-abb9-8e03537c55d4", 
+                  "identifier": "25a73085-9c6b-45fb-aaa7-a69ad1129d00", 
                   "display_name": "Test_Unit", 
                   "quantity": 1, 
                   "sensible_heat_recovery": 0.82999999999999996
@@ -1034,7 +1118,7 @@
                   {
                     "user_data": {}, 
                     "segments": {
-                      "1a8b74af-387e-47b8-904d-e062e4b7fb4e": {
+                      "2a70061a-2859-4de6-b3e0-7a093f900fd6": {
                         "user_data": {}, 
                         "diameter": 160, 
                         "geometry": {
@@ -1052,26 +1136,26 @@
                         }, 
                         "insulation_thickness": 25.399999999999999, 
                         "width": null, 
-                        "identifier": "1a8b74af-387e-47b8-904d-e062e4b7fb4e", 
-                        "display_name": "1a8b74af-387e-47b8-904d-e062e4b7fb4e", 
+                        "identifier": "2a70061a-2859-4de6-b3e0-7a093f900fd6", 
+                        "display_name": "2a70061a-2859-4de6-b3e0-7a093f900fd6", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "height": null, 
                         "insulation_reflective": true
                       }
                     }, 
                     "duct_type": 2, 
-                    "identifier": "ef604c2e-32ec-4942-a3b7-dd4931a00e64", 
-                    "display_name": "ef604c2e"
+                    "identifier": "1b6a9ca6-d51e-452a-a28a-69c515ea5414", 
+                    "display_name": "1b6a9ca6"
                   }
                 ], 
                 "sys_type": 1, 
-                "identifier": "7e1f74b9-d6b3-4070-9382-66e6c7793bba", 
+                "identifier": "69e9549d-b186-470c-bd6c-c10edb6d554c", 
                 "display_name": "Test_Vent_System", 
                 "supply_ducting": [
                   {
                     "user_data": {}, 
                     "segments": {
-                      "e988cdae-d9c8-445d-a618-e0d1e86183e5": {
+                      "f6aca278-a690-4f6a-9319-9c340e4468d5": {
                         "user_data": {}, 
                         "diameter": 160, 
                         "geometry": {
@@ -1089,16 +1173,16 @@
                         }, 
                         "insulation_thickness": 25.399999999999999, 
                         "width": null, 
-                        "identifier": "e988cdae-d9c8-445d-a618-e0d1e86183e5", 
-                        "display_name": "e988cdae-d9c8-445d-a618-e0d1e86183e5", 
+                        "identifier": "f6aca278-a690-4f6a-9319-9c340e4468d5", 
+                        "display_name": "f6aca278-a690-4f6a-9319-9c340e4468d5", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "height": null, 
                         "insulation_reflective": true
                       }
                     }, 
                     "duct_type": 1, 
-                    "identifier": "9b18d33d-39cb-4c00-8be8-ca0d68af1e59", 
-                    "display_name": "9b18d33d"
+                    "identifier": "09cb5f81-f342-468e-b279-e5c42f4609ef", 
+                    "display_name": "09cb5f81"
                   }
                 ]
               }, 
@@ -1108,7 +1192,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_3_dde6fa63 Ideal Loads Air System", 
+          "identifier": "Room_3_e2c8c962 Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": true, 
           "cooling_limit": {
@@ -1137,7 +1221,7 @@
                   "temperature_below_defrost_used": -5.0, 
                   "frost_protection_reqd": true, 
                   "in_conditioned_space": true, 
-                  "identifier": "4a9ee40c-9d05-4a9e-abb9-8e03537c55d4", 
+                  "identifier": "25a73085-9c6b-45fb-aaa7-a69ad1129d00", 
                   "display_name": "Test_Unit", 
                   "quantity": 1, 
                   "sensible_heat_recovery": 0.82999999999999996
@@ -1147,7 +1231,7 @@
                   {
                     "user_data": {}, 
                     "segments": {
-                      "1a8b74af-387e-47b8-904d-e062e4b7fb4e": {
+                      "2a70061a-2859-4de6-b3e0-7a093f900fd6": {
                         "user_data": {}, 
                         "diameter": 160, 
                         "geometry": {
@@ -1165,26 +1249,26 @@
                         }, 
                         "insulation_thickness": 25.399999999999999, 
                         "width": null, 
-                        "identifier": "1a8b74af-387e-47b8-904d-e062e4b7fb4e", 
-                        "display_name": "1a8b74af-387e-47b8-904d-e062e4b7fb4e", 
+                        "identifier": "2a70061a-2859-4de6-b3e0-7a093f900fd6", 
+                        "display_name": "2a70061a-2859-4de6-b3e0-7a093f900fd6", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "height": null, 
                         "insulation_reflective": true
                       }
                     }, 
                     "duct_type": 2, 
-                    "identifier": "ef604c2e-32ec-4942-a3b7-dd4931a00e64", 
-                    "display_name": "ef604c2e"
+                    "identifier": "1b6a9ca6-d51e-452a-a28a-69c515ea5414", 
+                    "display_name": "1b6a9ca6"
                   }
                 ], 
                 "sys_type": 1, 
-                "identifier": "7e1f74b9-d6b3-4070-9382-66e6c7793bba", 
+                "identifier": "69e9549d-b186-470c-bd6c-c10edb6d554c", 
                 "display_name": "Test_Vent_System", 
                 "supply_ducting": [
                   {
                     "user_data": {}, 
                     "segments": {
-                      "e988cdae-d9c8-445d-a618-e0d1e86183e5": {
+                      "f6aca278-a690-4f6a-9319-9c340e4468d5": {
                         "user_data": {}, 
                         "diameter": 160, 
                         "geometry": {
@@ -1202,16 +1286,16 @@
                         }, 
                         "insulation_thickness": 25.399999999999999, 
                         "width": null, 
-                        "identifier": "e988cdae-d9c8-445d-a618-e0d1e86183e5", 
-                        "display_name": "e988cdae-d9c8-445d-a618-e0d1e86183e5", 
+                        "identifier": "f6aca278-a690-4f6a-9319-9c340e4468d5", 
+                        "display_name": "f6aca278-a690-4f6a-9319-9c340e4468d5", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "height": null, 
                         "insulation_reflective": true
                       }
                     }, 
                     "duct_type": 1, 
-                    "identifier": "9b18d33d-39cb-4c00-8be8-ca0d68af1e59", 
-                    "display_name": "9b18d33d"
+                    "identifier": "09cb5f81-f342-468e-b279-e5c42f4609ef", 
+                    "display_name": "09cb5f81"
                   }
                 ]
               }, 
@@ -1221,7 +1305,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_4_2cb112da Ideal Loads Air System", 
+          "identifier": "Room_4_568baa7c Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": true, 
           "cooling_limit": {
@@ -1274,13 +1358,13 @@
               "recirc_piping": {}, 
               "branch_piping": {}, 
               "heaters": {
-                "1161": {
+                "2907645": {
                   "user_data": {}, 
                   "heater_type": "PhSHWHeaterHeatPump", 
                   "annual_system_perf_ratio": null, 
                   "in_conditioned_space": true, 
-                  "identifier": "28716f9c-8c20-44ee-9fc9-12fbc405c33a", 
-                  "display_name": "28716f9c-8c20-44ee-9fc9-12fbc405c33a", 
+                  "identifier": "d122fc1d-66f4-483a-9bd4-43c8d22ac53b", 
+                  "display_name": "d122fc1d-66f4-483a-9bd4-43c8d22ac53b", 
                   "percent_coverage": 1.0, 
                   "annual_COP": null, 
                   "annual_energy_factor": null
@@ -1300,7 +1384,7 @@
                 }, 
                 "in_conditioned_space": true, 
                 "storage_capacity": 300, 
-                "identifier": "f8d3d0db-b5db-48f6-99bf-44d268654d53", 
+                "identifier": "677e6078-0e09-4b17-bda9-2d309b78f758", 
                 "display_name": "_unnamed_hw_tank_", 
                 "quantity": 1, 
                 "storage_loss_rate": 0.0
@@ -1309,9 +1393,9 @@
             }, 
             "type": "SHWSystemProperties"
           }, 
-          "identifier": "SHW System_786ac168", 
+          "identifier": "SHW System_6f144f7d", 
           "ambient_condition": 22.0, 
-          "display_name": "SHW System_786ac168", 
+          "display_name": "SHW System_6f144f7d", 
           "type": "SHWSystem"
         }
       ], 
@@ -3103,7 +3187,7 @@
               "ph": {
                 "type": "PeoplePhProperties", 
                 "dwellings": {
-                  "identifier": "7ca54a51-b863-4e2b-a5a8-e74adda1c154", 
+                  "identifier": "237c8c23-7183-4274-9c57-61b4ae28607f", 
                   "num_dwellings": 0
                 }, 
                 "id_num": 0, 
@@ -3318,7 +3402,7 @@
     }
   }, 
   "version": "1.53.1", 
-  "identifier": "unnamed_037e3901", 
+  "identifier": "unnamed_b21c6c53", 
   "display_name": "unnamed", 
   "rooms": [
     {
@@ -3591,8 +3675,8 @@
                       ]
                     }
                   ], 
-                  "identifier": "19a92852-43e3-4e68-a9c9-6032c91e634f", 
-                  "display_name": "19a92852-43e3-4e68-a9c9-6032c91e634f", 
+                  "identifier": "3ab377cf-e9fe-4096-aac8-a5fa181f57e2", 
+                  "display_name": "3ab377cf-e9fe-4096-aac8-a5fa181f57e2", 
                   "floor": {
                     "user_data": {}, 
                     "geometry": {
@@ -3691,12 +3775,12 @@
                             ]
                           ]
                         }, 
-                        "identifier": "ccfad1f9-59dd-40d1-8eb3-acba4c32c0d7", 
-                        "display_name": "ccfad1f9-59dd-40d1-8eb3-acba4c32c0d7"
+                        "identifier": "c7a6a14f-e342-4a48-ad56-5a0b41b37f04", 
+                        "display_name": "c7a6a14f-e342-4a48-ad56-5a0b41b37f04"
                       }
                     ], 
-                    "identifier": "941c77cd-be11-421b-a2ea-6138628b2a04", 
-                    "display_name": "941c77cd-be11-421b-a2ea-6138628b2a04"
+                    "identifier": "1c0b92e5-16d7-4555-a861-1ce148bc9976", 
+                    "display_name": "1c0b92e5-16d7-4555-a861-1ce148bc9976"
                   }
                 }
               ], 
@@ -3718,16 +3802,16 @@
                 "type": "SpaceProperties"
               }, 
               "name": "Room_3", 
-              "identifier": "9b495534-2d64-416c-8d24-967f7138c82c", 
+              "identifier": "5efc64d9-ff78-4969-b266-14615315c579", 
               "quantity": 1
             }
           ], 
           "ph_foundations": [], 
-          "ph_bldg_segment_id": "ee456b90-6126-49a5-8c28-11715c31eb74", 
+          "ph_bldg_segment_id": "038d54dd-5253-4bb9-ab16-6fd39af3e05e", 
           "type": "RoomPhPropertiesAbridged"
         }, 
         "energy": {
-          "shw": "SHW System_786ac168", 
+          "shw": "SHW System_6f144f7d", 
           "program_type": "Generic Office Program", 
           "service_hot_water": {
             "flow_per_area": 5.0000000000000004e-06, 
@@ -3735,10 +3819,10 @@
             "latent_fraction": 0.050000000000000003, 
             "target_temperature": 60.0, 
             "schedule": "Always On", 
-            "identifier": "Room_3_dde6fa63_service_hot_water", 
+            "identifier": "Room_3_e2c8c962_service_hot_water", 
             "type": "ServiceHotWaterAbridged"
           }, 
-          "hvac": "Room_3_dde6fa63 Ideal Loads Air System", 
+          "hvac": "Room_3_e2c8c962 Ideal Loads Air System", 
           "people": {
             "radiant_fraction": 0.29999999999999999, 
             "occupancy_schedule": "Generic Office Occupancy", 
@@ -3750,7 +3834,7 @@
               "ph": {
                 "type": "PeoplePhProperties", 
                 "dwellings": {
-                  "identifier": "bae808f8-5d25-431a-bffe-a3e050091a4c", 
+                  "identifier": "d8c7601d-72d2-4a44-836b-1a833e8dcb46", 
                   "num_dwellings": 1
                 }, 
                 "id_num": 0, 
@@ -3770,7 +3854,61 @@
               "ph": {
                 "equipment_collection": {
                   "equipment_set": {
-                    "f08deea8-f049-47a5-b399-d17c0d163e07": {
+                    "de7fafed-0828-4380-9938-47fd47cbb7a8": {
+                      "energy_demand_per_use": 3.5, 
+                      "reference_quantity": 1, 
+                      "reference_energy_norm": 2, 
+                      "field_utilization_factor": 1.1799999999999999, 
+                      "user_data": {}, 
+                      "equipment_type": "PhClothesDryer", 
+                      "comment": "default", 
+                      "gas_consumption": 0, 
+                      "in_conditioned_space": true, 
+                      "identifier": "de7fafed-0828-4380-9938-47fd47cbb7a8", 
+                      "display_name": "Laundry - dryer", 
+                      "quantity": 1, 
+                      "_dryer_type": {
+                        "value": "4-CONDENSATION DRYER"
+                      }, 
+                      "combined_energy_factor": 3.9300000000000002, 
+                      "gas_efficiency_factor": 2.6699999999999999, 
+                      "energy_demand": 0, 
+                      "field_utilization_factor_type": 1
+                    }, 
+                    "ab537ab5-a6ce-4d30-a13d-8dc2d6ae50d1": {
+                      "energy_demand_per_use": 1.0, 
+                      "reference_quantity": 4, 
+                      "reference_energy_norm": 1, 
+                      "user_data": {}, 
+                      "equipment_type": "PhFridgeFreezer", 
+                      "comment": "default", 
+                      "in_conditioned_space": true, 
+                      "identifier": "ab537ab5-a6ce-4d30-a13d-8dc2d6ae50d1", 
+                      "display_name": "Kitchen fridge/freeze combo", 
+                      "quantity": 1, 
+                      "combined_energy_factor": 0, 
+                      "energy_demand": 0
+                    }, 
+                    "b58fe6d5-498a-4c10-abbe-395ae814b657": {
+                      "energy_demand_per_use": 1.1000000000000001, 
+                      "reference_quantity": 1, 
+                      "reference_energy_norm": 2, 
+                      "user_data": {}, 
+                      "equipment_type": "PhDishwasher", 
+                      "capacity_type": 1, 
+                      "comment": "default", 
+                      "capacity": 12, 
+                      "in_conditioned_space": true, 
+                      "identifier": "b58fe6d5-498a-4c10-abbe-395ae814b657", 
+                      "display_name": "Kitchen dishwasher", 
+                      "quantity": 1, 
+                      "combined_energy_factor": 0, 
+                      "_water_connection": {
+                        "value": "2-COLD WATER CONNECTION"
+                      }, 
+                      "energy_demand": 0
+                    }, 
+                    "bca30b73-b09b-4bbe-b430-90f72247fcfc": {
                       "energy_demand_per_use": 1.1000000000000001, 
                       "reference_quantity": 1, 
                       "reference_energy_norm": 2, 
@@ -3781,7 +3919,7 @@
                       "capacity": 0.12740000000000001, 
                       "in_conditioned_space": true, 
                       "modified_energy_factor": 2.7000000000000002, 
-                      "identifier": "f08deea8-f049-47a5-b399-d17c0d163e07", 
+                      "identifier": "bca30b73-b09b-4bbe-b430-90f72247fcfc", 
                       "display_name": "Laundry - washer", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
@@ -3790,7 +3928,7 @@
                       }, 
                       "energy_demand": 0
                     }, 
-                    "d7568ffe-038a-4dea-a2bd-2fdb78381d6a": {
+                    "6ab09e7b-0667-4c00-8db7-cbe3eb027755": {
                       "energy_demand_per_use": 0.25, 
                       "reference_quantity": 1, 
                       "reference_energy_norm": 1, 
@@ -3798,7 +3936,7 @@
                       "equipment_type": "PhCooktop", 
                       "comment": "default", 
                       "in_conditioned_space": true, 
-                      "identifier": "d7568ffe-038a-4dea-a2bd-2fdb78381d6a", 
+                      "identifier": "6ab09e7b-0667-4c00-8db7-cbe3eb027755", 
                       "display_name": "Kitchen cooking", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
@@ -3806,60 +3944,6 @@
                       "_cooktop_type": {
                         "value": "1-ELECTRICITY"
                       }
-                    }, 
-                    "9416e21c-d6c3-40e2-9089-e2fe15fd4851": {
-                      "energy_demand_per_use": 1.1000000000000001, 
-                      "reference_quantity": 1, 
-                      "reference_energy_norm": 2, 
-                      "user_data": {}, 
-                      "equipment_type": "PhDishwasher", 
-                      "capacity_type": 1, 
-                      "comment": "default", 
-                      "capacity": 12, 
-                      "in_conditioned_space": true, 
-                      "identifier": "9416e21c-d6c3-40e2-9089-e2fe15fd4851", 
-                      "display_name": "Kitchen dishwasher", 
-                      "quantity": 1, 
-                      "combined_energy_factor": 0, 
-                      "_water_connection": {
-                        "value": "2-COLD WATER CONNECTION"
-                      }, 
-                      "energy_demand": 0
-                    }, 
-                    "be93f806-7ab8-4e78-9449-bcd2875d1cf4": {
-                      "energy_demand_per_use": 1.0, 
-                      "reference_quantity": 4, 
-                      "reference_energy_norm": 1, 
-                      "user_data": {}, 
-                      "equipment_type": "PhFridgeFreezer", 
-                      "comment": "default", 
-                      "in_conditioned_space": true, 
-                      "identifier": "be93f806-7ab8-4e78-9449-bcd2875d1cf4", 
-                      "display_name": "Kitchen fridge/freeze combo", 
-                      "quantity": 1, 
-                      "combined_energy_factor": 0, 
-                      "energy_demand": 0
-                    }, 
-                    "c53e7301-d2ca-4cb4-9f00-e70b39f9e6f3": {
-                      "energy_demand_per_use": 3.5, 
-                      "reference_quantity": 1, 
-                      "reference_energy_norm": 2, 
-                      "field_utilization_factor": 1.1799999999999999, 
-                      "user_data": {}, 
-                      "equipment_type": "PhClothesDryer", 
-                      "comment": "default", 
-                      "gas_consumption": 0, 
-                      "in_conditioned_space": true, 
-                      "identifier": "c53e7301-d2ca-4cb4-9f00-e70b39f9e6f3", 
-                      "display_name": "Laundry - dryer", 
-                      "quantity": 1, 
-                      "_dryer_type": {
-                        "value": "4-CONDENSATION DRYER"
-                      }, 
-                      "combined_energy_factor": 3.9300000000000002, 
-                      "gas_efficiency_factor": 2.6699999999999999, 
-                      "energy_demand": 0, 
-                      "field_utilization_factor_type": 1
                     }
                   }
                 }, 
@@ -3869,7 +3953,7 @@
             }, 
             "lost_fraction": 0.0, 
             "schedule": "Generic Office Equipment", 
-            "identifier": "Generic Office Equipment_c56cbdae", 
+            "identifier": "Generic Office Equipment_03b23181", 
             "watts_per_area": 10.33, 
             "type": "ElectricEquipmentAbridged"
           }, 
@@ -3880,7 +3964,7 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_3_dde6fa63", 
+      "identifier": "Room_3_e2c8c962", 
       "display_name": "Room_3", 
       "faces": [
         {
@@ -3896,13 +3980,13 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                1.0, 
-                0.0, 
+                0.98480775301220813, 
+                0.17364817766693036, 
                 0.0
               ], 
               "n": [
-                0.0, 
-                -1.0, 
+                0.17364817766693036, 
+                -0.98480775301220813, 
                 0.0
               ], 
               "o": [
@@ -3924,13 +4008,13 @@
                 0.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 3.0
               ]
             ]
@@ -3950,41 +4034,41 @@
                 "type": "Face3D", 
                 "plane": {
                   "x": [
-                    -1.0, 
-                    -0.0, 
+                    -0.98480775301220813, 
+                    -0.17364817766693036, 
                     0.0
                   ], 
                   "n": [
-                    0.0, 
-                    -1.0, 
+                    0.17364817766693036, 
+                    -0.98480775301220813, 
                     0.0
                   ], 
                   "o": [
-                    0.82294901687515765, 
-                    0.0, 
+                    0.81044657215242966, 
+                    0.14290359709316303, 
                     0.49376941012509468
                   ], 
                   "type": "Plane"
                 }, 
                 "boundary": [
                   [
-                    0.82294901687515765, 
-                    0.0, 
+                    0.81044657215242966, 
+                    0.14290359709316303, 
                     2.5062305898749053
                   ], 
                   [
-                    0.82294901687515765, 
-                    0.0, 
+                    0.81044657215242966, 
+                    0.14290359709316303, 
                     0.49376941012509468
                   ], 
                   [
-                    4.1770509831248424, 
-                    0.0, 
+                    4.1135921929086106, 
+                    0.7253372912414886, 
                     0.49376941012509468
                   ], 
                   [
-                    4.1770509831248424, 
-                    0.0, 
+                    4.1135921929086106, 
+                    0.7253372912414886, 
                     2.5062305898749053
                   ]
                 ]
@@ -4007,8 +4091,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_3_dde6fa63..Face0_Glz0", 
-              "display_name": "Room_3_dde6fa63..Face0_Glz0", 
+              "identifier": "Room_3_e2c8c962..Face0_Glz0", 
+              "display_name": "Room_3_e2c8c962..Face0_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -4026,15 +4110,15 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_dde6fa63..Face0", 
-          "display_name": "Room_3_dde6fa63..Face0", 
+          "identifier": "Room_3_e2c8c962..Face0", 
+          "display_name": "Room_3_e2c8c962..Face0", 
           "type": "Face"
         }, 
         {
           "boundary_condition": {
             "boundary_condition_objects": [
-              "Room_4_2cb112da..Face3", 
-              "Room_4_2cb112da"
+              "Room_4_568baa7c..Face3", 
+              "Room_4_568baa7c"
             ], 
             "type": "Surface"
           }, 
@@ -4042,41 +4126,41 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                0.0, 
-                1.0, 
+                -0.17364817766693036, 
+                0.98480775301220813, 
                 0.0
               ], 
               "n": [
-                1.0, 
-                0.0, 
+                0.98480775301220813, 
+                0.17364817766693036, 
                 0.0
               ], 
               "o": [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 3.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 0.0
               ], 
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 3.0
               ]
             ]
@@ -4095,8 +4179,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_dde6fa63..Face1", 
-          "display_name": "Room_3_dde6fa63..Face1", 
+          "identifier": "Room_3_e2c8c962..Face1", 
+          "display_name": "Room_3_e2c8c962..Face1", 
           "type": "Face"
         }, 
         {
@@ -4112,41 +4196,41 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                -1.0, 
-                0.0, 
+                -0.98480775301220813, 
+                -0.17364817766693036, 
                 0.0
               ], 
               "n": [
-                0.0, 
-                1.0, 
+                -0.17364817766693036, 
+                0.98480775301220813, 
                 -0.0
               ], 
               "o": [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 3.0
               ], 
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 0.0
               ], 
               [
-                0.0, 
-                4.0, 
+                -0.69459271066772132, 
+                3.9392310120488321, 
                 0.0
               ], 
               [
-                0.0, 
-                4.0, 
+                -0.69459271066772132, 
+                3.9392310120488321, 
                 3.0
               ]
             ]
@@ -4166,41 +4250,41 @@
                 "type": "Face3D", 
                 "plane": {
                   "x": [
-                    1.0, 
-                    -0.0, 
+                    0.98480775301220813, 
+                    0.17364817766693036, 
                     0.0
                   ], 
                   "n": [
-                    0.0, 
-                    1.0, 
+                    -0.17364817766693036, 
+                    0.98480775301220813, 
                     0.0
                   ], 
                   "o": [
-                    4.1770509831248424, 
-                    4.0, 
+                    3.4189994822408893, 
+                    4.6645683032903209, 
                     0.49376941012509468
                   ], 
                   "type": "Plane"
                 }, 
                 "boundary": [
                   [
-                    4.1770509831248424, 
-                    4.0, 
+                    3.4189994822408893, 
+                    4.6645683032903209, 
                     2.5062305898749053
                   ], 
                   [
-                    4.1770509831248424, 
-                    4.0, 
+                    3.4189994822408893, 
+                    4.6645683032903209, 
                     0.49376941012509468
                   ], 
                   [
-                    0.82294901687515765, 
-                    4.0, 
+                    0.11585386148470833, 
+                    4.0821346091419954, 
                     0.49376941012509468
                   ], 
                   [
-                    0.82294901687515765, 
-                    4.0, 
+                    0.11585386148470833, 
+                    4.0821346091419954, 
                     2.5062305898749053
                   ]
                 ]
@@ -4223,8 +4307,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_3_dde6fa63..Face2_Glz0", 
-              "display_name": "Room_3_dde6fa63..Face2_Glz0", 
+              "identifier": "Room_3_e2c8c962..Face2_Glz0", 
+              "display_name": "Room_3_e2c8c962..Face2_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -4242,8 +4326,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_dde6fa63..Face2", 
-          "display_name": "Room_3_dde6fa63..Face2", 
+          "identifier": "Room_3_e2c8c962..Face2", 
+          "display_name": "Room_3_e2c8c962..Face2", 
           "type": "Face"
         }, 
         {
@@ -4259,31 +4343,31 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                0.0, 
-                -1.0, 
+                0.17364817766693036, 
+                -0.98480775301220813, 
                 0.0
               ], 
               "n": [
-                -1.0, 
-                0.0, 
+                -0.98480775301220813, 
+                -0.17364817766693036, 
                 0.0
               ], 
               "o": [
-                0.0, 
-                4.0, 
+                -0.69459271066772132, 
+                3.9392310120488321, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                0.0, 
-                4.0, 
+                -0.69459271066772132, 
+                3.9392310120488321, 
                 3.0
               ], 
               [
-                0.0, 
-                4.0, 
+                -0.69459271066772132, 
+                3.9392310120488321, 
                 0.0
               ], 
               [
@@ -4313,41 +4397,41 @@
                 "type": "Face3D", 
                 "plane": {
                   "x": [
-                    0.0, 
-                    1.0, 
+                    -0.17364817766693036, 
+                    0.98480775301220813, 
                     0.0
                   ], 
                   "n": [
-                    -1.0, 
-                    0.0, 
+                    -0.98480775301220813, 
+                    -0.17364817766693036, 
                     0.0
                   ], 
                   "o": [
-                    0.0, 
-                    3.3416407864998741, 
+                    -0.5802698329931909, 
+                    3.2908737543268884, 
                     0.49376941012509468
                   ], 
                   "type": "Plane"
                 }, 
                 "boundary": [
                   [
-                    0.0, 
-                    3.3416407864998741, 
+                    -0.5802698329931909, 
+                    3.2908737543268884, 
                     2.5062305898749053
                   ], 
                   [
-                    0.0, 
-                    3.3416407864998741, 
+                    -0.5802698329931909, 
+                    3.2908737543268884, 
                     0.49376941012509468
                   ], 
                   [
-                    0.0, 
-                    0.65835921350012616, 
+                    -0.11432287767453042, 
+                    0.64835725772194375, 
                     0.49376941012509468
                   ], 
                   [
-                    0.0, 
-                    0.65835921350012616, 
+                    -0.11432287767453042, 
+                    0.64835725772194375, 
                     2.5062305898749053
                   ]
                 ]
@@ -4370,8 +4454,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_3_dde6fa63..Face3_Glz0", 
-              "display_name": "Room_3_dde6fa63..Face3_Glz0", 
+              "identifier": "Room_3_e2c8c962..Face3_Glz0", 
+              "display_name": "Room_3_e2c8c962..Face3_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -4389,8 +4473,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_dde6fa63..Face3", 
-          "display_name": "Room_3_dde6fa63..Face3", 
+          "identifier": "Room_3_e2c8c962..Face3", 
+          "display_name": "Room_3_e2c8c962..Face3", 
           "type": "Face"
         }, 
         {
@@ -4401,8 +4485,8 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                0.0, 
-                1.0, 
+                -0.17364817766693036, 
+                0.98480775301220813, 
                 0.0
               ], 
               "n": [
@@ -4419,23 +4503,23 @@
             }, 
             "boundary": [
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 0.0
               ], 
               [
-                5.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               [
                 0.0, 
-                4.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                -0.69459271066772132, 
+                3.9392310120488321, 
                 0.0
               ]
             ]
@@ -4454,8 +4538,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_dde6fa63..Face4", 
-          "display_name": "Room_3_dde6fa63..Face4", 
+          "identifier": "Room_3_e2c8c962..Face4", 
+          "display_name": "Room_3_e2c8c962..Face4", 
           "type": "Face"
         }, 
         {
@@ -4471,8 +4555,8 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                1.0, 
-                0.0, 
+                0.98480775301220813, 
+                0.17364817766693036, 
                 0.0
               ], 
               "n": [
@@ -4489,8 +4573,8 @@
             }, 
             "boundary": [
               [
-                0.0, 
-                4.0, 
+                -0.69459271066772132, 
+                3.9392310120488321, 
                 3.0
               ], 
               [
@@ -4499,18 +4583,95 @@
                 3.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 3.0
               ], 
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 3.0
               ]
             ]
           }, 
           "face_type": "RoofCeiling", 
+          "apertures": [
+            {
+              "boundary_condition": {
+                "view_factor": {
+                  "type": "Autocalculate"
+                }, 
+                "wind_exposure": true, 
+                "sun_exposure": true, 
+                "type": "Outdoors"
+              }, 
+              "geometry": {
+                "type": "Face3D", 
+                "plane": {
+                  "x": [
+                    0.98480775301220813, 
+                    0.17364817766693036, 
+                    0.0
+                  ], 
+                  "n": [
+                    0.0, 
+                    0.0, 
+                    1.0
+                  ], 
+                  "o": [
+                    0.1282368184586663, 
+                    3.4894949209093475, 
+                    3.0
+                  ], 
+                  "type": "Plane"
+                }, 
+                "boundary": [
+                  [
+                    0.1282368184586663, 
+                    3.4894949209093475, 
+                    3.0
+                  ], 
+                  [
+                    0.61938803433455769, 
+                    0.70403795962927185, 
+                    3.0
+                  ], 
+                  [
+                    4.1012092359346521, 
+                    1.3179769794741361, 
+                    3.0
+                  ], 
+                  [
+                    3.6100580200587609, 
+                    4.1034339407542113, 
+                    3.0
+                  ]
+                ]
+              }, 
+              "properties": {
+                "ph": {
+                  "id_num": 0, 
+                  "default_monthly_shading_correction_factor": 1.0, 
+                  "winter_shading_factor": 0.75, 
+                  "summer_shading_factor": 0.75, 
+                  "install_depth": 0.1016, 
+                  "variant_type": "_unnamed_type_", 
+                  "type": "AperturePhPropertiesAbridged"
+                }, 
+                "energy": {
+                  "type": "ApertureEnergyPropertiesAbridged"
+                }, 
+                "type": "AperturePropertiesAbridged", 
+                "radiance": {
+                  "type": "ApertureRadiancePropertiesAbridged"
+                }
+              }, 
+              "identifier": "Room_3_e2c8c962..Face5_Glz0", 
+              "display_name": "Room_3_e2c8c962..Face5_Glz0", 
+              "is_operable": false, 
+              "type": "Aperture"
+            }
+          ], 
           "properties": {
             "ph": {
               "type": "FacePhPropertiesAbridged", 
@@ -4524,8 +4685,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_dde6fa63..Face5", 
-          "display_name": "Room_3_dde6fa63..Face5", 
+          "identifier": "Room_3_e2c8c962..Face5", 
+          "display_name": "Room_3_e2c8c962..Face5", 
           "type": "Face"
         }
       ], 
@@ -4801,8 +4962,8 @@
                       ]
                     }
                   ], 
-                  "identifier": "0f86d778-d29e-48cb-90b9-f96f43d4e8b1", 
-                  "display_name": "0f86d778-d29e-48cb-90b9-f96f43d4e8b1", 
+                  "identifier": "180bf2ac-fe68-4ddc-992f-9926d7dfc2b1", 
+                  "display_name": "180bf2ac-fe68-4ddc-992f-9926d7dfc2b1", 
                   "floor": {
                     "user_data": {}, 
                     "geometry": {
@@ -4901,12 +5062,12 @@
                             ]
                           ]
                         }, 
-                        "identifier": "d9579222-cee3-4b25-aab3-735d7dbc757f", 
-                        "display_name": "d9579222-cee3-4b25-aab3-735d7dbc757f"
+                        "identifier": "31e0a6cd-4854-44d9-9e2a-906e97de3163", 
+                        "display_name": "31e0a6cd-4854-44d9-9e2a-906e97de3163"
                       }
                     ], 
-                    "identifier": "a96d07d2-4036-4e14-ac84-72beddf07e20", 
-                    "display_name": "a96d07d2-4036-4e14-ac84-72beddf07e20"
+                    "identifier": "cb9b1435-f6ac-449d-bd9b-7867554f9d70", 
+                    "display_name": "cb9b1435-f6ac-449d-bd9b-7867554f9d70"
                   }
                 }
               ], 
@@ -4928,16 +5089,16 @@
                 "type": "SpaceProperties"
               }, 
               "name": "Room_4", 
-              "identifier": "01188e36-2e38-4706-ab72-1471d202c69e", 
+              "identifier": "302a10e7-effa-4d5a-9ad6-da59ad251d2b", 
               "quantity": 1
             }
           ], 
           "ph_foundations": [], 
-          "ph_bldg_segment_id": "ee456b90-6126-49a5-8c28-11715c31eb74", 
+          "ph_bldg_segment_id": "038d54dd-5253-4bb9-ab16-6fd39af3e05e", 
           "type": "RoomPhPropertiesAbridged"
         }, 
         "energy": {
-          "shw": "SHW System_786ac168", 
+          "shw": "SHW System_6f144f7d", 
           "program_type": "Generic Office Program", 
           "service_hot_water": {
             "flow_per_area": 3.5714285714285718e-06, 
@@ -4945,10 +5106,10 @@
             "latent_fraction": 0.050000000000000003, 
             "target_temperature": 60.0, 
             "schedule": "Always On", 
-            "identifier": "Room_4_2cb112da_service_hot_water", 
+            "identifier": "Room_4_568baa7c_service_hot_water", 
             "type": "ServiceHotWaterAbridged"
           }, 
-          "hvac": "Room_4_2cb112da Ideal Loads Air System", 
+          "hvac": "Room_4_568baa7c Ideal Loads Air System", 
           "people": {
             "radiant_fraction": 0.29999999999999999, 
             "occupancy_schedule": "Generic Office Occupancy", 
@@ -4960,7 +5121,7 @@
               "ph": {
                 "type": "PeoplePhProperties", 
                 "dwellings": {
-                  "identifier": "b06f76a4-8946-4d42-adf1-35dc503f6ac0", 
+                  "identifier": "dada593e-40aa-45ff-acc6-c0d6e345264f", 
                   "num_dwellings": 2
                 }, 
                 "id_num": 0, 
@@ -4980,7 +5141,61 @@
               "ph": {
                 "equipment_collection": {
                   "equipment_set": {
-                    "f08deea8-f049-47a5-b399-d17c0d163e07": {
+                    "de7fafed-0828-4380-9938-47fd47cbb7a8": {
+                      "energy_demand_per_use": 3.5, 
+                      "reference_quantity": 1, 
+                      "reference_energy_norm": 2, 
+                      "field_utilization_factor": 1.1799999999999999, 
+                      "user_data": {}, 
+                      "equipment_type": "PhClothesDryer", 
+                      "comment": "default", 
+                      "gas_consumption": 0, 
+                      "in_conditioned_space": true, 
+                      "identifier": "de7fafed-0828-4380-9938-47fd47cbb7a8", 
+                      "display_name": "Laundry - dryer", 
+                      "quantity": 1, 
+                      "_dryer_type": {
+                        "value": "4-CONDENSATION DRYER"
+                      }, 
+                      "combined_energy_factor": 3.9300000000000002, 
+                      "gas_efficiency_factor": 2.6699999999999999, 
+                      "energy_demand": 0, 
+                      "field_utilization_factor_type": 1
+                    }, 
+                    "ab537ab5-a6ce-4d30-a13d-8dc2d6ae50d1": {
+                      "energy_demand_per_use": 1.0, 
+                      "reference_quantity": 4, 
+                      "reference_energy_norm": 1, 
+                      "user_data": {}, 
+                      "equipment_type": "PhFridgeFreezer", 
+                      "comment": "default", 
+                      "in_conditioned_space": true, 
+                      "identifier": "ab537ab5-a6ce-4d30-a13d-8dc2d6ae50d1", 
+                      "display_name": "Kitchen fridge/freeze combo", 
+                      "quantity": 1, 
+                      "combined_energy_factor": 0, 
+                      "energy_demand": 0
+                    }, 
+                    "b58fe6d5-498a-4c10-abbe-395ae814b657": {
+                      "energy_demand_per_use": 1.1000000000000001, 
+                      "reference_quantity": 1, 
+                      "reference_energy_norm": 2, 
+                      "user_data": {}, 
+                      "equipment_type": "PhDishwasher", 
+                      "capacity_type": 1, 
+                      "comment": "default", 
+                      "capacity": 12, 
+                      "in_conditioned_space": true, 
+                      "identifier": "b58fe6d5-498a-4c10-abbe-395ae814b657", 
+                      "display_name": "Kitchen dishwasher", 
+                      "quantity": 1, 
+                      "combined_energy_factor": 0, 
+                      "_water_connection": {
+                        "value": "2-COLD WATER CONNECTION"
+                      }, 
+                      "energy_demand": 0
+                    }, 
+                    "bca30b73-b09b-4bbe-b430-90f72247fcfc": {
                       "energy_demand_per_use": 1.1000000000000001, 
                       "reference_quantity": 1, 
                       "reference_energy_norm": 2, 
@@ -4991,7 +5206,7 @@
                       "capacity": 0.12740000000000001, 
                       "in_conditioned_space": true, 
                       "modified_energy_factor": 2.7000000000000002, 
-                      "identifier": "f08deea8-f049-47a5-b399-d17c0d163e07", 
+                      "identifier": "bca30b73-b09b-4bbe-b430-90f72247fcfc", 
                       "display_name": "Laundry - washer", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
@@ -5000,7 +5215,7 @@
                       }, 
                       "energy_demand": 0
                     }, 
-                    "d7568ffe-038a-4dea-a2bd-2fdb78381d6a": {
+                    "6ab09e7b-0667-4c00-8db7-cbe3eb027755": {
                       "energy_demand_per_use": 0.25, 
                       "reference_quantity": 1, 
                       "reference_energy_norm": 1, 
@@ -5008,7 +5223,7 @@
                       "equipment_type": "PhCooktop", 
                       "comment": "default", 
                       "in_conditioned_space": true, 
-                      "identifier": "d7568ffe-038a-4dea-a2bd-2fdb78381d6a", 
+                      "identifier": "6ab09e7b-0667-4c00-8db7-cbe3eb027755", 
                       "display_name": "Kitchen cooking", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
@@ -5016,60 +5231,6 @@
                       "_cooktop_type": {
                         "value": "1-ELECTRICITY"
                       }
-                    }, 
-                    "9416e21c-d6c3-40e2-9089-e2fe15fd4851": {
-                      "energy_demand_per_use": 1.1000000000000001, 
-                      "reference_quantity": 1, 
-                      "reference_energy_norm": 2, 
-                      "user_data": {}, 
-                      "equipment_type": "PhDishwasher", 
-                      "capacity_type": 1, 
-                      "comment": "default", 
-                      "capacity": 12, 
-                      "in_conditioned_space": true, 
-                      "identifier": "9416e21c-d6c3-40e2-9089-e2fe15fd4851", 
-                      "display_name": "Kitchen dishwasher", 
-                      "quantity": 1, 
-                      "combined_energy_factor": 0, 
-                      "_water_connection": {
-                        "value": "2-COLD WATER CONNECTION"
-                      }, 
-                      "energy_demand": 0
-                    }, 
-                    "be93f806-7ab8-4e78-9449-bcd2875d1cf4": {
-                      "energy_demand_per_use": 1.0, 
-                      "reference_quantity": 4, 
-                      "reference_energy_norm": 1, 
-                      "user_data": {}, 
-                      "equipment_type": "PhFridgeFreezer", 
-                      "comment": "default", 
-                      "in_conditioned_space": true, 
-                      "identifier": "be93f806-7ab8-4e78-9449-bcd2875d1cf4", 
-                      "display_name": "Kitchen fridge/freeze combo", 
-                      "quantity": 1, 
-                      "combined_energy_factor": 0, 
-                      "energy_demand": 0
-                    }, 
-                    "c53e7301-d2ca-4cb4-9f00-e70b39f9e6f3": {
-                      "energy_demand_per_use": 3.5, 
-                      "reference_quantity": 1, 
-                      "reference_energy_norm": 2, 
-                      "field_utilization_factor": 1.1799999999999999, 
-                      "user_data": {}, 
-                      "equipment_type": "PhClothesDryer", 
-                      "comment": "default", 
-                      "gas_consumption": 0, 
-                      "in_conditioned_space": true, 
-                      "identifier": "c53e7301-d2ca-4cb4-9f00-e70b39f9e6f3", 
-                      "display_name": "Laundry - dryer", 
-                      "quantity": 1, 
-                      "_dryer_type": {
-                        "value": "4-CONDENSATION DRYER"
-                      }, 
-                      "combined_energy_factor": 3.9300000000000002, 
-                      "gas_efficiency_factor": 2.6699999999999999, 
-                      "energy_demand": 0, 
-                      "field_utilization_factor_type": 1
                     }
                   }
                 }, 
@@ -5079,7 +5240,7 @@
             }, 
             "lost_fraction": 0.0, 
             "schedule": "Generic Office Equipment", 
-            "identifier": "Generic Office Equipment_c56cbdae", 
+            "identifier": "Generic Office Equipment_03b23181", 
             "watts_per_area": 10.33, 
             "type": "ElectricEquipmentAbridged"
           }, 
@@ -5090,7 +5251,7 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_4_2cb112da", 
+      "identifier": "Room_4_568baa7c", 
       "display_name": "Room_4", 
       "faces": [
         {
@@ -5106,41 +5267,41 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                1.0, 
-                0.0, 
+                0.98480775301220813, 
+                0.17364817766693036, 
                 0.0
               ], 
               "n": [
-                0.0, 
-                -1.0, 
+                0.17364817766693036, 
+                -0.98480775301220813, 
                 0.0
               ], 
               "o": [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 3.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               [
-                12.0, 
-                0.0, 
+                11.817693036146496, 
+                2.0837781320031641, 
                 0.0
               ], 
               [
-                12.0, 
-                0.0, 
+                11.817693036146496, 
+                2.0837781320031641, 
                 3.0
               ]
             ]
@@ -5160,41 +5321,41 @@
                 "type": "Face3D", 
                 "plane": {
                   "x": [
-                    -1.0, 
-                    -0.0, 
+                    -0.98480775301220813, 
+                    -0.17364817766693036, 
                     0.0
                   ], 
                   "n": [
-                    0.0, 
-                    -1.0, 
+                    0.17364817766693036, 
+                    -0.98480775301220813, 
                     0.0
                   ], 
                   "o": [
-                    6.1521286236252202, 
-                    0.0, 
+                    6.058663966074441, 
+                    1.0683059242650799, 
                     0.49376941012509468
                   ], 
                   "type": "Plane"
                 }, 
                 "boundary": [
                   [
-                    6.1521286236252202, 
-                    0.0, 
+                    6.058663966074441, 
+                    1.0683059242650799, 
                     2.5062305898749053
                   ], 
                   [
-                    6.1521286236252202, 
-                    0.0, 
+                    6.058663966074441, 
+                    1.0683059242650799, 
                     0.49376941012509468
                   ], 
                   [
-                    10.84787137637478, 
-                    0.0, 
+                    10.683067835133095, 
+                    1.8837130960727357, 
                     0.49376941012509468
                   ], 
                   [
-                    10.84787137637478, 
-                    0.0, 
+                    10.683067835133095, 
+                    1.8837130960727357, 
                     2.5062305898749053
                   ]
                 ]
@@ -5217,8 +5378,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_4_2cb112da..Face0_Glz0", 
-              "display_name": "Room_4_2cb112da..Face0_Glz0", 
+              "identifier": "Room_4_568baa7c..Face0_Glz0", 
+              "display_name": "Room_4_568baa7c..Face0_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -5236,8 +5397,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_2cb112da..Face0", 
-          "display_name": "Room_4_2cb112da..Face0", 
+          "identifier": "Room_4_568baa7c..Face0", 
+          "display_name": "Room_4_568baa7c..Face0", 
           "type": "Face"
         }, 
         {
@@ -5253,41 +5414,41 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                0.0, 
-                1.0, 
+                -0.17364817766693036, 
+                0.98480775301220813, 
                 0.0
               ], 
               "n": [
-                1.0, 
-                0.0, 
+                0.98480775301220813, 
+                0.17364817766693036, 
                 0.0
               ], 
               "o": [
-                12.0, 
-                0.0, 
+                11.817693036146496, 
+                2.0837781320031641, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                12.0, 
-                0.0, 
+                11.817693036146496, 
+                2.0837781320031641, 
                 3.0
               ], 
               [
-                12.0, 
-                0.0, 
+                11.817693036146496, 
+                2.0837781320031641, 
                 0.0
               ], 
               [
-                12.0, 
-                4.0, 
+                11.123100325478774, 
+                6.0230091440519962, 
                 0.0
               ], 
               [
-                12.0, 
-                4.0, 
+                11.123100325478774, 
+                6.0230091440519962, 
                 3.0
               ]
             ]
@@ -5307,41 +5468,41 @@
                 "type": "Face3D", 
                 "plane": {
                   "x": [
-                    0.0, 
-                    -1.0, 
+                    0.17364817766693036, 
+                    -0.98480775301220813, 
                     0.0
                   ], 
                   "n": [
-                    1.0, 
-                    0.0, 
+                    0.98480775301220813, 
+                    0.17364817766693036, 
                     0.0
                   ], 
                   "o": [
-                    12.0, 
-                    0.65835921350012616, 
+                    11.703370158471966, 
+                    2.7321353897251077, 
                     0.49376941012509468
                   ], 
                   "type": "Plane"
                 }, 
                 "boundary": [
                   [
-                    12.0, 
-                    0.65835921350012616, 
+                    11.703370158471966, 
+                    2.7321353897251077, 
                     2.5062305898749053
                   ], 
                   [
-                    12.0, 
-                    0.65835921350012616, 
+                    11.703370158471966, 
+                    2.7321353897251077, 
                     0.49376941012509468
                   ], 
                   [
-                    12.0, 
-                    3.3416407864998741, 
+                    11.237423203153305, 
+                    5.374651886330053, 
                     0.49376941012509468
                   ], 
                   [
-                    12.0, 
-                    3.3416407864998741, 
+                    11.237423203153305, 
+                    5.374651886330053, 
                     2.5062305898749053
                   ]
                 ]
@@ -5364,8 +5525,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_4_2cb112da..Face1_Glz0", 
-              "display_name": "Room_4_2cb112da..Face1_Glz0", 
+              "identifier": "Room_4_568baa7c..Face1_Glz0", 
+              "display_name": "Room_4_568baa7c..Face1_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -5383,8 +5544,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_2cb112da..Face1", 
-          "display_name": "Room_4_2cb112da..Face1", 
+          "identifier": "Room_4_568baa7c..Face1", 
+          "display_name": "Room_4_568baa7c..Face1", 
           "type": "Face"
         }, 
         {
@@ -5400,41 +5561,41 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                -1.0, 
-                0.0, 
+                -0.98480775301220813, 
+                -0.17364817766693036, 
                 0.0
               ], 
               "n": [
-                0.0, 
-                1.0, 
+                -0.17364817766693036, 
+                0.98480775301220813, 
                 -0.0
               ], 
               "o": [
-                12.0, 
-                4.0, 
+                11.123100325478774, 
+                6.0230091440519962, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                12.0, 
-                4.0, 
+                11.123100325478774, 
+                6.0230091440519962, 
                 3.0
               ], 
               [
-                12.0, 
-                4.0, 
+                11.123100325478774, 
+                6.0230091440519962, 
                 0.0
               ], 
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 0.0
               ], 
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 3.0
               ]
             ]
@@ -5454,41 +5615,41 @@
                 "type": "Face3D", 
                 "plane": {
                   "x": [
-                    1.0, 
-                    -0.0, 
+                    0.98480775301220813, 
+                    0.17364817766693036, 
                     0.0
                   ], 
                   "n": [
-                    0.0, 
-                    1.0, 
+                    -0.17364817766693036, 
+                    0.98480775301220813, 
                     0.0
                   ], 
                   "o": [
-                    10.84787137637478, 
-                    4.0, 
+                    9.9884751244653724, 
+                    5.8229441081215683, 
                     0.49376941012509468
                   ], 
                   "type": "Plane"
                 }, 
                 "boundary": [
                   [
-                    10.84787137637478, 
-                    4.0, 
+                    9.9884751244653724, 
+                    5.8229441081215683, 
                     2.5062305898749053
                   ], 
                   [
-                    10.84787137637478, 
-                    4.0, 
+                    9.9884751244653724, 
+                    5.8229441081215683, 
                     0.49376941012509468
                   ], 
                   [
-                    6.1521286236252202, 
-                    4.0, 
+                    5.3640712554067198, 
+                    5.0075369363139117, 
                     0.49376941012509468
                   ], 
                   [
-                    6.1521286236252202, 
-                    4.0, 
+                    5.3640712554067198, 
+                    5.0075369363139117, 
                     2.5062305898749053
                   ]
                 ]
@@ -5511,8 +5672,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_4_2cb112da..Face2_Glz0", 
-              "display_name": "Room_4_2cb112da..Face2_Glz0", 
+              "identifier": "Room_4_568baa7c..Face2_Glz0", 
+              "display_name": "Room_4_568baa7c..Face2_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -5530,15 +5691,15 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_2cb112da..Face2", 
-          "display_name": "Room_4_2cb112da..Face2", 
+          "identifier": "Room_4_568baa7c..Face2", 
+          "display_name": "Room_4_568baa7c..Face2", 
           "type": "Face"
         }, 
         {
           "boundary_condition": {
             "boundary_condition_objects": [
-              "Room_3_dde6fa63..Face1", 
-              "Room_3_dde6fa63"
+              "Room_3_e2c8c962..Face1", 
+              "Room_3_e2c8c962"
             ], 
             "type": "Surface"
           }, 
@@ -5546,41 +5707,41 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                0.0, 
-                -1.0, 
+                0.17364817766693036, 
+                -0.98480775301220813, 
                 0.0
               ], 
               "n": [
-                -1.0, 
-                0.0, 
+                -0.98480775301220813, 
+                -0.17364817766693036, 
                 0.0
               ], 
               "o": [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 3.0
               ], 
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 0.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 3.0
               ]
             ]
@@ -5599,8 +5760,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_2cb112da..Face3", 
-          "display_name": "Room_4_2cb112da..Face3", 
+          "identifier": "Room_4_568baa7c..Face3", 
+          "display_name": "Room_4_568baa7c..Face3", 
           "type": "Face"
         }, 
         {
@@ -5611,8 +5772,8 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                0.0, 
-                1.0, 
+                -0.17364817766693036, 
+                0.98480775301220813, 
                 0.0
               ], 
               "n": [
@@ -5621,31 +5782,31 @@
                 -1.0
               ], 
               "o": [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                12.0, 
-                4.0, 
+                11.123100325478774, 
+                6.0230091440519962, 
                 0.0
               ], 
               [
-                12.0, 
-                0.0, 
+                11.817693036146496, 
+                2.0837781320031641, 
                 0.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 0.0
               ], 
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 0.0
               ]
             ]
@@ -5664,8 +5825,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_2cb112da..Face4", 
-          "display_name": "Room_4_2cb112da..Face4", 
+          "identifier": "Room_4_568baa7c..Face4", 
+          "display_name": "Room_4_568baa7c..Face4", 
           "type": "Face"
         }, 
         {
@@ -5681,8 +5842,8 @@
             "type": "Face3D", 
             "plane": {
               "x": [
-                1.0, 
-                0.0, 
+                0.98480775301220813, 
+                0.17364817766693036, 
                 0.0
               ], 
               "n": [
@@ -5691,36 +5852,113 @@
                 1.0
               ], 
               "o": [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 3.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                5.0, 
-                4.0, 
+                4.2294460543933186, 
+                4.8074719003834838, 
                 3.0
               ], 
               [
-                5.0, 
-                0.0, 
+                4.9240387650610398, 
+                0.86824088833465163, 
                 3.0
               ], 
               [
-                12.0, 
-                0.0, 
+                11.817693036146496, 
+                2.0837781320031641, 
                 3.0
               ], 
               [
-                12.0, 
-                4.0, 
+                11.123100325478774, 
+                6.0230091440519962, 
                 3.0
               ]
             ]
           }, 
           "face_type": "RoofCeiling", 
+          "apertures": [
+            {
+              "boundary_condition": {
+                "view_factor": {
+                  "type": "Autocalculate"
+                }, 
+                "wind_exposure": true, 
+                "sun_exposure": true, 
+                "type": "Outdoors"
+              }, 
+              "geometry": {
+                "type": "Face3D", 
+                "plane": {
+                  "x": [
+                    0.98480775301220813, 
+                    0.17364817766693036, 
+                    0.0
+                  ], 
+                  "n": [
+                    0.0, 
+                    0.0, 
+                    1.0
+                  ], 
+                  "o": [
+                    5.3407190962118953, 
+                    4.4085961829419569, 
+                    3.0
+                  ], 
+                  "type": "Plane"
+                }, 
+                "boundary": [
+                  [
+                    5.3407190962118953, 
+                    4.4085961829419569, 
+                    3.0
+                  ], 
+                  [
+                    5.8318703120877862, 
+                    1.623139221661881, 
+                    3.0
+                  ], 
+                  [
+                    10.70641999432792, 
+                    2.4826538494446906, 
+                    3.0
+                  ], 
+                  [
+                    10.215268778452028, 
+                    5.2681108107247665, 
+                    3.0
+                  ]
+                ]
+              }, 
+              "properties": {
+                "ph": {
+                  "id_num": 0, 
+                  "default_monthly_shading_correction_factor": 1.0, 
+                  "winter_shading_factor": 0.75, 
+                  "summer_shading_factor": 0.75, 
+                  "install_depth": 0.1016, 
+                  "variant_type": "_unnamed_type_", 
+                  "type": "AperturePhPropertiesAbridged"
+                }, 
+                "energy": {
+                  "type": "ApertureEnergyPropertiesAbridged"
+                }, 
+                "type": "AperturePropertiesAbridged", 
+                "radiance": {
+                  "type": "ApertureRadiancePropertiesAbridged"
+                }
+              }, 
+              "identifier": "Room_4_568baa7c..Face5_Glz0", 
+              "display_name": "Room_4_568baa7c..Face5_Glz0", 
+              "is_operable": false, 
+              "type": "Aperture"
+            }
+          ], 
           "properties": {
             "ph": {
               "type": "FacePhPropertiesAbridged", 
@@ -5734,8 +5972,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_2cb112da..Face5", 
-          "display_name": "Room_4_2cb112da..Face5", 
+          "identifier": "Room_4_568baa7c..Face5", 
+          "display_name": "Room_4_568baa7c..Face5", 
           "type": "Face"
         }
       ], 

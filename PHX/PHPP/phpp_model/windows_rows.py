@@ -59,7 +59,9 @@ class WindowRow:
         items: List[xl_data.XlItem] = [
             XLItemWindows(create_range("variant_input"), self.phpp_id_variant_type),
             XLItemWindows(create_range("quantity"), 1),
-            XLItemWindows(create_range("description"), self.phx_polygon.display_name),
+            XLItemWindows(
+                create_range("description"), f"'{self.phx_polygon.display_name}"
+            ),
             XLItemWindows(create_range("host"), self.phpp_host_surface_id_name),
             XLItemWindows(create_range("glazing_id"), self.phpp_id_glazing),
             XLItemWindows(create_range("frame_id"), self.phpp_id_frame),

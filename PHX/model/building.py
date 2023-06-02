@@ -20,6 +20,7 @@ from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
 from PHX.model.enums.building import SpecificHeatCapacity
 
+
 @dataclass
 class PhxZone:
     _count: ClassVar[int] = 0
@@ -152,6 +153,16 @@ class PhxBuilding:
             all_components += c.apertures
             all_components.append(c)
         return sorted(all_components, key=lambda c: c.id_num)
+
+    @property
+    def aperture_components(self) -> List[PhxComponentAperture]:
+        """Returns a sorted list (by display name) of all the aperture components in the building.
+
+        Returns:
+        --------
+            * (List[PhxComponentAperture]) A sorted list of all the aperture components.
+        """
+        return [ap for c in self.opaque_components for ap in c.apertures]
 
     @property
     def opaque_components(self) -> List[PhxComponentOpaque]:

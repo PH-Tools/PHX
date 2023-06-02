@@ -755,8 +755,9 @@ class PHPPConnection:
 
     def write_non_res_utilization_profiles(self, phx_project: project.PhxProject) -> None:
         """Write out all of the Utilization patterns to the "Use non-res" Worksheet."""
-        for pattern in phx_project.utilization_patterns_occupancy:
-            print(pattern)
+        # TODO: build this....
+        # for pattern in phx_project.utilization_patterns_occupancy:
+        #     print(pattern)
 
     def write_non_res_space_lighting(self, phx_project: project.PhxProject) -> None:
         """Write out all of the Space Lighting values to the "Electricity non-res" Worksheet."""

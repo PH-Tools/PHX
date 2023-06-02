@@ -65,7 +65,7 @@ class SurfaceRow:
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemAreas = partial(xl_data.XlItem, _sheet_name)
         return [
-            XLItemAreas(create_range("description"), self.phx_polygon.display_name),
+            XLItemAreas(create_range("description"), f"'{self.phx_polygon.display_name}"),
             XLItemAreas(create_range("group_number"), self.phpp_group_number),
             XLItemAreas(create_range("quantity"), 1),
             XLItemAreas(

@@ -50,7 +50,7 @@ class ConstructorBlock:
                 create_range(
                     "display_name", self.shape.constructor.inputs.name_row_offset
                 ),
-                self.phx_construction.display_name,
+                f"'{self.phx_construction.display_name}",
             ),
             XLItemUValues(
                 create_range("r_si", self.shape.constructor.inputs.rse_row_offset),
@@ -87,7 +87,8 @@ class ConstructorBlock:
             for j, material in enumerate(layer.materials, start=1):
                 layer_items: List[xl_data.XlItem] = [
                     XLItemUValues(
-                        create_range(f"sec_{j}_description", i), material.display_name
+                        create_range(f"sec_{j}_description", i),
+                        f"'{material.display_name}",
                     ),
                     XLItemUValues(
                         create_range(f"sec_{j}_conductivity", i),

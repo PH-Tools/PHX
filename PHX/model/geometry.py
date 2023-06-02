@@ -100,7 +100,7 @@ class PhxPolygon:
     _count: ClassVar[int] = 0
 
     _display_name: str
-    area: float
+    _area: float
     center: PhxVertix
     normal_vector: PhxVector
     plane: PhxPlane
@@ -109,6 +109,14 @@ class PhxPolygon:
     child_polygon_ids: List[int] = field(init=False, default_factory=list)
 
     id_num: int = field(init=False, default=0)
+
+    @property
+    def area(self) -> float:
+        return self._area
+
+    @area.setter
+    def area(self, _in: float):
+        self._area = _in
 
     def __post_init__(self):
         PhxPolygon._count += 1
@@ -305,6 +313,11 @@ class PhxPolygonRectangular(PhxPolygon):
         """Set a vertex at a specific index."""
         vert_name = self.VERTEX_ORDER[index]
         setattr(self, vert_name, _phx_vertix)
+
+    @property
+    def area(self) -> float:
+        """Returns the area of the rectangular surface."""
+        return self.width * self.height
 
 
 @dataclass

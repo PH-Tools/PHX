@@ -67,8 +67,8 @@ class PhxComponentOpaque(PhxComponentBase):
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
         return (
-            f"{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-"
-            f"{self.exposure_exterior}-{self.assembly_type_id_num}"
+            f"{self.face_type.value}-{self.face_opacity.value}-{self.exposure_interior}-{self.interior_attachment_id}-"
+            f"{self.exposure_exterior.value}-{self.assembly_type_id_num}"
         )
 
     @property
@@ -116,7 +116,7 @@ class PhxComponentOpaque(PhxComponentBase):
                 continue
             setattr(new_compo, attr_name, attr_val)
 
-        new_compo.display_name = "Merged_Component"
+        new_compo.display_name = f"{self.face_type.name} [{self.assembly.display_name}]"
         new_compo.polygons = self.polygons + other.polygons
         for phx_aperture in new_compo.apertures:
             phx_aperture.host = new_compo
@@ -188,6 +188,13 @@ class PhxApertureElement(PhxComponentBase):
             PhxApertureShadingDimensions()
         )
 
+    @property
+    def area(self) -> float:
+        """Return the area of the element's polygon."""
+        if self.polygon is None:
+            return 0.0
+        return self.polygon.area
+
 
 class PhxComponentAperture(PhxComponentBase):
     """An Aperture (window, door) component with one or more 'element' (sash)."""
@@ -236,8 +243,8 @@ class PhxComponentAperture(PhxComponentBase):
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
         return (
-            f"{self.face_type}-{self.face_opacity}-{self.exposure_interior}-{self.interior_attachment_id}-"
-            f"{self.exposure_exterior}-{self.window_type_id_num}-{self.variant_type_name}"
+            f"{self.face_type.value}-{self.face_opacity.value}-{self.exposure_interior}-{self.interior_attachment_id}-"
+            f"{self.exposure_exterior.value}-{self.window_type_id_num}-{self.variant_type_name}-{self.default_monthly_shading_correction_factor}"
         )
 
     def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:

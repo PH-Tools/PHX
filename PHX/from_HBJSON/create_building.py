@@ -132,6 +132,7 @@ def create_component_from_hb_aperture(
     _hb_aperture: aperture.Aperture,
     _hb_room: room.Room,
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
+    _tolerance: float = 0.001,
 ) -> building.PhxComponentAperture:
     """Create a new Transparent (window) Component based on a Honeybee Aperture.
 
@@ -169,7 +170,9 @@ def create_component_from_hb_aperture(
     new_phx_ap_element = components.PhxApertureElement(_host=phx_ap)
     new_phx_ap_element.display_name = _hb_aperture.display_name
     new_phx_ap_element.polygon = (
-        create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture)
+        create_geometry.create_PhxPolygonRectangular_from_hb_Face(
+            _hb_aperture, _tolerance
+        )
     )
 
     # -- Set the shading object dimensions, if there are any
@@ -194,6 +197,7 @@ def create_components_from_hb_face(
     _hb_room: room.Room,
     _assembly_dict: Dict[str, constructions.PhxConstructionOpaque],
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
+    _tolerance: float = 0.001,
 ) -> components.PhxComponentOpaque:
     """Returns a new Opaque Component (and any child components) based on a Honeybee Face,
 
@@ -238,7 +242,7 @@ def create_components_from_hb_face(
     # -- Create Child Apertures, register the Aperture with the Parent Compo
     for hb_aperture in _hb_face.apertures:
         phx_compo_aperture = create_component_from_hb_aperture(
-            opaque_compo, hb_aperture, _hb_room, _window_type_dict
+            opaque_compo, hb_aperture, _hb_room, _window_type_dict, _tolerance
         )
         phx_polygon.add_child_poly_id(phx_compo_aperture.polygon_ids)
         opaque_compo.add_aperture(phx_compo_aperture)
@@ -250,6 +254,7 @@ def create_components_from_hb_room(
     _hb_room: room.Room,
     _assembly_dict: Dict[str, constructions.PhxConstructionOpaque],
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
+    _tolerance: float = 0.001,
 ) -> List[components.PhxComponentOpaque]:
     """Create new Opaque and Transparent PHX-Components based on Honeybee-Room Faces.
 
@@ -265,7 +270,7 @@ def create_components_from_hb_room(
     """
     return [
         create_components_from_hb_face(
-            hb_face, _hb_room, _assembly_dict, _window_type_dict
+            hb_face, _hb_room, _assembly_dict, _window_type_dict, _tolerance
         )
         for hb_face in _hb_room
     ]

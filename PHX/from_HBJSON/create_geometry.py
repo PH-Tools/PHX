@@ -77,7 +77,7 @@ def create_PhxPolygon_from_hb_Face(
 
 
 def create_PhxPolygonRectangular_from_hb_Face(
-    _hb_face: Union[aperture.Aperture, face.Face, shade.Shade]
+    _hb_face: Union[aperture.Aperture, face.Face, shade.Shade], _tolerance: float = 0.001
 ) -> geometry.PhxPolygonRectangular:
     """Return a new PhxPolygonRectangular based on an input honeybee-Face.
 
@@ -91,9 +91,13 @@ def create_PhxPolygonRectangular_from_hb_Face(
         * (geometry.PhxPolygonRectangular): The new PhxPolygonRectangular object.
     """
 
-    if len(_hb_face.vertices) < 4:
+    # -- Try and clean up the polygon geometry
+    face_polygon = _hb_face.geometry
+    face_polygon = face_polygon.remove_colinear_vertices(_tolerance)
+    if len(face_polygon.vertices) != 4:
         raise InvalidRectangularFaceError(_hb_face)
 
+    # -- Create a new PhxPolygonRectangular
     phx_polygon = geometry.PhxPolygonRectangular(
         _hb_face.display_name,
         _hb_face.geometry.area,
@@ -102,17 +106,14 @@ def create_PhxPolygonRectangular_from_hb_Face(
         plane=create_PhxPlane_from_lbt_Plane(_hb_face.geometry.plane),
     )
 
-    phx_polygon.vertix_upper_left = create_PhxVertix_from_lbt_Point3D(
-        _hb_face.geometry.upper_left_corner
-    )
-    phx_polygon.vertix_lower_left = create_PhxVertix_from_lbt_Point3D(
-        _hb_face.geometry.lower_left_corner
-    )
-    phx_polygon.vertix_lower_right = create_PhxVertix_from_lbt_Point3D(
-        _hb_face.geometry.lower_right_corner
-    )
-    phx_polygon.vertix_upper_right = create_PhxVertix_from_lbt_Point3D(
-        _hb_face.geometry.upper_right_corner
-    )
+    # -- Set the vertices using the upper_left_counter_clockwise_vertices method.
+    # -- Note: cannot use the 'lower_right_corner' property as it is not always
+    # -- the lower right corner of the face. It shows the vertix of the bounding box
+    # -- which is not aligned when the face has been rotated.
+    vertices = face_polygon.upper_left_counter_clockwise_vertices
+    phx_polygon.vertix_upper_left = create_PhxVertix_from_lbt_Point3D(vertices[0])
+    phx_polygon.vertix_upper_right = create_PhxVertix_from_lbt_Point3D(vertices[1])
+    phx_polygon.vertix_lower_right = create_PhxVertix_from_lbt_Point3D(vertices[2])
+    phx_polygon.vertix_lower_left = create_PhxVertix_from_lbt_Point3D(vertices[3])
 
     return phx_polygon

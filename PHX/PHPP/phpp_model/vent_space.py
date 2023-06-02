@@ -94,7 +94,7 @@ class VentSpaceRow:
         items: List[xl_data.XlItem] = [
             XLItemAddnlVent(create_range("quantity"), self.phx_room_vent.quantity),
             XLItemAddnlVent(
-                create_range("display_name"), self.phx_room_vent.display_name
+                create_range("display_name"), f"'{self.phx_room_vent.display_name}"
             ),
             XLItemAddnlVent(create_range("vent_unit_assigned"), self.phpp_row_ventilator),
             XLItemAddnlVent(

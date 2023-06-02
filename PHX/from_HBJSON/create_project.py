@@ -109,11 +109,12 @@ def convert_hb_model_to_PhxProject(
         )
 
         new_variant = create_variant.from_hb_room(
-            merged_hb_room,
-            phx_project.assembly_types,
-            phx_project.window_types,
-            phx_project.utilization_patterns_ventilation,
-            _group_components,
+            _hb_room=merged_hb_room,
+            _assembly_dict=phx_project.assembly_types,
+            _window_type_dict=phx_project.window_types,
+            _vent_sched_collection=phx_project.utilization_patterns_ventilation,
+            group_components=_group_components,
+            _tolerance=_hb_model.tolerance,
         )
 
         new_variant = cleanup.weld_vertices(new_variant)

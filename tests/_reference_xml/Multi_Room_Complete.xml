@@ -68,155 +68,155 @@
 			<Remarks></Remarks>
 			<PlugIn></PlugIn>
 			<Graphics_3D>
-				<Vertices count="40">
+				<Vertices count="48">
 					<Vertix index="0">
 						<IdentNr>9</IdentNr>
-						<X>0.8229490169</X>
-						<Y>0.0</Y>
+						<X>0.8104465722</X>
+						<Y>0.1429035971</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="1">
 						<IdentNr>10</IdentNr>
-						<X>0.8229490169</X>
-						<Y>0.0</Y>
+						<X>0.8104465722</X>
+						<Y>0.1429035971</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="2">
 						<IdentNr>11</IdentNr>
-						<X>4.1770509831</X>
-						<Y>0.0</Y>
+						<X>4.1135921929</X>
+						<Y>0.7253372912</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="3">
 						<IdentNr>12</IdentNr>
-						<X>4.1770509831</X>
-						<Y>0.0</Y>
+						<X>4.1135921929</X>
+						<Y>0.7253372912</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="4">
 						<IdentNr>15</IdentNr>
-						<X>6.1521286236</X>
-						<Y>0.0</Y>
+						<X>6.0586639661</X>
+						<Y>1.0683059243</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="5">
 						<IdentNr>16</IdentNr>
-						<X>6.1521286236</X>
-						<Y>0.0</Y>
+						<X>6.0586639661</X>
+						<Y>1.0683059243</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="6">
 						<IdentNr>17</IdentNr>
-						<X>10.8478713764</X>
-						<Y>0.0</Y>
+						<X>10.6830678351</X>
+						<Y>1.8837130961</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="7">
 						<IdentNr>18</IdentNr>
-						<X>10.8478713764</X>
-						<Y>0.0</Y>
+						<X>10.6830678351</X>
+						<Y>1.8837130961</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="8">
 						<IdentNr>27</IdentNr>
-						<X>4.1770509831</X>
-						<Y>4.0</Y>
+						<X>3.4189994822</X>
+						<Y>4.6645683033</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="9">
 						<IdentNr>28</IdentNr>
-						<X>4.1770509831</X>
-						<Y>4.0</Y>
+						<X>3.4189994822</X>
+						<Y>4.6645683033</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="10">
 						<IdentNr>29</IdentNr>
-						<X>0.8229490169</X>
-						<Y>4.0</Y>
+						<X>0.1158538615</X>
+						<Y>4.0821346091</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="11">
 						<IdentNr>30</IdentNr>
-						<X>0.8229490169</X>
-						<Y>4.0</Y>
+						<X>0.1158538615</X>
+						<Y>4.0821346091</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="12">
 						<IdentNr>33</IdentNr>
-						<X>10.8478713764</X>
-						<Y>4.0</Y>
+						<X>9.9884751245</X>
+						<Y>5.8229441081</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="13">
 						<IdentNr>34</IdentNr>
-						<X>10.8478713764</X>
-						<Y>4.0</Y>
+						<X>9.9884751245</X>
+						<Y>5.8229441081</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="14">
 						<IdentNr>35</IdentNr>
-						<X>6.1521286236</X>
-						<Y>4.0</Y>
+						<X>5.3640712554</X>
+						<Y>5.0075369363</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="15">
 						<IdentNr>36</IdentNr>
-						<X>6.1521286236</X>
-						<Y>4.0</Y>
+						<X>5.3640712554</X>
+						<Y>5.0075369363</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="16">
 						<IdentNr>45</IdentNr>
-						<X>0.0</X>
-						<Y>3.3416407865</Y>
+						<X>-0.580269833</X>
+						<Y>3.2908737543</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="17">
 						<IdentNr>46</IdentNr>
-						<X>0.0</X>
-						<Y>3.3416407865</Y>
+						<X>-0.580269833</X>
+						<Y>3.2908737543</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="18">
 						<IdentNr>47</IdentNr>
-						<X>0.0</X>
-						<Y>0.6583592135</Y>
+						<X>-0.1143228777</X>
+						<Y>0.6483572577</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="19">
 						<IdentNr>48</IdentNr>
-						<X>0.0</X>
-						<Y>0.6583592135</Y>
+						<X>-0.1143228777</X>
+						<Y>0.6483572577</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="20">
 						<IdentNr>57</IdentNr>
-						<X>12.0</X>
-						<Y>0.6583592135</Y>
+						<X>11.7033701585</X>
+						<Y>2.7321353897</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="21">
 						<IdentNr>58</IdentNr>
-						<X>12.0</X>
-						<Y>0.6583592135</Y>
+						<X>11.7033701585</X>
+						<Y>2.7321353897</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="22">
 						<IdentNr>59</IdentNr>
-						<X>12.0</X>
-						<Y>3.3416407865</Y>
+						<X>11.2374232032</X>
+						<Y>5.3746518863</Y>
 						<Z>0.4937694101</Z>
 					</Vertix>
 					<Vertix index="23">
 						<IdentNr>60</IdentNr>
-						<X>12.0</X>
-						<Y>3.3416407865</Y>
+						<X>11.2374232032</X>
+						<Y>5.3746518863</Y>
 						<Z>2.5062305899</Z>
 					</Vertix>
 					<Vertix index="24">
 						<IdentNr>63</IdentNr>
-						<X>12.0</X>
-						<Y>0.0</Y>
+						<X>11.8176930361</X>
+						<Y>2.083778132</Y>
 						<Z>0.0</Z>
 					</Vertix>
 					<Vertix index="25">
@@ -227,20 +227,20 @@
 					</Vertix>
 					<Vertix index="26">
 						<IdentNr>65</IdentNr>
-						<X>0.0</X>
-						<Y>4.0</Y>
+						<X>-0.6945927107</X>
+						<Y>3.939231012</Y>
 						<Z>0.0</Z>
 					</Vertix>
 					<Vertix index="27">
 						<IdentNr>66</IdentNr>
-						<X>12.0</X>
-						<Y>4.0</Y>
+						<X>11.1231003255</X>
+						<Y>6.0230091441</Y>
 						<Z>0.0</Z>
 					</Vertix>
 					<Vertix index="28">
 						<IdentNr>69</IdentNr>
-						<X>0.0</X>
-						<Y>4.0</Y>
+						<X>-0.6945927107</X>
+						<Y>3.939231012</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="29">
@@ -251,66 +251,114 @@
 					</Vertix>
 					<Vertix index="30">
 						<IdentNr>71</IdentNr>
-						<X>12.0</X>
-						<Y>0.0</Y>
+						<X>11.8176930361</X>
+						<Y>2.083778132</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="31">
 						<IdentNr>72</IdentNr>
-						<X>12.0</X>
-						<Y>4.0</Y>
+						<X>11.1231003255</X>
+						<Y>6.0230091441</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="32">
 						<IdentNr>75</IdentNr>
-						<X>0.0</X>
-						<Y>0.0</Y>
+						<X>0.1282368185</X>
+						<Y>3.4894949209</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="33">
 						<IdentNr>76</IdentNr>
-						<X>0.0</X>
-						<Y>-1.0</Y>
+						<X>0.6193880343</X>
+						<Y>0.7040379596</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="34">
 						<IdentNr>77</IdentNr>
-						<X>5.0</X>
-						<Y>-1.0</Y>
+						<X>4.1012092359</X>
+						<Y>1.3179769795</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="35">
 						<IdentNr>78</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
+						<X>3.6100580201</X>
+						<Y>4.1034339408</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="36">
 						<IdentNr>81</IdentNr>
-						<X>5.0</X>
-						<Y>0.0</Y>
+						<X>5.3407190962</X>
+						<Y>4.4085961829</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="37">
 						<IdentNr>82</IdentNr>
-						<X>5.0</X>
-						<Y>-1.0</Y>
+						<X>5.8318703121</X>
+						<Y>1.6231392217</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="38">
 						<IdentNr>83</IdentNr>
-						<X>12.0</X>
-						<Y>-1.0</Y>
+						<X>10.7064199943</X>
+						<Y>2.4826538494</Y>
 						<Z>3.0</Z>
 					</Vertix>
 					<Vertix index="39">
 						<IdentNr>84</IdentNr>
-						<X>12.0</X>
+						<X>10.2152687785</X>
+						<Y>5.2681108107</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="40">
+						<IdentNr>87</IdentNr>
+						<X>0.0</X>
 						<Y>0.0</Y>
 						<Z>3.0</Z>
 					</Vertix>
+					<Vertix index="41">
+						<IdentNr>88</IdentNr>
+						<X>0.1736481777</X>
+						<Y>-0.984807753</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="42">
+						<IdentNr>89</IdentNr>
+						<X>5.0976869427</X>
+						<Y>-0.1165668647</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="43">
+						<IdentNr>90</IdentNr>
+						<X>4.9240387651</X>
+						<Y>0.8682408883</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="44">
+						<IdentNr>93</IdentNr>
+						<X>4.9240387651</X>
+						<Y>0.8682408883</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="45">
+						<IdentNr>94</IdentNr>
+						<X>5.0976869427</X>
+						<Y>-0.1165668647</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="46">
+						<IdentNr>95</IdentNr>
+						<X>11.9913412138</X>
+						<Y>1.098970379</Y>
+						<Z>3.0</Z>
+					</Vertix>
+					<Vertix index="47">
+						<IdentNr>96</IdentNr>
+						<X>11.8176930361</X>
+						<Y>2.083778132</Y>
+						<Z>3.0</Z>
+					</Vertix>
 				</Vertices>
-				<Polygons count="14">
+				<Polygons count="16">
 					<Polygon index="0">
 						<IdentNr>11</IdentNr>
 						<NormalVectorX>0.0</NormalVectorX>
@@ -335,12 +383,15 @@
 							<IdentNr index="2">71</IdentNr>
 							<IdentNr index="3">72</IdentNr>
 						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
+						<IdentNrPolygonsInside count="2">
+							<IdentNr index="0">13</IdentNr>
+							<IdentNr index="1">14</IdentNr>
+						</IdentNrPolygonsInside>
 					</Polygon>
 					<Polygon index="2">
 						<IdentNr>1</IdentNr>
-						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>-1.0</NormalVectorY>
+						<NormalVectorX>0.1736481777</NormalVectorX>
+						<NormalVectorY>-0.984807753</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">70</IdentNr>
@@ -355,8 +406,8 @@
 					</Polygon>
 					<Polygon index="3">
 						<IdentNr>4</IdentNr>
-						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>1.0</NormalVectorY>
+						<NormalVectorX>-0.1736481777</NormalVectorX>
+						<NormalVectorY>0.984807753</NormalVectorY>
 						<NormalVectorZ>-0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">72</IdentNr>
@@ -371,8 +422,8 @@
 					</Polygon>
 					<Polygon index="4">
 						<IdentNr>7</IdentNr>
-						<NormalVectorX>-1.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorX>-0.984807753</NormalVectorX>
+						<NormalVectorY>-0.1736481777</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">69</IdentNr>
@@ -386,8 +437,8 @@
 					</Polygon>
 					<Polygon index="5">
 						<IdentNr>9</IdentNr>
-						<NormalVectorX>1.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorX>0.984807753</NormalVectorX>
+						<NormalVectorY>0.1736481777</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">71</IdentNr>
@@ -400,116 +451,142 @@
 						</IdentNrPolygonsInside>
 					</Polygon>
 					<Polygon index="6">
-						<IdentNr>2</IdentNr>
-						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>-1.0</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">9</IdentNr>
-							<IdentNr index="1">10</IdentNr>
-							<IdentNr index="2">11</IdentNr>
-							<IdentNr index="3">12</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="7">
-						<IdentNr>3</IdentNr>
-						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>-1.0</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">15</IdentNr>
-							<IdentNr index="1">16</IdentNr>
-							<IdentNr index="2">17</IdentNr>
-							<IdentNr index="3">18</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="8">
-						<IdentNr>5</IdentNr>
-						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>1.0</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">27</IdentNr>
-							<IdentNr index="1">28</IdentNr>
-							<IdentNr index="2">29</IdentNr>
-							<IdentNr index="3">30</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="9">
-						<IdentNr>6</IdentNr>
-						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>1.0</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">33</IdentNr>
-							<IdentNr index="1">34</IdentNr>
-							<IdentNr index="2">35</IdentNr>
-							<IdentNr index="3">36</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="10">
-						<IdentNr>8</IdentNr>
-						<NormalVectorX>-1.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">45</IdentNr>
-							<IdentNr index="1">46</IdentNr>
-							<IdentNr index="2">47</IdentNr>
-							<IdentNr index="3">48</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="11">
-						<IdentNr>10</IdentNr>
-						<NormalVectorX>1.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">57</IdentNr>
-							<IdentNr index="1">58</IdentNr>
-							<IdentNr index="2">59</IdentNr>
-							<IdentNr index="3">60</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="12">
 						<IdentNr>13</IdentNr>
-						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorX>0.0</NormalVectorX>
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">75</IdentNr>
-							<IdentNr index="1">76</IdentNr>
+							<IdentNr index="1">78</IdentNr>
 							<IdentNr index="2">77</IdentNr>
-							<IdentNr index="3">78</IdentNr>
+							<IdentNr index="3">76</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
-					<Polygon index="13">
+					<Polygon index="7">
 						<IdentNr>14</IdentNr>
-						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorX>0.0</NormalVectorX>
 						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">81</IdentNr>
-							<IdentNr index="1">82</IdentNr>
+							<IdentNr index="1">84</IdentNr>
 							<IdentNr index="2">83</IdentNr>
-							<IdentNr index="3">84</IdentNr>
+							<IdentNr index="3">82</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="8">
+						<IdentNr>2</IdentNr>
+						<NormalVectorX>0.1736481777</NormalVectorX>
+						<NormalVectorY>-0.984807753</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">9</IdentNr>
+							<IdentNr index="1">12</IdentNr>
+							<IdentNr index="2">11</IdentNr>
+							<IdentNr index="3">10</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="9">
+						<IdentNr>3</IdentNr>
+						<NormalVectorX>0.1736481777</NormalVectorX>
+						<NormalVectorY>-0.984807753</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">15</IdentNr>
+							<IdentNr index="1">18</IdentNr>
+							<IdentNr index="2">17</IdentNr>
+							<IdentNr index="3">16</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="10">
+						<IdentNr>5</IdentNr>
+						<NormalVectorX>-0.1736481777</NormalVectorX>
+						<NormalVectorY>0.984807753</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">27</IdentNr>
+							<IdentNr index="1">30</IdentNr>
+							<IdentNr index="2">29</IdentNr>
+							<IdentNr index="3">28</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="11">
+						<IdentNr>6</IdentNr>
+						<NormalVectorX>-0.1736481777</NormalVectorX>
+						<NormalVectorY>0.984807753</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">33</IdentNr>
+							<IdentNr index="1">36</IdentNr>
+							<IdentNr index="2">35</IdentNr>
+							<IdentNr index="3">34</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="12">
+						<IdentNr>8</IdentNr>
+						<NormalVectorX>-0.984807753</NormalVectorX>
+						<NormalVectorY>-0.1736481777</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">45</IdentNr>
+							<IdentNr index="1">48</IdentNr>
+							<IdentNr index="2">47</IdentNr>
+							<IdentNr index="3">46</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="13">
+						<IdentNr>10</IdentNr>
+						<NormalVectorX>0.984807753</NormalVectorX>
+						<NormalVectorY>0.1736481777</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">57</IdentNr>
+							<IdentNr index="1">60</IdentNr>
+							<IdentNr index="2">59</IdentNr>
+							<IdentNr index="3">58</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="14">
+						<IdentNr>15</IdentNr>
+						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">87</IdentNr>
+							<IdentNr index="1">88</IdentNr>
+							<IdentNr index="2">89</IdentNr>
+							<IdentNr index="3">90</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="15">
+						<IdentNr>16</IdentNr>
+						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">93</IdentNr>
+							<IdentNr index="1">94</IdentNr>
+							<IdentNr index="2">95</IdentNr>
+							<IdentNr index="3">96</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
 				</Polygons>
 			</Graphics_3D>
 			<Building>
-				<Components count="6">
+				<Components count="7">
 					<Component index="0">
 						<IdentNr>23</IdentNr>
-						<Name>Room_3_dde6fa63..Face4</Name>
+						<Name>Room_3_e2c8c962..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -525,7 +602,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>24</IdentNr>
-						<Name>Room_3_dde6fa63..Face5</Name>
+						<Name>Room_3_e2c8c962..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -540,8 +617,8 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="2">
-						<IdentNr>35</IdentNr>
-						<Name>Merged_Component</Name>
+						<IdentNr>43</IdentNr>
+						<Name>WALL [Generic Exterior Wall]</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>2</IdentNrColorI>
@@ -559,7 +636,28 @@
 						</IdentNrPolygons>
 					</Component>
 					<Component index="3">
-						<IdentNr>40</IdentNr>
+						<IdentNr>44</IdentNr>
+						<Name>Generic Double Pane</Name>
+						<Visual>true</Visual>
+						<Type>2</Type>
+						<IdentNrColorI>4</IdentNrColorI>
+						<IdentNrColorE>4</IdentNrColorE>
+						<InnerAttachment>1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>1</IdentNrWindowType>
+						<IdentNrPolygons count="2">
+							<IdentNr index="0">13</IdentNr>
+							<IdentNr index="1">14</IdentNr>
+						</IdentNrPolygons>
+						<DepthWindowReveal unit="m">0.1016</DepthWindowReveal>
+						<IdentNrSolarProtection>-1</IdentNrSolarProtection>
+						<IdentNrOverhang>-1</IdentNrOverhang>
+						<DefaultCorrectionShadingMonth>1.0</DefaultCorrectionShadingMonth>
+					</Component>
+					<Component index="4">
+						<IdentNr>49</IdentNr>
 						<Name>Generic Double Pane</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
@@ -583,9 +681,9 @@
 						<IdentNrOverhang>-1</IdentNrOverhang>
 						<DefaultCorrectionShadingMonth>1.0</DefaultCorrectionShadingMonth>
 					</Component>
-					<Component index="4">
-						<IdentNr>41</IdentNr>
-						<Name>Shade_3f4a6d9a</Name>
+					<Component index="5">
+						<IdentNr>50</IdentNr>
+						<Name>Shade_871ce9d7</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -596,12 +694,12 @@
 						<IdentNrAssembly>-1</IdentNrAssembly>
 						<IdentNrWindowType>-1</IdentNrWindowType>
 						<IdentNrPolygons count="1">
-							<IdentNr index="0">13</IdentNr>
+							<IdentNr index="0">15</IdentNr>
 						</IdentNrPolygons>
 					</Component>
-					<Component index="5">
-						<IdentNr>42</IdentNr>
-						<Name>Shade_ad45503e</Name>
+					<Component index="6">
+						<IdentNr>51</IdentNr>
+						<Name>Shade_5ebdb08e</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -612,7 +710,7 @@
 						<IdentNrAssembly>-1</IdentNrAssembly>
 						<IdentNrWindowType>-1</IdentNrWindowType>
 						<IdentNrPolygons count="1">
-							<IdentNr index="0">14</IdentNr>
+							<IdentNr index="0">16</IdentNr>
 						</IdentNrPolygons>
 					</Component>
 				</Components>
@@ -662,7 +760,7 @@
 							</LoadPerson>
 						</LoadsPersonsPH>
 						<GrossVolume_Selection>6</GrossVolume_Selection>
-						<GrossVolume>144.0</GrossVolume>
+						<GrossVolume>144.00000000000009</GrossVolume>
 						<NetVolume_Selection>6</NetVolume_Selection>
 						<NetVolume>45.0</NetVolume>
 						<FloorArea_Selection>6</FloorArea_Selection>
@@ -745,60 +843,74 @@
 							</Device>
 						</HomeDevice>
 						<ExhaustVents count="0"/>
-						<ThermalBridges count="8">
+						<ThermalBridges count="10">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__02b8e25f</Name>
+								<Name>_unnamed_bldg_segment__06acc8b7</Name>
 								<Type>-15</Type>
-								<Length>10.733126291998989</Length>
+								<Length>20.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__059c1ec2</Name>
-								<Type>-15</Type>
-								<Length>13.416407864998739</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__2ba8e07a</Name>
-								<Type>-15</Type>
-								<Length>18.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__48a1c1b7</Name>
-								<Type>-15</Type>
-								<Length>9.391485505499118</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__680d4a6e</Name>
-								<Type>-15</Type>
-								<Length>16.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__d6a972c8</Name>
+								<Name>_unnamed_bldg_segment__0f2fdec8</Name>
 								<Type>-15</Type>
 								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
-							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__df2c847b</Name>
+							<ThermalBridge index="2">
+								<Name>_unnamed_bldg_segment__2ce520b3</Name>
 								<Type>-15</Type>
-								<Length>22.0</Length>
+								<Length>10.733126291998989</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="3">
+								<Name>_unnamed_bldg_segment__4e1775f3</Name>
+								<Type>-15</Type>
+								<Length>16.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="4">
+								<Name>_unnamed_bldg_segment__54e4ff45</Name>
+								<Type>-15</Type>
+								<Length>14.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="5">
+								<Name>_unnamed_bldg_segment__7ef6ae32</Name>
+								<Type>-15</Type>
+								<Length>9.391485505499118</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="6">
+								<Name>_unnamed_bldg_segment__84895f57</Name>
+								<Type>-15</Type>
+								<Length>13.416407864998739</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="7">
-								<Name>_unnamed_bldg_segment__f41c2931</Name>
+								<Name>_unnamed_bldg_segment__a3975e11</Name>
 								<Type>-15</Type>
-								<Length>9.391485505499118</Length>
+								<Length>14.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="8">
+								<Name>_unnamed_bldg_segment__a963ca8e</Name>
+								<Type>-15</Type>
+								<Length>14.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="9">
+								<Name>_unnamed_bldg_segment__bf8eb388</Name>
+								<Type>-15</Type>
+								<Length>18.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
@@ -1028,7 +1140,7 @@
 						<OccupancySettingMethod>2</OccupancySettingMethod>
 						<NumberUnits>3</NumberUnits>
 						<CountStories>1</CountStories>
-						<EnvelopeAirtightnessCoefficient>0.8157599999999999</EnvelopeAirtightnessCoefficient>
+						<EnvelopeAirtightnessCoefficient>0.81576</EnvelopeAirtightnessCoefficient>
 						<SummerHRVHumidityRecovery choice="Always">4</SummerHRVHumidityRecovery>
 						<FoundationInterfaces count="0"/>
 						<InternalGainsAdditionalData>
@@ -1091,7 +1203,7 @@
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
-								<Name>28716f9c-8c20-44ee-9fc9-12fbc405c33a</Name>
+								<Name>d122fc1d-66f4-483a-9bd4-43c8d22ac53b</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
@@ -1168,7 +1280,7 @@
 							<DistributionCooling/>
 							<DistributionVentilation count="2">
 								<Duct index="0">
-									<Name>9b18d33d</Name>
+									<Name>09cb5f81</Name>
 									<IdentNr>3</IdentNr>
 									<DuctDiameter unit="mm">160.0</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
@@ -1185,7 +1297,7 @@
 									</AssignedVentUnits>
 								</Duct>
 								<Duct index="1">
-									<Name>ef604c2e</Name>
+									<Name>1b6a9ca6</Name>
 									<IdentNr>4</IdentNr>
 									<DuctDiameter unit="mm">160.0</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
