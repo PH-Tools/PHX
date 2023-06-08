@@ -773,30 +773,62 @@ def add_dhw_heaters_from_hb_rooms(
             _variant.mech_systems.add_new_mech_device(heater.identifier, phx_hw_heater)
 
 
+def dhw_recirc_temp(_recirc_temps: Set[float]):
+    """Get the DHW recirculation temperature."""
+    if len(_recirc_temps) == 0:
+        return 60.0
+    elif len(_recirc_temps) == 1:
+        return _recirc_temps.pop()
+    else:
+        print(f"Warning: Multiple recirculation temperatures found. {_recirc_temps}")
+        return 60.0
+
+
+def dhw_recirc_hours(_recirc_temps: Set[int]) -> int:
+    """Get the number of hours that the DHW recirculation is active."""
+    if len(_recirc_temps) == 0:
+        return 24
+    elif len(_recirc_temps) == 1:
+        return _recirc_temps.pop()
+    else:
+        print(f"Warning: Multiple recirculation run-times found. {_recirc_temps}")
+        return 24
+
+
 def add_dhw_piping_from_hb_rooms(
     _variant: project.PhxVariant, _hb_room: room.Room
 ) -> None:
     ph_prop: RoomPhProperties = _hb_room.properties.ph  # type: ignore
-    for space in ph_prop.spaces:
-        prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
+    phx_mech_sys = _variant.mech_systems
+    recirc_temps: Set[float] = set()
+    recirc_hours: Set[int] = set()
 
+    for space in ph_prop.spaces:
+        # -- Get the HB SHW system from the space's host room
+        prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
         if not prop_energy.shw:
             continue
+        hb_shw_prop_ph: SHWSystemPhProperties = prop_energy.shw.properties.ph  # type: ignore
 
-        shw_prop_ph: SHWSystemPhProperties = prop_energy.shw.properties.ph  # type: ignore
-        mech_sys = _variant.mech_systems
+        # -- Add the DHW Branch Piping
+        for branch_piping_element in hb_shw_prop_ph.branch_piping:
+            phx_mech_sys.add_branch_piping(build_phx_piping(branch_piping_element))
 
-        for branch_piping_element in shw_prop_ph.branch_piping:
-            mech_sys.add_branch_piping(build_phx_piping(branch_piping_element))
+        # -- Set the tap points
+        phx_mech_sys._distribution_num_hw_tap_points = hb_shw_prop_ph.number_tap_points
 
-        mech_sys._distribution_num_hw_tap_points = shw_prop_ph.number_tap_points
+        # -- Add the DHW Recirculation Piping
+        for recirc_piping_element in hb_shw_prop_ph.recirc_piping:
+            phx_mech_sys.add_recirc_piping(build_phx_piping(recirc_piping_element))
 
-        for recirc_piping_element in shw_prop_ph.recirc_piping:
-            mech_sys.add_recirc_piping(build_phx_piping(recirc_piping_element))
+        # -- Get the DHW recirculation parameters
+        recirc_temps.add(hb_shw_prop_ph.recirc_temp)
+        recirc_hours.add(hb_shw_prop_ph.recirc_hours)
 
-        # -- Set the DHW recirculation parameters
-        mech_sys._distribution_hw_recirculation_params.daily_recirc_hours = 24
-        mech_sys._distribution_hw_recirculation_params.water_temp = 60
+    # -- Set the Recirc parameters
+    params = phx_mech_sys._distribution_hw_recirculation_params
+    params.water_temp = dhw_recirc_temp(recirc_temps)
+    params.daily_recirc_hours = dhw_recirc_hours(recirc_hours)
 
     return None
 

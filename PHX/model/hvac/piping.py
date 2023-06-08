@@ -20,9 +20,9 @@ class PhxRecirculationParameters:
     hot_water_fixtures = 1
     all_pipes_insulated = True
     units_or_floors = 1
-    pipe_diameter_m = 1  # 3/8" Copper
-    air_temp = 20  # Deg C
-    water_temp = 60  # Deg C
+    pipe_diameter_m = 1.0  # 3/8" Copper
+    air_temp = 20.0  # Deg C
+    water_temp = 60.0  # Deg C
     daily_recirc_hours = 24
 
 

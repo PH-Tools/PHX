@@ -1308,7 +1308,8 @@ def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
 def _DistributionDHW(_c: hvac.PhxMechanicalSystemCollection):
     # -- alias
     p = _c._distribution_hw_recirculation_params
-
+    print(p.water_temp)
+    print(p.daily_recirc_hours)
     return [
         # -- Settings
         XML_Node("CalculationMethodIndividualPipes", p.calc_method),

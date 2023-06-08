@@ -203,7 +203,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_40384ae7..Face4</Name>
+						<Name>Room_1_576082d8..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -219,7 +219,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_40384ae7..Face5</Name>
+						<Name>Room_1_576082d8..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -546,9 +546,9 @@
 								<AllPipesAreInsulated>true</AllPipesAreInsulated>
 								<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>
 								<PipeMaterialSimplifiedMethod>1</PipeMaterialSimplifiedMethod>
-								<PipeDiameterSimplifiedMethod>1</PipeDiameterSimplifiedMethod>
-								<TemperatureRoom_WR>20</TemperatureRoom_WR>
-								<DesignFlowTemperature_WR>60</DesignFlowTemperature_WR>
+								<PipeDiameterSimplifiedMethod>1.0</PipeDiameterSimplifiedMethod>
+								<TemperatureRoom_WR>20.0</TemperatureRoom_WR>
+								<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>
 								<DailyRunningHoursCirculation_WR>24</DailyRunningHoursCirculation_WR>
 								<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>
 								<HeatLossCoefficient_WR>None</HeatLossCoefficient_WR>
