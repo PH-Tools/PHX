@@ -354,7 +354,10 @@ def _PhxPhBuildingData(
             "OverheatingTemperatureThreshold",
             _phius_cert.ph_building_data.setpoints.summer,
         ),
-        XML_Node("NonCombustibleMaterials", _phius_cert.ph_building_data.non_combustible_materials),
+        XML_Node(
+            "NonCombustibleMaterials",
+            _phius_cert.ph_building_data.non_combustible_materials,
+        ),
     ]
 
 
@@ -1302,53 +1305,33 @@ def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
 # -- MECHANICAL SYSTEMS / DISTRIBUTION ----------------------------------------
 
 
-class DistributionDHW:
-    """Manager class to organize the Hot-Water piping."""
+def _DistributionDHW(_c: hvac.PhxMechanicalSystemCollection):
+    # -- alias
+    p = _c._distribution_hw_recirculation_params
 
-    def __init__(self, _phx_mech_collection: hvac.PhxMechanicalSystemCollection):
-        self.phx_mech_collection = _phx_mech_collection
-
-        self.calc_method = 1  # Simplified individual pipes
-        self.pipe_material = 1  # Copper M
-        self.demand_recirc = True
-        self.num_bathrooms = 1
-        self.hot_water_fixtures = 1
-        self.all_pipes_insulated = True
-        self.units_or_floors = 1
-        self.pipe_diameter_m = 1  # 3/8" Copper
-        self.air_temp = 20  # Deg C
-        self.water_temp = 60  # Deg C
-        self.daily_recirc_hours = 24
-
-
-def _DistributionDHW(_d: DistributionDHW):
     return [
         # -- Settings
-        XML_Node("CalculationMethodIndividualPipes", _d.calc_method),
-        XML_Node("DemandRecirculation", _d.demand_recirc),
-        XML_Node("SelectionhotWaterFixtureEff", _d.hot_water_fixtures),
-        XML_Node("NumberOfBathrooms", _d.num_bathrooms),
-        XML_Node("AllPipesAreInsulated", _d.all_pipes_insulated),
-        XML_Node("SelectionUnitsOrFloors", _d.units_or_floors),
-        XML_Node("PipeMaterialSimplifiedMethod", _d.pipe_material),
-        XML_Node("PipeDiameterSimplifiedMethod", _d.pipe_diameter_m),
+        XML_Node("CalculationMethodIndividualPipes", p.calc_method),
+        XML_Node("DemandRecirculation", p.demand_recirc),
+        XML_Node("SelectionhotWaterFixtureEff", p.hot_water_fixtures),
+        XML_Node("NumberOfBathrooms", p.num_bathrooms),
+        XML_Node("AllPipesAreInsulated", p.all_pipes_insulated),
+        XML_Node("SelectionUnitsOrFloors", p.units_or_floors),
+        XML_Node("PipeMaterialSimplifiedMethod", p.pipe_material),
+        XML_Node("PipeDiameterSimplifiedMethod", p.pipe_diameter_m),
         # -- Simplified Method
-        XML_Node("TemperatureRoom_WR", _d.air_temp),
-        XML_Node("DesignFlowTemperature_WR", _d.water_temp),
-        XML_Node("DailyRunningHoursCirculation_WR", _d.daily_recirc_hours),
-        XML_Node(
-            "LengthCirculationPipes_WR", _d.phx_mech_collection.dhw_recirc_total_length_m
-        ),
+        XML_Node("TemperatureRoom_WR", p.air_temp),
+        XML_Node("DesignFlowTemperature_WR", p.water_temp),
+        XML_Node("DailyRunningHoursCirculation_WR", p.daily_recirc_hours),
+        XML_Node("LengthCirculationPipes_WR", _c.dhw_recirc_total_length_m),
         XML_Node(
             "HeatLossCoefficient_WR",
-            _d.phx_mech_collection.dhw_recirc_weighted_heat_loss_coeff,
+            _c.dhw_recirc_weighted_heat_loss_coeff,
         ),
-        XML_Node(
-            "LengthIndividualPipes_WR", _d.phx_mech_collection.dhw_branch_total_length_m
-        ),
+        XML_Node("LengthIndividualPipes_WR", _c.dhw_branch_total_length_m),
         XML_Node(
             "ExteriorPipeDiameter_WR",
-            _d.phx_mech_collection.dhw_branch_weighted_diameter_mm,
+            _c.dhw_branch_weighted_diameter_mm,
         ),
         # -- Detailed Methods (Not Implemented Yet)
         # XML_Node("HeatReleaseStorage_WR", _d.),
@@ -1517,7 +1500,7 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
 
 def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
     return [
-        XML_Object("DistributionDHW", DistributionDHW(_c)),
+        XML_Object("DistributionDHW", _c, _schema_name="_DistributionDHW"),
         # XML_Object('DistributionHeating', DistributionHeating()),
         XML_Object(
             "DistributionCooling",

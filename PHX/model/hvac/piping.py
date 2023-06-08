@@ -12,6 +12,21 @@ from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
 
 @dataclass
+class PhxRecirculationParameters:
+    calc_method = 1  # Simplified individual pipes
+    pipe_material = 1  # Copper M
+    demand_recirc = True
+    num_bathrooms = 1
+    hot_water_fixtures = 1
+    all_pipes_insulated = True
+    units_or_floors = 1
+    pipe_diameter_m = 1  # 3/8" Copper
+    air_temp = 20  # Deg C
+    water_temp = 60  # Deg C
+    daily_recirc_hours = 24
+
+
+@dataclass
 class PhxPipeSegment:
     """An individual Pipe Segment."""
 
@@ -20,7 +35,7 @@ class PhxPipeSegment:
     geometry: LineSegment3D
     diameter_m: float
     insulation_thickness_m: float
-    insulation_conductivity: float # W/mk
+    insulation_conductivity: float  # W/mk
     insulation_reflective: bool
     insulation_quality: Any
     daily_period: float
@@ -34,12 +49,12 @@ class PhxPipeSegment:
     @property
     def diameter_inner_m(self) -> float:
         return self.diameter_m
-    
+
     @property
     def diameter_outer_m(self) -> float:
         """Return the outside diameter including the pipe wall thickness."""
         return self.diameter_inner_m + self.pipe_wall_thickness_m
-    
+
     @property
     def diameter_with_insulation_m(self) -> float:
         return self.diameter_outer_m + (2 * self.insulation_thickness_m)
@@ -60,41 +75,49 @@ class PhxPipeSegment:
             return 5.0
         else:
             return 8.0
-        
+
     def _calc_pipe_heat_loss_coeff(self, _alpha) -> float:
         """Calculate the pipe heat-loss coefficient (W/mk) with a known Alpha (W/m2k) value."""
-        _a = self.diameter_outer_m/self.diameter_inner_m
-        _b = self.diameter_with_insulation_m/self.diameter_outer_m
-        _c = (1 / 2 / 55 * math.log(_a) + 1 / 2 / self.insulation_conductivity * math.log(_b) + 1 / self.diameter_with_insulation_m / _alpha)
+        _a = self.diameter_outer_m / self.diameter_inner_m
+        _b = self.diameter_with_insulation_m / self.diameter_outer_m
+        _c = (
+            1 / 2 / 55 * math.log(_a)
+            + 1 / 2 / self.insulation_conductivity * math.log(_b)
+            + 1 / self.diameter_with_insulation_m / _alpha
+        )
         return math.pi / _c
 
     def _calc_pipe_surface_temp(self, dT, _k) -> float:
         """Return a surface temp (k) for the pipe with a known heat-loss-coefficient (W/mk) value."""
-        _a = self.diameter_outer_m/self.diameter_inner_m
-        _b = self.diameter_with_insulation_m/self.diameter_outer_m
-        _c = (1 / 2 / 55 * math.log(_a) + 1 / 2 / self.insulation_conductivity * math.log(_b))
+        _a = self.diameter_outer_m / self.diameter_inner_m
+        _b = self.diameter_with_insulation_m / self.diameter_outer_m
+        _c = 1 / 2 / 55 * math.log(_a) + 1 / 2 / self.insulation_conductivity * math.log(
+            _b
+        )
         return dT - 1 / math.pi * _c * _k * dT
 
-    def _solve_for_pipe_heat_loss_coeff(self, 
-                                        _alpha: Optional[float]=None, 
-                                        _k1: float=100.0, 
-                                        _k2: float=1.0,
-                                        _surface_temp: Optional[float]=None) -> float:
+    def _solve_for_pipe_heat_loss_coeff(
+        self,
+        _alpha: Optional[float] = None,
+        _k1: float = 100.0,
+        _k2: float = 1.0,
+        _surface_temp: Optional[float] = None,
+    ) -> float:
         """Return a heat-loss coefficient (W/mk) considering the diameter and insulation.
-        
+
         Approximates the recursive algorithm found in the PHPP "DHW" worksheet.
         """
         TOLERANCE = 0.001
-        DELTA_T = 30 # K
+        DELTA_T = 30  # K
 
         while _k1 - _k2 > TOLERANCE:
             # -- hang onto the old k to test against tolerance later
-            _k1 = _k2 
+            _k1 = _k2
 
             # -- If W/m2k alpha is not provided (ie: at the start) use the starting-alpha constant
             if not _alpha:
                 _alpha = self._starting_alpha
-            
+
             # -- Calc the new K (W/mk), and new surface temp of the pipe
             _k2 = self._calc_pipe_heat_loss_coeff(_alpha)
             _surface_temp = self._calc_pipe_surface_temp(DELTA_T, _k2)
@@ -108,7 +131,7 @@ class PhxPipeSegment:
 
             # -- Run the solver until the k result is < the tolerance
             self._solve_for_pipe_heat_loss_coeff(_alpha, _k1, _k2, _surface_temp)
-        
+
         return _k2
 
 

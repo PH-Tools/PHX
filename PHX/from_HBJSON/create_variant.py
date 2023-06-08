@@ -794,6 +794,10 @@ def add_dhw_piping_from_hb_rooms(
         for recirc_piping_element in shw_prop_ph.recirc_piping:
             mech_sys.add_recirc_piping(build_phx_piping(recirc_piping_element))
 
+        # -- Set the DHW recirculation parameters
+        mech_sys._distribution_hw_recirculation_params.daily_recirc_hours = 24
+        mech_sys._distribution_hw_recirculation_params.water_temp = 60
+
     return None
 
 

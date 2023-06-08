@@ -22,6 +22,7 @@ from PHX.model.hvac.ventilation import (
 )
 from PHX.model.hvac.cooling import AnyPhxCooling
 from PHX.model.hvac.water import AnyWaterTank
+from PHX.model.hvac.piping import PhxRecirculationParameters
 
 
 class NoVentUnitFoundError(Exception):
@@ -58,6 +59,9 @@ class PhxMechanicalSystemCollection:
     zone_coverage: PhxZoneCoverage = field(default_factory=PhxZoneCoverage)
 
     _devices: Dict[str, AnyMechDevice] = field(default_factory=dict)
+    _distribution_hw_recirculation_params: PhxRecirculationParameters = field(
+        default_factory=PhxRecirculationParameters
+    )
     _distribution_piping_branches: Dict[str, hvac.PhxPipeElement] = field(
         default_factory=dict
     )
