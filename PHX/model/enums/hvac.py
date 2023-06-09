@@ -87,3 +87,9 @@ class PhxExhaustVentType(Enum):
 class PhxVentDuctType(Enum):
     SUPPLY = 1
     EXHAUST = 2
+
+class PhxSupportiveDeviceType(Enum):
+    HEAT_CIRCULATING_PUMP = 4
+    DHW_CIRCULATING_PUMP = 6
+    DHW_STORAGE_LOAD_PUMP = 7
+    OTHER = 10

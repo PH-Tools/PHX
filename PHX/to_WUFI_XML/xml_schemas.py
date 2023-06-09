@@ -1013,6 +1013,17 @@ def _PhxExhaustVentilator(_v: hvac.AnyPhxExhaustVent) -> List[xml_writable]:
     ]
 
 
+def _PhxSupportiveDevice(d: hvac.PhxSupportiveDevice) -> List[xml_writable]:
+    return [
+        XML_Node("Name", d.display_name),
+        XML_Node("Type", d.device_type.value),
+        XML_Node("Quantity", d.quantity),
+        XML_Node("InConditionedSpace", d.params.in_conditioned_space),
+        XML_Node("NormEnergyDemand", d.params.norm_energy_demand_W),
+        XML_Node("PeriodOperation", d.params.annual_period_operation_khrs),
+    ]
+
+
 # -- Elec Heating--------------------------------------------------------------
 
 
@@ -1308,8 +1319,6 @@ def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
 def _DistributionDHW(_c: hvac.PhxMechanicalSystemCollection):
     # -- alias
     p = _c._distribution_hw_recirculation_params
-    print(p.water_temp)
-    print(p.daily_recirc_hours)
     return [
         # -- Settings
         XML_Node("CalculationMethodIndividualPipes", p.calc_method),
@@ -1512,8 +1521,15 @@ def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
             "DistributionVentilation",
             [XML_Object("Duct", d, "index", i) for i, d in enumerate(_c.vent_ducting)],
         ),
-        XML_Node("UseDefaultValues", True),
+        XML_Node("UseDefaultValues", False),
         XML_Node("DeviceInConditionedSpace", True),
+        XML_List(
+            "SupportiveDevices",
+            [
+                XML_Object("SupportiveDevice", d, "index", i)
+                for i, d in enumerate(_c.supportive_devices)
+            ],
+        ),
     ]
 
 

@@ -6,7 +6,7 @@
 from __future__ import annotations
 from inspect import signature
 from dataclasses import dataclass, field
-from typing import Optional, ClassVar, Union
+from typing import Optional, ClassVar, Union, Any
 import uuid
 
 from PHX.model.enums.hvac import DeviceType, SystemType
@@ -100,11 +100,11 @@ class PhxMechanicalDevice:
         self.id_num = self.__class__._count
 
     @property
-    def identifier(self):
+    def identifier(self) -> str:
         return str(self._identifier)
 
     @identifier.setter
-    def identifier(self, _in: str):
+    def identifier(self, _in: str) -> None:
         if not _in:
             return
         self._identifier = str(_in)
@@ -120,14 +120,14 @@ class PhxMechanicalDevice:
         obj.params = self.params + other.params
         return obj
 
-    def __radd__(self, other) -> PhxMechanicalDevice:
+    def __radd__(self, other: PhxMechanicalDevice) -> PhxMechanicalDevice:
         if isinstance(other, int):
             return self
         else:
             return self + other
 
     @classmethod
-    def from_kwargs(cls, **kwargs):
+    def from_kwargs(cls, **kwargs: dict[str, Any]) -> PhxMechanicalDevice:
         """Allow for the create of base object from arbitrary kwarg input.
 
         This is used by subclasses during __add__ or __copy__, otherwise fields

@@ -5,8 +5,15 @@
 
 from typing import TypeVar, Union
 
-from honeybee_energy_ph.hvac import ventilation, heating, cooling, _base, ducting
-from PHX.model.enums.hvac import PhxVentDuctType
+from honeybee_energy_ph.hvac import (
+    ventilation,
+    heating,
+    cooling,
+    _base,
+    ducting,
+    supportive_device,
+)
+from PHX.model.enums.hvac import PhxVentDuctType, PhxSupportiveDeviceType
 from PHX.model import hvac
 from PHX.model.hvac.heating import AnyPhxHeater
 from PHX.model.hvac.ventilation import AnyPhxVentilation
@@ -114,28 +121,32 @@ def build_phx_ventilator(
     return phx_vent
 
 
-def build_phx_duct(_hbph_duct: ducting.PhDuctElement, _vent_unit_id: int) -> hvac.PhxDuctElement:
+def build_phx_duct(
+    _hbph_duct: ducting.PhDuctElement, _vent_unit_id: int
+) -> hvac.PhxDuctElement:
     """Return a new PHX Ventilation Duct based on an HB-PH Duct.
-    
+
     Arguments:
     ----------
-        * _hbph_duct (ducting.PhDuctElement): The HB-PH DuctElement to use as 
+        * _hbph_duct (ducting.PhDuctElement): The HB-PH DuctElement to use as
             the source.
-        * _vent_unit_id (int): The ID-Number of the ventilation unit this duct 
+        * _vent_unit_id (int): The ID-Number of the ventilation unit this duct
             is assigned to.
-    
+
     Returns:
     --------
         * (hvac.PhxDuctElement)
     """
-    
+
     phx_duct = hvac.PhxDuctElement(
         _hbph_duct.identifier,
         _hbph_duct.display_name,
         _vent_unit_id,
     )
 
-    phx_duct.duct_type = PhxVentDuctType(_hbph_duct.duct_type,)
+    phx_duct.duct_type = PhxVentDuctType(
+        _hbph_duct.duct_type,
+    )
 
     for hbph_duct_segment in _hbph_duct.segments:
         phx_duct.add_segment(
@@ -148,10 +159,10 @@ def build_phx_duct(_hbph_duct: ducting.PhDuctElement, _vent_unit_id: int) -> hva
                 hbph_duct_segment.width,
                 hbph_duct_segment.insulation_thickness,
                 hbph_duct_segment.insulation_conductivity,
-                hbph_duct_segment.insulation_reflective
+                hbph_duct_segment.insulation_reflective,
             )
         )
-    
+
     return phx_duct
 
 
@@ -445,3 +456,37 @@ def build_phx_cooling_sys(_htg_sys: cooling.PhCoolingSystem) -> hvac.AnyPhxCooli
     # TODO: Distribution...
 
     return phx_htg_device
+
+
+# -----------------------------------------------------------------------------
+# --- Supportive Devices
+
+
+def build_phx_supportive_device(
+    _hbeph_supportive_device: supportive_device.PhSupportiveDevice,
+) -> hvac.PhxSupportiveDevice:
+    """Build a new PhxSupportiveDevice Device.
+
+    Arguments:
+    ----------
+        *_hbeph_supportive_device (supportive_device.PhSupportiveDevice): The Honeybee-PH
+            supportive device to build the PHX-Ventilation Device from.
+
+    Returns:
+    --------
+        * (hvac.PhxSupportiveDevice): A new PHX Supportive Device.
+    """
+    print("buildng")
+    phx_device = hvac.PhxSupportiveDevice()
+    # -- basics
+    phx_device.identifier = _hbeph_supportive_device.identifier
+    phx_device.display_name = _hbeph_supportive_device.display_name
+    phx_device.device_type = PhxSupportiveDeviceType(_hbeph_supportive_device.device_type)
+    phx_device.quantity = _hbeph_supportive_device.quantity
+    # -- params
+    phx_device.params.in_conditioned_space = _hbeph_supportive_device.in_conditioned_space
+    phx_device.params.norm_energy_demand_W = _hbeph_supportive_device.norm_energy_demand_W
+    phx_device.params.annual_period_operation_khrs = (
+        _hbeph_supportive_device.annual_period_operation_khrs
+    )
+    return phx_device

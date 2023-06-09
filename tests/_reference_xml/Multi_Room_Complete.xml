@@ -586,7 +586,7 @@
 				<Components count="7">
 					<Component index="0">
 						<IdentNr>23</IdentNr>
-						<Name>Room_3_38f06423..Face4</Name>
+						<Name>Room_3_8dfffe4e..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -602,7 +602,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>24</IdentNr>
-						<Name>Room_3_38f06423..Face5</Name>
+						<Name>Room_3_8dfffe4e..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -683,7 +683,7 @@
 					</Component>
 					<Component index="5">
 						<IdentNr>50</IdentNr>
-						<Name>Shade_5cb0ad00</Name>
+						<Name>Shade_b1b6d4a0</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -699,7 +699,7 @@
 					</Component>
 					<Component index="6">
 						<IdentNr>51</IdentNr>
-						<Name>Shade_b8ac2e2b</Name>
+						<Name>Shade_10c47b7e</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -845,70 +845,70 @@
 						<ExhaustVents count="0"/>
 						<ThermalBridges count="10">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__1b8c6e4d</Name>
-								<Type>-15</Type>
-								<Length>18.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__2152e417</Name>
-								<Type>-15</Type>
-								<Length>13.416407864998739</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__3348b3c8</Name>
-								<Type>-15</Type>
-								<Length>14.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__390f8917</Name>
-								<Type>-15</Type>
-								<Length>14.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__6c9553c7</Name>
-								<Type>-15</Type>
-								<Length>10.733126291998989</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__97007b3c</Name>
-								<Type>-15</Type>
-								<Length>20.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__dd38594c</Name>
-								<Type>-15</Type>
-								<Length>16.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="7">
-								<Name>_unnamed_bldg_segment__eecb682c</Name>
+								<Name>_unnamed_bldg_segment__13fae479</Name>
 								<Type>-15</Type>
 								<Length>9.391485505499118</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
+							<ThermalBridge index="1">
+								<Name>_unnamed_bldg_segment__22b1b84f</Name>
+								<Type>-15</Type>
+								<Length>14.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="2">
+								<Name>_unnamed_bldg_segment__41341d9c</Name>
+								<Type>-15</Type>
+								<Length>16.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="3">
+								<Name>_unnamed_bldg_segment__551056e6</Name>
+								<Type>-15</Type>
+								<Length>20.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="4">
+								<Name>_unnamed_bldg_segment__64d8fad0</Name>
+								<Type>-15</Type>
+								<Length>18.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="5">
+								<Name>_unnamed_bldg_segment__8e1b33d3</Name>
+								<Type>-15</Type>
+								<Length>14.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="6">
+								<Name>_unnamed_bldg_segment__9a77863a</Name>
+								<Type>-15</Type>
+								<Length>10.733126291998989</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="7">
+								<Name>_unnamed_bldg_segment__cc5f087b</Name>
+								<Type>-15</Type>
+								<Length>13.416407864998739</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
 							<ThermalBridge index="8">
-								<Name>_unnamed_bldg_segment__f464beab</Name>
+								<Name>_unnamed_bldg_segment__eec978d1</Name>
 								<Type>-15</Type>
 								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="9">
-								<Name>_unnamed_bldg_segment__f9a4a201</Name>
+								<Name>_unnamed_bldg_segment__fc1aee05</Name>
 								<Type>-15</Type>
 								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
@@ -1203,7 +1203,7 @@
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
-								<Name>104600ba-c6b0-4eb0-be2e-4694ce719a74</Name>
+								<Name>dcd4c8fc-59b5-4cd2-9746-310adaf2e3b3</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
@@ -1280,7 +1280,7 @@
 							<DistributionCooling/>
 							<DistributionVentilation count="2">
 								<Duct index="0">
-									<Name>668188a9</Name>
+									<Name>Test_Vent_System_supply</Name>
 									<IdentNr>3</IdentNr>
 									<DuctDiameter unit="mm">160.0</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
@@ -1297,7 +1297,7 @@
 									</AssignedVentUnits>
 								</Duct>
 								<Duct index="1">
-									<Name>55b11870</Name>
+									<Name>Test_Vent_System_exhaust</Name>
 									<IdentNr>4</IdentNr>
 									<DuctDiameter unit="mm">160.0</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
@@ -1314,8 +1314,18 @@
 									</AssignedVentUnits>
 								</Duct>
 							</DistributionVentilation>
-							<UseDefaultValues>true</UseDefaultValues>
+							<UseDefaultValues>false</UseDefaultValues>
 							<DeviceInConditionedSpace>true</DeviceInConditionedSpace>
+							<SupportiveDevices count="1">
+								<SupportiveDevice index="0">
+									<Name>Example Device</Name>
+									<Type>10</Type>
+									<Quantity>3</Quantity>
+									<InConditionedSpace>false</InConditionedSpace>
+									<NormEnergyDemand>123.0</NormEnergyDemand>
+									<PeriodOperation>6.5</PeriodOperation>
+								</SupportiveDevice>
+							</SupportiveDevices>
 						</PHDistribution>
 					</System>
 				</Systems>
