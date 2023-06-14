@@ -29,6 +29,7 @@ from PHX.model.enums import (
     phi_certification_phpp_9,
     phi_certification_phpp_10,
     phius_certification,
+    hvac,
 )
 from PHX.from_HBJSON import (
     create_building,
@@ -315,6 +316,10 @@ def add_PhxPhBuildingData_from_hb_room(
     ph_bldg.setpoints.summer = hbph_bldg_seg.set_points.summer
     ph_bldg.mech_room_temp = hbph_bldg_seg.mech_room_temp
     ph_bldg.non_combustible_materials = hbph_bldg_seg.non_combustible_materials
+
+    # -- Summer HRV Bypass mode
+    _ = hbph_bldg_seg.summer_hrv_bypass_mode.number
+    ph_bldg.summer_hrv_bypass_mode = hvac.PhxSummerBypassMode(_)
 
     return None
 

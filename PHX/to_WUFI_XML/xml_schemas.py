@@ -303,42 +303,28 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
 def _PhxPhBuildingData(
     _phius_cert: certification.PhxPhiusCertification,
 ) -> List[xml_writable]:
+    # alias --
+    bd = _phius_cert.ph_building_data
+    cert = _phius_cert.phius_certification_settings
+
     return [
-        XML_Node("IdentNr", _phius_cert.ph_building_data._count),
-        XML_Node(
-            "BuildingCategory",
-            _phius_cert.phius_certification_settings.phius_building_category_type.value,
-        ),
-        XML_Node(
-            "OccupancyTypeResidential",
-            _phius_cert.phius_certification_settings.phius_building_use_type.value,
-        ),
-        XML_Node(
-            "BuildingStatus",
-            _phius_cert.phius_certification_settings.phius_building_status.value,
-        ),
-        XML_Node(
-            "BuildingType",
-            _phius_cert.phius_certification_settings.phius_building_type.value,
-        ),
-        XML_Node(
-            "OccupancySettingMethod",
-            _phius_cert.ph_building_data.occupancy_setting_method,
-        ),
-        XML_Node("NumberUnits", _phius_cert.ph_building_data.num_of_units),
-        XML_Node("CountStories", _phius_cert.ph_building_data.num_of_floors),
-        XML_Node(
-            "EnvelopeAirtightnessCoefficient",
-            _phius_cert.ph_building_data.airtightness_q50,
-        ),
-        XML_Node("SummerHRVHumidityRecovery", 4, "choice", "Always"),
+        XML_Node("IdentNr", bd._count),
+        XML_Node("BuildingCategory", cert.phius_building_category_type.value),
+        XML_Node("OccupancyTypeResidential", cert.phius_building_use_type.value),
+        XML_Node("BuildingStatus", cert.phius_building_status.value),
+        XML_Node("BuildingType", cert.phius_building_type.value),
+        XML_Node("OccupancySettingMethod", bd.occupancy_setting_method),
+        XML_Node("NumberUnits", bd.num_of_units),
+        XML_Node("CountStories", bd.num_of_floors),
+        XML_Node("EnvelopeAirtightnessCoefficient", bd.airtightness_q50),
+        XML_Node("SummerHRVHumidityRecovery", bd.summer_hrv_bypass_mode.value),
         XML_List(
             "FoundationInterfaces",
             [
                 XML_Object(
                     "FoundationInterface", f, "index", i, _schema_name="_PhxFoundation"
                 )
-                for i, f in enumerate(_phius_cert.ph_building_data.foundations)
+                for i, f in enumerate(bd.foundations)
             ],
         ),
         XML_Object(
@@ -346,18 +332,10 @@ def _PhxPhBuildingData(
             None,
             _schema_name="_InternalGainsAdditionalData",
         ),
-        XML_Node(
-            "MechanicalRoomTemperature", _phius_cert.ph_building_data.mech_room_temp
-        ),
-        XML_Node("IndoorTemperature", _phius_cert.ph_building_data.setpoints.winter),
-        XML_Node(
-            "OverheatingTemperatureThreshold",
-            _phius_cert.ph_building_data.setpoints.summer,
-        ),
-        XML_Node(
-            "NonCombustibleMaterials",
-            _phius_cert.ph_building_data.non_combustible_materials,
-        ),
+        XML_Node("MechanicalRoomTemperature", bd.mech_room_temp),
+        XML_Node("IndoorTemperature", bd.setpoints.winter),
+        XML_Node("OverheatingTemperatureThreshold", bd.setpoints.summer),
+        XML_Node("NonCombustibleMaterials", bd.non_combustible_materials),
     ]
 
 

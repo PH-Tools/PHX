@@ -203,7 +203,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_2eb5007b..Face4</Name>
+						<Name>Room_1_8335d414..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -219,7 +219,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_2eb5007b..Face5</Name>
+						<Name>Room_1_8335d414..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -502,7 +502,7 @@
 						<NumberUnits>1</NumberUnits>
 						<CountStories>1</CountStories>
 						<EnvelopeAirtightnessCoefficient>0.81576</EnvelopeAirtightnessCoefficient>
-						<SummerHRVHumidityRecovery choice="Always">4</SummerHRVHumidityRecovery>
+						<SummerHRVHumidityRecovery>4</SummerHRVHumidityRecovery>
 						<FoundationInterfaces count="0"/>
 						<InternalGainsAdditionalData>
 							<EvaporationHeatPerPerson unit="W">15</EvaporationHeatPerPerson>

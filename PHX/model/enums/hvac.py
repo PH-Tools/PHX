@@ -88,8 +88,16 @@ class PhxVentDuctType(Enum):
     SUPPLY = 1
     EXHAUST = 2
 
+
 class PhxSupportiveDeviceType(Enum):
     HEAT_CIRCULATING_PUMP = 4
     DHW_CIRCULATING_PUMP = 6
     DHW_STORAGE_LOAD_PUMP = 7
     OTHER = 10
+
+
+class PhxSummerBypassMode(Enum):
+    NONE = 1
+    TEMP_CONTROLLED = 2
+    ENTHALPY_CONTROLLED = 3
+    ALWAYS = 4

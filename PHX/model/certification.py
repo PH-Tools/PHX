@@ -10,6 +10,7 @@ from enum import Enum
 
 from PHX.model import ground
 from PHX.model.enums import phi_certification_phpp_9, phius_certification
+from PHX.model.enums.hvac import PhxSummerBypassMode
 
 
 @dataclass
@@ -21,23 +22,20 @@ class PhxSetpoints:
 @dataclass
 class PhxPhBuildingData:
     _count: ClassVar[int] = 0
-
     id_num: int = field(init=False, default=0)
 
     num_of_units: int = 1
     num_of_floors: int = 1
     occupancy_setting_method: int = 2  # Design
-
     airtightness_q50: float = 1.0  # m3/hr-m2-envelope
     airtightness_n50: float = 1.0  # ach
     wind_coefficient_e: float = 0.07
     wind_coefficient_f: float = 15
-
     setpoints: PhxSetpoints = field(default_factory=PhxSetpoints)
     mech_room_temp: float = 20.0
     non_combustible_materials: bool = False
-
     foundations: list[ground.PhxFoundation] = field(default_factory=list)
+    summer_hrv_bypass_mode: PhxSummerBypassMode = PhxSummerBypassMode.ALWAYS
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
