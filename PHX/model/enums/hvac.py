@@ -31,6 +31,7 @@ class SystemType(Enum):
     DISTRICT_HEAT = 4
     HEAT_PUMP = 5
     WATER_STORAGE = 8
+    PHOTOVOLTAIC = 10
 
 
 class DeviceType(Enum):
@@ -40,6 +41,7 @@ class DeviceType(Enum):
     DISTRICT_HEAT = 4
     HEAT_PUMP = 5
     WATER_STORAGE = 8
+    PHOTOVOLTAIC = 10
 
 
 class HeatPumpType(Enum):

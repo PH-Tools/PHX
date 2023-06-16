@@ -22,6 +22,7 @@ from honeybee_energy_ph.hvac.ventilation import (
     _ExhaustVentilatorBase,
 )
 from honeybee_energy_ph.hvac.supportive_device import PhSupportiveDevice
+from honeybee_energy_ph.hvac.renewable_devices import PhRenewableEnergyDevice
 
 from PHX.model import phx_site, project, constructions, certification
 from PHX.model.utilization_patterns import UtilizationPatternCollection_Ventilation
@@ -872,7 +873,7 @@ def add_supportive_devices_from_hb_room(
         _hph_space: space.Space,
     ) -> Set[PhSupportiveDevice]:
         """Return a set of all the SupportiveDevices found on a space's host HB Room."""
-        # -- Get the Honeybee-PH Exhaust Vent Devices from the space's host room
+        # -- Get the Honeybee-PH Devices from the space's host room
         # -- Note: in the case of a merged room, the space host may not be the same
         # -- as _hb_room, so always refer back to the space.host to be sure.
         host_rm_prop_energy: RoomEnergyProperties = _hph_space.host.properties.energy  # type: ignore
@@ -899,6 +900,47 @@ def add_supportive_devices_from_hb_room(
     # -- Once all the Supportive Devices have been added to the Zones, merge them together
     if _merge_devices:
         _variant.mech_systems.supportive_devices.merge_all_devices()
+
+    return None
+
+
+def add_renewable_devices_from_hb_room(
+    _variant: project.PhxVariant,
+    _hb_room: room.Room,
+    _merge_devices: bool = True,
+) -> None:
+    def _get_space_renewable_devices(
+        _hph_space: space.Space,
+    ) -> Set[PhRenewableEnergyDevice]:
+        """Return a set of all the Renewable Energy Devices found on a space's host HB Room.
+
+        Note: in the case of a merged room, the space host may not be the same
+        as _hb_room, so always refer back to the space.host to be sure.
+        """
+        host_rm_prop_energy: RoomEnergyProperties = _hph_space.host.properties.energy  # type: ignore
+        hvac_prop_ph: IdealAirSystemPhProperties = host_rm_prop_energy.hvac.properties.ph  # type: ignore
+        return hvac_prop_ph.renewable_devices  # type: ignore
+
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    for hbph_space in room_prop_ph.spaces:
+        for hbph_device in _get_space_renewable_devices(hbph_space):
+            # -- Get or Build the PHX Renewable Device
+            # -- If the Device already exists, just use that one.
+            # -- If the device is already in the Mech System's collection, dont add another one.
+            if _variant.mech_systems.renewable_devices.device_in_collection(
+                hbph_device.key
+            ):
+                continue
+
+            # -- Otherwise, build a new PHX-Renewable Device from the HBPH-Object
+            phx_device = create_hvac.build_phx_renewable_device(hbph_device)
+            _variant.mech_systems.renewable_devices.add_new_device(
+                hbph_device.key, phx_device
+            )
+
+    # -- Once all the Renewable Devices have been added to the Zones, merge them together
+    if _merge_devices:
+        _variant.mech_systems.renewable_devices.merge_all_devices()
 
     return None
 
@@ -953,6 +995,7 @@ def from_hb_room(
     # -- devices are down at the zone level instead of up at the Variant level.
     add_exhaust_vent_devices_from_hb_rooms(new_variant, _hb_room)
     add_supportive_devices_from_hb_room(new_variant, _hb_room)
+    add_renewable_devices_from_hb_room(new_variant, _hb_room)
     add_phius_certification_from_hb_room(new_variant, _hb_room)
     add_phi_certification_from_hb_room(new_variant, _hb_room)
     add_PhxPhBuildingData_from_hb_room(new_variant, _hb_room)

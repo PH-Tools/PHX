@@ -34,7 +34,7 @@ class PhxCoolingVentilationParams(_base.PhxMechanicalDeviceParams):
         return 1 / self.annual_COP
 
     def __add__(self, other: PhxCoolingVentilationParams) -> PhxCoolingVentilationParams:
-        base = super().__add__(other)
+        base: PhxCoolingVentilationParams = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.hp_type = self.hp_type
         new_obj.single_speed = any([self.single_speed, other.single_speed])
@@ -55,7 +55,7 @@ class PhxCoolingVentilation(PhxCoolingDevice):
 
     def __add__(self, other: PhxCoolingVentilation) -> PhxCoolingVentilation:
         base = super().__add__(other)
-        new_obj = self.__class__.from_kwargs(**vars(base))
+        new_obj: PhxCoolingVentilation = self.__class__.from_kwargs(**vars(base))
         new_obj.device_type = self.device_type
         new_obj.cooling_type = self.cooling_type
         new_obj.params = self.params + other.params
@@ -82,7 +82,7 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
     def __add__(
         self, other: PhxCoolingRecirculationParams
     ) -> PhxCoolingRecirculationParams:
-        base = super().__add__(other)
+        base: PhxCoolingRecirculationParams = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.hp_type = self.hp_type
         new_obj.single_speed = any([self.single_speed, other.single_speed])
@@ -106,7 +106,7 @@ class PhxCoolingRecirculation(PhxCoolingDevice):
     )
 
     def __add__(self, other: PhxCoolingRecirculation) -> PhxCoolingRecirculation:
-        base = super().__add__(other)
+        base: PhxCoolingRecirculation = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         new_obj.cooling_type = self.cooling_type
         new_obj.device_type = self.device_type
@@ -130,7 +130,7 @@ class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
     def __add__(
         self, other: PhxCoolingDehumidificationParams
     ) -> PhxCoolingDehumidificationParams:
-        base = super().__add__(other)
+        base: PhxCoolingDehumidificationParams = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.hp_type = self.hp_type
         new_obj.useful_heat_loss = any([self.useful_heat_loss, other.useful_heat_loss])
@@ -148,7 +148,7 @@ class PhxCoolingDehumidification(PhxCoolingDevice):
     )
 
     def __add__(self, other: PhxCoolingDehumidification) -> PhxCoolingDehumidification:
-        base = super().__add__(other)
+        base: PhxCoolingDehumidification = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         new_obj.device_type = self.device_type
         new_obj.cooling_type = self.cooling_type
@@ -169,7 +169,7 @@ class PhxCoolingPanelParams(_base.PhxMechanicalDeviceParams):
         return 1 / self.annual_COP
 
     def __add__(self, other: PhxCoolingPanelParams) -> PhxCoolingPanelParams:
-        base = super().__add__(other)
+        base: PhxCoolingPanelParams = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.hp_type = self.hp_type
         new_obj.annual_COP = (self.annual_COP + other.annual_COP) / 2
@@ -184,7 +184,7 @@ class PhxCoolingPanel(PhxCoolingDevice):
     params: PhxCoolingPanelParams = field(default_factory=PhxCoolingPanelParams)
 
     def __add__(self, other: PhxCoolingPanel) -> PhxCoolingPanel:
-        base = super().__add__(other)
+        base: PhxCoolingPanel = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         new_obj.device_type = self.device_type
         new_obj.cooling_type = self.cooling_type

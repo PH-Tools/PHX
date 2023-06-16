@@ -24,6 +24,10 @@ from PHX.model.hvac.cooling import AnyPhxCooling
 from PHX.model.hvac.water import AnyWaterTank
 from PHX.model.hvac.piping import PhxRecirculationParameters
 from PHX.model.hvac.supportive_devices import PhxSupportiveDevice
+from PHX.model.hvac.renewable_devices import AnyRenewableDevice, PhxDevicePhotovoltaic
+
+
+# ------------------------------------------------------------------------------
 
 
 class NoVentUnitFoundError(Exception):
@@ -38,6 +42,15 @@ class NoSupportiveDeviceUnitFoundError(Exception):
         super().__init__(self.msg)
 
 
+class NoRenewableDeviceUnitFoundError(Exception):
+    def __init__(self, _id_num):
+        self.msg = f"Error: Cannot locate the Renewable Device with id num: {_id_num}"
+        super().__init__(self.msg)
+
+
+# ------------------------------------------------------------------------------
+
+
 @dataclass
 class PhxZoneCoverage:
     """Percentage of the building load-type covered by the subsystem."""
@@ -50,7 +63,133 @@ class PhxZoneCoverage:
     dehumidification: float = 1.0
 
 
-AnyMechDevice = Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxCooling, AnyWaterTank]
+AnyMechDevice = Union[
+    AnyPhxVentilation, AnyPhxHeater, AnyPhxCooling, AnyWaterTank, AnyRenewableDevice
+]
+
+
+# ------------------------------------------------------------------------------
+
+
+@dataclass
+class PhxRenewableDeviceCollection:
+    """A Collection of PHX Renewable Energy Devices."""
+
+    _count: ClassVar[int] = 0
+
+    id_num: int = field(init=False, default=0)
+    display_name: str = "Renewable Energy Device Collection"
+    _devices: Dict[str, AnyRenewableDevice] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        self.__class__._count += 1
+        self.id_num = self.__class__._count
+
+    @property
+    def devices(self) -> List[AnyRenewableDevice]:
+        return list(self._devices.values())
+
+    @property
+    def pv_devices(self) -> List[PhxDevicePhotovoltaic]:
+        """Return a List of all the Photovoltaic devices"""
+        return [d for d in self.devices if d.device_type == DeviceType.PHOTOVOLTAIC]
+
+    def clear_all_devices(self) -> None:
+        """Reset the collection to an empty dictionary."""
+        self._devices = {}
+
+    def device_in_collection(self, _device_key) -> bool:
+        """Return True if a PHX Renewable Device with the matching key is in the collection."""
+        return _device_key in self._devices.keys()
+
+    def get_device_by_key(self, _key: str) -> Optional[AnyRenewableDevice]:
+        """Returns the PHX Renewable Device with the matching key, or None if not found.
+
+        Arguments:
+        ----------
+            * _key (str): The key to search the collection for.
+
+        Returns:
+        --------
+            * (Optional[PhxRenewableDevice]) The supportive device with
+                the matching key, or None if not found.
+        """
+        return self._devices.get(_key, None)
+
+    def get_device_by_id(self, _id_num: int) -> AnyRenewableDevice:
+        """Returns a PHX Renewable Device from the collection which has a matching id-num.
+
+        Arguments:
+        ----------
+            * _id_num (int): The Renewable Device id-number to search for.
+
+        Returns:
+        --------
+            * (AnyRenewableDevice): The Renewable Device found with the
+                matching ID-Number. Or Error if not found.
+        """
+        for device in self._devices.values():
+            if device.id_num == _id_num:
+                return device
+
+        raise NoRenewableDeviceUnitFoundError(_id_num)
+
+    def add_new_device(self, _key: str, _d: AnyRenewableDevice) -> None:
+        """Adds a new PHX Supportive Device to the collection.
+
+        Arguments:
+        ----------
+            * _key (str): The key to use when storing the new device
+            * _device (AnyRenewableDevice): The new PHX Renewable Device
+                to add to the collection.
+
+        Returns:
+        --------
+            * None
+        """
+        if not _d:
+            return
+        self._devices[_key] = _d
+
+    def group_devices_by_identifer(
+        self, _devices: List[AnyRenewableDevice]
+    ) -> Dict[str, List[AnyRenewableDevice]]:
+        d = defaultdict(list)
+        for device in _devices:
+            d[device.identifier].append(copy(device))
+        return d
+
+    def merge_group_of_devices(
+        self, _groups: Dict[str, List[AnyRenewableDevice]]
+    ) -> List[AnyRenewableDevice]:
+        """Merge a group of Dict of device-groups together into a single device."""
+        merged_devices = []
+        for group in _groups.values():
+            merged_devices.append(reduce(lambda d1, d2: d1 + d2, group))
+        return merged_devices
+
+    def merge_all_devices(self) -> None:
+        """Merge all the devices in the collection together by identifier."""
+        pv_devices = self.group_devices_by_identifer(self.pv_devices)
+
+        # -- start fresh
+        self.clear_all_devices()
+
+        # -- Merge, and add back the merged devices
+        for device in self.merge_group_of_devices(pv_devices):
+            self.add_new_device(device.identifier, device)
+
+    def __iter__(self):
+        """Get each device in the PhxRenewableDeviceCollection, one at a time."""
+        for _ in self.devices:
+            yield _
+
+    def __len__(self) -> int:
+        """Number of devices in the PhxRenewableDeviceCollection"""
+        return len(self.devices)
+
+    def __bool__(self) -> bool:
+        return bool(self._devices)
 
 
 @dataclass
@@ -156,6 +295,8 @@ class PhxSupportiveDeviceCollection:
         --------
             * None
         """
+        if not _d:
+            return
         self._devices[_key] = _d
 
     def group_devices_by_identifer(
@@ -298,6 +439,8 @@ class PhxExhaustVentilatorCollection:
         --------
             * None
         """
+        if not _d:
+            return
         self._devices[_key] = _d
 
     def merge_all_devices(self):
@@ -336,6 +479,9 @@ class PhxExhaustVentilatorCollection:
         return bool(self._devices)
 
 
+# ------------------------------------------------------------------------------
+
+
 @dataclass
 class PhxMechanicalSystemCollection:
     """A Collection of all the mechanical devices (heating, cooling, etc) and distribution in the project"""
@@ -363,6 +509,9 @@ class PhxMechanicalSystemCollection:
 
     supportive_devices: PhxSupportiveDeviceCollection = field(
         default_factory=PhxSupportiveDeviceCollection
+    )
+    renewable_devices: PhxRenewableDeviceCollection = field(
+        default_factory=PhxRenewableDeviceCollection
     )
 
     def __post_init__(self) -> None:

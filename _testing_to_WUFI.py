@@ -31,7 +31,9 @@ TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 
 # -- Temp
 # SOURCE_FILES = [
-#     pathlib.Path("/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/test.hbjson")
+#     pathlib.Path(
+#         "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/pv_test.hbjson"
+#     )
 # ]
 # TARGET_DIR = pathlib.Path("sample")
 

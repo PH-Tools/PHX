@@ -13,11 +13,16 @@ from honeybee_energy_ph.hvac import (
     ducting,
     supportive_device,
 )
+from honeybee_energy_ph.hvac.renewable_devices import (
+    PhRenewableEnergyDevice,
+    PhPhotovoltaicDevice,
+)
 from PHX.model.enums.hvac import PhxVentDuctType, PhxSupportiveDeviceType
 from PHX.model import hvac
 from PHX.model.hvac.heating import AnyPhxHeater
 from PHX.model.hvac.ventilation import AnyPhxVentilation
 from PHX.model.hvac.cooling import AnyPhxCooling
+from PHX.model.hvac.renewable_devices import PhxDevicePhotovoltaic, AnyRenewableDevice
 
 T = TypeVar("T", bound=Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxCooling])
 
@@ -476,17 +481,45 @@ def build_phx_supportive_device(
     --------
         * (hvac.PhxSupportiveDevice): A new PHX Supportive Device.
     """
-    print("buildng")
     phx_device = hvac.PhxSupportiveDevice()
+
     # -- basics
     phx_device.identifier = _hbeph_supportive_device.identifier
     phx_device.display_name = _hbeph_supportive_device.display_name
     phx_device.device_type = PhxSupportiveDeviceType(_hbeph_supportive_device.device_type)
     phx_device.quantity = _hbeph_supportive_device.quantity
+
     # -- params
     phx_device.params.in_conditioned_space = _hbeph_supportive_device.in_conditioned_space
     phx_device.params.norm_energy_demand_W = _hbeph_supportive_device.norm_energy_demand_W
     phx_device.params.annual_period_operation_khrs = (
         _hbeph_supportive_device.annual_period_operation_khrs
     )
+
+    return phx_device
+
+
+# -----------------------------------------------------------------------------
+# -- Renewable Devices
+
+
+def build_phx_photovoltaic_device(_hbph_d: PhPhotovoltaicDevice) -> PhxDevicePhotovoltaic:
+    """Build a new PhxPhotovoltaicDevice Device from a Honeybee-PH Photovoltaic Device."""
+    d = PhxDevicePhotovoltaic()
+    d.display_name = _hbph_d.display_name
+    d.params.photovoltaic_renewable_energy = _hbph_d.photovoltaic_renewable_energy
+    d.params.onsite_utilization_factor = _hbph_d.utilization_factor
+    d.params.array_size = _hbph_d.array_size
+    return d
+
+
+def build_phx_renewable_device(_device: PhRenewableEnergyDevice) -> AnyRenewableDevice:
+    """Build a new PHX-Renewable-Device Device from a Honeybee-PH Renewable-Device."""
+    # -- Mapping Honeybee-PH -> PHX types
+    phx_renewable_classes = {
+        "PhPhotovoltaicDevice": build_phx_photovoltaic_device,
+    }
+
+    # -- Get and build the right heater equipment type
+    phx_device = phx_renewable_classes[_device.device_typename](_device)
     return phx_device

@@ -11,9 +11,19 @@ from PHX.model import (
     constructions,
     elec_equip,
     components,
-    spaces, shades,
+    spaces,
+    shades,
 )
-from PHX.model.hvac import _base, cooling, collection, water, ventilation, heating, ducting
+from PHX.model.hvac import (
+    _base,
+    cooling,
+    collection,
+    renewable_devices,
+    water,
+    ventilation,
+    heating,
+    ducting,
+)
 from PHX.model.schedules import ventilation as sched_ventilation
 
 
@@ -119,6 +129,9 @@ def _reset_phx_class_counters():
     ducting.PhxDuctElement._count = 0
 
     shades.PhxWindowShade._count = 0
+
+    renewable_devices.PhxDevicePhotovoltaic._count = 0
+
 
 def _reload_phx_classes():
     """reload all of the PHX model classes. This is similar to the 'reset_class_counters

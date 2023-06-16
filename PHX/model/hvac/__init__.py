@@ -10,3 +10,4 @@ from PHX.model.hvac.water import *
 from PHX.model.hvac.piping import *
 from PHX.model.hvac.ducting import *
 from PHX.model.hvac.supportive_devices import *
+from PHX.model.hvac.renewable_devices import *

@@ -110,8 +110,15 @@ class PhxMechanicalDevice:
         self._identifier = str(_in)
 
     def __add__(self, other: PhxMechanicalDevice) -> PhxMechanicalDevice:
+        if self.system_type != other.system_type:
+            raise ValueError("Cannot add devices of different system types.")
+
+        if self.device_type != other.device_type:
+            raise ValueError("Cannot add devices of different device types.")
+
         obj = self.__class__()
         obj.device_type = self.device_type
+        obj.system_type = self.system_type
         obj.display_name = self.display_name
         obj.quantity = self.quantity + other.quantity
         obj.unit = self.unit + other.unit

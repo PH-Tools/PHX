@@ -15,13 +15,16 @@ from PHX.model import (
     geometry,
     ground,
     hvac,
-    loads,
     phx_site,
     project,
-    schedules,
     spaces,
     shades,
 )
+from PHX.model.hvac.renewable_devices import (
+    PhxDevicePhotovoltaic,
+    PhxDevicePhotovoltaicParams,
+)
+from PHX.model.hvac._base import PhxUsageProfile
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
 from PHX.model.schedules.occupancy import PhxScheduleOccupancy
 from PHX.to_WUFI_XML.xml_writables import XML_Node, XML_List, XML_Object, xml_writable
@@ -1535,8 +1538,12 @@ def _PhxMechanicalDevices(
         hvac.DeviceType.DISTRICT_HEAT: "_PhxDeviceHeaterDistrict",
         hvac.DeviceType.HEAT_PUMP: "_PhxDeviceHeaterHeatPump",
         hvac.DeviceType.WATER_STORAGE: "_PhxDeviceWaterStorage",
+        hvac.DeviceType.PHOTOVOLTAIC: "_PhxDevicePhotovoltaic",
     }
 
+    wufi_devices = []
+    wufi_devices.extend(_hvac_collection.devices)
+    wufi_devices.extend(_hvac_collection.renewable_devices)
     return [
         XML_Node("Name", _hvac_collection.display_name),
         XML_Node(
@@ -1554,7 +1561,7 @@ def _PhxMechanicalDevices(
             "Devices",
             [
                 XML_Object("Device", d, "index", i, _schema_name=devices[d.device_type])
-                for i, d in enumerate(_hvac_collection.devices)
+                for i, d in enumerate(wufi_devices)
             ],
         ),
         XML_Object("PHDistribution", _hvac_collection, _schema_name="_PHDistribution"),
@@ -1759,4 +1766,42 @@ def _LoadPerson(_sp: spaces.PhxSpace) -> List[xml_writable]:
         XML_Node("ChoiceActivityPersons", 3),
         XML_Node("NumberOccupants", 1),
         XML_Node("FloorAreaUtilizationZone", _sp.floor_area, "unit", "m²"),
+    ]
+
+
+# -- PV System ----------------------------------------------------------------
+
+
+def _PhxDevicePhotovoltaicParams(_p: PhxDevicePhotovoltaicParams) -> List[xml_writable]:
+    return [
+        XML_Node("SelectionLocation", _p.location_type),
+        XML_Node("SelectionOnSiteUtilization", _p.onsite_utilization_type),
+        XML_Node("SelectionUtilization", _p.utilization_type),
+        XML_Node("ArraySizePV", _p.array_size),
+        XML_Node("PhotovoltaicRenewableEnergy", _p.photovoltaic_renewable_energy),
+        XML_Node("OnsiteUtilization", _p.onsite_utilization_factor),
+        XML_Node("AuxiliaryEnergy", _p.auxiliary_energy),
+        XML_Node("AuxiliaryEnergyDHW", _p.auxiliary_energy_DHW),
+        XML_Node("InConditionedSpace", _p.in_conditioned_space),
+    ]
+
+
+def _PhxDevicePhotovoltaic(_d: hvac.PhxDevicePhotovoltaic) -> List[xml_writable]:
+    use: PhxUsageProfile = _d.usage_profile
+    return [
+        XML_Node("Name", _d.display_name),
+        XML_Node("IdentNr", _d.id_num),
+        XML_Node("SystemType", _d.system_type.value),
+        XML_Node("TypeDevice", _d.device_type.value),
+        XML_Node("UsedFor_Heating", use.space_heating),
+        XML_Node("UsedFor_DHW", use.dhw_heating),
+        XML_Node("UsedFor_Cooling", use.cooling),
+        XML_Node("UsedFor_Ventilation", use.ventilation),
+        XML_Node("UsedFor_Humidification", use.humidification),
+        XML_Node("UsedFor_Dehumidification", use.dehumidification),
+        XML_Object(
+            "PH_Parameters",
+            _d.params,
+            _schema_name="_PhxDevicePhotovoltaicParams",
+        ),
     ]
