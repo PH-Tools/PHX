@@ -387,7 +387,7 @@ def merge_foundations(_hb_rooms: List[room.Room]) -> Dict[str, PhFoundation]:
 def merge_rooms(
     _hb_rooms: List[room.Room],
     _tolerance: float,
-    _angle_tolerance: float,
+    _angle_tolerance_degrees: float,
     _merge_faces: bool = False,
 ) -> room.Room:
     """Merge together a group of Honeybee Rooms into a new single HB Room.
@@ -419,10 +419,12 @@ def merge_rooms(
     # -------------------------------------------------------------------------
     # -- Try and merge the Faces to simplify the geometry
     if _merge_faces:
-        face_groups = sort_faces(exposed_faces, _tolerance, _angle_tolerance)
+        face_groups = sort_faces(exposed_faces, _tolerance, _angle_tolerance_degrees)
         merged_faces = []
         for face_group in face_groups:
-            merged_faces.extend(merge_hb_faces(face_group, _tolerance, _angle_tolerance))
+            merged_faces.extend(
+                merge_hb_faces(face_group, _tolerance, _angle_tolerance_degrees)
+            )
         exposed_faces = merged_faces
 
     # -------------------------------------------------------------------------

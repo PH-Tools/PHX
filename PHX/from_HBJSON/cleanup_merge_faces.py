@@ -14,7 +14,7 @@ from ladybug_geometry.geometry2d.pointvector import Vector2D
 from ladybug_geometry.geometry2d.polygon import Polygon2D
 from ladybug_geometry.geometry3d.face import Face3D
 from ladybug_geometry.geometry3d.plane import Plane
-from ladybug_geometry.geometry3d.pointvector import Point3D
+from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
 
 
 # -----------------------------------------------------------------------------
@@ -93,25 +93,28 @@ def sort_faces_by_type(_faces: List[Face]) -> List[List[Face]]:
 
 
 def sort_faces_by_co_planar(
-    _faces: List[Face], _tolerance: float, _angle_tolerance: float
+    _faces: List[Face], _tolerance: float, _angle_tolerance_radians: float
 ) -> List[List[Face]]:
-    """Group HB-Faces with their co-planar neighbors."""
+    """Group HB-Faces with their co-planar neighbors.
+    Args:
+        _faces: (List[Face]) A list of HB-Faces to sort.
+        _tolerance: (Model units) The tolerance value for co-planarity test, in model units.
+        _angle_tolerance: (Radians) The tolerance for co-planarity, in radians.
+    Returns:
+        (List[List[Face]]) A list of lists of HB-Faces that are co-planar.
+    """
 
-    d = {}
-    for f in _faces:
-        if not d:
-            d[id(f)] = [f]
+    groups = {}
+    for face in _faces:
+        for group_plane, group_faces in groups.items():
+            if face.geometry.plane.is_coplanar_tolerance(
+                group_plane, _tolerance, _angle_tolerance_radians
+            ):
+                group_faces.append(face)
+                break
         else:
-            for k, v in d.items():
-                if f.geometry.plane.is_coplanar_tolerance(
-                    v[0].geometry.plane, _tolerance, _angle_tolerance
-                ):
-                    d[k].append(f)
-                    break
-            else:
-                d[id(f)] = [f]
-
-    return list(d.values())
+            groups[face.geometry.plane] = [face]
+    return list(groups.values())
 
 
 def are_coincident_points(_pt1: Point3D, _pt2: Point3D, _tolerance: float) -> bool:
@@ -133,13 +136,31 @@ def are_touching(_face_2: Face, _face_1: Face, _tolerance: float):
 def find_connected_components(
     _hb_faces: List[Face], _tolerance: float
 ) -> List[List[Face]]:
-    """ChatGPT gave me this... not 100% sure what its doing. Seems to work though."""
+    """Finds connected components of touching faces in a list of Honeybee faces.
 
+    Args:
+        _hb_faces: A list of Honeybee faces to search for connected components.
+        _tolerance: A tolerance value for determining whether two faces are touching.
+
+    Returns:
+        A list of lists, where each inner list contains a connected component of touching faces.
+    """
+
+    """Initialize an empty set called visited to keep track of which faces have 
+    been visited during the search, and an empty list called components to store 
+    the connected component groups."""
     visited = set()
     components = []
 
-    def dfs(node, component):
+    def depth_first_search(node, component):
         # type: (Face, List[Face]) -> None
+        """Define a recursive function that takes a starting face node
+        and a list component to store the connected component.
+        The function adds the starting face to the visited set and the component list,
+        and then recursively calls itself on all neighboring faces that are not
+        in the visited set and are touching the starting face within
+        a given tolerance _tolerance.
+        """
         visited.add(node)
         component.append(node)
 
@@ -147,28 +168,41 @@ def find_connected_components(
             if _neighbor_face not in visited and are_touching(
                 node, _neighbor_face, _tolerance
             ):
-                dfs(_neighbor_face, component)
+                depth_first_search(_neighbor_face, component)
 
+    """Loop over all the faces in the input list _hb_faces. If a face has not 
+    been visited yet, create an empty list called 'component', call the 'depth_first_search'
+    function with the face and the new component list, and append the 'component' list 
+    to the master components list."""
     for hb_face in _hb_faces:
         if hb_face not in visited:
             component = []
-            dfs(hb_face, component)
+            depth_first_search(hb_face, component)
             components.append(component)
 
     return components
 
 
 def sort_faces(
-    _hb_faces: List[Face], _tolerance: float, _angle_tolerance: float
+    _hb_faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float
 ) -> List[List[Face]]:
-    """Sort HB-Faces into groups of similar, planar, connected faces."""
+    """Sort HB-Faces into groups of similar, planar, connected faces.
+
+    Args:
+        _hb_faces: (List[Face]) A list of HB-Faces to sort.
+        _tolerance: (Model units) The tolerance value for co-planarity test, in model units.
+        _angle_tolerance_degrees: (Degrees) The tolerance for co-planarity, in degrees.
+    Returns:
+        (List[List[Face]]) A list of lists of HB-Faces that are similar, planar, and connected.
+    """
 
     face_groups_by_type = sort_faces_by_type(_hb_faces)
+    angle_tolerance_radians = math.radians(_angle_tolerance_degrees)
 
     face_groups_coplanar = []
     for face_group in face_groups_by_type:
         face_groups_coplanar.extend(
-            sort_faces_by_co_planar(face_group, _tolerance, _angle_tolerance)
+            sort_faces_by_co_planar(face_group, _tolerance, angle_tolerance_radians)
         )
 
     face_groups_connected = []
@@ -293,7 +327,9 @@ def find_parent_and_child_polygons(
     return parent_polygon, child_polygons
 
 
-def merge_hb_faces(_faces: List[Face], _tolerance: float, _angle_tolerance: float):
+def merge_hb_faces(
+    _faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float
+):
     """Merge a group of HB-Faces into the fewest number of faces possible."""
 
     if not _faces:
@@ -367,7 +403,7 @@ def merge_hb_faces(_faces: List[Face], _tolerance: float, _angle_tolerance: floa
     # -- Add the apertures back in
     faces_with_apertures_ = []
     for _face in faces:
-        _check_and_add_sub_face(_face, apertures, _tolerance, _angle_tolerance)
+        _check_and_add_sub_face(_face, apertures, _tolerance, _angle_tolerance_degrees)
         faces_with_apertures_.append(_face)
 
     return faces_with_apertures_

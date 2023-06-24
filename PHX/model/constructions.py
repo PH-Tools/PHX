@@ -4,7 +4,7 @@
 """PHX Construction, Materials Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Union, List, Optional
+from typing import ClassVar, Union, List, Optional, Generator
 from dataclasses import dataclass, field
 import uuid
 
@@ -173,7 +173,7 @@ class PhxConstructionWindow:
         return str(self._identifier)
 
     @identifier.setter
-    def identifier(self, _in: str):
+    def identifier(self, _in: str) -> None:
         if not _in:
             return
         self._identifier = str(_in)
@@ -200,3 +200,34 @@ class PhxConstructionWindow:
         obj.frame_left = PhxWindowFrameElement.from_total_u_value(_total_u_value)
 
         return obj
+
+    @property
+    def frames(self) -> Generator[PhxWindowFrameElement, None, None]:
+        """Returns a generator of all frame elements in order: Top, Right, Bottom, Left."""
+        for frame in (
+            self.frame_top,
+            self.frame_right,
+            self.frame_bottom,
+            self.frame_left,
+        ):
+            yield frame
+
+    def set_all_frames_u_value(self, _u_value: float) -> None:
+        """Sets the u-value of all frame elements to the given value."""
+        for frame in self.frames:
+            frame.u_value = _u_value
+
+    def set_all_frames_width(self, _width: float) -> None:
+        """Sets the width of all frame elements to the given value."""
+        for frame in self.frames:
+            frame.width = _width
+
+    def set_all_frames_psi_glazing(self, _psi_glazing: float) -> None:
+        """Sets the psi_glazing of all frame elements to the given value."""
+        for frame in self.frames:
+            frame.psi_glazing = _psi_glazing
+
+    def set_all_frames_psi_install(self, _psi_install: float) -> None:
+        """Sets the psi_install of all frame elements to the given value."""
+        for frame in self.frames:
+            frame.psi_install = _psi_install

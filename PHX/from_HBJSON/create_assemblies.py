@@ -3,15 +3,19 @@
 
 """Functions used to create Project elements from the Honeybee-Model"""
 
-from typing import Union, Optional
+from typing import Union, Optional, Any, Tuple, List
 
 from honeybee import model
+from honeybee.aperture import Aperture
 from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
 from honeybee_energy.construction import window, windowshade
 
+from honeybee_energy.construction.window import WindowConstruction
+from honeybee_energy.construction.windowshade import WindowConstructionShade
 from honeybee_energy_ph.properties.construction.window import (
     WindowConstructionPhProperties,
 )
+from honeybee_energy_ph.construction.window import PhWindowGlazing, PhWindowFrame
 from honeybee_ph_utils import iso_10077_1
 
 from PHX.model import constructions, project, shades
@@ -179,12 +183,70 @@ def build_opaque_assemblies_from_HB_model(
     return None
 
 
-def build_phx_window_type_from_HB_WindowConstruction(
-    _project: project.PhxProject, 
-    _hb_win_const: window.WindowConstruction,
-    _shade_const: Optional[windowshade.WindowConstructionShade]
+def _set_phx_window_type_glazing(
+    _phx_window_type: constructions.PhxConstructionWindow,
+    _hbph_glazing: Optional[PhWindowGlazing],
 ) -> constructions.PhxConstructionWindow:
-    """Create a new PHX-WindowType based on a HB-Window-Construction.
+    if _hbph_glazing:
+        # -- Use Detailed PH-Params
+        _phx_window_type.glazing_type_display_name = _hbph_glazing.display_name
+        _phx_window_type.u_value_glass = _hbph_glazing.u_factor
+        _phx_window_type.glass_g_value = _hbph_glazing.g_value
+    return _phx_window_type
+
+
+def _set_phx_window_type_frames(
+    _phx_window_type: constructions.PhxConstructionWindow,
+    _hbph_frame: Optional[PhWindowFrame],
+) -> constructions.PhxConstructionWindow:
+    """Sets the Frame properties of a PhxConstructionWindow based on a Honeybee-Ph WindowFrame."""
+    if _hbph_frame:
+        # -- Use Detailed PH-Params
+        _phx_window_type.frame_type_display_name = _hbph_frame.display_name
+        _phx_window_type.frame_top.u_value = _hbph_frame.top.u_factor
+        _phx_window_type.frame_top.width = _hbph_frame.top.width
+        _phx_window_type.frame_top.psi_glazing = _hbph_frame.top.psi_glazing
+        _phx_window_type.frame_top.psi_install = _hbph_frame.top.psi_install
+
+        _phx_window_type.frame_right.u_value = _hbph_frame.right.u_factor
+        _phx_window_type.frame_right.width = _hbph_frame.right.width
+        _phx_window_type.frame_right.psi_glazing = _hbph_frame.right.psi_glazing
+        _phx_window_type.frame_right.psi_install = _hbph_frame.right.psi_install
+
+        _phx_window_type.frame_bottom.u_value = _hbph_frame.bottom.u_factor
+        _phx_window_type.frame_bottom.width = _hbph_frame.bottom.width
+        _phx_window_type.frame_bottom.psi_glazing = _hbph_frame.bottom.psi_glazing
+        _phx_window_type.frame_bottom.psi_install = _hbph_frame.bottom.psi_install
+
+        _phx_window_type.frame_left.u_value = _hbph_frame.left.u_factor
+        _phx_window_type.frame_left.width = _hbph_frame.left.width
+        _phx_window_type.frame_left.psi_glazing = _hbph_frame.left.psi_glazing
+        _phx_window_type.frame_left.psi_install = _hbph_frame.left.psi_install
+    return _phx_window_type
+
+
+def _set_phx_window_type_u_w_value(
+    _phx_window_type: constructions.PhxConstructionWindow,
+    _hbph_frame: Optional[PhWindowFrame],
+    _hbph_glazing: Optional[PhWindowGlazing],
+) -> constructions.PhxConstructionWindow:
+    """Set the U-Value and Frame-Factor of a PhxConstructionWindow based on the given HBPH-Params."""
+    if _hbph_frame and _hbph_glazing:
+        _phx_window_type.frame_factor = iso_10077_1.calculate_window_frame_factor(
+            _hbph_frame, _hbph_glazing
+        )
+        _phx_window_type.u_value_window = iso_10077_1.calculate_window_uw(
+            _hbph_frame, _hbph_glazing
+        )
+    return _phx_window_type
+
+
+def build_phx_window_type_from_HB_WindowConstruction(
+    _project: project.PhxProject,
+    _hb_win_const: window.WindowConstruction,
+    _shade_const: Optional[windowshade.WindowConstructionShade],
+) -> constructions.PhxConstructionWindow:
+    """Create a new PhxConstructionWindow based on a HBPH-WindowConstruction.
 
     If any detailed PH-Params exist for the frame or glass on the HB-Window-Construction's
     .properties.ph.* then those will be used. Otherwise, the basic HB-Window-Construction
@@ -199,7 +261,6 @@ def build_phx_window_type_from_HB_WindowConstruction(
     --------
         * (constructions.WindowType): The new PHX-WindowType.
     """
-
     phx_window_type = constructions.PhxConstructionWindow()
     phx_window_type.id_num = constructions.PhxConstructionWindow._count
     phx_window_type.display_name = _hb_win_const.display_name
@@ -207,75 +268,33 @@ def build_phx_window_type_from_HB_WindowConstruction(
 
     ph_params: WindowConstructionPhProperties = _hb_win_const.properties.ph  # type: ignore
 
+    # -------------------------------------------------------------------------
+    # -- Set the basic data first ---------------------------------------------
     # -- Glass ----------------------------------------------------------------
-    if ph_params.ph_glazing:
-        # -- Use Detailed PH-Params
-        phx_window_type.glazing_type_display_name = ph_params.ph_glazing.display_name
-        phx_window_type.u_value_glass = ph_params.ph_glazing.u_factor
-        phx_window_type.glass_g_value = ph_params.ph_glazing.g_value
-    else:
-        # -- Use the basic Honeybee Params
-        phx_window_type.u_value_glass = _hb_win_const.u_factor
-        phx_window_type.glass_g_value = _hb_win_const.shgc
+    phx_window_type.u_value_glass = _hb_win_const.u_factor
+    phx_window_type.glass_g_value = _hb_win_const.shgc
+    phx_window_type.u_value_window = _hb_win_const.u_factor
+    phx_window_type.frame_factor = 0.75
 
     # -- Frames ---------------------------------------------------------------
-    if ph_params.ph_frame:
-        # -- Use Detailed PH-Params
-        phx_window_type.frame_type_display_name = ph_params.ph_frame.display_name
-        phx_window_type.frame_top.u_value = ph_params.ph_frame.top.u_factor
-        phx_window_type.frame_top.width = ph_params.ph_frame.top.width
-        phx_window_type.frame_top.psi_glazing = ph_params.ph_frame.top.psi_glazing
-        phx_window_type.frame_top.psi_install = ph_params.ph_frame.top.psi_install
+    phx_window_type.set_all_frames_u_value(_hb_win_const.u_factor)
+    phx_window_type.set_all_frames_width(0.1)
+    phx_window_type.set_all_frames_psi_glazing(0.0)
+    phx_window_type.set_all_frames_psi_install(0.0)
 
-        phx_window_type.frame_right.u_value = ph_params.ph_frame.right.u_factor
-        phx_window_type.frame_right.width = ph_params.ph_frame.right.width
-        phx_window_type.frame_right.psi_glazing = ph_params.ph_frame.right.psi_glazing
-        phx_window_type.frame_right.psi_install = ph_params.ph_frame.right.psi_install
-
-        phx_window_type.frame_bottom.u_value = ph_params.ph_frame.bottom.u_factor
-        phx_window_type.frame_bottom.width = ph_params.ph_frame.bottom.width
-        phx_window_type.frame_bottom.psi_glazing = ph_params.ph_frame.bottom.psi_glazing
-        phx_window_type.frame_bottom.psi_install = ph_params.ph_frame.bottom.psi_install
-
-        phx_window_type.frame_left.u_value = ph_params.ph_frame.left.u_factor
-        phx_window_type.frame_left.width = ph_params.ph_frame.left.width
-        phx_window_type.frame_left.psi_glazing = ph_params.ph_frame.left.psi_glazing
-        phx_window_type.frame_left.psi_install = ph_params.ph_frame.left.psi_install
-    else:
-        # -- Use the basic Honeybee Params
-        phx_window_type.frame_top.u_value = _hb_win_const.u_factor
-        phx_window_type.frame_top.width = 0.1
-        phx_window_type.frame_top.psi_glazing = 0.0
-        phx_window_type.frame_top.psi_install = 0.0
-
-        phx_window_type.frame_right.u_value = _hb_win_const.u_factor
-        phx_window_type.frame_right.width = 0.1
-        phx_window_type.frame_right.psi_glazing = 0.0
-        phx_window_type.frame_right.psi_install = 0.0
-
-        phx_window_type.frame_bottom.u_value = _hb_win_const.u_factor
-        phx_window_type.frame_bottom.width = 0.1
-        phx_window_type.frame_bottom.psi_glazing = 0.0
-        phx_window_type.frame_bottom.psi_install = 0.0
-
-        phx_window_type.frame_left.u_value = _hb_win_const.u_factor
-        phx_window_type.frame_left.width = 0.1
-        phx_window_type.frame_left.psi_glazing = 0.0
-        phx_window_type.frame_left.psi_install = 0.0
+    # -------------------------------------------------------------------------
+    # -- Then set detailed PH data, if any  -----------------------------------
+    ph_frame = ph_params.ph_frame
+    ph_glazing = ph_params.ph_glazing
+    phx_window_type = _set_phx_window_type_glazing(phx_window_type, ph_glazing)
+    phx_window_type = _set_phx_window_type_frames(phx_window_type, ph_frame)
 
     # -- Window Params as per ISO-10077-1 -------------------------------------
-    if ph_params.ph_frame and ph_params.ph_glazing:
-        phx_window_type.frame_factor = iso_10077_1.calculate_window_frame_factor(
-            ph_params.ph_frame, ph_params.ph_glazing
-        )
-        phx_window_type.u_value_window = iso_10077_1.calculate_window_uw(
-            ph_params.ph_frame, ph_params.ph_glazing
-        )
-    else:
-        phx_window_type.frame_factor = 0.75
-        phx_window_type.u_value_window = _hb_win_const.u_factor
+    phx_window_type = _set_phx_window_type_u_w_value(
+        phx_window_type, ph_frame, ph_glazing
+    )
 
-    # -- Add Shading, if any --------------------------------------------------
+    # -- Add Shading to the Window, if any -------------------------------------
     if _shade_const:
         phx_shade = _project.shade_types[_shade_const.shade_material.identifier]
         phx_window_type.id_num_shade = phx_shade.id_num
@@ -283,8 +302,61 @@ def build_phx_window_type_from_HB_WindowConstruction(
     return phx_window_type
 
 
+def build_phx_shade_type_from_HB_WindowConstructionShade(
+    _hb_const: windowshade.WindowConstructionShade,
+) -> shades.PhxWindowShade:
+    """Create a new PhxWindowShade object with attributes based on an HBE-WindowConstructionShade.
+
+    Arguments:
+    ----------
+        * _hb_const: (windowshade.WindowConstructionShade) The source HBE-WindowConstructionShade.
+
+    Returns:
+    --------
+        * (shades.PhxWindowShade): The new PHX Window Shade type.
+    """
+    _hb_shade_material = _hb_const.shade_material
+
+    phx_shade = shades.PhxWindowShade()
+    phx_shade.display_name = _hb_shade_material.display_name
+    phx_shade.identifier = _hb_shade_material.identifier
+    # TODO: Phius Shade Method?
+    phx_shade.reduction_factor = _hb_shade_material.solar_transmittance
+
+    # -- Keep the IDs aligned
+    _hb_const.properties.ph.id_num = phx_shade.id_num  # type: ignore
+
+    return phx_shade
+
+
+def _get_hbph_window_constructions(
+    _ap_ep_const,
+) -> Tuple[WindowConstruction, Optional[WindowConstructionShade]]:
+    """Get the WindowConstruction and WindowConstructionShade from an HB-Aperture Construction."""
+    try:
+        # -- It is a WindowConstructionShade if it has a 'window_construction' attribute
+        hb_win_const = _ap_ep_const.window_construction
+        hb_shade_const = _ap_ep_const
+    except AttributeError:
+        # -- otherwise, its a normal window construction
+        hb_win_const = _ap_ep_const
+        hb_shade_const = None
+
+    return hb_win_const, hb_shade_const
+
+
+def _new_shade_type(
+    _project: project.PhxProject, hb_shade_const: WindowConstructionShade
+) -> bool:
+    """Check if a new shade type needs to be created for the given HB-WindowConstructionShade."""
+    if hb_shade_const.shade_material.identifier in _project.shade_types:
+        return False
+    else:
+        return True
+
+
 def build_transparent_assembly_types_from_HB_Model(
-    _project: project.PhxProject, _hb_model: model.Model
+    _project: project.PhxProject, _hb_apertures: List[Aperture]
 ) -> None:
     """Create PHX-WindowTypes (constructions) from an HB Model and add to the PHX-Project
 
@@ -293,62 +365,37 @@ def build_transparent_assembly_types_from_HB_Model(
     Arguments:
     ----------
         * _project (_project: project.PhxProject): The PhxProject to store the new window-type on.
-        * _hb_model (model.Model): The Honeybee Model to use as the source.
+        * _hb_apertures (List[Aperture]): The Honeybee Apertures to use as the source
 
     Returns:
     --------
         * None
     """
-    apertures = (aperture for room in _hb_model.rooms for face in room.faces for aperture in face.apertures)
-    for aperture in apertures:
-        # -- If it is a WindowConstructionShade, pull out the normal WindowConstruction
-        if hasattr(aperture.properties.energy.construction, "window_construction"):
-            # -- It is a WindowConstructionShade
-            hb_win_construction = aperture.properties.energy.construction.window_construction
-            hb_shade_construction = aperture.properties.energy.construction
-        else:
-            # -- It is a normal WindowConstruction
-            hb_win_construction = aperture.properties.energy.construction
-            hb_shade_construction = None
 
+    for aperture in _hb_apertures:
+        # ---------------------------------------------------------------------
+        ap_ep_const = aperture.properties.energy.construction  # type: ignore
+        hb_win_const, hb_shade_const = _get_hbph_window_constructions(ap_ep_const)
+
+        # ---------------------------------------------------------------------
         # --- Build all the PHX Shades first since the window needs to know their ID num
-        if hb_shade_construction and hb_shade_construction.shade_material.identifier not in _project.shade_types:
-            phx_shade_type = build_phx_shade_type_from_HB_WindowConstructionShade(hb_shade_construction)
+        if hb_shade_const and _new_shade_type(_project, hb_shade_const):
+            phx_shade_type = build_phx_shade_type_from_HB_WindowConstructionShade(
+                hb_shade_const
+            )
             _project.add_new_shade_type(phx_shade_type)
 
+        # ---------------------------------------------------------------------
         # --- Build the PHX Windows
-        if hb_win_construction.identifier not in _project.window_types:
+        if hb_win_const.identifier not in _project.window_types:
             phx_aperture_constr = build_phx_window_type_from_HB_WindowConstruction(
-                _project, hb_win_construction, hb_shade_construction)
+                _project, hb_win_const, hb_shade_const
+            )
             _project.add_new_window_type(phx_aperture_constr)
 
+        # ---------------------------------------------------------------------
         # -- Keep all the IDs aligned
-        phx_win_type = _project.window_types[hb_win_construction.identifier]
-        hb_win_construction.properties.ph.id_num = phx_win_type.id_num
+        phx_win_type = _project.window_types[hb_win_const.identifier]
+        hb_win_const.properties.ph.id_num = phx_win_type.id_num  # type: ignore
 
     return None
-
-
-def build_phx_shade_type_from_HB_WindowConstructionShade(
-        _hb_const: windowshade.WindowConstructionShade) -> shades.PhxWindowShade:
-    """Create a new PhxWindowShade object with attributes based on an HBE-WindowConstructionShade.
-    
-    Arguments:
-    ----------
-        * _hb_const: (windowshade.WindowConstructionShade) The source HBE-WindowConstructionShade.
-    
-    Returns:
-    --------
-        * (shades.PhxWindowShade): The new PHX Window Shade type.
-    """
-    _hb_shade_material = _hb_const.shade_material
-    
-    phx_shade = shades.PhxWindowShade()
-    phx_shade.display_name = _hb_shade_material.display_name
-    phx_shade.identifier = _hb_shade_material.identifier
-    phx_shade.reduction_factor = _hb_shade_material.solar_transmittance #TODO: Phius Shade Method?
-
-    # -- Keep the IDs aligned
-    _hb_const.properties.ph.id_num = phx_shade.id_num
-
-    return phx_shade

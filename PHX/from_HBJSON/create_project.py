@@ -8,6 +8,7 @@ from typing import Tuple, List
 
 from honeybee import model
 from honeybee import room
+from honeybee.aperture import Aperture
 
 from honeybee_ph.properties.room import RoomPhProperties
 from honeybee_ph.team import ProjectTeam, ProjectTeamMember
@@ -70,6 +71,16 @@ def get_project_data_from_hb_model(_hb_model: model.Model) -> PhxProjectData:
     return new_project_data
 
 
+def get_hb_apertures(_hb_model: model.Model) -> List[Aperture]:
+    """Return a list of all the HB Apertures in the Model."""
+    return [
+        aperture
+        for room in _hb_model.rooms
+        for face in room.faces
+        for aperture in face.apertures
+    ]
+
+
 def convert_hb_model_to_PhxProject(
     _hb_model: model.Model, _group_components: bool = True, _merge_faces: bool = False
 ) -> PhxProject:
@@ -94,7 +105,7 @@ def convert_hb_model_to_PhxProject(
     phx_project.project_data = get_project_data_from_hb_model(_hb_model)
     create_assemblies.build_opaque_assemblies_from_HB_model(phx_project, _hb_model)
     create_assemblies.build_transparent_assembly_types_from_HB_Model(
-        phx_project, _hb_model
+        phx_project, get_hb_apertures(_hb_model)
     )
     create_schedules.add_all_HB_schedules_to_PHX_Project(phx_project, _hb_model)
 
