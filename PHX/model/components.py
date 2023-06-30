@@ -4,7 +4,7 @@
 """PHX Component (Face, Aperture) Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Collection, List, Set, Union, Optional
+from typing import ClassVar, Collection, List, Set, Union, Optional, Tuple
 
 from PHX.model import geometry, constructions
 from PHX.model.enums.building import (
@@ -58,6 +58,36 @@ class PhxComponentOpaque(PhxComponentBase):
         self.apertures: List[PhxComponentAperture] = []
         self.polygons: List[geometry.PhxPolygon] = []
 
+    def __eq__(self, other: PhxComponentOpaque) -> bool:
+        if (
+            self.display_name != other.display_name
+            or self.face_type != other.face_type
+            or self.face_opacity != other.face_opacity
+            or self.color_interior != other.color_interior
+            or self.color_exterior != other.color_exterior
+            or self.exposure_exterior != other.exposure_exterior
+            or self.exposure_interior != other.exposure_interior
+            or self.interior_attachment_id != other.interior_attachment_id
+            or self.assembly_type_id_num != other.assembly_type_id_num
+        ):
+            return False
+
+        # -- check the apertures
+        if len(self.apertures) != len(other.apertures):
+            return False
+        for this_ap in self.apertures:
+            if not any((this_ap == other_ap for other_ap in other.apertures)):
+                return False
+
+        # -- check the polygons
+        if len(self.polygons) != len(other.polygons):
+            return False
+        for this_poly in self.polygons:
+            if not any((this_poly == other_poly for other_poly in other.polygons)):
+                return False
+
+        return True
+
     @property
     def polygon_ids(self) -> Set[int]:
         """Return a Set of all the Polygon-id numbers found in the Component's Polygon group."""
@@ -99,6 +129,11 @@ class PhxComponentOpaque(PhxComponentBase):
         for polygon in _input:
             self.polygons.append(polygon)
 
+    @property
+    def aperture_ids(self) -> Set[int]:
+        """Return a Set of all the Aperture-id numbers found in the Component's Aperture group."""
+        return {aperture.id_num for aperture in self.apertures}
+
     def __add__(self, other: PhxComponentOpaque) -> PhxComponentOpaque:
         """Merge with another Component into a single new Component.
 
@@ -136,8 +171,9 @@ class PhxComponentOpaque(PhxComponentBase):
         --------
             * None
         """
-        _aperture.host = self
-        self.apertures.append(_aperture)
+        if _aperture.id_num not in self.aperture_ids:
+            _aperture.host = self
+            self.apertures.append(_aperture)
 
     def get_host_polygon_by_child_id_num(self, _id_num: int) -> geometry.PhxPolygon:
         """Return a single Polygon from the collection if it has the specified ID as a 'child'.
@@ -195,6 +231,20 @@ class PhxApertureElement(PhxComponentBase):
             return 0.0
         return self.polygon.area
 
+    def is_equivalent(self, other: PhxApertureElement) -> bool:
+        """Return True if the two elements are equivalent."""
+        TOLERANCE = 0.001
+        if (
+            abs(self.winter_shading_factor - other.winter_shading_factor) > TOLERANCE
+            or abs(self.summer_shading_factor - other.summer_shading_factor) > TOLERANCE
+        ):
+            return False
+
+        if self.polygon != other.polygon:
+            return False
+
+        return True
+
 
 class PhxComponentAperture(PhxComponentBase):
     """An Aperture (window, door) component with one or more 'element' (sash)."""
@@ -209,10 +259,10 @@ class PhxComponentAperture(PhxComponentBase):
         self.face_opacity: ComponentFaceOpacity = ComponentFaceOpacity.TRANSPARENT
         self.color_interior: ComponentColor = ComponentColor.WINDOW
         self.color_exterior: ComponentColor = ComponentColor.WINDOW
+        self.exposure_interior: int = 1
         self.exposure_exterior: ComponentExposureExterior = (
             ComponentExposureExterior.EXTERIOR
         )
-        self.exposure_interior: int = 1
         self.interior_attachment_id: int = -1
 
         self.window_type: constructions.PhxConstructionWindow = (
@@ -240,6 +290,11 @@ class PhxComponentAperture(PhxComponentBase):
         return {polygon.id_num for polygon in self.polygons}
 
     @property
+    def polygon_ids_sorted(self) -> Tuple[int]:
+        """Return a Tuple of all the Polygon-id numbers found in the Component's Polygon group, sorted."""
+        return tuple(sorted(self.polygon_ids))
+
+    @property
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
         return (
@@ -249,11 +304,12 @@ class PhxComponentAperture(PhxComponentBase):
 
     def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:
         """Add one or more new 'Elements' (Sashes) to the Aperture"""
-
         for element in _elements:
             self.elements.append(element)
 
-        return None
+    def add_element(self, _element: PhxApertureElement) -> None:
+        """Add a new 'Element' (Sash) to the Aperture"""
+        self.elements.append(_element)
 
     def __add__(self, other: PhxComponentAperture) -> PhxComponentAperture:
         """Merge with another Component into a single new Component.
@@ -282,6 +338,43 @@ class PhxComponentAperture(PhxComponentBase):
             element.host = new_compo
 
         return new_compo
+
+    def __eq__(self, other: PhxComponentAperture) -> bool:
+        if (
+            self.display_name != other.display_name
+            or self.face_type != other.face_type
+            or self.face_opacity != other.face_opacity
+            or self.color_interior != other.color_interior
+            or self.color_exterior != other.color_exterior
+            or self.exposure_exterior != other.exposure_exterior
+            or self.exposure_interior != other.exposure_interior
+            or self.interior_attachment_id != other.interior_attachment_id
+            or self.window_type_id_num != other.window_type_id_num
+            or self.variant_type_name != other.variant_type_name
+            or abs(self.install_depth - other.install_depth) > 0.001
+            or abs(
+                self.default_monthly_shading_correction_factor
+                - other.default_monthly_shading_correction_factor
+            )
+            > 0.001
+        ):
+            return False
+
+        # -- check the elements
+        if len(self.elements) != len(other.elements):
+            return False
+        for this_el in self.elements:
+            if not any((this_el.is_equivalent(other_el) for other_el in other.elements)):
+                return False
+
+        # -- check the polygons
+        if len(self.polygons) != len(other.polygons):
+            return False
+        for this_poly in self.polygons:
+            if not any((this_poly == other_poly for other_poly in other.polygons)):
+                return False
+
+        return True
 
 
 class PhxComponentThermalBridge(PhxComponentBase):

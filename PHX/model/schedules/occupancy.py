@@ -26,6 +26,25 @@ class PhxScheduleOccupancy:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
+    def __eq__(self, other: PhxScheduleOccupancy) -> bool:
+        TOLERANCE = 0.001
+        if self.display_name != other.display_name:
+            return False
+        if abs(self.start_hour - other.start_hour) > TOLERANCE:
+            return False
+        if abs(self.end_hour - other.end_hour) > TOLERANCE:
+            return False
+        if abs(self.annual_utilization_days - other.annual_utilization_days) > TOLERANCE:
+            return False
+        if (
+            abs(self.relative_utilization_factor - other.relative_utilization_factor)
+            > TOLERANCE
+        ):
+            return False
+        if self.unique_key != other.unique_key:
+            return False
+        return True
+
     @property
     def annual_utilization_factor(self) -> float:
         """Return the annual Utilization Rate (0-1) relative to the entire year (8760 hours)"""
@@ -62,9 +81,4 @@ class PhxScheduleOccupancy:
     @property
     def unique_key(self):
         """Return a key unique to this 'type' (collection of values) of pattern"""
-        return "{}_{}_{}_{}_".format(
-            self.start_hour,
-            self.end_hour,
-            self.annual_utilization_days,
-            self.annual_utilization_factor,
-        )
+        return f"{self.start_hour :.3f}_{self.end_hour :.3f}_{self.annual_utilization_days :.3f}_{self.annual_utilization_factor :.3f}_"

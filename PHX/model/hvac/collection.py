@@ -524,7 +524,7 @@ class PhxMechanicalSystemCollection:
     @property
     def devices(self) -> List[AnyMechDevice]:
         """Returns a list of the 'devices' in the collection."""
-        return list(self._devices.values())
+        return list(sorted(self._devices.values(), key=lambda d: d.identifier))
 
     def device_in_collection(self, _device_key) -> bool:
         """Return True if the a Mech device with the matching key is already in the collection."""

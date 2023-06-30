@@ -7,8 +7,8 @@ from enum import Enum
 from honeybee_energy_ph.hvac.hot_water import PhSHWTankType
 
 
-class FuelType(Enum):
-    GAS = 1
+class PhxFuelType(Enum):
+    NATURAL_GAS = 1
     OIL = 2
     WOOD_LOG = 3
     WOOD_PELLET = 4

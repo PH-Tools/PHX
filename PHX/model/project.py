@@ -13,8 +13,7 @@ from PHX.model.constructions import PhxConstructionOpaque, PhxConstructionWindow
 from PHX.model.geometry import PhxGraphics3D
 from PHX.model.hvac.collection import PhxMechanicalSystemCollection
 from PHX.model.phx_site import PhxSite
-from PHX.model.schedules.ventilation import PhxScheduleVentilation
-from PHX.model.schedules.occupancy import PhxScheduleOccupancy
+from PHX.model.schedules import ventilation, occupancy
 from PHX.model.shades import PhxWindowShade
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Occupancy,
@@ -99,7 +98,7 @@ class PhxProject:
     variants: List[PhxVariant] = field(default_factory=list)
     project_data: PhxProjectData = field(default_factory=PhxProjectData)
     data_version: int = 48
-    unit_system: int = 1
+    unit_system: int = 1  # SI
     program_version: str = "3.2.0.1"
     scope: int = 3
     visualized_geometry: int = 2
@@ -108,9 +107,19 @@ class PhxProject:
         """Adds a new PHX Variant to the Project."""
         self.variants.append(_variant)
 
-    def add_new_window_type(self, _window_type: PhxConstructionWindow) -> None:
+    def add_assembly_type(self, _assembly_type: PhxConstructionOpaque, _key=None) -> None:
+        """Adds a new PhxConstructionOpaque to the Project's collection"""
+        if _key:
+            self.assembly_types[_key] = _assembly_type
+        else:
+            self.assembly_types[_assembly_type.identifier] = _assembly_type
+
+    def add_new_window_type(self, _window_type: PhxConstructionWindow, _key=None) -> None:
         """Adds a new PhxConstructionWindow to the Project's collection"""
-        self.window_types[_window_type.identifier] = _window_type
+        if _key:
+            self.window_types[_key] = _window_type
+        else:
+            self.window_types[_window_type.identifier] = _window_type
 
     def add_new_shade_type(self, _shade_type: PhxWindowShade) -> None:
         """Adds a new PhxWindowShade to the Project's collection"""
@@ -125,13 +134,13 @@ class PhxProject:
         return self.utilization_patterns_occupancy.key_is_in_collection(_key)
 
     def add_vent_sched_to_collection(
-        self, vent_sched: Optional[PhxScheduleVentilation]
+        self, vent_sched: ventilation.PhxScheduleVentilation
     ) -> None:
         """Add a new Ventilation schedule to the project's collection."""
         self.utilization_patterns_ventilation.add_new_util_pattern(vent_sched)
 
     def add_occupancy_sched_to_collection(
-        self, vent_sched: Optional[PhxScheduleOccupancy]
+        self, vent_sched: Optional[occupancy.PhxScheduleOccupancy]
     ) -> None:
         """Add a new Occupancy schedule to the project's collection."""
         self.utilization_patterns_occupancy.add_new_util_pattern(vent_sched)

@@ -25,7 +25,10 @@ from honeybee_energy_ph.hvac.supportive_device import PhSupportiveDevice
 from honeybee_energy_ph.hvac.renewable_devices import PhRenewableEnergyDevice
 
 from PHX.model import phx_site, project, constructions, certification
-from PHX.model.utilization_patterns import UtilizationPatternCollection_Ventilation
+from PHX.model.utilization_patterns import (
+    UtilizationPatternCollection_Ventilation,
+    UtilizationPatternCollection_Occupancy,
+)
 from PHX.model.enums import (
     phi_certification_phpp_9,
     phi_certification_phpp_10,
@@ -52,6 +55,7 @@ def add_building_from_hb_room(
     _assembly_dict: Dict[str, constructions.PhxConstructionOpaque],
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
+    _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     group_components: bool = False,
     _tolerance: float = 0.001,
 ) -> None:
@@ -65,6 +69,8 @@ def add_building_from_hb_room(
         * _window_type_dict (Dict[str, constructions.PhxConstructionWindow]): The Window Type dict.
         * _vent_sched_collection (UtilizationPatternVentCollection): The PhxProject's
             UtilizationPatternVentCollection with the ventilation schedules.
+        * _occ_sched_collection (UtilizationPatternOccCollection): The PhxProject's
+            UtilizationPatternOccCollection with the occupancy schedules.
         * group_components (bool): default=False. Set to true to have the converter
             group the components by assembly-type.
 
@@ -78,7 +84,11 @@ def add_building_from_hb_room(
         )
     )
     _variant.building.add_zones(
-        create_building.create_zones_from_hb_room(_hb_room, _vent_sched_collection)
+        create_building.create_zones_from_hb_room(
+            _hb_room,
+            _vent_sched_collection,
+            _occ_sched_collection,
+        )
     )
 
     if group_components:
@@ -950,6 +960,7 @@ def from_hb_room(
     _assembly_dict: Dict[str, constructions.PhxConstructionOpaque],
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
+    _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     group_components: bool = False,
     _tolerance: float = 0.001,
 ) -> project.PhxVariant:
@@ -988,6 +999,7 @@ def from_hb_room(
         _assembly_dict=_assembly_dict,
         _window_type_dict=_window_type_dict,
         _vent_sched_collection=_vent_sched_collection,
+        _occ_sched_collection=_occ_sched_collection,
         group_components=group_components,
         _tolerance=_tolerance,
     )

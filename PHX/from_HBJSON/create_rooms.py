@@ -17,7 +17,10 @@ from honeybee_ph_utils.occupancy import hb_room_ppl_per_area
 from honeybee_ph_utils.ventilation import hb_room_vent_flowrates
 
 from PHX.model import spaces
-from PHX.model.utilization_patterns import UtilizationPatternCollection_Ventilation
+from PHX.model.utilization_patterns import (
+    UtilizationPatternCollection_Ventilation,
+    UtilizationPatternCollection_Occupancy,
+)
 
 
 def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
@@ -66,12 +69,17 @@ def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
 def create_room_from_space(
     _space: space.Space,
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
+    _occ_sched_collection: UtilizationPatternCollection_Occupancy,
 ) -> spaces.PhxSpace:
     """Create a new RoomVentilation object with attributes based on a Honeybee-PH Space
 
     Arguments:
     ----------
         * _space (space.Space): The Honeybee-PH Space to use as the source.
+        * _vent_sched_collection (UtilizationPatternCollection_Ventilation): A collection of
+            ventilation schedules to use for the new PHX-Room.
+        * _occ_sched_collection (UtilizationPatternCollection_Occupancy): A collection of
+            occupancy schedules to use for the new PHX-Room.
 
     Returns:
     --------
@@ -82,6 +90,7 @@ def create_room_from_space(
     hbe_vent = host_room_prop_energy.ventilation
     hbe_vent_sched = hbe_vent.schedule
     hbe_vent_sched_prop_ph: ScheduleRulesetPhProperties = hbe_vent_sched.properties.ph  # type: ignore
+    hbe_occ = host_room_prop_energy.people
     space_prop_ph: SpacePhProperties = _space.properties.ph  # type: ignore
     hbe_hvac = host_room_prop_energy.hvac
     hbe_hvac_prop_ph: IdealAirSystemPhProperties = hbe_hvac.properties.ph  # type: ignore
@@ -116,5 +125,10 @@ def create_room_from_space(
     # -- Keep the Ventilation Equipment ID-Numbers aligned
     if hbe_hvac_prop_ph.ventilation_system:
         new_room.vent_unit_id_num = hbe_hvac_prop_ph.ventilation_system.id_num
+
+    # -- Keep the new room's Occupancy reference aligned with the HB-Room's
+    if hbe_occ:
+        occ_sched_id = hbe_occ.occupancy_schedule.identifier
+        new_room.occupancy.schedule = _occ_sched_collection[occ_sched_id]
 
     return new_room

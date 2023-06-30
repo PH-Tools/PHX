@@ -40,8 +40,8 @@ def test_PhxHeaterBoilerFossil_set_fuel(reset_class_counters):
     d2 = heating.PhxHeaterBoilerFossil()
     d2.params.fuel = 2
 
-    assert d1.params.fuel == hvac.FuelType.GAS
-    assert d2.params.fuel == hvac.FuelType.OIL
+    assert d1.params.fuel == hvac.PhxFuelType.NATURAL_GAS
+    assert d2.params.fuel == hvac.PhxFuelType.OIL
 
 
 def test_default_PhxHeaterBoilerWood(reset_class_counters):
@@ -58,8 +58,8 @@ def test_PhxHeaterBoilerWood_set_fuel(reset_class_counters):
     d2 = heating.PhxHeaterBoilerWood()
     d2.params.fuel = 4
 
-    assert d1.params.fuel == hvac.FuelType.WOOD_LOG
-    assert d2.params.fuel == hvac.FuelType.WOOD_PELLET
+    assert d1.params.fuel == hvac.PhxFuelType.WOOD_LOG
+    assert d2.params.fuel == hvac.PhxFuelType.WOOD_PELLET
 
 
 # -----------------------------------------------------------------------------

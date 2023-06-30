@@ -17,11 +17,11 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
     location_type: int = 1
     onsite_utilization_type: int = 1
     utilization_type: int = 1
-    array_size: int = 0
-    photovoltaic_renewable_energy: int = 0
+    array_size: float = 0.0
+    photovoltaic_renewable_energy: float = 0.0
     onsite_utilization_factor: float = 1.0
-    auxiliary_energy: int = 0
-    auxiliary_energy_DHW: int = 0
+    auxiliary_energy: float = 0.0
+    auxiliary_energy_DHW: float = 0.0
     in_conditioned_space: bool = False
 
     def __add__(self, other: PhxDevicePhotovoltaicParams) -> PhxDevicePhotovoltaicParams:

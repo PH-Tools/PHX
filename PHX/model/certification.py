@@ -18,6 +18,14 @@ class PhxSetpoints:
     winter: float = 20.0  # deg. C
     summer: float = 25.0  # deg. C
 
+    def __eq__(self, other: PhxSetpoints) -> bool:
+        TOLERANCE = 0.001
+        if abs(self.winter - other.winter) > TOLERANCE:
+            return False
+        if abs(self.summer - other.summer) > TOLERANCE:
+            return False
+        return True
+
 
 @dataclass
 class PhxPhBuildingData:
@@ -44,6 +52,34 @@ class PhxPhBuildingData:
     def add_foundation(self, _input: ground.PhxFoundation) -> None:
         self.foundations.append(_input)
 
+    def __eq__(self, other: PhxPhBuildingData) -> bool:
+        TOLERANCE = 0.001
+        if self.num_of_units != other.num_of_units:
+            return False
+        if self.num_of_floors != other.num_of_floors:
+            return False
+        if self.occupancy_setting_method != other.occupancy_setting_method:
+            return False
+        if abs(self.airtightness_q50 - other.airtightness_q50) > TOLERANCE:
+            return False
+        if abs(self.airtightness_n50 - other.airtightness_n50) > TOLERANCE:
+            return False
+        if abs(self.wind_coefficient_e - other.wind_coefficient_e) > TOLERANCE:
+            return False
+        if abs(self.wind_coefficient_f - other.wind_coefficient_f) > TOLERANCE:
+            return False
+        if self.setpoints != other.setpoints:
+            return False
+        if abs(self.mech_room_temp - other.mech_room_temp) > TOLERANCE:
+            return False
+        if self.non_combustible_materials != other.non_combustible_materials:
+            return False
+        if self.foundations != other.foundations:
+            return False
+        if self.summer_hrv_bypass_mode != other.summer_hrv_bypass_mode:
+            return False
+        return True
+
 
 # -----------------------------------------------------------------------------
 @dataclass
@@ -54,6 +90,24 @@ class PhxPhiusCertificationCriteria:
     phius_annual_cooling_demand: float = 15.0
     phius_peak_heating_load: float = 10.0
     phius_peak_cooling_load: float = 10.0
+
+    def __eq__(self, other: PhxPhiusCertificationCriteria) -> bool:
+        TOLERANCE = 0.001
+        if (
+            abs(self.phius_annual_heating_demand - other.phius_annual_heating_demand)
+            > TOLERANCE
+        ):
+            return False
+        if (
+            abs(self.phius_annual_cooling_demand - other.phius_annual_cooling_demand)
+            > TOLERANCE
+        ):
+            return False
+        if abs(self.phius_peak_heating_load - other.phius_peak_heating_load) > TOLERANCE:
+            return False
+        if abs(self.phius_peak_cooling_load - other.phius_peak_cooling_load) > TOLERANCE:
+            return False
+        return True
 
 
 @dataclass
@@ -74,6 +128,22 @@ class PhxPhiusCertificationSettings:
         phius_certification.PhiusCertificationBuildingType.NEW_CONSTRUCTION
     )
 
+    def __eq__(self, other: PhxPhiusCertificationSettings) -> bool:
+        if (
+            self.phius_building_certification_program
+            != other.phius_building_certification_program
+        ):
+            return False
+        if self.phius_building_category_type != other.phius_building_category_type:
+            return False
+        if self.phius_building_use_type != other.phius_building_use_type:
+            return False
+        if self.phius_building_status != other.phius_building_status:
+            return False
+        if self.phius_building_type != other.phius_building_type:
+            return False
+        return True
+
 
 @dataclass
 class PhxPhiusCertification:
@@ -87,6 +157,17 @@ class PhxPhiusCertification:
     # TODO: Refactor this out to someplace more general than inside Phius....
     ph_building_data: PhxPhBuildingData = field(default_factory=PhxPhBuildingData)
     use_monthly_shading: bool = True
+
+    def __eq__(self, other: PhxPhiusCertification) -> bool:
+        if self.phius_certification_criteria != other.phius_certification_criteria:
+            return False
+        if self.phius_certification_settings != other.phius_certification_settings:
+            return False
+        if self.ph_building_data != other.ph_building_data:
+            return False
+        if self.use_monthly_shading != other.use_monthly_shading:
+            return False
+        return True
 
 
 # -----------------------------------------------------------------------------
@@ -107,6 +188,27 @@ class PhxPhiCertificationSettings:
     phi_enerphit_type: Enum = phi_certification_phpp_9.PhiCertEnerPHitType.BY_DEMAND
     phi_retrofit_type: Enum = phi_certification_phpp_9.PhiCertRetrofitType.NEW_BUILDING
 
+    def __eq__(self, other: PhxPhiCertificationSettings) -> bool:
+        if self.phi_building_category_type != other.phi_building_category_type:
+            return False
+        if self.phi_building_use_type != other.phi_building_use_type:
+            return False
+        if self.phi_building_ihg_type != other.phi_building_ihg_type:
+            return False
+        if self.phi_building_occupancy_type != other.phi_building_occupancy_type:
+            return False
+        if self.phi_certification_type != other.phi_certification_type:
+            return False
+        if self.phi_certification_class != other.phi_certification_class:
+            return False
+        if self.phi_pe_type != other.phi_pe_type:
+            return False
+        if self.phi_enerphit_type != other.phi_enerphit_type:
+            return False
+        if self.phi_retrofit_type != other.phi_retrofit_type:
+            return False
+        return True
+
 
 @dataclass
 class PhxPhiCertification:
@@ -114,3 +216,10 @@ class PhxPhiCertification:
         default_factory=PhxPhiCertificationSettings
     )
     version: int = 9
+
+    def __eq__(self, other: PhxPhiCertification) -> bool:
+        if self.phi_certification_settings != other.phi_certification_settings:
+            return False
+        if self.version != other.version:
+            return False
+        return True

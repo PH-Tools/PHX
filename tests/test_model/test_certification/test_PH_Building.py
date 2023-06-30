@@ -7,7 +7,7 @@ def test_default_PH_Building(reset_class_counters):
     obj_2 = certification.PhxPhBuildingData()
     assert obj_2.id_num == 2
 
-    assert obj_1 != obj_2
+    assert id(obj_1) != id(obj_2)
     assert not obj_1.foundations
     assert not obj_2.foundations
 

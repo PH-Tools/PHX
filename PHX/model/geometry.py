@@ -28,11 +28,20 @@ class PhxVertix:
     z: float = 0.0
 
     def __eq__(self, other: PhxVertix) -> bool:
+        TOLERANCE = 0.0001
         return (
-            (self.x == other.x)
-            and (self.y == other.y)
-            and (self.z == other.z)
-            and (self.id_num == other.id_num)
+            abs(self.x - other.x) < TOLERANCE
+            and abs(self.y - other.y) < TOLERANCE
+            and abs(self.z - other.z) < TOLERANCE
+            and self.id_num == other.id_num
+        )
+
+    def is_equivalent(self, other: PhxVertix) -> bool:
+        TOLERANCE = 0.001
+        return (
+            abs(self.x - other.x) < TOLERANCE
+            and abs(self.y - other.y) < TOLERANCE
+            and abs(self.z - other.z) < TOLERANCE
         )
 
     def __post_init__(self):
@@ -66,6 +75,14 @@ class PhxVector:
         self.y = self.y * _factor
         self.z = self.z * _factor
 
+    def __eq__(self, other: PhxVector) -> bool:
+        TOLERANCE = 0.001
+        return (
+            abs(self.x - other.x) < TOLERANCE
+            and abs(self.y - other.y) < TOLERANCE
+            and abs(self.z - other.z) < TOLERANCE
+        )
+
 
 @dataclass
 class PhxPlane:
@@ -73,6 +90,14 @@ class PhxPlane:
     origin: PhxVertix
     x: PhxVector
     y: PhxVector
+
+    def __eq__(self, other: PhxPlane) -> bool:
+        return (
+            self.normal == other.normal
+            and self.origin == other.origin
+            and self.x == other.x
+            and self.y == other.y
+        )
 
 
 @dataclass
@@ -92,6 +117,13 @@ class PhxLineSegment:
             )
         )
 
+    def __eq__(self, other: PhxLineSegment) -> bool:
+        if self.vertix_1 == other.vertix_1 and self.vertix_2 == other.vertix_2:
+            return True
+        if self.vertix_1 == other.vertix_2 and self.vertix_2 == other.vertix_1:
+            return True
+        return False
+
 
 @dataclass
 class PhxPolygon:
@@ -109,6 +141,24 @@ class PhxPolygon:
     child_polygon_ids: List[int] = field(init=False, default_factory=list)
 
     id_num: int = field(init=False, default=0)
+
+    def __eq__(self, other: PhxPolygon) -> bool:
+        # -- Check the PolyIds
+        if not len(self.child_polygon_ids) == len(other.child_polygon_ids):
+            return False
+        for _ in self.child_polygon_ids:
+            if not _ in other.child_polygon_ids:
+                return False
+
+        # # -- Chech the actual vertices
+        if not len(self.vertices) == len(other.vertices):
+            return False
+        # -- For each Vertix, make sure this is an equivalent vertix in the other
+        for v in self.vertices:
+            if not any((_.is_equivalent(v) for _ in other.vertices)):
+                return False
+
+        return True
 
     @property
     def area(self) -> float:

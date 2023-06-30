@@ -174,11 +174,11 @@ def build_opaque_assemblies_from_HB_model(
                 ]
 
                 # -- Add the assembly to the Project
-                _project.assembly_types[hb_const.identifier] = new_assembly
+                _project.add_assembly_type(new_assembly, hb_const.identifier)
 
-            hb_const.properties.ph.id_num = _project.assembly_types[
-                hb_const.identifier
-            ].id_num
+            # -- Keep the ID numbers in sync
+            _phx_assembly = _project.assembly_types[hb_const.identifier]
+            hb_const.properties.ph.id_num = _phx_assembly.id_num
 
     return None
 

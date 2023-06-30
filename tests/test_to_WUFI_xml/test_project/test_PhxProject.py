@@ -8,7 +8,7 @@ def test_default_PhxProject(reset_class_counters):
     result = generate_WUFI_XML_from_object(p1, _header="")
     assert xml_string_to_list(result) == [
         "<DataVersion>48</DataVersion>",
-        "<UnitSystem>48</UnitSystem>",
+        "<UnitSystem>1</UnitSystem>",
         "<ProgramVersion>3.2.0.1</ProgramVersion>",
         "<Scope>3</Scope>",
         "<DimensionsVisualizedGeometry>2</DimensionsVisualizedGeometry>",
@@ -44,5 +44,5 @@ def test_default_PhxProject(reset_class_counters):
         '<Variants count="0"/>',
         '<Assemblies count="0"/>',
         '<WindowTypes count="0"/>',
-        '<SolarProtectionTypes count="0"/>'
+        '<SolarProtectionTypes count="0"/>',
     ]

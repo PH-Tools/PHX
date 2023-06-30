@@ -14,6 +14,14 @@ class Vent_OperatingPeriod:
     period_operating_hours: float = 0.0  # hours/period
     period_operation_speed: float = 0.0  # % of peak design airflow
 
+    def __eq__(self, other: Vent_OperatingPeriod) -> bool:
+        if abs(self.period_operating_hours - other.period_operating_hours) > 0.01:
+            return False
+        if abs(self.period_operation_speed - other.period_operation_speed) > 0.01:
+            return False
+        else:
+            return True
+
 
 @dataclass
 class Vent_UtilPeriods:
@@ -22,12 +30,25 @@ class Vent_UtilPeriods:
     basic: Vent_OperatingPeriod = field(default_factory=Vent_OperatingPeriod)
     minimum: Vent_OperatingPeriod = field(default_factory=Vent_OperatingPeriod)
 
+    def __eq__(self, other: Vent_UtilPeriods) -> bool:
+        if self.high != other.high:
+            return False
+        if self.standard != other.standard:
+            return False
+        if self.basic != other.basic:
+            return False
+        if self.minimum != other.minimum:
+            return False
+        else:
+            return True
+
 
 @dataclass
 class PhxScheduleVentilation:
     """A PHX Schedule for the Ventilation."""
 
     _count: ClassVar[int] = 0
+
     id_num: int = field(init=False, default=0)
     name: str = "__unnamed_vent_schedule__"
     identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)

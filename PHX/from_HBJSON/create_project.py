@@ -62,7 +62,7 @@ def hb_team_member_to_phx_agent(
 
 def get_project_data_from_hb_model(_hb_model: model.Model) -> PhxProjectData:
     """Return a new PhxProjectData with all team-member info based on an HB Model."""
-    hb_proj_team = _hb_model.properties.ph.team  # type: ProjectTeam
+    hb_proj_team = _hb_model.properties.ph.team  # type: ProjectTeam # type: ignore
     new_project_data = PhxProjectData()
     new_project_data.customer = hb_team_member_to_phx_agent(hb_proj_team.customer)
     new_project_data.owner = hb_team_member_to_phx_agent(hb_proj_team.owner)
@@ -124,6 +124,7 @@ def convert_hb_model_to_PhxProject(
             _assembly_dict=phx_project.assembly_types,
             _window_type_dict=phx_project.window_types,
             _vent_sched_collection=phx_project.utilization_patterns_ventilation,
+            _occ_sched_collection=phx_project.utilization_patterns_occupancy,
             group_components=_group_components,
             _tolerance=_hb_model.tolerance,
         )

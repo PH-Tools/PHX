@@ -6,16 +6,16 @@
 from typing import Optional
 
 from honeybee import model, room
-from honeybee_energy.schedule import ruleset
+
+from honeybee_energy.schedule import ruleset as hbe_ruleset
 from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_energy.lib.scheduletypelimits import schedule_type_limit_by_identifier
 
-from honeybee_energy_ph.properties.ruleset import ScheduleRulesetPhProperties
+from honeybee_energy_ph.properties import ruleset as phx_ruleset
 from honeybee_ph_utils.schedules import calc_four_part_vent_sched_values_from_hb_room
 
 from PHX.model import project
-from PHX.model.schedules.ventilation import PhxScheduleVentilation
-from PHX.model.schedules.occupancy import PhxScheduleOccupancy
+from PHX.model.schedules import ventilation, occupancy
 
 
 def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
@@ -45,7 +45,7 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
     # -------------------------------------------------------------------------
     # -- Check Honeybee-Energy-PH detailed data
     hbe_vent_sched_prop = hbe_prop.ventilation.schedule.properties
-    hbph_sched_prop: ScheduleRulesetPhProperties = hbe_vent_sched_prop.ph  # type: ignore
+    hbph_sched_prop: phx_ruleset.ScheduleRulesetPhProperties = hbe_vent_sched_prop.ph  # type: ignore
     if not hbph_sched_prop.daily_operating_periods:
         # No Honeybee-Energy-PH Schedule detailed Operating Periods
         return False
@@ -54,7 +54,9 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
     return True
 
 
-def _create_vent_schedule_from_hb_style(_hb_room: room.Room) -> PhxScheduleVentilation:
+def _create_vent_schedule_from_hb_style(
+    _hb_room: room.Room,
+) -> ventilation.PhxScheduleVentilation:
     """Returns a new PHX Ventilation Schedule based on the HB-Room's E+
     HB-Style info found on the energy.ventilation
 
@@ -67,13 +69,13 @@ def _create_vent_schedule_from_hb_style(_hb_room: room.Room) -> PhxScheduleVenti
 
     Returns:
     --------
-        * (PhxScheduleVentilation): A new PHX Ventilation Schedule.
+        * (ventilation.PhxScheduleVentilation): A new PHX Ventilation Schedule.
     """
 
     # -- Type Aliases
     hbe_room_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
 
-    new_phx_vent_schedule = PhxScheduleVentilation()
+    new_phx_vent_schedule = ventilation.PhxScheduleVentilation()
 
     wufi_sched = calc_four_part_vent_sched_values_from_hb_room(_hb_room)
     op_periods = new_phx_vent_schedule.operating_periods
@@ -91,14 +93,16 @@ def _create_vent_schedule_from_hb_style(_hb_room: room.Room) -> PhxScheduleVenti
     # -- Keep all the IDs in alignment....
     new_phx_vent_schedule.identifier = hbe_room_prop.ventilation.schedule.identifier
     new_phx_vent_schedule.id_num = new_phx_vent_schedule._count
-    ph_sched_props: ScheduleRulesetPhProperties = hbe_room_prop.ventilation.schedule.properties.ph  # type: ignore
+    ph_sched_props: phx_ruleset.ScheduleRulesetPhProperties = hbe_room_prop.ventilation.schedule.properties.ph  # type: ignore
     ph_sched_props.id_num = new_phx_vent_schedule.id_num  # <--- Important!
     new_phx_vent_schedule.name = hbe_room_prop.ventilation.schedule.display_name
 
     return new_phx_vent_schedule
 
 
-def _create_vent_schedule_from_ph_style(_hb_room: room.Room) -> PhxScheduleVentilation:
+def _create_vent_schedule_from_ph_style(
+    _hb_room: room.Room,
+) -> ventilation.PhxScheduleVentilation:
     """Returns a new PHX Utilization Pattern (Vent) based on the HB-Room's detailed
     PH-Style info found on the energy.ventilation.schedule.properties.ph
 
@@ -108,17 +112,17 @@ def _create_vent_schedule_from_ph_style(_hb_room: room.Room) -> PhxScheduleVenti
 
     Returns:
     --------
-        * (PhxScheduleVentilation): A new PHX Ventilation Schedule
+        * (ventilation.PhxScheduleVentilation): A new PHX Ventilation Schedule
     """
 
     # -- Type Aliases
     hbe_room_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
     hbe_vent_sched = hbe_room_prop.ventilation.schedule
     hbe_vent_sched_prop = hbe_vent_sched.properties
-    hbe_vent_sched_prop_ph: ScheduleRulesetPhProperties = hbe_vent_sched_prop.ph  # type: ignore
+    hbe_vent_sched_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_vent_sched_prop.ph  # type: ignore
 
     # -- Create the new Schedule object
-    new_phx_vent_schedule = PhxScheduleVentilation()
+    new_phx_vent_schedule = ventilation.PhxScheduleVentilation()
     new_phx_vent_schedule.name = hbe_room_prop.ventilation.schedule.display_name
 
     # -- Set all the ventilation schedule data from the room's properties
@@ -146,7 +150,7 @@ def _create_vent_schedule_from_ph_style(_hb_room: room.Room) -> PhxScheduleVenti
 
 def build_ventilation_schedule_from_hb_room(
     _hb_room: room.Room,
-) -> Optional[PhxScheduleVentilation]:
+) -> Optional[ventilation.PhxScheduleVentilation]:
     """Build a new Ventilation Schedule based on a Honeybee-Room's energy.ventilation values.
 
     Arguments:
@@ -155,7 +159,7 @@ def build_ventilation_schedule_from_hb_room(
 
     Returns:
     --------
-        * (Optional[PhxScheduleVentilation]): The new Ventilation Schedule or None
+        * (Optional[ventilation.PhxScheduleVentilation]): The new Ventilation Schedule or None
             if no energy.ventilation or energy.ventilation.schedule is found on the room.
     """
 
@@ -187,7 +191,7 @@ def build_ventilation_schedule_from_hb_room(
 
 def build_occupancy_schedule_from_hb_room(
     _hb_room: room.Room,
-) -> Optional[PhxScheduleOccupancy]:
+) -> Optional[occupancy.PhxScheduleOccupancy]:
     """Build a new PHX Occupancy Schedule based on a Honeybee-Room's energy.people values.
 
     Arguments:
@@ -196,7 +200,7 @@ def build_occupancy_schedule_from_hb_room(
 
     Returns:
     --------
-        * (Optional[PhxScheduleOccupancy]): The new PHX Occupancy Schedule or None.
+        * (Optional[occupancy.PhxScheduleOccupancy]): The new PHX Occupancy Schedule or None.
     """
 
     # -- Make sure that the room has an occupancy schedule
@@ -209,11 +213,11 @@ def build_occupancy_schedule_from_hb_room(
 
     # -- Aliases
     hbe_schedule = hbe_prop.people.occupancy_schedule
-    hbe_schedule_prop_ph: ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
+    hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
     daily_period = hbe_schedule_prop_ph.first_operating_period
 
     # -- Build the new Schedule
-    new_phx_occ_schedule = PhxScheduleOccupancy()
+    new_phx_occ_schedule = occupancy.PhxScheduleOccupancy()
     new_phx_occ_schedule.identifier = hbe_schedule.identifier
     new_phx_occ_schedule.display_name = hbe_schedule.display_name
     new_phx_occ_schedule.annual_utilization_days = (
@@ -250,7 +254,7 @@ def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
             any Rooms which were missing them.
     """
     type_limit = schedule_type_limit_by_identifier("Fractional")
-    default_ventilation_schedule = ruleset.ScheduleRuleset.from_constant_value(
+    default_ventilation_schedule = hbe_ruleset.ScheduleRuleset.from_constant_value(
         "default_schedule", 1.0, type_limit
     )
 
@@ -294,7 +298,8 @@ def add_all_HB_Model_ventilation_schedules_to_PHX_Project(
             continue
 
         new_phx_vent_schedule = build_ventilation_schedule_from_hb_room(hb_room)
-        _project.add_vent_sched_to_collection(new_phx_vent_schedule)
+        if new_phx_vent_schedule:
+            _project.add_vent_sched_to_collection(new_phx_vent_schedule)
 
 
 def add_all_HB_Model_occupancy_schedules_to_PHX_Project(
@@ -316,7 +321,7 @@ def add_all_HB_Model_occupancy_schedules_to_PHX_Project(
     for hb_room in _hb_model.rooms:
         hbe_room_energy_prop: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
 
-        # -- Sometimes there is to 'People'
+        # -- Sometimes there is no 'People'
         if hbe_room_energy_prop.people is None:
             continue
 

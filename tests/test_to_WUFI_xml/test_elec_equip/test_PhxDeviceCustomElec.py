@@ -12,8 +12,8 @@ def test_default_PhxDeviceCustomElec(reset_class_counters):
         "<Quantity>1</Quantity>",
         "<InConditionedSpace>true</InConditionedSpace>",
         "<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>",
-        "<EnergyDemandNorm>100</EnergyDemandNorm>",
-        "<EnergyDemandNormUse>100</EnergyDemandNormUse>",
-        "<CEF_CombinedEnergyFactor>0</CEF_CombinedEnergyFactor>",
+        "<EnergyDemandNorm>100.0</EnergyDemandNorm>",
+        "<EnergyDemandNormUse>100.0</EnergyDemandNormUse>",
+        "<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>",
         "<Type>11</Type>",
     ]

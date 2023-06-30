@@ -7,7 +7,7 @@ from __future__ import annotations
 from typing import Optional, Union
 from dataclasses import dataclass, field
 
-from PHX.model.enums.hvac import DeviceType, HeatPumpType, FuelType, SystemType
+from PHX.model.enums.hvac import DeviceType, HeatPumpType, PhxFuelType, SystemType
 from PHX.model.hvac import _base
 
 
@@ -39,7 +39,7 @@ class PhxHeaterElectric(PhxHeatingDevice):
 
 @dataclass
 class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
-    _fuel: FuelType = FuelType.GAS
+    _fuel: PhxFuelType = PhxFuelType.NATURAL_GAS
     condensing: bool = True
     in_conditioned_space: bool = True
     effic_at_30_percent_load: float = 0.98
@@ -57,12 +57,15 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
 
     @fuel.setter
     def fuel(self, _in):
-        self._fuel = FuelType(_in)
+        try:
+            self._fuel = PhxFuelType[_in]
+        except KeyError:
+            self._fuel = PhxFuelType(_in)
 
 
 @dataclass
 class PhxHeaterBoilerWoodParams(_base.PhxMechanicalDeviceParams):
-    _fuel: FuelType = FuelType.WOOD_LOG
+    _fuel: PhxFuelType = PhxFuelType.WOOD_LOG
     effic_in_basic_cycle: float = 0.6
     effic_in_const_operation: float = 0.7
     avg_frac_heat_output: float = 0.4
@@ -81,7 +84,7 @@ class PhxHeaterBoilerWoodParams(_base.PhxMechanicalDeviceParams):
 
     @fuel.setter
     def fuel(self, _in):
-        self._fuel = FuelType(_in)
+        self._fuel = PhxFuelType(_in)
 
 
 @dataclass

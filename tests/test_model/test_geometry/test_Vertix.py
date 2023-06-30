@@ -19,7 +19,7 @@ def test_multiple_vertices_id_num(reset_class_counters):
 def test_vertix_equality(reset_class_counters):
     vert_1 = geometry.PhxVertix(0, 0, 0)
     vert_2 = geometry.PhxVertix(0, 0, 0)
-    assert vert_1 != vert_2
+    assert id(vert_1) != id(vert_2)
     assert vert_1.unique_key == vert_2.unique_key
     assert hash(vert_1) == hash(vert_2)
 

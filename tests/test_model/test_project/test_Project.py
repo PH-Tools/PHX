@@ -96,11 +96,11 @@ def test_add_assembly_to_project(reset_class_counters):
     assembly_1 = constructions.PhxConstructionOpaque()
     assembly_2 = constructions.PhxConstructionOpaque()
 
-    pr_1.assembly_types[assembly_1.identifier] = assembly_1
+    pr_1.add_assembly_type(assembly_1)
     assert assembly_1.identifier in pr_1.assembly_types
     assert assembly_2.identifier not in pr_1.assembly_types
 
-    pr_1.assembly_types[assembly_2.identifier] = assembly_2
+    pr_1.add_assembly_type(assembly_2)
     assert assembly_1.identifier in pr_1.assembly_types
     assert assembly_2.identifier in pr_1.assembly_types
 

@@ -3,6 +3,7 @@
 
 """Valid 'types' for Building Elements."""
 
+from __future__ import annotations
 from enum import Enum
 
 
@@ -14,6 +15,14 @@ class ComponentFaceType(Enum):
     WINDOW = 4
     ADIABATIC = 5
     CUSTOM = 6
+
+    @classmethod
+    def by_angle(cls, _angle: float) -> ComponentFaceType:
+        if _angle < 70.0:
+            return cls.ROOF_CEILING
+        if _angle > 110.0:
+            return cls.FLOOR
+        return cls.WALL
 
 
 class ComponentExposureExterior(Enum):

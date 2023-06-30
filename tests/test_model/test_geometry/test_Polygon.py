@@ -133,7 +133,7 @@ def test_add_child_poly_id(reset_class_counters, polygon_1x1x0, polygon_2x2x0):
             geometry.PhxVector(0, 1, 0),
         ),
     )
-    p2.add_vertix(geometry.PhxVertix(0, 0, 0))
+    p2.add_vertix(geometry.PhxVertix(0, 0, 2))
     p2.add_vertix(geometry.PhxVertix(0, 2, 0))
     p2.add_vertix(geometry.PhxVertix(2, 2, 0))
     p2.add_vertix(geometry.PhxVertix(2, 0, 0))

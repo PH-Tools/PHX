@@ -25,6 +25,8 @@ from PHX.model.hvac import (
     ducting,
 )
 from PHX.model.schedules import ventilation as sched_ventilation
+from PHX.model.schedules.ventilation import PhxScheduleVentilation
+from PHX.model.schedules import occupancy as sched_occupancy
 
 
 @pytest.fixture
@@ -73,7 +75,6 @@ def _reset_phx_class_counters():
     project.PhxVariant._count = 0
     geometry.PhxPolygon._count = 0
     geometry.PhxVertix._count = 0
-    sched_ventilation.PhxScheduleVentilation._count = 0
     constructions.PhxConstructionOpaque._count = 0
     constructions.PhxConstructionWindow._count = 0
     building.PhxZone._count = 0
@@ -132,6 +133,11 @@ def _reset_phx_class_counters():
 
     renewable_devices.PhxDevicePhotovoltaic._count = 0
 
+    sched_ventilation.PhxScheduleVentilation._count = 0
+    PhxScheduleVentilation._count = 0
+    PhxScheduleVentilation.id_num = 0
+    sched_occupancy.PhxScheduleOccupancy._count = 0
+
 
 def _reload_phx_classes():
     """reload all of the PHX model classes. This is similar to the 'reset_class_counters
@@ -150,6 +156,8 @@ def _reload_phx_classes():
     importlib.reload(schedules)
     importlib.reload(spaces)
     importlib.reload(shades)
+    importlib.reload(sched_ventilation)
+    importlib.reload(sched_occupancy)
 
 
 @pytest.fixture

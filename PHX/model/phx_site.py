@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Union, Optional
+from typing import Union, Optional, List
 
 from PHX.model.enums.phx_site import (
     SiteSelection,
@@ -16,11 +16,22 @@ from PHX.model.enums.phx_site import (
 
 @dataclass
 class PhxGround:
-    ground_thermal_conductivity: float = 2
-    ground_heat_capacity: float = 1000
-    ground_density: float = 2000
-    depth_groundwater: float = 3
+    ground_thermal_conductivity: float = 2.0
+    ground_heat_capacity: float = 1000.0
+    ground_density: float = 2000.0
+    depth_groundwater: float = 3.0
     flow_rate_groundwater: float = 0.05
+
+    def __eq__(self, other: PhxGround) -> bool:
+        TOLERANCE = 0.0001
+        return (
+            abs(self.ground_thermal_conductivity - other.ground_thermal_conductivity)
+            < TOLERANCE
+            and abs(self.ground_heat_capacity - other.ground_heat_capacity) < TOLERANCE
+            and abs(self.ground_density - other.ground_density) < TOLERANCE
+            and abs(self.depth_groundwater - other.depth_groundwater) < TOLERANCE
+            and abs(self.flow_rate_groundwater - other.flow_rate_groundwater) < TOLERANCE
+        )
 
 
 @dataclass
@@ -31,6 +42,14 @@ class PhxPEFactor:
     unit: str = ""
     fuel_name: str = ""
 
+    def __eq__(self, other: PhxPEFactor) -> bool:
+        TOLERANCE = 0.0001
+        return (
+            abs(self.value - other.value) < TOLERANCE
+            and self.unit == other.unit
+            and self.fuel_name == other.fuel_name
+        )
+
 
 @dataclass
 class PhxCO2Factor:
@@ -39,6 +58,14 @@ class PhxCO2Factor:
     value: float = 0.0
     unit: str = ""
     fuel_name: str = ""
+
+    def __eq__(self, other: PhxCO2Factor) -> bool:
+        TOLERANCE = 0.0001
+        return (
+            abs(self.value - other.value) < TOLERANCE
+            and self.unit == other.unit
+            and self.fuel_name == other.fuel_name
+        )
 
 
 PhxEnergyFactorAlias = Union[PhxPEFactor, PhxCO2Factor]
@@ -94,6 +121,13 @@ class PhxSiteEnergyFactors:
             "OIL_CGS_0_CHP": PhxCO2Factor(409.9966, "g/kWh", "OIL_CGS_0_CHP"),
         }
 
+    def __eq__(self, other: PhxSiteEnergyFactors) -> bool:
+        return (
+            self.selection_pe_co2_factor == other.selection_pe_co2_factor
+            and self.pe_factors == other.pe_factors
+            and self.co2_factors == other.co2_factors
+        )
+
 
 @dataclass
 class PhxLocation:
@@ -105,6 +139,17 @@ class PhxLocation:
     climate_zone: int = 1
     hours_from_UTC: int = -4
 
+    def __eq__(self, other: PhxLocation) -> bool:
+        TOLERANCE = 0.001
+        return (
+            abs(self.latitude - other.latitude) < TOLERANCE
+            and abs(self.longitude - other.longitude) < TOLERANCE
+            and abs((self.site_elevation or 0.0) - (other.site_elevation or 0.0))
+            < TOLERANCE
+            and self.climate_zone == other.climate_zone
+            and self.hours_from_UTC == other.hours_from_UTC
+        )
+
 
 @dataclass
 class PhxClimatePeakLoad:
@@ -114,6 +159,17 @@ class PhxClimatePeakLoad:
     radiation_south: float = 0
     radiation_west: float = 0
     radiation_global: float = 0
+
+    def __eq__(self, other: PhxClimatePeakLoad) -> bool:
+        TOLERANCE = 0.001
+        return (
+            abs(self.temperature_air - other.temperature_air) < TOLERANCE
+            and abs(self.radiation_north - other.radiation_north) < TOLERANCE
+            and abs(self.radiation_east - other.radiation_east) < TOLERANCE
+            and abs(self.radiation_south - other.radiation_south) < TOLERANCE
+            and abs(self.radiation_west - other.radiation_west) < TOLERANCE
+            and abs(self.radiation_global - other.radiation_global) < TOLERANCE
+        )
 
 
 @dataclass
@@ -140,12 +196,48 @@ class PhxClimate:
     peak_cooling_1: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)
     peak_cooling_2: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)
 
+    @staticmethod
+    def _list_eq(list_a: List[float], list_b: List[float]) -> bool:
+        TOLERANCE = 0.001
+        for a, b in zip(list_a, list_b):
+            if abs(a - b) > TOLERANCE:
+                return False
+        return True
+
+    def __eq__(self, other) -> bool:
+        TOLERANCE = 0.01
+        return (
+            abs(self.station_elevation - other.station_elevation) < TOLERANCE
+            and self.selection == other.selection
+            and abs(self.daily_temp_swing - other.daily_temp_swing) < TOLERANCE
+            and abs(self.avg_wind_speed - other.avg_wind_speed) < TOLERANCE
+            and self._list_eq(self.temperature_air, other.temperature_air)
+            and self._list_eq(self.temperature_dewpoint, other.temperature_dewpoint)
+            and self._list_eq(self.temperature_sky, other.temperature_sky)
+            and self._list_eq(self.radiation_north, other.radiation_north)
+            and self._list_eq(self.radiation_east, other.radiation_east)
+            and self._list_eq(self.radiation_south, other.radiation_south)
+            and self._list_eq(self.radiation_west, other.radiation_west)
+            and self._list_eq(self.radiation_global, other.radiation_global)
+            and self.peak_heating_1 == other.peak_heating_1
+            and self.peak_heating_2 == other.peak_heating_2
+            and self.peak_cooling_1 == other.peak_cooling_1
+            and self.peak_cooling_2 == other.peak_cooling_2
+        )
+
 
 @dataclass
 class PhxPHPPCodes:
     country_code: str = "US-United States of America"
     region_code: str = "New York"
     dataset_name = "US0055b-New York"
+
+    def __eq__(self, other) -> bool:
+        return (
+            self.country_code == other.country_code
+            and self.region_code == other.region_code
+            and self.dataset_name == other.dataset_name
+        )
 
 
 @dataclass
@@ -163,3 +255,15 @@ class PhxSite:
     ground: PhxGround = field(default_factory=PhxGround)
 
     energy_factors: PhxSiteEnergyFactors = field(default_factory=PhxSiteEnergyFactors)
+
+    def __eq__(self, other) -> bool:
+        return (
+            self.display_name == other.display_name
+            and self.source == other.source
+            and self.selection == other.selection
+            and self.location == other.location
+            and self.climate == other.climate
+            and self.phpp_codes == other.phpp_codes
+            and self.ground == other.ground
+            and self.energy_factors == other.energy_factors
+        )

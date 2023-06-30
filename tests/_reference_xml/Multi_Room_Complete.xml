@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <WUFIplusProject>
 	<DataVersion>48</DataVersion>
-	<UnitSystem>48</UnitSystem>
+	<UnitSystem>1</UnitSystem>
 	<ProgramVersion>3.2.0.1</ProgramVersion>
 	<Scope>3</Scope>
 	<DimensionsVisualizedGeometry>2</DimensionsVisualizedGeometry>
@@ -50,7 +50,7 @@
 	</UtilisationPatternsVentilation>
 	<UtilizationPatternsPH count="1">
 		<UtilizationPattern index="0">
-			<IdentNr></IdentNr>
+			<IdentNr>1</IdentNr>
 			<Name>Generic Office Occupancy</Name>
 			<HeightUtilizationLevel>0.5</HeightUtilizationLevel>
 			<BeginUtilization>0</BeginUtilization>
@@ -389,21 +389,6 @@
 						</IdentNrPolygonsInside>
 					</Polygon>
 					<Polygon index="2">
-						<IdentNr>9</IdentNr>
-						<NormalVectorX>-0.984807753</NormalVectorX>
-						<NormalVectorY>-0.1736481777</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">69</IdentNr>
-							<IdentNr index="1">65</IdentNr>
-							<IdentNr index="2">64</IdentNr>
-							<IdentNr index="3">70</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="1">
-							<IdentNr index="0">10</IdentNr>
-						</IdentNrPolygonsInside>
-					</Polygon>
-					<Polygon index="3">
 						<IdentNr>1</IdentNr>
 						<NormalVectorX>0.1736481777</NormalVectorX>
 						<NormalVectorY>-0.984807753</NormalVectorY>
@@ -419,7 +404,7 @@
 							<IdentNr index="1">3</IdentNr>
 						</IdentNrPolygonsInside>
 					</Polygon>
-					<Polygon index="4">
+					<Polygon index="3">
 						<IdentNr>4</IdentNr>
 						<NormalVectorX>0.984807753</NormalVectorX>
 						<NormalVectorY>0.1736481777</NormalVectorY>
@@ -434,7 +419,7 @@
 							<IdentNr index="0">5</IdentNr>
 						</IdentNrPolygonsInside>
 					</Polygon>
-					<Polygon index="5">
+					<Polygon index="4">
 						<IdentNr>6</IdentNr>
 						<NormalVectorX>-0.1736481777</NormalVectorX>
 						<NormalVectorY>0.984807753</NormalVectorY>
@@ -448,6 +433,21 @@
 						<IdentNrPolygonsInside count="2">
 							<IdentNr index="0">7</IdentNr>
 							<IdentNr index="1">8</IdentNr>
+						</IdentNrPolygonsInside>
+					</Polygon>
+					<Polygon index="5">
+						<IdentNr>9</IdentNr>
+						<NormalVectorX>-0.984807753</NormalVectorX>
+						<NormalVectorY>-0.1736481777</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">69</IdentNr>
+							<IdentNr index="1">65</IdentNr>
+							<IdentNr index="2">64</IdentNr>
+							<IdentNr index="3">70</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="1">
+							<IdentNr index="0">10</IdentNr>
 						</IdentNrPolygonsInside>
 					</Polygon>
 					<Polygon index="6">
@@ -477,19 +477,6 @@
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
 					<Polygon index="8">
-						<IdentNr>10</IdentNr>
-						<NormalVectorX>-0.984807753</NormalVectorX>
-						<NormalVectorY>-0.1736481777</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">57</IdentNr>
-							<IdentNr index="1">60</IdentNr>
-							<IdentNr index="2">59</IdentNr>
-							<IdentNr index="3">58</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="9">
 						<IdentNr>2</IdentNr>
 						<NormalVectorX>0.1736481777</NormalVectorX>
 						<NormalVectorY>-0.984807753</NormalVectorY>
@@ -502,7 +489,7 @@
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
-					<Polygon index="10">
+					<Polygon index="9">
 						<IdentNr>3</IdentNr>
 						<NormalVectorX>0.1736481777</NormalVectorX>
 						<NormalVectorY>-0.984807753</NormalVectorY>
@@ -515,7 +502,7 @@
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
-					<Polygon index="11">
+					<Polygon index="10">
 						<IdentNr>5</IdentNr>
 						<NormalVectorX>0.984807753</NormalVectorX>
 						<NormalVectorY>0.1736481777</NormalVectorY>
@@ -528,7 +515,7 @@
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
-					<Polygon index="12">
+					<Polygon index="11">
 						<IdentNr>7</IdentNr>
 						<NormalVectorX>-0.1736481777</NormalVectorX>
 						<NormalVectorY>0.984807753</NormalVectorY>
@@ -541,7 +528,7 @@
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
-					<Polygon index="13">
+					<Polygon index="12">
 						<IdentNr>8</IdentNr>
 						<NormalVectorX>-0.1736481777</NormalVectorX>
 						<NormalVectorY>0.984807753</NormalVectorY>
@@ -551,6 +538,19 @@
 							<IdentNr index="1">48</IdentNr>
 							<IdentNr index="2">47</IdentNr>
 							<IdentNr index="3">46</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="13">
+						<IdentNr>10</IdentNr>
+						<NormalVectorX>-0.984807753</NormalVectorX>
+						<NormalVectorY>-0.1736481777</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">57</IdentNr>
+							<IdentNr index="1">60</IdentNr>
+							<IdentNr index="2">59</IdentNr>
+							<IdentNr index="3">58</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
@@ -586,7 +586,7 @@
 				<Components count="7">
 					<Component index="0">
 						<IdentNr>23</IdentNr>
-						<Name>Room_8_c435937e..Face4</Name>
+						<Name>Room_3_1823f5ef..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -602,7 +602,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>24</IdentNr>
-						<Name>Room_8_c435937e..Face5</Name>
+						<Name>Room_3_1823f5ef..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -629,15 +629,15 @@
 						<IdentNrAssembly>1</IdentNrAssembly>
 						<IdentNrWindowType>-1</IdentNrWindowType>
 						<IdentNrPolygons count="4">
-							<IdentNr index="0">9</IdentNr>
+							<IdentNr index="0">1</IdentNr>
 							<IdentNr index="1">4</IdentNr>
-							<IdentNr index="2">1</IdentNr>
-							<IdentNr index="3">6</IdentNr>
+							<IdentNr index="2">6</IdentNr>
+							<IdentNr index="3">9</IdentNr>
 						</IdentNrPolygons>
 					</Component>
 					<Component index="3">
 						<IdentNr>44</IdentNr>
-						<Name>PhWindowConstruction_6f6f77ca</Name>
+						<Name>PhWindowConstruction_2ce0ba4d</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -658,7 +658,7 @@
 					</Component>
 					<Component index="4">
 						<IdentNr>49</IdentNr>
-						<Name>PhWindowConstruction_6f6f77ca</Name>
+						<Name>PhWindowConstruction_2ce0ba4d</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -683,7 +683,7 @@
 					</Component>
 					<Component index="5">
 						<IdentNr>50</IdentNr>
-						<Name>Shade_7ccf0157</Name>
+						<Name>Shade_35539e8a</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -699,7 +699,7 @@
 					</Component>
 					<Component index="6">
 						<IdentNr>51</IdentNr>
-						<Name>Shade_24c01202</Name>
+						<Name>Shade_4df9791b</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -721,7 +721,7 @@
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="2">
 							<Room index="0">
-								<Name>101-Room_10</Name>
+								<Name>101-Room_4</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
 								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
@@ -732,7 +732,7 @@
 								<DesignVolumeFlowRateExhaust unit="m³/h">17.53</DesignVolumeFlowRateExhaust>
 							</Room>
 							<Room index="1">
-								<Name>102-Room_8</Name>
+								<Name>102-Room_3</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
 								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
@@ -745,17 +745,17 @@
 						</RoomsVentilation>
 						<LoadsPersonsPH count="2">
 							<LoadPerson index="0">
-								<Name>101-Room_10</Name>
+								<Name>101-Room_4</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
-								<NumberOccupants>1</NumberOccupants>
+								<NumberOccupants>0.0</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">9.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 							<LoadPerson index="1">
-								<Name>102-Room_8</Name>
+								<Name>102-Room_3</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
-								<NumberOccupants>1</NumberOccupants>
+								<NumberOccupants>0.0</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">9.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 						</LoadsPersonsPH>
@@ -842,75 +842,82 @@
 								<MEF_ModifiedEnergyFactor>2.7</MEF_ModifiedEnergyFactor>
 							</Device>
 						</HomeDevice>
-						<ExhaustVents count="0"/>
+						<ExhaustVents count="1">
+							<ExhaustVent index="0">
+								<Name>example_dryer_vent</Name>
+								<Type>1</Type>
+								<ExhaustVolumeFlowRate unit="m³/h">442800.0</ExhaustVolumeFlowRate>
+								<RunTimePerYear>0.0</RunTimePerYear>
+							</ExhaustVent>
+						</ExhaustVents>
 						<ThermalBridges count="10">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__0800ff28</Name>
+								<Name>_unnamed_bldg_segment__203b672b</Name>
 								<Type>-15</Type>
-								<Length>14.0</Length>
+								<Length>20.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__25db705b</Name>
-								<Type>-15</Type>
-								<Length>9.391485505499118</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__2d6e9c3c</Name>
+								<Name>_unnamed_bldg_segment__7ad0b1e2</Name>
 								<Type>-15</Type>
 								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
-							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__6a2691bd</Name>
+							<ThermalBridge index="2">
+								<Name>_unnamed_bldg_segment__ac0bb41f</Name>
 								<Type>-15</Type>
-								<Length>13.416407864998739</Length>
+								<Length>16.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="3">
+								<Name>_unnamed_bldg_segment__ad243d85</Name>
+								<Type>-15</Type>
+								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__6c0d1782</Name>
+								<Name>_unnamed_bldg_segment__b4e87cfd</Name>
 								<Type>-15</Type>
 								<Length>10.733126291998989</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__98749b71</Name>
-								<Type>-15</Type>
-								<Length>16.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__bbf37c05</Name>
-								<Type>-15</Type>
-								<Length>22.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="7">
-								<Name>_unnamed_bldg_segment__c5f1979e</Name>
+								<Name>_unnamed_bldg_segment__ba13308e</Name>
 								<Type>-15</Type>
 								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
+							<ThermalBridge index="6">
+								<Name>_unnamed_bldg_segment__c5dd1639</Name>
+								<Type>-15</Type>
+								<Length>13.416407864998739</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="7">
+								<Name>_unnamed_bldg_segment__c6b12cc4</Name>
+								<Type>-15</Type>
+								<Length>9.391485505499118</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
 							<ThermalBridge index="8">
-								<Name>_unnamed_bldg_segment__dcce587f</Name>
+								<Name>_unnamed_bldg_segment__d7a558f4</Name>
 								<Type>-15</Type>
 								<Length>13.416407864998739</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="9">
-								<Name>_unnamed_bldg_segment__ddbe11db</Name>
+								<Name>_unnamed_bldg_segment__eae18846</Name>
 								<Type>-15</Type>
-								<Length>20.0</Length>
+								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
@@ -935,7 +942,7 @@
 				<Unit_CO2concentration choice="ppmv">48</Unit_CO2concentration>
 				<PH_ClimateLocation>
 					<Selection>6</Selection>
-					<DailyTemperatureSwingSummer>8.0</DailyTemperatureSwingSummer>
+					<DailyTemperatureSwingSummer>10.0</DailyTemperatureSwingSummer>
 					<AverageWindSpeed>4.0</AverageWindSpeed>
 					<Latitude>40.6</Latitude>
 					<Longitude>-73.8</Longitude>
@@ -950,72 +957,72 @@
 					<FlowRateGroundwater>0.05</FlowRateGroundwater>
 					<TemperatureMonthly count="12">
 						<Item index="0">0.0</Item>
-						<Item index="1">0.0</Item>
-						<Item index="2">0.0</Item>
-						<Item index="3">0.0</Item>
-						<Item index="4">0.0</Item>
-						<Item index="5">0.0</Item>
-						<Item index="6">0.0</Item>
-						<Item index="7">0.0</Item>
-						<Item index="8">0.0</Item>
-						<Item index="9">0.0</Item>
-						<Item index="10">0.0</Item>
-						<Item index="11">0.0</Item>
+						<Item index="1">4.0</Item>
+						<Item index="2">10.0</Item>
+						<Item index="3">19.75</Item>
+						<Item index="4">21.5</Item>
+						<Item index="5">24.75</Item>
+						<Item index="6">21.23</Item>
+						<Item index="7">15.85</Item>
+						<Item index="8">11.74</Item>
+						<Item index="9">7.78</Item>
+						<Item index="10">6.07</Item>
+						<Item index="11">4.34</Item>
 					</TemperatureMonthly>
 					<DewPointTemperatureMonthly count="12">
 						<Item index="0">0.0</Item>
-						<Item index="1">0.0</Item>
-						<Item index="2">0.0</Item>
-						<Item index="3">0.0</Item>
-						<Item index="4">0.0</Item>
-						<Item index="5">0.0</Item>
-						<Item index="6">0.0</Item>
-						<Item index="7">0.0</Item>
-						<Item index="8">0.0</Item>
-						<Item index="9">0.0</Item>
-						<Item index="10">0.0</Item>
-						<Item index="11">0.0</Item>
+						<Item index="1">2.67</Item>
+						<Item index="2">6.67</Item>
+						<Item index="3">7.96</Item>
+						<Item index="4">5.13</Item>
+						<Item index="5">6.95</Item>
+						<Item index="6">4.95</Item>
+						<Item index="7">4.14</Item>
+						<Item index="8">1.05</Item>
+						<Item index="9">1.54</Item>
+						<Item index="10">1.62</Item>
+						<Item index="11">4.28</Item>
 					</DewPointTemperatureMonthly>
 					<SkyTemperatureMonthly count="12">
 						<Item index="0">0.0</Item>
-						<Item index="1">0.0</Item>
-						<Item index="2">0.0</Item>
-						<Item index="3">0.0</Item>
-						<Item index="4">0.0</Item>
-						<Item index="5">0.0</Item>
-						<Item index="6">0.0</Item>
-						<Item index="7">0.0</Item>
-						<Item index="8">0.0</Item>
-						<Item index="9">0.0</Item>
-						<Item index="10">0.0</Item>
-						<Item index="11">0.0</Item>
+						<Item index="1">3.33</Item>
+						<Item index="2">8.33</Item>
+						<Item index="3">16.46</Item>
+						<Item index="4">17.92</Item>
+						<Item index="5">20.62</Item>
+						<Item index="6">17.7</Item>
+						<Item index="7">13.21</Item>
+						<Item index="8">9.78</Item>
+						<Item index="9">6.48</Item>
+						<Item index="10">5.06</Item>
+						<Item index="11">3.62</Item>
 					</SkyTemperatureMonthly>
 					<NorthSolarRadiationMonthly count="12">
 						<Item index="0">0.0</Item>
-						<Item index="1">0.0</Item>
-						<Item index="2">0.0</Item>
-						<Item index="3">0.0</Item>
-						<Item index="4">0.0</Item>
-						<Item index="5">0.0</Item>
-						<Item index="6">0.0</Item>
-						<Item index="7">0.0</Item>
-						<Item index="8">0.0</Item>
-						<Item index="9">0.0</Item>
-						<Item index="10">0.0</Item>
+						<Item index="1">26.66</Item>
+						<Item index="2">66.66</Item>
+						<Item index="3">131.66</Item>
+						<Item index="4">149.97</Item>
+						<Item index="5">165.0</Item>
+						<Item index="6">200.0</Item>
+						<Item index="7">145.61</Item>
+						<Item index="8">104.03</Item>
+						<Item index="9">74.32</Item>
+						<Item index="10">42.05</Item>
 						<Item index="11">0.0</Item>
 					</NorthSolarRadiationMonthly>
 					<EastSolarRadiationMonthly count="12">
 						<Item index="0">0.0</Item>
-						<Item index="1">0.0</Item>
-						<Item index="2">0.0</Item>
-						<Item index="3">0.0</Item>
-						<Item index="4">0.0</Item>
-						<Item index="5">0.0</Item>
-						<Item index="6">0.0</Item>
-						<Item index="7">0.0</Item>
-						<Item index="8">0.0</Item>
-						<Item index="9">0.0</Item>
-						<Item index="10">0.0</Item>
+						<Item index="1">26.66</Item>
+						<Item index="2">66.66</Item>
+						<Item index="3">131.66</Item>
+						<Item index="4">149.97</Item>
+						<Item index="5">165.0</Item>
+						<Item index="6">200.0</Item>
+						<Item index="7">145.61</Item>
+						<Item index="8">104.03</Item>
+						<Item index="9">74.32</Item>
+						<Item index="10">42.05</Item>
 						<Item index="11">0.0</Item>
 					</EastSolarRadiationMonthly>
 					<SouthSolarRadiationMonthly count="12">
@@ -1034,30 +1041,30 @@
 					</SouthSolarRadiationMonthly>
 					<WestSolarRadiationMonthly count="12">
 						<Item index="0">0.0</Item>
-						<Item index="1">0.0</Item>
-						<Item index="2">0.0</Item>
-						<Item index="3">0.0</Item>
-						<Item index="4">0.0</Item>
-						<Item index="5">0.0</Item>
-						<Item index="6">0.0</Item>
-						<Item index="7">0.0</Item>
-						<Item index="8">0.0</Item>
-						<Item index="9">0.0</Item>
-						<Item index="10">0.0</Item>
+						<Item index="1">26.66</Item>
+						<Item index="2">66.66</Item>
+						<Item index="3">131.66</Item>
+						<Item index="4">149.97</Item>
+						<Item index="5">165.0</Item>
+						<Item index="6">200.0</Item>
+						<Item index="7">145.61</Item>
+						<Item index="8">104.03</Item>
+						<Item index="9">74.32</Item>
+						<Item index="10">42.05</Item>
 						<Item index="11">0.0</Item>
 					</WestSolarRadiationMonthly>
 					<GlobalSolarRadiationMonthly count="12">
 						<Item index="0">0.0</Item>
-						<Item index="1">0.0</Item>
-						<Item index="2">0.0</Item>
-						<Item index="3">0.0</Item>
-						<Item index="4">0.0</Item>
-						<Item index="5">0.0</Item>
-						<Item index="6">0.0</Item>
-						<Item index="7">0.0</Item>
-						<Item index="8">0.0</Item>
-						<Item index="9">0.0</Item>
-						<Item index="10">0.0</Item>
+						<Item index="1">26.66</Item>
+						<Item index="2">66.66</Item>
+						<Item index="3">131.66</Item>
+						<Item index="4">149.97</Item>
+						<Item index="5">165.0</Item>
+						<Item index="6">200.0</Item>
+						<Item index="7">145.61</Item>
+						<Item index="8">104.03</Item>
+						<Item index="9">74.32</Item>
+						<Item index="10">42.05</Item>
 						<Item index="11">0.0</Item>
 					</GlobalSolarRadiationMonthly>
 					<TemperatureHeating1>0.0</TemperatureHeating1>
@@ -1175,7 +1182,7 @@
 								<CoverageDehumidification>1.0</CoverageDehumidification>
 							</ZoneCoverage>
 						</ZonesCoverage>
-						<Devices count="4">
+						<Devices count="7">
 							<Device index="0">
 								<Name>Test_Unit</Name>
 								<IdentNr>1</IdentNr>
@@ -1203,7 +1210,132 @@
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
-								<Name>e64a60cf-6481-4c16-8fd8-4d49774f20b5</Name>
+								<Name>_unnamed_recirculation_cooling__914b27c7</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>true</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+									<InConditionedSpace>true</InConditionedSpace>
+									<AnnualCOP>2.0</AnnualCOP>
+									<TotalSystemPerformanceRatioHeatGenerator>0.5</TotalSystemPerformanceRatioHeatGenerator>
+									<HPType>3</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+							</Device>
+							<Device index="2">
+								<Name>acd8ac03-c863-4be0-a147-84b1c842edde</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>3</SystemType>
+								<TypeDevice>3</TypeDevice>
+								<UsedFor_Heating>true</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<EnergySourceBoilerType>1</EnergySourceBoilerType>
+									<CondensingBoiler>true</CondensingBoiler>
+									<InConditionedSpace>true</InConditionedSpace>
+									<MaximalBoilerPower>10.0</MaximalBoilerPower>
+									<BoilerEfficiency30>0.98</BoilerEfficiency30>
+									<BoilerEfficiencyNominalOutput>0.94</BoilerEfficiencyNominalOutput>
+									<AverageReturnTemperatureMeasured30Load>30</AverageReturnTemperatureMeasured30Load>
+									<AverageBoilerTemperatureDesign70_55>41</AverageBoilerTemperatureDesign70_55>
+									<AverageBoilerTemperatureDesign55_45>35</AverageBoilerTemperatureDesign55_45>
+									<AverageBoilerTemperatureDesign35_28>24</AverageBoilerTemperatureDesign35_28>
+									<StandbyHeatLossBoiler70>None</StandbyHeatLossBoiler70>
+									<SolarFractionBoilerSpaceHeating>None</SolarFractionBoilerSpaceHeating>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+							</Device>
+							<Device index="3">
+								<Name>Example_Heat_Pump</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>true</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+									<InConditionedSpace>true</InConditionedSpace>
+									<RatedCOP1>3.4</RatedCOP1>
+									<RatedCOP2>4.12</RatedCOP2>
+									<AmbientTemperature1>-3.33</AmbientTemperature1>
+									<AmbientTemperature2>12.0</AmbientTemperature2>
+									<HPType>4</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+							</Device>
+							<Device index="4">
+								<Name>_unnamed_hw_tank_</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>8</SystemType>
+								<TypeDevice>8</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>true</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<SolarThermalStorageCapacity>300</SolarThermalStorageCapacity>
+									<StorageLossesStandby>4.0</StorageLossesStandby>
+									<TotalSolarThermalStorageLosses>4.0</TotalSolarThermalStorageLosses>
+									<InputOption>1</InputOption>
+									<AverageHeatReleaseStorage>0.0</AverageHeatReleaseStorage>
+									<TankRoomTemp >20</TankRoomTemp >
+									<TypicalStorageWaterTemperature>60</TypicalStorageWaterTemperature>
+									<QauntityWS>1</QauntityWS>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+									<InConditionedSpace>true</InConditionedSpace>
+								</PH_Parameters>
+							</Device>
+							<Device index="5">
+								<Name>fac36898-ad0b-4bd2-b81d-496f31ad56c8</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
@@ -1233,32 +1365,7 @@
 									<Selection>1</Selection>
 								</Heating_Parameters>
 							</Device>
-							<Device index="2">
-								<Name>_unnamed_hw_tank_</Name>
-								<IdentNr>1</IdentNr>
-								<SystemType>8</SystemType>
-								<TypeDevice>8</TypeDevice>
-								<UsedFor_Heating>false</UsedFor_Heating>
-								<UsedFor_DHW>true</UsedFor_DHW>
-								<UsedFor_Cooling>false</UsedFor_Cooling>
-								<UsedFor_Ventilation>false</UsedFor_Ventilation>
-								<UsedFor_Humidification>false</UsedFor_Humidification>
-								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
-								<PH_Parameters>
-									<SolarThermalStorageCapacity>300</SolarThermalStorageCapacity>
-									<StorageLossesStandby>4.0</StorageLossesStandby>
-									<TotalSolarThermalStorageLosses>4.0</TotalSolarThermalStorageLosses>
-									<InputOption>1</InputOption>
-									<AverageHeatReleaseStorage>0.0</AverageHeatReleaseStorage>
-									<TankRoomTemp >20</TankRoomTemp >
-									<TypicalStorageWaterTemperature>60</TypicalStorageWaterTemperature>
-									<QauntityWS>1</QauntityWS>
-									<AuxiliaryEnergy>None</AuxiliaryEnergy>
-									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
-									<InConditionedSpace>true</InConditionedSpace>
-								</PH_Parameters>
-							</Device>
-							<Device index="3">
+							<Device index="6">
 								<Name>my_PV_system</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>10</SystemType>
@@ -1276,8 +1383,8 @@
 									<ArraySizePV>0.0</ArraySizePV>
 									<PhotovoltaicRenewableEnergy>1000.0</PhotovoltaicRenewableEnergy>
 									<OnsiteUtilization>1.0</OnsiteUtilization>
-									<AuxiliaryEnergy>0</AuxiliaryEnergy>
-									<AuxiliaryEnergyDHW>0</AuxiliaryEnergyDHW>
+									<AuxiliaryEnergy>0.0</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>0.0</AuxiliaryEnergyDHW>
 									<InConditionedSpace>false</InConditionedSpace>
 								</PH_Parameters>
 							</Device>
@@ -1300,7 +1407,15 @@
 								<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>
 								<ExteriorPipeDiameter_WR>None</ExteriorPipeDiameter_WR>
 							</DistributionDHW>
-							<DistributionCooling/>
+							<DistributionCooling>
+								<CoolingViaRecirculation>true</CoolingViaRecirculation>
+								<RecirculatingAirOnOff>false</RecirculatingAirOnOff>
+								<MaxRecirculationAirCoolingPower>10.0</MaxRecirculationAirCoolingPower>
+								<MinTempCoolingCoilRecirculatingAir>12.0</MinTempCoolingCoilRecirculatingAir>
+								<RecirculationCoolingCOP>2.0</RecirculationCoolingCOP>
+								<RecirculationAirVolume>100.08</RecirculationAirVolume>
+								<ControlledRecirculationVolumeFlow>true</ControlledRecirculationVolumeFlow>
+							</DistributionCooling>
 							<DistributionVentilation count="2">
 								<Duct index="0">
 									<Name>Test_Vent_System_supply</Name>
@@ -1572,7 +1687,7 @@
 	<WindowTypes count="2">
 		<WindowType index="0">
 			<IdentNr>1</IdentNr>
-			<Name>PhWindowConstruction_6f6f77ca</Name>
+			<Name>PhWindowConstruction_2ce0ba4d</Name>
 			<Uw_Detailed>true</Uw_Detailed>
 			<GlazingFrameDetailed>true</GlazingFrameDetailed>
 			<FrameFactor>0.7242364315535045</FrameFactor>
@@ -1601,7 +1716,7 @@
 		</WindowType>
 		<WindowType index="1">
 			<IdentNr>2</IdentNr>
-			<Name>PhWindowConstruction_434d1abb</Name>
+			<Name>PhWindowConstruction_7b4cb607</Name>
 			<Uw_Detailed>true</Uw_Detailed>
 			<GlazingFrameDetailed>true</GlazingFrameDetailed>
 			<FrameFactor>0.7242364315535045</FrameFactor>

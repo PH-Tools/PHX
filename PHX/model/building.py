@@ -30,20 +30,30 @@ class PhxZone:
     volume_net: float = 0.0
     weighted_net_floor_area: float = 0.0
     clearance_height: float = 2.5
-    specific_heat_capacity: SpecificHeatCapacity = SpecificHeatCapacity.LIGHTWEIGHT
-    spaces: List[spaces.PhxSpace] = field(default_factory=list)
-    elec_equipment_collection: elec_equip.PhxElectricDeviceCollection = field(
-        default_factory=elec_equip.PhxElectricDeviceCollection
-    )
     res_occupant_quantity: float = 0.0
     res_number_bedrooms: int = 0
     res_number_dwellings: int = 0
+    specific_heat_capacity: SpecificHeatCapacity = SpecificHeatCapacity.LIGHTWEIGHT
+
+    spaces: List[spaces.PhxSpace] = field(default_factory=list)
+    _thermal_bridges: Dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
+
+    # TODO: see if this can be safely removed?
+    # ---------------------------------------------------------
+    occupancy: Optional[occupancy.PhxProgramOccupancy] = None
+    # ---------------------------------------------------------
+
+    lighting: Any = None
+    elec_equipment_collection: elec_equip.PhxElectricDeviceCollection = field(
+        default_factory=elec_equip.PhxElectricDeviceCollection
+    )
     exhaust_ventilator_collection: collection.PhxExhaustVentilatorCollection = field(
         default_factory=collection.PhxExhaustVentilatorCollection
     )
-    _thermal_bridges: Dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
-    occupancy: Optional[occupancy.PhxProgramOccupancy] = None
-    lighting: Any = None
+
+    def add_thermal_bridge(self, _thermal_bridge: PhxComponentThermalBridge) -> None:
+        """Add a new PhxComponentThermalBridge to the PhxZone."""
+        self._thermal_bridges[_thermal_bridge.identifier] = _thermal_bridge
 
     def add_thermal_bridges(
         self,
@@ -72,6 +82,10 @@ class PhxZone:
 
 @dataclass
 class PhxBuilding:
+    """PHX Building Class"""
+
+    # -- Only opaque components (and shades) are stored in the _components list
+    # -- as the apertures are stored in the opaque components themselves
     _components: List[PhxComponentOpaque] = field(default_factory=list)
     zones: List[PhxZone] = field(default_factory=list)
 
@@ -88,12 +102,18 @@ class PhxBuilding:
     def add_components(
         self, _components: Union[PhxComponentOpaque, Sequence[PhxComponentOpaque]]
     ) -> None:
-        """Add a new PhxComponentOpaque to the PhxBuilding."""
+        """Add new PHX Components to the PhxBuilding."""
         if not isinstance(_components, Sequence):
             _components = (_components,)
 
         for compo in _components:
             self._components.append(compo)
+
+    def add_component(
+        self, _component: Union[PhxComponentOpaque, PhxComponentAperture]
+    ) -> None:
+        """Add a new PHX Components to the PhxBuilding."""
+        self._components.append(_component)
 
     def add_zones(self, _zones: Union[PhxZone, Sequence[PhxZone]]) -> None:
         """Add a new PhxZone to the PhxBuilding."""
@@ -102,6 +122,10 @@ class PhxBuilding:
 
         for zone in _zones:
             self.zones.append(zone)
+
+    def add_zone(self, _zone: PhxZone) -> None:
+        """Add a new PhxZone to the PhxBuilding."""
+        self.zones.append(_zone)
 
     def merge_opaque_components_by_assembly(self) -> None:
         """Merge together all the Opaque-Components in the Building if they gave the same Attributes."""

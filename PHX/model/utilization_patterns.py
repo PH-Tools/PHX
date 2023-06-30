@@ -5,35 +5,34 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Union, Dict, Optional
+from typing import Union, Dict, Optional, Generator, Any, KeysView, ValuesView, ItemsView
 import uuid
 
-from PHX.model.schedules.ventilation import PhxScheduleVentilation
-from PHX.model.schedules.occupancy import PhxScheduleOccupancy
+from PHX.model.schedules import ventilation, occupancy
 
 
 @dataclass
 class UtilizationPatternCollection_Ventilation:
-    patterns: Dict[Union[str, uuid.UUID], PhxScheduleVentilation] = field(
+    patterns: Dict[Union[str, uuid.UUID], ventilation.PhxScheduleVentilation] = field(
         init=False, default_factory=dict
     )
 
-    def __getitem__(self, key) -> PhxScheduleVentilation:
+    def __getitem__(self, key) -> ventilation.PhxScheduleVentilation:
         return self.patterns[key]
 
     def __setitem__(
-        self, key: Union[str, uuid.UUID], value: PhxScheduleVentilation
+        self, key: Union[str, uuid.UUID], value: ventilation.PhxScheduleVentilation
     ) -> None:
         self.patterns[key] = value
 
     def add_new_util_pattern(
-        self, _util_pattern: Optional[PhxScheduleVentilation]
+        self, _util_pattern: Optional[ventilation.PhxScheduleVentilation]
     ) -> None:
-        """Add a new PhxScheduleVentilation to the Collection.
+        """Add a new ventilation.PhxScheduleVentilation to the Collection.
 
         Arguments:
         ----------
-            * _util_pattern (PhxScheduleVentilation): The PhxScheduleVentilation
+            * _util_pattern (ventilation.PhxScheduleVentilation): The ventilation.PhxScheduleVentilation
                 pattern to add to the collection.
 
         Returns:
@@ -49,8 +48,8 @@ class UtilizationPatternCollection_Ventilation:
         """Check if the id is in the collection."""
         return _id in self.patterns.keys()
 
-    def get_pattern_by_id_num(self, _id_num: int) -> PhxScheduleVentilation:
-        """Return a PhxScheduleVentilation from the collection found by an id-num
+    def get_pattern_by_id_num(self, _id_num: int) -> ventilation.PhxScheduleVentilation:
+        """Return a ventilation.PhxScheduleVentilation from the collection found by an id-num
 
         Arguments:
         ----------
@@ -63,49 +62,51 @@ class UtilizationPatternCollection_Ventilation:
         for pattern in self.patterns.values():
             if pattern.id_num == _id_num:
                 return pattern
-        msg = f"Error: Cannot locate the PhxScheduleVentilation with id-number: {_id_num}"
+        msg = f"Error: Cannot locate the ventilation.PhxScheduleVentilation with id-number: {_id_num}"
         raise Exception(msg)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.patterns.keys())
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[ventilation.PhxScheduleVentilation, Any, None]:
         for v in self.patterns.values():
             yield v
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self.patterns)
 
-    def items(self):
+    def items(self) -> ItemsView:
         return self.patterns.items()
 
-    def keys(self):
+    def keys(self) -> KeysView:
         return self.patterns.keys()
 
-    def values(self):
+    def values(self) -> ValuesView:
         return self.patterns.values()
 
 
 @dataclass
 class UtilizationPatternCollection_Occupancy:
-    patterns: Dict[Union[str, uuid.UUID], PhxScheduleOccupancy] = field(
+    patterns: Dict[Union[str, uuid.UUID], occupancy.PhxScheduleOccupancy] = field(
         init=False, default_factory=dict
     )
 
-    def __getitem__(self, key) -> PhxScheduleOccupancy:
+    def __getitem__(self, key) -> occupancy.PhxScheduleOccupancy:
         return self.patterns[key]
 
     def __setitem__(
-        self, key: Union[str, uuid.UUID], value: PhxScheduleOccupancy
+        self, key: Union[str, uuid.UUID], value: occupancy.PhxScheduleOccupancy
     ) -> None:
         self.patterns[key] = value
 
-    def add_new_util_pattern(self, _util_pattern: Optional[PhxScheduleOccupancy]) -> None:
-        """Add a new PhxScheduleOccupancy to the Collection.
+    def add_new_util_pattern(
+        self, _util_pattern: Optional[occupancy.PhxScheduleOccupancy]
+    ) -> None:
+        """Add a new occupancy.PhxScheduleOccupancy to the Collection.
 
         Arguments:
         ----------
-            * _util_pattern (Optional[PhxScheduleOccupancy]): The PhxScheduleOccupancy
+            * _util_pattern (Optional[occupancy.PhxScheduleOccupancy]): The occupancy.PhxScheduleOccupancy
                 pattern to add to the collection.
 
         Returns:
@@ -121,8 +122,8 @@ class UtilizationPatternCollection_Occupancy:
         """Check if the id is in the collection."""
         return _id in self.patterns.keys()
 
-    def get_pattern_by_id_num(self, _id_num: int) -> PhxScheduleOccupancy:
-        """Return a PhxScheduleOccupancy from the collection found by an id-num
+    def get_pattern_by_id_num(self, _id_num: int) -> occupancy.PhxScheduleOccupancy:
+        """Return a occupancy.PhxScheduleOccupancy from the collection found by an id-num
 
         Arguments:
         ----------
@@ -135,17 +136,17 @@ class UtilizationPatternCollection_Occupancy:
         for pattern in self.patterns.values():
             if pattern.id_num == _id_num:
                 return pattern
-        msg = f"Error: Cannot locate the PhxScheduleOccupancy with id-number: {_id_num}"
+        msg = f"Error: Cannot locate the occupancy.PhxScheduleOccupancy with id-number: {_id_num}"
         raise Exception(msg)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.patterns.keys())
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[occupancy.PhxScheduleOccupancy, Any, None]:
         for v in self.patterns.values():
             yield v
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self.patterns)
 
     def items(self):
