@@ -372,16 +372,14 @@ class Areas:
                 pass
         return d
 
-    def get_total_wall_area(self) -> float:
-        """Return the total wall area from the PHPP Areas worksheet."""
+    def get_total_net_wall_area(self) -> float:
+        """Return the total net (apertures punched) wall area from the PHPP Areas worksheet."""
         v = self.xl.get_data(self.shape.name, self.shape.defined_ranges.exposed_wall_area)
-
         return float(v)
 
-    def get_total_roof_area(self) -> float:
-        """Return the total Roof area from the PHPP Areas worksheet."""
+    def get_total_net_roof_area(self) -> float:
+        """Return the total net (apertures punched) Roof area from the PHPP Areas worksheet."""
         v = self.xl.get_data(self.shape.name, self.shape.defined_ranges.roof_ceiling_area)
-
         return float(v)
 
     def get_total_vertical_window_area(self) -> float:

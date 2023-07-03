@@ -103,6 +103,141 @@ def test_add_vertices_to_Polygon(reset_class_counters):
     assert v4.id_num in p1.vertices_id_numbers
 
 
+def test_polgon_calculate_area_simple_rectangle_1(reset_class_counters):
+    p1 = geometry.PhxPolygon(
+        "no_name",
+        100.0,
+        geometry.PhxVertix(1.0, 1.0, 0.0),
+        geometry.PhxVector(0.0, 0.0, 1.0),
+        geometry.PhxPlane(
+            geometry.PhxVector(0, 0, 1),
+            geometry.PhxVertix(1, 1, 0),
+            geometry.PhxVector(1, 0, 0),
+            geometry.PhxVector(0, 1, 0),
+        ),
+    )
+
+    v1 = geometry.PhxVertix(0, 0, 0)
+    v2 = geometry.PhxVertix(0, 1, 0)
+    v3 = geometry.PhxVertix(1, 1, 0)
+    v4 = geometry.PhxVertix(1, 0, 0)
+
+    p1.add_vertix(v1)
+    p1.add_vertix(v2)
+    p1.add_vertix(v3)
+    p1.add_vertix(v4)
+
+    assert p1.calculate_area() == 1
+
+
+def test_polgon_calculate_area_simple_rectangle_2(reset_class_counters):
+    p2 = geometry.PhxPolygon(
+        "no_name",
+        1_000.0,
+        geometry.PhxVertix(1.5, 1.5, 0.0),
+        geometry.PhxVector(0.0, 0.0, 1.0),
+        geometry.PhxPlane(
+            geometry.PhxVector(0, 0, 1),
+            geometry.PhxVertix(1, 1, 0),
+            geometry.PhxVector(1, 0, 0),
+            geometry.PhxVector(0, 1, 0),
+        ),
+    )
+
+    v1 = geometry.PhxVertix(0, 0, 0)
+    v2 = geometry.PhxVertix(0, 3, 0)
+    v3 = geometry.PhxVertix(3, 3, 0)
+    v4 = geometry.PhxVertix(3, 0, 0)
+
+    p2.add_vertix(v1)
+    p2.add_vertix(v2)
+    p2.add_vertix(v3)
+    p2.add_vertix(v4)
+
+    assert p2.calculate_area() == 9
+
+
+def test_polgon_calculate_area_irregular_polygon_1(reset_class_counters):
+    p2 = geometry.PhxPolygon(
+        "no_name",
+        1_000.0,
+        geometry.PhxVertix(1.5, 1.5, 0.0),
+        geometry.PhxVector(0.0, 0.0, 1.0),
+        geometry.PhxPlane(
+            geometry.PhxVector(0, 0, 1),
+            geometry.PhxVertix(1, 1, 0),
+            geometry.PhxVector(1, 0, 0),
+            geometry.PhxVector(0, 1, 0),
+        ),
+    )
+
+    v1 = geometry.PhxVertix(0, 6, 0)
+    v2 = geometry.PhxVertix(4, 6, 0)
+    v3 = geometry.PhxVertix(8, 3, 0)
+    v4 = geometry.PhxVertix(0, 0, 0)
+
+    p2.add_vertix(v1)
+    p2.add_vertix(v2)
+    p2.add_vertix(v3)
+    p2.add_vertix(v4)
+
+    assert p2.calculate_area() == pytest.approx(30.0)
+
+
+def test_polgon_calculate_area_irregular_polygon_2(reset_class_counters):
+    p2 = geometry.PhxPolygon(
+        "no_name",
+        1_000.0,
+        geometry.PhxVertix(-3.24561404, -2.96491228, 0),
+        geometry.PhxVector(0.0, 0.0, 1.0),
+        geometry.PhxPlane(
+            geometry.PhxVector(0, 0, 1),
+            geometry.PhxVertix(-3.24561404, -2.96491228, 0),
+            geometry.PhxVector(1, 0, 0),
+            geometry.PhxVector(0, 1, 0),
+        ),
+    )
+
+    v1 = geometry.PhxVertix(-4, 5, 0)
+    v2 = geometry.PhxVertix(-3, -2, 0)
+    v3 = geometry.PhxVertix(2, -4, 0)
+    v4 = geometry.PhxVertix(-6, -7, 0)
+
+    p2.add_vertix(v1)
+    p2.add_vertix(v2)
+    p2.add_vertix(v3)
+    p2.add_vertix(v4)
+
+    assert p2.calculate_area() == pytest.approx(28.5)
+
+
+def test_3D_polygon_calculate_area(reset_class_counters) -> None:
+    p2 = geometry.PhxPolygon(
+        _display_name="no_name",
+        _area=1_000_000.0,
+        _center=geometry.PhxVertix(5, 0, 5),
+        normal_vector=geometry.PhxVector(0.0, 1.0, 0.0),
+        plane=geometry.PhxPlane(
+            normal_vector=geometry.PhxVector(0, 1.0, 0),
+            origin=geometry.PhxVertix(5, 0, 5),
+            x=geometry.PhxVector(1, 0, 0),
+            y=geometry.PhxVector(0, 0, 1),
+        ),
+    )
+
+    v1 = geometry.PhxVertix(0, 0, 0)
+    v2 = geometry.PhxVertix(10, 0, 0)
+    v3 = geometry.PhxVertix(10, 0, 10)
+    v4 = geometry.PhxVertix(0, 0, 10)
+
+    p2.add_vertix(v1)
+    p2.add_vertix(v2)
+    p2.add_vertix(v3)
+    p2.add_vertix(v4)
+
+    assert p2.calculate_area() == pytest.approx(100.0)
+
+
 def test_add_child_poly_id(reset_class_counters, polygon_1x1x0, polygon_2x2x0):
     p1 = geometry.PhxPolygon(
         "no_name",

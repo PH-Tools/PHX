@@ -17,7 +17,7 @@ def test_default_PhxDeviceClothesWasher(reset_class_counters):
         "<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>",
         "<Type>2</Type>",
         "<Connection>1</Connection>",
-        "<UtilizationFactor>1</UtilizationFactor>",
+        "<UtilizationFactor>1.0</UtilizationFactor>",
         "<CapacityClothesWasher>0.0814</CapacityClothesWasher>",
         "<MEF_ModifiedEnergyFactor>2.38</MEF_ModifiedEnergyFactor>",
     ]

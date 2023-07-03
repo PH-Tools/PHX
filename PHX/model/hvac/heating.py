@@ -40,16 +40,16 @@ class PhxHeaterElectric(PhxHeatingDevice):
 @dataclass
 class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
     _fuel: PhxFuelType = PhxFuelType.NATURAL_GAS
-    condensing: bool = True
-    in_conditioned_space: bool = True
-    effic_at_30_percent_load: float = 0.98
-    effic_at_nominal_load: float = 0.94
-    avg_rtrn_temp_at_30_percent_load: float = 30
-    avg_temp_at_70C_55C: float = 41
-    avg_temp_at_55C_45C: float = 35
-    avg_temp_at_32C_28C: float = 24
-    standby_loss_at_70C: Optional[float] = None
-    rated_capacity: float = 10.0  # kW
+    _condensing: bool = True
+    _in_conditioned_space: bool = True
+    _effic_at_30_percent_load: float = 0.98
+    _effic_at_nominal_load: float = 0.94
+    _avg_rtrn_temp_at_30_percent_load: float = 30
+    _avg_temp_at_70C_55C: float = 41
+    _avg_temp_at_55C_45C: float = 35
+    _avg_temp_at_32C_28C: float = 24
+    _standby_loss_at_70C: Optional[float] = None
+    _rated_capacity: float = 10.0  # kW
 
     @property
     def fuel(self):
@@ -61,6 +61,96 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
             self._fuel = PhxFuelType[_in]
         except KeyError:
             self._fuel = PhxFuelType(_in)
+
+    @property
+    def condensing(self) -> bool:
+        return self._condensing
+
+    @condensing.setter
+    def condensing(self, value: Optional[bool]) -> None:
+        if value is not None:
+            self._condensing = value
+
+    @property
+    def in_conditioned_space(self) -> bool:
+        return self._in_conditioned_space
+
+    @in_conditioned_space.setter
+    def in_conditioned_space(self, value: Optional[bool]) -> None:
+        if value is not None:
+            self._in_conditioned_space = value
+
+    @property
+    def effic_at_30_percent_load(self) -> float:
+        return self._effic_at_30_percent_load
+
+    @effic_at_30_percent_load.setter
+    def effic_at_30_percent_load(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._effic_at_30_percent_load = value
+
+    @property
+    def effic_at_nominal_load(self) -> float:
+        return self._effic_at_nominal_load
+
+    @effic_at_nominal_load.setter
+    def effic_at_nominal_load(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._effic_at_nominal_load = value
+
+    @property
+    def avg_rtrn_temp_at_30_percent_load(self) -> float:
+        return self._avg_rtrn_temp_at_30_percent_load
+
+    @avg_rtrn_temp_at_30_percent_load.setter
+    def avg_rtrn_temp_at_30_percent_load(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._avg_rtrn_temp_at_30_percent_load = value
+
+    @property
+    def avg_temp_at_70C_55C(self) -> float:
+        return self._avg_temp_at_70C_55C
+
+    @avg_temp_at_70C_55C.setter
+    def avg_temp_at_70C_55C(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._avg_temp_at_70C_55C = value
+
+    @property
+    def avg_temp_at_55C_45C(self) -> float:
+        return self._avg_temp_at_55C_45C
+
+    @avg_temp_at_55C_45C.setter
+    def avg_temp_at_55C_45C(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._avg_temp_at_55C_45C = value
+
+    @property
+    def avg_temp_at_32C_28C(self) -> float:
+        return self._avg_temp_at_32C_28C
+
+    @avg_temp_at_32C_28C.setter
+    def avg_temp_at_32C_28C(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._avg_temp_at_32C_28C = value
+
+    @property
+    def standby_loss_at_70C(self) -> Optional[float]:
+        return self._standby_loss_at_70C
+
+    @standby_loss_at_70C.setter
+    def standby_loss_at_70C(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._standby_loss_at_70C = value
+
+    @property
+    def rated_capacity(self) -> float:
+        return self._rated_capacity
+
+    @rated_capacity.setter
+    def rated_capacity(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._rated_capacity = value
 
 
 @dataclass
@@ -138,10 +228,10 @@ class PhxHeaterHeatPumpAnnualParams(_base.PhxMechanicalDeviceParams):
 @dataclass
 class PhxHeaterHeatPumpMonthlyParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.RATED_MONTHLY)
-    COP_1: Optional[float] = None
-    COP_2: Optional[float] = None
-    ambient_temp_1: Optional[float] = None
-    ambient_temp_2: Optional[float] = None
+    _COP_1: Optional[float] = None
+    _COP_2: Optional[float] = None
+    _ambient_temp_1: Optional[float] = None
+    _ambient_temp_2: Optional[float] = None
 
     @property
     def monthly_COPS(self):
@@ -172,6 +262,42 @@ class PhxHeaterHeatPumpMonthlyParams(_base.PhxMechanicalDeviceParams):
             self.ambient_temp_2 = _in[1]
         except IndexError:
             self.ambient_temp_2 = _in[0]
+
+    @property
+    def COP_1(self) -> Optional[float]:
+        return self._COP_1
+
+    @COP_1.setter
+    def COP_1(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._COP_1 = value
+
+    @property
+    def COP_2(self) -> Optional[float]:
+        return self._COP_2
+
+    @COP_2.setter
+    def COP_2(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._COP_2 = value
+
+    @property
+    def ambient_temp_1(self) -> Optional[float]:
+        return self._ambient_temp_1
+
+    @ambient_temp_1.setter
+    def ambient_temp_1(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._ambient_temp_1 = value
+
+    @property
+    def ambient_temp_2(self) -> Optional[float]:
+        return self._ambient_temp_2
+
+    @ambient_temp_2.setter
+    def ambient_temp_2(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._ambient_temp_2 = value
 
 
 @dataclass

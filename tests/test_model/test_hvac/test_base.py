@@ -106,13 +106,13 @@ def test_r_add_default_PhxMechanicalEquipment(reset_class_counters):
 
 def test_add_mixed_PhxMechanicalEquipment(reset_class_counters):
     mech_equip_1 = _base.PhxMechanicalDevice(
-        quantity=1,
+        _quantity=1,
         unit=0.5,
         percent_coverage=0.25,
         usage_profile=_base.PhxUsageProfile(False, False, False, True, False, False),
     )
     mech_equip_2 = _base.PhxMechanicalDevice(
-        quantity=9,
+        _quantity=9,
         unit=0.25,
         percent_coverage=0.75,
         usage_profile=_base.PhxUsageProfile(True, False, False, False, False, True),

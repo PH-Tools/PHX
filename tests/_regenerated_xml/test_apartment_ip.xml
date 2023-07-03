@@ -1,0 +1,2764 @@
+<?xml version="1.0" ?>
+<WUFIplusProject>
+	<DataVersion>48</DataVersion>
+	<UnitSystem>2</UnitSystem>
+	<ProgramVersion>3.3.0.2</ProgramVersion>
+	<Scope>3</Scope>
+	<DimensionsVisualizedGeometry>2</DimensionsVisualizedGeometry>
+	<ProjectData>
+		<Year_Construction>0</Year_Construction>
+		<OwnerIsClient>false</OwnerIsClient>
+		<Date_Project></Date_Project>
+		<WhiteBackgroundPictureBuilding>false</WhiteBackgroundPictureBuilding>
+		<Customer_Name>None</Customer_Name>
+		<Customer_Street>None</Customer_Street>
+		<Customer_Locality>None</Customer_Locality>
+		<Customer_PostalCode>None</Customer_PostalCode>
+		<Customer_Tel>None</Customer_Tel>
+		<Customer_Email>None</Customer_Email>
+		<Building_Name>None</Building_Name>
+		<Building_Street>None</Building_Street>
+		<Building_Locality>None</Building_Locality>
+		<Building_PostalCode>None</Building_PostalCode>
+		<Owner_Name>None</Owner_Name>
+		<Owner_Street>None</Owner_Street>
+		<Owner_Locality>None</Owner_Locality>
+		<Owner_PostalCode>None</Owner_PostalCode>
+		<Responsible_Name>Passive House Accelerator</Responsible_Name>
+		<Responsible_Street>My Street</Responsible_Street>
+		<Responsible_Locality>My City</Responsible_Locality>
+		<Responsible_PostalCode>10001</Responsible_PostalCode>
+		<Responsible_Tel>555-555-5555</Responsible_Tel>
+		<Responsible_LicenseNr>hello@passivehouseaccelerator.com</Responsible_LicenseNr>
+		<Responsible_Email>None</Responsible_Email>
+	</ProjectData>
+	<UtilisationPatternsVentilation count="1">
+		<UtilizationPatternVent index="0">
+			<Name>ConstantSchedule_3e6132c3</Name>
+			<IdentNr>1</IdentNr>
+			<OperatingDays>7.0</OperatingDays>
+			<OperatingWeeks>52.0</OperatingWeeks>
+			<Maximum_DOS>1.0</Maximum_DOS>
+			<Maximum_PDF>1.0</Maximum_PDF>
+			<Standard_DOS>23.0</Standard_DOS>
+			<Standard_PDF>0.74</Standard_PDF>
+			<Basic_DOS>0.0</Basic_DOS>
+			<Basic_PDF>0.0</Basic_PDF>
+			<Minimum_DOS>0.0</Minimum_DOS>
+			<Minimum_PDF>0.0</Minimum_PDF>
+		</UtilizationPatternVent>
+	</UtilisationPatternsVentilation>
+	<UtilizationPatternsPH count="2">
+		<UtilizationPattern index="0">
+			<IdentNr>1</IdentNr>
+			<Name>Generic Office Occupancy</Name>
+			<HeightUtilizationLevel>0.5</HeightUtilizationLevel>
+			<BeginUtilization>0.0</BeginUtilization>
+			<EndUtilization>24.0</EndUtilization>
+			<AnnualUtilizationDays>365.0</AnnualUtilizationDays>
+			<IlluminationLevel unit="lux">300</IlluminationLevel>
+			<RelativeAbsenteeism unit="-">0.0</RelativeAbsenteeism>
+			<PartUseFactorPeriodForLighting unit="-">1</PartUseFactorPeriodForLighting>
+		</UtilizationPattern>
+		<UtilizationPattern index="1">
+			<IdentNr>2</IdentNr>
+			<Name>2021::PHIUS_NR::Hallway::Occupancy</Name>
+			<HeightUtilizationLevel>0.5</HeightUtilizationLevel>
+			<BeginUtilization>7.0</BeginUtilization>
+			<EndUtilization>18.0</EndUtilization>
+			<AnnualUtilizationDays>250.0</AnnualUtilizationDays>
+			<IlluminationLevel unit="lux">300</IlluminationLevel>
+			<RelativeAbsenteeism unit="-">0.0917</RelativeAbsenteeism>
+			<PartUseFactorPeriodForLighting unit="-">1</PartUseFactorPeriodForLighting>
+		</UtilizationPattern>
+	</UtilizationPatternsPH>
+	<Variants count="1">
+		<Variant index="0">
+			<IdentNr>1</IdentNr>
+			<Name>Unnamed_Bldg_Segment</Name>
+			<Remarks>None</Remarks>
+			<Graphics_3D>
+				<Vertices count="124">
+					<Vertix index="0">
+						<IdentNr>9</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="1">
+						<IdentNr>10</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="2">
+						<IdentNr>11</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="3">
+						<IdentNr>12</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="4">
+						<IdentNr>15</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="5">
+						<IdentNr>16</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="6">
+						<IdentNr>17</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="7">
+						<IdentNr>18</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="8">
+						<IdentNr>21</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="9">
+						<IdentNr>22</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="10">
+						<IdentNr>23</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="11">
+						<IdentNr>24</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="12">
+						<IdentNr>27</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="13">
+						<IdentNr>28</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="14">
+						<IdentNr>29</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="15">
+						<IdentNr>30</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="16">
+						<IdentNr>33</IdentNr>
+						<X>10.0</X>
+						<Y>-1.8</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="17">
+						<IdentNr>34</IdentNr>
+						<X>10.0</X>
+						<Y>-1.8</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="18">
+						<IdentNr>35</IdentNr>
+						<X>10.0</X>
+						<Y>-0.2</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="19">
+						<IdentNr>36</IdentNr>
+						<X>10.0</X>
+						<Y>-0.2</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="20">
+						<IdentNr>39</IdentNr>
+						<X>10.0</X>
+						<Y>-1.8</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="21">
+						<IdentNr>40</IdentNr>
+						<X>10.0</X>
+						<Y>-1.8</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="22">
+						<IdentNr>41</IdentNr>
+						<X>10.0</X>
+						<Y>-0.2</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="23">
+						<IdentNr>42</IdentNr>
+						<X>10.0</X>
+						<Y>-0.2</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="24">
+						<IdentNr>45</IdentNr>
+						<X>10.0</X>
+						<Y>-1.8</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="25">
+						<IdentNr>46</IdentNr>
+						<X>10.0</X>
+						<Y>-1.8</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="26">
+						<IdentNr>47</IdentNr>
+						<X>10.0</X>
+						<Y>-0.2</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="27">
+						<IdentNr>48</IdentNr>
+						<X>10.0</X>
+						<Y>-0.2</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="28">
+						<IdentNr>51</IdentNr>
+						<X>10.0</X>
+						<Y>-1.8</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="29">
+						<IdentNr>52</IdentNr>
+						<X>10.0</X>
+						<Y>-1.8</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="30">
+						<IdentNr>53</IdentNr>
+						<X>10.0</X>
+						<Y>-0.2</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="31">
+						<IdentNr>54</IdentNr>
+						<X>10.0</X>
+						<Y>-0.2</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="32">
+						<IdentNr>63</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="33">
+						<IdentNr>64</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="34">
+						<IdentNr>65</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="35">
+						<IdentNr>66</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="36">
+						<IdentNr>69</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="37">
+						<IdentNr>70</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="38">
+						<IdentNr>71</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="39">
+						<IdentNr>72</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="40">
+						<IdentNr>75</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="41">
+						<IdentNr>76</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="42">
+						<IdentNr>77</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="43">
+						<IdentNr>78</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="44">
+						<IdentNr>81</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="45">
+						<IdentNr>82</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="46">
+						<IdentNr>83</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="47">
+						<IdentNr>84</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="48">
+						<IdentNr>93</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="49">
+						<IdentNr>94</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="50">
+						<IdentNr>95</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="51">
+						<IdentNr>96</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="52">
+						<IdentNr>99</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="53">
+						<IdentNr>100</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="54">
+						<IdentNr>101</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="55">
+						<IdentNr>102</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="56">
+						<IdentNr>105</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="57">
+						<IdentNr>106</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="58">
+						<IdentNr>107</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="59">
+						<IdentNr>108</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="60">
+						<IdentNr>111</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="61">
+						<IdentNr>112</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="62">
+						<IdentNr>113</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="63">
+						<IdentNr>114</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="64">
+						<IdentNr>117</IdentNr>
+						<X>0.0</X>
+						<Y>-0.2</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="65">
+						<IdentNr>118</IdentNr>
+						<X>0.0</X>
+						<Y>-0.2</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="66">
+						<IdentNr>119</IdentNr>
+						<X>0.0</X>
+						<Y>-1.8</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="67">
+						<IdentNr>120</IdentNr>
+						<X>0.0</X>
+						<Y>-1.8</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="68">
+						<IdentNr>123</IdentNr>
+						<X>0.0</X>
+						<Y>-0.2</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="69">
+						<IdentNr>124</IdentNr>
+						<X>0.0</X>
+						<Y>-0.2</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="70">
+						<IdentNr>125</IdentNr>
+						<X>0.0</X>
+						<Y>-1.8</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="71">
+						<IdentNr>126</IdentNr>
+						<X>0.0</X>
+						<Y>-1.8</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="72">
+						<IdentNr>129</IdentNr>
+						<X>0.0</X>
+						<Y>-0.2</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="73">
+						<IdentNr>130</IdentNr>
+						<X>0.0</X>
+						<Y>-0.2</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="74">
+						<IdentNr>131</IdentNr>
+						<X>0.0</X>
+						<Y>-1.8</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="75">
+						<IdentNr>132</IdentNr>
+						<X>0.0</X>
+						<Y>-1.8</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="76">
+						<IdentNr>135</IdentNr>
+						<X>0.0</X>
+						<Y>-0.2</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="77">
+						<IdentNr>136</IdentNr>
+						<X>0.0</X>
+						<Y>-0.2</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="78">
+						<IdentNr>137</IdentNr>
+						<X>0.0</X>
+						<Y>-1.8</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="79">
+						<IdentNr>138</IdentNr>
+						<X>0.0</X>
+						<Y>-1.8</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="80">
+						<IdentNr>147</IdentNr>
+						<X>1.0</X>
+						<Y>-2.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="81">
+						<IdentNr>148</IdentNr>
+						<X>1.0</X>
+						<Y>-2.0</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="82">
+						<IdentNr>149</IdentNr>
+						<X>9.0</X>
+						<Y>-2.0</Y>
+						<Z>0.3</Z>
+					</Vertix>
+					<Vertix index="83">
+						<IdentNr>150</IdentNr>
+						<X>9.0</X>
+						<Y>-2.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="84">
+						<IdentNr>153</IdentNr>
+						<X>1.0</X>
+						<Y>-2.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="85">
+						<IdentNr>154</IdentNr>
+						<X>1.0</X>
+						<Y>-2.0</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="86">
+						<IdentNr>155</IdentNr>
+						<X>9.0</X>
+						<Y>-2.0</Y>
+						<Z>3.3</Z>
+					</Vertix>
+					<Vertix index="87">
+						<IdentNr>156</IdentNr>
+						<X>9.0</X>
+						<Y>-2.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="88">
+						<IdentNr>159</IdentNr>
+						<X>1.0</X>
+						<Y>-2.0</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="89">
+						<IdentNr>160</IdentNr>
+						<X>1.0</X>
+						<Y>-2.0</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="90">
+						<IdentNr>161</IdentNr>
+						<X>9.0</X>
+						<Y>-2.0</Y>
+						<Z>6.3</Z>
+					</Vertix>
+					<Vertix index="91">
+						<IdentNr>162</IdentNr>
+						<X>9.0</X>
+						<Y>-2.0</Y>
+						<Z>8.7</Z>
+					</Vertix>
+					<Vertix index="92">
+						<IdentNr>165</IdentNr>
+						<X>1.0</X>
+						<Y>-2.0</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="93">
+						<IdentNr>166</IdentNr>
+						<X>1.0</X>
+						<Y>-2.0</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="94">
+						<IdentNr>167</IdentNr>
+						<X>9.0</X>
+						<Y>-2.0</Y>
+						<Z>9.3</Z>
+					</Vertix>
+					<Vertix index="95">
+						<IdentNr>168</IdentNr>
+						<X>9.0</X>
+						<Y>-2.0</Y>
+						<Z>11.7</Z>
+					</Vertix>
+					<Vertix index="96">
+						<IdentNr>171</IdentNr>
+						<X>10.0</X>
+						<Y>-2.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="97">
+						<IdentNr>172</IdentNr>
+						<X>0.0</X>
+						<Y>-2.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="98">
+						<IdentNr>173</IdentNr>
+						<X>0.0</X>
+						<Y>10.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="99">
+						<IdentNr>174</IdentNr>
+						<X>10.0</X>
+						<Y>10.0</Y>
+						<Z>0.0</Z>
+					</Vertix>
+					<Vertix index="100">
+						<IdentNr>177</IdentNr>
+						<X>0.0</X>
+						<Y>10.0</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="101">
+						<IdentNr>178</IdentNr>
+						<X>0.0</X>
+						<Y>-2.0</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="102">
+						<IdentNr>179</IdentNr>
+						<X>10.0</X>
+						<Y>-2.0</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="103">
+						<IdentNr>180</IdentNr>
+						<X>10.0</X>
+						<Y>10.0</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="104">
+						<IdentNr>183</IdentNr>
+						<X>2.354248689</X>
+						<Y>7.645751311</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="105">
+						<IdentNr>184</IdentNr>
+						<X>2.354248689</X>
+						<Y>2.354248689</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="106">
+						<IdentNr>185</IdentNr>
+						<X>7.645751311</X>
+						<Y>2.354248689</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="107">
+						<IdentNr>186</IdentNr>
+						<X>7.645751311</X>
+						<Y>7.645751311</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="108">
+						<IdentNr>189</IdentNr>
+						<X>2.354248689</X>
+						<Y>-0.470849738</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="109">
+						<IdentNr>190</IdentNr>
+						<X>2.354248689</X>
+						<Y>-1.529150262</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="110">
+						<IdentNr>191</IdentNr>
+						<X>7.645751311</X>
+						<Y>-1.529150262</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="111">
+						<IdentNr>192</IdentNr>
+						<X>7.645751311</X>
+						<Y>-0.470849738</Y>
+						<Z>12.0</Z>
+					</Vertix>
+					<Vertix index="112">
+						<IdentNr>195</IdentNr>
+						<X>0.0</X>
+						<Y>9.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="113">
+						<IdentNr>196</IdentNr>
+						<X>0.0</X>
+						<Y>1.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="114">
+						<IdentNr>197</IdentNr>
+						<X>-1.0</X>
+						<Y>1.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="115">
+						<IdentNr>198</IdentNr>
+						<X>-1.0</X>
+						<Y>9.0</Y>
+						<Z>2.7</Z>
+					</Vertix>
+					<Vertix index="116">
+						<IdentNr>201</IdentNr>
+						<X>11.0</X>
+						<Y>9.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="117">
+						<IdentNr>202</IdentNr>
+						<X>11.0</X>
+						<Y>1.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="118">
+						<IdentNr>203</IdentNr>
+						<X>10.0</X>
+						<Y>1.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="119">
+						<IdentNr>204</IdentNr>
+						<X>10.0</X>
+						<Y>9.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="120">
+						<IdentNr>207</IdentNr>
+						<X>9.0</X>
+						<Y>11.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="121">
+						<IdentNr>208</IdentNr>
+						<X>9.0</X>
+						<Y>10.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="122">
+						<IdentNr>209</IdentNr>
+						<X>1.0</X>
+						<Y>10.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+					<Vertix index="123">
+						<IdentNr>210</IdentNr>
+						<X>1.0</X>
+						<Y>11.0</Y>
+						<Z>5.7</Z>
+					</Vertix>
+				</Vertices>
+				<Polygons count="35">
+					<Polygon index="0">
+						<IdentNr>32</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">189</IdentNr>
+							<IdentNr index="1">192</IdentNr>
+							<IdentNr index="2">191</IdentNr>
+							<IdentNr index="3">190</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="1">
+						<IdentNr>31</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">183</IdentNr>
+							<IdentNr index="1">186</IdentNr>
+							<IdentNr index="2">185</IdentNr>
+							<IdentNr index="3">184</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="2">
+						<IdentNr>2</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">9</IdentNr>
+							<IdentNr index="1">12</IdentNr>
+							<IdentNr index="2">11</IdentNr>
+							<IdentNr index="3">10</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="3">
+						<IdentNr>3</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">15</IdentNr>
+							<IdentNr index="1">18</IdentNr>
+							<IdentNr index="2">17</IdentNr>
+							<IdentNr index="3">16</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="4">
+						<IdentNr>4</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">21</IdentNr>
+							<IdentNr index="1">24</IdentNr>
+							<IdentNr index="2">23</IdentNr>
+							<IdentNr index="3">22</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="5">
+						<IdentNr>5</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">27</IdentNr>
+							<IdentNr index="1">30</IdentNr>
+							<IdentNr index="2">29</IdentNr>
+							<IdentNr index="3">28</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="6">
+						<IdentNr>6</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">33</IdentNr>
+							<IdentNr index="1">36</IdentNr>
+							<IdentNr index="2">35</IdentNr>
+							<IdentNr index="3">34</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="7">
+						<IdentNr>7</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">39</IdentNr>
+							<IdentNr index="1">42</IdentNr>
+							<IdentNr index="2">41</IdentNr>
+							<IdentNr index="3">40</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="8">
+						<IdentNr>8</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">45</IdentNr>
+							<IdentNr index="1">48</IdentNr>
+							<IdentNr index="2">47</IdentNr>
+							<IdentNr index="3">46</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="9">
+						<IdentNr>9</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">51</IdentNr>
+							<IdentNr index="1">54</IdentNr>
+							<IdentNr index="2">53</IdentNr>
+							<IdentNr index="3">52</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="10">
+						<IdentNr>11</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">63</IdentNr>
+							<IdentNr index="1">66</IdentNr>
+							<IdentNr index="2">65</IdentNr>
+							<IdentNr index="3">64</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="11">
+						<IdentNr>12</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">69</IdentNr>
+							<IdentNr index="1">72</IdentNr>
+							<IdentNr index="2">71</IdentNr>
+							<IdentNr index="3">70</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="12">
+						<IdentNr>13</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">75</IdentNr>
+							<IdentNr index="1">78</IdentNr>
+							<IdentNr index="2">77</IdentNr>
+							<IdentNr index="3">76</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="13">
+						<IdentNr>14</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">81</IdentNr>
+							<IdentNr index="1">84</IdentNr>
+							<IdentNr index="2">83</IdentNr>
+							<IdentNr index="3">82</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="14">
+						<IdentNr>16</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">93</IdentNr>
+							<IdentNr index="1">96</IdentNr>
+							<IdentNr index="2">95</IdentNr>
+							<IdentNr index="3">94</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="15">
+						<IdentNr>17</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">99</IdentNr>
+							<IdentNr index="1">102</IdentNr>
+							<IdentNr index="2">101</IdentNr>
+							<IdentNr index="3">100</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="16">
+						<IdentNr>18</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">105</IdentNr>
+							<IdentNr index="1">108</IdentNr>
+							<IdentNr index="2">107</IdentNr>
+							<IdentNr index="3">106</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="17">
+						<IdentNr>19</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">111</IdentNr>
+							<IdentNr index="1">114</IdentNr>
+							<IdentNr index="2">113</IdentNr>
+							<IdentNr index="3">112</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="18">
+						<IdentNr>20</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">117</IdentNr>
+							<IdentNr index="1">120</IdentNr>
+							<IdentNr index="2">119</IdentNr>
+							<IdentNr index="3">118</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="19">
+						<IdentNr>21</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">123</IdentNr>
+							<IdentNr index="1">126</IdentNr>
+							<IdentNr index="2">125</IdentNr>
+							<IdentNr index="3">124</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="20">
+						<IdentNr>22</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">129</IdentNr>
+							<IdentNr index="1">132</IdentNr>
+							<IdentNr index="2">131</IdentNr>
+							<IdentNr index="3">130</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="21">
+						<IdentNr>23</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">135</IdentNr>
+							<IdentNr index="1">138</IdentNr>
+							<IdentNr index="2">137</IdentNr>
+							<IdentNr index="3">136</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="22">
+						<IdentNr>25</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>-1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">147</IdentNr>
+							<IdentNr index="1">150</IdentNr>
+							<IdentNr index="2">149</IdentNr>
+							<IdentNr index="3">148</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="23">
+						<IdentNr>26</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>-1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">153</IdentNr>
+							<IdentNr index="1">156</IdentNr>
+							<IdentNr index="2">155</IdentNr>
+							<IdentNr index="3">154</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="24">
+						<IdentNr>27</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>-1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">159</IdentNr>
+							<IdentNr index="1">162</IdentNr>
+							<IdentNr index="2">161</IdentNr>
+							<IdentNr index="3">160</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="25">
+						<IdentNr>28</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>-1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">165</IdentNr>
+							<IdentNr index="1">168</IdentNr>
+							<IdentNr index="2">167</IdentNr>
+							<IdentNr index="3">166</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="26">
+						<IdentNr>29</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>-1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">171</IdentNr>
+							<IdentNr index="1">172</IdentNr>
+							<IdentNr index="2">173</IdentNr>
+							<IdentNr index="3">174</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="27">
+						<IdentNr>30</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">177</IdentNr>
+							<IdentNr index="1">178</IdentNr>
+							<IdentNr index="2">179</IdentNr>
+							<IdentNr index="3">180</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="2">
+							<IdentNr index="0">31</IdentNr>
+							<IdentNr index="1">32</IdentNr>
+						</IdentNrPolygonsInside>
+					</Polygon>
+					<Polygon index="28">
+						<IdentNr>24</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>-1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">178</IdentNr>
+							<IdentNr index="1">172</IdentNr>
+							<IdentNr index="2">171</IdentNr>
+							<IdentNr index="3">179</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="4">
+							<IdentNr index="0">25</IdentNr>
+							<IdentNr index="1">26</IdentNr>
+							<IdentNr index="2">27</IdentNr>
+							<IdentNr index="3">28</IdentNr>
+						</IdentNrPolygonsInside>
+					</Polygon>
+					<Polygon index="29">
+						<IdentNr>1</IdentNr>
+						<NormalVectorX>1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">179</IdentNr>
+							<IdentNr index="1">171</IdentNr>
+							<IdentNr index="2">174</IdentNr>
+							<IdentNr index="3">180</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="8">
+							<IdentNr index="0">2</IdentNr>
+							<IdentNr index="1">3</IdentNr>
+							<IdentNr index="2">4</IdentNr>
+							<IdentNr index="3">5</IdentNr>
+							<IdentNr index="4">6</IdentNr>
+							<IdentNr index="5">7</IdentNr>
+							<IdentNr index="6">8</IdentNr>
+							<IdentNr index="7">9</IdentNr>
+						</IdentNrPolygonsInside>
+					</Polygon>
+					<Polygon index="30">
+						<IdentNr>10</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">180</IdentNr>
+							<IdentNr index="1">174</IdentNr>
+							<IdentNr index="2">173</IdentNr>
+							<IdentNr index="3">177</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="4">
+							<IdentNr index="0">11</IdentNr>
+							<IdentNr index="1">12</IdentNr>
+							<IdentNr index="2">13</IdentNr>
+							<IdentNr index="3">14</IdentNr>
+						</IdentNrPolygonsInside>
+					</Polygon>
+					<Polygon index="31">
+						<IdentNr>15</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">177</IdentNr>
+							<IdentNr index="1">173</IdentNr>
+							<IdentNr index="2">172</IdentNr>
+							<IdentNr index="3">178</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="8">
+							<IdentNr index="0">16</IdentNr>
+							<IdentNr index="1">17</IdentNr>
+							<IdentNr index="2">18</IdentNr>
+							<IdentNr index="3">19</IdentNr>
+							<IdentNr index="4">20</IdentNr>
+							<IdentNr index="5">21</IdentNr>
+							<IdentNr index="6">22</IdentNr>
+							<IdentNr index="7">23</IdentNr>
+						</IdentNrPolygonsInside>
+					</Polygon>
+					<Polygon index="32">
+						<IdentNr>33</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>-1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">195</IdentNr>
+							<IdentNr index="1">196</IdentNr>
+							<IdentNr index="2">197</IdentNr>
+							<IdentNr index="3">198</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="33">
+						<IdentNr>34</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>-1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">201</IdentNr>
+							<IdentNr index="1">202</IdentNr>
+							<IdentNr index="2">203</IdentNr>
+							<IdentNr index="3">204</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="34">
+						<IdentNr>35</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>-1.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">207</IdentNr>
+							<IdentNr index="1">208</IdentNr>
+							<IdentNr index="2">209</IdentNr>
+							<IdentNr index="3">210</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+				</Polygons>
+			</Graphics_3D>
+			<Building>
+				<Components count="8">
+					<Component index="0">
+						<IdentNr>62</IdentNr>
+						<Name>Generic Double Pane</Name>
+						<Visual>true</Visual>
+						<Type>2</Type>
+						<IdentNrColorI>4</IdentNrColorI>
+						<IdentNrColorE>4</IdentNrColorE>
+						<InnerAttachment>1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>1</IdentNrWindowType>
+						<IdentNrPolygons count="2">
+							<IdentNr index="0">32</IdentNr>
+							<IdentNr index="1">31</IdentNr>
+						</IdentNrPolygons>
+						<DepthWindowReveal unit="m">0.1016</DepthWindowReveal>
+						<IdentNrSolarProtection>-1</IdentNrSolarProtection>
+						<IdentNrOverhang>-1</IdentNrOverhang>
+						<DefaultCorrectionShadingMonth>0.5</DefaultCorrectionShadingMonth>
+					</Component>
+					<Component index="1">
+						<IdentNr>67</IdentNr>
+						<Name>Generic Double Pane</Name>
+						<Visual>true</Visual>
+						<Type>2</Type>
+						<IdentNrColorI>4</IdentNrColorI>
+						<IdentNrColorE>4</IdentNrColorE>
+						<InnerAttachment>1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>1</IdentNrWindowType>
+						<IdentNrPolygons count="24">
+							<IdentNr index="0">2</IdentNr>
+							<IdentNr index="1">3</IdentNr>
+							<IdentNr index="2">4</IdentNr>
+							<IdentNr index="3">5</IdentNr>
+							<IdentNr index="4">6</IdentNr>
+							<IdentNr index="5">7</IdentNr>
+							<IdentNr index="6">8</IdentNr>
+							<IdentNr index="7">9</IdentNr>
+							<IdentNr index="8">11</IdentNr>
+							<IdentNr index="9">12</IdentNr>
+							<IdentNr index="10">13</IdentNr>
+							<IdentNr index="11">14</IdentNr>
+							<IdentNr index="12">16</IdentNr>
+							<IdentNr index="13">17</IdentNr>
+							<IdentNr index="14">18</IdentNr>
+							<IdentNr index="15">19</IdentNr>
+							<IdentNr index="16">20</IdentNr>
+							<IdentNr index="17">21</IdentNr>
+							<IdentNr index="18">22</IdentNr>
+							<IdentNr index="19">23</IdentNr>
+							<IdentNr index="20">25</IdentNr>
+							<IdentNr index="21">26</IdentNr>
+							<IdentNr index="22">27</IdentNr>
+							<IdentNr index="23">28</IdentNr>
+						</IdentNrPolygons>
+						<DepthWindowReveal unit="m">0.1016</DepthWindowReveal>
+						<IdentNrSolarProtection>-1</IdentNrSolarProtection>
+						<IdentNrOverhang>-1</IdentNrOverhang>
+						<DefaultCorrectionShadingMonth>0.5</DefaultCorrectionShadingMonth>
+					</Component>
+					<Component index="2">
+						<IdentNr>77</IdentNr>
+						<Name>Apartment_1_7e6ff285..Face4</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>12</IdentNrColorI>
+						<IdentNrColorE>12</IdentNrColorE>
+						<InnerAttachment>1</InnerAttachment>
+						<OuterAttachment>-2</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>3</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">29</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+					<Component index="3">
+						<IdentNr>78</IdentNr>
+						<Name>Apartment_4_b400743e..Face5</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>7</IdentNrColorI>
+						<IdentNrColorE>8</IdentNrColorE>
+						<InnerAttachment>1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>6</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">30</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+					<Component index="4">
+						<IdentNr>88</IdentNr>
+						<Name>WALL [Generic Exterior Wall]</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>2</IdentNrColorI>
+						<IdentNrColorE>2</IdentNrColorE>
+						<InnerAttachment>1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>2</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="4">
+							<IdentNr index="0">24</IdentNr>
+							<IdentNr index="1">1</IdentNr>
+							<IdentNr index="2">10</IdentNr>
+							<IdentNr index="3">15</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+					<Component index="5">
+						<IdentNr>113</IdentNr>
+						<Name>Shade_58d9a9e4</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>1</IdentNrColorI>
+						<IdentNrColorE>1</IdentNrColorE>
+						<InnerAttachment>-1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">33</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+					<Component index="6">
+						<IdentNr>114</IdentNr>
+						<Name>Shade_04647aa7</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>1</IdentNrColorI>
+						<IdentNrColorE>1</IdentNrColorE>
+						<InnerAttachment>-1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">34</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+					<Component index="7">
+						<IdentNr>115</IdentNr>
+						<Name>Shade_db088517</Name>
+						<Visual>true</Visual>
+						<Type>1</Type>
+						<IdentNrColorI>1</IdentNrColorI>
+						<IdentNrColorE>1</IdentNrColorE>
+						<InnerAttachment>-1</InnerAttachment>
+						<OuterAttachment>-1</OuterAttachment>
+						<IdentNr_ComponentInnerSurface>-1</IdentNr_ComponentInnerSurface>
+						<IdentNrAssembly>-1</IdentNrAssembly>
+						<IdentNrWindowType>-1</IdentNrWindowType>
+						<IdentNrPolygons count="1">
+							<IdentNr index="0">35</IdentNr>
+						</IdentNrPolygons>
+					</Component>
+				</Components>
+				<Zones count="1">
+					<Zone index="0">
+						<Name>Unnamed_Bldg_Segment</Name>
+						<KindZone choice="Simulated zone">1</KindZone>
+						<IdentNr>1</IdentNr>
+						<RoomsVentilation count="8">
+							<Room index="0">
+								<Name>Unnamed_Space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">99.99999612864002</AreaRoom>
+								<ClearRoomHeight unit="m">2.50000008</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">135.29</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">135.29</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="1">
+								<Name>Unnamed_Space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">99.99999612864002</AreaRoom>
+								<ClearRoomHeight unit="m">2.50000008</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">152.28</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">152.28</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="2">
+								<Name>Unnamed_Space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">99.99999612864002</AreaRoom>
+								<ClearRoomHeight unit="m">2.50000008</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">143.78</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">143.78</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="3">
+								<Name>Unnamed_Space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">99.99999612864002</AreaRoom>
+								<ClearRoomHeight unit="m">2.50000008</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">135.29</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">135.29</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="4">
+								<Name>Unnamed_Space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">19.999999225728</AreaRoom>
+								<ClearRoomHeight unit="m">2.50000008</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">0.0</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">0.0</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="5">
+								<Name>Unnamed_Space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">19.999999225728</AreaRoom>
+								<ClearRoomHeight unit="m">2.50000008</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">0.0</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">0.0</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="6">
+								<Name>Unnamed_Space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">19.999999225728</AreaRoom>
+								<ClearRoomHeight unit="m">2.50000008</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">0.0</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">0.0</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="7">
+								<Name>Unnamed_Space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">19.999999225728</AreaRoom>
+								<ClearRoomHeight unit="m">2.50000008</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">0.0</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">0.0</DesignVolumeFlowRateExhaust>
+							</Room>
+						</RoomsVentilation>
+						<LoadsPersonsPH count="8">
+							<LoadPerson index="0">
+								<Name>Unnamed_Space</Name>
+								<IdentNrUtilizationPattern>13</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">99.99999612864002</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="1">
+								<Name>Unnamed_Space</Name>
+								<IdentNrUtilizationPattern>14</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">99.99999612864002</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="2">
+								<Name>Unnamed_Space</Name>
+								<IdentNrUtilizationPattern>15</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">99.99999612864002</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="3">
+								<Name>Unnamed_Space</Name>
+								<IdentNrUtilizationPattern>16</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">99.99999612864002</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="4">
+								<Name>Unnamed_Space</Name>
+								<IdentNrUtilizationPattern>17</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">19.999999225728</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="5">
+								<Name>Unnamed_Space</Name>
+								<IdentNrUtilizationPattern>18</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">19.999999225728</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="6">
+								<Name>Unnamed_Space</Name>
+								<IdentNrUtilizationPattern>19</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">19.999999225728</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="7">
+								<Name>Unnamed_Space</Name>
+								<IdentNrUtilizationPattern>20</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">19.999999225728</FloorAreaUtilizationZone>
+							</LoadPerson>
+						</LoadsPersonsPH>
+						<LoadsLightingsPH count="8">
+							<LoadsLighting index="0">
+								<Name>Unnamed_Space</Name>
+								<RoomCategory>13</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="1">
+								<Name>Unnamed_Space</Name>
+								<RoomCategory>14</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="2">
+								<Name>Unnamed_Space</Name>
+								<RoomCategory>15</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="3">
+								<Name>Unnamed_Space</Name>
+								<RoomCategory>16</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="4">
+								<Name>Unnamed_Space</Name>
+								<RoomCategory>17</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="5">
+								<Name>Unnamed_Space</Name>
+								<RoomCategory>18</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="6">
+								<Name>Unnamed_Space</Name>
+								<RoomCategory>19</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="7">
+								<Name>Unnamed_Space</Name>
+								<RoomCategory>20</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+						</LoadsLightingsPH>
+						<GrossVolume_Selection>6</GrossVolume_Selection>
+						<GrossVolume>1440.0000213443248</GrossVolume>
+						<NetVolume_Selection>6</NetVolume_Selection>
+						<NetVolume>1200.0000182588847</NetVolume>
+						<FloorArea_Selection>6</FloorArea_Selection>
+						<FloorArea>479.99999999808</FloorArea>
+						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
+						<ClearanceHeight>2.50000008</ClearanceHeight>
+						<SpecificHeatCapacity_Selection>3</SpecificHeatCapacity_Selection>
+						<SpecificHeatCapacity>204</SpecificHeatCapacity>
+						<IdentNrPH_Building>1</IdentNrPH_Building>
+						<OccupantQuantityUserDef unit="-">15</OccupantQuantityUserDef>
+						<NumberBedrooms unit="-">11</NumberBedrooms>
+						<HomeDevice count="14">
+							<Device index="0">
+								<Comment>default</Comment>
+								<ReferenceQuantity>1</ReferenceQuantity>
+								<Quantity>4</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>269.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>1</Type>
+								<Connection>2</Connection>
+								<DishwasherCapacityPreselection>1</DishwasherCapacityPreselection>
+								<DishwasherCapacityInPlace>12.0</DishwasherCapacityInPlace>
+							</Device>
+							<Device index="1">
+								<Comment>default</Comment>
+								<ReferenceQuantity>1</ReferenceQuantity>
+								<Quantity>4</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>1</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>0.2</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>7</Type>
+								<CookingWith>1</CookingWith>
+							</Device>
+							<Device index="2">
+								<Comment>default</Comment>
+								<ReferenceQuantity>4</ReferenceQuantity>
+								<Quantity>4</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>1</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>1.22</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>6</Type>
+							</Device>
+							<Device index="3">
+								<Comment>default</Comment>
+								<ReferenceQuantity>1</ReferenceQuantity>
+								<Quantity>4</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>0.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>3.93</CEF_CombinedEnergyFactor>
+								<Type>3</Type>
+								<Dryer_Choice>5</Dryer_Choice>
+								<GasConsumption>0.0</GasConsumption>
+								<EfficiencyFactorGas>2.67</EfficiencyFactorGas>
+								<FieldUtilizationFactorPreselection>1</FieldUtilizationFactorPreselection>
+								<FieldUtilizationFactor>1.18</FieldUtilizationFactor>
+							</Device>
+							<Device index="4">
+								<Comment>default</Comment>
+								<ReferenceQuantity>1</ReferenceQuantity>
+								<Quantity>4</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>120.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>2</Type>
+								<Connection>2</Connection>
+								<UtilizationFactor>1.0</UtilizationFactor>
+								<CapacityClothesWasher>0.12740032633770002</CapacityClothesWasher>
+								<MEF_ModifiedEnergyFactor>2.7</MEF_ModifiedEnergyFactor>
+							</Device>
+							<Device index="5">
+								<Comment>default</Comment>
+								<ReferenceQuantity>6</ReferenceQuantity>
+								<Quantity>4</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>1</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>0.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>15</Type>
+								<FractionHightEfficiency>1.0</FractionHightEfficiency>
+							</Device>
+							<Device index="6">
+								<Comment>default</Comment>
+								<ReferenceQuantity>6</ReferenceQuantity>
+								<Quantity>4</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>1</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>0.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>14</Type>
+								<FractionHightEfficiency>1.0</FractionHightEfficiency>
+							</Device>
+							<Device index="7">
+								<Comment>default</Comment>
+								<ReferenceQuantity>3</ReferenceQuantity>
+								<Quantity>4</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>1</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>0.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>13</Type>
+							</Device>
+							<Device index="8">
+								<Comment>MEL_Dwell - Phius MF Calculator</Comment>
+								<ReferenceQuantity>5</ReferenceQuantity>
+								<Quantity>1</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>5063.2477</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>18</Type>
+							</Device>
+							<Device index="9">
+								<Comment>Elevator - Hydraulic</Comment>
+								<ReferenceQuantity>2</ReferenceQuantity>
+								<Quantity>1</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>1910.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>11</Type>
+							</Device>
+							<Device index="10">
+								<Comment>MEL_Comm - Phius MF Calculator</Comment>
+								<ReferenceQuantity>5</ReferenceQuantity>
+								<Quantity>1</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>0.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>18</Type>
+							</Device>
+							<Device index="11">
+								<Comment>Garage Lighting - Phius MF Calculator</Comment>
+								<ReferenceQuantity>5</ReferenceQuantity>
+								<Quantity>1</Quantity>
+								<InConditionedSpace>false</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>80.0</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>17</Type>
+							</Device>
+							<Device index="12">
+								<Comment>Exterior Lighting - Phius MF Calculator</Comment>
+								<ReferenceQuantity>5</ReferenceQuantity>
+								<Quantity>1</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>123.0556</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>17</Type>
+							</Device>
+							<Device index="13">
+								<Comment>Interior Lighting - Phius MF Calculator</Comment>
+								<ReferenceQuantity>5</ReferenceQuantity>
+								<Quantity>1</Quantity>
+								<InConditionedSpace>true</InConditionedSpace>
+								<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>
+								<EnergyDemandNorm>3481.6028</EnergyDemandNorm>
+								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
+								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<Type>17</Type>
+							</Device>
+						</HomeDevice>
+						<ExhaustVents count="1">
+							<ExhaustVent index="0">
+								<Name>_unnamed_equipment_</Name>
+								<Type>1</Type>
+								<ExhaustVolumeFlowRate unit="m³/h">0.0</ExhaustVolumeFlowRate>
+								<RunTimePerYear>360000.0000525513</RunTimePerYear>
+							</ExhaustVent>
+						</ExhaustVents>
+						<ThermalBridges count="1">
+							<ThermalBridge index="0">
+								<Name>my_bridge</Name>
+								<Type>-15</Type>
+								<Length>0.9999878400000001</Length>
+								<PsiValue>0.1230552519588</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+						</ThermalBridges>
+						<SummerNaturalVentilationDay unit="1/hr">0</SummerNaturalVentilationDay>
+						<SummerNaturalVentilationNight unit="1/hr">0</SummerNaturalVentilationNight>
+					</Zone>
+				</Zones>
+			</Building>
+			<ClimateLocation>
+				<Selection>2</Selection>
+				<Latitude_DB unit="°">-73.8</Latitude_DB>
+				<Longitude_DB unit="°">-73.8</Longitude_DB>
+				<HeightNN_DB unit="m">5.00000016</HeightNN_DB>
+				<dUTC_DB>-5</dUTC_DB>
+				<Albedo choice="User defined">-2</Albedo>
+				<GroundReflShort unit="-">0.2</GroundReflShort>
+				<GroundReflLong unit="-">0.1</GroundReflLong>
+				<GroundEmission unit="-">0.9</GroundEmission>
+				<CloudIndex unit="-">0.66</CloudIndex>
+				<CO2concenration unit="mg/m³">350</CO2concenration>
+				<Unit_CO2concentration choice="ppmv">48</Unit_CO2concentration>
+				<PH_ClimateLocation>
+					<Selection>6</Selection>
+					<DailyTemperatureSwingSummer>8.000000006399999</DailyTemperatureSwingSummer>
+					<AverageWindSpeed>4.000012320000001</AverageWindSpeed>
+					<Latitude>-73.8</Latitude>
+					<Longitude>-73.8</Longitude>
+					<HeightNNWeatherStation>5.00000016</HeightNNWeatherStation>
+					<dUTC>-5</dUTC>
+					<HeightNNBuilding>5.00000016</HeightNNBuilding>
+					<ClimateZone>1</ClimateZone>
+					<GroundThermalConductivity>2.0000372596848</GroundThermalConductivity>
+					<GroundHeatCapacitiy>999.807979698</GroundHeatCapacitiy>
+					<GroundDensity>1999.9996644240603</GroundDensity>
+					<DepthGroundwater>2.999994</DepthGroundwater>
+					<FlowRateGroundwater>0.0499872</FlowRateGroundwater>
+					<TemperatureMonthly count="11">
+						<Item index="0">1.1999999999999982</Item>
+						<Item index="1">-0.19999999999999968</Item>
+						<Item index="2">5.599999999999999</Item>
+						<Item index="3">10.899999999999999</Item>
+						<Item index="4">16.099999999999998</Item>
+						<Item index="5">21.7</Item>
+						<Item index="6">25.0</Item>
+						<Item index="7">24.8</Item>
+						<Item index="8">19.899999999999995</Item>
+						<Item index="9">14.000000000000002</Item>
+						<Item index="10">7.3</Item>
+					</TemperatureMonthly>
+					<DewPointTemperatureMonthly count="11">
+						<Item index="0">-4.299999999999999</Item>
+						<Item index="1">-7.4</Item>
+						<Item index="2">0.29999999999999954</Item>
+						<Item index="3">4.7</Item>
+						<Item index="4">9.100000000000001</Item>
+						<Item index="5">15.799999999999999</Item>
+						<Item index="6">20.300000000000004</Item>
+						<Item index="7">17.1</Item>
+						<Item index="8">13.2</Item>
+						<Item index="9">7.8999999999999995</Item>
+						<Item index="10">2.1000000000000005</Item>
+					</DewPointTemperatureMonthly>
+					<SkyTemperatureMonthly count="11">
+						<Item index="0">-17.4</Item>
+						<Item index="1">-20.0</Item>
+						<Item index="2">-10.899999999999999</Item>
+						<Item index="3">-4.8</Item>
+						<Item index="4">0.9999999999999984</Item>
+						<Item index="5">9.8</Item>
+						<Item index="6">14.5</Item>
+						<Item index="7">8.399999999999999</Item>
+						<Item index="8">5.799999999999999</Item>
+						<Item index="9">-2.7999999999999994</Item>
+						<Item index="10">-8.6</Item>
+					</SkyTemperatureMonthly>
+					<NorthSolarRadiationMonthly count="11">
+						<Item index="0">21.00010563</Item>
+						<Item index="1">29.000145869999997</Item>
+						<Item index="2">33.999855561</Item>
+						<Item index="3">38.999880710999996</Item>
+						<Item index="4">55.999966220999994</Item>
+						<Item index="5">59.999986340999996</Item>
+						<Item index="6">58.99998131099999</Item>
+						<Item index="7">49.999936041</Item>
+						<Item index="8">33.999855561</Item>
+						<Item index="9">29.999835441</Item>
+						<Item index="10">20.0001006</Item>
+					</NorthSolarRadiationMonthly>
+					<EastSolarRadiationMonthly count="11">
+						<Item index="0">31.999845501</Item>
+						<Item index="1">45.999915920999996</Item>
+						<Item index="2">56.99997125099999</Item>
+						<Item index="3">65.000011491</Item>
+						<Item index="4">82.000097001</Item>
+						<Item index="5">76.00006682099999</Item>
+						<Item index="6">78.000076881</Item>
+						<Item index="7">84.000107061</Item>
+						<Item index="8">59.999986340999996</Item>
+						<Item index="9">53.99995616099999</Item>
+						<Item index="10">32.999850531</Item>
+					</EastSolarRadiationMonthly>
+					<SouthSolarRadiationMonthly count="11">
+						<Item index="0">83.000102031</Item>
+						<Item index="1">105.99990226199998</Item>
+						<Item index="2">102.99988717199999</Item>
+						<Item index="3">86.000117121</Item>
+						<Item index="4">80.00008694099999</Item>
+						<Item index="5">73.00005173099999</Item>
+						<Item index="6">78.000076881</Item>
+						<Item index="7">103.99989220199998</Item>
+						<Item index="8">96.99985699199999</Item>
+						<Item index="9">129.000017952</Item>
+						<Item index="10">87.000122151</Item>
+					</SouthSolarRadiationMonthly>
+					<WestSolarRadiationMonthly count="11">
+						<Item index="0">47.999925981</Item>
+						<Item index="1">70.000036641</Item>
+						<Item index="2">91.99983184199999</Item>
+						<Item index="3">94.999846932</Item>
+						<Item index="4">113.99994250199998</Item>
+						<Item index="5">120.99997771199999</Item>
+						<Item index="6">119.99997268199999</Item>
+						<Item index="7">130.000022982</Item>
+						<Item index="8">90.999826812</Item>
+						<Item index="9">93.99984190199999</Item>
+						<Item index="10">46.99992095099999</Item>
+					</WestSolarRadiationMonthly>
+					<GlobalSolarRadiationMonthly count="11">
+						<Item index="0">49.999936041</Item>
+						<Item index="1">72.00004670099999</Item>
+						<Item index="2">110.99992741199999</Item>
+						<Item index="3">133.000038072</Item>
+						<Item index="4">169.99990872299998</Item>
+						<Item index="5">175.999938903</Item>
+						<Item index="6">176.999943933</Item>
+						<Item index="7">181.999969083</Item>
+						<Item index="8">123.999992802</Item>
+						<Item index="9">108.99991735199998</Item>
+						<Item index="10">61.999996401</Item>
+					</GlobalSolarRadiationMonthly>
+					<TemperatureHeating1>-6.699999999999999</TemperatureHeating1>
+					<NorthSolarRadiationHeating1>45.9999332151334</NorthSolarRadiationHeating1>
+					<EastSolarRadiationHeating1>80.0001170178414</EastSolarRadiationHeating1>
+					<SouthSolarRadiationHeating1>200.00013481504422</SouthSolarRadiationHeating1>
+					<WestSolarRadiationHeating1>112.9999799554688</WestSolarRadiationHeating1>
+					<GlobalSolarRadiationHeating1>121.0000232031648</GlobalSolarRadiationHeating1>
+					<TemperatureHeating2>4.200000000000001</TemperatureHeating2>
+					<NorthSolarRadiationHeating2>16.000086495392</NorthSolarRadiationHeating2>
+					<EastSolarRadiationHeating2>22.000118931164003</EastSolarRadiationHeating2>
+					<SouthSolarRadiationHeating2>45.9999332151334</SouthSolarRadiationHeating2>
+					<WestSolarRadiationHeating2>26.000140555012006</WestSolarRadiationHeating2>
+					<GlobalSolarRadiationHeating2>37.999889967437404</GlobalSolarRadiationHeating2>
+					<TemperatureCooling>26.1</TemperatureCooling>
+					<NorthSolarRadiationCooling>64.0000305224494</NorthSolarRadiationCooling>
+					<EastSolarRadiationCooling>105.9999421137348</EastSolarRadiationCooling>
+					<SouthSolarRadiationCooling>132.0000826687468</SouthSolarRadiationCooling>
+					<WestSolarRadiationCooling>158.9999131706022</WestSolarRadiationCooling>
+					<GlobalSolarRadiationCooling>229.9999815347856</GlobalSolarRadiationCooling>
+					<TemperatureCooling2>26.1</TemperatureCooling2>
+					<NorthSolarRadiationCooling2>64.0000305224494</NorthSolarRadiationCooling2>
+					<EastSolarRadiationCooling2>105.9999421137348</EastSolarRadiationCooling2>
+					<SouthSolarRadiationCooling2>132.0000826687468</SouthSolarRadiationCooling2>
+					<WestSolarRadiationCooling2>158.9999131706022</WestSolarRadiationCooling2>
+					<GlobalSolarRadiationCooling2>229.9999815347856</GlobalSolarRadiationCooling2>
+					<SelectionPECO2Factor>6</SelectionPECO2Factor>
+					<PEFactorsUserDef count="16">
+						<PEF0 unit="kWh/kWh">0.00032237810000000004</PEF0>
+						<PEF1 unit="kWh/kWh">0.00032237810000000004</PEF1>
+						<PEF2 unit="kWh/kWh">0.00032237810000000004</PEF2>
+						<PEF3 unit="kWh/kWh">0.00032237810000000004</PEF3>
+						<PEF4 unit="kWh/kWh">5.8614200000000005e-05</PEF4>
+						<PEF5 unit="kWh/kWh">0.0005275278</PEF5>
+						<PEF6 unit="kWh/kWh">0.0004982207</PEF6>
+						<PEF7 unit="kWh/kWh">0.00023445680000000002</PEF7>
+						<PEF8 unit="kWh/kWh">0.00032237810000000004</PEF8>
+						<PEF9 unit="kWh/kWh">0.0004396065</PEF9>
+						<PEF10 unit="kWh/kWh">0.00020514969999999998</PEF10>
+						<PEF11 unit="kWh/kWh">0.00032237810000000004</PEF11>
+						<PEF12 unit="kWh/kWh">0.0004396065</PEF12>
+						<PEF13 unit="kWh/kWh">0.00023445680000000002</PEF13>
+						<PEF14 unit="kWh/kWh">0.00032237810000000004</PEF14>
+						<PEF15 unit="kWh/kWh">0.0004396065</PEF15>
+					</PEFactorsUserDef>
+					<CO2FactorsUserDef count="16">
+						<CO2F0 unit="g/kWh">310.027185776</CO2F0>
+						<CO2F1 unit="g/kWh">250.041736448</CO2F1>
+						<CO2F2 unit="g/kWh">270.036886224</CO2F2>
+						<CO2F3 unit="g/kWh">440.029780736</CO2F3>
+						<CO2F4 unit="g/kWh">53.434137456</CO2F4>
+						<CO2F5 unit="g/kWh">680.073942296</CO2F5>
+						<CO2F6 unit="g/kWh">250.041736448</CO2F6>
+						<CO2F7 unit="g/kWh">240.01004014400002</CO2F7>
+						<CO2F8 unit="g/kWh">320.02476066400004</CO2F8>
+						<CO2F9 unit="g/kWh">410.037056072</CO2F9>
+						<CO2F10 unit="g/kWh">-70.017145632</CO2F10>
+						<CO2F11 unit="g/kWh">130.00259496</CO2F11>
+						<CO2F12 unit="g/kWh">320.02476066400004</CO2F12>
+						<CO2F13 unit="g/kWh">100.009870296</CO2F13>
+						<CO2F14 unit="g/kWh">250.041736448</CO2F14>
+						<CO2F15 unit="g/kWh">410.037056072</CO2F15>
+					</CO2FactorsUserDef>
+				</PH_ClimateLocation>
+			</ClimateLocation>
+			<PassivehouseData>
+				<PH_CertificateCriteria>7</PH_CertificateCriteria>
+				<PH_SelectionTargetData>2</PH_SelectionTargetData>
+				<AnnualHeatingDemand>15.000075449999999</AnnualHeatingDemand>
+				<AnnualCoolingDemand>15.000075449999999</AnnualCoolingDemand>
+				<PeakHeatingLoad>10.00005405962</PeakHeatingLoad>
+				<PeakCoolingLoad>10.00005405962</PeakCoolingLoad>
+				<PH_Buildings count="1">
+					<PH_Building index="0">
+						<IdentNr>6</IdentNr>
+						<BuildingCategory>1</BuildingCategory>
+						<OccupancyTypeResidential>1</OccupancyTypeResidential>
+						<BuildingStatus>1</BuildingStatus>
+						<BuildingType>1</BuildingType>
+						<OccupancySettingMethod>2</OccupancySettingMethod>
+						<NumberUnits>4</NumberUnits>
+						<CountStories>1</CountStories>
+						<EnvelopeAirtightnessCoefficient>1.1503151999999999</EnvelopeAirtightnessCoefficient>
+						<SummerHRVHumidityRecovery>4</SummerHRVHumidityRecovery>
+						<FoundationInterfaces count="0"/>
+						<InternalGainsAdditionalData>
+							<EvaporationHeatPerPerson unit="W">15</EvaporationHeatPerPerson>
+							<HeatLossFluschingWC>true</HeatLossFluschingWC>
+							<QuantityWCs>1</QuantityWCs>
+							<RoomCategory>1</RoomCategory>
+							<UseDefaultValuesSchool>false</UseDefaultValuesSchool>
+							<MarginalPerformanceRatioDHW>None</MarginalPerformanceRatioDHW>
+						</InternalGainsAdditionalData>
+						<MechanicalRoomTemperature>20.0</MechanicalRoomTemperature>
+						<IndoorTemperature>20.0</IndoorTemperature>
+						<OverheatingTemperatureThreshold>25.0</OverheatingTemperatureThreshold>
+						<NonCombustibleMaterials>false</NonCombustibleMaterials>
+					</PH_Building>
+				</PH_Buildings>
+				<UseWUFIMeanMonthShading>true</UseWUFIMeanMonthShading>
+			</PassivehouseData>
+			<HVAC>
+				<Systems count="1">
+					<System index="0">
+						<Name>Ideal Air System</Name>
+						<Type choice="User defined (ideal system)">1</Type>
+						<IdentNr>1</IdentNr>
+						<ZonesCoverage count="1">
+							<ZoneCoverage index="0">
+								<IdentNrZone>1</IdentNrZone>
+								<CoverageHeating>1.0</CoverageHeating>
+								<CoverageCooling>1.0</CoverageCooling>
+								<CoverageVentilation>1.0</CoverageVentilation>
+								<CoverageHumidification>1.0</CoverageHumidification>
+								<CoverageDehumidification>1.0</CoverageDehumidification>
+							</ZoneCoverage>
+						</ZonesCoverage>
+						<Devices count="6">
+							<Device index="0">
+								<Name>_unnamed_equipment_</Name>
+								<IdentNr>3</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+									<InConditionedSpace>true</InConditionedSpace>
+									<AnnualCOP>2.5</AnnualCOP>
+									<TotalSystemPerformanceRatioHeatGenerator>0.4</TotalSystemPerformanceRatioHeatGenerator>
+									<HPType>3</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+							</Device>
+							<Device index="1">
+								<Name>_unnamed_equipment_</Name>
+								<IdentNr>2</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+									<InConditionedSpace>true</InConditionedSpace>
+									<AnnualCOP>None</AnnualCOP>
+									<TotalSystemPerformanceRatioHeatGenerator>None</TotalSystemPerformanceRatioHeatGenerator>
+									<HPWH_EF>None</HPWH_EF>
+									<HPType>5</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+							</Device>
+							<Device index="2">
+								<Name>_unnamed_equipment_</Name>
+								<IdentNr>4</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+									<InConditionedSpace>true</InConditionedSpace>
+									<AnnualCOP>None</AnnualCOP>
+									<TotalSystemPerformanceRatioHeatGenerator>None</TotalSystemPerformanceRatioHeatGenerator>
+									<HPType>3</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+							</Device>
+							<Device index="3">
+								<Name>_unnamed_equipment_</Name>
+								<IdentNr>2</IdentNr>
+								<SystemType>8</SystemType>
+								<TypeDevice>8</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>true</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<SolarThermalStorageCapacity>300.0010761643896</SolarThermalStorageCapacity>
+									<StorageLossesStandby>3.9996117904</StorageLossesStandby>
+									<TotalSolarThermalStorageLosses>3.9996117904</TotalSolarThermalStorageLosses>
+									<InputOption>1</InputOption>
+									<AverageHeatReleaseStorage>0.0</AverageHeatReleaseStorage>
+									<TankRoomTemp >20.0</TankRoomTemp >
+									<TypicalStorageWaterTemperature>60.0</TypicalStorageWaterTemperature>
+									<QauntityWS>1</QauntityWS>
+									<AuxiliaryEnergy>None</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>None</AuxiliaryEnergyDHW>
+									<InConditionedSpace>true</InConditionedSpace>
+								</PH_Parameters>
+							</Device>
+							<Device index="4">
+								<Name>_unnamed_equipment_</Name>
+								<IdentNr>2</IdentNr>
+								<SystemType>10</SystemType>
+								<TypeDevice>10</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<SelectionLocation>1</SelectionLocation>
+									<SelectionOnSiteUtilization>1</SelectionOnSiteUtilization>
+									<SelectionUtilization>1</SelectionUtilization>
+									<ArraySizePV>10.0</ArraySizePV>
+									<PhotovoltaicRenewableEnergy>1000.0</PhotovoltaicRenewableEnergy>
+									<OnsiteUtilization>1.0</OnsiteUtilization>
+									<AuxiliaryEnergy>0.0</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>0.0</AuxiliaryEnergyDHW>
+									<InConditionedSpace>false</InConditionedSpace>
+								</PH_Parameters>
+							</Device>
+							<Device index="5">
+								<Name>_unnamed_equipment_</Name>
+								<IdentNr>2</IdentNr>
+								<SystemType>1</SystemType>
+								<TypeDevice>1</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>true</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<UseOptionalClimate>false</UseOptionalClimate>
+								<IdentNr_OptionalClimate>-1</IdentNr_OptionalClimate>
+								<HeatRecovery>0.0</HeatRecovery>
+								<MoistureRecovery >0.0</MoistureRecovery >
+								<PH_Parameters>
+									<Quantity>1</Quantity>
+									<HumidityRecoveryEfficiency>0.0</HumidityRecoveryEfficiency>
+									<ElectricEfficiency>0.55</ElectricEfficiency>
+									<DefrostRequired>true</DefrostRequired>
+									<FrostProtection>true</FrostProtection>
+									<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>
+									<InConditionedSpace>true</InConditionedSpace>
+									<NoSummerBypass>false</NoSummerBypass>
+								</PH_Parameters>
+							</Device>
+						</Devices>
+						<PHDistribution>
+							<DistributionDHW>
+								<CalculationMethodIndividualPipes>1</CalculationMethodIndividualPipes>
+								<DemandRecirculation>true</DemandRecirculation>
+								<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>
+								<NumberOfBathrooms>1</NumberOfBathrooms>
+								<AllPipesAreInsulated>true</AllPipesAreInsulated>
+								<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>
+								<PipeMaterialSimplifiedMethod>1</PipeMaterialSimplifiedMethod>
+								<PipeDiameterSimplifiedMethod>1.0</PipeDiameterSimplifiedMethod>
+								<TemperatureRoom_WR>20.0</TemperatureRoom_WR>
+								<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>
+								<DailyRunningHoursCirculation_WR>24</DailyRunningHoursCirculation_WR>
+								<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>
+								<HeatLossCoefficient_WR>None</HeatLossCoefficient_WR>
+								<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>
+								<ExteriorPipeDiameter_WR>None</ExteriorPipeDiameter_WR>
+							</DistributionDHW>
+							<DistributionCooling/>
+							<DistributionVentilation count="0"/>
+							<UseDefaultValues>false</UseDefaultValues>
+							<DeviceInConditionedSpace>true</DeviceInConditionedSpace>
+							<SupportiveDevices count="0"/>
+						</PHDistribution>
+					</System>
+				</Systems>
+			</HVAC>
+		</Variant>
+	</Variants>
+	<Assemblies count="6">
+		<Assembly index="0">
+			<IdentNr>1</IdentNr>
+			<Name>Generic Interior Wall</Name>
+			<Order_Layers>2</Order_Layers>
+			<Grid_Kind>2</Grid_Kind>
+			<Layers count="3">
+				<Layer index="0">
+					<Thickness>0.0127</Thickness>
+					<Material>
+						<Name>Generic Gypsum Board</Name>
+						<ThermalConductivity>0.1599199054992</ThermalConductivity>
+						<BulkDensity>800.00050650816</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>1089.8241922754999</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="1">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic Wall Air Gap</Name>
+						<ThermalConductivity>0.6670252335432001</ThermalConductivity>
+						<BulkDensity>1.2798752256600001</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>999.807979698</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="2">
+					<Thickness>0.0127</Thickness>
+					<Material>
+						<Name>Generic Gypsum Board</Name>
+						<ThermalConductivity>0.1599199054992</ThermalConductivity>
+						<BulkDensity>800.00050650816</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>1089.8241922754999</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+			</Layers>
+		</Assembly>
+		<Assembly index="1">
+			<IdentNr>2</IdentNr>
+			<Name>Generic Exterior Wall</Name>
+			<Order_Layers>2</Order_Layers>
+			<Grid_Kind>2</Grid_Kind>
+			<Layers count="5">
+				<Layer index="0">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic Brick</Name>
+						<ThermalConductivity>0.8999821521600001</ThermalConductivity>
+						<BulkDensity>1920.0002545117802</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>790.0492703895001</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="1">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic LW Concrete</Name>
+						<ThermalConductivity>0.5299510288296001</ThermalConductivity>
+						<BulkDensity>1280.00016967452</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>839.872197351</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="2">
+					<Thickness>0.04999989999999999</Thickness>
+					<Material>
+						<Name>Generic 50mm Insulation</Name>
+						<ThermalConductivity>0.0299417139084</ThermalConductivity>
+						<BulkDensity>42.999963150960006</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>1209.985369065</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="3">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic Wall Air Gap</Name>
+						<ThermalConductivity>0.6670252335432001</ThermalConductivity>
+						<BulkDensity>1.2798752256600001</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>999.807979698</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="4">
+					<Thickness>0.0127</Thickness>
+					<Material>
+						<Name>Generic Gypsum Board</Name>
+						<ThermalConductivity>0.1599199054992</ThermalConductivity>
+						<BulkDensity>800.00050650816</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>1089.8241922754999</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+			</Layers>
+		</Assembly>
+		<Assembly index="2">
+			<IdentNr>3</IdentNr>
+			<Name>Generic Ground Slab</Name>
+			<Order_Layers>2</Order_Layers>
+			<Grid_Kind>2</Grid_Kind>
+			<Layers count="2">
+				<Layer index="0">
+					<Thickness>0.04999989999999999</Thickness>
+					<Material>
+						<Name>Generic 50mm Insulation</Name>
+						<ThermalConductivity>0.0299417139084</ThermalConductivity>
+						<BulkDensity>42.999963150960006</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>1209.985369065</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="1">
+					<Thickness>0.19999959999999997</Thickness>
+					<Material>
+						<Name>Generic HW Concrete</Name>
+						<ThermalConductivity>1.9500190208436001</ThermalConductivity>
+						<BulkDensity>2240.00109785358</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>900.1621257749999</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+			</Layers>
+		</Assembly>
+		<Assembly index="3">
+			<IdentNr>4</IdentNr>
+			<Name>Generic Interior Ceiling</Name>
+			<Order_Layers>2</Order_Layers>
+			<Grid_Kind>2</Grid_Kind>
+			<Layers count="3">
+				<Layer index="0">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic LW Concrete</Name>
+						<ThermalConductivity>0.5299510288296001</ThermalConductivity>
+						<BulkDensity>1280.00016967452</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>839.872197351</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="1">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic Ceiling Air Gap</Name>
+						<ThermalConductivity>0.5560851259403999</ThermalConductivity>
+						<BulkDensity>1.2798752256600001</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>999.807979698</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="2">
+					<Thickness>0.019999959999999997</Thickness>
+					<Material>
+						<Name>Generic Acoustic Tile</Name>
+						<ThermalConductivity>0.060056501307600006</ThermalConductivity>
+						<BulkDensity>368.00016891990003</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>589.9202024264999</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+			</Layers>
+		</Assembly>
+		<Assembly index="4">
+			<IdentNr>5</IdentNr>
+			<Name>Generic Interior Floor</Name>
+			<Order_Layers>2</Order_Layers>
+			<Grid_Kind>2</Grid_Kind>
+			<Layers count="3">
+				<Layer index="0">
+					<Thickness>0.019999959999999997</Thickness>
+					<Material>
+						<Name>Generic Acoustic Tile</Name>
+						<ThermalConductivity>0.060056501307600006</ThermalConductivity>
+						<BulkDensity>368.00016891990003</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>589.9202024264999</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="1">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic Ceiling Air Gap</Name>
+						<ThermalConductivity>0.5560851259403999</ThermalConductivity>
+						<BulkDensity>1.2798752256600001</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>999.807979698</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="2">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic LW Concrete</Name>
+						<ThermalConductivity>0.5299510288296001</ThermalConductivity>
+						<BulkDensity>1280.00016967452</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>839.872197351</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+			</Layers>
+		</Assembly>
+		<Assembly index="5">
+			<IdentNr>6</IdentNr>
+			<Name>Generic Roof</Name>
+			<Order_Layers>2</Order_Layers>
+			<Grid_Kind>2</Grid_Kind>
+			<Layers count="5">
+				<Layer index="0">
+					<Thickness>0.009999979999999999</Thickness>
+					<Material>
+						<Name>Generic Roof Membrane</Name>
+						<ThermalConductivity>0.1599199054992</ThermalConductivity>
+						<BulkDensity>1119.9997480036202</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>1459.9373639895</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="1">
+					<Thickness>0.04999989999999999</Thickness>
+					<Material>
+						<Name>Generic 50mm Insulation</Name>
+						<ThermalConductivity>0.0299417139084</ThermalConductivity>
+						<BulkDensity>42.999963150960006</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>1209.985369065</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="2">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic LW Concrete</Name>
+						<ThermalConductivity>0.5299510288296001</ThermalConductivity>
+						<BulkDensity>1280.00016967452</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>839.872197351</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="3">
+					<Thickness>0.09999979999999999</Thickness>
+					<Material>
+						<Name>Generic Ceiling Air Gap</Name>
+						<ThermalConductivity>0.5560851259403999</ThermalConductivity>
+						<BulkDensity>1.2798752256600001</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>999.807979698</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+				<Layer index="4">
+					<Thickness>0.019999959999999997</Thickness>
+					<Material>
+						<Name>Generic Acoustic Tile</Name>
+						<ThermalConductivity>0.060056501307600006</ThermalConductivity>
+						<BulkDensity>368.00016891990003</BulkDensity>
+						<Porosity>0.95</Porosity>
+						<HeatCapacity>589.9202024264999</HeatCapacity>
+						<WaterVaporResistance>0.0</WaterVaporResistance>
+						<ReferenceW>0.0</ReferenceW>
+					</Material>
+				</Layer>
+			</Layers>
+		</Assembly>
+	</Assemblies>
+	<WindowTypes count="1">
+		<WindowType index="0">
+			<IdentNr>1</IdentNr>
+			<Name>Generic Double Pane</Name>
+			<Uw_Detailed>true</Uw_Detailed>
+			<GlazingFrameDetailed>false</GlazingFrameDetailed>
+			<FrameFactor>0.75</FrameFactor>
+			<U_Value>1.6875801006248001</U_Value>
+			<U_Value_Glazing>1.6875801006248001</U_Value_Glazing>
+			<MeanEmissivity>0.1</MeanEmissivity>
+			<g_Value>0.4241</g_Value>
+			<SHGC_Hemispherical>0.4241</SHGC_Hemispherical>
+			<U_Value_Frame>1.6875801006248001</U_Value_Frame>
+			<Frame_Width_Left>0.09999979999999999</Frame_Width_Left>
+			<Frame_Psi_Left>0.0</Frame_Psi_Left>
+			<Frame_U_Left>1.6875801006248001</Frame_U_Left>
+			<Glazing_Psi_Left>0.0</Glazing_Psi_Left>
+			<Frame_Width_Right>0.09999979999999999</Frame_Width_Right>
+			<Frame_Psi_Right>0.0</Frame_Psi_Right>
+			<Frame_U_Right>1.6875801006248001</Frame_U_Right>
+			<Glazing_Psi_Right>0.0</Glazing_Psi_Right>
+			<Frame_Width_Top>0.09999979999999999</Frame_Width_Top>
+			<Frame_Psi_Top>0.0</Frame_Psi_Top>
+			<Frame_U_Top>1.6875801006248001</Frame_U_Top>
+			<Glazing_Psi_Top>0.0</Glazing_Psi_Top>
+			<Frame_Width_Bottom>0.09999979999999999</Frame_Width_Bottom>
+			<Frame_Psi_Bottom>0.0</Frame_Psi_Bottom>
+			<Frame_U_Bottom>1.6875801006248001</Frame_U_Bottom>
+			<Glazing_Psi_Bottom>0.0</Glazing_Psi_Bottom>
+		</WindowType>
+	</WindowTypes>
+	<SolarProtectionTypes count="0"/>
+</WUFIplusProject>

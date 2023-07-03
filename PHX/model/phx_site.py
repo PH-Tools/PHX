@@ -153,23 +153,34 @@ class PhxLocation:
 
 @dataclass
 class PhxClimatePeakLoad:
-    temperature_air: float = 0
-    radiation_north: float = 0
-    radiation_east: float = 0
-    radiation_south: float = 0
-    radiation_west: float = 0
-    radiation_global: float = 0
+    temperature_air: Optional[float] = 0.0
+    radiation_north: Optional[float] = 0.0
+    radiation_east: Optional[float] = 0.0
+    radiation_south: Optional[float] = 0.0
+    radiation_west: Optional[float] = 0.0
+    radiation_global: Optional[float] = 0.0
 
     def __eq__(self, other: PhxClimatePeakLoad) -> bool:
         TOLERANCE = 0.001
-        return (
-            abs(self.temperature_air - other.temperature_air) < TOLERANCE
-            and abs(self.radiation_north - other.radiation_north) < TOLERANCE
-            and abs(self.radiation_east - other.radiation_east) < TOLERANCE
-            and abs(self.radiation_south - other.radiation_south) < TOLERANCE
-            and abs(self.radiation_west - other.radiation_west) < TOLERANCE
-            and abs(self.radiation_global - other.radiation_global) < TOLERANCE
-        )
+        if self.temperature_air and other.temperature_air:
+            if abs(self.temperature_air - other.temperature_air) > TOLERANCE:
+                return False
+        if self.radiation_north and other.radiation_north:
+            if abs(self.radiation_north - other.radiation_north) > TOLERANCE:
+                return False
+        if self.radiation_east and other.radiation_east:
+            if abs(self.radiation_east - other.radiation_east) > TOLERANCE:
+                return False
+        if self.radiation_south and other.radiation_south:
+            if abs(self.radiation_south - other.radiation_south) > TOLERANCE:
+                return False
+        if self.radiation_west and other.radiation_west:
+            if abs(self.radiation_west - other.radiation_west) > TOLERANCE:
+                return False
+        if self.radiation_global and other.radiation_global:
+            if abs(self.radiation_global - other.radiation_global) > TOLERANCE:
+                return False
+        return True
 
 
 @dataclass

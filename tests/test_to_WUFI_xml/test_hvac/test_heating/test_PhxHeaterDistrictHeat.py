@@ -17,7 +17,7 @@ def test_default_PhxHeaterDistrictHeat(reset_class_counters):
         "<IdentNr>1</IdentNr>",
         '<ZonesCoverage count="1">',
         '<ZoneCoverage index="0">',
-        "<IdentNrZone>1.0</IdentNrZone>",
+        "<IdentNrZone>1</IdentNrZone>",
         "<CoverageHeating>1.0</CoverageHeating>",
         "<CoverageCooling>1.0</CoverageCooling>",
         "<CoverageVentilation>1.0</CoverageVentilation>",

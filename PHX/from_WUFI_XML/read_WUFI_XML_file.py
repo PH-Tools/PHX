@@ -3,30 +3,49 @@
 
 """Functions for importing WUFI XML file data."""
 
-from typing import Dict, Any
+from typing import Dict, Any, Union, List, Optional
 import pathlib
 from lxml import etree
+from dataclasses import dataclass
 
 
-def xml_to_dict(element, _level=0) -> Dict[str, Any]:
+@dataclass
+class Tag:
+    text: Optional[str]
+    tag: str
+    attrib: Optional[Dict[str, str]]
+
+
+def _is_list_element(_child) -> bool:
+    if "count" in getattr(_child, "attrib", ""):
+        return True
+
+    # -- WUFI NONSENSE....Why the fuck don't THESE have a 'count'?
+    elif _child.tag == "PEFactorsUserDef":
+        return True
+    elif _child.tag == "CO2FactorsUserDef":
+        return True
+    return False
+
+
+def xml_to_dict(element: etree._Element, _level: int = 0) -> Dict[Union[List, str], Any]:
     d = {}
 
     if len(element) == 0:
-        # -- If its a bar element with no children, just return the text
+        # -- If its a bare element with no children, just return the text
         # -- Debug
         tag = f"{_level * '  '} {element.tag :<35}"
         attrib = getattr(element, "attrib", "")
         l = len(element)
-        # print(f"{tag} | {attrib} | {l}")
 
-        return element.text
+        return {element.tag: Tag(element.text, element.tag, element.attrib)}
 
-    for child in element:
+    for child in element:  # type: ignore
         # -- Debug
         tag = f"{_level * '  '} {child.tag :<35}"
         attrib = getattr(child, "attrib", "")
         l = len(child)
-        # print(f"{tag} | {attrib} | {l}")
+        # ---
 
         if len(child) == 0:
             # At the end of the a branch
@@ -34,20 +53,25 @@ def xml_to_dict(element, _level=0) -> Dict[str, Any]:
                 # It is just an empty container
                 d[child.tag] = []
             else:
-                # It is an actual data item
-                d[child.tag] = child.text
-        elif "count" in getattr(child, "attrib", ""):
+                # It is finally an actual data item
+                d[child.tag] = Tag(child.text, child.tag, child.attrib)  # .text
+        elif _is_list_element(child):
+            # -- Fucking WUFI... sometimes the unit data is up at the parent
+            if "unit" in getattr(child, "attrib", ""):
+                for _ in child:
+                    _.attrib["unit"] = child.attrib.get("unit", "")
+
             # -- The children of this node should be in a list
             d[child.tag] = []
             for sub_child in child:
                 d[child.tag].append(xml_to_dict(sub_child, _level + 1))
+
         else:
-            # -- The children of this node are other nodes
             d[child.tag] = xml_to_dict(child, _level + 1)
     return d
 
 
-def get_WUFI_XML_file_as_dict(_file_address: pathlib.Path) -> Dict[str, Any]:
+def get_WUFI_XML_file_as_dict(_file_address: pathlib.Path) -> Dict[Union[str, List], Any]:
     """Read in the WUFI-XML file and return the data as a dictionary."""
 
     parser = etree.XMLPullParser(recover=True, encoding="utf-8")
@@ -60,7 +84,7 @@ def get_WUFI_XML_file_as_dict(_file_address: pathlib.Path) -> Dict[str, Any]:
             parser.feed(chunk)
 
     # Get the root element of the parsed XML
-    root = parser.close()
+    root: etree._Element = parser.close()
 
     # Convert the root element and all children to a Python Dictionary
     return xml_to_dict(root)

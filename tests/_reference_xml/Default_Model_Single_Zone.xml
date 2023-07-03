@@ -66,7 +66,6 @@
 			<IdentNr>1</IdentNr>
 			<Name>Unnamed_Bldg_Segment</Name>
 			<Remarks></Remarks>
-			<PlugIn></PlugIn>
 			<Graphics_3D>
 				<Vertices count="8">
 					<Vertix index="0">
@@ -203,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_213d611d..Face4</Name>
+						<Name>Room_1_1dc91cc0..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -219,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_213d611d..Face5</Name>
+						<Name>Room_1_1dc91cc0..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -260,6 +259,7 @@
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="0"/>
 						<LoadsPersonsPH count="0"/>
+						<LoadsLightingsPH count="0"/>
 						<GrossVolume_Selection>6</GrossVolume_Selection>
 						<GrossVolume>60.0</GrossVolume>
 						<NetVolume_Selection>6</NetVolume_Selection>
@@ -528,7 +528,7 @@
 						<IdentNr>1</IdentNr>
 						<ZonesCoverage count="1">
 							<ZoneCoverage index="0">
-								<IdentNrZone>1.0</IdentNrZone>
+								<IdentNrZone>1</IdentNrZone>
 								<CoverageHeating>1.0</CoverageHeating>
 								<CoverageCooling>1.0</CoverageCooling>
 								<CoverageVentilation>1.0</CoverageVentilation>

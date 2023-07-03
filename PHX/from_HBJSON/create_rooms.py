@@ -20,6 +20,7 @@ from PHX.model import spaces
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Ventilation,
     UtilizationPatternCollection_Occupancy,
+    UtilizationPatternCollection_Lighting,
 )
 
 
@@ -70,6 +71,7 @@ def create_room_from_space(
     _space: space.Space,
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
+    _lighting_sched_collection: UtilizationPatternCollection_Lighting,
 ) -> spaces.PhxSpace:
     """Create a new RoomVentilation object with attributes based on a Honeybee-PH Space
 
@@ -91,6 +93,7 @@ def create_room_from_space(
     hbe_vent_sched = hbe_vent.schedule
     hbe_vent_sched_prop_ph: ScheduleRulesetPhProperties = hbe_vent_sched.properties.ph  # type: ignore
     hbe_occ = host_room_prop_energy.people
+    hbe_lighting = host_room_prop_energy.lighting
     space_prop_ph: SpacePhProperties = _space.properties.ph  # type: ignore
     hbe_hvac = host_room_prop_energy.hvac
     hbe_hvac_prop_ph: IdealAirSystemPhProperties = hbe_hvac.properties.ph  # type: ignore
@@ -130,5 +133,11 @@ def create_room_from_space(
     if hbe_occ:
         occ_sched_id = hbe_occ.occupancy_schedule.identifier
         new_room.occupancy.schedule = _occ_sched_collection[occ_sched_id]
+
+    # -- Keep the new room's Lighting reference aligned with the HB-Room's
+    if hbe_lighting:
+        lighting_sched_id = hbe_lighting.schedule.identifier
+        new_room.lighting.schedule = _lighting_sched_collection[lighting_sched_id]
+        new_room.lighting.load.installed_w_per_m2 = hbe_lighting.watts_per_area
 
     return new_room

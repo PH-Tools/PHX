@@ -89,7 +89,7 @@ class PhxMechanicalDevice:
     system_type: SystemType = SystemType.ANY
     device_type: DeviceType = DeviceType.ELECTRIC
     display_name: str = "_unnamed_equipment_"
-    quantity: int = 0
+    _quantity: int = 0
     unit: float = 0.0
     percent_coverage: float = 0.0
     usage_profile: PhxUsageProfile = field(default_factory=PhxUsageProfile)
@@ -108,6 +108,16 @@ class PhxMechanicalDevice:
         if not _in:
             return
         self._identifier = str(_in)
+
+    @property
+    def quantity(self) -> int:
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, _in: Optional[int]) -> None:
+        if not _in:
+            return
+        self._quantity = int(_in)
 
     def __add__(self, other: PhxMechanicalDevice) -> PhxMechanicalDevice:
         if self.system_type != other.system_type:

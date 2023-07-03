@@ -111,7 +111,7 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
         XML_Node("IdentNr", _variant.id_num),
         XML_Node("Name", _variant.name),
         XML_Node("Remarks", _variant.remarks),
-        XML_Node("PlugIn", _variant.plugin),
+        # XML_Node("PlugIn", _variant.plugin),
         XML_Object("Graphics_3D", _variant.graphics3D),
         XML_Object("Building", _variant.building),
         XML_Object("ClimateLocation", _variant.site),
@@ -192,6 +192,13 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
             "LoadsPersonsPH",
             [
                 XML_Object("LoadPerson", sp, "index", i, _schema_name="_LoadPerson")
+                for i, sp in enumerate(_z.spaces)
+            ],
+        ),
+        XML_List(
+            "LoadsLightingsPH",
+            [
+                XML_Object("LoadsLighting", sp, "index", i, _schema_name="_LoadsLighting")
                 for i, sp in enumerate(_z.spaces)
             ],
         ),
@@ -1519,12 +1526,12 @@ def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
 
 def _PhxZoneCoverage(_zc: hvac.PhxZoneCoverage) -> List[xml_writable]:
     return [
-        XML_Node("IdentNrZone", _zc.zone_num),
-        XML_Node("CoverageHeating", _zc.zone_num),
-        XML_Node("CoverageCooling", _zc.zone_num),
-        XML_Node("CoverageVentilation", _zc.zone_num),
-        XML_Node("CoverageHumidification", _zc.zone_num),
-        XML_Node("CoverageDehumidification", _zc.zone_num),
+        XML_Node("IdentNrZone", int(_zc.zone_num)),
+        XML_Node("CoverageHeating", _zc.heating),
+        XML_Node("CoverageCooling", _zc.cooling),
+        XML_Node("CoverageVentilation", _zc.ventilation),
+        XML_Node("CoverageHumidification", _zc.humidification),
+        XML_Node("CoverageDehumidification", _zc.dehumidification),
     ]
 
 
@@ -1769,6 +1776,32 @@ def _LoadPerson(_sp: spaces.PhxSpace) -> List[xml_writable]:
         XML_Node("ChoiceActivityPersons", 3),
         XML_Node("NumberOccupants", _sp.peak_occupancy),
         XML_Node("FloorAreaUtilizationZone", _sp.floor_area, "unit", "m²"),
+    ]
+
+
+def _LoadsLighting(_sp: spaces.PhxSpace) -> List[xml_writable]:
+    return [
+        XML_Node("Name", _sp.display_name),
+        # -- NOTE: As per discussions with Phius we use the
+        # -- occupancy pattern, and then just set the full-load hours directly
+        XML_Node("RoomCategory", _sp.occupancy.schedule.id_num),
+        XML_Node("ChoiceLightTransmissionGlazing", 1),
+        XML_Node("LightingControl", 1),
+        XML_Node("WithinThermalEnvelope", True),
+        XML_Node("MotionDetector", False),
+        XML_Node("FacadeIncludingWindows", False),
+        XML_Node("FractionTreatedFloorArea", 1),
+        XML_Node("DeviationFromNorth", 0),
+        XML_Node("RoomDepth", 1),
+        XML_Node("RoomWidth", 1),
+        XML_Node("RoomHeight", 1),
+        XML_Node("LintelHeight", 1),
+        XML_Node("WindowWidth", 1),
+        XML_Node("InstalledLightingPower", _sp.lighting.load.installed_w_per_m2),
+        XML_Node(
+            "LightingFullLoadHours",
+            round(_sp.lighting.schedule.full_load_lighting_hours, 1),
+        ),
     ]
 
 

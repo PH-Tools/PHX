@@ -30,6 +30,7 @@ from PHX.model import building, constructions, components
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Ventilation,
     UtilizationPatternCollection_Occupancy,
+    UtilizationPatternCollection_Lighting,
 )
 from PHX.model.enums.building import (
     ComponentExposureExterior,
@@ -296,6 +297,7 @@ def create_zones_from_hb_room(
     _hb_room: room.Room,
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
+    _lighting_sched_collection: UtilizationPatternCollection_Lighting,
 ) -> building.PhxZone:
     """Create a new PHX-Zone based on a honeybee-Room.
 
@@ -323,6 +325,7 @@ def create_zones_from_hb_room(
         create_room_from_space,
         _vent_sched_collection=_vent_sched_collection,
         _occ_sched_collection=_occ_sched_collection,
+        _lighting_sched_collection=_lighting_sched_collection,
     )
     new_zone.spaces = [_create_space(sp) for sp in sorted_spaces]
 

@@ -18,5 +18,5 @@ def test_default_PhxDeviceDishwasher(reset_class_counters):
         "<Type>1</Type>",
         "<Connection>1</Connection>",
         "<DishwasherCapacityPreselection>1</DishwasherCapacityPreselection>",
-        "<DishwasherCapacityInPlace>1</DishwasherCapacityInPlace>",
+        "<DishwasherCapacityInPlace>1.0</DishwasherCapacityInPlace>",
     ]

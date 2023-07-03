@@ -101,7 +101,7 @@ def create_PhxPolygonRectangular_from_hb_Face(
     phx_polygon = geometry.PhxPolygonRectangular(
         _hb_face.display_name,
         _hb_face.geometry.area,
-        center=create_PhxVertix_from_lbt_Point3D(_hb_face.geometry.center),
+        _center=create_PhxVertix_from_lbt_Point3D(_hb_face.geometry.center),
         normal_vector=create_PhxVector_from_lbt_Vector3D(_hb_face.normal),
         plane=create_PhxPlane_from_lbt_Plane(_hb_face.geometry.plane),
     )

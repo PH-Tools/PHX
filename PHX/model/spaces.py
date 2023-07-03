@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 
 from PHX.model.programs import occupancy as occupancy_prog
 from PHX.model.programs.ventilation import PhxProgramVentilation
+from PHX.model.programs.lighting import PhxProgramLighting
 
 
 @dataclass
@@ -32,7 +33,8 @@ class PhxSpace:
     occupancy: occupancy_prog.PhxProgramOccupancy = field(
         default_factory=occupancy_prog.PhxProgramOccupancy
     )
-    lighting = None
+    lighting: PhxProgramLighting = field(default_factory=PhxProgramLighting)
+
     electric_equipment = None
 
     def __post_init__(self) -> None:

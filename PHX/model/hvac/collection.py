@@ -55,7 +55,7 @@ class NoRenewableDeviceUnitFoundError(Exception):
 class PhxZoneCoverage:
     """Percentage of the building load-type covered by the subsystem."""
 
-    zone_num: float = 1.0
+    zone_num: int = 1
     heating: float = 1.0
     cooling: float = 1.0
     ventilation: float = 1.0

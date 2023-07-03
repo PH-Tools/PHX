@@ -4,7 +4,7 @@
 """PHX Passive House Certification Classes"""
 
 from __future__ import annotations
-from typing import ClassVar
+from typing import ClassVar, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -32,8 +32,8 @@ class PhxPhBuildingData:
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
 
-    num_of_units: int = 1
-    num_of_floors: int = 1
+    num_of_units: Optional[int] = 1
+    num_of_floors: Optional[int] = 1
     occupancy_setting_method: int = 2  # Design
     airtightness_q50: float = 1.0  # m3/hr-m2-envelope
     airtightness_n50: float = 1.0  # ach

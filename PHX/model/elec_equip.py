@@ -15,18 +15,19 @@ class PhxElectricalDevice:
     """Base class for PHX Electrical Equipment (dishwashers, laundry, lighting, etc.)"""
 
     _count: ClassVar[int] = 0
-
-    identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
-    display_name: str = "_unnamed_equipment_"
     id_num: int = field(init=False, default=0)
-    comment: str = ""
-    reference_quantity: int = 1
-    quantity: int = 1
-    in_conditioned_space: bool = True
-    reference_energy_norm: int = 2
-    energy_demand: float = 100.0
-    energy_demand_per_use: float = 100.0
-    combined_energy_factor: float = 0.0
+    identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
+
+    _reference_quantity: int = 1
+    _reference_energy_norm: int = 2
+    _quantity: int = 1
+
+    display_name: Optional[str] = "_unnamed_equipment_"
+    comment: Optional[str] = ""
+    in_conditioned_space: Optional[bool] = True
+    energy_demand: Optional[float] = 100.0
+    energy_demand_per_use: Optional[float] = 100.0
+    combined_energy_factor: Optional[float] = 0.0
 
     device_type: ElectricEquipmentType = field(default=ElectricEquipmentType.CUSTOM)
 
@@ -34,50 +35,124 @@ class PhxElectricalDevice:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
+    @property
+    def reference_quantity(self) -> int:
+        return self._reference_quantity
+
+    @reference_quantity.setter
+    def reference_quantity(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._reference_quantity = value
+
+    @property
+    def reference_energy_norm(self) -> int:
+        return self._reference_energy_norm
+
+    @reference_energy_norm.setter
+    def reference_energy_norm(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._reference_energy_norm = value
+
+    @property
+    def quantity(self) -> int:
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._quantity = value
+
     def get_energy_demand(self) -> float:
         """To allow for subclass custom behavior. Cannot use @property since
         it will not work with __setattr__ which is used during HBPH->PHX object creation.
         """
-        return self.energy_demand
+        return self.energy_demand or 0.0
 
     def get_quantity(self) -> int:
         """To allow for subclass custom behavior. Cannot use @property since
         it will not work with __setattr__ which is used during HBPH->PHX object creation.
         """
-        return self.quantity
+        return self.quantity or 1
 
 
 class PhxDeviceDishwasher(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
+        self._water_connection: int = 1  # DHW Connection
+        self._capacity_type: int = 1
         self.display_name = "Kitchen Dishwasher"
-        self.capacity_type: int = 1
-        self.capacity: float = 1
-        self.water_connection: int = 1  # DHW Connection
+        self.capacity: Optional[float] = 1.0
         self.device_type = ElectricEquipmentType.DISHWASHER
+
+    @property
+    def water_connection(self) -> Optional[int]:
+        return self._water_connection
+
+    @water_connection.setter
+    def water_connection(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._water_connection = value
+
+    @property
+    def capacity_type(self) -> Optional[int]:
+        return self._capacity_type
+
+    @capacity_type.setter
+    def capacity_type(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._capacity_type = value
 
 
 class PhxDeviceClothesWasher(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "Laundry - washer"
-        self.capacity: float = 0.0814  # m3
-        self.modified_energy_factor: float = 2.38
-        self.water_connection: int = 1  # DHW Connection
-        self.utilization_factor: float = 1
+        self._water_connection: int = 1  # DHW Connection
+
+        self.capacity: Optional[float] = 0.0814  # m3
+        self.modified_energy_factor: Optional[float] = 2.38
+        self.utilization_factor: Optional[float] = 1.0
         self.device_type = ElectricEquipmentType.CLOTHES_WASHER
+
+    @property
+    def water_connection(self) -> Optional[int]:
+        return self._water_connection
+
+    @water_connection.setter
+    def water_connection(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._water_connection = value
 
 
 class PhxDeviceClothesDryer(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "Laundry - dryer"
-        self.dryer_type: int = 4  # Condensation dryer
-        self.gas_consumption: float = 0.0  # kWh
-        self.gas_efficiency_factor: float = 2.67
-        self.field_utilization_factor_type: int = 1  # Timer
-        self.field_utilization_factor: float = 1.18
+        self._dryer_type: int = 4  # Condensation dryer
+        self._field_utilization_factor_type: int = 1  # Timer
+
+        self.gas_consumption: Optional[float] = 0.0  # kWh
+        self.gas_efficiency_factor: Optional[float] = 2.67
+        self.field_utilization_factor: Optional[float] = 1.18
         self.device_type = ElectricEquipmentType.CLOTHES_DRYER
+
+    @property
+    def dryer_type(self) -> int:
+        return self._dryer_type
+
+    @dryer_type.setter
+    def dryer_type(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._dryer_type = value
+
+    @property
+    def field_utilization_factor_type(self) -> Optional[int]:
+        return self._field_utilization_factor_type
+
+    @field_utilization_factor_type.setter
+    def field_utilization_factor_type(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._field_utilization_factor_type = value
 
 
 class PhxDeviceRefrigerator(PhxElectricalDevice):
@@ -105,8 +180,17 @@ class PhxDeviceCooktop(PhxElectricalDevice):
     def __init__(self):
         super().__init__()
         self.display_name = "Kitchen cooking"
-        self.cooktop_type: int = 1  # Electric
+        self._cooktop_type: int = 1  # Electric
         self.device_type = ElectricEquipmentType.COOKING
+
+    @property
+    def cooktop_type(self) -> int:
+        return self._cooktop_type
+
+    @cooktop_type.setter
+    def cooktop_type(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._cooktop_type = value
 
 
 class PhxDeviceMEL(PhxElectricalDevice):
@@ -120,7 +204,7 @@ class PhxDeviceLightingInterior(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Interior Lighting"
-        self.frac_high_efficiency: float = 1.0
+        self.frac_high_efficiency: Optional[float] = 1.0
         self.device_type = ElectricEquipmentType.LIGHTING_INTERIOR
 
 
@@ -128,7 +212,7 @@ class PhxDeviceLightingExterior(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Exterior Lighting"
-        self.frac_high_efficiency: float = 1.0
+        self.frac_high_efficiency: Optional[float] = 1.0
         self.device_type = ElectricEquipmentType.LIGHTING_EXTERIOR
 
 
@@ -136,7 +220,7 @@ class PhxDeviceLightingGarage(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Garage Lighting"
-        self.frac_high_efficiency: float = 1.0
+        self.frac_high_efficiency: Optional[float] = 1.0
         self.device_type = ElectricEquipmentType.LIGHTING_GARAGE
 
 
@@ -156,6 +240,8 @@ class PhxDeviceCustomLighting(PhxElectricalDevice):
         self.device_type = ElectricEquipmentType.CUSTOM_LIGHTING
 
     def get_energy_demand(self) -> float:
+        if self.energy_demand is None:
+            return 0
         return self.energy_demand * self.quantity
 
     def get_quantity(self) -> int:
@@ -171,6 +257,8 @@ class PhxDeviceCustomMEL(PhxElectricalDevice):
         self.device_type = ElectricEquipmentType.CUSTOM_MEL
 
     def get_energy_demand(self) -> float:
+        if self.energy_demand is None:
+            return 0
         return self.energy_demand * self.quantity
 
     def get_quantity(self) -> int:
@@ -184,6 +272,8 @@ class PhxElevatorHydraulic(PhxElectricalDevice):
         self.device_type = ElectricEquipmentType.CUSTOM
 
     def get_energy_demand(self) -> float:
+        if self.energy_demand is None:
+            return 0
         return self.energy_demand * self.quantity
 
     def get_quantity(self) -> int:
@@ -197,6 +287,8 @@ class PhxElevatorGearedTraction(PhxElectricalDevice):
         self.device_type = ElectricEquipmentType.CUSTOM
 
     def get_energy_demand(self) -> float:
+        if self.energy_demand is None:
+            return 0
         return self.energy_demand * self.quantity
 
     def get_quantity(self) -> int:
@@ -210,6 +302,8 @@ class PhxElevatorGearlessTraction(PhxElectricalDevice):
         self.device_type = ElectricEquipmentType.CUSTOM
 
     def get_energy_demand(self) -> float:
+        if self.energy_demand is None:
+            return 0
         return self.energy_demand * self.quantity
 
     def get_quantity(self) -> int:
@@ -230,7 +324,7 @@ class PhxElectricDeviceCollection:
         """Returns a list of all the devices in the PhxElectricDeviceCollection, sorted by display_name."""
         if not self._devices:
             return []
-        return sorted(self._devices.values(), key=lambda e: e.display_name)
+        return sorted(self._devices.values(), key=lambda e: e.display_name or "")
 
     def device_key_in_collection(self, _device_key) -> bool:
         """Returns True if the key supplied is in the existing device collection."""

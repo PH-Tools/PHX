@@ -28,6 +28,7 @@ from PHX.model import phx_site, project, constructions, certification
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Ventilation,
     UtilizationPatternCollection_Occupancy,
+    UtilizationPatternCollection_Lighting,
 )
 from PHX.model.enums import (
     phi_certification_phpp_9,
@@ -56,6 +57,7 @@ def add_building_from_hb_room(
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
+    _lighting_sched_collection: UtilizationPatternCollection_Lighting,
     group_components: bool = False,
     _tolerance: float = 0.001,
 ) -> None:
@@ -71,6 +73,8 @@ def add_building_from_hb_room(
             UtilizationPatternVentCollection with the ventilation schedules.
         * _occ_sched_collection (UtilizationPatternOccCollection): The PhxProject's
             UtilizationPatternOccCollection with the occupancy schedules.
+        * _lighting_sched_collection (UtilizationPatternLightingCollection): The PhxProject's
+            UtilizationPatternLightingCollection with the lighting schedules.
         * group_components (bool): default=False. Set to true to have the converter
             group the components by assembly-type.
 
@@ -88,6 +92,7 @@ def add_building_from_hb_room(
             _hb_room,
             _vent_sched_collection,
             _occ_sched_collection,
+            _lighting_sched_collection,
         )
     )
 
@@ -961,6 +966,7 @@ def from_hb_room(
     _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
+    _lighting_sched_collection: UtilizationPatternCollection_Lighting,
     group_components: bool = False,
     _tolerance: float = 0.001,
 ) -> project.PhxVariant:
@@ -1000,6 +1006,7 @@ def from_hb_room(
         _window_type_dict=_window_type_dict,
         _vent_sched_collection=_vent_sched_collection,
         _occ_sched_collection=_occ_sched_collection,
+        _lighting_sched_collection=_lighting_sched_collection,
         group_components=group_components,
         _tolerance=_tolerance,
     )

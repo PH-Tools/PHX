@@ -20,22 +20,22 @@ def test_add_default_PhxHotWaterTankParams(reset_class_counters):
 
 def test_add_mixed_PhxHotWaterTankParams(reset_class_counters):
     p1 = water.PhxHotWaterTankParams(
-        solar_losses=4,
-        storage_loss_rate=2,
-        standby_losses=10,
-        input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
-        storage_capacity=10,
-        room_temp=1,
-        water_temp=4,
+        _solar_losses=4,
+        _storage_loss_rate=2,
+        _standby_losses=10,
+        _input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
+        _storage_capacity=10,
+        _room_temp=1,
+        _water_temp=4,
     )
     p2 = water.PhxHotWaterTankParams(
-        solar_losses=4,
-        storage_loss_rate=4,
-        standby_losses=20,
-        input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
-        storage_capacity=20,
-        room_temp=2,
-        water_temp=8,
+        _solar_losses=4,
+        _storage_loss_rate=4,
+        _standby_losses=20,
+        _input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
+        _storage_capacity=20,
+        _room_temp=2,
+        _water_temp=8,
     )
 
     p3 = p1 + p2
@@ -81,24 +81,24 @@ def test_add_mixed_PhxHotWaterTank(reset_class_counters):
     d1 = water.PhxHotWaterTank()
     d1.quantity = 10
     d1.params = water.PhxHotWaterTankParams(
-        solar_losses=4,
-        storage_loss_rate=2,
-        standby_losses=10,
-        input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
-        storage_capacity=10,
-        room_temp=1,
-        water_temp=4,
+        _solar_losses=4,
+        _storage_loss_rate=2,
+        _standby_losses=10,
+        _input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
+        _storage_capacity=10,
+        _room_temp=1,
+        _water_temp=4,
     )
     d2 = water.PhxHotWaterTank()
     d2.quantity = 11
     d2.params = water.PhxHotWaterTankParams(
-        solar_losses=4,
-        storage_loss_rate=4,
-        standby_losses=20,
-        input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
-        storage_capacity=20,
-        room_temp=2,
-        water_temp=8,
+        _solar_losses=4,
+        _storage_loss_rate=4,
+        _standby_losses=20,
+        _input_option=hvac.PhxHotWaterInputOptions.SPEC_TOTAL_LOSSES,
+        _storage_capacity=20,
+        _room_temp=2,
+        _water_temp=8,
     )
 
     d3 = d1 + d2

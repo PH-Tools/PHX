@@ -15,7 +15,7 @@ from honeybee_energy_ph.properties import ruleset as phx_ruleset
 from honeybee_ph_utils.schedules import calc_four_part_vent_sched_values_from_hb_room
 
 from PHX.model import project
-from PHX.model.schedules import ventilation, occupancy
+from PHX.model.schedules import ventilation, occupancy, lighting
 
 
 def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
@@ -237,6 +237,54 @@ def build_occupancy_schedule_from_hb_room(
     return new_phx_occ_schedule
 
 
+def build_lighting_schedule_from_hb_room(
+    _hb_room: room.Room,
+) -> Optional[lighting.PhxScheduleLighting]:
+    """Build a new PHX Lighting Schedule based on a Honeybee-Room's energy.lighting.schedule values.
+
+    Arguments:
+    ----------
+        * _hb_room (room.Room): The Honeybee Room to build the schedules from.
+
+    Returns:
+    --------
+        * (Optional[occupancy.PhxScheduleLighting]): The new PHX Lighting Schedule or None.
+    """
+
+    # -- Make sure that the room has an occupancy schedule
+    hbe_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
+    if hbe_prop.lighting is None:
+        return None
+
+    if hbe_prop.lighting.schedule is None:
+        return None
+
+    # -- Aliases
+    hbe_schedule = hbe_prop.lighting.schedule
+    hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
+    daily_period = hbe_schedule_prop_ph.first_operating_period
+
+    # -- Build the new Schedule
+    new_phx_occ_schedule = lighting.PhxScheduleLighting()
+    new_phx_occ_schedule.identifier = hbe_schedule.identifier
+    new_phx_occ_schedule.display_name = hbe_schedule.display_name
+    new_phx_occ_schedule.annual_utilization_days = (
+        hbe_schedule_prop_ph.operating_days_year
+    )
+    new_phx_occ_schedule.relative_utilization_factor = (
+        hbe_schedule_prop_ph.annual_average_operating_fraction
+    )
+
+    if daily_period:
+        new_phx_occ_schedule.start_hour = daily_period.start_hour
+        new_phx_occ_schedule.end_hour = daily_period.end_hour
+    else:
+        new_phx_occ_schedule.start_hour = 0
+        new_phx_occ_schedule.end_hour = 24
+
+    return new_phx_occ_schedule
+
+
 def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
     """Add a default ventilation.schedule to the HB Model's Rooms if they have None.
 
@@ -335,6 +383,25 @@ def add_all_HB_Model_occupancy_schedules_to_PHX_Project(
         _project.add_occupancy_sched_to_collection(new_phx_occ_schedule)
 
 
+def add_all_HB_Model_lighting_schedules_to_PHX_Project(
+    _project: project.PhxProject, _hb_model: model.Model
+) -> None:
+    for hb_room in _hb_model.rooms:
+        hbe_room_energy_prop: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
+
+        if hbe_room_energy_prop.lighting is None:
+            continue
+
+        lighting_schedule_id = hbe_room_energy_prop.lighting.schedule.identifier
+        if _project.lighting_sched_in_project_collection(lighting_schedule_id):
+            # -- This is just to help speed things up.
+            # -- Don't re-make the util-pattern if it is already in collection.
+            continue
+
+        new_phx_lighting_schedule = build_lighting_schedule_from_hb_room(hb_room)
+        _project.add_lighting_sched_to_collection(new_phx_lighting_schedule)
+
+
 def add_all_HB_schedules_to_PHX_Project(
     _project: project.PhxProject, _hb_model: model.Model
 ) -> None:
@@ -353,3 +420,4 @@ def add_all_HB_schedules_to_PHX_Project(
     """
     add_all_HB_Model_ventilation_schedules_to_PHX_Project(_project, _hb_model)
     add_all_HB_Model_occupancy_schedules_to_PHX_Project(_project, _hb_model)
+    add_all_HB_Model_lighting_schedules_to_PHX_Project(_project, _hb_model)

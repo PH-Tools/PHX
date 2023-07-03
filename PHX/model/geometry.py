@@ -19,6 +19,41 @@ class PolygonEdgeError(Exception):
 
 
 @dataclass
+class PhxVertix2D:
+    """A 2D vertix."""
+
+    _count: ClassVar[int] = 0
+
+    id_num: int = field(init=False, default=0)
+    x: float
+    y: float
+
+    def __eq__(self, other: PhxVertix2D) -> bool:
+        TOLERANCE = 0.0001
+        return (
+            abs(self.x - other.x) < TOLERANCE
+            and abs(self.y - other.y) < TOLERANCE
+            and self.id_num == other.id_num
+        )
+
+    def is_equivalent(self, other: PhxVertix) -> bool:
+        TOLERANCE = 0.001
+        return abs(self.x - other.x) < TOLERANCE and abs(self.y - other.y) < TOLERANCE
+
+    def __post_init__(self):
+        PhxVertix._count += 1
+        self.id_num = PhxVertix._count
+
+    @property
+    def unique_key(self) -> str:
+        """Return a unique key (str) for the Vertex. Used for dicts, welding, etc"""
+        return f"{self.x :0.10f}_{self.y :0.10f}"
+
+    def __hash__(self) -> int:
+        return hash(self.unique_key)
+
+
+@dataclass
 class PhxVertix:
     _count: ClassVar[int] = 0
 
@@ -75,6 +110,39 @@ class PhxVector:
         self.y = self.y * _factor
         self.z = self.z * _factor
 
+    def dot(self, other: PhxVector) -> float:
+        """Get the dot product of this vector with another."""
+        return self.x * other.x + self.y * other.y + self.z * other.z
+
+    def rotate_around(self, _axis: PhxVector, _angle_deg: float) -> PhxVector:
+        """Rotate this vector around an axis by an angle in radians."""
+        _cos = math.cos(math.radians(_angle_deg))
+        _sin = math.sin(math.radians(_angle_deg))
+        _x = (
+            (_cos + _axis.x**2 * (1 - _cos)) * self.x
+            + (_axis.x * _axis.y * (1 - _cos) - _axis.z * _sin) * self.y
+            + (_axis.x * _axis.z * (1 - _cos) + _axis.y * _sin) * self.z
+        )
+        _y = (
+            (_axis.y * _axis.x * (1 - _cos) + _axis.z * _sin) * self.x
+            + (_cos + _axis.y**2 * (1 - _cos)) * self.y
+            + (_axis.y * _axis.z * (1 - _cos) - _axis.x * _sin) * self.z
+        )
+        _z = (
+            (_axis.z * _axis.x * (1 - _cos) - _axis.y * _sin) * self.x
+            + (_axis.z * _axis.y * (1 - _cos) + _axis.x * _sin) * self.y
+            + (_cos + _axis.z**2 * (1 - _cos)) * self.z
+        )
+        return PhxVector(_x, _y, _z)
+
+    def unitize(self) -> None:
+        """Convert this vector to a unit vector."""
+        magnitude = math.sqrt(self.x**2 + self.y**2 + self.z**2)
+        if magnitude > 0:
+            self.x /= magnitude
+            self.y /= magnitude
+            self.z /= magnitude
+
     def __eq__(self, other: PhxVector) -> bool:
         TOLERANCE = 0.001
         return (
@@ -86,17 +154,46 @@ class PhxVector:
 
 @dataclass
 class PhxPlane:
-    normal: PhxVector
+    normal_vector: PhxVector
     origin: PhxVertix
     x: PhxVector
     y: PhxVector
 
+    @property
+    def normal(self) -> PhxVector:
+        return self.normal_vector
+
     def __eq__(self, other: PhxPlane) -> bool:
         return (
-            self.normal == other.normal
+            self.normal_vector == other.normal_vector
             and self.origin == other.origin
             and self.x == other.x
             and self.y == other.y
+        )
+
+    def xyz_to_xy(self, point: PhxVertix) -> PhxVertix2D:
+        """Get a Point2D in the coordinate system of this plane from a Point3D.
+
+        Copied from Ladybug-Geometry
+        https://github.com/ladybug-tools/ladybug-geometry/blob/master/ladybug_geometry/geometry3d/plane.py
+        """
+        _diff = PhxVector(
+            point.x - self.origin.x, point.y - self.origin.y, point.z - self.origin.z
+        )
+        return PhxVertix2D(self.x.dot(_diff), self.y.dot(_diff))
+
+    def xy_to_xyz(self, point):
+        """Get a Point3D from a Point2D in the coordinate system of this plane.
+
+        Cpied from Ladybug-Geometry
+        https://github.com/ladybug-tools/ladybug-geometry/blob/master/ladybug_geometry/geometry3d/plane.py
+        """
+        _u = (self.x.x * point.x, self.x.y * point.x, self.x.z * point.x)
+        _v = (self.y.x * point.y, self.y.y * point.y, self.y.z * point.y)
+        return PhxVertix(
+            self.origin.x + _u[0] + _v[0],
+            self.origin.y + _u[1] + _v[1],
+            self.origin.z + _u[2] + _v[2],
         )
 
 
@@ -132,8 +229,8 @@ class PhxPolygon:
     _count: ClassVar[int] = 0
 
     _display_name: str
-    _area: float
-    center: PhxVertix
+    _area: Optional[float]
+    _center: Optional[PhxVertix]
     normal_vector: PhxVector
     plane: PhxPlane
 
@@ -162,11 +259,25 @@ class PhxPolygon:
 
     @property
     def area(self) -> float:
+        if not self._area:
+            self._area = self.calculate_area()
         return self._area
 
     @area.setter
-    def area(self, _in: float):
-        self._area = _in
+    def area(self, _in: Optional[float]):
+        if _in:
+            self._area = _in
+
+    @property
+    def center(self) -> PhxVertix:
+        if not self._center:
+            self._center = self.calculate_center()
+        return self._center
+
+    @center.setter
+    def center(self, _in: Optional[PhxVertix]):
+        if _in:
+            self._center = _in
 
     def __post_init__(self):
         PhxPolygon._count += 1
@@ -289,6 +400,57 @@ class PhxPolygon:
     def set_vertex(self, _phx_vertix: PhxVertix, index: int):
         """Set a vertex at a specific index."""
         self.vertices[index] = _phx_vertix
+
+    def calculate_area(self) -> float:
+        """Calculate the area of the polygon."""
+        x_coords = [self.plane.xyz_to_xy(v).x for v in self.vertices]
+        y_coords = [self.plane.xyz_to_xy(v).y for v in self.vertices]
+        x_coords.append(x_coords[0])
+        y_coords.append(y_coords[0])
+        return (
+            abs(
+                sum(
+                    [
+                        x_coords[i] * y_coords[i + 1] - x_coords[i + 1] * y_coords[i]
+                        for i in range(len(x_coords) - 1)
+                    ]
+                )
+            )
+            / 2
+        )
+
+    def calculate_center(self) -> PhxVertix:
+        """Find the center of the polygon."""
+        num_vertices = len(self.vertices)
+        center = PhxVertix(0, 0, 0)  # Initialize the center point at (0, 0, 0)
+
+        # Sum up the coordinates of all vertices
+        for vertex in self.vertices:
+            center.x += vertex.x
+            center.y += vertex.y
+            center.z += vertex.z
+
+        # Divide the sum by the number of vertices to get the average position
+        center.x /= num_vertices
+        center.y /= num_vertices
+        center.z /= num_vertices
+
+        return center
+
+    def scale(self, _scale_factor: float = 1.0) -> None:
+        """Scale the polygon by the given factor."""
+        for vertex in self.vertices:
+            vertex.x -= self.center.x
+            vertex.y -= self.center.y
+            vertex.z -= self.center.z
+
+            vertex.x *= _scale_factor
+            vertex.y *= _scale_factor
+            vertex.z *= _scale_factor
+
+            vertex.x += self.center.x
+            vertex.y += self.center.y
+            vertex.z += self.center.z
 
 
 @dataclass

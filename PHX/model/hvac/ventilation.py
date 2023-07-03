@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Union, ClassVar
+from typing import Union, ClassVar, Optional
 
 from PHX.model.enums.hvac import DeviceType, SystemType, PhxExhaustVentType
 from PHX.model.hvac import _base
@@ -72,9 +72,36 @@ class PhxDeviceVentilator(PhxDeviceVentilation):
 
 @dataclass
 class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
-    exhaust_type: PhxExhaustVentType = PhxExhaustVentType.KITCHEN_HOOD
-    annual_runtime_minutes: float = 0.0
-    exhaust_flow_rate_m3h: float = 0.0
+    _exhaust_type: PhxExhaustVentType = PhxExhaustVentType.KITCHEN_HOOD
+    _annual_runtime_minutes: float = 0.0
+    _exhaust_flow_rate_m3h: float = 0.0
+
+    @property
+    def exhaust_type(self) -> PhxExhaustVentType:
+        return self._exhaust_type
+
+    @exhaust_type.setter
+    def exhaust_type(self, value: Optional[PhxExhaustVentType]) -> None:
+        if value is not None:
+            self._exhaust_type = value
+
+    @property
+    def annual_runtime_minutes(self) -> float:
+        return self._annual_runtime_minutes
+
+    @annual_runtime_minutes.setter
+    def annual_runtime_minutes(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._annual_runtime_minutes = value
+
+    @property
+    def exhaust_flow_rate_m3h(self) -> float:
+        return self._exhaust_flow_rate_m3h
+
+    @exhaust_flow_rate_m3h.setter
+    def exhaust_flow_rate_m3h(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._exhaust_flow_rate_m3h = value
 
     def _calc_flow_weighted_annual_minutes(
         self, other: PhxExhaustVentilatorParams

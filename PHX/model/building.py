@@ -109,9 +109,7 @@ class PhxBuilding:
         for compo in _components:
             self._components.append(compo)
 
-    def add_component(
-        self, _component: Union[PhxComponentOpaque, PhxComponentAperture]
-    ) -> None:
+    def add_component(self, _component: PhxComponentOpaque) -> None:
         """Add a new PHX Components to the PhxBuilding."""
         self._components.append(_component)
 
@@ -189,6 +187,32 @@ class PhxBuilding:
         return [ap for c in self.opaque_components for ap in c.apertures]
 
     @property
+    def wall_aperture_components(self) -> List[PhxComponentAperture]:
+        """Returns a sorted list (by display name) of all the wall aperture (window) components in the building.
+
+        Returns:
+        --------
+            * (List[PhxComponentAperture]) A sorted list of all the wall aperture components.
+        """
+        return sorted(
+            [ap for c in self.above_grade_wall_components for ap in c.apertures],
+            key=lambda ap: ap.display_name,
+        )
+
+    @property
+    def roof_aperture_components(self) -> List[PhxComponentAperture]:
+        """Returns a sorted list (by display name) of all the roof aperture (skylight) components in the building.
+
+        Returns:
+        --------
+            * (List[PhxComponentAperture]) A sorted list of all the roof aperture components.
+        """
+        return sorted(
+            [ap for c in self.roof_components for ap in c.apertures],
+            key=lambda ap: ap.display_name,
+        )
+
+    @property
     def opaque_components(self) -> List[PhxComponentOpaque]:
         """Returns a sorted list (by display name) of all the opaque non-shade components in the building.
 
@@ -198,6 +222,31 @@ class PhxBuilding:
         """
         return sorted(
             [c for c in self._components if not c.is_shade], key=lambda _: _.display_name
+        )
+
+    @property
+    def roof_components(self) -> List[PhxComponentOpaque]:
+        """Returns a sorted list (by display name) of all the roof components in the building.
+
+        Returns:
+        --------
+            * (List[PhxComponentOpaque]) A sorted list of all the roof components.
+        """
+        return sorted(
+            [c for c in self._components if c.is_roof], key=lambda _: _.display_name
+        )
+
+    @property
+    def above_grade_wall_components(self) -> List[PhxComponentOpaque]:
+        """Returns a sorted list (by display name) of all the above grade wall components in the building.
+
+        Returns:
+        --------
+            * (List[PhxComponentOpaque]) A sorted list of all the above grade wall components.
+        """
+        return sorted(
+            [c for c in self._components if c.is_above_grade_wall],
+            key=lambda _: _.display_name,
         )
 
     @property
@@ -227,3 +276,51 @@ class PhxBuilding:
 
     def __bool__(self) -> bool:
         return bool(self.opaque_components) or bool(self.zones)
+
+    def get_total_gross_wall_area(self) -> float:
+        """Returns the total wall area of all the opaque components in the building."""
+        return sum(
+            c.get_total_gross_component_area() for c in self.above_grade_wall_components
+        )
+
+    def get_total_net_wall_area(self) -> float:
+        """Returns the total net wall area of all the opaque components in the building."""
+        return sum(
+            c.get_total_net_component_area() for c in self.above_grade_wall_components
+        )
+
+    def get_total_gross_roof_area(self) -> float:
+        """Returns the total roof area of all the opaque components in the building."""
+        return sum(c.get_total_gross_component_area() for c in self.roof_components)
+
+    def get_total_net_roof_area(self) -> float:
+        """Returns the total net roof area of all the opaque components in the building."""
+        return sum(c.get_total_net_component_area() for c in self.roof_components)
+
+    def get_total_wall_aperture_area(self) -> float:
+        """Returns the total window area of all the opaque components in the building."""
+        return sum(c.get_total_aperture_area() for c in self.wall_aperture_components)
+
+    def get_total_roof_aperture_area(self) -> float:
+        """Returns the total skylight area of all the opaque components in the building."""
+        return sum(c.get_total_aperture_area() for c in self.roof_aperture_components)
+
+    def scale_all_wall_aperture_components(self, _scale_factor: float = 1.0) -> None:
+        """Scale all the wall-aperture component's polygons by a given factor.
+
+        Args:
+        -----
+            * scale_factor (float): The factor to scale the aperture components by.
+        """
+        for c in self.wall_aperture_components:
+            c.scale(_scale_factor)
+
+    def scale_all_roof_aperture_components(self, _scale_factor: float = 1.0) -> None:
+        """Scale all the roof-aperture component's polygons by a given factor.
+
+        Args:
+        -----
+            * scale_factor (float): The factor to scale the aperture components by.
+        """
+        for c in self.roof_aperture_components:
+            c.scale(_scale_factor)

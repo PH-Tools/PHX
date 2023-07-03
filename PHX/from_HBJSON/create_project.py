@@ -125,6 +125,7 @@ def convert_hb_model_to_PhxProject(
             _window_type_dict=phx_project.window_types,
             _vent_sched_collection=phx_project.utilization_patterns_ventilation,
             _occ_sched_collection=phx_project.utilization_patterns_occupancy,
+            _lighting_sched_collection=phx_project.utilization_patterns_lighting,
             group_components=_group_components,
             _tolerance=_hb_model.tolerance,
         )

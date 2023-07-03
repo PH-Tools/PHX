@@ -109,6 +109,20 @@ class PhxComponentOpaque(PhxComponentBase):
             return False
         return True
 
+    @property
+    def is_above_grade_wall(self) -> bool:
+        if self.face_type != ComponentFaceType.WALL:
+            return False
+        if self.exposure_exterior != ComponentExposureExterior.EXTERIOR:
+            return False
+        return True
+
+    @property
+    def is_roof(self) -> bool:
+        if self.face_type != ComponentFaceType.ROOF_CEILING:
+            return False
+        return True
+
     def add_polygons(
         self, _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]
     ) -> None:
@@ -194,6 +208,32 @@ class PhxComponentOpaque(PhxComponentBase):
             f"Error: Cannot find a host polygon for the child id_num: {_id_num}"
         )
 
+    def set_assembly_type(self, _phx_construction: constructions.PhxConstructionOpaque):
+        """Set the Assembly Type for the Component.
+
+        Arguments:
+        ----------
+            * _phx_construction (constructions.PhxConstructionOpaque): The Construction to
+                set as the Assembly Type.
+        Returns:
+        --------
+            * None
+        """
+        self.assembly = _phx_construction
+        self.assembly_type_id_num = _phx_construction.id_num
+
+    def get_total_gross_component_area(self) -> float:
+        """Return the total Gross wall area of the Component (ignoring any nested apertures)."""
+        return sum([polygon.area for polygon in self.polygons])
+
+    def get_total_aperture_area(self) -> float:
+        """Return the total Gross aperture area of the Component."""
+        return sum([aperture.get_total_aperture_area() for aperture in self.apertures])
+
+    def get_total_net_component_area(self) -> float:
+        """Return the total net area of the Component (gross - apertures)."""
+        return self.get_total_gross_component_area() - self.get_total_aperture_area()
+
 
 class PhxApertureShadingDimensions(PhxComponentBase):
     """PHPP old-style shading dimensions data."""
@@ -217,7 +257,9 @@ class PhxApertureElement(PhxComponentBase):
 
         self.host: PhxComponentAperture = _host
         self.display_name: str = ""
-        self.polygon: Optional[geometry.PhxPolygonRectangular] = None
+        self.polygon: Optional[
+            Union[geometry.PhxPolygonRectangular, geometry.PhxPolygon]
+        ] = None
         self.winter_shading_factor: float = 0.75
         self.summer_shading_factor: float = 0.75
         self.shading_dimensions: PhxApertureShadingDimensions = (
@@ -244,6 +286,11 @@ class PhxApertureElement(PhxComponentBase):
             return False
 
         return True
+
+    def scale(self, _scale_factor: float) -> None:
+        """Scale the element's polygon by the specified factor."""
+        if self.polygon:
+            self.polygon.scale(_scale_factor)
 
 
 class PhxComponentAperture(PhxComponentBase):
@@ -311,6 +358,11 @@ class PhxComponentAperture(PhxComponentBase):
         """Add a new 'Element' (Sash) to the Aperture"""
         self.elements.append(_element)
 
+    def set_window_type(self, _window_type: constructions.PhxConstructionWindow) -> None:
+        """Set the Component's Window Type."""
+        self.window_type = _window_type
+        self.window_type_id_num = _window_type.id_num
+
     def __add__(self, other: PhxComponentAperture) -> PhxComponentAperture:
         """Merge with another Component into a single new Component.
 
@@ -376,6 +428,15 @@ class PhxComponentAperture(PhxComponentBase):
 
         return True
 
+    def get_total_aperture_area(self) -> float:
+        """Return the total Window Area of the Component."""
+        return sum([polygon.area for polygon in self.polygons])
+
+    def scale(self, _scale_factor: float = 1.0) -> None:
+        """Scale the Component's size by the given factor."""
+        for element in self.elements:
+            element.scale(_scale_factor)
+
 
 class PhxComponentThermalBridge(PhxComponentBase):
     """A single Thermal Bridge Element."""
@@ -383,10 +444,73 @@ class PhxComponentThermalBridge(PhxComponentBase):
     def __init__(self):
         super().__init__()
 
-        self.identifier: str = ""
-        self.quantity: float = 0.0
-        self.group_number: ThermalBridgeType = ThermalBridgeType.AMBIENT
-        self.display_name: str = ""
-        self.psi_value: float = 0.1
-        self.fRsi_value: float = 0.75
-        self.length: float = 0.0
+        self._identifier: Optional[str] = ""
+        self._quantity: Optional[float] = 0.0
+        self._group_number: Optional[ThermalBridgeType] = ThermalBridgeType.AMBIENT
+        self._display_name: Optional[str] = ""
+        self._psi_value: Optional[float] = 0.1
+        self._fRsi_value: Optional[float] = 0.75
+        self._length: Optional[float] = 0.0
+
+    @property
+    def identifier(self) -> Optional[str]:
+        return self._identifier
+
+    @identifier.setter
+    def identifier(self, value: Optional[str]) -> None:
+        if value is not None:
+            self._identifier = value
+
+    @property
+    def quantity(self) -> Optional[float]:
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._quantity = value
+
+    @property
+    def group_number(self) -> Optional[ThermalBridgeType]:
+        return self._group_number
+
+    @group_number.setter
+    def group_number(self, value: Optional[ThermalBridgeType]) -> None:
+        if value is not None:
+            self._group_number = value
+
+    @property
+    def display_name(self) -> Optional[str]:
+        return self._display_name
+
+    @display_name.setter
+    def display_name(self, value: Optional[str]) -> None:
+        if value is not None:
+            self._display_name = value
+
+    @property
+    def psi_value(self) -> Optional[float]:
+        return self._psi_value
+
+    @psi_value.setter
+    def psi_value(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._psi_value = value
+
+    @property
+    def fRsi_value(self) -> Optional[float]:
+        return self._fRsi_value
+
+    @fRsi_value.setter
+    def fRsi_value(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._fRsi_value = value
+
+    @property
+    def length(self) -> Optional[float]:
+        return self._length
+
+    @length.setter
+    def length(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._length = value

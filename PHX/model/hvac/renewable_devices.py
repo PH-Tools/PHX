@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
+from typing import Optional
 
 from PHX.model.enums.hvac import DeviceType, SystemType
 from PHX.model.hvac import _base
@@ -14,30 +15,112 @@ from PHX.model.hvac import _base
 class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
     """PV System Parameters"""
 
-    location_type: int = 1
-    onsite_utilization_type: int = 1
-    utilization_type: int = 1
-    array_size: float = 0.0
-    photovoltaic_renewable_energy: float = 0.0
-    onsite_utilization_factor: float = 1.0
-    auxiliary_energy: float = 0.0
-    auxiliary_energy_DHW: float = 0.0
-    in_conditioned_space: bool = False
+    _location_type: int = 1
+    _onsite_utilization_type: int = 1
+    _utilization_type: int = 1
+
+    _array_size: float = 0.0
+    _photovoltaic_renewable_energy: float = 0.0
+    _onsite_utilization_factor: float = 1.0
+    _auxiliary_energy: float = 0.0
+    _auxiliary_energy_DHW: float = 0.0
+    _in_conditioned_space: bool = False
+
+    @property
+    def location_type(self) -> int:
+        return self._location_type
+
+    @location_type.setter
+    def location_type(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._location_type = value
+
+    @property
+    def onsite_utilization_type(self) -> int:
+        return self._onsite_utilization_type
+
+    @onsite_utilization_type.setter
+    def onsite_utilization_type(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._onsite_utilization_type = value
+
+    @property
+    def utilization_type(self) -> int:
+        return self._utilization_type
+
+    @utilization_type.setter
+    def utilization_type(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._utilization_type = value
+
+    @property
+    def array_size(self) -> float:
+        return self._array_size
+
+    @array_size.setter
+    def array_size(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._array_size = value
+
+    @property
+    def photovoltaic_renewable_energy(self) -> float:
+        return self._photovoltaic_renewable_energy
+
+    @photovoltaic_renewable_energy.setter
+    def photovoltaic_renewable_energy(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._photovoltaic_renewable_energy = value
+
+    @property
+    def onsite_utilization_factor(self) -> float:
+        return self._onsite_utilization_factor
+
+    @onsite_utilization_factor.setter
+    def onsite_utilization_factor(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._onsite_utilization_factor = value
+
+    @property
+    def auxiliary_energy(self) -> float:
+        return self._auxiliary_energy
+
+    @auxiliary_energy.setter
+    def auxiliary_energy(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._auxiliary_energy = value
+
+    @property
+    def auxiliary_energy_DHW(self) -> float:
+        return self._auxiliary_energy_DHW
+
+    @auxiliary_energy_DHW.setter
+    def auxiliary_energy_DHW(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._auxiliary_energy_DHW = value
+
+    @property
+    def in_conditioned_space(self) -> bool:
+        return self._in_conditioned_space
+
+    @in_conditioned_space.setter
+    def in_conditioned_space(self, value: Optional[bool]) -> None:
+        if value is not None:
+            self._in_conditioned_space = value
 
     def __add__(self, other: PhxDevicePhotovoltaicParams) -> PhxDevicePhotovoltaicParams:
         return PhxDevicePhotovoltaicParams(
-            location_type=self.location_type,
-            onsite_utilization_type=self.onsite_utilization_type,
-            utilization_type=self.utilization_type,
-            array_size=self.array_size + other.array_size,
-            photovoltaic_renewable_energy=self.photovoltaic_renewable_energy
+            _location_type=self.location_type,
+            _onsite_utilization_type=self.onsite_utilization_type,
+            _utilization_type=self.utilization_type,
+            _array_size=self.array_size + other.array_size,
+            _photovoltaic_renewable_energy=self.photovoltaic_renewable_energy
             + other.photovoltaic_renewable_energy,
-            onsite_utilization_factor=(
+            _onsite_utilization_factor=(
                 self.onsite_utilization_factor + other.onsite_utilization_factor
             )
             / 2,
-            auxiliary_energy=self.auxiliary_energy + other.auxiliary_energy,
-            auxiliary_energy_DHW=self.auxiliary_energy_DHW + other.auxiliary_energy_DHW,
+            _auxiliary_energy=self.auxiliary_energy + other.auxiliary_energy,
+            _auxiliary_energy_DHW=self.auxiliary_energy_DHW + other.auxiliary_energy_DHW,
             in_conditioned_space=self.in_conditioned_space,
         )
 
