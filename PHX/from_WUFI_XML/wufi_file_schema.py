@@ -158,10 +158,10 @@ class ClimateLocation(BaseModel):
     dUTC_DB: Optional[float]
 
     Albedo: int
-    GroundReflShort: unit.Percentage
-    GroundReflLong: unit.Percentage
-    GroundEmission: unit.Percentage
-    CloudIndex: unit.Percentage
+    GroundReflShort: unit._Percentage
+    GroundReflLong: unit._Percentage
+    GroundEmission: unit._Percentage
+    CloudIndex: unit._Percentage
     CO2concenration: unit.MG_per_M3
     Unit_CO2concentration: unit.PartsPerMillionByVolume
     PH_ClimateLocation: Optional[PH_ClimateLocation]
@@ -242,7 +242,7 @@ class LoadsLighting(BaseModel):
     WithinThermalEnvelope: bool
     MotionDetector: bool
     FacadeIncludingWindows: bool
-    FractionTreatedFloorArea: unit.Percentage
+    FractionTreatedFloorArea: unit._Percentage
     DeviationFromNorth: unit.AngleDegree
     RoomDepth: unit.M
     RoomWidth: unit.M
@@ -273,14 +273,14 @@ class H_Device(BaseModel):
     ReferenceEnergyDemandNorm: Optional[int]
     EnergyDemandNorm: Optional[unit.kWh]
     EnergyDemandNormUse: Optional[unit.kWh]
-    CEF_CombinedEnergyFactor: Optional[unit.Percentage]
+    CEF_CombinedEnergyFactor: Optional[unit._Percentage]
     Type: int
 
     # -- Cooktops
     CookingWith: Optional[int]
 
     # -- Lighting
-    FractionHightEfficiency: Optional[unit.Percentage]
+    FractionHightEfficiency: Optional[unit._Percentage]
 
     # -- Dishwasher
     CookingWith: Optional[int]
@@ -288,7 +288,7 @@ class H_Device(BaseModel):
     # -- Dryer
     Dryer_Choice: Optional[int]
     GasConsumption: Optional[unit.kWh]
-    EfficiencyFactorGas: Optional[unit.Percentage]
+    EfficiencyFactorGas: Optional[unit._Percentage]
     FieldUtilizationFactorPreselection: Optional[int]
     FieldUtilizationFactor: Optional[unit._Float]
 
@@ -327,7 +327,7 @@ class Component(BaseModel):
     DepthWindowReveal: Optional[unit.M]
     IdentNrSolarProtection: Optional[int]
     IdentNrOverhang: Optional[int]
-    DefaultCorrectionShadingMonth: Optional[unit.Percentage]
+    DefaultCorrectionShadingMonth: Optional[unit._Percentage]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -444,7 +444,7 @@ class PH_Parameters(BaseModel):
     AuxiliaryEnergy: Optional[unit.Watts]
     AuxiliaryEnergyDHW: Optional[unit.Watts]
     AnnualCOP: Optional[unit.kWh_per_kWh]
-    TotalSystemPerformanceRatioHeatGenerator: Optional[unit.Percentage]
+    TotalSystemPerformanceRatioHeatGenerator: Optional[unit._Percentage]
     HPType: Optional[int]
     RatedCOP1: Optional[float]
     RatedCOP2: Optional[float]
@@ -453,7 +453,7 @@ class PH_Parameters(BaseModel):
 
     # -- Ventilation
     Quantity: Optional[int]
-    HumidityRecoveryEfficiency: Optional[unit.Percentage]
+    HumidityRecoveryEfficiency: Optional[unit._Percentage]
     ElectricEfficiency: Optional[unit.Wh_per_M3]
     DefrostRequired: Optional[bool]
     FrostProtection: Optional[bool]
@@ -461,7 +461,7 @@ class PH_Parameters(BaseModel):
     NoSummerBypass: Optional[bool]
 
     # -- HP Water Heater
-    HPWH_EF: Optional[unit.Percentage]
+    HPWH_EF: Optional[unit._Percentage]
 
     # -- Water Storage
     QauntityWS: Optional[int]
@@ -479,12 +479,12 @@ class PH_Parameters(BaseModel):
     SelectionUtilization: Optional[int]
     ArraySizePV: Optional[float]
     PhotovoltaicRenewableEnergy: Optional[unit.kWh]
-    OnsiteUtilization: Optional[unit.Percentage]
+    OnsiteUtilization: Optional[unit._Percentage]
 
     # -- Boilers
     EnergySourceBoilerType: Optional[int]
     CondensingBoiler: Optional[bool]
-    BoilerEfficiency30: Optional[unit.Percentage]
+    BoilerEfficiency30: Optional[unit._Percentage]
     BoilerEfficiencyNominalOutput: Optional[float]
     AverageReturnTemperatureMeasured30Load: Optional[float]
     AverageBoilerTemperatureDesign70_55: Optional[float]
@@ -497,7 +497,7 @@ class PH_Parameters(BaseModel):
 
 
 class DHW_Parameters(BaseModel):
-    CoverageWithinSystem: unit.Percentage
+    CoverageWithinSystem: unit._Percentage
     Unit: float
     Selection: int
 
@@ -505,7 +505,7 @@ class DHW_Parameters(BaseModel):
 
 
 class Heating_Parameters(BaseModel):
-    CoverageWithinSystem: unit.Percentage
+    CoverageWithinSystem: unit._Percentage
     Unit: float
     Selection: int
 
@@ -529,8 +529,8 @@ class Device(BaseModel):
     DHW_Parameters: Optional[DHW_Parameters]
     Heating_Parameters: Optional[Heating_Parameters]
 
-    HeatRecovery: Optional[unit.Percentage]
-    MoistureRecovery: Optional[unit.Percentage]
+    HeatRecovery: Optional[unit._Percentage]
+    MoistureRecovery: Optional[unit._Percentage]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -564,7 +564,7 @@ class InternalGainsAdditionalData(BaseModel):
     QuantityWCs: unit._Int
     RoomCategory: int
     UseDefaultValuesSchool: bool
-    MarginalPerformanceRatioDHW: Optional[unit.Percentage]
+    MarginalPerformanceRatioDHW: Optional[unit._Percentage]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -638,10 +638,10 @@ class Material(BaseModel):
     Name: str
     ThermalConductivity: unit.Watts_per_MK
     BulkDensity: unit.KG_per_M3
-    Porosity: unit.Percentage
+    Porosity: unit._Percentage
     HeatCapacity: unit.Joule_per_KGK
     WaterVaporResistance: unit.WUFI_Vapor_Resistance_Factor
-    ReferenceW: unit.KG_per_M3
+    ReferenceWaterContent: unit.KG_per_M3
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -668,12 +668,12 @@ class WindowType(BaseModel):
     Name: str
     Uw_Detailed: bool
     GlazingFrameDetailed: bool
-    FrameFactor: unit.Percentage
+    FrameFactor: unit._Percentage
     U_Value: unit.Watts_per_M2K
     U_Value_Glazing: unit.Watts_per_M2K
-    MeanEmissivity: unit.Percentage
-    g_Value: unit.Percentage
-    SHGC_Hemispherical: unit.Percentage
+    MeanEmissivity: unit._Percentage
+    g_Value: unit._Percentage
+    SHGC_Hemispherical: unit._Percentage
     U_Value_Frame: unit.Watts_per_M2K
     Frame_Width_Left: unit.M
     Frame_Psi_Left: unit.Watts_per_MK
@@ -724,8 +724,8 @@ class UtilizationPattern(BaseModel):
     EndUtilization: unit.Hour
     AnnualUtilizationDays: unit.Days_per_Year
     IlluminationLevel: unit.Lux
-    RelativeAbsenteeism: unit.Percentage
-    PartUseFactorPeriodForLighting: unit.Percentage
+    RelativeAbsenteeism: unit._Percentage
+    PartUseFactorPeriodForLighting: unit._Percentage
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -791,5 +791,12 @@ class WUFIplusProject(BaseModel):
     Assemblies: List[Assembly]
     Variants: List[Variant]
     # TODO: SolarProtectionTypes
+
+    @validator("UnitSystem", pre=True)
+    def unpack_unit_system(cls, v):
+        """
+        Since the model gets converted to SI units, always set this to 1, no matter what.
+        """
+        return 1
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)

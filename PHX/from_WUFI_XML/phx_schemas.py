@@ -300,7 +300,7 @@ def _PhxMaterial(_data: wufi_xml.Material) -> PhxMaterial:
     phx_obj.porosity = _data.Porosity
     phx_obj.heat_capacity = _data.HeatCapacity
     phx_obj.water_vapor_resistance = _data.WaterVaporResistance
-    phx_obj.reference_water = _data.ReferenceW
+    phx_obj.reference_water = _data.ReferenceWaterContent
     return phx_obj
 
 
@@ -700,9 +700,9 @@ def _PhxSite(_data: wufi_xml.ClimateLocation) -> PhxSite:
 def _PhxClimate(_data: wufi_xml.PH_ClimateLocation) -> PhxClimate:
     def _monthly_values(_in) -> List[float]:
         values = []
-        for i in range(11):
+        for i in range(12):
             try:
-                val = getattr(_in[i], "Item", 0.0)
+                val = round(getattr(_in[i], "Item", 0.0), 2)
             except IndexError:
                 val = 0.0
             values.append(val)
@@ -1166,15 +1166,15 @@ def _PhxExhaustVent_KitchenHood(
     _data: wufi_xml.ExhaustVent,
 ) -> PhxExhaustVentilatorRangeHood:
     phx_obj = PhxExhaustVentilatorRangeHood()
-    phx_obj.params.annual_runtime_minutes = _data.ExhaustVolumeFlowRate
-    phx_obj.params.exhaust_flow_rate_m3h = _data.RunTimePerYear
+    phx_obj.params.annual_runtime_minutes = _data.RunTimePerYear
+    phx_obj.params.exhaust_flow_rate_m3h = _data.ExhaustVolumeFlowRate
     return phx_obj
 
 
 def _PhxExhaustVent_Dryer(_data: wufi_xml.ExhaustVent) -> PhxExhaustVentilatorDryer:
     phx_obj = PhxExhaustVentilatorDryer()
-    phx_obj.params.annual_runtime_minutes = _data.ExhaustVolumeFlowRate
-    phx_obj.params.exhaust_flow_rate_m3h = _data.RunTimePerYear
+    phx_obj.params.annual_runtime_minutes = _data.RunTimePerYear
+    phx_obj.params.exhaust_flow_rate_m3h = _data.ExhaustVolumeFlowRate
     return phx_obj
 
 
@@ -1182,8 +1182,8 @@ def _PhxExhaustVent_UserDefined(
     _data: wufi_xml.ExhaustVent,
 ) -> PhxExhaustVentilatorUserDefined:
     phx_obj = PhxExhaustVentilatorUserDefined()
-    phx_obj.params.annual_runtime_minutes = _data.ExhaustVolumeFlowRate
-    phx_obj.params.exhaust_flow_rate_m3h = _data.RunTimePerYear
+    phx_obj.params.annual_runtime_minutes = _data.RunTimePerYear
+    phx_obj.params.exhaust_flow_rate_m3h = _data.ExhaustVolumeFlowRate
     return phx_obj
 
 

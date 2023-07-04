@@ -17,5 +17,5 @@ def test_project_variants(
         assert var_hbjson.plugin == var_xml.plugin
         assert var_hbjson.phius_cert == var_xml.phius_cert
         assert var_hbjson.site == var_xml.site
-        # assert var_hbjson.building == var_xml.building
-        # assert var_hbjson.mech_systems == var_xml.mech_systems
+        # TODO: assert var_hbjson.building == var_xml.building
+        # TODO: assert var_hbjson.mech_systems == var_xml.mech_systems

@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_d40aa5c2..Face4</Name>
+						<Name>Room_1_6bb248b5..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_d40aa5c2..Face5</Name>
+						<Name>Room_1_6bb248b5..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -582,7 +582,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>790.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -594,7 +594,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>840.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="2">
@@ -606,7 +606,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="3">
@@ -618,7 +618,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>1000.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="4">
@@ -630,7 +630,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>1090.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 			</Layers>
@@ -650,7 +650,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -662,7 +662,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>900.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 			</Layers>
@@ -682,7 +682,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>1460.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -694,7 +694,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="2">
@@ -706,7 +706,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>840.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="3">
@@ -718,7 +718,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>1000.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 				<Layer index="4">
@@ -730,7 +730,7 @@
 						<Porosity>0.95</Porosity>
 						<HeatCapacity>590.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
-						<ReferenceW>0.0</ReferenceW>
+						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 					</Material>
 				</Layer>
 			</Layers>

@@ -13,5 +13,5 @@ def test_default_PhxMaterial(reset_class_counters):
         "<Porosity>0.0</Porosity>",
         "<HeatCapacity>0.0</HeatCapacity>",
         "<WaterVaporResistance>0.0</WaterVaporResistance>",
-        "<ReferenceW>0.0</ReferenceW>",
+        "<ReferenceWaterContent>0.0</ReferenceWaterContent>",
     ]

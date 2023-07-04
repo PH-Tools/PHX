@@ -825,7 +825,7 @@ def _PhxMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
         XML_Node("Porosity", _m.porosity),
         XML_Node("HeatCapacity", _m.heat_capacity),
         XML_Node("WaterVaporResistance", _m.water_vapor_resistance),
-        XML_Node("ReferenceW", _m.reference_water),
+        XML_Node("ReferenceWaterContent", _m.reference_water),
     ]
 
 

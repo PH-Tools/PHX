@@ -14,9 +14,7 @@ from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 
 SOURCE_DIR = pathlib.Path("tests", "_reference_xml")
 SOURCE_FILE_NAMES = [
-    "test_apartment_from_rh.xml",
-    "test_apartment_ip.xml",
-    "test_apartment_si.xml",
+    "Multi_Room_Complete.xml",
 ]
 TARGET_DIR = pathlib.Path("tests", "_regenerated_xml")
 
@@ -42,7 +40,7 @@ for i, xm_source_file_name in enumerate(SOURCE_FILE_NAMES):
     print(f"[green bold]> Converting XML file to PHX Model[/green bold]")
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
-    # # # --- Output the PHX model to a WUFI-XML
+    # # # # --- Output the PHX model to a WUFI-XML
     target_file = TARGET_DIR / xm_source_file_name
     xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
 
