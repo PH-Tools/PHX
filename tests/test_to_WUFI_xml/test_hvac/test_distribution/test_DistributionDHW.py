@@ -46,7 +46,7 @@ def test_DistributionDHW_Class(reset_class_counters):
         "<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>",
         "<DailyRunningHoursCirculation_WR>24</DailyRunningHoursCirculation_WR>",
         "<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>",
-        "<HeatLossCoefficient_WR>None</HeatLossCoefficient_WR>",
+        "<HeatLossCoefficient_WR/>",
         "<LengthIndividualPipes_WR>1.0</LengthIndividualPipes_WR>",
         "<ExteriorPipeDiameter_WR>25.4</ExteriorPipeDiameter_WR>",
     ]

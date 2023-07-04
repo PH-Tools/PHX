@@ -299,8 +299,8 @@ def _PhxMaterial(_data: wufi_xml.Material) -> PhxMaterial:
     phx_obj.density = _data.BulkDensity
     phx_obj.porosity = _data.Porosity
     phx_obj.heat_capacity = _data.HeatCapacity
-    # phx_obj.water_vapor_resistance = float(_data.WaterVaporResistance)
-    # phx_obj.reference_water = float(_data.get("ReferenceW", 0.0))
+    phx_obj.water_vapor_resistance = _data.WaterVaporResistance
+    phx_obj.reference_water = _data.ReferenceW
     return phx_obj
 
 
@@ -489,9 +489,9 @@ def _PhxPolygon(
     # ----------------------------------------------------------------------
     plane = PhxPlane(
         normal_vector=surface_normal,
-        origin=PhxVertix(0, 0, 0),  # temporay value
-        x=PhxVector(0, 0, 0),  # temporay value
-        y=PhxVector(0, 0, 0),  # temporay value
+        origin=PhxVertix(0, 0, 0),  # temp. value
+        x=PhxVector(0, 0, 0),  # temp. value
+        y=PhxVector(0, 0, 0),  # temp. value
     )
     # ----------------------------------------------------------------------
 
@@ -542,10 +542,10 @@ def _PhxComponentAperture(
         phx_obj.window_type_id_num = _data.IdentNrWindowType
         phx_obj.window_type = _window_types[str(phx_obj.window_type_id_num)]
 
-    # phx_obj.install_depth = _data.DepthWindowReveal
-    # phx_obj.default_monthly_shading_correction_factor = (
-    #     _data.DefaultCorrectionShadingMonth
-    # )
+    phx_obj.install_depth = _data.DepthWindowReveal
+    phx_obj.default_monthly_shading_correction_factor = (
+        _data.DefaultCorrectionShadingMonth
+    )
 
     # phx_obj.variant_type_name = str() ?? What is this for?
 
@@ -685,7 +685,7 @@ def _PhxSite(_data: wufi_xml.ClimateLocation) -> PhxSite:
     ph_climate_data = _data.PH_ClimateLocation
     if ph_climate_data:
         phx_obj.location.latitude = ph_climate_data.Latitude
-        phx_obj.location.latitude = ph_climate_data.Longitude
+        phx_obj.location.longitude = ph_climate_data.Longitude
         phx_obj.location.hours_from_UTC = ph_climate_data.dUTC
         phx_obj.location.site_elevation = ph_climate_data.HeightNNBuilding
         phx_obj.location.climate_zone = ph_climate_data.ClimateZone
@@ -863,8 +863,8 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
             new_phx_home_device.identifier, new_phx_home_device
         )
 
-    for i, brige_dict_data in enumerate(_data.ThermalBridges or []):
-        new_phx_tb = as_phx_obj(brige_dict_data, "PhxComponentThermalBridge")
+    for i, bridge_dict_data in enumerate(_data.ThermalBridges or []):
+        new_phx_tb = as_phx_obj(bridge_dict_data, "PhxComponentThermalBridge")
         new_phx_tb.identifier = f"ThermalBridge_{i :03}"
         phx_obj.add_thermal_bridge(new_phx_tb)
 
@@ -1149,7 +1149,7 @@ def _PhxDevice_Photovoltaic(_data: wufi_xml.Device) -> PhxDevicePhotovoltaic:
 
 
 # ----------------------------------------------------------------------
-# -- Exhause Ventilators
+# -- Exhaust Ventilators
 
 
 def _PhxExhaustVent(_data: wufi_xml.ExhaustVent) -> AnyPhxExhaustVent:

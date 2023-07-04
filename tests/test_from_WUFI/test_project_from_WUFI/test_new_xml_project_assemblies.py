@@ -4,12 +4,12 @@ from PHX.model.constructions import PhxConstructionOpaque
 
 
 def test_assembly_types_match(
-    project_from_hbjson: PhxProject,
-    project_from_wufi_xml: PhxProject,
+    create_phx_project_from_hbjson: PhxProject,
+    create_phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Assemblies
-    hbjson_assemblies = project_from_hbjson.assembly_types
-    xml_assemblies = project_from_wufi_xml.assembly_types
+    hbjson_assemblies = create_phx_project_from_hbjson.assembly_types
+    xml_assemblies = create_phx_project_from_wufi_xml.assembly_types
     assert len(hbjson_assemblies) == len(xml_assemblies)
 
     # -- From WUFI uses id-num as the key. while HBJSON uses the display_name
@@ -29,12 +29,12 @@ def _find_matching_assembly(
 
 
 def test_assembly_type_layers_match(
-    project_from_hbjson: PhxProject,
-    project_from_wufi_xml: PhxProject,
+    create_phx_project_from_hbjson: PhxProject,
+    create_phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Assemblies
-    hbjson_assemblies = project_from_hbjson.assembly_types
-    xml_assemblies = project_from_wufi_xml.assembly_types
+    hbjson_assemblies = create_phx_project_from_hbjson.assembly_types
+    xml_assemblies = create_phx_project_from_wufi_xml.assembly_types
 
     for hbjson_type in hbjson_assemblies.values():
         xml_type = _find_matching_assembly(hbjson_type, xml_assemblies.values())
@@ -42,14 +42,14 @@ def test_assembly_type_layers_match(
 
 
 def test_assembly_type_materials_match(
-    project_from_hbjson: PhxProject,
-    project_from_wufi_xml: PhxProject,
+    create_phx_project_from_hbjson: PhxProject,
+    create_phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Assemblies
-    hbjson_assemblies = project_from_hbjson.assembly_types
-    xml_assemblies = project_from_wufi_xml.assembly_types
+    hbjson_assemblies = create_phx_project_from_hbjson.assembly_types
+    xml_assemblies = create_phx_project_from_wufi_xml.assembly_types
 
     for hbjson_type in hbjson_assemblies.values():
         xml_type = _find_matching_assembly(hbjson_type, xml_assemblies.values())
-        for i, layer in enumerate(hbjson_type.layers):
-            assert layer.material == xml_type.layers[i].material
+        for i, hbjson_layer in enumerate(hbjson_type.layers):
+            assert hbjson_layer.material == xml_type.layers[i].material

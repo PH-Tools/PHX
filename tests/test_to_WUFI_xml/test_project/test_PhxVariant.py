@@ -5,11 +5,12 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 def test_default_PhxProject(reset_class_counters):
     v1 = project.PhxVariant()
+    print("remarks=", v1.remarks)
     result = generate_WUFI_XML_from_object(v1, _header="")
     assert xml_string_to_list(result) == [
         "<IdentNr>1</IdentNr>",
         "<Name>unnamed_variant</Name>",
-        "<Remarks></Remarks>",
+        "<Remarks/>",
         "<Graphics_3D>",
         '<Vertices count="0"/>',
         '<Polygons count="0"/>',
@@ -22,7 +23,7 @@ def test_default_PhxProject(reset_class_counters):
         "<Selection>2</Selection>",
         '<Latitude_DB unit="°">40.6</Latitude_DB>',
         '<Longitude_DB unit="°">-73.8</Longitude_DB>',
-        '<HeightNN_DB unit="m">None</HeightNN_DB>',
+        '<HeightNN_DB unit="m"/>',
         "<dUTC_DB>-4</dUTC_DB>",
         '<Albedo choice="User defined">-2</Albedo>',
         '<GroundReflShort unit="-">0.2</GroundReflShort>',
@@ -39,7 +40,7 @@ def test_default_PhxProject(reset_class_counters):
         "<Longitude>-73.8</Longitude>",
         "<HeightNNWeatherStation>3.0</HeightNNWeatherStation>",
         "<dUTC>-4</dUTC>",
-        "<HeightNNBuilding>None</HeightNNBuilding>",
+        "<HeightNNBuilding/>",
         "<ClimateZone>1</ClimateZone>",
         "<GroundThermalConductivity>2.0</GroundThermalConductivity>",
         "<GroundHeatCapacitiy>1000.0</GroundHeatCapacitiy>",
@@ -143,7 +144,7 @@ def test_default_PhxProject(reset_class_counters):
         "<QuantityWCs>1</QuantityWCs>",
         "<RoomCategory>1</RoomCategory>",
         "<UseDefaultValuesSchool>false</UseDefaultValuesSchool>",
-        "<MarginalPerformanceRatioDHW>None</MarginalPerformanceRatioDHW>",
+        "<MarginalPerformanceRatioDHW/>",
         "</InternalGainsAdditionalData>",
         "<MechanicalRoomTemperature>20.0</MechanicalRoomTemperature>",
         "<IndoorTemperature>20.0</IndoorTemperature>",
@@ -184,9 +185,9 @@ def test_default_PhxProject(reset_class_counters):
         "<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>",
         "<DailyRunningHoursCirculation_WR>24</DailyRunningHoursCirculation_WR>",
         "<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>",
-        "<HeatLossCoefficient_WR>None</HeatLossCoefficient_WR>",
+        "<HeatLossCoefficient_WR/>",
         "<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>",
-        "<ExteriorPipeDiameter_WR>None</ExteriorPipeDiameter_WR>",
+        "<ExteriorPipeDiameter_WR/>",
         "</DistributionDHW>",
         "<DistributionCooling/>",
         '<DistributionVentilation count="0"/>',

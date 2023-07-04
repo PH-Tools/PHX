@@ -296,7 +296,7 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
             "IdentNrPolygons",
             [XML_Node("IdentNr", n, "index", i) for i, n in enumerate(_c.polygon_ids)],
         ),
-        XML_Node("DepthWindowReveal", _c.install_depth, "unit", "m"),
+        XML_Node("DepthWindowReveal", _c._install_depth, "unit", "m"),
         XML_Node("IdentNrSolarProtection", _c.id_num_shade),
         XML_Node("IdentNrOverhang", -1),
         XML_Node(

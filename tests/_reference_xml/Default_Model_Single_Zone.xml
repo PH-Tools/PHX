@@ -9,28 +9,28 @@
 		<Year_Construction>0</Year_Construction>
 		<OwnerIsClient>false</OwnerIsClient>
 		<Date_Project></Date_Project>
-		<WhiteBackgroundPictureBuilding>None</WhiteBackgroundPictureBuilding>
-		<Customer_Name></Customer_Name>
-		<Customer_Street></Customer_Street>
-		<Customer_Locality></Customer_Locality>
-		<Customer_PostalCode></Customer_PostalCode>
-		<Customer_Tel></Customer_Tel>
-		<Customer_Email></Customer_Email>
-		<Building_Name></Building_Name>
-		<Building_Street></Building_Street>
-		<Building_Locality></Building_Locality>
-		<Building_PostalCode></Building_PostalCode>
-		<Owner_Name></Owner_Name>
-		<Owner_Street></Owner_Street>
-		<Owner_Locality></Owner_Locality>
-		<Owner_PostalCode></Owner_PostalCode>
-		<Responsible_Name></Responsible_Name>
-		<Responsible_Street></Responsible_Street>
-		<Responsible_Locality></Responsible_Locality>
-		<Responsible_PostalCode></Responsible_PostalCode>
-		<Responsible_Tel></Responsible_Tel>
-		<Responsible_LicenseNr></Responsible_LicenseNr>
-		<Responsible_Email></Responsible_Email>
+		<WhiteBackgroundPictureBuilding/>
+		<Customer_Name/>
+		<Customer_Street/>
+		<Customer_Locality/>
+		<Customer_PostalCode/>
+		<Customer_Tel/>
+		<Customer_Email/>
+		<Building_Name/>
+		<Building_Street/>
+		<Building_Locality/>
+		<Building_PostalCode/>
+		<Owner_Name/>
+		<Owner_Street/>
+		<Owner_Locality/>
+		<Owner_PostalCode/>
+		<Responsible_Name/>
+		<Responsible_Street/>
+		<Responsible_Locality/>
+		<Responsible_PostalCode/>
+		<Responsible_Tel/>
+		<Responsible_LicenseNr/>
+		<Responsible_Email/>
 	</ProjectData>
 	<UtilisationPatternsVentilation count="1">
 		<UtilizationPatternVent index="0">
@@ -65,7 +65,7 @@
 		<Variant index="0">
 			<IdentNr>1</IdentNr>
 			<Name>Unnamed_Bldg_Segment</Name>
-			<Remarks></Remarks>
+			<Remarks/>
 			<Graphics_3D>
 				<Vertices count="8">
 					<Vertix index="0">
@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_1dc91cc0..Face4</Name>
+						<Name>Room_1_d40aa5c2..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_1dc91cc0..Face5</Name>
+						<Name>Room_1_d40aa5c2..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -285,7 +285,7 @@
 				<Selection>2</Selection>
 				<Latitude_DB unit="°">40.6</Latitude_DB>
 				<Longitude_DB unit="°">-73.8</Longitude_DB>
-				<HeightNN_DB unit="m">None</HeightNN_DB>
+				<HeightNN_DB unit="m"/>
 				<dUTC_DB>-4</dUTC_DB>
 				<Albedo choice="User defined">-2</Albedo>
 				<GroundReflShort unit="-">0.2</GroundReflShort>
@@ -302,7 +302,7 @@
 					<Longitude>-73.8</Longitude>
 					<HeightNNWeatherStation>0.0</HeightNNWeatherStation>
 					<dUTC>-4</dUTC>
-					<HeightNNBuilding>None</HeightNNBuilding>
+					<HeightNNBuilding/>
 					<ClimateZone>1</ClimateZone>
 					<GroundThermalConductivity>2</GroundThermalConductivity>
 					<GroundHeatCapacitiy>1000</GroundHeatCapacitiy>
@@ -510,7 +510,7 @@
 							<QuantityWCs>1</QuantityWCs>
 							<RoomCategory>1</RoomCategory>
 							<UseDefaultValuesSchool>false</UseDefaultValuesSchool>
-							<MarginalPerformanceRatioDHW>None</MarginalPerformanceRatioDHW>
+							<MarginalPerformanceRatioDHW/>
 						</InternalGainsAdditionalData>
 						<MechanicalRoomTemperature>20.0</MechanicalRoomTemperature>
 						<IndoorTemperature>20.0</IndoorTemperature>
@@ -551,9 +551,9 @@
 								<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>
 								<DailyRunningHoursCirculation_WR>24</DailyRunningHoursCirculation_WR>
 								<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>
-								<HeatLossCoefficient_WR>None</HeatLossCoefficient_WR>
+								<HeatLossCoefficient_WR/>
 								<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>
-								<ExteriorPipeDiameter_WR>None</ExteriorPipeDiameter_WR>
+								<ExteriorPipeDiameter_WR/>
 							</DistributionDHW>
 							<DistributionCooling/>
 							<DistributionVentilation count="0"/>

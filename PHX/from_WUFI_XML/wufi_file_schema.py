@@ -71,13 +71,13 @@ class PEFactorsUserDef(BaseModel):
         return float(result)
 
 
-class MonthtlyClimateTemp_Item(BaseModel):
+class MonthlyClimateTemp_Item(BaseModel):
     Item: Optional[unit.DegreeC]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
-class MonthtlyClimateRadiation_Item(BaseModel):
+class MonthlyClimateRadiation_Item(BaseModel):
     Item: Optional[unit.kWh_per_M2]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
@@ -104,15 +104,15 @@ class PH_ClimateLocation(BaseModel):
     DepthGroundwater: unit.M
     FlowRateGroundwater: unit.M_per_Day
 
-    TemperatureMonthly: List[Optional[MonthtlyClimateTemp_Item]]
-    DewPointTemperatureMonthly: List[Optional[MonthtlyClimateTemp_Item]]
-    SkyTemperatureMonthly: List[Optional[MonthtlyClimateTemp_Item]]
+    TemperatureMonthly: List[Optional[MonthlyClimateTemp_Item]]
+    DewPointTemperatureMonthly: List[Optional[MonthlyClimateTemp_Item]]
+    SkyTemperatureMonthly: List[Optional[MonthlyClimateTemp_Item]]
 
-    NorthSolarRadiationMonthly: List[Optional[MonthtlyClimateRadiation_Item]]
-    EastSolarRadiationMonthly: List[Optional[MonthtlyClimateRadiation_Item]]
-    SouthSolarRadiationMonthly: List[Optional[MonthtlyClimateRadiation_Item]]
-    WestSolarRadiationMonthly: List[Optional[MonthtlyClimateRadiation_Item]]
-    GlobalSolarRadiationMonthly: List[Optional[MonthtlyClimateRadiation_Item]]
+    NorthSolarRadiationMonthly: List[Optional[MonthlyClimateRadiation_Item]]
+    EastSolarRadiationMonthly: List[Optional[MonthlyClimateRadiation_Item]]
+    SouthSolarRadiationMonthly: List[Optional[MonthlyClimateRadiation_Item]]
+    WestSolarRadiationMonthly: List[Optional[MonthlyClimateRadiation_Item]]
+    GlobalSolarRadiationMonthly: List[Optional[MonthlyClimateRadiation_Item]]
 
     TemperatureHeating1: Optional[unit.DegreeC]
     NorthSolarRadiationHeating1: Optional[unit.Watts_per_M2]
@@ -174,7 +174,7 @@ class ClimateLocation(BaseModel):
 
 
 class Vertix(BaseModel):
-    # Note: Bizarly, even in IP units WUFI XML, the Vertixes are in Meters.
+    # Note: Bizarrely, even in IP units WUFI XML, the Vertices are in Meters.
     IdentNr: int
     X: float
     Y: float
@@ -324,6 +324,10 @@ class Component(BaseModel):
     IdentNrAssembly: Optional[int]
     IdentNrWindowType: Optional[int]
     IdentNrPolygons: List[IdentNrPolygons]
+    DepthWindowReveal: Optional[unit.M]
+    IdentNrSolarProtection: Optional[int]
+    IdentNrOverhang: Optional[int]
+    DefaultCorrectionShadingMonth: Optional[unit.Percentage]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -540,7 +544,7 @@ class System(BaseModel):
     Devices: List[Device]
 
     @validator("ZonesCoverage", pre=True)
-    def unpack_zonecoverage(cls, v):
+    def unpack_zone_coverage(cls, v):
         return v
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
@@ -610,7 +614,7 @@ class Plugin(BaseModel):
 
 class Variant(BaseModel):
     IdentNr: int
-    Name: str
+    Name: Optional[str]
     Remarks: Optional[str]
     PlugIn: Optional[Plugin]
     Graphics_3D: Graphics_3D
@@ -620,7 +624,7 @@ class Variant(BaseModel):
     HVAC: Systems
 
     @validator("HVAC", pre=True)
-    def unpack_havc(cls, v):
+    def unpack_hvac(cls, v):
         return v
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
@@ -636,8 +640,8 @@ class Material(BaseModel):
     BulkDensity: unit.KG_per_M3
     Porosity: unit.Percentage
     HeatCapacity: unit.Joule_per_KGK
-    # TODO WaterVaporResistance
-    # TODOReferenceW: unit.KG_per_M3
+    WaterVaporResistance: unit.WUFI_Vapor_Resistance_Factor
+    ReferenceW: unit.KG_per_M3
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 

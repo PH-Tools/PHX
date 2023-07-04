@@ -317,10 +317,32 @@ class PhxComponentAperture(PhxComponentBase):
         )
         self.window_type_id_num: int = -1
         self.variant_type_name: str = "_unnamed_type_"
-        self.install_depth: float = 0.1016  # m
-        self.default_monthly_shading_correction_factor: float = 0.5
+        self._install_depth: float = 0.1016  # m
+        self._default_monthly_shading_correction_factor: float = 0.5
 
         self.elements: List[PhxApertureElement] = []
+
+    @property
+    def install_depth(self) -> float:
+        """Return the installation depth of the Aperture."""
+        return self._install_depth
+
+    @install_depth.setter
+    def install_depth(self, _depth: Optional[float]) -> None:
+        """Set the installation depth of the Aperture."""
+        if _depth != None:
+            self._install_depth = _depth
+
+    @property
+    def default_monthly_shading_correction_factor(self) -> float:
+        """Return the default monthly shading correction factor."""
+        return self._default_monthly_shading_correction_factor
+
+    @default_monthly_shading_correction_factor.setter
+    def default_monthly_shading_correction_factor(self, _factor: Optional[float]) -> None:
+        """Set the default monthly shading correction factor."""
+        if _factor != None:
+            self._default_monthly_shading_correction_factor = _factor
 
     @property
     def id_num_shade(self) -> int:
@@ -328,7 +350,9 @@ class PhxComponentAperture(PhxComponentBase):
         return self.window_type.id_num_shade
 
     @property
-    def polygons(self) -> List[geometry.PhxPolygonRectangular]:
+    def polygons(
+        self,
+    ) -> List[Union[geometry.PhxPolygonRectangular, geometry.PhxPolygon]]:
         return [e.polygon for e in self.elements if e.polygon]
 
     @property
@@ -375,10 +399,18 @@ class PhxComponentAperture(PhxComponentBase):
             * (PhxComponentAperture): A new Component with attributes merged.
         """
         new_compo = self.__class__(_host=self.host)
+
+        # -- Copy the basic attribute values over
         for attr_name, attr_val in vars(self).items():
             if attr_name.startswith("_"):
                 continue  # Ignore private attributes
             setattr(new_compo, attr_name, attr_val)
+
+        # -- Get the Properties as well
+        new_compo.install_depth = self.install_depth
+        new_compo.default_monthly_shading_correction_factor = (
+            self.default_monthly_shading_correction_factor
+        )
 
         if self.window_type.display_name == other.window_type.display_name:
             new_compo.display_name = self.window_type.display_name

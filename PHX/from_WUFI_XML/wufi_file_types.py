@@ -328,6 +328,9 @@ class Liter(float):
         if not v["value"]:
             return None
 
+        if v["unit_type"] == "-":
+            return float(v["value"])
+
         result = convert(v["value"], v["unit_type"], "L")
         if result is None:
             raise Exception(
@@ -637,3 +640,28 @@ class CardinalDegrees(float):
             return float(v["value"])
         else:
             return float(v)
+
+
+# ------------------------------------------------------------------------------
+# -- Moisture Resistance
+
+
+class WUFI_Vapor_Resistance_Factor(float):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v: Union[str, Dict[str, Any]]):
+        if not isinstance(v, dict):
+            return float(v)
+
+        if not v["value"]:
+            return None
+
+        result = convert(v["value"], v["unit_type"], "WUFI_MEW")
+        if result is None:
+            raise Exception(
+                f"Could not convert: {v['value']} from {v['unit_type']} to WUFI_MEW"
+            )
+        return float(result)

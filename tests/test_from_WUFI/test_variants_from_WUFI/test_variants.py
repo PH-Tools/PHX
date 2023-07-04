@@ -2,12 +2,12 @@ from PHX.model.project import PhxProject
 
 
 def test_project_variants(
-    project_from_hbjson: PhxProject,
-    project_from_wufi_xml: PhxProject,
+    create_phx_project_from_hbjson: PhxProject,
+    create_phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Project Data
-    variants_hbjson = project_from_hbjson.variants
-    variants_xml = project_from_wufi_xml.variants
+    variants_hbjson = create_phx_project_from_hbjson.variants
+    variants_xml = create_phx_project_from_wufi_xml.variants
 
     assert len(variants_hbjson) == len(variants_xml)
 

@@ -4,12 +4,12 @@ from PHX.model.constructions import PhxConstructionWindow
 
 
 def test_project_data(
-    project_from_hbjson: PhxProject,
-    project_from_wufi_xml: PhxProject,
+    create_phx_project_from_hbjson: PhxProject,
+    create_phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Project Data
-    hbjson_windows = project_from_hbjson.window_types
-    xml_windwows = project_from_wufi_xml.window_types
+    hbjson_windows = create_phx_project_from_hbjson.window_types
+    xml_windwows = create_phx_project_from_wufi_xml.window_types
 
     # -- Check the two
     assert len(hbjson_windows) == len(xml_windwows)
@@ -25,12 +25,12 @@ def _find_matching_window(
 
 
 def test_window_type_attributes_match(
-    project_from_hbjson: PhxProject,
-    project_from_wufi_xml: PhxProject,
+    create_phx_project_from_hbjson: PhxProject,
+    create_phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Project Data
-    hbjson_windows = project_from_hbjson.window_types
-    xml_windows = project_from_wufi_xml.window_types
+    hbjson_windows = create_phx_project_from_hbjson.window_types
+    xml_windows = create_phx_project_from_wufi_xml.window_types
 
     assert len(hbjson_windows) == len(xml_windows)
 
@@ -47,12 +47,12 @@ def test_window_type_attributes_match(
 
 
 def test_window_FrameElememt_attributes_match(
-    project_from_hbjson: PhxProject,
-    project_from_wufi_xml: PhxProject,
+    create_phx_project_from_hbjson: PhxProject,
+    create_phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Project Data
-    hbjson_windows = project_from_hbjson.window_types
-    xml_windows = project_from_wufi_xml.window_types
+    hbjson_windows = create_phx_project_from_hbjson.window_types
+    xml_windows = create_phx_project_from_wufi_xml.window_types
 
     for hbjson_type in hbjson_windows.values():
         xml_type = _find_matching_window(hbjson_type, xml_windows.values())

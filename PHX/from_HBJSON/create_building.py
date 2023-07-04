@@ -166,7 +166,7 @@ def create_component_from_hb_aperture(
     phx_ap.window_type = _window_type_dict[hb_ap_const.identifier]
     phx_ap.window_type_id_num = hb_ap_const_prop_ph.id_num
     phx_ap.variant_type_name = hb_ap_prop_ph.variant_type
-    phx_ap.install_depth = hb_ap_prop_ph.install_depth
+    phx_ap._install_depth = hb_ap_prop_ph.install_depth
     monthly_fac = getattr(hb_ap_prop_ph, "default_monthly_shading_correction_factor", 1.0)
     phx_ap.default_monthly_shading_correction_factor = monthly_fac
 

@@ -34,7 +34,7 @@ class PhxVariant:
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
     name: Optional[str] = "unnamed_variant"
-    remarks: Optional[str] = ""
+    remarks: Optional[str] = None
     plugin: Optional[WufiPlugin] = field(default_factory=WufiPlugin)
     building: PhxBuilding = field(default_factory=PhxBuilding)
     phius_cert: PhxPhiusCertification = field(default_factory=PhxPhiusCertification)
@@ -93,13 +93,13 @@ class PhxVariant:
 
 @dataclass
 class ProjectData_Agent:
-    name: Optional[str] = ""
-    street: Optional[str] = ""
-    city: Optional[str] = ""
-    post_code: Optional[str] = ""
-    telephone: Optional[str] = ""
-    email: Optional[str] = ""
-    license_number: Optional[str] = ""
+    name: Optional[str] = None
+    street: Optional[str] = None
+    city: Optional[str] = None
+    post_code: Optional[str] = None
+    telephone: Optional[str] = None
+    email: Optional[str] = None
+    license_number: Optional[str] = None
 
 
 @dataclass

@@ -8,9 +8,8 @@ from xml.dom.minidom import Document, Element
 from PHX.to_WUFI_XML import xml_writables, xml_converter
 
 
-def _xml_str(_: Union[str, bool]) -> str:
+def _xml_str(_: Union[str, bool, float]) -> str:
     """Util: Handle converting Boolean values to xml text format properly"""
-
     if isinstance(_, bool):
         if _:
             return "true"
@@ -34,7 +33,7 @@ def add_node_attributes(_data: xml_writables.xml_writable, _element: Element) ->
 
 
 def _add_text_node(
-    _doc: Document, _parent_node: Element, _data: xml_writables.xml_writable
+    _doc: Document, _parent_node: Element, _data: xml_writables.XML_Node
 ) -> None:
     """Adds a basic text-node ie: "<node_name>node_value</node_name>" to the XML Parent Node.
 
@@ -45,14 +44,15 @@ def _add_text_node(
         * _data (xml_writables.xml_writable): The new XML_writable object to add to the 'parent' node.
     """
 
-    # -- 1) Create the new text-node
-    new_text_node = _doc.createTextNode(_xml_str(_data.node_value))
-
-    # -- 2) Create a new Element
+    # -- 1) Create a new Element
     new_element = _doc.createElementNS(None, _xml_str(_data.node_name))
 
-    # -- 3) Add the new text-node to the new Element
-    new_element.appendChild(new_text_node)
+    if _data.node_value != None:
+        # -- 2) Create the new text-node
+        new_text_node = _doc.createTextNode(_xml_str(_data.node_value))
+
+        # -- 3) Add the new text-node to the new Element
+        new_element.appendChild(new_text_node)
 
     # ---4) Add the Optional Node Attributes
     add_node_attributes(_data, new_element)
@@ -108,7 +108,7 @@ def add_children(
             add_children(_doc, new_parent_node, each_item)
 
     else:
-        # -- Must be aBasic Node, so just write out the value
+        # -- Must be a Basic Node, so just write out the value
         _add_text_node(_doc, _parent_node, _item)
 
 
@@ -125,7 +125,7 @@ def generate_WUFI_XML_from_object(
         * _header (str): Optional header for the XML doc. Default ="WUFIplusProject"
 
         * _schema_name (str): Optional schema name for lookup. If not provided, will
-            try and use the name of the object preceded by an underscore. 
+            try and use the name of the object preceded by an underscore.
             ie: "PhxZone" --> "_PhxZone", etc..
 
     Returns:
