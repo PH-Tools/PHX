@@ -324,6 +324,8 @@ class Component(BaseModel):
     IdentNrAssembly: Optional[int]
     IdentNrWindowType: Optional[int]
     IdentNrPolygons: List[IdentNrPolygons]
+
+    # Window-Specific Attributes
     DepthWindowReveal: Optional[unit.M]
     IdentNrSolarProtection: Optional[int]
     IdentNrOverhang: Optional[int]
@@ -675,22 +677,35 @@ class WindowType(BaseModel):
     g_Value: unit._Percentage
     SHGC_Hemispherical: unit._Percentage
     U_Value_Frame: unit.Watts_per_M2K
+
     Frame_Width_Left: unit.M
     Frame_Psi_Left: unit.Watts_per_MK
     Frame_U_Left: unit.Watts_per_M2K
     Glazing_Psi_Left: unit.Watts_per_MK
+
     Frame_Width_Right: unit.M
     Frame_Psi_Right: unit.Watts_per_MK
     Frame_U_Right: unit.Watts_per_M2K
     Glazing_Psi_Right: unit.Watts_per_MK
+
     Frame_Width_Top: unit.M
     Frame_Psi_Top: unit.Watts_per_MK
     Frame_U_Top: unit.Watts_per_M2K
     Glazing_Psi_Top: unit.Watts_per_MK
+
     Frame_Width_Bottom: unit.M
     Frame_Psi_Bottom: unit.Watts_per_MK
     Frame_U_Bottom: unit.Watts_per_M2K
     Glazing_Psi_Bottom: unit.Watts_per_MK
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class SolarProtectionType(BaseModel):
+    IdentNr: int
+    Name: str
+    OperationMode: int
+    MaxRedFactorRadiation: Optional[unit._Percentage]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -790,7 +805,7 @@ class WUFIplusProject(BaseModel):
     WindowTypes: List[WindowType]
     Assemblies: List[Assembly]
     Variants: List[Variant]
-    # TODO: SolarProtectionTypes
+    SolarProtectionTypes: Optional[List[SolarProtectionType]]
 
     @validator("UnitSystem", pre=True)
     def unpack_unit_system(cls, v):

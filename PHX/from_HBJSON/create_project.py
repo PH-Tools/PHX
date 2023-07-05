@@ -132,7 +132,13 @@ def convert_hb_model_to_PhxProject(
 
         new_variant = cleanup.weld_vertices(new_variant)
 
-        create_shades.add_hb_model_shades_to_variant(new_variant, _hb_model)
+        create_shades.add_hb_model_shades_to_variant(
+            new_variant,
+            _hb_model,
+            _merge_faces=_merge_faces,
+            _tolerance=_hb_model.tolerance,
+            _angle_tolerance_degrees=_hb_model.angle_tolerance,
+        )
 
         phx_project.add_new_variant(new_variant)
 

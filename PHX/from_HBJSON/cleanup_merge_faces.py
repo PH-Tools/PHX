@@ -6,9 +6,10 @@
 from copy import copy
 from collections import defaultdict
 import math
-from typing import List, Sequence, Tuple
+from typing import List, Sequence, Tuple, Union, TypeVar
 
 from honeybee.face import Face
+from honeybee.shade import Shade
 from honeybee.aperture import Aperture
 from ladybug_geometry.geometry2d.pointvector import Vector2D
 from ladybug_geometry.geometry2d.polygon import Polygon2D
@@ -19,7 +20,9 @@ from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
 
 # -----------------------------------------------------------------------------
 # -- Geometry Functions
-def cross_product(a: Sequence[float], b: Sequence[float]) -> Sequence[float]:
+def cross_product(
+    a: Union[Sequence[float], Vector3D], b: Union[Sequence[float], Vector3D]
+) -> Sequence[float]:
     return [
         a[1] * b[2] - a[2] * b[1],
         a[2] * b[0] - a[0] * b[2],
@@ -27,15 +30,17 @@ def cross_product(a: Sequence[float], b: Sequence[float]) -> Sequence[float]:
     ]
 
 
-def dot_product(a: Sequence[float], b: Sequence[float]) -> float:
+def dot_product(
+    a: Union[Sequence[float], Vector3D], b: Union[Sequence[float], Vector3D]
+) -> float:
     return sum([a[i] * b[i] for i in range(len(a))])
 
 
-def magnitude(a: Sequence[float]) -> float:
+def magnitude(a: Union[Sequence[float], Vector3D]) -> float:
     return sum([a[i] ** 2 for i in range(len(a))]) ** 0.5
 
 
-def normalize(a: Sequence[float]) -> List[float]:
+def normalize(a: Union[Sequence[float], Vector3D]) -> List[float]:
     mag = magnitude(a)
     return [a[i] / mag for i in range(len(a))]
 
@@ -71,18 +76,21 @@ def angle_between_planes(plane1, plane2, _tolerance):
 # -----------------------------------------------------------------------------
 # Sorting
 
+TFaceOrShade = TypeVar("TFaceOrShade", Face, Shade)
 
-def _hb_face_type_unique_key(_hb_face: Face) -> str:
+
+def _hb_face_type_unique_key(_hb_face: TFaceOrShade) -> str:
     """Return a unique key for the HB-Face's type."""
 
-    face_type = str(_hb_face.type)
-    face_bc = str(_hb_face.boundary_condition)
-    const_name = _hb_face.properties.energy.construction.display_name
+    face_type = str(getattr(_hb_face, "type", "shade"))
+    face_bc = str(getattr(_hb_face, "boundary_condition", "shade"))
+    hb_prop_e = _hb_face.properties.energy  # type: ignore
+    const_name = hb_prop_e.construction.display_name
 
     return "{}_{}_{}".format(face_type, face_bc, const_name)
 
 
-def sort_faces_by_type(_faces: List[Face]) -> List[List[Face]]:
+def sort_hb_faces_by_type(_faces: List[TFaceOrShade]) -> List[List[TFaceOrShade]]:
     """Group HB-Faces by their type."""
 
     d = defaultdict(list)
@@ -93,15 +101,15 @@ def sort_faces_by_type(_faces: List[Face]) -> List[List[Face]]:
 
 
 def sort_faces_by_co_planar(
-    _faces: List[Face], _tolerance: float, _angle_tolerance_radians: float
-) -> List[List[Face]]:
+    _faces: List[TFaceOrShade], _tolerance: float, _angle_tolerance_radians: float
+) -> List[List[TFaceOrShade]]:
     """Group HB-Faces with their co-planar neighbors.
     Args:
-        _faces: (List[Face]) A list of HB-Faces to sort.
+        _faces: (List[Face | Shade]) A list of HB-Faces to sort.
         _tolerance: (Model units) The tolerance value for co-planarity test, in model units.
         _angle_tolerance: (Radians) The tolerance for co-planarity, in radians.
     Returns:
-        (List[List[Face]]) A list of lists of HB-Faces that are co-planar.
+        (List[List[Face | Shade]]) A list of lists of HB-Faces that are co-planar.
     """
 
     groups = {}
@@ -122,7 +130,7 @@ def are_coincident_points(_pt1: Point3D, _pt2: Point3D, _tolerance: float) -> bo
     return _pt1.distance_to_point(_pt2) < _tolerance
 
 
-def are_touching(_face_2: Face, _face_1: Face, _tolerance: float):
+def are_touching(_face_2: TFaceOrShade, _face_1: TFaceOrShade, _tolerance: float):
     """Return True if the faces are 'touching' one another within the tolerance."""
 
     for v in _face_1.vertices:
@@ -134,12 +142,12 @@ def are_touching(_face_2: Face, _face_1: Face, _tolerance: float):
 
 
 def find_connected_components(
-    _hb_faces: List[Face], _tolerance: float
-) -> List[List[Face]]:
+    _hb_faces: List[TFaceOrShade], _tolerance: float
+) -> List[List[TFaceOrShade]]:
     """Finds connected components of touching faces in a list of Honeybee faces.
 
     Args:
-        _hb_faces: A list of Honeybee faces to search for connected components.
+        _hb_faces List[Face | Shade]: A list of Honeybee face or shades to search for connected components.
         _tolerance: A tolerance value for determining whether two faces are touching.
 
     Returns:
@@ -153,7 +161,7 @@ def find_connected_components(
     components = []
 
     def depth_first_search(node, component):
-        # type: (Face, List[Face]) -> None
+        # type: (TFaceOrShade, List[TFaceOrShade]) -> None
         """Define a recursive function that takes a starting face node
         and a list component to store the connected component.
         The function adds the starting face to the visited set and the component list,
@@ -183,20 +191,20 @@ def find_connected_components(
     return components
 
 
-def sort_faces(
-    _hb_faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float
-) -> List[List[Face]]:
+def sort_hb_faces(
+    _hb_faces: List[TFaceOrShade], _tolerance: float, _angle_tolerance_degrees: float
+) -> List[List[TFaceOrShade]]:
     """Sort HB-Faces into groups of similar, planar, connected faces.
 
     Args:
-        _hb_faces: (List[Face]) A list of HB-Faces to sort.
+        _hb_faces: (List[Face | Shade]) A list of HB-Faces to sort.
         _tolerance: (Model units) The tolerance value for co-planarity test, in model units.
         _angle_tolerance_degrees: (Degrees) The tolerance for co-planarity, in degrees.
     Returns:
-        (List[List[Face]]) A list of lists of HB-Faces that are similar, planar, and connected.
+        (List[List[Face | Shade]]) A list of lists of HB-Faces that are similar, planar, and connected.
     """
 
-    face_groups_by_type = sort_faces_by_type(_hb_faces)
+    face_groups_by_type = sort_hb_faces_by_type(_hb_faces)
     angle_tolerance_radians = math.radians(_angle_tolerance_degrees)
 
     face_groups_coplanar = []
@@ -288,7 +296,25 @@ def _create_new_HB_Face(_face3D: Face3D, _ref_face: Face) -> Face:
     return new_face
 
 
-def _create_new_Face3D(_poly2D: Polygon2D, _base_plane: Plane, _ref_face: Face) -> Face3D:
+def _create_new_HB_Shade(_face3D: Face3D, _ref_face: Shade) -> Shade:
+    """Create a new HB-Shade using a Face3D and a reference HB-Shade."""
+    new_face = Shade(
+        identifier=_ref_face.identifier,
+        geometry=_face3D,
+        is_detached=True,
+    )
+    new_face.display_name = _ref_face.display_name
+    new_face._user_data = (
+        None if _ref_face.user_data is None else _ref_face.user_data.copy()
+    )
+    new_face._properties._duplicate_extension_attr(_ref_face._properties)
+
+    return new_face
+
+
+def _create_new_Face3D(
+    _poly2D: Polygon2D, _base_plane: Plane, _ref_face: TFaceOrShade
+) -> Face3D:
     """Return a new Face3D based on a Polygon2D and a reference HB-Face."""
     return Face3D(
         boundary=tuple(_base_plane.xy_to_xyz(v) for v in _poly2D.vertices),
@@ -327,6 +353,44 @@ def find_parent_and_child_polygons(
     return parent_polygon, child_polygons
 
 
+def merge_hb_face_polygons(
+    _faces: List[TFaceOrShade], _tolerance: float, _angle_tolerance_degrees: float
+) -> Tuple[List[Polygon2D], Plane, TFaceOrShade]:
+    # -------------------------------------------------------------------------
+    # -- This will be the reference face for everything else to match
+    reference_face: TFaceOrShade = _faces.pop(0).duplicate()  # type: ignore
+    reference_plane: Plane = copy(reference_face.geometry.plane)
+    polygons_in_ref_space: List[Polygon2D] = []
+    polygons_in_ref_space.append(reference_face.geometry.polygon2d)
+
+    # -------------------------------------------------------------------------
+    # -- Get all the Polygon2Ds in the same reference space
+    poly2ds = [f.geometry.polygon2d for f in _faces]
+    planes = (f.geometry.plane for f in _faces)
+
+    if len(poly2ds) > 100:
+        print(
+            f"Merging together {len(poly2ds)} polygons for '{reference_face.display_name}'."
+        )
+        print("Consider reducing the complexity of the geometry.")
+
+    for poly2d_plane, poly2d in zip(planes, poly2ds):
+        polygons_in_ref_space.append(
+            _get_polygon2d_in_reference_space(
+                poly2d, poly2d_plane, reference_plane, _tolerance
+            )
+        )
+
+    # -------------------------------------------------------------------------
+    # -- Try and merge all the new Polygon2Ds together.
+    merged_polygons = Polygon2D.boolean_union_all(polygons_in_ref_space, _tolerance)
+
+    if len(poly2ds) > 100:
+        print(f"merge_hb_face_polygons resulted in: {len(merged_polygons)} faces.")
+
+    return (merged_polygons, reference_plane, reference_face)
+
+
 def merge_hb_faces(
     _faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float
 ):
@@ -339,44 +403,24 @@ def merge_hb_faces(
         return _faces
 
     # -------------------------------------------------------------------------
-    # -- Before anything else, preserve all the Apertures for adding back in later
+    # -- Before anything else, preserve any the Apertures for adding back in later
     apertures = []
     for f in _faces:
-        apertures.extend([ap.duplicate() for ap in f.apertures])
+        apertures.extend([ap.duplicate() for ap in getattr(f, "apertures", [])])
 
     # -------------------------------------------------------------------------
-    # -- This will be the reference face for everything else to match
-    reference_face = _faces.pop(0).duplicate()  # type: Face # type: ignore
-    reference_plane = copy(reference_face.geometry.plane)
-    polygons_in_ref_space = [
-        reference_face.geometry.polygon2d,
-    ]
-
-    # -------------------------------------------------------------------------
-    # -- Get all the Polygon2Ds in the same reference space
-    poly2ds = (f.geometry.polygon2d for f in _faces)
-    planes = (f.geometry.plane for f in _faces)
-    for poly2d_plane, poly2d in zip(planes, poly2ds):
-        polygons_in_ref_space.append(
-            _get_polygon2d_in_reference_space(
-                poly2d, poly2d_plane, reference_plane, _tolerance
-            )
-        )
-
-    # -------------------------------------------------------------------------
-    # -- Try and merge all the new Polygon2Ds together.
-    merged_polygons = Polygon2D.boolean_union_all(polygons_in_ref_space, _tolerance)
+    # -- Merge the Polygons togther
+    merged_polygons, ref_plane, ref_face = merge_hb_face_polygons(
+        _faces, _tolerance, _angle_tolerance_degrees
+    )
 
     # -------------------------------------------------------------------------
     # -- Create new Face3D, and HB-Faces from the Polygon2Ds
     faces = []
     if len(merged_polygons) == 1:
         # -- Create new faces for the merged Polygon2Ds
-        face3ds = [
-            _create_new_Face3D(p, reference_plane, reference_face)
-            for p in merged_polygons
-        ]
-        faces = [_create_new_HB_Face(f3d, reference_face) for f3d in face3ds]
+        face3ds = (_create_new_Face3D(p, ref_plane, ref_face) for p in merged_polygons)
+        faces = [_create_new_HB_Face(f3d, ref_face) for f3d in face3ds]
     elif len(merged_polygons) > 1:
         # -- It may mean that there are 'holes' in a surface? So try and find
         # -- the parent and any child surfaces.
@@ -386,18 +430,18 @@ def merge_hb_faces(
         # -- Check the results
         if len(parent_polygon) != 1:
             # -- Something went wrong, give up.
-            _faces.append(reference_face)
+            _faces.append(ref_face)
             return _faces
 
         # -- If only 1 parent, lets make some Face3Ds and Faces
         parent_face_3d = [
-            _create_new_Face3D(p, reference_plane, reference_face) for p in parent_polygon
+            _create_new_Face3D(p, ref_plane, ref_face) for p in parent_polygon
         ]
         child_face_3ds = [
-            _create_new_Face3D(p, reference_plane, reference_face) for p in child_polygons
+            _create_new_Face3D(p, ref_plane, ref_face) for p in child_polygons
         ]
         face_3ds = [Face3D.from_punched_geometry(parent_face_3d[0], child_face_3ds)]
-        faces = [_create_new_HB_Face(f3d, reference_face) for f3d in face_3ds]
+        faces = [_create_new_HB_Face(f3d, ref_face) for f3d in face_3ds]
 
     # -------------------------------------------------------------------------
     # -- Add the apertures back in
@@ -407,3 +451,51 @@ def merge_hb_faces(
         faces_with_apertures_.append(_face)
 
     return faces_with_apertures_
+
+
+def merge_hb_shades(
+    _faces: List[Shade], _tolerance: float, _angle_tolerance_degrees: float
+) -> List[Shade]:
+    """Merge a group of HB-Shades into the fewest number of shades possible."""
+    if not _faces:
+        return []
+
+    if len(_faces) == 1:
+        return _faces
+
+    # -------------------------------------------------------------------------
+    # -- Merge the Polygons togther
+    merged_polygons, ref_plane, ref_face = merge_hb_face_polygons(
+        _faces, _tolerance, _angle_tolerance_degrees
+    )
+
+    # -------------------------------------------------------------------------
+    # -- Create new Face3D, and HB-Faces from the Polygon2Ds
+    hb_shades_ = []
+    if len(merged_polygons) == 1:
+        # -- Create new faces for the merged Polygon2Ds
+        face3ds = (_create_new_Face3D(p, ref_plane, ref_face) for p in merged_polygons)
+        hb_shades_ = [_create_new_HB_Shade(f3d, ref_face) for f3d in face3ds]
+    elif len(merged_polygons) > 1:
+        # -- It may mean that there are 'holes' in a surface? So try and find
+        # -- the parent and any child surfaces.
+
+        parent_polygon, child_polygons = find_parent_and_child_polygons(merged_polygons)
+
+        # -- Check the results
+        if len(parent_polygon) != 1:
+            # -- Something went wrong, give up.
+            _faces.append(ref_face)
+            return _faces
+
+        # -- If only 1 parent, lets make some Face3Ds and Faces
+        parent_face_3d = [
+            _create_new_Face3D(p, ref_plane, ref_face) for p in parent_polygon
+        ]
+        child_face_3ds = [
+            _create_new_Face3D(p, ref_plane, ref_face) for p in child_polygons
+        ]
+        face_3ds = Face3D.from_punched_geometry(parent_face_3d[0], child_face_3ds)
+        hb_shades_ = [_create_new_HB_Shade(f3d, ref_face) for f3d in face_3ds]
+
+    return hb_shades_

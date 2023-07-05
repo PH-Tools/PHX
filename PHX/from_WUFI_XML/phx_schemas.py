@@ -868,8 +868,7 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
         new_phx_tb.identifier = f"ThermalBridge_{i :03}"
         phx_obj.add_thermal_bridge(new_phx_tb)
 
-    # TODO:
-    # phx_obj.res_number_dwellings = int(_data.IdentNr)
+    # TODO: phx_obj.res_number_dwellings = int(_data.IdentNr)
 
     return phx_obj
 

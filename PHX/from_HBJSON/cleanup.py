@@ -46,7 +46,7 @@ except ImportError as e:
 
 try:
     from PHX.model import project
-    from PHX.from_HBJSON.cleanup_merge_faces import sort_faces, merge_hb_faces
+    from PHX.from_HBJSON.cleanup_merge_faces import sort_hb_faces, merge_hb_faces
 except ImportError as e:
     raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
 
@@ -419,7 +419,7 @@ def merge_rooms(
     # -------------------------------------------------------------------------
     # -- Try and merge the Faces to simplify the geometry
     if _merge_faces:
-        face_groups = sort_faces(exposed_faces, _tolerance, _angle_tolerance_degrees)
+        face_groups = sort_hb_faces(exposed_faces, _tolerance, _angle_tolerance_degrees)
         merged_faces = []
         for face_group in face_groups:
             merged_faces.extend(
