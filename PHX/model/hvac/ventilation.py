@@ -23,12 +23,66 @@ class PhxDeviceVentilation(_base.PhxMechanicalDevice):
 
 @dataclass
 class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
-    sensible_heat_recovery: float = 0.0
-    latent_heat_recovery: float = 0.0
-    quantity: int = 1
-    electric_efficiency: float = 0.55
-    frost_protection_reqd: bool = True
-    temperature_below_defrost_used: float = -5.0
+    _sensible_heat_recovery: float = 0.0
+    _latent_heat_recovery: float = 0.0
+    _quantity: int = 1
+    _electric_efficiency: float = 0.55
+    _frost_protection_reqd: bool = True
+    _temperature_below_defrost_used: float = -5.0
+
+    @property
+    def sensible_heat_recovery(self) -> float:
+        return self._sensible_heat_recovery
+
+    @sensible_heat_recovery.setter
+    def sensible_heat_recovery(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._sensible_heat_recovery = value
+
+    @property
+    def latent_heat_recovery(self) -> float:
+        return self._latent_heat_recovery
+
+    @latent_heat_recovery.setter
+    def latent_heat_recovery(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._latent_heat_recovery = value
+
+    @property
+    def quantity(self) -> int:
+        return self._quantity
+
+    @quantity.setter
+    def quantity(self, value: Optional[int]) -> None:
+        if value is not None:
+            self._quantity = value
+
+    @property
+    def electric_efficiency(self) -> float:
+        return self._electric_efficiency
+
+    @electric_efficiency.setter
+    def electric_efficiency(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._electric_efficiency = value
+
+    @property
+    def frost_protection_reqd(self) -> bool:
+        return self._frost_protection_reqd
+
+    @frost_protection_reqd.setter
+    def frost_protection_reqd(self, value: Optional[bool]) -> None:
+        if value is not None:
+            self._frost_protection_reqd = value
+
+    @property
+    def temperature_below_defrost_used(self) -> float:
+        return self._temperature_below_defrost_used
+
+    @temperature_below_defrost_used.setter
+    def temperature_below_defrost_used(self, value: Optional[float]) -> None:
+        if value is not None:
+            self._temperature_below_defrost_used = value
 
     def __add__(self, other: PhxDeviceVentilatorParams) -> PhxDeviceVentilatorParams:
         base = super().__add__(other)

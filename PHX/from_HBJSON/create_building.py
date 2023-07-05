@@ -157,14 +157,12 @@ def create_component_from_hb_aperture(
     hb_ap_prop_ph: AperturePhProperties = _hb_aperture.properties.ph  # type: ignore
     hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     hb_ap_const = _get_hb_aperture_construction(hb_ap_prop_energy)
-    hb_ap_const_prop_ph = hb_ap_const.properties.ph
 
     # -- Create new Aperture
     phx_ap = components.PhxComponentAperture(_host=_host_compo)
     phx_ap.display_name = _hb_aperture.display_name
     phx_ap.exposure_interior = hb_room_prop_ph.id_num
     phx_ap.window_type = _window_type_dict[hb_ap_const.identifier]
-    phx_ap.window_type_id_num = hb_ap_const_prop_ph.id_num
     phx_ap.variant_type_name = hb_ap_prop_ph.variant_type
     phx_ap._install_depth = hb_ap_prop_ph.install_depth
     monthly_fac = getattr(hb_ap_prop_ph, "default_monthly_shading_correction_factor", 1.0)

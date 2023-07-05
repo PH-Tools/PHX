@@ -557,6 +557,43 @@ class Systems(BaseModel):
 
 
 # ------------------------------------------------------------------------------
+# -- Foundations
+
+
+class FoundationInterface(BaseModel):
+    # -- Common Attributes
+    Name: str
+    SettingFloorSlabType: int
+    FloorSlabType: int
+
+    # -- Heated Basement
+    FloorSlabArea: Optional[unit.M2]
+    U_ValueBasementSlab: Optional[unit.Watts_per_M2K]
+    FloorSlabPerimeter: Optional[unit.M]
+    U_ValueBasementWall: Optional[unit.Watts_per_M2K]
+    DepthBasementBelowGroundSurface: Optional[unit.M]
+
+    # -- Unheated Basement
+    HeightBasementWallAboveGrade: Optional[unit.M]
+    FloorCeilingArea: Optional[unit.M]
+    U_ValueCeilingToUnheatedCellar: Optional[unit.Watts_per_M2K]
+    U_ValueWallAboveGround: Optional[unit.Watts_per_M2K]
+    BasementVolume: Optional[unit.M3]
+
+    # -- Slab on Grade
+    PositionPerimeterInsulation: Optional[int]
+    PerimeterInsulationWidthDepth: Optional[unit.M]
+    ConductivityPerimeterInsulation: Optional[unit.Watts_per_MK]
+    ThicknessPerimeterInsulation: Optional[unit.M]
+
+    # -- Vented Crawlspace
+    U_ValueCrawlspaceFloor: Optional[unit.Watts_per_M2K]
+    CrawlspaceVentOpenings: Optional[unit.M2]
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+# ------------------------------------------------------------------------------
 # -- Variants
 
 
@@ -583,7 +620,7 @@ class PH_Building(BaseModel):
     CountStories: Optional[int]
     EnvelopeAirtightnessCoefficient: unit.M3_per_Hour_per_M2
     SummerHRVHumidityRecovery: float
-    # # FoundationInterfaces
+    FoundationInterfaces: Optional[List[FoundationInterface]]
     InternalGainsAdditionalData: Optional[InternalGainsAdditionalData]
     MechanicalRoomTemperature: unit.DegreeC
     IndoorTemperature: unit.DegreeC

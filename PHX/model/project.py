@@ -175,6 +175,10 @@ class PhxProject:
         else:
             self.window_types[_window_type.identifier] = _window_type
 
+    def get_window_type(self, _key: str) -> PhxConstructionWindow:
+        """Returns the PhxConstructionWindow with the specified key"""
+        return self.window_types[_key]
+
     def add_new_shade_type(self, _shade_type: PhxWindowShade, _key=None) -> None:
         """Adds a new PhxWindowShade to the Project's collection"""
         if _shade_type.id_num in self.shade_type_id_numbers:

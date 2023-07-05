@@ -315,7 +315,7 @@ class PhxComponentAperture(PhxComponentBase):
         self.window_type: constructions.PhxConstructionWindow = (
             constructions.PhxConstructionWindow()
         )
-        self.window_type_id_num: int = -1
+
         self.variant_type_name: str = "_unnamed_type_"
         self._install_depth: float = 0.1016  # m
         self._default_monthly_shading_correction_factor: float = 0.5
@@ -345,9 +345,13 @@ class PhxComponentAperture(PhxComponentBase):
             self._default_monthly_shading_correction_factor = _factor
 
     @property
-    def id_num_shade(self) -> int:
+    def shade_type_id_num(self) -> int:
         """Return the ID-Number of the Component Construction's Shade-Type, or -1 if None."""
-        return self.window_type.id_num_shade
+        return self.window_type._id_num_shade
+
+    @property
+    def window_type_id_num(self) -> int:
+        return self.window_type.id_num
 
     @property
     def polygons(
@@ -370,7 +374,7 @@ class PhxComponentAperture(PhxComponentBase):
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
         return (
             f"{self.face_type.value}-{self.face_opacity.value}-{self.exposure_interior}-{self.interior_attachment_id}-"
-            f"{self.exposure_exterior.value}-{self.window_type_id_num}-{self.variant_type_name}-{self.default_monthly_shading_correction_factor}"
+            f"{self.exposure_exterior.value}-{self.window_type_id_num}-{self.shade_type_id_num}-{self.variant_type_name}-{self.default_monthly_shading_correction_factor}"
         )
 
     def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:
@@ -385,7 +389,6 @@ class PhxComponentAperture(PhxComponentBase):
     def set_window_type(self, _window_type: constructions.PhxConstructionWindow) -> None:
         """Set the Component's Window Type."""
         self.window_type = _window_type
-        self.window_type_id_num = _window_type.id_num
 
     def __add__(self, other: PhxComponentAperture) -> PhxComponentAperture:
         """Merge with another Component into a single new Component.

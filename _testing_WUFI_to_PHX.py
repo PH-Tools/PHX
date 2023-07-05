@@ -14,7 +14,7 @@ from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 
 SOURCE_DIR = pathlib.Path("tests", "_reference_xml")
 SOURCE_FILE_NAMES = [
-    "Multi_Room_Complete.xml",
+    "test_apartment.xml",
 ]
 TARGET_DIR = pathlib.Path("tests", "_regenerated_xml")
 

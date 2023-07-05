@@ -3,7 +3,7 @@
 
 from dataclasses import asdict
 from rich import print
-from typing import Any, Dict, List, Optional, Union, Tuple, Generator, TypeVar
+from typing import Any, Dict, List, Optional, Tuple
 import sys
 
 from PHX.from_WUFI_XML import wufi_file_schema as wufi_xml
@@ -45,7 +45,20 @@ from PHX.model.enums.phx_site import (
     SiteEnergyFactorSelection,
 )
 from PHX.model.geometry import PhxVertix, PhxPolygon, PhxVector, PhxPlane
+from PHX.model.enums.foundations import (
+    FoundationType,
+    CalculationSetting,
+    PerimeterInsulationPosition,
+)
+from PHX.model.ground import (
+    PhxFoundation,
+    PhxHeatedBasement,
+    PhxUnHeatedBasement,
+    PhxSlabOnGrade,
+    PhxVentedCrawlspace,
+)
 from PHX.model.spaces import PhxSpace
+from PHX.model.shades import PhxWindowShade
 from PHX.model.schedules.ventilation import (
     PhxScheduleVentilation,
     Vent_UtilPeriods,
@@ -147,30 +160,35 @@ def _PhxProject(_model: wufi_xml.WUFIplusProject) -> PhxProject:
 
     # ----------------------------------------------------------------------
     # -- Build all the type collections first
-    for window_type_dict in _model.WindowTypes:
-        new_window = as_phx_obj(window_type_dict, "PhxConstructionWindow")
+    for window_type_data in _model.WindowTypes:
+        new_window = as_phx_obj(window_type_data, "PhxConstructionWindow")
         # -- Be sure to use the identifier as the key so the Component
         # -- lookup works properly. We don't use the name here since
         # -- wufi doesn't enforce unique names like HB does.
         phx_obj.add_new_window_type(new_window, _key=new_window.identifier)
 
-    for opaque_type_dict in _model.Assemblies:
+    for assembly_data in _model.Assemblies:
         new_opaque: PhxConstructionOpaque = as_phx_obj(
-            opaque_type_dict, "PhxConstructionOpaque"
+            assembly_data, "PhxConstructionOpaque"
         )
         # -- Be sure to use the identifier as the key so the Component
         # -- lookup works properly. We don't use the name here since
         # -- wufi doesn't enforce unique names like HB does.
         phx_obj.add_assembly_type(new_opaque, _key=new_opaque.identifier)
 
-    # # TODO: phx_obj.shade_types = as_phx_obj("SolarProtectionTypes", _data)
+    for shade_type_data in _model.SolarProtectionTypes or []:
+        new_shade: PhxWindowShade = as_phx_obj(shade_type_data, "PhxWindowShade")
+        # -- Be sure to use the identifier as the key so the Component
+        # -- lookup works properly. We don't use the name here since
+        # -- wufi doesn't enforce unique names like HB does.
+        phx_obj.add_new_shade_type(new_shade, _key=new_shade.identifier)
 
-    for vent_pattern_dict in _model.UtilisationPatternsVentilation:
-        new_pattern = as_phx_obj(vent_pattern_dict, "PhxScheduleVentilation")
+    for vent_pattern_data in _model.UtilisationPatternsVentilation:
+        new_pattern = as_phx_obj(vent_pattern_data, "PhxScheduleVentilation")
         phx_obj.utilization_patterns_ventilation.add_new_util_pattern(new_pattern)
 
-    for vent_pattern_dict in _model.UtilizationPatternsPH:
-        new_pattern = as_phx_obj(vent_pattern_dict, "PhxScheduleOccupancy")
+    for vent_pattern_data in _model.UtilizationPatternsPH:
+        new_pattern = as_phx_obj(vent_pattern_data, "PhxScheduleOccupancy")
         phx_obj.utilization_patterns_occupancy.add_new_util_pattern(new_pattern)
 
     # ----------------------------------------------------------------------
@@ -301,6 +319,16 @@ def _PhxMaterial(_data: wufi_xml.Material) -> PhxMaterial:
     phx_obj.heat_capacity = _data.HeatCapacity
     phx_obj.water_vapor_resistance = _data.WaterVaporResistance
     phx_obj.reference_water = _data.ReferenceWaterContent
+    return phx_obj
+
+
+def _PhxWindowShade(_data: wufi_xml.SolarProtectionType) -> PhxWindowShade:
+    phx_obj = PhxWindowShade()
+    phx_obj.id_num = _data.IdentNr
+    phx_obj.identifier = str(_data.IdentNr)
+    phx_obj.display_name = _data.Name
+    phx_obj.operation_mode = _data.OperationMode
+    phx_obj.reduction_factor = _data.MaxRedFactorRadiation or 1.0
     return phx_obj
 
 
@@ -539,15 +567,13 @@ def _PhxComponentAperture(
         phx_obj.interior_attachment_id = _data.IdentNr_ComponentInnerSurface
 
     if _data.IdentNrWindowType:
-        phx_obj.window_type_id_num = _data.IdentNrWindowType
-        phx_obj.window_type = _window_types[str(phx_obj.window_type_id_num)]
+        phx_obj.window_type = _window_types[str(_data.IdentNrWindowType)]
+        phx_obj.window_type.id_num_shade = _data.IdentNrSolarProtection
 
     phx_obj.install_depth = _data.DepthWindowReveal
     phx_obj.default_monthly_shading_correction_factor = (
         _data.DefaultCorrectionShadingMonth
     )
-
-    # phx_obj.variant_type_name = str() ?? What is this for?
 
     for i, poly_id in enumerate(_data.IdentNrPolygons):
         polygon = _polygons[poly_id.IdentNr]
@@ -617,6 +643,86 @@ def _PhxComponentThermalBridge(
 
 
 # ----------------------------------------------------------------------
+# -- Foundations
+
+
+def _PhxHeatedBasement(_data: wufi_xml.FoundationInterface) -> PhxHeatedBasement:
+    phx_obj = PhxHeatedBasement()
+    phx_obj.display_name = _data.Name
+    phx_obj.foundation_type_num = _data.FloorSlabType
+
+    phx_obj.floor_slab_area_m2 = _data.FloorSlabArea
+    phx_obj.floor_slab_exposed_perimeter_m = _data.FloorSlabPerimeter
+    phx_obj.floor_slab_u_value = _data.U_ValueBasementSlab
+    phx_obj.slab_depth_below_grade_m = _data.DepthBasementBelowGroundSurface
+    phx_obj.basement_wall_u_value = _data.U_ValueBasementWall
+    return phx_obj
+
+
+def _PhxUnHeatedBasement(_data: wufi_xml.FoundationInterface) -> PhxUnHeatedBasement:
+    phx_obj = PhxUnHeatedBasement()
+    phx_obj.display_name = _data.Name
+    phx_obj.foundation_type_num = _data.FloorSlabType
+
+    phx_obj.slab_depth_below_grade_m = _data.DepthBasementBelowGroundSurface
+    phx_obj.basement_wall_height_above_grade_m = _data.HeightBasementWallAboveGrade
+    phx_obj.floor_ceiling_area_m2 = _data.FloorSlabArea
+    phx_obj.floor_slab_u_value = _data.U_ValueBasementSlab
+    phx_obj.floor_ceiling_area_m2 = _data.FloorCeilingArea
+    phx_obj.ceiling_u_value = _data.U_ValueCeilingToUnheatedCellar
+    phx_obj.basement_wall_uValue_below_grade = _data.U_ValueBasementWall
+    phx_obj.basement_wall_uValue_above_grade = _data.U_ValueWallAboveGround
+    phx_obj.floor_slab_exposed_perimeter_m = _data.FloorSlabPerimeter
+    phx_obj.basement_volume_m3 = _data.BasementVolume
+    return phx_obj
+
+
+def _PhxSlabOnGrade(_data: wufi_xml.FoundationInterface) -> PhxSlabOnGrade:
+    phx_obj = PhxSlabOnGrade()
+    phx_obj.display_name = _data.Name
+    phx_obj.foundation_type_num = _data.FloorSlabType
+
+    phx_obj.floor_slab_area_m2 = _data.FloorSlabArea
+    phx_obj.floor_slab_u_value = _data.U_ValueBasementSlab
+    phx_obj.floor_slab_exposed_perimeter_m = _data.FloorSlabPerimeter
+    phx_obj.perim_insulation_position = _data.PositionPerimeterInsulation
+    phx_obj.perim_insulation_width_or_depth_m = _data.PerimeterInsulationWidthDepth
+    phx_obj.perim_insulation_thickness_m = _data.ThicknessPerimeterInsulation
+    phx_obj.perim_insulation_conductivity = _data.ConductivityPerimeterInsulation
+    return phx_obj
+
+
+def _PhxVentedCrawlspace(_data: wufi_xml.FoundationInterface) -> PhxVentedCrawlspace:
+    phx_obj = PhxVentedCrawlspace()
+    phx_obj.display_name = _data.Name
+    phx_obj.foundation_type_num = _data.FloorSlabType
+
+    phx_obj.crawlspace_floor_slab_area_m2 = _data.FloorCeilingArea
+    phx_obj.ceiling_above_crawlspace_u_value = _data.U_ValueCeilingToUnheatedCellar
+    phx_obj.crawlspace_floor_exposed_perimeter_m = _data.FloorSlabPerimeter
+    phx_obj.crawlspace_wall_height_above_grade_m = _data.HeightBasementWallAboveGrade
+    phx_obj.crawlspace_floor_u_value = _data.U_ValueCrawlspaceFloor
+    phx_obj.crawlspace_vent_opening_are_m2 = _data.CrawlspaceVentOpenings
+    phx_obj.crawlspace_wall_u_value = _data.U_ValueWallAboveGround
+    return phx_obj
+
+
+def _PhxFoundation(_data: wufi_xml.FoundationInterface) -> PhxFoundation:
+    foundation_type_builders = {
+        FoundationType.HEATED_BASEMENT: "PhxHeatedBasement",
+        FoundationType.UNHEATED_BASEMENT: "PhxUnHeatedBasement",
+        FoundationType.SLAB_ON_GRADE: "PhxSlabOnGrade",
+        FoundationType.VENTED_CRAWLSPACE: "PhxVentedCrawlspace",
+    }
+
+    device_type = FoundationType(_data.FloorSlabType)
+    builder_class = foundation_type_builders[device_type]
+
+    # -- Pass the data off to the correct foundation builder class
+    return as_phx_obj(_data, builder_class)
+
+
+# ----------------------------------------------------------------------
 # -- Site & Climate
 
 
@@ -673,7 +779,8 @@ def _PhxPhBuildingData(_data: wufi_xml.PH_Building) -> PhxPhBuildingData:
         _data.SummerHRVHumidityRecovery
     )
 
-    # TODO: phx_obj.foundations =
+    for foundation_data in _data.FoundationInterfaces or []:
+        phx_obj.add_foundation(as_phx_obj(foundation_data, "PhxFoundation"))
 
     return phx_obj
 
@@ -868,8 +975,6 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
         new_phx_tb.identifier = f"ThermalBridge_{i :03}"
         phx_obj.add_thermal_bridge(new_phx_tb)
 
-    # TODO: phx_obj.res_number_dwellings = int(_data.IdentNr)
-
     return phx_obj
 
 
@@ -983,8 +1088,19 @@ def _PhxMechanicalDevice(_data: wufi_xml.Device) -> Any:
 
 def _PhxDevice_Ventilation(_data: wufi_xml.Device) -> PhxDeviceVentilator:
     phx_obj = PhxDeviceVentilator()
+    phx_obj.display_name = _data.Name
+    phx_obj.id_num = _data.IdentNr
+    phx_obj.identifier = str(_data.IdentNr)
 
-    # TODO: params
+    phx_obj.params.sensible_heat_recovery = _data.HeatRecovery
+    phx_obj.params.latent_heat_recovery = _data.MoistureRecovery
+    if _data.PH_Parameters:
+        phx_obj.params.quantity = _data.PH_Parameters.Quantity
+        phx_obj.params.electric_efficiency = _data.PH_Parameters.ElectricEfficiency
+        phx_obj.params.frost_protection_reqd = _data.PH_Parameters.FrostProtection
+        phx_obj.params.temperature_below_defrost_used = (
+            _data.PH_Parameters.TemperatureBelowDefrostUsed
+        )
 
     return phx_obj
 

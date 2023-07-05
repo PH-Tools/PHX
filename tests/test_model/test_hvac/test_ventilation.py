@@ -19,20 +19,20 @@ def test_add_default_PhxVentilatorParams(reset_class_counters):
 
 def test_add_mixed_PhxVentilatorParams(reset_class_counters):
     p1 = ventilation.PhxDeviceVentilatorParams(
-        sensible_heat_recovery=10,
-        latent_heat_recovery=10,
-        quantity=2,
-        electric_efficiency=4,
-        frost_protection_reqd=True,
-        temperature_below_defrost_used=-5.0,
+        _sensible_heat_recovery=10,
+        _latent_heat_recovery=10,
+        _quantity=2,
+        _electric_efficiency=4,
+        _frost_protection_reqd=True,
+        _temperature_below_defrost_used=-5.0,
     )
     p2 = ventilation.PhxDeviceVentilatorParams(
-        sensible_heat_recovery=20,
-        latent_heat_recovery=20,
-        quantity=3,
-        electric_efficiency=2,
-        frost_protection_reqd=False,
-        temperature_below_defrost_used=5.0,
+        _sensible_heat_recovery=20,
+        _latent_heat_recovery=20,
+        _quantity=3,
+        _electric_efficiency=2,
+        _frost_protection_reqd=False,
+        _temperature_below_defrost_used=5.0,
     )
     p3 = p1 + p2
     assert p1 != p2 != p3
@@ -74,21 +74,21 @@ def test_add_default_PhxVentilator(reset_class_counters):
 def test_add_mixed_PhxVentilator(reset_class_counters):
     d1 = ventilation.PhxDeviceVentilator()
     d1.params = ventilation.PhxDeviceVentilatorParams(
-        sensible_heat_recovery=10,
-        latent_heat_recovery=10,
-        quantity=2,
-        electric_efficiency=4,
-        frost_protection_reqd=True,
-        temperature_below_defrost_used=-5.0,
+        _sensible_heat_recovery=10,
+        _latent_heat_recovery=10,
+        _quantity=2,
+        _electric_efficiency=4,
+        _frost_protection_reqd=True,
+        _temperature_below_defrost_used=-5.0,
     )
     d2 = ventilation.PhxDeviceVentilator()
     d2.params = ventilation.PhxDeviceVentilatorParams(
-        sensible_heat_recovery=20,
-        latent_heat_recovery=20,
-        quantity=3,
-        electric_efficiency=2,
-        frost_protection_reqd=False,
-        temperature_below_defrost_used=5.0,
+        _sensible_heat_recovery=20,
+        _latent_heat_recovery=20,
+        _quantity=3,
+        _electric_efficiency=2,
+        _frost_protection_reqd=False,
+        _temperature_below_defrost_used=5.0,
     )
 
     d3 = d1 + d2

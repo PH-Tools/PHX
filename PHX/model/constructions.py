@@ -146,7 +146,7 @@ class PhxConstructionWindow:
     glass_mean_emissivity: float = 0.1
     glass_g_value: float = 0.4
 
-    id_num_shade: int = -1
+    _id_num_shade: int = -1
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
@@ -177,6 +177,15 @@ class PhxConstructionWindow:
         if not _in:
             return
         self._identifier = str(_in)
+
+    @property
+    def id_num_shade(self) -> int:
+        return self._id_num_shade
+
+    @id_num_shade.setter
+    def id_num_shade(self, _in: Optional[int]) -> None:
+        if _in != None:
+            self._id_num_shade = _in
 
     @classmethod
     def from_total_u_value(

@@ -18,6 +18,8 @@ class PhxWindowShade:
     display_name: str = "__unnamed_shade__"
     operation_mode: int = 1  # 1=Reduce overheating
     reduction_factor: float = 1.0
+
+    # -- Extra junk
     external_emissivity: float = 0.8
     absorptivity: float = 0.0
     thermal_resistance_supplement: float = 0.0
@@ -28,7 +30,7 @@ class PhxWindowShade:
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
-    
+
     @property
     def identifier(self) -> str:
         return str(self._identifier)

@@ -297,7 +297,7 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
             [XML_Node("IdentNr", n, "index", i) for i, n in enumerate(_c.polygon_ids)],
         ),
         XML_Node("DepthWindowReveal", _c._install_depth, "unit", "m"),
-        XML_Node("IdentNrSolarProtection", _c.id_num_shade),
+        XML_Node("IdentNrSolarProtection", _c.shade_type_id_num),
         XML_Node("IdentNrOverhang", -1),
         XML_Node(
             "DefaultCorrectionShadingMonth", _c.default_monthly_shading_correction_factor
@@ -495,23 +495,6 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
         foundation_specific_attributes = foundation_schema(_f)
 
     return common_attributes + foundation_specific_attributes
-
-    # -- Settings: Others
-    # XML_Node("BasementVentilationACH", 1),
-
-    # XML_Node("CrawlspaceVentOpenings_Selection", 1),
-    # XML_Node("CrawlspaceVentOpenings", 1),
-    # XML_Node("FloorCeilingArea_Selection", 1),
-    # XML_Node("FloorCeilingArea", 1),
-    # XML_Node("U_ValueCeilingToUnheatedCellar_Selection", 1),
-    # XML_Node("U_ValueCeilingToUnheatedCellar", 1),
-
-    # XML_Node("U_ValueWallAboveGround_Selection", 1),
-    # XML_Node("U_ValueWallAboveGround", 1),
-    # XML_Node("BasementVolume_Selection", 1),
-    # XML_Node("BasementVolume", 1),
-    # XML_Node("U_ValueCrawlspaceFloor_Selection", 1),
-    # XML_Node("U_ValueCrawlspaceFloor", 1),
 
 
 # -- CLIMATE ------------------------------------------------------------------

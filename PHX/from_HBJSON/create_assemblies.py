@@ -297,7 +297,7 @@ def build_phx_window_type_from_HB_WindowConstruction(
     # -- Add Shading to the Window, if any -------------------------------------
     if _shade_const:
         phx_shade = _project.shade_types[_shade_const.shade_material.identifier]
-        phx_window_type.id_num_shade = phx_shade.id_num
+        phx_window_type._id_num_shade = phx_shade.id_num
 
     return phx_window_type
 
