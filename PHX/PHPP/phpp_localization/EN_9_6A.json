@@ -425,17 +425,61 @@
             }
         },
         "defined_ranges": {
-            "treated_floor_area": "N8",
-            "window_area_north": "N9",
-            "window_area_east": "N10",
-            "window_area_south": "N11",
-            "window_area_west": "N12",
-            "window_area_horizontal": "N13",
-            "door_area": "N14",
-            "exposed_wall_area": "N15",
-            "ground_wall_area": "N16",
-            "roof_ceiling_area": "N17",
-            "floor_area": "N18"
+            "treated_floor_area": {
+                "column": "N",
+                "row": 8,
+                "unit": "M2"
+            },
+            "window_area_north": {
+                "column": "N",
+                "row": 9,
+                "unit": "M2"
+            },
+            "window_area_east": {
+                "column": "L",
+                "row": 10,
+                "unit": "M2"
+            },
+            "window_area_south": {
+                "column": "N",
+                "row": 11,
+                "unit": "M2"
+            },
+            "window_area_west": {
+                "column": "N",
+                "row": 12,
+                "unit": "M2"
+            },
+            "window_area_horizontal": {
+                "column": "N",
+                "row": 13,
+                "unit": "M2"
+            },
+            "door_area": {
+                "column": "N",
+                "row": 14,
+                "unit": "M2"
+            },
+            "exposed_wall_area": {
+                "column": "N",
+                "row": 15,
+                "unit": "M2"
+            },
+            "ground_wall_area": {
+                "column": "N",
+                "row": 16,
+                "unit": "M2"
+            },
+            "roof_ceiling_area": {
+                "column": "N",
+                "row": 17,
+                "unit": "M2"
+            },
+            "floor_area": {
+                "column": "N",
+                "row": 18,
+                "unit": "M2"
+            }
         }
     },
     "GROUND": {
@@ -1027,6 +1071,7 @@
     },
     "HEATING_DEMAND": {
         "name": "Heating",
+        "unit": "KWH",
         "col_kWh_year": "O",
         "col_kWh_m2_year": "Q",
         "row_total_losses_transmission": 27,
@@ -1040,8 +1085,9 @@
     },
     "HEATING_PEAK_LOAD": {
         "name": "Heating Load",
-        "col_Watts1": "P",
-        "col_Watts2": "R",
+        "unit": "W",
+        "col_weather_1": "P",
+        "col_weather_2": "R",
         "row_total_losses_transmission": 44,
         "row_total_losses_ventilation": 58,
         "row_total_losses": 63,
@@ -1052,6 +1098,7 @@
     },
     "COOLING_DEMAND": {
         "name": "Cooling",
+        "unit": "KWH",
         "col_kWh_year": "O",
         "col_kWh_m2_year": "Q",
         "row_total_losses_transmission": 28,
@@ -1069,8 +1116,9 @@
     },
     "COOLING_PEAK_LOAD": {
         "name": "Cooling load",
-        "col_Watts1": "P",
-        "col_Watts2": "R",
+        "unit": "W",
+        "col_weather_1": "P",
+        "col_weather_2": "R",
         "row_total_losses_transmission": 33,
         "row_total_losses_ventilation": 41,
         "row_total_gains_solar": 52,
@@ -1320,6 +1368,7 @@
     },
     "PER": {
         "name": "PER",
+        "unit": "KWH",
         "locator_col": "P",
         "columns": {
             "final_energy": "T",
@@ -1390,11 +1439,23 @@
             "address_project_name": "C8"
         },
         "building_envelope": {
-            "address_area_envelope": "C84",
-            "address_area_tfa": "E84"
+            "address_area_envelope": {
+                "column": "C",
+                "row": 84,
+                "unit": "M2"
+            },
+            "address_area_tfa": {
+                "column": "E",
+                "row": 84,
+                "unit": "M2"
+            }
         },
         "ventilation": {
-            "address_vn50": "C297"
+            "vn50": {
+                "column": "C",
+                "row": 297,
+                "unit": "M3"
+            }
         }
     }
 }

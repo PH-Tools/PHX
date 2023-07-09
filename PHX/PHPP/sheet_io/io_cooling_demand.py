@@ -6,6 +6,8 @@
 from __future__ import annotations
 from typing import Dict, Any
 
+from ph_units.unit_type import Unit
+
 from PHX.xl import xl_app
 from PHX.PHPP.phpp_localization import shape_model
 
@@ -17,55 +19,46 @@ class CoolingDemand:
         self.xl = _xl
         self.shape = _shape
 
-    def get_demand_kWh_year(self) -> Dict[str, Any]:
-        """Return a Dict of all the Cooling Energy Demand data (kWh-yr)."""
-        qT = f"{self.shape.col_kWh_year}{self.shape.row_total_losses_transmission}"
-        qV = f"{self.shape.col_kWh_year}{self.shape.row_total_losses_ventilation}"
-        qL = f"{self.shape.col_kWh_year}{self.shape.row_total_losses}"
-        eta = f"{self.shape.col_kWh_year}{self.shape.row_utilization_factor}"
+    def _get_annual_demand(self, _col: str) -> Dict[str, Unit]:
+        shp = self.shape
+        qT = self.xl.get_single_data_item(
+            shp.name, f"{_col}{shp.row_total_losses_transmission}"
+        )
+        qV = self.xl.get_single_data_item(
+            shp.name, f"{_col}{shp.row_total_losses_ventilation}"
+        )
+        qL = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses}")
+        util = self.xl.get_single_data_item(
+            shp.name, f"{_col}{shp.row_utilization_factor}"
+        )
         qVn = f"{self.shape.col_kWh_year}{self.shape.row_useful_losses}"
 
-        qS = f"{self.shape.col_kWh_year}{self.shape.row_total_gains_solar}"
-        qI = f"{self.shape.col_kWh_year}{self.shape.row_total_gains_internal}"
-        qF = f"{self.shape.col_kWh_year}{self.shape.row_total_gains}"
-        qK = f"{self.shape.col_kWh_year}{self.shape.row_annual_sensible_demand}"
-        qDr = f"{self.shape.address_specific_latent_cooling_demand}"
-
-        # -- Latent demand, cus PHPP 9 cooling a mess....
-        tfa = self.xl.get_data(self.shape.name, self.shape.address_tfa)
-        latent_demand_kWh_m2 = self.xl.get_data(self.shape.name, qDr)
-        latent_demand_kWh = latent_demand_kWh_m2 * tfa  # type: ignore
-
-        return {
-            "sensible_cooling_demand": self.xl.get_data(self.shape.name, qK),
-            "latent_cooling_demand": latent_demand_kWh,
-            "losses_transmission": self.xl.get_data(self.shape.name, qT),
-            "losses_ventilation": self.xl.get_data(self.shape.name, qV),
-            "utilization_factor": self.xl.get_data(self.shape.name, eta),
-            "gains_solar": self.xl.get_data(self.shape.name, qS),
-            "gains_internal": self.xl.get_data(self.shape.name, qI),
-        }
-
-    def get_demand_kWh_m2_year(self) -> Dict[str, Any]:
-        """Return a Dict of all the Cooling Energy Demand data (kWh-yr)."""
-        qT = f"{self.shape.col_kWh_m2_year}{self.shape.row_total_losses_transmission}"
-        qV = f"{self.shape.col_kWh_m2_year}{self.shape.row_total_losses_ventilation}"
-        qL = f"{self.shape.col_kWh_m2_year}{self.shape.row_total_losses}"
-        eta = f"{self.shape.col_kWh_year}{self.shape.row_utilization_factor}"
-        qVn = f"{self.shape.col_kWh_m2_year}{self.shape.row_useful_losses}"
-
-        qS = f"{self.shape.col_kWh_m2_year}{self.shape.row_total_gains_solar}"
-        qI = f"{self.shape.col_kWh_m2_year}{self.shape.row_total_gains_internal}"
-        qF = f"{self.shape.col_kWh_m2_year}{self.shape.row_total_gains}"
-        qK = f"{self.shape.col_kWh_m2_year}{self.shape.row_annual_sensible_demand}"
-        qDr = f"{self.shape.address_specific_latent_cooling_demand}"
+        qS = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_solar}")
+        qI = self.xl.get_single_data_item(
+            shp.name, f"{_col}{shp.row_total_gains_internal}"
+        )
+        qF = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains}")
+        qK = self.xl.get_single_data_item(
+            shp.name, f"{_col}{shp.row_annual_sensible_demand}"
+        )
+        qDr = self.xl.get_single_data_item(
+            shp.name, f"{_col}{shp.address_specific_latent_cooling_demand}"
+        )
 
         return {
-            "sensible_cooling_demand": self.xl.get_data(self.shape.name, qK),
-            "latent_cooling_demand": self.xl.get_data(self.shape.name, qDr),
-            "losses_transmission": self.xl.get_data(self.shape.name, qT),
-            "losses_ventilation": self.xl.get_data(self.shape.name, qV),
-            "utilization_factor": self.xl.get_data(self.shape.name, eta),
-            "gains_solar": self.xl.get_data(self.shape.name, qS),
-            "gains_internal": self.xl.get_data(self.shape.name, qI),
+            "sensible_cooling_demand": Unit(float(qK or 0.0), str(shp.unit)),
+            "latent_cooling_demand": Unit(float(qDr or 0.0), str(shp.unit)),
+            "losses_transmission": Unit(float(qT or 0.0), str(shp.unit)),
+            "losses_ventilation": Unit(float(qV or 0.0), str(shp.unit)),
+            "utilization_factor": Unit(float(util or 0.0), str(shp.unit)),
+            "gains_solar": Unit(float(qS or 0.0), str(shp.unit)),
+            "gains_internal": Unit(float(qI or 0.0), str(shp.unit)),
         }
+
+    def get_annual_demand(self) -> Dict[str, Unit]:
+        """Return a Dict of all the Heating Energy Demand data (kWh-yr)."""
+        return self._get_annual_demand(self.shape.col_kWh_year)
+
+    def get_specific_annual_demand(self) -> Dict[str, Unit]:
+        """Return a Dict of all the Specific Heating Energy Demand data (kWh/m2-yr)."""
+        return self._get_annual_demand(self.shape.col_kWh_m2_year)

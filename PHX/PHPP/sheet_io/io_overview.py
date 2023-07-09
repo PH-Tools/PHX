@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from ph_units.unit_type import Unit
+
 from PHX.xl.xl_app import XLConnection
 from PHX.PHPP.phpp_localization import shape_model as shp
 from PHX.PHPP.sheet_io.io_exceptions import PHPPDataMissingException
@@ -69,52 +71,45 @@ class OverviewBasicData:
 
 
 class OverviewVentilation:
-    def __init__(self, _host, _xl: XLConnection, _shape: shp.OverviewVentilation):
+    def __init__(self, _host, _xl: XLConnection, _shape: shp.OverviewVentilation) -> None:
         self.host = _host
         self.xl = _xl
         self.shape = _shape
 
-    def get_vn50(self) -> float:
+    def get_vn50(self) -> Unit:
         """Return the Total Net Interior Volume (Vn50)"""
-        address = self.shape.address_vn50
+        address = self.shape.vn50.xl_range
         val = self.xl.get_single_data_item(self.host.worksheet_name, address)
-        if val:
-            return float(val)
-
-        raise PHPPDataMissingException(self.host.worksheet_name, address)
+        return Unit(float(val or 0.0), str(self.shape.vn50.unit))
 
 
 class OverviewBuildingEnvelope:
     """IO Controller for the PHPP 'Overview' worksheet."""
 
-    def __init__(self, _host, _xl: XLConnection, _shape: shp.OverviewBuildingEnvelope):
+    def __init__(
+        self, _host, _xl: XLConnection, _shape: shp.OverviewBuildingEnvelope
+    ) -> None:
         self.host = _host
         self.xl = _xl
         self.shape = _shape
 
-    def get_area_envelope(self) -> float:
+    def get_area_envelope(self) -> Unit:
         """Return the Total Envelope Area [M2]"""
-        address = self.shape.address_area_envelope
+        address = self.shape.address_area_envelope.xl_range
         val = self.xl.get_single_data_item(self.host.worksheet_name, address)
-        if val:
-            return float(val)
+        return Unit(float(val or 0.0), str(self.shape.address_area_envelope.unit))
 
-        raise PHPPDataMissingException(self.host.worksheet_name, address)
-
-    def get_area_tfa(self) -> float:
+    def get_area_tfa(self) -> Unit:
         """Return the Total TFA [M2]"""
-        address = self.shape.address_area_tfa
+        address = self.shape.address_area_tfa.xl_range
         val = self.xl.get_single_data_item(self.host.worksheet_name, address)
-        if val:
-            return float(val)
-
-        raise PHPPDataMissingException(self.host.worksheet_name, address)
+        return Unit(float(val or 0.0), str(self.shape.address_area_tfa.unit))
 
 
 class Overview:
     """IO Controller for the PHPP 'Overview' worksheet."""
 
-    def __init__(self, _xl: XLConnection, _shape: shp.Overview):
+    def __init__(self, _xl: XLConnection, _shape: shp.Overview) -> None:
         self.xl = _xl
         self.shape = _shape
         self.basic_data = OverviewBasicData(self, _xl, self.shape.basic_data)
@@ -127,16 +122,16 @@ class Overview:
     def worksheet_name(self) -> str:
         return self.shape.name
 
-    def get_area_envelope(self) -> float:
-        """Return the Total Envelope Area [M2]"""
+    def get_area_envelope(self) -> Unit:
+        """Return the Total Envelope Area [M2 | FT2]"""
         return self.building_envelope.get_area_envelope()
 
-    def get_area_tfa(self) -> float:
-        """Return the Total TFA [M2]"""
+    def get_area_tfa(self) -> Unit:
+        """Return the Total TFA [M2 | FT2]"""
         return self.building_envelope.get_area_tfa()
 
-    def get_net_interior_volume(self) -> float:
-        """Return the Total Net Interior Volume (Vn50)"""
+    def get_net_interior_volume(self) -> Unit:
+        """Return the Total Net Interior Volume (Vn50) [M3 | FT3]"""
         return self.ventilation.get_vn50()
 
     def get_number_of_dwellings(self) -> int:

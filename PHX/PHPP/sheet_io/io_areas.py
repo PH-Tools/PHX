@@ -6,6 +6,8 @@
 from __future__ import annotations
 from typing import List, Optional, Dict, Generator, Tuple
 
+from ph_units.unit_type import Unit
+
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset
 from PHX.PHPP.phpp_model import areas_surface, areas_data, areas_thermal_bridges
@@ -372,17 +374,19 @@ class Areas:
                 pass
         return d
 
-    def get_total_net_wall_area(self) -> float:
+    def get_total_net_wall_area(self) -> Unit:
         """Return the total net (apertures punched) wall area from the PHPP Areas worksheet."""
-        v = self.xl.get_data(self.shape.name, self.shape.defined_ranges.exposed_wall_area)
-        return float(v)
+        item = self.shape.defined_ranges.exposed_wall_area
+        value = self.xl.get_single_data_item(f"{item.row}{item.column}", self.shape.name)
+        return Unit(float(value or 0.0), str(item.unit))
 
-    def get_total_net_roof_area(self) -> float:
+    def get_total_net_roof_area(self) -> Unit:
         """Return the total net (apertures punched) Roof area from the PHPP Areas worksheet."""
-        v = self.xl.get_data(self.shape.name, self.shape.defined_ranges.roof_ceiling_area)
-        return float(v)
+        item = self.shape.defined_ranges.roof_ceiling_area
+        value = self.xl.get_single_data_item(f"{item.row}{item.column}", self.shape.name)
+        return Unit(float(value or 0.0), str(item.unit))
 
-    def get_total_vertical_window_area(self) -> float:
+    def get_total_vertical_window_area(self) -> Unit:
         """Return the total window area from the PHPP Areas worksheet.
 
 
@@ -390,26 +394,26 @@ class Areas:
         if the skylights are on sloped roof surfaces. Use the
         io_windows.get_total_window_area() function to get the total window area only.
         """
-        start = self.shape.defined_ranges.window_area_north
-        end = self.shape.defined_ranges.window_area_west
+        unit_type = self.shape.defined_ranges.window_area_north.unit
+        start = self.shape.defined_ranges.window_area_north.xl_range
+        end = self.shape.defined_ranges.window_area_west.xl_range
         _range = f"{start}:{end}"
 
-        data = self.xl.get_data(self.shape.name, _range)
+        xl_data: List[float] = self.xl.get_data(self.shape.name, _range)  # type: ignore
+        unit_data: List[Unit] = [Unit(v, str(unit_type)) for v in xl_data]
 
-        return sum(float(v) for v in data)
+        return sum(unit_data) or Unit(0.0, str(unit_type))
 
-    def get_total_horizontal_window_area(self) -> float:
+    def get_total_horizontal_window_area(self) -> Unit:
         """Return the total skylight area from the PHPP Areas worksheet.
 
         Note: this value includes ONLY flat windows and not all the "skylights",
         if the skylights are on sloped roof surfaces. Use the
         io_windows.get_total_skylight_area() function to get the total skylight area.
         """
-        v = self.xl.get_data(
-            self.shape.name, self.shape.defined_ranges.window_area_horizontal
-        )
-
-        return float(v)
+        item = self.shape.defined_ranges.window_area_horizontal
+        value = self.xl.get_single_data_item(f"{item.row}{item.column}", self.shape.name)
+        return Unit(float(value or 0.0), str(item.unit))
 
     def set_surface_row_construction(
         self, _row_num: int, _phpp_constriction_id: str

@@ -15,6 +15,10 @@ class InputItem(BaseModel):
     row: Optional[int]
     unit: Optional[str]
 
+    @property
+    def xl_range(self) -> str:
+        return f"{self.column}{self.row}"
+
 
 # -----------------------------------------------------------------------------
 
@@ -280,17 +284,17 @@ class AreasSurfaceRows(BaseModel):
 
 
 class AreasDefinedRanges(BaseModel):
-    treated_floor_area: str
-    window_area_north: str
-    window_area_east: str
-    window_area_south: str
-    window_area_west: str
-    window_area_horizontal: str
-    door_area: str
-    exposed_wall_area: str
-    ground_wall_area: str
-    roof_ceiling_area: str
-    floor_area: str
+    treated_floor_area: InputItem
+    window_area_north: InputItem
+    window_area_east: InputItem
+    window_area_south: InputItem
+    window_area_west: InputItem
+    window_area_horizontal: InputItem
+    door_area: InputItem
+    exposed_wall_area: InputItem
+    ground_wall_area: InputItem
+    roof_ceiling_area: InputItem
+    floor_area: InputItem
 
 
 class Areas(BaseModel):
@@ -596,6 +600,7 @@ class AddnlVent(BaseModel):
 
 class HeatingDemand(BaseModel):
     name: str
+    unit: str
     col_kWh_year: str
     col_kWh_m2_year: str
     row_total_losses_transmission: int
@@ -610,8 +615,9 @@ class HeatingDemand(BaseModel):
 
 class HeatingPeakLoad(BaseModel):
     name: str
-    col_Watts1: str
-    col_Watts2: str
+    unit: str
+    col_weather_1: str
+    col_weather_2: str
     row_total_losses_transmission: int
     row_total_losses_ventilation: int
     row_total_losses: int
@@ -626,6 +632,7 @@ class HeatingPeakLoad(BaseModel):
 
 class CoolingDemand(BaseModel):
     name: str
+    unit: str
     col_kWh_year: str
     col_kWh_m2_year: str
     row_total_losses_transmission: int
@@ -644,8 +651,9 @@ class CoolingDemand(BaseModel):
 
 class CoolingPeakLoad(BaseModel):
     name: str
-    col_Watts1: str
-    col_Watts2: str
+    unit: str
+    col_weather_1: str
+    col_weather_2: str
     row_total_losses_transmission: int
     row_total_losses_ventilation: int
     row_total_gains_solar: int
@@ -908,6 +916,7 @@ class PerDataBlock(BaseModel):
 
 class Per(BaseModel):
     name: str
+    unit: str
     locator_col: str
     columns: PerColumns
     addresses: PerAddresses
@@ -965,12 +974,12 @@ class OverviewBasicData(BaseModel):
 
 
 class OverviewBuildingEnvelope(BaseModel):
-    address_area_envelope: str
-    address_area_tfa: str
+    address_area_envelope: InputItem
+    address_area_tfa: InputItem
 
 
 class OverviewVentilation(BaseModel):
-    address_vn50: str
+    vn50: InputItem
 
 
 class Overview(BaseModel):

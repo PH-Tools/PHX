@@ -4,9 +4,10 @@
 """Controller Class for the PHPP PER Worksheet."""
 
 from __future__ import annotations
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 
-from PHX.xl import xl_data
+from ph_units.unit_type import Unit
+
 from PHX.xl.xl_app import XLConnection
 from PHX.PHPP.phpp_localization import shape_model as shp
 from PHX.PHPP.sheet_io.io_exceptions import (
@@ -30,7 +31,7 @@ class BaseBlock:
         self.host = _host
         self.xl = _xl
         self.shape = _shape
-        self._phpp_data: Optional[Dict[str, List[xl_data.xl_range_single_value]]] = None
+        self._phpp_data: Optional[Dict[str, List[Union[str, Unit]]]] = None
         self._block_header_row: Optional[int] = None
         self._block_start_row: Optional[int] = None
         self._block_end_row: Optional[int] = None
@@ -52,8 +53,15 @@ class BaseBlock:
         return self._block_end_row
 
     @property
-    def phpp_data(self) -> Dict[str, List[xl_data.xl_range_single_value]]:
-        """Return all the Block PHPP Data as a Dict of Lists of values."""
+    def phpp_data(self) -> Dict[str, List[Union[str, Unit]]]:
+        """Return all the Block PHPP Data as a Dict of Lists of values.
+
+        -> {
+            'P': ['Electricity (HP compact unit)', 'Electricity (heat pump)', ...],
+            'T': [0.0 (KBTU/FT2), 0.8733713455642654 (KBTU/FT2), ...],
+            'X': [0.0 (KBTU/FT2), 2.27076549846709 (KBTU/FT2), ...],
+            }
+        """
         if not self._phpp_data:
             self._phpp_data = self.get_data()
         return self._phpp_data
@@ -164,21 +172,66 @@ class BaseBlock:
             )
         return row_number
 
-    def get_data(self) -> Dict[str, List[xl_data.xl_range_single_value]]:
+    def get_data(self) -> Dict[str, List[Union[str, Unit]]]:
         """Return all the Block's data from Excel"""
-        address = f"{self.locator_column}{self.block_start_row}:{self.column_co2_emissions}{self.block_end_row}"
-        return self.xl.get_data_with_column_letters(self.worksheet_name, address)
+        start = f"{self.locator_column}{self.block_start_row}"
+        end = f"{self.column_co2_emissions}{self.block_end_row}"
+        address = f"{start}:{end}"
+        xl_raw_data = self.xl.get_data_with_column_letters(self.worksheet_name, address)
+        """
+        xl_raw_data = {
+            'P': ['Electricity (HP compact unit)', 'Electricity (heat pump)', ...], 
+            'Q': [12.3, 1.9, 45.6, ...],
+            ...
+            'Z': [0.0, 0.0, 0.0, ...],
+        }
+        """
 
-    def get_final_energy_by_fuel_type(self) -> Dict[str, xl_data.xl_range_single_value]:
-        """Return the Block's Final (Site) Energy as a dict of values."""
-        use_types = self.phpp_data[self.locator_column]
-        site_energy = self.phpp_data[self.column_final_energy]
-        return {str(t): e for t, e in zip(use_types, site_energy)}
+        # ----------------------------------------------------------------------
+        # -- convert the raw numeric values to Units
+        unit_dict: Dict[str, List[Union[str, Unit]]] = {}
 
-    def get_primary_energy_by_fuel_type(self) -> Dict[str, xl_data.xl_range_single_value]:
-        """Return the Block's Primary (Source)) Energy as a dict of values."""
-        use_types = self.phpp_data[self.locator_column]
-        source_energy = self.phpp_data[self.column_pe_energy]
+        # -- Grab the index column data first
+        unit_dict[self.locator_column] = [
+            str(_) for _ in xl_raw_data[self.locator_column]
+        ]
+
+        # -- Get the numerica values as units
+        unit_dict[self.host.shape.columns.final_energy] = [
+            Unit(_, self.host.shape.unit)
+            for _ in xl_raw_data[self.host.shape.columns.final_energy]
+        ]
+        unit_dict[self.host.shape.columns.pe_energy] = [
+            Unit(_, self.host.shape.unit)
+            for _ in xl_raw_data[self.host.shape.columns.pe_energy]
+        ]
+
+        return unit_dict
+
+    def get_final_energy_by_fuel_type(self) -> Dict[str, Unit]:
+        """Return the Block's Final (Site) Energy as a dict of Unit values.
+
+        -> {
+            'Electricity (HP compact unit)': 0.0 (KBTU/FT2),
+            'Electricity (heat pump)': 0.8733713455642654 (KBTU/FT2),
+            ...
+            }
+        """
+        use_types: List[str] = self.phpp_data[self.locator_column]  # type: ignore
+        site_energy: List[Unit] = self.phpp_data[self.column_final_energy]  # type: ignore
+        return {str(use_type): value for use_type, value in zip(use_types, site_energy)}
+
+    def get_primary_energy_by_fuel_type(self) -> Dict[str, Unit]:
+        """Return the Block's Primary (Source)) Energy as a dict of values.
+
+        -> {
+            'Electricity (HP compact unit)': 0.0 (KBTU/FT2),
+            'Electricity (heat pump)': 0.8733713455642654 (KBTU/FT2),
+            ...
+            }
+        """
+        use_types: List[str] = self.phpp_data[self.locator_column]  # type: ignore
+        source_energy: List[Unit] = self.phpp_data[self.column_pe_energy]  # type: ignore
         return {str(t): e for t, e in zip(use_types, source_energy)}
 
 
@@ -253,12 +306,10 @@ class PER:
     def heading_row(self) -> int:
         return 15
 
-    def get_final_kWh_m2_by_fuel_type(
+    def get_final_kWh_m2_by_use_type(
         self,
-    ) -> Dict[str, Dict[str, xl_data.xl_range_single_value]]:
+    ) -> Dict[str, Dict[str, Unit]]:
         """Return a Dict of all the Site (Final) Energy [kWh/m2] by use-type."""
-        self.xl.get_sheet_by_name(self.shape.name).activate()
-
         return {
             "heating": self.heating.get_final_energy_by_fuel_type(),
             "cooling": self.cooling.get_final_energy_by_fuel_type(),
@@ -268,22 +319,45 @@ class PER:
             "energy_generation": self.energy_generation.get_final_energy_by_fuel_type(),
         }
 
-    def get_final_kWh_by_fuel_type(self) -> Dict[str, Dict[str, Any]]:
-        """Return a Dict of all the Site (Final) Energy [kWh] by use-type."""
-        kwh_m2_data = self.get_final_kWh_m2_by_fuel_type()
-        d: Dict[str, Dict] = {}
-        for k, v in kwh_m2_data.items():
-            d[k] = {}
-            energy_type = getattr(self, k)
+    def get_final_kWh_by_fuel_type(self) -> Dict[str, Dict[str, Unit]]:
+        """Return a Dict of all the Site (Final) Energy [kWh | kBtu] by use and fuel-type.
+
+        -> {
+            'heating': {
+                'Electricity (HP compact unit)': 0.0 (KBTU/FT2),
+                ...
+            'cooling': {
+                'Electricity cooling (HP)': 1.1129088978478676 (KBTU/FT2),
+                ...
+                },
+            'dhw': {
+                'Electricity (HP compact unit)': 0.0 (KBTU/FT2),
+                ...
+                },
+            'household_electric': {
+                'User electricity (lighting, electrical devices, etc.)': 2.5064700097780253 (KBTU/FT2),
+                ...
+                },
+            'energy_generation':{
+                'PV electricity': 19.687188186419185 (KBTU/FT2),
+                ...
+                }
+        }
+        """
+        kwh_m2_data = self.get_final_kWh_m2_by_use_type()
+        d: Dict[str, Dict[str, Unit]] = {}
+        for use_type_name, use_type_values_by_fuel in kwh_m2_data.items():
+            d[use_type_name] = {}
+            energy_type = getattr(self, use_type_name)
             area_m2: float = energy_type.reference_area  # TFA or Footprint
-            for k2, v2 in v.items():
+            for fuel_type_name, fuel_type_values in use_type_values_by_fuel.items():
                 try:
-                    d[k][k2] = v2 * area_m2  # type: ignore
+                    d[use_type_name][fuel_type_name] = fuel_type_values * area_m2
                 except:
-                    d[k][k2] = v2
+                    d[use_type_name][fuel_type_name] = fuel_type_values
         return d
 
-    def get_primary_kWh_m2_by_fuel_type(self) -> Dict[str, Any]:
+    def get_primary_kWh_m2_by_use_type(self) -> Dict[str, Dict[str, Unit]]:
         """Return a Dict of all the Source (Primary) Energy [kWh/m2] by use-type."""
         self.xl.get_sheet_by_name(self.shape.name).activate()
         return {
@@ -295,17 +369,40 @@ class PER:
             "energy_generation": self.energy_generation.get_primary_energy_by_fuel_type(),
         }
 
-    def get_primary_kWh_by_fuel_type(self) -> Dict[str, Dict[str, Any]]:
-        """Return a Dict of all the Primary (Source) Energy [kWh] by use-type."""
-        kwh_m2_data = self.get_primary_kWh_m2_by_fuel_type()
-        d: Dict[str, Dict] = {}
-        for k, v in kwh_m2_data.items():
-            d[k] = {}
-            energy_type = getattr(self, k)
+    def get_primary_kWh_by_fuel_type(self) -> Dict[str, Dict[str, Unit]]:
+        """Return a Dict of all the Primary (Source) Energy [kWh | kBtu] by use and fuel type
+
+        -> {
+            'heating': {
+                'Electricity (HP compact unit)': 0.0 (KBTU/FT2),
+                ...
+            'cooling': {
+                'Electricity cooling (HP)': 1.1129088978478676 (KBTU/FT2),
+                ...
+                },
+            'dhw': {
+                'Electricity (HP compact unit)': 0.0 (KBTU/FT2),
+                ...
+                },
+            'household_electric': {
+                'User electricity (lighting, electrical devices, etc.)': 2.5064700097780253 (KBTU/FT2),
+                ...
+                },
+            'energy_generation':{
+                'PV electricity': 19.687188186419185 (KBTU/FT2),
+                ...
+                }
+        }
+        """
+        kwh_m2_data = self.get_primary_kWh_m2_by_use_type()
+        d: Dict[str, Dict[str, Unit]] = {}
+        for use_type_name, use_type_values_by_fuel in kwh_m2_data.items():
+            d[use_type_name] = {}
+            energy_type = getattr(self, use_type_name)
             area_m2: float = energy_type.reference_area  # TFA or Footprint
-            for k2, v2 in v.items():
+            for fuel_type_name, fuel_type_values in use_type_values_by_fuel.items():
                 try:
-                    d[k][k2] = v2 * area_m2  # type: ignore
+                    d[use_type_name][fuel_type_name] = fuel_type_values * area_m2
                 except:
-                    d[k][k2] = v2
+                    d[use_type_name][fuel_type_name] = fuel_type_values
         return d
