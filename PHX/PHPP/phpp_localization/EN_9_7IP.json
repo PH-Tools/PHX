@@ -242,9 +242,9 @@
             }
         },
         "named_ranges": {
-            "country": "Klima_Region",
-            "region": "Klima_Region2",
-            "data_set": "Klima_Standort"
+            "country": "IP_Klima_Region",
+            "region": "IP_Klima_Region2",
+            "data_set": "IP_Klima_Standort"
         },
         "defined_ranges": {
             "climate_zone": "D13",
