@@ -206,14 +206,11 @@ class UValues:
 
         #  -- Handle the fact it might be SI or IP units
         if unit_type == "W/M2K":
-            # -- It is a U-Value
+            # -- It is already a U-Value
             return Unit(value, unit_type)
         else:
             # -- It is an R-Value, so return the inverse
-            try:
-                return Unit(1 / value, unit_type)
-            except ZeroDivisionError:
-                return Unit(0, unit_type)
+            return Unit(value, unit_type).inverse()
 
     def get_constructor_r_value(self, _row_num: int) -> Unit:
         """Return the U-Value of the constructor at the specified row."""
@@ -225,12 +222,9 @@ class UValues:
         #  -- Handle the fact it might be SI or IP units
         if unit_type == "W/M2K":
             # -- It is an U-Value, so return the inverse
-            try:
-                return Unit(1 / value, unit_type)
-            except ZeroDivisionError:
-                return Unit(0, unit_type)
+            return Unit(value, unit_type).inverse()
         else:
-            # -- It is an R-Value
+            # -- It is already an R-Value
             return Unit(value, unit_type)
 
     # -------------------------------------------------------------------------
