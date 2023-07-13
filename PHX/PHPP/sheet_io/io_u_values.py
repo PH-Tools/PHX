@@ -6,6 +6,8 @@
 from __future__ import annotations
 from typing import List, Optional, Generator
 
+from ph_units.unit_type import Unit
+
 from PHX.xl import xl_data, xl_app
 from PHX.xl.xl_data import col_offset
 
@@ -25,10 +27,26 @@ class NoEmptyConstructorError(Exception):
         super().__init__(self.msg)
 
 
+class ExistingAssemblyData:
+    def __init__(
+        self,
+        name: str,
+        u_value: Unit,
+        r_value: Unit,
+        ext_exposure: str,
+        int_exposure: str,
+    ) -> None:
+        self.name: str = name
+        self.u_value: Unit = u_value
+        self.r_value: Unit = r_value
+        self.ext_exposure: str = ext_exposure
+        self.int_exposure: str = int_exposure
+
+
 class UValues:
     """IO Controller for the PHPP "U-Values" worksheet."""
 
-    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.UValues):
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.UValues) -> None:
         self.xl = _xl
         self.shape = _shape
         self._constructor_start_rows: List[int] = []
@@ -179,10 +197,46 @@ class UValues:
         else:
             raise NoEmptyConstructorError
 
+    def get_constructor_u_value(self, _row_num: int) -> Unit:
+        """Return the U-Value of the constructor at the specified row."""
+        col = self.shape.constructor.inputs.result_val_col
+        row_num = _row_num + self.shape.constructor.inputs.result_val_row_offset
+        value = float(self.xl.get_data(self.shape.name, f"{col}{row_num}"))
+        unit_type = self.shape.constructor.inputs.result_val_unit
+
+        #  -- Handle the fact it might be SI or IP units
+        if unit_type == "W/M2K":
+            # -- It is a U-Value
+            return Unit(value, unit_type)
+        else:
+            # -- It is an R-Value, so return the inverse
+            try:
+                return Unit(1 / value, unit_type)
+            except ZeroDivisionError:
+                return Unit(0, unit_type)
+
+    def get_constructor_r_value(self, _row_num: int) -> Unit:
+        """Return the U-Value of the constructor at the specified row."""
+        col = self.shape.constructor.inputs.result_val_col
+        row_num = _row_num + self.shape.constructor.inputs.result_val_row_offset
+        value = float(self.xl.get_data(self.shape.name, f"{col}{row_num}"))
+        unit_type = self.shape.constructor.inputs.result_val_unit
+
+        #  -- Handle the fact it might be SI or IP units
+        if unit_type == "W/M2K":
+            # -- It is an U-Value, so return the inverse
+            try:
+                return Unit(1 / value, unit_type)
+            except ZeroDivisionError:
+                return Unit(0, unit_type)
+        else:
+            # -- It is an R-Value
+            return Unit(value, unit_type)
+
     # -------------------------------------------------------------------------
     # -- Writers
 
-    def write_single_PHX_construction(self, _phx_construction, _start_row):
+    def write_single_PHX_construction(self, _phx_construction, _start_row) -> None:
         """Write a single PHX Construction to the PHPP worksheet."""
         new_constructor = uvalues_constructor.ConstructorBlock(
             self.shape, _phx_construction
@@ -258,14 +312,16 @@ class UValues:
                 )
             )
 
-    def clear_all_constructor_data(self, _clear_name: bool = True):
+    def clear_all_constructor_data(self, _clear_name: bool = True) -> None:
         """Remove all of the existing input data from all of the constructors in the PHPP."""
         for row_num in self.all_constructor_start_rows:
             self.clear_single_constructor_data(row_num, _clear_name)
 
     # -------------------------------------------------------------------------
 
-    def activate_variants(self, _assembly_phpp_ids: List[VariantAssemblyLayerName]):
+    def activate_variants(
+        self, _assembly_phpp_ids: List[VariantAssemblyLayerName]
+    ) -> None:
         """Connect all the links to make the 'Variants' page drive the input values."""
 
         self.clear_all_constructor_data(_clear_name=False)
@@ -317,3 +373,18 @@ class UValues:
                             0,
                         )
                     )
+
+    def get_all_envelope_assemblies(self) -> List[ExistingAssemblyData]:
+        assemblies: List[ExistingAssemblyData] = []
+
+        for row_num in self.used_constructor_start_rows:
+            existing_assembly = ExistingAssemblyData(
+                self.get_constructor_name(row_num),
+                self.get_constructor_u_value(row_num),
+                self.get_constructor_r_value(row_num),
+                self.get_constructor_r_se_type(row_num),
+                self.get_constructor_r_si_type(row_num),
+            )
+            assemblies.append(existing_assembly)
+
+        return assemblies

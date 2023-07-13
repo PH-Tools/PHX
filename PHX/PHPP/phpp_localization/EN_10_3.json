@@ -329,7 +329,10 @@
                 "rsi_row_offset": 4,
                 "rse_row_offset": 5,
                 "first_layer_row_offset": 7,
-                "last_layer_row_offset": 14
+                "last_layer_row_offset": 14,
+                "result_val_col": "R",
+                "result_val_row_offset": 19,
+                "result_val_unit": "W/M2K"
             }
         }
     },

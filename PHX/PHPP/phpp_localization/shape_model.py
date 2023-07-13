@@ -213,6 +213,9 @@ class UValuesConstructorInputs(BaseModel):
     rsi_row_offset: int
     first_layer_row_offset: int
     last_layer_row_offset: int
+    result_val_col: str
+    result_val_row_offset: int
+    result_val_unit: str
 
 
 class UValuesConstructor(BaseModel):

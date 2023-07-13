@@ -324,7 +324,10 @@
                 "rsi_row_offset": 4,
                 "rse_row_offset": 5,
                 "first_layer_row_offset": 8,
-                "last_layer_row_offset": 15
+                "last_layer_row_offset": 15,
+                "result_val_col": "Q",
+                "result_val_row_offset": 19,
+                "result_val_unit": "HR-FT2-F/BTU"
             }
         }
     },
