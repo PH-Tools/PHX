@@ -85,6 +85,23 @@ class SurfaceRow:
         ]
 
 
+def get_name_from_assembly_id(
+    _phpp_assembly_id: Optional[xl_data.xl_range_single_value],
+) -> str:
+    """Return the face's construction PHPP-Name (ie: "MyConst") from id-string."""
+    try:
+        return str(_phpp_assembly_id).split("-", 1)[1]
+    except:
+        if _phpp_assembly_id == None or _phpp_assembly_id == "None":
+            return ""
+        else:
+            msg = (
+                f"Error getting construction PHPP-Name? "
+                f"Could not split {_phpp_assembly_id} on '-'?"
+            )
+            raise Exception(msg)
+
+
 @dataclass
 class ExistingSurfaceRow:
     """The data from an existing PHPP Surface Entry row."""
@@ -96,9 +113,9 @@ class ExistingSurfaceRow:
 
     @property
     def name(self) -> str:
-        l = self.shape.surface_rows.inputs.description.column
-        i = xl_data.xl_ord(str(l)) - 65
-        return self.data[i]
+        col_letter = self.shape.surface_rows.inputs.description.column
+        col_number_as_index = xl_data.xl_ord(str(col_letter)) - 65
+        return str(self.data[col_number_as_index])
 
     @property
     def no_name(self) -> bool:
@@ -164,3 +181,15 @@ class ExistingSurfaceRow:
         return type_map.get(
             self.face_exposure_phpp_letter, ComponentExposureExterior.SURFACE
         )
+
+    @property
+    def face_construction_phpp_id(self) -> str:
+        """Return the face's construction PHPP-ID (ie: "01ud-MyConst") from the row-data."""
+        col_letter = self.shape.surface_rows.inputs.assembly_id.column
+        col_number_as_index = xl_data.xl_ord(str(col_letter)) - 65
+        return str(self.data[col_number_as_index])
+
+    @property
+    def face_construction_phpp_name(self) -> str:
+        """Return the face's construction PHPP-Name (ie: "MyConst") from the row-data."""
+        return get_name_from_assembly_id(self.face_construction_phpp_id)

@@ -4,6 +4,7 @@
 """Controller Class for the PHPP "U-Values" worksheet."""
 
 from __future__ import annotations
+from dataclasses import dataclass
 from typing import List, Optional, Generator
 
 from ph_units.unit_type import Unit
@@ -27,20 +28,13 @@ class NoEmptyConstructorError(Exception):
         super().__init__(self.msg)
 
 
+@dataclass
 class ExistingAssemblyData:
-    def __init__(
-        self,
-        name: str,
-        u_value: Unit,
-        r_value: Unit,
-        ext_exposure: str,
-        int_exposure: str,
-    ) -> None:
-        self.name: str = name
-        self.u_value: Unit = u_value
-        self.r_value: Unit = r_value
-        self.ext_exposure: str = ext_exposure
-        self.int_exposure: str = int_exposure
+    name: str
+    u_value: Unit
+    r_value: Unit
+    ext_exposure: str
+    int_exposure: str
 
 
 class UValues:

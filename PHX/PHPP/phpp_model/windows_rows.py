@@ -13,6 +13,23 @@ from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
 
 
+def get_name_from_glazing_id(
+    _phpp_glazing_id: Optional[xl_data.xl_range_single_value],
+) -> str:
+    """Return the aperture's PHPP-Name (ie: "MyGlass") from phpp-id-string."""
+    try:
+        return str(_phpp_glazing_id).split("-", 1)[1]
+    except:
+        if _phpp_glazing_id == None or _phpp_glazing_id == "None":
+            return ""
+        else:
+            msg = (
+                f"Error getting construction PHPP-Name? "
+                f"Could not split {_phpp_glazing_id} on '-'?"
+            )
+            raise Exception(msg)
+
+
 @dataclass
 class WindowRow:
     """Model class for a single Window entry row."""

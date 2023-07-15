@@ -4,7 +4,10 @@
 """Controller Class for the PHPP 'Components' worksheet."""
 
 from __future__ import annotations
-from typing import List, Optional
+from dataclasses import dataclass
+from typing import List, Optional, Set, Dict
+
+from ph_units.unit_type import Unit
 
 from PHX.xl import xl_app
 from PHX.xl.xl_data import col_offset
@@ -12,6 +15,17 @@ from PHX.PHPP.phpp_model.component_vent import VentilatorRow
 from PHX.PHPP.phpp_model.component_glazing import GlazingRow
 from PHX.PHPP.phpp_model.component_frame import FrameRow
 from PHX.PHPP.phpp_localization import shape_model
+
+
+@dataclass
+class ExistingGlazingTypeData:
+    name: str
+    g_value: Unit
+    u_value: Unit
+
+    @property
+    def key(self) -> str:
+        return f"{self.name}-{self.g_value}-{self.u_value}"
 
 
 class Glazings:
@@ -160,6 +174,31 @@ class Glazings:
         name_col = str(self.shape.glazings.inputs.description.column)
         id_name = self.xl.get_data(self.shape.name, f"{name_col}{_row_num}")
         return f"{id_num}-{id_name}"
+
+    def get_all_glazing_types(self) -> List[ExistingGlazingTypeData]:
+        """Return a set of all glazing types in the Glazing input section."""
+        glazing_types: Dict[str, ExistingGlazingTypeData] = {}
+        unit_type = str(self.shape.glazings.inputs.u_value.unit)
+        start = f"{self.shape.glazings.inputs.description.column}{self.section_first_entry_row}"
+        end = f"{self.shape.glazings.inputs.u_value.column}{self.section_last_entry_row}"
+
+        data = self.xl.get_data(self.shape.name, f"{start}:{end}")
+
+        if not data:
+            return []
+
+        for row in data:
+            if "None" in row or None in row:
+                continue
+
+            exiting_glazing_type = ExistingGlazingTypeData(
+                str(row[0]),
+                Unit(row[1], "-"),
+                Unit(row[2], unit_type),
+            )
+            glazing_types[exiting_glazing_type.key] = exiting_glazing_type
+
+        return [glazing_types[k] for k in sorted(glazing_types.keys())]
 
 
 class Frames:

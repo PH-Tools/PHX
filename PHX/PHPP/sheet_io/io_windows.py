@@ -8,7 +8,7 @@ from typing import List, Optional, Generator
 
 from PHX.xl import xl_app
 from PHX.xl.xl_data import col_offset, XlItem
-from PHX.PHPP.phpp_model.windows_rows import WindowRow
+from PHX.PHPP.phpp_model.windows_rows import WindowRow, get_name_from_glazing_id
 from PHX.PHPP.phpp_localization import shape_model
 
 
@@ -249,6 +249,16 @@ class Windows:
                 areas.append(float(area))
 
         return sum(areas)
+
+    def get_all_glazing_names(self) -> set[str]:
+        """Return a set of all the construction names used in the Areas worksheet."""
+        glazing_data = self.xl.get_single_column_data(
+            self.shape.name,
+            str(self.shape.window_rows.inputs.glazing_id.column),
+            self.first_entry_row,
+            self.last_entry_row,
+        )
+        return {get_name_from_glazing_id(_d) for _d in glazing_data}
 
     def activate_variants(self) -> None:
         """Set the frame and glass values to link to the Variants worksheet."""

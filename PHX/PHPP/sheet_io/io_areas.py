@@ -207,6 +207,16 @@ class Surfaces:
 
         return name
 
+    def get_all_construction_names(self) -> set[str]:
+        """Return a set of all the construction names used in the Areas worksheet."""
+        assembly_data = self.xl.get_single_column_data(
+            self.shape.name,
+            str(self.shape.surface_rows.inputs.assembly_id.column),
+            self.section_first_entry_row,
+            self.section_last_entry_row,
+        )
+        return {areas_surface.get_name_from_assembly_id(_d) for _d in assembly_data}
+
     @property
     def all_surface_rows(
         self,
@@ -219,12 +229,12 @@ class Surfaces:
         """
 
         for i in range(self.section_first_entry_row, self.section_last_entry_row):
-            exg_srfc_row = areas_surface.ExistingSurfaceRow(
+            existing_surface_row = areas_surface.ExistingSurfaceRow(
                 self.shape,
                 self.xl.get_single_row_data(self.shape.name, i),
                 self.group_type_exposures,
             )
-            yield i, exg_srfc_row
+            yield i, existing_surface_row
 
 
 class ThermalBridges:
