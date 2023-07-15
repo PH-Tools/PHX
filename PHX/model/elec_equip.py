@@ -3,7 +3,9 @@
 
 """PHX Passive House Electrical Equipment (Appliances) Classes"""
 
-from typing import Optional, ClassVar, Union, List
+import inspect
+import sys
+from typing import Optional, ClassVar, Union, List, Dict, Any, Type
 from dataclasses import dataclass, field
 import uuid
 
@@ -308,6 +310,28 @@ class PhxElevatorGearlessTraction(PhxElectricalDevice):
 
     def get_quantity(self) -> int:
         return 1
+
+
+# -----------------------------------------------------------------------------
+
+
+def get_device_type_map() -> Dict[ElectricEquipmentType, Type[PhxElectricalDevice]]:
+    """Returns a dictionary mapping all the device enum types to the PhxElectricalDevice classes.
+
+    This is useful of you are building up new Devices from raw data or types inputs.
+    """
+
+    d = {}
+    for name, device_class in inspect.getmembers(sys.modules[__name__]):
+        if not inspect.isclass(device_class):
+            continue
+        if not issubclass(device_class, PhxElectricalDevice):
+            continue
+
+        obj = device_class()
+        d[obj.device_type] = device_class
+
+    return d
 
 
 # -----------------------------------------------------------------------------

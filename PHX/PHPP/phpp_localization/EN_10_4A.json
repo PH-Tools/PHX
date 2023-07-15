@@ -1255,11 +1255,12 @@
             "energy_demand_per_use": "N",
             "utilization_factor": "H",
             "frequency": "K",
-            "reference_quantity": "I"
+            "reference_quantity": "I",
+            "annual_energy_demand": "AB"
         },
         "input_rows": {
             "dishwasher": {
-                "data": 24,
+                "data": 25,
                 "selection": 24,
                 "selection_options": {
                     "1": "1-DHW connection",
@@ -1267,7 +1268,7 @@
                 }
             },
             "clothes_washing": {
-                "data": 28,
+                "data": 29,
                 "selection": 28,
                 "selection_options": {
                     "1": "1-DHW connection",
@@ -1275,7 +1276,7 @@
                 }
             },
             "clothes_drying": {
-                "data": 32,
+                "data": 33,
                 "selection": 32,
                 "selection_options": {
                     "1": "1-Clothes line",
@@ -1287,7 +1288,7 @@
                 }
             },
             "refrigerator": {
-                "data": 15,
+                "data": 16,
                 "selection": 0,
                 "selection_options": {}
             },
@@ -1302,7 +1303,7 @@
                 "selection_options": {}
             },
             "cooking": {
-                "data": 20,
+                "data": 21,
                 "selection": 20,
                 "selection_options": {
                     "1": "1-Electricity",
@@ -1312,6 +1313,16 @@
             },
             "lighting": {
                 "data": 37,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "lighting_interior": {
+                "data": 38,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "lighting_exterior": {
+                "data": 39,
                 "selection": 0,
                 "selection_options": {}
             },

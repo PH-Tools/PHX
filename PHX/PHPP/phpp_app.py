@@ -748,7 +748,9 @@ class PHPPConnection:
         for phx_variant in phx_project.variants:
             for zone in phx_variant.building.zones:
                 for phx_equip in zone.elec_equipment_collection:
-                    equipment_inputs.append(electricity_item.ElectricityItem(phx_equip))
+                    equipment_inputs.append(
+                        electricity_item.ElectricityItemXLWriter(phx_equip)
+                    )
             self.electricity.write_equipment(equipment_inputs)
 
         return None

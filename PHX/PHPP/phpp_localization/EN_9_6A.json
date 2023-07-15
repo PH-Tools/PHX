@@ -1250,7 +1250,8 @@
             "energy_demand_per_use": "J",
             "utilization_factor": "N",
             "frequency": "P",
-            "reference_quantity": "S"
+            "reference_quantity": "S",
+            "annual_energy_demand": "AA"
         },
         "input_rows": {
             "dishwasher": {
@@ -1306,6 +1307,16 @@
                 }
             },
             "lighting": {
+                "data": 26,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "lighting_interior": {
+                "data": 26,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "lighting_exterior": {
                 "data": 26,
                 "selection": 0,
                 "selection_options": {}

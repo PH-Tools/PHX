@@ -790,6 +790,7 @@ class ElectricityInputColumns(BaseModel):
     utilization_factor: str
     frequency: str
     reference_quantity: str
+    annual_energy_demand: str
 
 
 class ElectricityInputRow(BaseModel):
@@ -807,6 +808,8 @@ class ElectricityInputRows(BaseModel):
     fridge_freezer: ElectricityInputRow
     cooking: ElectricityInputRow
     lighting: ElectricityInputRow
+    lighting_interior: ElectricityInputRow
+    lighting_exterior: ElectricityInputRow
     consumer_elec: ElectricityInputRow
     small_appliances: ElectricityInputRow
 
