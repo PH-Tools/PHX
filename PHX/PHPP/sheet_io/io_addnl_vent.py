@@ -4,7 +4,10 @@
 """Controller Class for the PHPP "Additional Vent" worksheet."""
 
 from __future__ import annotations
-from typing import List, Optional
+from dataclasses import dataclass, field
+from typing import List, Optional, Any, Sequence, Collection, Tuple
+
+from ph_units.unit_type import Unit
 
 from PHX.xl import xl_data
 from PHX.xl.xl_data import col_offset, xl_writable
@@ -14,7 +17,7 @@ from PHX.xl import xl_app
 
 
 class Spaces:
-    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent):
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent) -> None:
         self.xl = _xl
         self.shape = _shape
         self.section_header_row: Optional[int] = None
@@ -73,13 +76,73 @@ class Spaces:
         self.section_first_entry_row = self.find_section_first_entry_row()
 
 
+@dataclass
+class VentilatorDeviceUsage:
+    """Convenience class for organizing and cleaning the data."""
+
+    display_name: str = "-"
+    vent_unit_type_name: str = "-"
+    quantity: int = 0
+    hr_efficiency: Unit = field(default_factory=Unit)
+    mr_efficiency: Unit = field(default_factory=Unit)
+
+    @classmethod
+    def from_phpp_data_row(cls, row: Sequence) -> VentilatorDeviceUsage:
+        """Create a new instance from a row of data from PHPP."""
+        obj = cls()
+
+        if not row:
+            return obj
+
+        if row[1] not in ["-", "", "None", None]:
+            # split off the "01ud-" prefix...
+            obj.display_name = str(row[1]).strip()
+
+        if row[2] not in ["-", "", "None", None]:
+            # split off the "01ud-" prefix...
+            obj.vent_unit_type_name = str(row[2]).split("-", 1)[-1].strip()
+
+        if row[0] not in ["-", "", "None", None]:
+            # split off the "01ud-" prefix...
+            obj.quantity = int(float(row[0]))
+
+        if row[14] not in ["-", "", "None", None, "N/A"]:
+            obj.hr_efficiency = Unit(row[14], "-")
+
+        if row[16] not in ["-", "", "None", None, "N/A"]:
+            obj.mr_efficiency = Unit(row[16], "-")
+
+        return obj
+
+
 class VentUnits:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent):
         self.xl = _xl
         self.shape = _shape
-        self.section_header_row: Optional[int] = None
-        self.section_first_entry_row: Optional[int] = None
-        self.section_last_entry_row: Optional[int] = None
+        self._section_header_row: Optional[int] = None
+        self._section_first_entry_row: Optional[int] = None
+        self._section_last_entry_row: Optional[int] = None
+
+    @property
+    def section_header_row(self) -> int:
+        """Return the row number of the 'Area input' section header."""
+        if not self._section_header_row:
+            self._section_header_row = self.find_section_header_row()
+        return self._section_header_row
+
+    @property
+    def section_first_entry_row(self) -> int:
+        """Return the row number of the very first user-input entry row in the 'Area input' section."""
+        if not self._section_first_entry_row:
+            self._section_first_entry_row = self.find_section_first_entry_row()
+        return self._section_first_entry_row
+
+    @property
+    def section_last_entry_row(self) -> int:
+        """Return the row number of the last user-input entry row in the 'Area input' section."""
+        if not self._section_last_entry_row:
+            self._section_last_entry_row = self.find_section_last_entry_row()
+        return self._section_last_entry_row
 
     def find_section_header_row(self, _row_start: int = 50, _row_end: int = 200) -> int:
         """Return the row number of the 'Units' section header."""
@@ -105,15 +168,6 @@ class VentUnits:
     def find_section_first_entry_row(self) -> int:
         """Return the row number of the very first user-input entry row in the 'Vent Unit' section."""
 
-        if not self.section_header_row:
-            try:
-                self.section_header_row = self.find_section_header_row()
-            except:
-                # Try one more time with a larger read-block
-                self.section_header_row = self.find_section_header_row(
-                    _row_start=1, _row_end=999
-                )
-
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.units.locator_col_entry,
@@ -137,9 +191,6 @@ class VentUnits:
 
     def find_section_last_entry_row(self, _rows: int = 50) -> int:
         """Return the row number of the very last user-input entry row in the 'Vent Unit' section."""
-
-        if not self.section_first_entry_row:
-            self.section_first_entry_row = self.find_section_first_entry_row()
 
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
@@ -166,8 +217,6 @@ class VentUnits:
                 _row_start=1, _row_end=1000
             )
 
-        self.section_first_entry_row = self.find_section_first_entry_row()
-
     def get_vent_unit_num_by_phpp_id(self, _phpp_id: str) -> xl_writable:
         """Return the phpp-number of the Ventilation unit from the Additional Ventilation worksheet.
 
@@ -182,10 +231,7 @@ class VentUnits:
                 the Ventilation unit.
         """
 
-        if not self.section_first_entry_row:
-            self.section_first_entry_row = self.find_section_first_entry_row()
-
-        search_column = self.shape.units.inputs.unit_selected.column
+        search_column = str(self.shape.units.inputs.unit_selected.column)
 
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
@@ -206,9 +252,27 @@ class VentUnits:
             " worksheet before writing the spaces and ducts."
         )
 
+    def get_ventilation_units(self) -> Tuple[VentilatorDeviceUsage]:
+        """Return a tuple of VentilatorDeviceUsage objects from the PHPP worksheet."""
+        input_shape = self.shape.units.inputs
+        range_start = f"{input_shape.quantity.column}{self.section_first_entry_row}"
+        range_end = f"{input_shape.temperature_below_defrost_used.column}{self.section_last_entry_row}"
+
+        data = self.xl.get_data(
+            self.shape.name,
+            f"{range_start}:{range_end}",
+        )
+        if not isinstance(data, Collection):
+            raise ValueError(
+                f"There was a problem reading the ventilator-unit data from the "
+                f"PHPP worksheet '{self.shape.name}', range: '{range_start}:{range_end}'?"
+            )
+
+        return tuple(VentilatorDeviceUsage.from_phpp_data_row(row) for row in data)
+
 
 class VentDucts:
-    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent):
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent) -> None:
         self.xl = _xl
         self.shape = _shape
         self.section_header_row: Optional[int] = None
@@ -280,7 +344,7 @@ class VentDucts:
 class AddnlVent:
     """IO Controller for the PHPP Additional Vent worksheet."""
 
-    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent):
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent) -> None:
         self.xl = _xl
         self.shape = _shape
         self.spaces = Spaces(self.xl, self.shape)
@@ -298,11 +362,6 @@ class AddnlVent:
                 self.xl.write_xl_item(item)
 
     def write_vent_units(self, _vent_units: List[vent_units.VentUnitRow]) -> None:
-        if not self.vent_units.section_first_entry_row:
-            self.vent_units.section_first_entry_row = (
-                self.vent_units.find_section_first_entry_row()
-            )
-
         for i, vent_unit in enumerate(
             _vent_units, start=self.vent_units.section_first_entry_row
         ):
@@ -339,3 +398,7 @@ class AddnlVent:
             )
 
         return None
+
+    def get_ventilation_units(self) -> Tuple[VentilatorDeviceUsage]:
+        """Return a list of Ventilation Units found in the Worksheet."""
+        return self.vent_units.get_ventilation_units()

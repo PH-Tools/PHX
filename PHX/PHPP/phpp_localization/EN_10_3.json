@@ -1140,7 +1140,29 @@
     },
     "COOLING_UNITS": {
         "name": "Cooling units",
-        "columns": {}
+        "SEER_unit": "W/W",
+        "supply_air": {
+            "used": "Kuehlgeraete_Zuluft_Kuehlung_Ankreuzen",
+            "num_units": "Kuehlgeraete_Kompressor_Zuluft_Anzahl",
+            "device_type_name": "Kuehlgeraete_Kompressor_Zuluft_Geraet",
+            "SEER": "X32"
+        },
+        "recirculation_air": {
+            "used": "Kuehlgeraete_Umluft_Kuehlung_Ankreuzen",
+            "num_units": "Kuehlgeraete_Kompressor_Umluft_Anzahl",
+            "device_type_name": "Kuehlgeraete_Kompressor_Umluft_Geraet",
+            "SEER": "X50"
+        },
+        "dehumidification": {
+            "used": "Kuehlgeraete_Zusaetzliche_Entfeuchtung_Ankreuzen",
+            "waste_heat_to_room": "Kuehlgeraete_Zusaetzliche_Entfeuchtung_Abwaerme",
+            "SEER": "Kuehlgeraete_Zusaetzliche_Entfeuchtung_JAZ"
+        },
+        "panel": {
+            "used": "Kuehlgeraete_Flaechenkuehlung_Ankreuzen",
+            "device_type_name": "Kuehlgeraete_Kompressor_Flaechenkuehlung_Geraet",
+            "SEER": "X69"
+        }
     },
     "DHW": {
         "name": "DHW+Distribution",
@@ -1387,9 +1409,15 @@
     },
     "PER": {
         "name": "PER",
-        "unit": "KWH",
         "locator_col": "P",
+        "unit": "KWH",
+        "named_ranges": {
+            "heating_type_1": "PE_Waermeerzeuger_primaer",
+            "heating_type_2": "PE_Waermeerzeuger_sekundaer"
+        },
         "columns": {
+            "calculated_efficiency": "Q",
+            "user_determined_efficiency": "R",
             "final_energy": "T",
             "per_energy": "V",
             "pe_energy": "X",
@@ -1398,6 +1426,10 @@
         "addresses": {
             "tfa": "Z7",
             "footprint": "Z8"
+        },
+        "heating_types": {
+            "range_start": "P8",
+            "range_end": "T11"
         },
         "heating": {
             "locator_string_heading": "Heating",

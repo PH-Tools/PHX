@@ -72,6 +72,7 @@ class PHPPConnection:
         self.use_non_res = sheet_io.UseNonRes(self.xl, self.shape.USE_NON_RES)
         self.elec_non_res = sheet_io.ElecNonRes(self.xl, self.shape.ELEC_NON_RES)
         self.ihg_non_res = sheet_io.IhgNonRes(self.xl, self.shape.IHG_NON_RES)
+        self.cooling_units = sheet_io.CoolingUnits(self.xl, self.shape.COOLING_UNITS)
 
     def get_data_worksheet(self) -> xl_Sheet_Protocol:
         """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""

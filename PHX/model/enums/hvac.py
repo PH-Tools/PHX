@@ -52,6 +52,7 @@ class HeatPumpType(Enum):
 
 
 class CoolingType(Enum):
+    NONE = 0
     VENTILATION = 1
     RECIRCULATION = 2
     DEHUMIDIFICATION = 3

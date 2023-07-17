@@ -677,13 +677,42 @@ class SummVent(BaseModel):
     columns: ColSummVent
 
 
-class ColCoolingUnits(BaseModel):
-    ...
+# -----------------------------------------------------------------------------
+
+
+class SupplyAirCoolingUnits(BaseModel):
+    used: str
+    num_units: str
+    device_type_name: str
+    SEER: str
+
+
+class RecirculationAirCoolingUnits(BaseModel):
+    used: str
+    num_units: str
+    device_type_name: str
+    SEER: str
+
+
+class DehumidificationCoolingUnits(BaseModel):
+    used: str
+    waste_heat_to_room: str
+    SEER: str
+
+
+class PanelCoolingUnits(BaseModel):
+    used: str
+    device_type_name: str
+    SEER: str
 
 
 class CoolingUnits(BaseModel):
     name: str
-    columns: ColCoolingUnits
+    SEER_unit: str
+    supply_air: SupplyAirCoolingUnits
+    recirculation_air: RecirculationAirCoolingUnits
+    dehumidification: DehumidificationCoolingUnits
+    panel: PanelCoolingUnits
 
 
 # -----------------------------------------------------------------------------
@@ -903,6 +932,8 @@ class AuxElec(BaseModel):
 
 
 class PerColumns(BaseModel):
+    calculated_efficiency: str
+    user_determined_efficiency: str
     final_energy: str
     per_energy: str
     pe_energy: str
@@ -920,12 +951,24 @@ class PerDataBlock(BaseModel):
     locator_string_end: Optional[str]
 
 
+class PerNamedRanges(BaseModel):
+    heating_type_1: str
+    heating_type_2: str
+
+
+class PerHeatingTypesBlock(BaseModel):
+    range_start: str
+    range_end: str
+
+
 class Per(BaseModel):
     name: str
-    unit: str
     locator_col: str
+    unit: str
+    named_ranges: PerNamedRanges
     columns: PerColumns
     addresses: PerAddresses
+    heating_types: PerHeatingTypesBlock
     heating: PerDataBlock
     cooling: PerDataBlock
     dhw: PerDataBlock

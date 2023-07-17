@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""Model class for a PHPP DHW Tank"""
+"""Model class for a PHPP DHW Piping Elements."""
 
 from dataclasses import dataclass
 from typing import List
 from functools import partial
 
 from PHX.model.hvac import piping
-
-from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 @dataclass

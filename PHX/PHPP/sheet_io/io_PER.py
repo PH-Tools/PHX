@@ -4,7 +4,8 @@
 """Controller Class for the PHPP PER Worksheet."""
 
 from __future__ import annotations
-from typing import Optional, List, Dict, Any, Union
+from dataclasses import dataclass, field
+from typing import Optional, List, Dict, Any, Union, Tuple, Collection, Sequence
 
 from ph_units.unit_type import Unit
 
@@ -196,7 +197,7 @@ class BaseBlock:
             str(_) for _ in xl_raw_data[self.locator_column]
         ]
 
-        # -- Get the numerica values as units
+        # -- Get the numeric values as units
         unit_dict[self.host.shape.columns.final_energy] = [
             Unit(_, self.host.shape.unit)
             for _ in xl_raw_data[self.host.shape.columns.final_energy]
@@ -289,6 +290,34 @@ class EnergyGeneration(BaseBlock):
 # -----------------------------------------------------------------------------
 
 
+@dataclass
+class HeatingDeviceUsage:
+    """Convenience class for organizing and cleaning the data."""
+
+    device_type_name: str = "-"
+    device_heating_percentage: Unit = field(default_factory=Unit)
+    device_dhw_percentage: Unit = field(default_factory=Unit)
+
+    @classmethod
+    def from_phpp_data_row(cls, row: Sequence) -> HeatingDeviceUsage:
+        """Create a new instance from a row of data from PHPP."""
+        obj = cls()
+
+        if not row:
+            return obj
+
+        if row[0] not in ["-", "", "None", None]:
+            obj.device_type_name = str(row[0])
+
+        if row[3] not in ["-", "", "None", None]:
+            obj.device_heating_percentage = Unit(row[3], "-")
+
+        if row[4] not in ["-", "", "None", None]:
+            obj.device_dhw_percentage = Unit(row[4], "-")
+
+        return obj
+
+
 class PER:
     """IO Controller for the PHPP 'PER' worksheet."""
 
@@ -301,10 +330,18 @@ class PER:
         self.household_electric = HouseholdElectric(self, _xl, _shape.household_electric)
         self.additional_gas = AdditionalGas(self, _xl, _shape.additional_gas)
         self.energy_generation = EnergyGeneration(self, _xl, _shape.energy_generation)
+        self._heating_device_data = None  # local cache
 
     @property
     def heading_row(self) -> int:
         return 15
+
+    @property
+    def heating_device_data(self) -> Tuple[HeatingDeviceUsage]:
+        """Return a list of HeatingDeviceUsage objects."""
+        if not self._heating_device_data:
+            self._heating_device_data = self.get_heating_device_type_data()
+        return self._heating_device_data
 
     def get_final_kWh_m2_by_use_type(
         self,
@@ -406,3 +443,18 @@ class PER:
                 except:
                     d[use_type_name][fuel_type_name] = fuel_type_values
         return d
+
+    def get_heating_device_type_data(self) -> Tuple[HeatingDeviceUsage]:
+        """Return a Tuple of HeatingDeviceUsage objects from the PER worksheet."""
+        data = self.xl.get_data(
+            self.shape.name,
+            f"{self.shape.heating_types.range_start}:{self.shape.heating_types.range_end}",
+        )
+
+        if not isinstance(data, Collection):
+            raise ValueError(
+                "There was a problem getting the heating-generation "
+                f"type data from PHPP worksheet {self.shape.name}?"
+            )
+
+        return tuple(HeatingDeviceUsage.from_phpp_data_row(row) for row in data)
