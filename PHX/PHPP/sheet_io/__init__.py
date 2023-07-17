@@ -20,3 +20,5 @@ from PHX.PHPP.sheet_io.io_elec_non_res import *
 from PHX.PHPP.sheet_io.io_use_non_res import *
 from PHX.PHPP.sheet_io.io_ihg_non_res import *
 from PHX.PHPP.sheet_io.io_cooling_units import *
+from PHX.PHPP.sheet_io.io_solar_dhw import *
+from PHX.PHPP.sheet_io.io_solar_pv import *

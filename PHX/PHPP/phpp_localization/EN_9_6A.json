@@ -1257,11 +1257,34 @@
     },
     "SOLAR_DHW": {
         "name": "SolarDHW",
-        "columns": {}
+        "footprint_unit": "M2",
+        "energy_unit": "KHW",
+        "ranges": {
+            "footprint": "SolarWW_Kollektorflaeche",
+            "annual_dhw_contribution": "G34",
+            "annual_dhw_energy": "I34",
+            "annual_heating_contribution": "G35",
+            "annual_heating_energy": "I35"
+        }
     },
-    "PV": {
+    "SOLAR_PV": {
         "name": "PV",
-        "columns": {}
+        "footprint_unit": "M2",
+        "energy_unit": "KWH",
+        "columns": {
+            "systems_start": "H",
+            "systems_end": "L"
+        },
+        "rows": {
+            "systems_start": 10,
+            "current": 20,
+            "voltage": 21,
+            "num_panels": 29,
+            "name": 10,
+            "footprint": 37,
+            "annual_energy": 42,
+            "systems_end": 47
+        }
     },
     "ELECTRICITY": {
         "name": "Electricity",

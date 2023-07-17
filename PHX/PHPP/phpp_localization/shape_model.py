@@ -790,22 +790,46 @@ class Dhw(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColSolarDhw(BaseModel):
-    ...
+class RangesSolarDhw(BaseModel):
+    footprint: str
+    annual_dhw_contribution: str
+    annual_dhw_energy: str
+    annual_heating_contribution: str
+    annual_heating_energy: str
 
 
 class SolarDhw(BaseModel):
     name: str
-    columns: ColSolarDhw
+    footprint_unit: str
+    energy_unit: str
+    ranges: RangesSolarDhw
 
 
-class ColPv(BaseModel):
-    ...
+# -----------------------------------------------------------------------------
 
 
-class Pv(BaseModel):
+class ColsSolarPV(BaseModel):
+    systems_start: str
+    systems_end: str
+
+
+class RowsSolarPV(BaseModel):
+    systems_start: int
+    current: int
+    voltage: int
+    num_panels: int
+    name: int
+    footprint: int
+    annual_energy: int
+    systems_end: int
+
+
+class SolarPv(BaseModel):
     name: str
-    columns: ColPv
+    footprint_unit: str
+    energy_unit: str
+    columns: ColsSolarPV
+    rows: RowsSolarPV
 
 
 # -----------------------------------------------------------------------------
@@ -1061,7 +1085,7 @@ class PhppShape(BaseModel):
     COOLING_UNITS: CoolingUnits
     DHW: Dhw
     SOLAR_DHW: SolarDhw
-    PV: Pv
+    SOLAR_PV: SolarPv
     ELECTRICITY: Electricity
     USE_NON_RES: UseNonRes
     ELEC_NON_RES: ElecNonRes
