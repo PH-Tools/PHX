@@ -225,7 +225,7 @@ class Tanks:
 
 
 class HotWater:
-    """IO Controller for the PHPP 'DHW+Distribution' worksheet."""
+    """IO Controller for the PHPP 'DHW+Distribution' PHPP worksheet."""
 
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Dhw):
         self.xl = _xl
