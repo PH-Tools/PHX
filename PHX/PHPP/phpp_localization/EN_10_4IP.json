@@ -1216,7 +1216,8 @@
             "locator_col_header": "D",
             "locator_string_header": "Storage heat losses",
             "locator_col_entry": "J",
-            "locator_string_entry": "Storage type 1",
+            "locator_string_entry": "Storage type",
+            "entry_row_start": 191,
             "input_columns": {
                 "tank_1": "J",
                 "tank_2": "M",

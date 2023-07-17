@@ -774,6 +774,7 @@ class DhwTanks(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
+    entry_row_start: int
     input_columns: DhwTankInputColumns
     tank_type: DhwTankInputOptions
     tank_location: DhwTankInputOptions
