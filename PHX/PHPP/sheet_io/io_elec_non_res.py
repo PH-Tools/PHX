@@ -122,8 +122,8 @@ class Lighting:
         """
 
         for i in range(self.section_first_entry_row, self.section_last_entry_row):
-            exg_srfc_row = self.get_lighting_row_data(i)
-            yield i, exg_srfc_row
+            exg_surface_row = self.get_lighting_row_data(i)
+            yield i, exg_surface_row
 
     @property
     def used_lighting_row_numbers(self) -> Generator[int, None, None]:
@@ -140,16 +140,30 @@ class Lighting:
             if val is not None
         )
 
-    def set_lighting_power_density(self, _row_num: int, _power_density: float):
+    def _get_target_unit(self, _field_name: str) -> str:
+        "Return the right target unit for the PHPP item writing (IP | SI)"
+        return getattr(self.shape.lighting_rows.inputs, _field_name).unit
+
+    def set_lighting_power_density(
+        self, _row_num: int, _power_density: float, _unit: str = "W/M2"
+    ) -> None:
         """Set the lighting power density for the given row number."""
-        _range = f"{self.shape.lighting_rows.inputs.installed_power}{_row_num}"
-        self.xl.write_xl_item(xl_data.XlItem(self.shape.name, _range, _power_density))
+        _range = f"{self.shape.lighting_rows.inputs.installed_power.column}{_row_num}"
+        self.xl.write_xl_item(
+            xl_data.XlItem(
+                sheet_name=self.shape.name,
+                xl_range=_range,
+                write_value=_power_density,
+                input_unit=_unit,
+                target_unit=self._get_target_unit("installed_power"),
+            )
+        )
 
 
 class ElecNonRes:
     """IO Controller for the PHPP "Electricity non-res" worksheet."""
 
-    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.ElecNonRes):
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.ElecNonRes) -> None:
         self.xl = _xl
         self.shape = _shape
         self.lighting = Lighting(self.xl, self.shape)

@@ -387,13 +387,13 @@ class Areas:
     def get_total_net_wall_area(self) -> Unit:
         """Return the total net (apertures punched) wall area from the PHPP Areas worksheet."""
         item = self.shape.defined_ranges.exposed_wall_area
-        value = self.xl.get_single_data_item(f"{item.row}{item.column}", self.shape.name)
+        value = self.xl.get_single_data_item(self.shape.name, f"{item.column}{item.row}")
         return Unit(float(value or 0.0), str(item.unit))
 
     def get_total_net_roof_area(self) -> Unit:
         """Return the total net (apertures punched) Roof area from the PHPP Areas worksheet."""
         item = self.shape.defined_ranges.roof_ceiling_area
-        value = self.xl.get_single_data_item(f"{item.row}{item.column}", self.shape.name)
+        value = self.xl.get_single_data_item(self.shape.name, f"{item.column}{item.row}")
         return Unit(float(value or 0.0), str(item.unit))
 
     def get_total_vertical_window_area(self) -> Unit:
@@ -422,7 +422,7 @@ class Areas:
         io_windows.get_total_skylight_area() function to get the total skylight area.
         """
         item = self.shape.defined_ranges.window_area_horizontal
-        value = self.xl.get_single_data_item(f"{item.row}{item.column}", self.shape.name)
+        value = self.xl.get_single_data_item(self.shape.name, f"{item.column}{item.row}")
         return Unit(float(value or 0.0), str(item.unit))
 
     def set_surface_row_construction(

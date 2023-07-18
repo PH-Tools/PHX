@@ -1407,7 +1407,10 @@
                 "window_width": "Q",
                 "daily_utilization": "T",
                 "nominal_illumination": "R",
-                "installed_power": "U",
+                "installed_power": {
+                    "column": "U",
+                    "unit": "W/M2"
+                },
                 "lighting_control": "W",
                 "motion_detector_used": "X",
                 "utilization_hours_year": "AA",

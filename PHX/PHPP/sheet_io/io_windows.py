@@ -6,6 +6,8 @@
 from __future__ import annotations
 from typing import List, Optional, Generator
 
+from ph_units.unit_type import Unit
+
 from PHX.xl import xl_app
 from PHX.xl.xl_data import col_offset, XlItem
 from PHX.PHPP.phpp_model.windows_rows import WindowRow, get_name_from_glazing_id
@@ -202,7 +204,7 @@ class Windows:
 
         return [str(_) for _ in xl_data if _]
 
-    def get_total_window_area(self, _tolerance: float = 1.0) -> float:
+    def get_total_window_area(self, _tolerance: float = 1.0) -> Unit:
         """Return the total window area from the PHPP Windows worksheet."""
         angle_data = self.xl.get_single_column_data(
             self.shape.name,
@@ -224,9 +226,9 @@ class Windows:
             if abs(90 - float(angle)) < _tolerance:
                 areas.append(float(area))
 
-        return sum(areas)
+        return Unit(sum(areas), str(self.shape.window_rows.inputs.window_area.unit))
 
-    def get_total_skylight_area(self, _tolerance: float = 1.0) -> float:
+    def get_total_skylight_area(self, _tolerance: float = 1.0) -> Unit:
         """Return the total skylight area from the PHPP Windows worksheet."""
         angle_data = self.xl.get_single_column_data(
             self.shape.name,
@@ -248,7 +250,7 @@ class Windows:
             if abs(90 - float(angle)) > _tolerance:
                 areas.append(float(area))
 
-        return sum(areas)
+        return Unit(sum(areas), str(self.shape.window_rows.inputs.window_area.unit))
 
     def get_all_glazing_names(self) -> set[str]:
         """Return a set of all the construction names used in the Areas worksheet."""
@@ -308,7 +310,7 @@ class Windows:
         )
 
         # -- Calculate current area
-        current_area = float(height) * float(width)
+        current_area = float(height) * float(width)  # type: ignore
         desired_area = current_area * _scale_factor
 
         # -- Calculate scaling factor

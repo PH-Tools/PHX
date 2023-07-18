@@ -1412,7 +1412,10 @@
                 "window_width": "O",
                 "daily_utilization": "P",
                 "nominal_illumination": "R",
-                "installed_power": "S",
+                "installed_power": {
+                    "column": "S",
+                    "unit": "W/FT2"
+                },
                 "lighting_control": "V",
                 "motion_detector_used": "W",
                 "utilization_hours_year": "X",

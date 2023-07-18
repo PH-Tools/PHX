@@ -8,6 +8,7 @@ from enum import Enum
 
 
 class ComponentFaceType(Enum):
+    NONE = 0
     WALL = 1
     FLOOR = 2
     ROOF_CEILING = 3
@@ -26,6 +27,7 @@ class ComponentFaceType(Enum):
 
 
 class ComponentExposureExterior(Enum):
+    NONE = 0
     EXTERIOR = -1
     GROUND = -2
     SURFACE = -3

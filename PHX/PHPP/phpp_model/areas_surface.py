@@ -112,15 +112,24 @@ class ExistingSurfaceRow:
     group_type_exposure_map: Dict[int, str]  # From io_areas.Areas() parent class
 
     @property
+    def is_empty(self) -> bool:
+        if self.name in ["-", "", "None", None]:
+            return True
+        if self.face_group_type_phpp_string in ["-", "", "None", None]:
+            return True
+        if self.face_group_type_phpp_number == 0:
+            return True
+        if self.face_type == ComponentFaceType.NONE:
+            return True
+        if self.face_exposure == ComponentExposureExterior.NONE:
+            return True
+        return False
+
+    @property
     def name(self) -> str:
         col_letter = self.shape.surface_rows.inputs.description.column
         col_number_as_index = xl_data.xl_ord(str(col_letter)) - 65
         return str(self.data[col_number_as_index])
-
-    @property
-    def no_name(self) -> bool:
-        """Return True if the name in the row-data is "-" or None."""
-        return self.name == "-" or self.name is None
 
     @property
     def face_group_type_phpp_string(self) -> str:
@@ -132,16 +141,24 @@ class ExistingSurfaceRow:
     @property
     def face_group_type_phpp_number(self) -> int:
         """Return the face's Group-Type number as an int from the Group-Type string."""
-        result = re.split(r"\D+", self.face_group_type_phpp_string, 2)
+        phpp_data = self.face_group_type_phpp_string
+        if phpp_data in ["-", "", "None", None]:
+            return 0
+
+        result = re.split(r"\D+", phpp_data, 2)
         if not result:
-            msg = f"Error getting Group-Type number? Could not find a number in the Group-Type string {self.face_group_type_phpp_string}?"
+            msg = (
+                f"Error getting Group-Type number? Could not find a number "
+                f"in the Group-Type string from PHPP: '{phpp_data}'?"
+            )
             raise Exception(msg)
 
         try:
             return int(result[0])
         except:
             msg = (
-                f"Error getting Group-Type number? Could not convert {result[0]} to int?"
+                f"Error getting Group-Type number? Could not convert '{result[0]}' "
+                f"to int from the PHPP value: '{phpp_data}' or type: {type(phpp_data)}?"
             )
             raise Exception(msg)
 
@@ -151,9 +168,10 @@ class ExistingSurfaceRow:
         return self.group_type_exposure_map[self.face_group_type_phpp_number]
 
     @property
-    def face_type(self):
+    def face_type(self) -> ComponentFaceType:
         """Return the face type enum (WALL, FLOOR, etc..) based on the group_type_phpp_number."""
         type_map = {
+            0: ComponentFaceType.NONE,
             2: ComponentFaceType.WINDOW,
             3: ComponentFaceType.WINDOW,
             4: ComponentFaceType.WINDOW,
@@ -172,11 +190,12 @@ class ExistingSurfaceRow:
         return type_map[self.face_group_type_phpp_number]
 
     @property
-    def face_exposure(self):
+    def face_exposure(self) -> ComponentExposureExterior:
         """Return the exposure type enum (EXTERIOR, GROUND, SURFACE) based on the face_exposure_phpp_letter"""
         type_map = {
             "A": ComponentExposureExterior.EXTERIOR,
             "B": ComponentExposureExterior.GROUND,
+            "": ComponentExposureExterior.NONE,
         }
         return type_map.get(
             self.face_exposure_phpp_letter, ComponentExposureExterior.SURFACE

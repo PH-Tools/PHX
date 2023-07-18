@@ -905,7 +905,7 @@ class InputsLightingRowsElecNonRes(BaseModel):
     window_width: str
     daily_utilization: str
     nominal_illumination: str
-    installed_power: str
+    installed_power: InputItem
     lighting_control: str
     motion_detector_used: str
     utilization_hours_year: str
