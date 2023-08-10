@@ -112,8 +112,8 @@ def create_PhxPolygonRectangular_from_hb_Face(
     # -- which is not aligned when the face has been rotated.
     vertices = face_polygon.upper_left_counter_clockwise_vertices
     phx_polygon.vertix_upper_left = create_PhxVertix_from_lbt_Point3D(vertices[0])
-    phx_polygon.vertix_upper_right = create_PhxVertix_from_lbt_Point3D(vertices[1])
+    phx_polygon.vertix_lower_left = create_PhxVertix_from_lbt_Point3D(vertices[1])
     phx_polygon.vertix_lower_right = create_PhxVertix_from_lbt_Point3D(vertices[2])
-    phx_polygon.vertix_lower_left = create_PhxVertix_from_lbt_Point3D(vertices[3])
+    phx_polygon.vertix_upper_right = create_PhxVertix_from_lbt_Point3D(vertices[3])
 
     return phx_polygon
