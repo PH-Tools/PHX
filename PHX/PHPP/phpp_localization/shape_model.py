@@ -370,10 +370,19 @@ class ComponentsVentilatorsInputs(BaseModel):
 
 
 class ComponentsGlazings(BaseModel):
-    locator_col_header: str
-    locator_string_header: str
-    locator_col_entry: str
-    locator_string_entry: str
+    """
+    Note: this is done differently for glazing than everywhere else because
+    in PHPP10, there is a potential Excel formula error in cell IH9 where it
+    references the climate data. If the climate is NOT already set, this will
+    Error. Then because of a bug in MacOS AppleScript:
+    (https://github.com/xlwings/xlwings/issues/1924) XL-Wings will silently pass
+    by this cell, which then throws off the row count. Therefor to avoid,
+    just hard-coding the start row in this case.
+    """
+
+    entry_column: str
+    entry_start_row: int
+    header_start_row: int
     inputs: ComponentsGlazingsInputs
 
 

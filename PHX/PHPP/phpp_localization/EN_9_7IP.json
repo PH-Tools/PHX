@@ -492,10 +492,9 @@
     "COMPONENTS": {
         "name": "Components",
         "glazings": {
-            "locator_col_header": "ID",
-            "locator_string_header": "Glazing",
-            "locator_col_entry": "ID",
-            "locator_string_entry": "01ud",
+            "entry_column":"ID",
+            "entry_start_row": 15,
+            "header_start_row": 10,
             "inputs": {
                 "id": {
                     "column": "ID",

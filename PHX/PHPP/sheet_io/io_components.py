@@ -60,39 +60,26 @@ class Glazings:
 
     def find_section_header_row(self, _row_start: int = 1, _row_end: int = 100) -> int:
         """Return the row number of the Glazings section header."""
-        xl_data = self.xl.get_single_column_data(
-            _sheet_name=self.shape.name,
-            _col=self.shape.glazings.locator_col_header,
-            _row_start=_row_start,
-            _row_end=_row_end,
-        )
-
-        for i, val in enumerate(xl_data):
-            if self.shape.glazings.locator_string_header == val:
-                return i
-
-        raise Exception(
-            f"Error: Cannot find the '{self.shape.glazings.locator_string_header}'"
-            f"header on the '{self.shape.name}' sheet, column {self.shape.glazings.locator_col_header}?"
-        )
+        # -- Note: this is done differently for glazing than everywhere else because
+        # -- in PHPP10, there is a potential Excel formula error in cell IH9 where it
+        # -- references the climate data. If the climate is NOT already set, this will
+        # -- Error. Then because of a bug in MacOS AppleScript:
+        # -- (https://github.com/xlwings/xlwings/issues/1924) XL-Wings will silently pass
+        # -- by this cell, which then throws off the row count. Therefor to avoid,
+        # -- just hard-coding the start row in this case.
+        return self.shape.glazings.entry_start_row
 
     def find_section_first_entry_row(self) -> int:
         """Return the row number of the very first user-input entry row in the Glazing input section."""
-        xl_data = self.xl.get_single_column_data(
-            _sheet_name=self.shape.name,
-            _col=self.shape.glazings.locator_col_entry,
-            _row_start=self.section_header_row,
-            _row_end=self.section_header_row + 25,
-        )
+        # -- Note: this is done differently for glazing than everywhere else because
+        # -- in PHPP10, there is a potential Excel formula error in cell IH9 where it
+        # -- references the climate data. If the climate is NOT already set, this will
+        # -- Error. Then because of a bug in MacOS AppleScript:
+        # -- (https://github.com/xlwings/xlwings/issues/1924) XL-Wings will silently pass
+        # -- by this cell, which then throws off the row count. Therefor to avoid,
+        # -- just hard-coding the start row in this case.
 
-        for i, val in enumerate(xl_data, start=self.section_header_row):
-            if val == self.shape.glazings.locator_string_entry:
-                return i
-
-        raise Exception(
-            f"Error: Cannot find the '{self.shape.glazings.locator_string_entry}' "
-            f" entry start on the '{self.shape.name}' sheet, column {self.shape.glazings.locator_col_entry}?"
-        )
+        return self.shape.glazings.entry_start_row
 
     def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
         """Return the last row of the glazing input section."""

@@ -497,10 +497,9 @@
     "COMPONENTS": {
         "name": "Components",
         "glazings": {
-            "locator_col_header": "IH",
-            "locator_string_header": "Glazing and door panels",
-            "locator_col_entry": "IH",
-            "locator_string_entry": "01ud",
+            "entry_column":"IH",
+            "entry_start_row":13,
+            "header_start_row": 8,
             "inputs": {
                 "id": {
                     "column": "IH",

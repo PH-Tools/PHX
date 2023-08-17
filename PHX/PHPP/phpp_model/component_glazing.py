@@ -60,4 +60,6 @@ class GlazingRow:
             ),
         ]
 
-        return xl_item_list
+        items_merged = xl_data.merge_xl_item_row(xl_item_list)
+
+        return items_merged

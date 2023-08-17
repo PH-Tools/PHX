@@ -360,7 +360,6 @@ class XLConnection:
         self.output(f"Reading: '{address}' data on sheet: '{_sheet_name}'")
 
         sheet = self.get_sheet_by_name(_sheet_name)
-        # sheet.activate()
         col_range = sheet.range(f"{address}")
         return col_range.value  # type: ignore
 
