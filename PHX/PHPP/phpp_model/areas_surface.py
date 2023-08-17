@@ -66,7 +66,9 @@ class SurfaceRow:
         XLItemAreas = partial(xl_data.XlItem, _sheet_name)
         return [
             XLItemAreas(create_range("description"), f"'{self.phx_polygon.display_name}"),
-            XLItemAreas(create_range("group_number"), self.phpp_group_number),
+            # -- Note, Add a "-" to the group number so that it is 'text' otherwise the
+            # -- IP PHPP won't recognize it properly.
+            XLItemAreas(create_range("group_number"), f"{self.phpp_group_number}-"),
             XLItemAreas(create_range("quantity"), 1),
             XLItemAreas(
                 create_range("area"),
