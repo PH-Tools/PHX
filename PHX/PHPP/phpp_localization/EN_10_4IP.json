@@ -205,10 +205,10 @@
                 "latitude": "F",
                 "longitude": "H",
                 "elevation": "J",
-                "elevation_unit": "M",
+                "elevation_unit": "FT",
                 "display_name": "L",
                 "summer_delta_t": "N",
-                "summer_delta_t_unit": "DELTA-C",
+                "summer_delta_t_unit": "DELTA-F",
                 "source": "P"
             },
             "input_rows": {
