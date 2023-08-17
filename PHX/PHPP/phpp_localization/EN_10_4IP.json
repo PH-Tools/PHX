@@ -113,14 +113,14 @@
         },
         "setpoint_winter": {
             "locator_col": "J",
-            "locator_string": "Interior temperature winter [°C]:",
+            "locator_string": "Interior temperature winter [°F]:",
             "input_column": "K",
             "input_row_offset": 0,
             "unit": "F"
         },
         "setpoint_summer": {
             "locator_col": "M",
-            "locator_string": "Interior temp. summer [°C]:",
+            "locator_string": "Interior temp. summer [°F]:",
             "input_column": "N",
             "input_row_offset": 0,
             "unit": "F"
@@ -695,11 +695,11 @@
                 },
                 "width": {
                     "column": "R",
-                    "unit": "M"
+                    "unit": "FT"
                 },
                 "height": {
                     "column": "S",
-                    "unit": "M"
+                    "unit": "FT"
                 },
                 "host": {
                     "column": "T",
