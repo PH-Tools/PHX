@@ -43,8 +43,8 @@ from PHX.from_HBJSON import (
     create_foundations,
 )
 from PHX.from_HBJSON.create_shw import (
-    build_phx_piping,
-    build_phx_piping,
+    build_phx_pipe_element,
+    build_phx_trunk_pipe,
     build_phx_hw_heater,
     build_phx_hw_storage,
 )
@@ -832,16 +832,18 @@ def add_dhw_piping_from_hb_rooms(
             continue
         hb_shw_prop_ph: SHWSystemPhProperties = prop_energy.shw.properties.ph  # type: ignore
 
-        # -- Add the DHW Branch Piping
-        for branch_piping_element in hb_shw_prop_ph.branch_piping:
-            phx_mech_sys.add_branch_piping(build_phx_piping(branch_piping_element))
+        # -- Add the DHW Distribution Piping
+        for distribution_piping_element in hb_shw_prop_ph.distribution_piping:
+            phx_mech_sys.add_distribution_piping(
+                build_phx_trunk_pipe(distribution_piping_element)
+            )
 
         # -- Set the tap points
         phx_mech_sys._distribution_num_hw_tap_points = hb_shw_prop_ph.number_tap_points
 
         # -- Add the DHW Recirculation Piping
         for recirc_piping_element in hb_shw_prop_ph.recirc_piping:
-            phx_mech_sys.add_recirc_piping(build_phx_piping(recirc_piping_element))
+            phx_mech_sys.add_recirc_piping(build_phx_pipe_element(recirc_piping_element))
 
         # -- Get the DHW recirculation parameters
         recirc_temps.add(hb_shw_prop_ph.recirc_temp)

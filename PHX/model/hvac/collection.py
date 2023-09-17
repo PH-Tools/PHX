@@ -151,7 +151,7 @@ class PhxRenewableDeviceCollection:
             return
         self._devices[_key] = _d
 
-    def group_devices_by_identifer(
+    def group_devices_by_identifier(
         self, _devices: List[AnyRenewableDevice]
     ) -> Dict[str, List[AnyRenewableDevice]]:
         d = defaultdict(list)
@@ -170,7 +170,7 @@ class PhxRenewableDeviceCollection:
 
     def merge_all_devices(self) -> None:
         """Merge all the devices in the collection together by identifier."""
-        pv_devices = self.group_devices_by_identifer(self.pv_devices)
+        pv_devices = self.group_devices_by_identifier(self.pv_devices)
 
         # -- start fresh
         self.clear_all_devices()
@@ -299,7 +299,7 @@ class PhxSupportiveDeviceCollection:
             return
         self._devices[_key] = _d
 
-    def group_devices_by_identifer(
+    def group_devices_by_identifier(
         self, _devices: List[PhxSupportiveDevice]
     ) -> Dict[str, List[PhxSupportiveDevice]]:
         d = defaultdict(list)
@@ -318,14 +318,14 @@ class PhxSupportiveDeviceCollection:
 
     def merge_all_devices(self) -> None:
         """Merge all the devices in the collection together by identifier."""
-        heat_circulating_pumps = self.group_devices_by_identifer(
+        heat_circulating_pumps = self.group_devices_by_identifier(
             self.heat_circulating_pumps
         )
-        dhw_circulating_pumps = self.group_devices_by_identifer(
+        dhw_circulating_pumps = self.group_devices_by_identifier(
             self.dhw_circulating_pumps
         )
-        dhw_storage_pumps = self.group_devices_by_identifer(self.dhw_storage_pumps)
-        others = self.group_devices_by_identifer(self.other_devices)
+        dhw_storage_pumps = self.group_devices_by_identifier(self.dhw_storage_pumps)
+        others = self.group_devices_by_identifier(self.other_devices)
 
         # -- start fresh
         self.clear_all_devices()
@@ -498,7 +498,7 @@ class PhxMechanicalSystemCollection:
     _distribution_hw_recirculation_params: PhxRecirculationParameters = field(
         default_factory=PhxRecirculationParameters
     )
-    _distribution_piping_branches: Dict[str, hvac.PhxPipeElement] = field(
+    _distribution_piping_trunks: Dict[str, hvac.PhxPipeTrunk] = field(
         default_factory=dict
     )
     _distribution_piping_recirc: Dict[str, hvac.PhxPipeElement] = field(
@@ -580,8 +580,8 @@ class PhxMechanicalSystemCollection:
     # -------------------------------------------------------------------------
     #  -- Distribution Piping and Ducting
 
-    def add_branch_piping(self, _p: hvac.PhxPipeElement) -> None:
-        self._distribution_piping_branches[_p.identifier] = _p
+    def add_distribution_piping(self, _p: hvac.PhxPipeTrunk) -> None:
+        self._distribution_piping_trunks[_p.identifier] = _p
 
     def add_recirc_piping(self, _p: hvac.PhxPipeElement) -> None:
         self._distribution_piping_recirc[_p.identifier] = _p
@@ -639,18 +639,44 @@ class PhxMechanicalSystemCollection:
         ]
 
     @property
-    def dhw_branch_piping(self) -> List[hvac.PhxPipeElement]:
-        """Returns a list of all the DHW branch-piping in the collection."""
-        return list(self._distribution_piping_branches.values())
+    def dhw_distribution_trunks(self) -> list[hvac.PhxPipeTrunk]:
+        return list(self._distribution_piping_trunks.values())
 
     @property
-    def dhw_branch_piping_segments_by_diam(self) -> List[List[hvac.PhxPipeSegment]]:
+    def dhw_distribution_piping(self) -> List[hvac.PhxPipeElement]:
+        """Returns a list of ALL the DHW Piping from ALL Trunks, Branches, Twigs in the collection."""
+        piping: List[hvac.PhxPipeElement] = []
+
+        for trunk in self._distribution_piping_trunks.values():
+            piping.append(trunk.pipe_element)
+            for branch in trunk.branches:
+                piping.append(branch.pipe_element)
+                for fixture in branch.fixtures:
+                    piping.append(fixture)
+
+        return piping
+
+    @property
+    def dhw_distribution_piping_segments(self) -> List[hvac.PhxPipeSegment]:
+        """Returns a list of ALL the DHW Piping Segments from ALL Trunks, Branches, Twigs in the collection."""
+        pipe_segments: List[hvac.PhxPipeSegment] = []
+
+        for trunk in self._distribution_piping_trunks.values():
+            pipe_segments.extend(trunk.pipe_element.segments)
+            for branch in trunk.branches:
+                pipe_segments.extend(branch.pipe_element.segments)
+                for fixture in branch.fixtures:
+                    pipe_segments.extend(fixture.segments)
+
+        return pipe_segments
+
+    @property
+    def dhw_distribution_piping_segments_by_diam(self) -> List[List[hvac.PhxPipeSegment]]:
         """Returns a list of the DHW branch-piping segments, grouped by diameter."""
         # -- Group piping segments by diameter
         d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
-        for pipe in self.dhw_branch_piping:
-            for segment in pipe.segments:
-                d[segment.diameter_m].append(segment)
+        for pipe_segment in self.dhw_distribution_piping_segments:
+            d[pipe_segment.diameter_m].append(pipe_segment)
 
         return list(d.values())
 
@@ -694,18 +720,18 @@ class PhxMechanicalSystemCollection:
         return weighted_total / self.dhw_recirc_total_length_m
 
     @property
-    def dhw_branch_total_length_m(self) -> float:
-        return sum(_.length_m for _ in self.dhw_branch_piping)
+    def dhw_distribution_total_length_m(self) -> float:
+        return sum(_.length_m for _ in self.dhw_distribution_piping_segments)
 
     @property
-    def dhw_branch_weighted_diameter_mm(self) -> Optional[float]:
-        """Return a length-weighted average diameter."""
-        if not self.dhw_branch_total_length_m:
+    def dhw_distribution_weighted_diameter_mm(self) -> Optional[float]:
+        """Return a length-weighted average diameter for the trunk/branch/twig piping."""
+        if not self.dhw_distribution_total_length_m:
             return None
 
         weighted_total = 0.0
-        for phx_pipe_element in self.dhw_branch_piping:
+        for phx_pipe_element in self.dhw_distribution_piping:
             weighted_total += (
                 phx_pipe_element.weighted_diameter_mm * phx_pipe_element.length_m
             )
-        return weighted_total / self.dhw_branch_total_length_m
+        return weighted_total / self.dhw_distribution_total_length_m

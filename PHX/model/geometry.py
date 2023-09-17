@@ -91,6 +91,12 @@ class PhxVertix:
     def __hash__(self) -> int:
         return hash(self.unique_key)
 
+    def distance_to(self, other: PhxVertix) -> float:
+        """Return the distance between this vertex and another."""
+        return math.sqrt(
+            (self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2
+        )
+
 
 @dataclass
 class PhxVector:
@@ -452,6 +458,13 @@ class PhxPolygon:
             vertex.y += self.center.y
             vertex.z += self.center.z
 
+    def perimeter_length(self) -> float:
+        """Calculate the total perimeter length of the polygon."""
+        perimeter = 0.0
+        for i in range(len(self.vertices)):
+            perimeter += self.vertices[i].distance_to(self.vertices[i - 1])
+        return perimeter
+
 
 @dataclass
 class PhxPolygonRectangular(PhxPolygon):
@@ -530,6 +543,10 @@ class PhxPolygonRectangular(PhxPolygon):
     def area(self) -> float:
         """Returns the area of the rectangular surface."""
         return self.width * self.height
+
+    def perimeter_length(self) -> float:
+        """Calculate the total perimeter length of the polygon."""
+        return (2 * self.width) + (2 * self.height)
 
 
 @dataclass

@@ -5,7 +5,11 @@
 
 from honeybee_energy_ph.hvac import hot_water
 
-from PHX.model.enums.hvac import PhxHotWaterTankType
+from PHX.model.enums.hvac import (
+    PhxHotWaterTankType,
+    PhxHotWaterPipingMaterial,
+    PhxHotWaterPipingDiameter,
+)
 from PHX.model import hvac
 from PHX.model.hvac import piping
 
@@ -125,17 +129,16 @@ def build_phx_hw_heater(
 # -- Piping ----
 
 
-def build_phx_piping(_hbph_pipe: hot_water.PhPipeElement) -> hvac.PhxPipeElement:
-    """Create a new PHX Water Pipe based on an input Honeybee-PH Water Pipe.
+def build_phx_pipe_element(_hbph_pipe: hot_water.PhPipeElement) -> hvac.PhxPipeElement:
+    """Create new PHX-Pipe based on an input Honeybee-PH-Pipe.
 
     Arguments:
     ----------
-        * _hbph_pipe: (hot_water.PhPipeElement): The Honeybee-PH Pipe to use as
-            the source.
+        * _hbph_pipe: The Honeybee-PH Pipe to use as the source.
 
     Returns:
     --------
-        * (piping.PhxPipeElement): The new PhxPipeElement created.
+        * The new PHX Pipe Element created.
     """
 
     phx_pipe = piping.PhxPipeElement(_hbph_pipe.identifier, _hbph_pipe.display_name)
@@ -145,7 +148,8 @@ def build_phx_piping(_hbph_pipe: hot_water.PhPipeElement) -> hvac.PhxPipeElement
                 segment.identifier,
                 segment.display_name,
                 segment.geometry,
-                segment.diameter_m,
+                PhxHotWaterPipingMaterial(segment.material.number),
+                PhxHotWaterPipingDiameter(segment.diameter.number),
                 segment.insulation_thickness_m,
                 segment.insulation_conductivity,
                 segment.insulation_reflective,
@@ -155,3 +159,76 @@ def build_phx_piping(_hbph_pipe: hot_water.PhPipeElement) -> hvac.PhxPipeElement
         )
 
     return phx_pipe
+
+
+def build_phx_branch_pipe(_hbph_branch: hot_water.PhPipeBranch) -> hvac.PhxPipeBranch:
+    """Create new PHX-Branch based on an input Honeybee-PH-Branch.
+
+    Arguments:
+    ----------
+        * _hbph_branch: The Honeybee-PH-Branch to use as the source.
+
+    Returns:
+    --------
+        * The new PHX-Branch created.
+    """
+
+    phx_pipe_branch = piping.PhxPipeBranch(
+        _hbph_branch.identifier, _hbph_branch.display_name
+    )
+    for segment in _hbph_branch.segments:
+        phx_pipe_branch.pipe_element.add_segment(
+            piping.PhxPipeSegment(
+                segment.identifier,
+                segment.display_name,
+                segment.geometry,
+                PhxHotWaterPipingMaterial(segment.material.number),
+                PhxHotWaterPipingDiameter(segment.diameter.number),
+                segment.insulation_thickness_m,
+                segment.insulation_conductivity,
+                segment.insulation_reflective,
+                segment.insulation_quality,
+                segment.daily_period,
+            )
+        )
+
+    for fixture in _hbph_branch.fixtures:
+        phx_pipe_branch.add_fixture(build_phx_pipe_element(fixture))
+
+    return phx_pipe_branch
+
+
+def build_phx_trunk_pipe(_hbph_trunk: hot_water.PhPipeTrunk) -> hvac.PhxPipeTrunk:
+    """Create new PHX-Trunk based on an input Honeybee-PH-Trunk.
+
+    Arguments:
+    ----------
+        * _hbph_trunk: The Honeybee-PH-Trunk to use as the source.
+
+    Returns:
+    --------
+        * The new PHX-Trunk created.
+    """
+
+    phx_pipe_trunk = piping.PhxPipeTrunk(_hbph_trunk.identifier, _hbph_trunk.display_name)
+    phx_pipe_trunk.pipe_element.display_name = f"{_hbph_trunk.display_name}-PIPE"
+    for segment in _hbph_trunk.segments:
+        phx_pipe_trunk.pipe_element.add_segment(
+            piping.PhxPipeSegment(
+                segment.identifier,
+                segment.display_name,
+                segment.geometry,
+                PhxHotWaterPipingMaterial(segment.material.number),
+                PhxHotWaterPipingDiameter(segment.diameter.number),
+                segment.insulation_thickness_m,
+                segment.insulation_conductivity,
+                segment.insulation_reflective,
+                segment.insulation_quality,
+                segment.daily_period,
+            )
+        )
+
+    for branch in _hbph_trunk.branches:
+        phx_pipe_trunk.add_branch(build_phx_branch_pipe(branch))
+
+    return phx_pipe_trunk

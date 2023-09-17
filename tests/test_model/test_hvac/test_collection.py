@@ -156,7 +156,7 @@ def test_group_homogenous_supportive_devices(reset_class_counters):
     supp_device2 = copy(supp_device1)
     supp_device3 = copy(supp_device1)
 
-    gr = c1.group_devices_by_identifer([supp_device1, supp_device2, supp_device3])
+    gr = c1.group_devices_by_identifier([supp_device1, supp_device2, supp_device3])
     assert len(gr) == 1
 
 
@@ -166,7 +166,7 @@ def test_group_mixed_supportive_devices(reset_class_counters):
     supp_device2 = copy(supp_device1)
     supp_device3 = supportive_devices.PhxSupportiveDevice()
 
-    gr = c1.group_devices_by_identifer([supp_device1, supp_device2, supp_device3])
+    gr = c1.group_devices_by_identifier([supp_device1, supp_device2, supp_device3])
     assert len(gr) == 2
 
 

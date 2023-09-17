@@ -4,26 +4,37 @@
 """PHX Water Piping Distribution Objects."""
 
 from __future__ import annotations
-from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, field
+from typing import Dict, List, Any, Optional, ClassVar, Union
 import math
+from uuid import uuid4
 
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
+from ph_units.converter import convert
+from PHX.model.enums.hvac import (
+    PhxHotWaterPipingDiameter,
+    PhxHotWaterPipingCalcMethod,
+    PhxHotWaterPipingMaterial,
+)
 
 
 @dataclass
 class PhxRecirculationParameters:
-    calc_method = 1  # Simplified individual pipes
-    pipe_material = 1  # Copper M
-    demand_recirc = True
-    num_bathrooms = 1
-    hot_water_fixtures = 1
-    all_pipes_insulated = True
-    units_or_floors = 1
-    pipe_diameter_m = 1.0  # 3/8" Copper
-    air_temp = 20.0  # Deg C
-    water_temp = 60.0  # Deg C
-    daily_recirc_hours = 24
+    calc_method: PhxHotWaterPipingCalcMethod = field(
+        default=PhxHotWaterPipingCalcMethod.HOT_WATER_PIPING_FLOOR_METHOD
+    )
+    pipe_material: PhxHotWaterPipingMaterial = field(
+        default=PhxHotWaterPipingMaterial.COPPER_L
+    )
+    demand_recirc: bool = True
+    num_bathrooms: int = 1
+    hot_water_fixtures: int = 1
+    all_pipes_insulated: bool = True
+    units_or_floors: int = 1
+    pipe_diameter: float = 25.4  # MM - For simplified method only
+    air_temp: float = 20.0  # Deg C
+    water_temp: float = 60.0  # Deg C
+    daily_recirc_hours: float = 0.0
 
 
 @dataclass
@@ -33,17 +44,24 @@ class PhxPipeSegment:
     identifier: str
     display_name: str
     geometry: LineSegment3D
-    diameter_m: float
+    pipe_material: PhxHotWaterPipingMaterial
+    pipe_diameter: PhxHotWaterPipingDiameter
     insulation_thickness_m: float
     insulation_conductivity: float  # W/mk
     insulation_reflective: bool
     insulation_quality: Any
     daily_period: float
-
     pipe_wall_thickness_m: float = 0.00225
 
     @property
-    def diameter_mm(self):
+    def diameter_m(self) -> float:
+        diam_m = convert(self.pipe_diameter.name_as_float, "IN", "M")
+        if not diam_m:
+            raise ValueError(f"Could not convert {self.pipe_diameter.name} to meters?")
+        return diam_m
+
+    @property
+    def diameter_mm(self) -> float:
         return self.diameter_m * 1000
 
     @property
@@ -139,9 +157,15 @@ class PhxPipeSegment:
 class PhxPipeElement:
     """A Pipe Element / Run made of one or more PhxPipeSegments."""
 
-    identifier: str
-    display_name: str
+    _count: ClassVar[int] = 0
+    id_num: int = field(init=False, default=0)
+    identifier: str = str(uuid4())
+    display_name: str = "_unnamed_pipe_element_"
     _segments: Dict = field(default_factory=dict)
+
+    def __post_init__(self):
+        PhxPipeElement._count += 1
+        self.id_num = PhxPipeElement._count
 
     @property
     def segments(self) -> List[PhxPipeSegment]:
@@ -168,5 +192,83 @@ class PhxPipeElement:
             weighted_total += segment.diameter_mm * segment.length_m
         return weighted_total / self.length_m
 
+    @property
+    def material(self) -> PhxHotWaterPipingMaterial:
+        if not self.segments:
+            return PhxHotWaterPipingMaterial.COPPER_K
+
+        materials = list({s.pipe_material for s in self.segments})
+        if len(materials) != 1:
+            raise ValueError(
+                "Error: Pipe Element '{}' has multiple materials: '{}'."
+                "Please rebuild the pipe with a single material. {}".format(
+                    self.display_name, materials, self.segments
+                )
+            )
+        else:
+            return materials[0]
+
+    @property
+    def diameter(self) -> PhxHotWaterPipingDiameter:
+        if not self.segments:
+            return PhxHotWaterPipingDiameter._0_3_8_IN
+
+        diameters = list({s.pipe_diameter for s in self.segments})
+        if len(diameters) != 1:
+            raise ValueError(
+                "Error: Pipe Element '{}' has multiple diameters: '{}'."
+                "Please rebuild the pipe with a single diameter.".format(
+                    self.display_name, diameters
+                )
+            )
+        else:
+            return diameters[0]
+
+    @property
+    def demand_recirculation(self):
+        return False
+
     def add_segment(self, _s: PhxPipeSegment) -> None:
         self._segments[_s.identifier] = _s
+
+
+@dataclass
+class PhxPipeBranch:
+    """A Pipe Branch made of one or more Fixture-pipes (PhxPipeElement)."""
+
+    _count: ClassVar[int] = 0
+    id_num: int = field(init=False, default=0)
+    identifier: str = str(uuid4())
+    display_name: str = "_unnamed_pipe_branch_"
+    pipe_element: PhxPipeElement = field(default_factory=PhxPipeElement)
+    fixtures: List[PhxPipeElement] = field(default_factory=list)
+
+    def __post_init__(self):
+        PhxPipeBranch._count += 1
+        self.id_num = PhxPipeBranch._count
+
+    def add_fixture(self, _f: PhxPipeElement) -> None:
+        self.fixtures.append(_f)
+
+
+@dataclass
+class PhxPipeTrunk:
+    """A Pipe Trunk made of one or more Pipe Branches (PhxPipeBranch)."""
+
+    _count: ClassVar[int] = 0
+    id_num: int = field(init=False, default=0)
+    identifier: str = str(uuid4())
+    display_name: str = "_unnamed_pipe_trunk_"
+    pipe_element: PhxPipeElement = field(default_factory=PhxPipeElement)
+    branches: List[PhxPipeBranch] = field(default_factory=list)
+
+    def __post_init__(self):
+        PhxPipeTrunk._count += 1
+        self.id_num = PhxPipeTrunk._count
+
+    def add_branch(self, _b: PhxPipeBranch) -> None:
+        self.branches.append(_b)
+
+
+# -- Type Alias
+AnyPhxPiping = Union[PhxPipeElement, PhxPipeBranch, PhxPipeTrunk]

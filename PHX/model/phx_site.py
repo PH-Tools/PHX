@@ -236,6 +236,28 @@ class PhxClimate:
             and self.peak_cooling_2 == other.peak_cooling_2
         )
 
+    @property
+    def max_temperature_air(self) -> float:
+        """The maximum air temperature in the dataset."""
+        return max(self.temperature_air)
+
+    @property
+    def min_temperature_air(self) -> float:
+        """The minimum air temperature in the dataset."""
+        return min(self.temperature_air)
+
+    @property
+    def max_air_temperature_amplitude(self) -> float:
+        """The absolute difference between the maximum and minimum air temperature."""
+        return self.max_temperature_air - self.min_temperature_air
+
+    @property
+    def average_temperature_amplitude(self) -> float:
+        """The Average between the maximum and minimum air temperature.
+        This value is primarily used to calculate the ground heat loss in PHPP.
+        """
+        return (self.max_air_temperature_amplitude) / 2
+
 
 @dataclass
 class PhxPHPPCodes:

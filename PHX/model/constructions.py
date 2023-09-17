@@ -59,6 +59,14 @@ class PhxLayer:
 
         return obj
 
+    @property
+    def layer_resistance(self) -> float:
+        """Returns the conductance of the layer in W/m2K"""
+        try:
+            return (1 / self.material.conductivity) * self.thickness_m
+        except ZeroDivisionError:
+            return 0.0
+
 
 @dataclass
 class PhxConstructionOpaque:
@@ -84,6 +92,17 @@ class PhxConstructionOpaque:
         if not _in:
             return
         self._identifier = str(_in)
+
+    @property
+    def r_value(self) -> float:
+        return sum(l.layer_resistance for l in self.layers)
+
+    @property
+    def u_value(self) -> float:
+        try:
+            return 1 / self.r_value
+        except ZeroDivisionError:
+            return 0.0
 
     def __hash__(self) -> int:
         return hash(self.identifier)

@@ -59,6 +59,54 @@ class CoolingType(Enum):
     PANEL = 4
 
 
+class PhxHotWaterPipingCalcMethod(Enum):
+    SIMPLIFIED_INDIVIDUAL_PIPES = 1
+    SIMPLIFIED_HOT_WATER_CALCULATOR = 2
+    HOT_WATER_PIPING_UNIT_METHOD = 3
+    HOT_WATER_PIPING_FLOOR_METHOD = 4
+
+
+class PhxHotWaterPipingMaterial(Enum):
+    COPPER_M = 1
+    COPPER_L = 2
+    COPPER_K = 3
+    CPVC_CTS_SDR = 4
+    CPVC_SCH_40 = 5
+    PEX = 6
+    PE = 7
+    PEX_CTS_SDR = 8
+
+
+class PhxHotWaterPipingDiameter(Enum):
+    _0_3_8_IN = 1
+    _0_1_2_IN = 2
+    _0_5_8_IN = 3
+    _0_3_4_IN = 4
+    _1_0_0_IN = 5
+    _1_1_4_IN = 6
+    _1_1_2_IN = 7
+    _2_0_0_IN = 8
+
+    @property
+    def name_as_float(self) -> float:
+        """Return the name as a float. Oh my fucking god IP units are so stupid."""
+        # -- Remove the '_IN' suffix
+        name = str(self.name).split("_IN")[0]
+
+        # -- Remove the prefix underscore
+        name = name[1:]
+
+        # -- Split the fraction
+        parts = str(name).split("_")
+        try:
+            fraction = "{}".format(float(parts[1]) / float(parts[2]))
+        except ZeroDivisionError:
+            fraction = 0.0
+
+        # -- Return the whole
+        return float(parts[0]) + float(fraction)
+
+
 class PhxHotWaterInputOptions(Enum):
     SPEC_TOTAL_LOSSES = 1
     SPEC_STANDBY_LOSSES = 2

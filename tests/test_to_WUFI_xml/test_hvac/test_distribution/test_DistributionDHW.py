@@ -28,7 +28,7 @@ def test_DistributionDHW_Class(reset_class_counters):
     phx_pipe_element.add_segment(phx_pipe_segment)
 
     phx_mech_collection = PhxMechanicalSystemCollection()
-    phx_mech_collection.add_branch_piping(phx_pipe_element)
+    phx_mech_collection.add_distribution_piping(phx_pipe_element)
 
     result = generate_WUFI_XML_from_object(
         phx_mech_collection, _header="", _schema_name="_DistributionDHW"
