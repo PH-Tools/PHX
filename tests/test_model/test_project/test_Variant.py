@@ -14,8 +14,8 @@ def test_blank_variant(reset_class_counters):
     assert not var.mech_systems.cooling_devices
     assert not var.mech_systems.dhw_heating_devices
     assert not var.mech_systems.dhw_tank_devices
-    assert not var.mech_systems.dhw_branch_piping
-    assert not var.mech_systems.dhw_branch_piping_segments_by_diam
+    assert not var.mech_systems.dhw_distribution_piping_segments
+    assert not var.mech_systems.dhw_distribution_piping_segments_by_diam
     assert not var.mech_systems.dhw_recirc_piping
     assert not var.mech_systems.dhw_recirc_piping_segments_by_diam
     assert not var.mech_systems.supportive_devices

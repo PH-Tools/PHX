@@ -89,6 +89,10 @@ class PhxComponentOpaque(PhxComponentBase):
         return True
 
     @property
+    def u_value(self) -> float:
+        return self.assembly.u_value
+
+    @property
     def polygon_ids(self) -> Set[int]:
         """Return a Set of all the Polygon-id numbers found in the Component's Polygon group."""
         return {polygon.id_num for polygon in self.polygons}
@@ -114,6 +118,30 @@ class PhxComponentOpaque(PhxComponentBase):
         if self.face_type != ComponentFaceType.WALL:
             return False
         if self.exposure_exterior != ComponentExposureExterior.EXTERIOR:
+            return False
+        return True
+
+    @property
+    def is_below_grade_wall(self) -> bool:
+        if self.face_type != ComponentFaceType.WALL:
+            return False
+        if self.exposure_exterior != ComponentExposureExterior.GROUND:
+            return False
+        return True
+
+    @property
+    def is_above_grade_floor(self) -> bool:
+        if self.face_type != ComponentFaceType.FLOOR:
+            return False
+        if self.exposure_exterior != ComponentExposureExterior.EXTERIOR:
+            return False
+        return True
+
+    @property
+    def is_below_grade_floor(self) -> bool:
+        if self.face_type != ComponentFaceType.FLOOR:
+            return False
+        if self.exposure_exterior != ComponentExposureExterior.GROUND:
             return False
         return True
 
@@ -272,6 +300,39 @@ class PhxApertureElement(PhxComponentBase):
         if self.polygon is None:
             return 0.0
         return self.polygon.area
+
+    @property
+    def frame_factor(self) -> float:
+        """Return the % of the Aperture Element which is frame (as opposed to glazing)."""
+
+        window_type = self.host.window_type
+        frame_w_top = window_type.frame_top.width
+        frame_w_bottom = window_type.frame_bottom.width
+        frame_w_left = window_type.frame_left.width
+        frame_w_right = window_type.frame_right.width
+
+        if not self.polygon:
+            return 1.0
+
+        if isinstance(self.polygon, geometry.PhxPolygonRectangular):
+            frame_area = (
+                +(self.polygon.width * frame_w_top)
+                + (self.polygon.width * frame_w_bottom)
+                + (self.polygon.height * frame_w_left)
+                + (self.polygon.height * frame_w_right)
+            )
+        else:
+            avg_frame_width = (
+                frame_w_top + frame_w_bottom + frame_w_left + frame_w_right
+            ) / 4
+            frame_area = self.polygon.perimeter_length() * avg_frame_width
+
+        return frame_area / self.polygon.area
+
+    @property
+    def glazing_factor(self) -> float:
+        """Return the % of the Aperture Element which is glazing (as opposed to frame)."""
+        return 1 - self.frame_factor
 
     def is_equivalent(self, other: PhxApertureElement) -> bool:
         """Return True if the two elements are equivalent."""

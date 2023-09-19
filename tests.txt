@@ -1,0 +1,451 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.7.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/.venv/bin/python3.7
+cachedir: .pytest_cache
+rootdir: /Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX, configfile: pyproject.toml
+plugins: cov-4.0.0
+collecting ... collected 341 items
+
+docs/test_power.py::test_W PASSED                                        [  0%]
+docs/test_power.py::test_kW PASSED                                       [  0%]
+docs/test_power.py::test_Btu_hr PASSED                                   [  0%]
+docs/test_power.py::test_kBtu_aliases PASSED                             [  1%]
+docs/test_power.py::test_kBtu_hr PASSED                                  [  1%]
+tests/test_PHPP/test_shape_file.py::test_load_all_shape_files[version0] PASSED [  1%]
+tests/test_PHPP/test_shape_file.py::test_load_all_shape_files[version1] PASSED [  2%]
+tests/test_PHPP/test_shape_file.py::test_load_all_shape_files[version2] PASSED [  2%]
+tests/test_PHPP/test_shape_file.py::test_load_all_shape_files[version3] PASSED [  2%]
+tests/test_PHPP/test_shape_file.py::test_load_all_shape_files[version4] PASSED [  2%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_default <- tests/test_to_PHPP/test_xl_app.py PASSED [  3%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_get_WorkBook_success <- tests/test_to_PHPP/test_xl_app.py PASSED [  3%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_get_WorkBook_fail <- tests/test_to_PHPP/test_xl_app.py PASSED [  3%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_silent_mode <- tests/test_to_PHPP/test_xl_app.py PASSED [  4%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_unprotect_all_sheets <- tests/test_to_PHPP/test_xl_app.py PASSED [  4%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_create_new_worksheet <- tests/test_to_PHPP/test_xl_app.py PASSED [  4%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_create_new_worksheet_already_in_raises_ValueError <- tests/test_to_PHPP/test_xl_app.py PASSED [  4%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_get_sheet_by_name <- tests/test_to_PHPP/test_xl_app.py PASSED [  5%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_int_value[100000] <- tests/test_to_PHPP/test_xl_app.py PASSED [  5%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_int_value[1] <- tests/test_to_PHPP/test_xl_app.py PASSED [  5%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_int_value[0] <- tests/test_to_PHPP/test_xl_app.py PASSED [  6%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_int_value[-1] <- tests/test_to_PHPP/test_xl_app.py PASSED [  6%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_int_value[-100000] <- tests/test_to_PHPP/test_xl_app.py PASSED [  6%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_string_value[test] <- tests/test_to_PHPP/test_xl_app.py PASSED [  7%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_string_value[another] <- tests/test_to_PHPP/test_xl_app.py PASSED [  7%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_string_value[] <- tests/test_to_PHPP/test_xl_app.py PASSED [  7%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_list_of_ints <- tests/test_to_PHPP/test_xl_app.py PASSED [  7%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_raise_Attribute_error <- tests/test_to_PHPP/test_xl_app.py PASSED [  8%]
+tests/test_PHPP/test_xl_app.py::test_xl_app_write_raise_WriteValue_error <- tests/test_to_PHPP/test_xl_app.py PASSED [  8%]
+tests/test_PHPP/test_xl_data.py::test_XlItem <- tests/test_to_PHPP/test_xl_data.py PASSED [  8%]
+tests/test_PHPP/test_xl_data.py::test_XlItem_covert_M <- tests/test_to_PHPP/test_xl_data.py PASSED [  9%]
+tests/test_PHPP/test_xl_data.py::test_XlItem_covert_FT <- tests/test_to_PHPP/test_xl_data.py PASSED [  9%]
+tests/test_PHPP/test_xl_data.py::test_XlItem_list <- tests/test_to_PHPP/test_xl_data.py PASSED [  9%]
+tests/test_PHPP/test_xl_data_XlItem.py::test_XlItem <- tests/test_to_PHPP/test_xl_data_XlItem.py PASSED [  9%]
+tests/test_PHPP/test_xl_data_XlItem.py::test_XlItem_covert_M <- tests/test_to_PHPP/test_xl_data_XlItem.py PASSED [ 10%]
+tests/test_PHPP/test_xl_data_XlItem.py::test_XlItem_covert_FT <- tests/test_to_PHPP/test_xl_data_XlItem.py PASSED [ 10%]
+tests/test_PHPP/test_xl_data_XlItem.py::test_XlItem_list <- tests/test_to_PHPP/test_xl_data_XlItem.py PASSED [ 10%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_xl_item_merge_none <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 11%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_xl_item_different_sheets_do_not_merge <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 11%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_xl_item_different_rows_do_not_merge <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 11%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_xl_item_merge_single_group <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 12%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_xl_item_merge_2_groups <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 12%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_xl_item_merge_3_groups_in_order <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 12%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_xl_item_merge_3_groups_out_of_order <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 12%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_manual_add_item <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 13%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_manual_add_item_exception <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 13%]
+tests/test_PHPP/test_xl_data_XlItem_List.py::test_XlItem_List <- tests/test_to_PHPP/test_xl_data_XlItem_List.py PASSED [ 13%]
+tests/test_PHPP/test_xl_data_colums.py::test_xl_ord <- tests/test_to_PHPP/test_xl_data_colums.py PASSED [ 14%]
+tests/test_PHPP/test_xl_data_colums.py::test_xl_chr <- tests/test_to_PHPP/test_xl_data_colums.py PASSED [ 14%]
+tests/test_PHPP/test_xl_data_colums.py::test_xl_chr_equals_xl_ord <- tests/test_to_PHPP/test_xl_data_colums.py PASSED [ 14%]
+tests/test_PHPP/test_xl_data_colums.py::test_col_offset <- tests/test_to_PHPP/test_xl_data_colums.py PASSED [ 14%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_are_touching.py::test_are_touching_true PASSED [ 15%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_are_touching.py::test_are_touching_false PASSED [ 15%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_find_connected_components.py::test_find_connected_components_single_face PASSED [ 15%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_find_connected_components.py::test_find_connected_components_two_faces PASSED [ 16%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_find_connected_components.py::test_find_connected_components_three_faces PASSED [ 16%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_find_connected_components.py::test_find_connected_components_two_connected_faces PASSED [ 16%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_sort_faces_by_co_planar.py::test_sort_two_planar_faces_by_co_planar PASSED [ 17%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_sort_faces_by_co_planar.py::test_sort_two_non_planar_faces_by_co_planar PASSED [ 17%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_sort_faces_by_type.py::test_sort_faces_by_type PASSED [ 17%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_sort_faces_by_type.py::test_sort_faces_by_type_all_same PASSED [ 17%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_sort_faces_by_type.py::test_sort_faces_by_type_all_different PASSED [ 18%]
+tests/test_from_HBJSON/test_cleanup_merge_faces/test_sort_faces_by_type.py::test_sort_faces_by_type_mixed PASSED [ 18%]
+tests/test_from_HBJSON/test_create_assemblies/test_create_shade.py::test_create_phx_shade_from_hb_shade PASSED [ 18%]
+tests/test_from_HBJSON/test_create_assemblies/test_create_window_type.py::test_create_phx_window_from_hb_window_default PASSED [ 19%]
+tests/test_from_HBJSON/test_create_assemblies/test_create_window_type.py::test_create_phx_window_from_hb_window_with_ph_glazing PASSED [ 19%]
+tests/test_from_HBJSON/test_create_assemblies/test_create_window_type.py::test_create_phx_window_from_hb_window_with_ph_frame PASSED [ 19%]
+tests/test_from_HBJSON/test_create_assemblies/test_create_window_type.py::test_creat_phx_window_from_hb_window_with_ph_frame_and_ph_glazing PASSED [ 19%]
+tests/test_from_HBJSON/test_create_project/test_convert_hbjson_to_PHX_Project.py::test_convert_model_PhxProject[Default_Model_Single_Zone.hbjson-None] PASSED [ 20%]
+tests/test_from_HBJSON/test_create_project/test_convert_hbjson_to_PHX_Project.py::test_convert_model_PhxProject[Multi_Room_Complete.hbjson-None] PASSED [ 20%]
+tests/test_from_HBJSON/test_read_HBJSON_file/test_convert_hbjson_dict_to_hb_model.py::test_read_default_single_zone_model_no_conversion[Default_Model_Single_Zone.hbjson-None] PASSED [ 20%]
+tests/test_from_HBJSON/test_read_HBJSON_file/test_convert_hbjson_dict_to_hb_model.py::test_read_default_single_zone_model_no_conversion[Multi_Room_Complete.hbjson-None] PASSED [ 21%]
+tests/test_from_HBJSON/test_read_HBJSON_file/test_read_hb_json_from_file.py::test_read_default_single_zone_model PASSED [ 21%]
+tests/test_from_HBJSON/test_read_HBJSON_file/test_read_hb_json_from_file.py::test_read_default_single_zone_room PASSED [ 21%]
+tests/test_from_HBJSON/test_read_HBJSON_file/test_read_hb_json_from_file.py::test_read_not_a_real_file PASSED [ 21%]
+tests/test_from_WUFI/test_patterns_from_WUFI/test_new_xml_util_patterns_occupancy.py::test_vent_patterns_match PASSED [ 22%]
+tests/test_from_WUFI/test_patterns_from_WUFI/test_new_xml_util_patterns_ventilation.py::test_vent_patterns_match PASSED [ 22%]
+tests/test_from_WUFI/test_project_from_WUFI/test_new_xml_project_assemblies.py::test_assembly_types_match PASSED [ 22%]
+tests/test_from_WUFI/test_project_from_WUFI/test_new_xml_project_assemblies.py::test_assembly_type_layers_match PASSED [ 23%]
+tests/test_from_WUFI/test_project_from_WUFI/test_new_xml_project_assemblies.py::test_assembly_type_materials_match PASSED [ 23%]
+tests/test_from_WUFI/test_project_from_WUFI/test_new_xml_project_data.py::test_project_data PASSED [ 23%]
+tests/test_from_WUFI/test_project_from_WUFI/test_new_xml_project_windows.py::test_project_data PASSED [ 24%]
+tests/test_from_WUFI/test_project_from_WUFI/test_new_xml_project_windows.py::test_window_type_attributes_match PASSED [ 24%]
+tests/test_from_WUFI/test_project_from_WUFI/test_new_xml_project_windows.py::test_window_FrameElememt_attributes_match PASSED [ 24%]
+tests/test_from_WUFI/test_project_from_WUFI/test_read_xml_file.py::test_read_xml_file PASSED [ 24%]
+tests/test_from_WUFI/test_project_from_WUFI/test_read_xml_file.py::test_read_xml_and_convert_to_phx_project PASSED [ 25%]
+tests/test_from_WUFI/test_variants_from_WUFI/test_building_components.py::test_building_all_components_are_equal PASSED [ 25%]
+tests/test_from_WUFI/test_variants_from_WUFI/test_buildings.py::test_variant_buildings PASSED [ 25%]
+tests/test_from_WUFI/test_variants_from_WUFI/test_variants.py::test_project_variants PASSED [ 26%]
+tests/test_model/test_building/test_Building.py::test_default_Building PASSED [ 26%]
+tests/test_model/test_building/test_Building.py::test_add_single_component PASSED [ 26%]
+tests/test_model/test_building/test_Building.py::test_add_multiple_components PASSED [ 26%]
+tests/test_model/test_building/test_Building.py::test_add_single_zone PASSED [ 27%]
+tests/test_model/test_building/test_Building.py::test_add_multiple_zones PASSED [ 27%]
+tests/test_model/test_building/test_Building.py::test_group_compos_by_assembly_with_single_compo PASSED [ 27%]
+tests/test_model/test_building/test_ComponentOpaque.py::test_default_component_opaque PASSED [ 28%]
+tests/test_model/test_building/test_ComponentOpaque.py::test_add_with_empty_poly_ids PASSED [ 28%]
+tests/test_model/test_building/test_ComponentOpaque.py::test_add_polygons PASSED [ 28%]
+tests/test_model/test_building/test_Zone.py::test_default_zone PASSED    [ 29%]
+tests/test_model/test_building/test_Zone.py::test_add_exhaust_device PASSED [ 29%]
+tests/test_model/test_certification/test_PH_Building.py::test_default_PH_Building PASSED [ 29%]
+tests/test_model/test_certification/test_PH_Building.py::test_add_single_foundation PASSED [ 29%]
+tests/test_model/test_constructions/test_assembly.py::test_default_assembly PASSED [ 30%]
+tests/test_model/test_constructions/test_assembly.py::test_set_assembly_identifier PASSED [ 30%]
+tests/test_model/test_constructions/test_window_type.py::test_default_window_type PASSED [ 30%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_default_ElecEquipment PASSED [ 31%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxDishwasher PASSED [ 31%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxClothesWasher PASSED [ 31%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxClothesDryer PASSED [ 31%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxRefrigerator PASSED [ 32%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxFreezer PASSED [ 32%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxFridgeFreezer PASSED [ 32%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxCooktop PASSED [ 33%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxMEL PASSED [ 33%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxLightingInterior PASSED [ 33%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxLightingExterior PASSED [ 34%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxLightingGarage PASSED [ 34%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxCustomElec PASSED [ 34%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxCustomLighting PASSED [ 34%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxCustomMEL PASSED [ 35%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxElevatorHydraulic PASSED [ 35%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxElevatorGearedTraction PASSED [ 35%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipment.py::test_PhxElevatorGearlessTraction PASSED [ 36%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipmentCollection.py::test_empty_collection PASSED [ 36%]
+tests/test_model/test_elec_equip/test_PhxElectricalEquipmentCollection.py::test_add_single_equip_to_collection PASSED [ 36%]
+tests/test_model/test_geometry/test_Graphics3D.py::test_empty_Graphics3D PASSED [ 36%]
+tests/test_model/test_geometry/test_Graphics3D.py::test_add_single_polygon PASSED [ 37%]
+tests/test_model/test_geometry/test_Graphics3D.py::test_add_two_polygon PASSED [ 37%]
+tests/test_model/test_geometry/test_Polygon.py::test_blank_Polygon PASSED [ 37%]
+tests/test_model/test_geometry/test_Polygon.py::test_multiple_Polygon_id_numbers PASSED [ 38%]
+tests/test_model/test_geometry/test_Polygon.py::test_add_vertices_to_Polygon PASSED [ 38%]
+tests/test_model/test_geometry/test_Polygon.py::test_polgon_calculate_area_simple_rectangle_1 PASSED [ 38%]
+tests/test_model/test_geometry/test_Polygon.py::test_polgon_calculate_area_simple_rectangle_2 PASSED [ 39%]
+tests/test_model/test_geometry/test_Polygon.py::test_polgon_calculate_area_irregular_polygon_1 PASSED [ 39%]
+tests/test_model/test_geometry/test_Polygon.py::test_polgon_calculate_area_irregular_polygon_2 PASSED [ 39%]
+tests/test_model/test_geometry/test_Polygon.py::test_3D_polygon_calculate_area PASSED [ 39%]
+tests/test_model/test_geometry/test_Polygon.py::test_add_child_poly_id PASSED [ 40%]
+tests/test_model/test_geometry/test_Polygon.py::test_cube_polygons_cardinal_orientation_on_axis PASSED [ 40%]
+tests/test_model/test_geometry/test_Polygon.py::test_cube_polygons_vertical_orientation_on_axis PASSED [ 40%]
+tests/test_model/test_geometry/test_Polygon.py::test_cube_polygons_cardinal_orientation_rotated PASSED [ 41%]
+tests/test_model/test_geometry/test_Polygon.py::test_cube_polygons_vertical_orientation_rotated PASSED [ 41%]
+tests/test_model/test_geometry/test_Polygon.py::test_sq_pyramid_polygons_vertical_orientation_on_axis PASSED [ 41%]
+tests/test_model/test_geometry/test_Polygon.py::test_sq_pyramid_polygons_cardinal_orientation_on_axis PASSED [ 41%]
+tests/test_model/test_geometry/test_Polygon.py::test_sq_pyramid_polygons_vertical_orientation_rotated PASSED [ 42%]
+tests/test_model/test_geometry/test_Polygon.py::test_sq_pyramid_polygons_cardinal_orientation_rotated PASSED [ 42%]
+tests/test_model/test_geometry/test_Vertix.py::test_blank_vertix PASSED  [ 42%]
+tests/test_model/test_geometry/test_Vertix.py::test_multiple_vertices_id_num PASSED [ 43%]
+tests/test_model/test_geometry/test_Vertix.py::test_vertix_equality PASSED [ 43%]
+tests/test_model/test_geometry/test_Vertix.py::test_vertix_not_equal PASSED [ 43%]
+tests/test_model/test_geometry/test_Vertix.py::test_set_of_vertices PASSED [ 43%]
+tests/test_model/test_geometry/test_Vertix.py::test_unique_key PASSED    [ 44%]
+tests/test_model/test_hvac/test_base.py::test_PhxUsageProfile_add PASSED [ 44%]
+tests/test_model/test_hvac/test_base.py::test_add_default_PhxMechEquipmentParams PASSED [ 44%]
+tests/test_model/test_hvac/test_base.py::test_r_add_default_PhxMechEquipmentParams PASSED [ 45%]
+tests/test_model/test_hvac/test_base.py::test_sum_default_PhxMechEquipmentParams PASSED [ 45%]
+tests/test_model/test_hvac/test_base.py::test_add_mixed_PhxMechEquipmentParams PASSED [ 45%]
+tests/test_model/test_hvac/test_base.py::test_PhxMechanicalEquipment PASSED [ 46%]
+tests/test_model/test_hvac/test_base.py::test_add_default_PhxMechanicalEquipment PASSED [ 46%]
+tests/test_model/test_hvac/test_base.py::test_r_add_default_PhxMechanicalEquipment PASSED [ 46%]
+tests/test_model/test_hvac/test_base.py::test_add_mixed_PhxMechanicalEquipment PASSED [ 46%]
+tests/test_model/test_hvac/test_collection.py::test_default_PhxMechanicalEquipmentCollection PASSED [ 47%]
+tests/test_model/test_hvac/test_collection.py::test_get_mech_device_by_key PASSED [ 47%]
+tests/test_model/test_hvac/test_collection.py::test_get_mech_device_by_NONE_key PASSED [ 47%]
+tests/test_model/test_hvac/test_collection.py::test_get_mech_device_by_id PASSED [ 48%]
+tests/test_model/test_hvac/test_collection.py::test_get_mech_device_by_NONE_id PASSED [ 48%]
+tests/test_model/test_hvac/test_collection.py::test_add_ventilation_device PASSED [ 48%]
+tests/test_model/test_hvac/test_collection.py::test_get_ventilation_device PASSED [ 48%]
+tests/test_model/test_hvac/test_collection.py::test_add_exhaust_ventilation_device_collection PASSED [ 49%]
+tests/test_model/test_hvac/test_collection.py::test_get_exhaust_ventilation_device PASSED [ 49%]
+tests/test_model/test_hvac/test_collection.py::test_get_exhaust_ventilation_device_error PASSED [ 49%]
+tests/test_model/test_hvac/test_collection.py::test_add_supportive_device_collection PASSED [ 50%]
+tests/test_model/test_hvac/test_collection.py::test_get_supportive_device PASSED [ 50%]
+tests/test_model/test_hvac/test_collection.py::test_get_supportive_device_error PASSED [ 50%]
+tests/test_model/test_hvac/test_collection.py::test_group_homogenous_supportive_devices PASSED [ 51%]
+tests/test_model/test_hvac/test_collection.py::test_group_mixed_supportive_devices PASSED [ 51%]
+tests/test_model/test_hvac/test_collection.py::test_merge_homogeneous_supportive_devices PASSED [ 51%]
+tests/test_model/test_hvac/test_collection.py::test_merge_mixed_supportive_devices PASSED [ 51%]
+tests/test_model/test_hvac/test_collection.py::test_merge_homogeneous_DHW_recirc_supportive_devices PASSED [ 52%]
+tests/test_model/test_hvac/test_collection.py::test_merge_homogeneous_DHW_storage_supportive_devices PASSED [ 52%]
+tests/test_model/test_hvac/test_collection.py::test_merge_homogeneous_Heat_Recirc_supportive_devices PASSED [ 52%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingDevice PASSED [ 53%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingVentilationParams PASSED [ 53%]
+tests/test_model/test_hvac/test_cooling.py::test_mixed_PhxCoolingVentilationParams PASSED [ 53%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingVentilation PASSED [ 53%]
+tests/test_model/test_hvac/test_cooling.py::test_add_default_PhxCoolingVentilation PASSED [ 54%]
+tests/test_model/test_hvac/test_cooling.py::test_add_mixed_PhxCoolingVentilation PASSED [ 54%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingRecirculationParams PASSED [ 54%]
+tests/test_model/test_hvac/test_cooling.py::test_mixed_PhxCoolingRecirculationParams PASSED [ 55%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingRecirculation PASSED [ 55%]
+tests/test_model/test_hvac/test_cooling.py::test_add_default_PhxCoolingRecirculation PASSED [ 55%]
+tests/test_model/test_hvac/test_cooling.py::test_add_mixed_PhxCoolingRecirculation PASSED [ 56%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingDehumidificationParams PASSED [ 56%]
+tests/test_model/test_hvac/test_cooling.py::test_mixed_PhxCoolingDehumidificationParams PASSED [ 56%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingDehumidification PASSED [ 56%]
+tests/test_model/test_hvac/test_cooling.py::test_add_default_PhxCoolingDehumidification PASSED [ 57%]
+tests/test_model/test_hvac/test_cooling.py::test_add_mixed_PhxCoolingDehumidification PASSED [ 57%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingPanelParams PASSED [ 57%]
+tests/test_model/test_hvac/test_cooling.py::test_mixed_PhxCoolingPanelParams PASSED [ 58%]
+tests/test_model/test_hvac/test_cooling.py::test_default_PhxCoolingPanel PASSED [ 58%]
+tests/test_model/test_hvac/test_cooling.py::test_add_default_PhxCoolingPanel PASSED [ 58%]
+tests/test_model/test_hvac/test_cooling.py::test_add_mixed_PhxCoolingPanel PASSED [ 58%]
+tests/test_model/test_hvac/test_heating.py::test_PhxHeatingDevice PASSED [ 59%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterElectric PASSED [ 59%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterBoilerFossil PASSED [ 59%]
+tests/test_model/test_hvac/test_heating.py::test_PhxHeaterBoilerFossil_set_fuel PASSED [ 60%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterBoilerWood PASSED [ 60%]
+tests/test_model/test_hvac/test_heating.py::test_PhxHeaterBoilerWood_set_fuel PASSED [ 60%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterDistrictHeat PASSED [ 60%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterHeatPumpAnnual PASSED [ 61%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterHeatPumpMonthly PASSED [ 61%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterHeatPumpMonthlyParams_set_monthly_COPs PASSED [ 61%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterHeatPumpMonthlyParams_set_monthly_temps PASSED [ 62%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterHeatPumpHotWater PASSED [ 62%]
+tests/test_model/test_hvac/test_heating.py::test_default_PhxHeaterHeatPumpCombined PASSED [ 62%]
+tests/test_model/test_hvac/test_piping_elements.py::test_empty_PhxPipeElement PASSED [ 63%]
+tests/test_model/test_hvac/test_piping_elements.py::test_add_single_segment_to_PhxPipeElement PASSED [ 63%]
+tests/test_model/test_hvac/test_piping_elements.py::test_add_multiple_segment_to_PhxPipeElement PASSED [ 63%]
+tests/test_model/test_hvac/test_piping_segments.py::test_PhxPipeSegment_heat_loss_coefficient_1 PASSED [ 63%]
+tests/test_model/test_hvac/test_piping_segments.py::test_PhxPipeSegment_heat_loss_coefficient_2 PASSED [ 64%]
+tests/test_model/test_hvac/test_renewable_equip.py::test_add_default_PhxDevicePhotovoltaicParams PASSED [ 64%]
+tests/test_model/test_hvac/test_renewable_equip.py::test_default_PhxDevicePhotovoltaic PASSED [ 64%]
+tests/test_model/test_hvac/test_supportive_device.py::test_add_PhxSupportiveDeviceParams PASSED [ 65%]
+tests/test_model/test_hvac/test_supportive_device.py::test_add_default_PhxSupportiveDevice PASSED [ 65%]
+tests/test_model/test_hvac/test_ventilation.py::test_add_default_PhxVentilatorParams PASSED [ 65%]
+tests/test_model/test_hvac/test_ventilation.py::test_add_mixed_PhxVentilatorParams PASSED [ 65%]
+tests/test_model/test_hvac/test_ventilation.py::test_default_PhxVentilator PASSED [ 66%]
+tests/test_model/test_hvac/test_ventilation.py::test__PhxVentilator_params PASSED [ 66%]
+tests/test_model/test_hvac/test_ventilation.py::test_add_default_PhxVentilator PASSED [ 66%]
+tests/test_model/test_hvac/test_ventilation.py::test_add_mixed_PhxVentilator PASSED [ 67%]
+tests/test_model/test_hvac/test_ventilation.py::test_range_hood PASSED   [ 67%]
+tests/test_model/test_hvac/test_ventilation.py::test_add_error PASSED    [ 67%]
+tests/test_model/test_hvac/test_ventilation.py::test_add_range_hoods PASSED [ 68%]
+tests/test_model/test_hvac/test_ventilation.py::test_dryer PASSED        [ 68%]
+tests/test_model/test_hvac/test_ventilation.py::test_add_dryers PASSED   [ 68%]
+tests/test_model/test_hvac/test_ventilation.py::test_user_determined PASSED [ 68%]
+tests/test_model/test_hvac/test_ventilation.py::test_add_user_determined PASSED [ 69%]
+tests/test_model/test_hvac/test_water.py::test_add_default_PhxHotWaterTankParams PASSED [ 69%]
+tests/test_model/test_hvac/test_water.py::test_add_mixed_PhxHotWaterTankParams PASSED [ 69%]
+tests/test_model/test_hvac/test_water.py::test_default_PhxHotWaterTank PASSED [ 70%]
+tests/test_model/test_hvac/test_water.py::test_PhxHotWaterTank_quantity PASSED [ 70%]
+tests/test_model/test_hvac/test_water.py::test_add_default_PhxHotWaterTank PASSED [ 70%]
+tests/test_model/test_hvac/test_water.py::test_add_mixed_PhxHotWaterTank PASSED [ 70%]
+tests/test_model/test_loads/test_ventilation.py::test_default_room_ventilation PASSED [ 71%]
+tests/test_model/test_project/test_Project.py::test_blank_project PASSED [ 71%]
+tests/test_model/test_project/test_Project.py::test_project_data PASSED  [ 71%]
+tests/test_model/test_project/test_Project.py::test_add_variant_to_project PASSED [ 72%]
+tests/test_model/test_project/test_Project.py::test_add_assembly_to_project PASSED [ 72%]
+tests/test_model/test_project/test_Variant.py::test_blank_variant PASSED [ 72%]
+tests/test_model/test_project/test_Variant.py::test_variant_with_zone PASSED [ 73%]
+tests/test_model/test_schedules/test_vent_periods.py::test_default_vent_util_period PASSED [ 73%]
+tests/test_model/test_schedules/test_vent_periods.py::test_custom_vent_util_periods PASSED [ 73%]
+tests/test_model/test_schedules/test_vent_schedules.py::test_vent_schedule_empty PASSED [ 73%]
+tests/test_model/test_schedules/test_vent_schedules.py::test_vent_schedule_empty_force_24 PASSED [ 74%]
+tests/test_model/test_schedules/test_vent_schedules.py::test_vent_schedule_custom PASSED [ 74%]
+tests/test_model/test_schedules/test_vent_schedules.py::test_vent_schedule_over_24_force_24 PASSED [ 74%]
+tests/test_model/test_schedules/test_vent_schedules.py::test_vent_schedules_different_hash PASSED [ 75%]
+tests/test_model/test_util_patterns/test_util_pattern_collection.py::test_empty_util_collection PASSED [ 75%]
+tests/test_model/test_util_patterns/test_util_pattern_collection.py::test_add_no_schedule_to_collection PASSED [ 75%]
+tests/test_model/test_util_patterns/test_util_pattern_collection.py::test_add_single_schedule_to_collection PASSED [ 75%]
+tests/test_model/test_util_patterns/test_util_pattern_collection.py::test_add_multiple_schedules_to_collection PASSED [ 76%]
+tests/test_to_WUFI_xml/test_xml_builder.py::test_generate_WUFI_XML_from_object PASSED [ 76%]
+tests/test_to_WUFI_xml/test_xml_converter.py::test_get_PHX_object_conversion_schema_with_valid_PHX PASSED [ 76%]
+tests/test_to_WUFI_xml/test_xml_converter.py::test_get_PHX_object_conversion_schema_with_valid_PHX_schema_name_override PASSED [ 77%]
+tests/test_to_WUFI_xml/test_xml_converter.py::test_get_PHX_object_conversion_schema_with_valid_PHX_error PASSED [ 77%]
+tests/test_to_WUFI_xml/test_xml_writables.py::test_XML_Node PASSED       [ 77%]
+tests/test_to_WUFI_xml/test_xml_writables.py::test_XML_List PASSED       [ 78%]
+tests/test_to_WUFI_xml/test_building/test_PhxBuilding.py::test_default_PhxProject PASSED [ 78%]
+tests/test_to_WUFI_xml/test_building/test_PhxComponent.py::test_default_PhxProject PASSED [ 78%]
+tests/test_to_WUFI_xml/test_building/test_PhxZone.py::test_default_PhxProject PASSED [ 78%]
+tests/test_to_WUFI_xml/test_certification/test_PhxPHCertification.py::test_default_PhxPHCertification PASSED [ 79%]
+tests/test_to_WUFI_xml/test_certification/test_PhxPHCertification.py::test_customized_PhxPhiusCertification PASSED [ 79%]
+tests/test_to_WUFI_xml/test_climate/test_PhxLocation.py::test_default_PhxLocation PASSED [ 79%]
+tests/test_to_WUFI_xml/test_construction/test_PhxConstructionOpaque.py::test_default_PhxConstructionOpaque PASSED [ 80%]
+tests/test_to_WUFI_xml/test_construction/test_PhxConstructionWindow.py::test_default_PhxConstructionWindow PASSED [ 80%]
+tests/test_to_WUFI_xml/test_construction/test_PhxLayer.py::test_default_PhxLayer PASSED [ 80%]
+tests/test_to_WUFI_xml/test_construction/test_PhxMaterial.py::test_default_PhxMaterial PASSED [ 80%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxClothesWasher.py::test_default_PhxDeviceClothesWasher PASSED [ 81%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceClothesDryer.py::test_default_PhxDeviceClothesDryer <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceClothesDryer.py PASSED [ 81%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceCooktop.py::test_default_PhxDeviceCooktop <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceCooktop.py PASSED [ 81%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceCustomElec.py::test_default_PhxDeviceCustomElec <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceCustomElec.py PASSED [ 82%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceCustomLighting.py::test_default_PhxDeviceCustomLighting <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceCustomLighting.py PASSED [ 82%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceCustomMEL.py::test_default_PhxDeviceCustomMEL <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceCustomMEL.py PASSED [ 82%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceDishwasher.py::test_default_PhxDeviceDishwasher PASSED [ 82%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceFreezer.py::test_default_PhxDeviceFreezer <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceFreezer.py PASSED [ 83%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceFridgeFreezer.py::test_default_PhxDeviceFridgeFreezer <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceFridgeFreezer.py PASSED [ 83%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceLightingExterior.py::test_default_PhxDeviceLightingExterior <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceLightingExterior.py PASSED [ 83%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceLightingGarage.py::test_default_PhxDeviceLightingGarage <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceLightingGarage.py PASSED [ 84%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceLightingInterior.py::test_default_PhxDeviceLightingInterior <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceLightingInterior.py PASSED [ 84%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceMEL.py::test_default_PhxDeviceMEL <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceMEL.py PASSED [ 84%]
+tests/test_to_WUFI_xml/test_elec_equip/test_PhxDeviceRefrigerator.py::test_default_PhxDeviceRefrigerator <- tests/test_to_WUFI_xml/test_loads/test_elec_equip/test_PhxDeviceRefrigerator.py PASSED [ 85%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxGraphics3D.py::test_default_PhxGraphics3D PASSED [ 85%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxGraphics3D.py::test_PhxGraphics3D_with_single_polygon PASSED [ 85%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxGraphics3D.py::test_PhxGraphics3D_with_multiple_polygon PASSED [ 85%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxLineSegment.py::test_simple_line_length_x PASSED [ 86%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxLineSegment.py::test_simple_line_length_y PASSED [ 86%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxLineSegment.py::test_simple_line_length_z PASSED [ 86%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxLineSegment.py::test_simple_line_length_xyz PASSED [ 87%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxPolygon.py::test_default_polygon_no_vertices PASSED [ 87%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxPolygon.py::test_default_polygon_edit_normal_vector PASSED [ 87%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxPolygon.py::test_default_polygon_with_two_vertices PASSED [ 87%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxPolygon.py::test_default_polygon_with_single_polygon_inside PASSED [ 88%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxPolygon.py::test_default_polygon_with_multiple_polygon_inside PASSED [ 88%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxPolygonRectangular.py::test_default_polygon_rectangular_no_vertices PASSED [ 88%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxPolygonRectangular.py::test_multiple_default_polygon_rectangular_no_vertices PASSED [ 89%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxPolygonRectangular.py::test_polygon_then_polygon_rectangular_no_vertices PASSED [ 89%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxVertix.py::test_single_Vertix_to_XML PASSED [ 89%]
+tests/test_to_WUFI_xml/test_geometry/test_PhxVertix.py::test_multiple_Vertix_to_XML PASSED [ 90%]
+tests/test_to_WUFI_xml/test_ground/test_PhxFoundation.py::test_default_PhxFoundation PASSED [ 90%]
+tests/test_to_WUFI_xml/test_ground/test_PhxFoundation.py::test_default_PhxHeatedBasement PASSED [ 90%]
+tests/test_to_WUFI_xml/test_ground/test_PhxFoundation.py::test_default_PhxUnHeatedBasement PASSED [ 90%]
+tests/test_to_WUFI_xml/test_ground/test_PhxFoundation.py::test_default_PhxSlabOnGrade PASSED [ 91%]
+tests/test_to_WUFI_xml/test_ground/test_PhxFoundation.py::test_default_PhxCrawlspace PASSED [ 91%]
+tests/test_to_WUFI_xml/test_hvac/test_cooling/test_PhxCoolingDehumidification.py::test_default_PhxCoolingDehumidification PASSED [ 91%]
+tests/test_to_WUFI_xml/test_hvac/test_cooling/test_PhxCoolingPanel.py::test_default_PhxCoolingPanel PASSED [ 92%]
+tests/test_to_WUFI_xml/test_hvac/test_cooling/test_PhxCoolingRecirculation.py::test_default_PhxCoolingRecirculation PASSED [ 92%]
+tests/test_to_WUFI_xml/test_hvac/test_cooling/test_PhxCoolingVentilation.py::test_default_PhxCoolingVentilation PASSED [ 92%]
+tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDHW.py::test_add_Trunk_to_HW_System FAILED [ 92%]
+tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDucting.py::test_Duct_Schema PASSED [ 93%]
+tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionHeating.py::test_DistributionHeating_Class PASSED [ 93%]
+tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionHeating.py::test_DistributionHeating_Schema PASSED [ 93%]
+tests/test_to_WUFI_xml/test_hvac/test_heating/test_PhxHeaterBoilerFossil.py::test_default_PhxHeaterBoilerFossil PASSED [ 94%]
+tests/test_to_WUFI_xml/test_hvac/test_heating/test_PhxHeaterBoilerWood.py::test_default_PhxHeaterBoilerWood PASSED [ 94%]
+tests/test_to_WUFI_xml/test_hvac/test_heating/test_PhxHeaterDistrictHeat.py::test_default_PhxHeaterDistrictHeat PASSED [ 94%]
+tests/test_to_WUFI_xml/test_hvac/test_heating/test_PhxHeaterElectric.py::test_default_PhxHeaterElectric PASSED [ 95%]
+tests/test_to_WUFI_xml/test_hvac/test_heating/test_PhxHeaterHeatPumpAnnual.py::test_default_PhxHeaterHeatPumpAnnual PASSED [ 95%]
+tests/test_to_WUFI_xml/test_hvac/test_heating/test_PhxHeaterHeatPumpCombined.py::test_default_PhxHeaterHeatPumpCombined PASSED [ 95%]
+tests/test_to_WUFI_xml/test_hvac/test_heating/test_PhxHeaterHeatPumpHotWater.py::test_default_PhxHeaterHeatPumpHotWater PASSED [ 95%]
+tests/test_to_WUFI_xml/test_hvac/test_heating/test_PhxHeaterHeatPumpMonthly.py::test_default_PhxHeaterHeatPumpMonthly PASSED [ 96%]
+tests/test_to_WUFI_xml/test_hvac/test_renewable_equip/test_PhxDevicePhotovoltaic.py::test_default_PhxDevicePhotovoltaic PASSED [ 96%]
+tests/test_to_WUFI_xml/test_hvac/test_ventilation/test_PhxVentilator.py::test_PhxRoomVentilator_id_num_increment PASSED [ 96%]
+tests/test_to_WUFI_xml/test_hvac/test_ventilation/test_PhxVentilator.py::test_default_PhxRoomVentilation PASSED [ 97%]
+tests/test_to_WUFI_xml/test_hvac/test_water/test_PhxHotWaterTank.py::test_default_PhxHotWaterTank PASSED [ 97%]
+tests/test_to_WUFI_xml/test_project/test_PhxProject.py::test_default_PhxProject PASSED [ 97%]
+tests/test_to_WUFI_xml/test_project/test_PhxProjectData.py::test_default_PhxProjectData PASSED [ 97%]
+tests/test_to_WUFI_xml/test_project/test_PhxVariant.py::test_default_PhxProject PASSED [ 98%]
+tests/test_to_WUFI_xml/test_reference_cases/test_to_project_geometry.py::test_all_aperture_areas_are_equivalent_after_conversion[to_xml_reference_cases0] PASSED [ 98%]
+tests/test_to_WUFI_xml/test_reference_cases/test_to_project_geometry.py::test_all_aperture_areas_are_equivalent_after_conversion[to_xml_reference_cases1] PASSED [ 98%]
+tests/test_to_WUFI_xml/test_reference_cases/test_xml_output.py::test_xml_output[to_xml_reference_cases0] PASSED [ 99%]
+tests/test_to_WUFI_xml/test_reference_cases/test_xml_output.py::test_xml_output[to_xml_reference_cases1] PASSED [ 99%]
+tests/test_to_WUFI_xml/test_schedule/test_PhxRoomVentilation.py::test_default_PhxRoomVentilation PASSED [ 99%]
+tests/test_to_WUFI_xml/test_schedule/test_PhxUtilizationPatternVent.py::test_default_PhxRoomVentilation PASSED [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_add_Trunk_to_HW_System __________________________
+
+reset_class_counters = None
+
+    def test_add_Trunk_to_HW_System(reset_class_counters):
+        p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
+        phx_pipe_segment = PhxPipeSegment(
+            identifier="test-id",
+            display_name="test-display-name",
+            geometry=LineSegment3D(p1, p2),
+            pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
+            pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
+            insulation_thickness_m=25.4,
+            insulation_conductivity=0.04,
+            insulation_reflective=True,
+            insulation_quality=None,
+            daily_period=24,
+        )
+        phx_pipe_fixture = PhxPipeElement()
+        phx_pipe_fixture.add_segment(phx_pipe_segment)
+    
+        phx_pipe_branch = PhxPipeBranch(display_name="test-branch")
+        phx_pipe_branch.add_fixture(phx_pipe_fixture)
+    
+        phx_pipe_trunk = PhxPipeTrunk(display_name="test-trunk")
+    
+        phx_mech_collection = PhxMechanicalSystemCollection()
+        phx_mech_collection.add_distribution_piping(phx_pipe_trunk)
+    
+        result = generate_WUFI_XML_from_object(
+            phx_mech_collection, _header="", _schema_name="_DistributionDHW"
+        )
+>       assert xml_string_to_list(result) == [
+            "<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>",
+            "<DemandRecirculation>true</DemandRecirculation>",
+            "<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>",
+            "<NumberOfBathrooms>1</NumberOfBathrooms>",
+            "<AllPipesAreInsulated>true</AllPipesAreInsulated>",
+            "<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>",
+            "<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>",
+            "<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>",
+            "<TemperatureRoom_WR>20.0</TemperatureRoom_WR>",
+            "<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>",
+            "<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>",
+            "<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>",
+            "<HeatLossCoefficient_WR/>",
+            "<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>",
+            "<ExteriorPipeDiameter_WR/>",
+            '<Truncs count="1">',
+            '<Trunc index="0">',
+            "<Name>test-trunk</Name>",
+            "<IdentNr>27</IdentNr>",
+            "<PipingLength>1.0</PipingLength>",
+            "<PipeMaterial>3</PipeMaterial>",
+            "<PipingDiameter>1</PipingDiameter>",
+            "<CountUnitsOrFloors>1</CountUnitsOrFloors>",
+            "<DemandRecirculation>false</DemandRecirculation>",
+            '<Branches count="0"/>',
+            "</Trunc>",
+            "</Truncs>",
+        ]
+E       assert ['<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>', '<DemandRecirculation>true</DemandRecirculation>', '<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>', '<NumberOfBathrooms>1</NumberOfBathrooms>', '<AllPipesAreInsulated>true</AllPipesAreInsulated>', '<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>', '<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>', '<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>', '<TemperatureRoom_WR>20.0</TemperatureRoom_WR>', '<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>', '<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>', '<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>', '<HeatLossCoefficient_WR/>', '<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>', '<ExteriorPipeDiameter_WR/>', '<Truncs count="1">', '<Trunc index="0">', '<Name>test-trunk</Name>', '<IdentNr>1</IdentNr>', '<PipingLength>1.0</PipingLength>', '<PipeMaterial>3</PipeMaterial>', '<PipingDiameter>1</PipingDiameter>', '<CountUnitsOrFloors>1</CountUnitsOrFloors>', '<DemandRecirculation>false</DemandRecirculation>', '<Branches count="0"/>', '</Trunc>', '</Truncs>'] == ['<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>', '<DemandRecirculation>true</DemandRecirculation>', '<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>', '<NumberOfBathrooms>1</NumberOfBathrooms>', '<AllPipesAreInsulated>true</AllPipesAreInsulated>', '<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>', '<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>', '<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>', '<TemperatureRoom_WR>20.0</TemperatureRoom_WR>', '<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>', '<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>', '<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>', '<HeatLossCoefficient_WR/>', '<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>', '<ExteriorPipeDiameter_WR/>', '<Truncs count="1">', '<Trunc index="0">', '<Name>test-trunk</Name>', '<IdentNr>27</IdentNr>', '<PipingLength>1.0</PipingLength>', '<PipeMaterial>3</PipeMaterial>', '<PipingDiameter>1</PipingDiameter>', '<CountUnitsOrFloors>1</CountUnitsOrFloors>', '<DemandRecirculation>false</DemandRecirculation>', '<Branches count="0"/>', '</Trunc>', '</Truncs>']
+E         At index 18 diff: '<IdentNr>1</IdentNr>' != '<IdentNr>27</IdentNr>'
+E         Full diff:
+E           [
+E            '<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>',
+E            '<DemandRecirculation>true</DemandRecirculation>',
+E            '<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>',
+E            '<NumberOfBathrooms>1</NumberOfBathrooms>',
+E            '<AllPipesAreInsulated>true</AllPipesAreInsulated>',
+E            '<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>',
+E            '<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>',
+E            '<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>',
+E            '<TemperatureRoom_WR>20.0</TemperatureRoom_WR>',
+E            '<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>',
+E            '<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>',
+E            '<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>',
+E            '<HeatLossCoefficient_WR/>',
+E            '<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>',
+E            '<ExteriorPipeDiameter_WR/>',
+E            '<Truncs count="1">',
+E            '<Trunc index="0">',
+E            '<Name>test-trunk</Name>',
+E         -  '<IdentNr>27</IdentNr>',
+E         ?            ^^
+E         +  '<IdentNr>1</IdentNr>',
+E         ?            ^
+E            '<PipingLength>1.0</PipingLength>',
+E            '<PipeMaterial>3</PipeMaterial>',
+E            '<PipingDiameter>1</PipingDiameter>',
+E            '<CountUnitsOrFloors>1</CountUnitsOrFloors>',
+E            '<DemandRecirculation>false</DemandRecirculation>',
+E            '<Branches count="0"/>',
+E            '</Trunc>',
+E            '</Truncs>',
+E           ]
+
+tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDHW.py:47: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDHW.py::test_add_Trunk_to_HW_System
+======================== 1 failed, 340 passed in 1.71s =========================

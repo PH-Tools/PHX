@@ -4,7 +4,19 @@
 """PHX Building Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, List, Sequence, Union, Set, Dict, ValuesView, Any, Optional
+from typing import (
+    ClassVar,
+    List,
+    Sequence,
+    Union,
+    Set,
+    Dict,
+    ValuesView,
+    Any,
+    Optional,
+    Generator,
+    NamedTuple,
+)
 from dataclasses import dataclass, field
 from collections import defaultdict
 from functools import reduce
@@ -15,6 +27,7 @@ from PHX.model.components import (
     PhxComponentAperture,
     PhxComponentOpaque,
     PhxComponentThermalBridge,
+    PhxApertureElement,
 )
 from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
@@ -185,6 +198,63 @@ class PhxBuilding:
             * (List[PhxComponentAperture]) A sorted list of all the aperture components.
         """
         return [ap for c in self.opaque_components for ap in c.apertures]
+
+    @property
+    def aperture_elements(self) -> List[PhxApertureElement]:
+        """Returns a sorted list (by display name) of all the aperture elements in the building.
+
+        Returns:
+        --------
+            * (List[PhxApertureElement]) A sorted list of all the aperture components.
+        """
+        return sorted(
+            [
+                el
+                for c in self.opaque_components
+                for ap in c.apertures
+                for el in ap.elements
+            ],
+            key=lambda el: el.display_name,
+        )
+
+    @property
+    def aperture_elements_by_orientation(self):
+        """Return all of the Aperture Elements, grouped by their cardinal orientation."""
+
+        class Output(NamedTuple):
+            north: List[PhxApertureElement]
+            east: List[PhxApertureElement]
+            south: List[PhxApertureElement]
+            west: List[PhxApertureElement]
+            horizontal: List[PhxApertureElement]
+
+        aperture_elements_by_orientation = Output([], [], [], [], [])
+
+        for el in self.aperture_elements:
+            if not el.polygon:
+                continue
+
+            if (
+                el.polygon.angle_from_horizontal <= 45
+                or el.polygon.angle_from_horizontal >= 135
+            ):
+                aperture_elements_by_orientation.horizontal.append(el)
+            elif el.polygon.cardinal_orientation_angle < 45:
+                aperture_elements_by_orientation.north.append(el)
+            elif el.polygon.cardinal_orientation_angle < 135:
+                aperture_elements_by_orientation.east.append(el)
+            elif el.polygon.cardinal_orientation_angle < 225:
+                aperture_elements_by_orientation.south.append(el)
+            elif el.polygon.cardinal_orientation_angle < 315:
+                aperture_elements_by_orientation.west.append(el)
+            else:
+                aperture_elements_by_orientation.north.append(el)
+
+        return aperture_elements_by_orientation
+
+    @property
+    def aperture_components_horizontal(self) -> List[PhxComponentAperture]:
+        return [ap for ap in self.aperture_components]
 
     @property
     def wall_aperture_components(self) -> List[PhxComponentAperture]:

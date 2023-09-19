@@ -702,7 +702,9 @@ class PHPPConnection:
 
             # -- Branch Piping
             branch_piping_inputs = []
-            branch_pipe_groups = variant.mech_systems.dhw_branch_piping_segments_by_diam
+            branch_pipe_groups = (
+                variant.mech_systems.dhw_distribution_piping_segments_by_diam
+            )
             if len(branch_pipe_groups) > 5:
                 print(
                     "Warning: PHPP only allows 5 groups of DHW branch piping. "

@@ -1287,19 +1287,67 @@ def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
 # -- MECHANICAL SYSTEMS / DISTRIBUTION ----------------------------------------
 
 
+def _DistributionDHWTwig(_twg: hvac.PhxPipeElement) -> List[xml_writable]:
+    return [
+        XML_Node("Name", _twg.display_name),
+        XML_Node("IdentNr", _twg.id_num),
+        XML_Node("PipingLength", _twg.length_m),
+        XML_Node("PipeMaterial", _twg.material.value),
+        XML_Node("PipingDiameter", _twg.diameter.value),
+    ]
+
+
+def _DistributionDHWBranch(_br: hvac.PhxPipeBranch) -> List[xml_writable]:
+    return [
+        XML_Node("Name", _br.display_name),
+        XML_Node("IdentNr", _br.id_num),
+        XML_Node("PipingLength", _br.pipe_element.length_m),
+        XML_Node("PipeMaterial", _br.pipe_element.material.value),
+        XML_Node("PipingDiameter", _br.pipe_element.diameter.value),
+        XML_List(
+            "Twigs",
+            [
+                XML_Object("Twig", br, "index", i, _schema_name="_DistributionDHWTwig")
+                for i, br in enumerate(_br.fixtures)
+            ],
+        ),
+    ]
+
+
+def _DistributionDHWTrunc(_t: hvac.PhxPipeTrunk) -> List[xml_writable]:
+    return [
+        XML_Node("Name", _t.display_name),
+        XML_Node("IdentNr", _t.id_num),
+        XML_Node("PipingLength", _t.pipe_element.length_m),
+        XML_Node("PipeMaterial", _t.pipe_element.material.value),
+        XML_Node("PipingDiameter", _t.pipe_element.diameter.value),
+        XML_Node("CountUnitsOrFloors", 1),
+        XML_Node("DemandRecirculation", _t.pipe_element.demand_recirculation),
+        XML_List(
+            "Branches",
+            [
+                XML_Object(
+                    "Branch", br, "index", i, _schema_name="_DistributionDHWBranch"
+                )
+                for i, br in enumerate(_t.branches)
+            ],
+        ),
+    ]
+
+
 def _DistributionDHW(_c: hvac.PhxMechanicalSystemCollection):
     # -- alias
     p = _c._distribution_hw_recirculation_params
     return [
         # -- Settings
-        XML_Node("CalculationMethodIndividualPipes", p.calc_method),
+        XML_Node("CalculationMethodIndividualPipes", p.calc_method.value),
         XML_Node("DemandRecirculation", p.demand_recirc),
         XML_Node("SelectionhotWaterFixtureEff", p.hot_water_fixtures),
         XML_Node("NumberOfBathrooms", p.num_bathrooms),
         XML_Node("AllPipesAreInsulated", p.all_pipes_insulated),
         XML_Node("SelectionUnitsOrFloors", p.units_or_floors),
-        XML_Node("PipeMaterialSimplifiedMethod", p.pipe_material),
-        XML_Node("PipeDiameterSimplifiedMethod", p.pipe_diameter_m),
+        XML_Node("PipeMaterialSimplifiedMethod", p.pipe_material.value),
+        XML_Node("PipeDiameterSimplifiedMethod", p.pipe_diameter),
         # -- Simplified Method
         XML_Node("TemperatureRoom_WR", p.air_temp),
         XML_Node("DesignFlowTemperature_WR", p.water_temp),
@@ -1309,30 +1357,21 @@ def _DistributionDHW(_c: hvac.PhxMechanicalSystemCollection):
             "HeatLossCoefficient_WR",
             _c.dhw_recirc_weighted_heat_loss_coeff,
         ),
-        XML_Node("LengthIndividualPipes_WR", _c.dhw_branch_total_length_m),
+        XML_Node("LengthIndividualPipes_WR", _c.dhw_distribution_total_length_m),
         XML_Node(
             "ExteriorPipeDiameter_WR",
-            _c.dhw_branch_weighted_diameter_mm,
+            _c.dhw_distribution_weighted_diameter_mm,
         ),
-        # -- Detailed Methods (Not Implemented Yet)
-        # XML_Node("HeatReleaseStorage_WR", _d.),
-        # XML_Node("HotWaterFixtureEffectiveness", _d.),
-        #     XML_Node("LengthCirculationPipes_CR1", _d.),
-        #     XML_Node("LengthCirculationPipes_CR2", _d.),
-        #     XML_Node("HeatLossCoefficient_CR1", _d.),
-        #     XML_Node("HeatLossCoefficient_CR2", _d.),
-        #     XML_Node("TemperatureRoom_CR1", _d.),
-        #     XML_Node("TemperatureRoom_CR2", _d.),
-        #     XML_Node("DesignFlowTemperature_CR1", _d.),
-        #     XML_Node("DesignFlowTemperature_CR2", _d.),
-        #     XML_Node("DailyRunningHoursCirculation_CR1", _d.),
-        #     XML_Node("DailyRunningHoursCirculation_CR2", _d.),
-        #     XML_Node("LengthIndividualPipes_CR1", _d.),
-        #     XML_Node("LengthIndividualPipes_CR2", _d.),
-        #     XML_Node("ExteriorPipeDiameter_CR1", _d.),
-        #     XML_Node("ExteriorPipeDiameter_CR2", _d.),
-        #     XML_Node("HeatReleaseStorage_CR1", _d.),
-        #     XML_Node("HeatReleaseStorage_CR2", _d.),
+        # -- Detailed Trunk, Branch, Fixture (Twig) piping
+        XML_List(
+            "Truncs",
+            [
+                XML_Object(
+                    "Trunc", trunc, "index", i, _schema_name="_DistributionDHWTrunc"
+                )
+                for i, trunc in enumerate(_c.dhw_distribution_trunks)
+            ],
+        ),
     ]
 
 
