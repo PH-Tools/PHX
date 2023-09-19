@@ -64,7 +64,7 @@ def test_default_PhxHeaterHeatPumpAnnual(reset_class_counters):
         "<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>",
         "<NumberOfBathrooms>1</NumberOfBathrooms>",
         "<AllPipesAreInsulated>true</AllPipesAreInsulated>",
-        "<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>",
+        "<SelectionUnitsOrFloors>2</SelectionUnitsOrFloors>",
         "<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>",
         "<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>",
         "<TemperatureRoom_WR>20.0</TemperatureRoom_WR>",

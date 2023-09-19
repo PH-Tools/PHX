@@ -321,7 +321,7 @@ tests/test_to_WUFI_xml/test_hvac/test_cooling/test_PhxCoolingDehumidification.py
 tests/test_to_WUFI_xml/test_hvac/test_cooling/test_PhxCoolingPanel.py::test_default_PhxCoolingPanel PASSED [ 92%]
 tests/test_to_WUFI_xml/test_hvac/test_cooling/test_PhxCoolingRecirculation.py::test_default_PhxCoolingRecirculation PASSED [ 92%]
 tests/test_to_WUFI_xml/test_hvac/test_cooling/test_PhxCoolingVentilation.py::test_default_PhxCoolingVentilation PASSED [ 92%]
-tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDHW.py::test_add_Trunk_to_HW_System FAILED [ 92%]
+tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDHW.py::test_add_Trunk_to_HW_System PASSED [ 92%]
 tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDucting.py::test_Duct_Schema PASSED [ 93%]
 tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionHeating.py::test_DistributionHeating_Class PASSED [ 93%]
 tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionHeating.py::test_DistributionHeating_Schema PASSED [ 93%]
@@ -347,105 +347,4 @@ tests/test_to_WUFI_xml/test_reference_cases/test_xml_output.py::test_xml_output[
 tests/test_to_WUFI_xml/test_schedule/test_PhxRoomVentilation.py::test_default_PhxRoomVentilation PASSED [ 99%]
 tests/test_to_WUFI_xml/test_schedule/test_PhxUtilizationPatternVent.py::test_default_PhxRoomVentilation PASSED [100%]
 
-=================================== FAILURES ===================================
-_________________________ test_add_Trunk_to_HW_System __________________________
-
-reset_class_counters = None
-
-    def test_add_Trunk_to_HW_System(reset_class_counters):
-        p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
-        phx_pipe_segment = PhxPipeSegment(
-            identifier="test-id",
-            display_name="test-display-name",
-            geometry=LineSegment3D(p1, p2),
-            pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
-            pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
-            insulation_thickness_m=25.4,
-            insulation_conductivity=0.04,
-            insulation_reflective=True,
-            insulation_quality=None,
-            daily_period=24,
-        )
-        phx_pipe_fixture = PhxPipeElement()
-        phx_pipe_fixture.add_segment(phx_pipe_segment)
-    
-        phx_pipe_branch = PhxPipeBranch(display_name="test-branch")
-        phx_pipe_branch.add_fixture(phx_pipe_fixture)
-    
-        phx_pipe_trunk = PhxPipeTrunk(display_name="test-trunk")
-    
-        phx_mech_collection = PhxMechanicalSystemCollection()
-        phx_mech_collection.add_distribution_piping(phx_pipe_trunk)
-    
-        result = generate_WUFI_XML_from_object(
-            phx_mech_collection, _header="", _schema_name="_DistributionDHW"
-        )
->       assert xml_string_to_list(result) == [
-            "<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>",
-            "<DemandRecirculation>true</DemandRecirculation>",
-            "<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>",
-            "<NumberOfBathrooms>1</NumberOfBathrooms>",
-            "<AllPipesAreInsulated>true</AllPipesAreInsulated>",
-            "<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>",
-            "<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>",
-            "<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>",
-            "<TemperatureRoom_WR>20.0</TemperatureRoom_WR>",
-            "<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>",
-            "<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>",
-            "<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>",
-            "<HeatLossCoefficient_WR/>",
-            "<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>",
-            "<ExteriorPipeDiameter_WR/>",
-            '<Truncs count="1">',
-            '<Trunc index="0">',
-            "<Name>test-trunk</Name>",
-            "<IdentNr>27</IdentNr>",
-            "<PipingLength>1.0</PipingLength>",
-            "<PipeMaterial>3</PipeMaterial>",
-            "<PipingDiameter>1</PipingDiameter>",
-            "<CountUnitsOrFloors>1</CountUnitsOrFloors>",
-            "<DemandRecirculation>false</DemandRecirculation>",
-            '<Branches count="0"/>',
-            "</Trunc>",
-            "</Truncs>",
-        ]
-E       assert ['<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>', '<DemandRecirculation>true</DemandRecirculation>', '<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>', '<NumberOfBathrooms>1</NumberOfBathrooms>', '<AllPipesAreInsulated>true</AllPipesAreInsulated>', '<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>', '<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>', '<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>', '<TemperatureRoom_WR>20.0</TemperatureRoom_WR>', '<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>', '<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>', '<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>', '<HeatLossCoefficient_WR/>', '<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>', '<ExteriorPipeDiameter_WR/>', '<Truncs count="1">', '<Trunc index="0">', '<Name>test-trunk</Name>', '<IdentNr>1</IdentNr>', '<PipingLength>1.0</PipingLength>', '<PipeMaterial>3</PipeMaterial>', '<PipingDiameter>1</PipingDiameter>', '<CountUnitsOrFloors>1</CountUnitsOrFloors>', '<DemandRecirculation>false</DemandRecirculation>', '<Branches count="0"/>', '</Trunc>', '</Truncs>'] == ['<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>', '<DemandRecirculation>true</DemandRecirculation>', '<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>', '<NumberOfBathrooms>1</NumberOfBathrooms>', '<AllPipesAreInsulated>true</AllPipesAreInsulated>', '<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>', '<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>', '<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>', '<TemperatureRoom_WR>20.0</TemperatureRoom_WR>', '<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>', '<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>', '<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>', '<HeatLossCoefficient_WR/>', '<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>', '<ExteriorPipeDiameter_WR/>', '<Truncs count="1">', '<Trunc index="0">', '<Name>test-trunk</Name>', '<IdentNr>27</IdentNr>', '<PipingLength>1.0</PipingLength>', '<PipeMaterial>3</PipeMaterial>', '<PipingDiameter>1</PipingDiameter>', '<CountUnitsOrFloors>1</CountUnitsOrFloors>', '<DemandRecirculation>false</DemandRecirculation>', '<Branches count="0"/>', '</Trunc>', '</Truncs>']
-E         At index 18 diff: '<IdentNr>1</IdentNr>' != '<IdentNr>27</IdentNr>'
-E         Full diff:
-E           [
-E            '<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>',
-E            '<DemandRecirculation>true</DemandRecirculation>',
-E            '<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>',
-E            '<NumberOfBathrooms>1</NumberOfBathrooms>',
-E            '<AllPipesAreInsulated>true</AllPipesAreInsulated>',
-E            '<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>',
-E            '<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>',
-E            '<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>',
-E            '<TemperatureRoom_WR>20.0</TemperatureRoom_WR>',
-E            '<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>',
-E            '<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>',
-E            '<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>',
-E            '<HeatLossCoefficient_WR/>',
-E            '<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>',
-E            '<ExteriorPipeDiameter_WR/>',
-E            '<Truncs count="1">',
-E            '<Trunc index="0">',
-E            '<Name>test-trunk</Name>',
-E         -  '<IdentNr>27</IdentNr>',
-E         ?            ^^
-E         +  '<IdentNr>1</IdentNr>',
-E         ?            ^
-E            '<PipingLength>1.0</PipingLength>',
-E            '<PipeMaterial>3</PipeMaterial>',
-E            '<PipingDiameter>1</PipingDiameter>',
-E            '<CountUnitsOrFloors>1</CountUnitsOrFloors>',
-E            '<DemandRecirculation>false</DemandRecirculation>',
-E            '<Branches count="0"/>',
-E            '</Trunc>',
-E            '</Truncs>',
-E           ]
-
-tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDHW.py:47: AssertionError
-=========================== short test summary info ============================
-FAILED tests/test_to_WUFI_xml/test_hvac/test_distribution/test_DistributionDHW.py::test_add_Trunk_to_HW_System
-======================== 1 failed, 340 passed in 1.71s =========================
+============================= 341 passed in 1.63s ==============================

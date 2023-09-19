@@ -524,7 +524,34 @@ class PhxMechanicalSystemCollection:
     @property
     def devices(self) -> List[AnyMechDevice]:
         """Returns a list of the 'devices' in the collection."""
-        return list(sorted(self._devices.values(), key=lambda d: d.identifier))
+        return list(sorted(self._devices.values(), key=lambda d: d.display_name))
+
+    @property
+    def ventilation_devices(self) -> List[hvac.AnyPhxVentilation]:
+        """Returns a list of the 'Ventilation' devices in the collection."""
+        return [
+            _
+            for _ in self.devices
+            if isinstance(_, hvac.PhxDeviceVentilation) and _.usage_profile.ventilation
+        ]
+
+    @property
+    def space_heating_devices(self) -> List[hvac.AnyPhxHeater]:
+        """Returns a list of the 'Space Heating' devices in the collection."""
+        return [
+            _
+            for _ in self.devices
+            if isinstance(_, hvac.PhxHeatingDevice) and _.usage_profile.space_heating
+        ]
+
+    @property
+    def cooling_devices(self) -> List[hvac.AnyPhxCooling]:
+        """Returns a list of all the 'Cooling' devices in the collection."""
+        return [
+            _
+            for _ in self.devices
+            if isinstance(_, hvac.PhxCoolingDevice) and _.usage_profile.cooling
+        ]
 
     def device_in_collection(self, _device_key) -> bool:
         """Return True if the a Mech device with the matching key is already in the collection."""
@@ -578,43 +605,13 @@ class PhxMechanicalSystemCollection:
         self._devices[_key] = _d
 
     # -------------------------------------------------------------------------
-    #  -- Distribution Piping and Ducting
+    #  -- Distribution Piping
 
     def add_distribution_piping(self, _p: hvac.PhxPipeTrunk) -> None:
         self._distribution_piping_trunks[_p.identifier] = _p
 
     def add_recirc_piping(self, _p: hvac.PhxPipeElement) -> None:
         self._distribution_piping_recirc[_p.identifier] = _p
-
-    def add_vent_ducting(self, _d: hvac.PhxDuctElement) -> None:
-        self._distribution_ducting[_d.identifier] = _d
-
-    @property
-    def ventilation_devices(self) -> List[hvac.AnyPhxVentilation]:
-        """Returns a list of the 'Ventilation' devices in the collection."""
-        return [
-            _
-            for _ in self.devices
-            if isinstance(_, hvac.PhxDeviceVentilation) and _.usage_profile.ventilation
-        ]
-
-    @property
-    def space_heating_devices(self) -> List[hvac.AnyPhxHeater]:
-        """Returns a list of the 'Space Heating' devices in the collection."""
-        return [
-            _
-            for _ in self.devices
-            if isinstance(_, hvac.PhxHeatingDevice) and _.usage_profile.space_heating
-        ]
-
-    @property
-    def cooling_devices(self) -> List[hvac.AnyPhxCooling]:
-        """Returns a list of all the 'Cooling' devices in the collection."""
-        return [
-            _
-            for _ in self.devices
-            if isinstance(_, hvac.PhxCoolingDevice) and _.usage_profile.cooling
-        ]
 
     @property
     def dhw_heating_devices(self) -> List[hvac.AnyPhxHeater]:
@@ -640,7 +637,9 @@ class PhxMechanicalSystemCollection:
 
     @property
     def dhw_distribution_trunks(self) -> list[hvac.PhxPipeTrunk]:
-        return list(self._distribution_piping_trunks.values())
+        return sorted(
+            self._distribution_piping_trunks.values(), key=lambda p: p.display_name
+        )
 
     @property
     def dhw_distribution_piping(self) -> List[hvac.PhxPipeElement]:
@@ -697,11 +696,6 @@ class PhxMechanicalSystemCollection:
         return list(d.values())
 
     @property
-    def vent_ducting(self) -> List[hvac.PhxDuctElement]:
-        """Returns a list of all the Vent. Ducting in the collection."""
-        return list(self._distribution_ducting.values())
-
-    @property
     def dhw_recirc_total_length_m(self) -> float:
         return sum(_.length_m for _ in self.dhw_recirc_piping)
 
@@ -735,3 +729,14 @@ class PhxMechanicalSystemCollection:
                 phx_pipe_element.weighted_diameter_mm * phx_pipe_element.length_m
             )
         return weighted_total / self.dhw_distribution_total_length_m
+
+    # -------------------------------------------------------------------------
+    #  -- Distribution Ducting
+
+    def add_vent_ducting(self, _d: hvac.PhxDuctElement) -> None:
+        self._distribution_ducting[_d.identifier] = _d
+
+    @property
+    def vent_ducting(self) -> List[hvac.PhxDuctElement]:
+        """Returns a list of all the Vent. Ducting in the collection."""
+        return list(self._distribution_ducting.values())

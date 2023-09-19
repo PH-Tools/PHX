@@ -211,6 +211,7 @@ def build_phx_trunk_pipe(_hbph_trunk: hot_water.PhPipeTrunk) -> hvac.PhxPipeTrun
     """
 
     phx_pipe_trunk = piping.PhxPipeTrunk(_hbph_trunk.identifier, _hbph_trunk.display_name)
+    phx_pipe_trunk.multiplier = _hbph_trunk.multiplier
     phx_pipe_trunk.pipe_element.display_name = f"{_hbph_trunk.display_name}-PIPE"
     for segment in _hbph_trunk.segments:
         phx_pipe_trunk.pipe_element.add_segment(

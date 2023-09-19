@@ -129,6 +129,11 @@ class PhxHotWaterTankType(Enum):
         return _mapping[_hbph_type]
 
 
+class PhxHotWaterSelectionUnitsOrFloors(Enum):
+    PH_CASE = 1
+    USER_DETERMINED = 2
+
+
 class PhxExhaustVentType(Enum):
     DRYER = 1
     KITCHEN_HOOD = 2

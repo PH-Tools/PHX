@@ -1321,7 +1321,7 @@ def _DistributionDHWTrunc(_t: hvac.PhxPipeTrunk) -> List[xml_writable]:
         XML_Node("PipingLength", _t.pipe_element.length_m),
         XML_Node("PipeMaterial", _t.pipe_element.material.value),
         XML_Node("PipingDiameter", _t.pipe_element.diameter.value),
-        XML_Node("CountUnitsOrFloors", 1),
+        XML_Node("CountUnitsOrFloors", _t.multiplier),
         XML_Node("DemandRecirculation", _t.pipe_element.demand_recirculation),
         XML_List(
             "Branches",
@@ -1345,7 +1345,7 @@ def _DistributionDHW(_c: hvac.PhxMechanicalSystemCollection):
         XML_Node("SelectionhotWaterFixtureEff", p.hot_water_fixtures),
         XML_Node("NumberOfBathrooms", p.num_bathrooms),
         XML_Node("AllPipesAreInsulated", p.all_pipes_insulated),
-        XML_Node("SelectionUnitsOrFloors", p.units_or_floors),
+        XML_Node("SelectionUnitsOrFloors", p.units_or_floors.value),
         XML_Node("PipeMaterialSimplifiedMethod", p.pipe_material.value),
         XML_Node("PipeDiameterSimplifiedMethod", p.pipe_diameter),
         # -- Simplified Method

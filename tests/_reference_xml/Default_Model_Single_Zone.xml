@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_d0e834e0..Face4</Name>
+						<Name>Room_5_9b7f6703..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_d0e834e0..Face5</Name>
+						<Name>Room_5_9b7f6703..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -544,7 +544,7 @@
 								<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>
 								<NumberOfBathrooms>1</NumberOfBathrooms>
 								<AllPipesAreInsulated>true</AllPipesAreInsulated>
-								<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>
+								<SelectionUnitsOrFloors>2</SelectionUnitsOrFloors>
 								<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>
 								<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>
 								<TemperatureRoom_WR>20.0</TemperatureRoom_WR>

@@ -15,6 +15,7 @@ from PHX.model.enums.hvac import (
     PhxHotWaterPipingDiameter,
     PhxHotWaterPipingCalcMethod,
     PhxHotWaterPipingMaterial,
+    PhxHotWaterSelectionUnitsOrFloors,
 )
 
 
@@ -30,7 +31,9 @@ class PhxRecirculationParameters:
     num_bathrooms: int = 1
     hot_water_fixtures: int = 1
     all_pipes_insulated: bool = True
-    units_or_floors: int = 1
+    units_or_floors: PhxHotWaterSelectionUnitsOrFloors = field(
+        default=PhxHotWaterSelectionUnitsOrFloors.USER_DETERMINED
+    )
     pipe_diameter: float = 25.4  # MM - For simplified method only
     air_temp: float = 20.0  # Deg C
     water_temp: float = 60.0  # Deg C
@@ -174,7 +177,7 @@ class PhxPipeElement:
     @property
     def length_m(self) -> float:
         """Return the total length of all the Pipe Segments."""
-        return sum(_.length_m for _ in self.segments) or 1.0
+        return sum(_.length_m for _ in self.segments)
 
     @property
     def weighted_pipe_heat_loss_coefficient(self) -> float:
@@ -182,7 +185,10 @@ class PhxPipeElement:
         weighted_total = 0.0
         for segment in self.segments:
             weighted_total += segment.pipe_heat_loss_coefficient * segment.length_m
-        return weighted_total / self.length_m
+        try:
+            return weighted_total / self.length_m
+        except ZeroDivisionError:
+            return 0.0
 
     @property
     def weighted_diameter_mm(self) -> float:
@@ -190,7 +196,10 @@ class PhxPipeElement:
         weighted_total = 0.0
         for segment in self.segments:
             weighted_total += segment.diameter_mm * segment.length_m
-        return weighted_total / self.length_m
+        try:
+            return weighted_total / self.length_m
+        except ZeroDivisionError:
+            return 0.0
 
     @property
     def material(self) -> PhxHotWaterPipingMaterial:
@@ -259,6 +268,7 @@ class PhxPipeTrunk:
     id_num: int = field(init=False, default=0)
     identifier: str = str(uuid4())
     display_name: str = "_unnamed_pipe_trunk_"
+    multiplier: int = 1
     pipe_element: PhxPipeElement = field(default_factory=PhxPipeElement)
     branches: List[PhxPipeBranch] = field(default_factory=list)
 
