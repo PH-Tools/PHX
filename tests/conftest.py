@@ -23,6 +23,7 @@ from PHX.model.hvac import (
     ventilation,
     heating,
     ducting,
+    piping,
 )
 from PHX.model.schedules import ventilation as sched_ventilation
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
@@ -123,6 +124,9 @@ def _reset_phx_class_counters():
     water.PhxHotWaterDevice._count = 0
     water.PhxHotWaterTank._count = 0
 
+    piping.PhxPipeBranch._count = 0
+    piping.PhxPipeTrunk._count = 0
+
     ventilation.PhxDeviceVentilation._count = 0
     ventilation.PhxDeviceVentilator._count = 0
     ventilation.PhxExhaustVentilatorBase._count = 0
@@ -158,6 +162,7 @@ def _reload_phx_classes():
     importlib.reload(shades)
     importlib.reload(sched_ventilation)
     importlib.reload(sched_occupancy)
+    importlib.reload(piping)
 
 
 @pytest.fixture

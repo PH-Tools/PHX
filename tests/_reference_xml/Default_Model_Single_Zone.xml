@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_6bb248b5..Face4</Name>
+						<Name>Room_1_d0e834e0..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_6bb248b5..Face5</Name>
+						<Name>Room_1_d0e834e0..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -539,14 +539,14 @@
 						<Devices count="0"/>
 						<PHDistribution>
 							<DistributionDHW>
-								<CalculationMethodIndividualPipes>1</CalculationMethodIndividualPipes>
+								<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>
 								<DemandRecirculation>true</DemandRecirculation>
 								<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>
 								<NumberOfBathrooms>1</NumberOfBathrooms>
 								<AllPipesAreInsulated>true</AllPipesAreInsulated>
 								<SelectionUnitsOrFloors>1</SelectionUnitsOrFloors>
-								<PipeMaterialSimplifiedMethod>1</PipeMaterialSimplifiedMethod>
-								<PipeDiameterSimplifiedMethod>1.0</PipeDiameterSimplifiedMethod>
+								<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>
+								<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>
 								<TemperatureRoom_WR>20.0</TemperatureRoom_WR>
 								<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>
 								<DailyRunningHoursCirculation_WR>24</DailyRunningHoursCirculation_WR>
@@ -554,6 +554,7 @@
 								<HeatLossCoefficient_WR/>
 								<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>
 								<ExteriorPipeDiameter_WR/>
+								<Truncs count="0"/>
 							</DistributionDHW>
 							<DistributionCooling/>
 							<DistributionVentilation count="0"/>

@@ -163,7 +163,7 @@ class PhxPipeElement:
     display_name: str = "_unnamed_pipe_element_"
     _segments: Dict = field(default_factory=dict)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         PhxPipeElement._count += 1
         self.id_num = PhxPipeElement._count
 
@@ -177,7 +177,7 @@ class PhxPipeElement:
         return sum(_.length_m for _ in self.segments) or 1.0
 
     @property
-    def weighted_pipe_heat_loss_coefficient(self):
+    def weighted_pipe_heat_loss_coefficient(self) -> float:
         """Return a length-weighted total heat loss coefficient (W/mk)"""
         weighted_total = 0.0
         for segment in self.segments:
@@ -185,7 +185,7 @@ class PhxPipeElement:
         return weighted_total / self.length_m
 
     @property
-    def weighted_diameter_mm(self):
+    def weighted_diameter_mm(self) -> float:
         """Return a length-weighted total diameter (mm)"""
         weighted_total = 0.0
         for segment in self.segments:
@@ -225,7 +225,7 @@ class PhxPipeElement:
             return diameters[0]
 
     @property
-    def demand_recirculation(self):
+    def demand_recirculation(self) -> bool:
         return False
 
     def add_segment(self, _s: PhxPipeSegment) -> None:
@@ -243,7 +243,7 @@ class PhxPipeBranch:
     pipe_element: PhxPipeElement = field(default_factory=PhxPipeElement)
     fixtures: List[PhxPipeElement] = field(default_factory=list)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         PhxPipeBranch._count += 1
         self.id_num = PhxPipeBranch._count
 
@@ -262,7 +262,7 @@ class PhxPipeTrunk:
     pipe_element: PhxPipeElement = field(default_factory=PhxPipeElement)
     branches: List[PhxPipeBranch] = field(default_factory=list)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         PhxPipeTrunk._count += 1
         self.id_num = PhxPipeTrunk._count
 
