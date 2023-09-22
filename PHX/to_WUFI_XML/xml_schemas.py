@@ -185,7 +185,7 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
             "RoomsVentilation",
             [
                 XML_Object("Room", sp, "index", i, _schema_name="_PhxSpace")
-                for i, sp in enumerate(_z.spaces)
+                for i, sp in enumerate(_z.spaces_with_ventilation)
             ],
         ),
         XML_List(

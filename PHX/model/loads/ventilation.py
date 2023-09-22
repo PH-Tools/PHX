@@ -15,3 +15,8 @@ class PhxLoadVentilation:
     flow_supply: float = 0.0
     flow_extract: float = 0.0
     flow_transfer: float = 0.0
+
+    @property
+    def total_airflow(self) -> float:
+        """Returns the total airflow for the ventilation load."""
+        return self.flow_supply + self.flow_extract + self.flow_transfer

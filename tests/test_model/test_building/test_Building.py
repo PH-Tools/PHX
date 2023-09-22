@@ -1,4 +1,4 @@
-from PHX.model import building, components
+from PHX.model import building, components, spaces
 
 
 def test_default_Building(reset_class_counters):
@@ -72,3 +72,30 @@ def test_group_compos_by_assembly_with_single_compo(reset_class_counters):
     assert b._components
     assert len(b._components) == 1
     assert c1 in b._components
+
+
+def test_zones_with_ventilation(reset_class_counters) -> None:
+    z = building.PhxZone()
+
+    sp1 = spaces.PhxSpace()
+    sp1.ventilation.load.flow_extract = 0
+    sp1.ventilation.load.flow_supply = 0
+    sp1.ventilation.load.flow_transfer = 0
+    z.spaces.append(sp1)
+
+    sp2 = spaces.PhxSpace()
+    sp2.ventilation.load.flow_extract = 1
+    sp2.ventilation.load.flow_supply = 1
+    sp2.ventilation.load.flow_transfer = 1
+    z.spaces.append(sp2)
+
+    sp3 = spaces.PhxSpace()
+    sp3.ventilation.load.flow_extract = 1
+    sp3.ventilation.load.flow_supply = 1
+    sp3.ventilation.load.flow_transfer = 1
+    z.spaces.append(sp3)
+
+    assert len(z.spaces_with_ventilation) == 2
+    assert sp1 not in z.spaces_with_ventilation
+    assert sp2 in z.spaces_with_ventilation
+    assert sp3 in z.spaces_with_ventilation

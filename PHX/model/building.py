@@ -64,6 +64,10 @@ class PhxZone:
         default_factory=collection.PhxExhaustVentilatorCollection
     )
 
+    def __post_init__(self) -> None:
+        self.__class__._count += 1
+        self.id_num = self.__class__._count
+
     def add_thermal_bridge(self, _thermal_bridge: PhxComponentThermalBridge) -> None:
         """Add a new PhxComponentThermalBridge to the PhxZone."""
         self._thermal_bridges[_thermal_bridge.identifier] = _thermal_bridge
@@ -88,9 +92,10 @@ class PhxZone:
         """Return all of the PhxComponentThermalBridge objects in the PhxZone."""
         return self._thermal_bridges.values()
 
-    def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+    @property
+    def spaces_with_ventilation(self) -> List[spaces.PhxSpace]:
+        """Return a list of all the spaces in the PhxZone which hav ventilation airflow."""
+        return [s for s in self.spaces if s.has_ventilation_airflow]
 
 
 @dataclass

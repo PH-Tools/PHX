@@ -21,3 +21,8 @@ class PhxProgramVentilation:
     schedule: vent_schedules.PhxScheduleVentilation = field(
         default_factory=vent_schedules.PhxScheduleVentilation
     )
+
+    @property
+    def has_ventilation_airflow(self) -> bool:
+        """Returns True if the load has any amount of ventilation airflow."""
+        return self.load.total_airflow > 0.0

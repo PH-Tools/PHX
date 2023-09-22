@@ -50,3 +50,8 @@ class PhxSpace:
     def peak_occupancy(self, value: float) -> None:
         """Sets the peak occupancy for the space (Num. of people)."""
         self.occupancy.load.people_per_m2 = value / self.floor_area
+
+    @property
+    def has_ventilation_airflow(self) -> bool:
+        """Returns True if the space has ventilation airflow."""
+        return self.ventilation.has_ventilation_airflow
