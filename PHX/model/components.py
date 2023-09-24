@@ -302,32 +302,69 @@ class PhxApertureElement(PhxComponentBase):
         return self.polygon.area
 
     @property
-    def frame_factor(self) -> float:
-        """Return the % of the Aperture Element which is frame (as opposed to glazing)."""
+    def width(self) -> float:
+        if not self.polygon:
+            return 0.0
 
+        try:
+            return self.polygon.width  # type: ignore
+        except AttributeError:
+            return self.polygon.perimeter_length() / 4
+
+    @property
+    def height(self) -> float:
+        if not self.polygon:
+            return 0.0
+
+        try:
+            return self.polygon.height  # type: ignore
+        except AttributeError:
+            return self.polygon.perimeter_length() / 4
+
+    @property
+    def frame_area(self) -> float:
+        """Return the area of the frame in the Aperture Element."""
+        if not self.polygon:
+            return 1.0
+
+        # -- Get the frame widths
         window_type = self.host.window_type
         frame_w_top = window_type.frame_top.width
         frame_w_bottom = window_type.frame_bottom.width
         frame_w_left = window_type.frame_left.width
         frame_w_right = window_type.frame_right.width
 
-        if not self.polygon:
-            return 1.0
+        # -- Get the frame lengths (remove the top/bottom frame width from the sides)
+        frame_l_top = self.width
+        frame_l_bottom = self.width
+        frame_l_left = self.height - self.height / self.height * (
+            frame_w_top + frame_w_bottom
+        )
+        frame_l_right = self.height - self.height / self.height * (
+            frame_w_top + frame_w_bottom
+        )
+        # -- Calc. the frame area
+        frame_area = (
+            +(frame_l_top * frame_w_top)
+            + (frame_l_bottom * frame_w_bottom)
+            + (frame_l_left * frame_w_left)
+            + (frame_l_right * frame_w_right)
+        )
 
-        if isinstance(self.polygon, geometry.PhxPolygonRectangular):
-            frame_area = (
-                +(self.polygon.width * frame_w_top)
-                + (self.polygon.width * frame_w_bottom)
-                + (self.polygon.height * frame_w_left)
-                + (self.polygon.height * frame_w_right)
-            )
-        else:
-            avg_frame_width = (
-                frame_w_top + frame_w_bottom + frame_w_left + frame_w_right
-            ) / 4
-            frame_area = self.polygon.perimeter_length() * avg_frame_width
+        return frame_area
 
-        return frame_area / self.polygon.area
+    @property
+    def frame_factor(self) -> float:
+        """Return the % of the Aperture Element which is frame (as opposed to glazing)."""
+        try:
+            return self.frame_area / self.area
+        except ZeroDivisionError:
+            return 0.0
+
+    @property
+    def glazing_area(self) -> float:
+        """Return the area of the glazing in the Aperture Element."""
+        return self.area * self.glazing_factor
 
     @property
     def glazing_factor(self) -> float:
