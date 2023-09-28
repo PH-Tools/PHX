@@ -87,7 +87,7 @@ def test_default_PhxProject(reset_class_counters):
         '<PEF3 unit="kWh/kWh">1.1</PEF3>',
         '<PEF4 unit="kWh/kWh">0.2</PEF4>',
         '<PEF5 unit="kWh/kWh">1.8</PEF5>',
-        '<PEF6 unit="kWh/kWh">1.7</PEF6>',
+        '<PEF6 unit="kWh/kWh">0.7</PEF6>',
         '<PEF7 unit="kWh/kWh">0.8</PEF7>',
         '<PEF8 unit="kWh/kWh">1.1</PEF8>',
         '<PEF9 unit="kWh/kWh">1.5</PEF9>',

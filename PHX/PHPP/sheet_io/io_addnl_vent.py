@@ -145,7 +145,8 @@ class VentUnits:
         return self._section_last_entry_row
 
     def find_section_header_row(self, _row_start: int = 50, _row_end: int = 200) -> int:
-        """Return the row number of the 'Units' section header."""
+        """Return the row number of the 'Vent-Units' section header."""
+        RECURSION_LIMIT = 10_000
 
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
@@ -158,6 +159,12 @@ class VentUnits:
             if self.shape.units.locator_string_header in str(val):
                 return i
 
+        # -- If the section is not found, try again with a larger read-block
+        if _row_end < RECURSION_LIMIT:
+            return self.find_section_header_row(
+                _row_start=_row_end, _row_end=_row_end + 200
+            )
+        # -- If the section is still not found, raise an exception
         raise Exception(
             f'\nError: Not able to find the "Ventilation-Units" input section '
             f'of the "{self.shape.name}" worksheet? Please be sure the section '

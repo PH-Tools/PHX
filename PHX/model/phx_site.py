@@ -87,7 +87,7 @@ class PhxSiteEnergyFactors:
             "HARD_COAL": PhxPEFactor(1.1, "kWh/kWh", "HARD_COAL"),
             "WOOD": PhxPEFactor(0.2, "kWh/kWh", "WOOD"),
             "ELECTRICITY_MIX": PhxPEFactor(1.8, "kWh/kWh", "ELECTRICITY_MIX"),
-            "ELECTRICITY_PV": PhxPEFactor(1.7, "kWh/kWh", "ELECTRICITY_PV"),
+            "ELECTRICITY_PV": PhxPEFactor(0.7, "kWh/kWh", "ELECTRICITY_PV"),
             "HARD_COAL_CGS_70_CHP": PhxPEFactor(0.8, "kWh/kWh", "HARD_COAL_CGS_70_CHP"),
             "HARD_COAL_CGS_35_CHP": PhxPEFactor(1.1, "kWh/kWh", "HARD_COAL_CGS_35_CHP"),
             "HARD_COAL_CGS_0_CHP": PhxPEFactor(1.5, "kWh/kWh", "HARD_COAL_CGS_0_CHP"),
