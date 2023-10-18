@@ -62,8 +62,18 @@ def angle_between_planes(plane1, plane2, _tolerance):
     # Handle parallel or coincident planes
     if (1.0 - dot_product_value) < _tolerance:
         return 0.0
-
-    angle_rad = math.acos(dot_product_value)
+    
+    try:
+        angle_rad = math.acos(dot_product_value)
+    except ValueError as e:
+        # ---- if its a floating point value like -1.0000000000000002
+        # ---- that will cause a domain error, so try again with a rounded value
+        angle_rad = 0.0
+        try:
+            print(round(dot_product_value, 8))
+            angle_rad = math.acos(round(dot_product_value, 8))
+        except Exception as e:
+            raise Exception(e)
 
     # Determine the counterclockwise angle
     orientation = cross_product(plane1_x_axis, plane2_x_axis)
