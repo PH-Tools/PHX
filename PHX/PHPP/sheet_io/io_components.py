@@ -87,13 +87,14 @@ class Glazings:
             _start_row = self.section_first_entry_row
         elif _start_row > 10_000:
             raise Exception(
-                f"Error: Cannot find the last row in the '{self.shape.name}' sheet, column {self.shape.glazings.locator_col_entry}?"
+                f"Error: Cannot find the last row in the '{self.shape.name}'"
+                f"sheet, column {self.shape.glazings.entry_column}?"
             )
 
         _row_end = _start_row + 500
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
-            _col=self.shape.glazings.locator_col_entry,
+            _col=self.shape.glazings.entry_column,
             _row_start=_start_row,
             _row_end=_row_end,
         )

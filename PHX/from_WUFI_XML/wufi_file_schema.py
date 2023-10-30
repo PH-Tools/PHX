@@ -412,7 +412,7 @@ class SupportiveDevice(BaseModel):
     InConditionedSpace: Optional[bool]
     NormEnergyDemand: Optional[unit.Watts]
     Controlled: Optional[bool]
-    PeriodOperation: Optional[float]
+    PeriodOperation: Optional[unit.KiloHours_per_Year]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -448,8 +448,8 @@ class PH_Parameters(BaseModel):
     AnnualCOP: Optional[unit.kWh_per_kWh]
     TotalSystemPerformanceRatioHeatGenerator: Optional[unit._Percentage]
     HPType: Optional[int]
-    RatedCOP1: Optional[float]
-    RatedCOP2: Optional[float]
+    RatedCOP1: Optional[unit._Percentage]
+    RatedCOP2: Optional[unit._Percentage]
     AmbientTemperature1: Optional[unit.DegreeC]
     AmbientTemperature2: Optional[unit.DegreeC]
 
@@ -562,7 +562,7 @@ class Systems(BaseModel):
 
 class FoundationInterface(BaseModel):
     # -- Common Attributes
-    Name: str
+    Name: Optional[str]
     SettingFloorSlabType: int
     FloorSlabType: int
 

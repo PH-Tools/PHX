@@ -1503,7 +1503,7 @@
 						<Name>Unnamed_Bldg_Segment</Name>
 						<KindZone choice="Simulated zone">1</KindZone>
 						<IdentNr>1</IdentNr>
-						<RoomsVentilation count="8">
+						<RoomsVentilation count="4">
 							<Room index="0">
 								<Name>Unnamed_Space</Name>
 								<Type>99</Type>
@@ -1547,50 +1547,6 @@
 								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
 								<DesignVolumeFlowRateSupply unit="m³/h">135.29</DesignVolumeFlowRateSupply>
 								<DesignVolumeFlowRateExhaust unit="m³/h">135.29</DesignVolumeFlowRateExhaust>
-							</Room>
-							<Room index="4">
-								<Name>Unnamed_Space</Name>
-								<Type>99</Type>
-								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
-								<Quantity>1</Quantity>
-								<AreaRoom unit="m²">20.0</AreaRoom>
-								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
-								<DesignVolumeFlowRateSupply unit="m³/h">0.0</DesignVolumeFlowRateSupply>
-								<DesignVolumeFlowRateExhaust unit="m³/h">0.0</DesignVolumeFlowRateExhaust>
-							</Room>
-							<Room index="5">
-								<Name>Unnamed_Space</Name>
-								<Type>99</Type>
-								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
-								<Quantity>1</Quantity>
-								<AreaRoom unit="m²">20.0</AreaRoom>
-								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
-								<DesignVolumeFlowRateSupply unit="m³/h">0.0</DesignVolumeFlowRateSupply>
-								<DesignVolumeFlowRateExhaust unit="m³/h">0.0</DesignVolumeFlowRateExhaust>
-							</Room>
-							<Room index="6">
-								<Name>Unnamed_Space</Name>
-								<Type>99</Type>
-								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
-								<Quantity>1</Quantity>
-								<AreaRoom unit="m²">20.0</AreaRoom>
-								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
-								<DesignVolumeFlowRateSupply unit="m³/h">0.0</DesignVolumeFlowRateSupply>
-								<DesignVolumeFlowRateExhaust unit="m³/h">0.0</DesignVolumeFlowRateExhaust>
-							</Room>
-							<Room index="7">
-								<Name>Unnamed_Space</Name>
-								<Type>99</Type>
-								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
-								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
-								<Quantity>1</Quantity>
-								<AreaRoom unit="m²">20.0</AreaRoom>
-								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
-								<DesignVolumeFlowRateSupply unit="m³/h">0.0</DesignVolumeFlowRateSupply>
-								<DesignVolumeFlowRateExhaust unit="m³/h">0.0</DesignVolumeFlowRateExhaust>
 							</Room>
 						</RoomsVentilation>
 						<LoadsPersonsPH count="8">
@@ -2276,62 +2232,6 @@
 						</ZonesCoverage>
 						<Devices count="6">
 							<Device index="0">
-								<Name>test_ventilator</Name>
-								<IdentNr>1</IdentNr>
-								<SystemType>1</SystemType>
-								<TypeDevice>1</TypeDevice>
-								<UsedFor_Heating>false</UsedFor_Heating>
-								<UsedFor_DHW>false</UsedFor_DHW>
-								<UsedFor_Cooling>false</UsedFor_Cooling>
-								<UsedFor_Ventilation>true</UsedFor_Ventilation>
-								<UsedFor_Humidification>false</UsedFor_Humidification>
-								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
-								<UseOptionalClimate>false</UseOptionalClimate>
-								<IdentNr_OptionalClimate>-1</IdentNr_OptionalClimate>
-								<HeatRecovery>0.73</HeatRecovery>
-								<MoistureRecovery >0.0</MoistureRecovery >
-								<PH_Parameters>
-									<Quantity>1</Quantity>
-									<HumidityRecoveryEfficiency>0.0</HumidityRecoveryEfficiency>
-									<ElectricEfficiency>0.45</ElectricEfficiency>
-									<DefrostRequired>true</DefrostRequired>
-									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>
-									<InConditionedSpace>true</InConditionedSpace>
-									<NoSummerBypass>false</NoSummerBypass>
-								</PH_Parameters>
-							</Device>
-							<Device index="1">
-								<Name>_unnamed_equipment_</Name>
-								<IdentNr>2</IdentNr>
-								<SystemType>5</SystemType>
-								<TypeDevice>5</TypeDevice>
-								<UsedFor_Heating>false</UsedFor_Heating>
-								<UsedFor_DHW>false</UsedFor_DHW>
-								<UsedFor_Cooling>false</UsedFor_Cooling>
-								<UsedFor_Ventilation>false</UsedFor_Ventilation>
-								<UsedFor_Humidification>false</UsedFor_Humidification>
-								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
-								<PH_Parameters>
-									<AuxiliaryEnergy/>
-									<AuxiliaryEnergyDHW/>
-									<InConditionedSpace>true</InConditionedSpace>
-									<AnnualCOP>2.5</AnnualCOP>
-									<TotalSystemPerformanceRatioHeatGenerator>0.4</TotalSystemPerformanceRatioHeatGenerator>
-									<HPType>3</HPType>
-								</PH_Parameters>
-								<DHW_Parameters>
-									<CoverageWithinSystem>0.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</DHW_Parameters>
-								<Heating_Parameters>
-									<CoverageWithinSystem>0.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</Heating_Parameters>
-							</Device>
-							<Device index="2">
 								<Name>_unnamed_equipment_</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
@@ -2362,30 +2262,32 @@
 									<Selection>1</Selection>
 								</Heating_Parameters>
 							</Device>
-							<Device index="3">
+							<Device index="1">
 								<Name>_unnamed_equipment_</Name>
 								<IdentNr>1</IdentNr>
-								<SystemType>10</SystemType>
-								<TypeDevice>10</TypeDevice>
+								<SystemType>8</SystemType>
+								<TypeDevice>8</TypeDevice>
 								<UsedFor_Heating>false</UsedFor_Heating>
-								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_DHW>true</UsedFor_DHW>
 								<UsedFor_Cooling>false</UsedFor_Cooling>
 								<UsedFor_Ventilation>false</UsedFor_Ventilation>
 								<UsedFor_Humidification>false</UsedFor_Humidification>
 								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
 								<PH_Parameters>
-									<SelectionLocation>1</SelectionLocation>
-									<SelectionOnSiteUtilization>1</SelectionOnSiteUtilization>
-									<SelectionUtilization>1</SelectionUtilization>
-									<ArraySizePV>10.0</ArraySizePV>
-									<PhotovoltaicRenewableEnergy>1000.0</PhotovoltaicRenewableEnergy>
-									<OnsiteUtilization>1.0</OnsiteUtilization>
-									<AuxiliaryEnergy>0.0</AuxiliaryEnergy>
-									<AuxiliaryEnergyDHW>0.0</AuxiliaryEnergyDHW>
-									<InConditionedSpace>false</InConditionedSpace>
+									<SolarThermalStorageCapacity>300.0</SolarThermalStorageCapacity>
+									<StorageLossesStandby>4.0</StorageLossesStandby>
+									<TotalSolarThermalStorageLosses>4.0</TotalSolarThermalStorageLosses>
+									<InputOption>1</InputOption>
+									<AverageHeatReleaseStorage>0.0</AverageHeatReleaseStorage>
+									<TankRoomTemp >20.0</TankRoomTemp >
+									<TypicalStorageWaterTemperature>60.0</TypicalStorageWaterTemperature>
+									<QauntityWS>1</QauntityWS>
+									<AuxiliaryEnergy/>
+									<AuxiliaryEnergyDHW/>
+									<InConditionedSpace>true</InConditionedSpace>
 								</PH_Parameters>
 							</Device>
-							<Device index="4">
+							<Device index="2">
 								<Name>_unnamed_equipment_</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
@@ -2415,49 +2317,104 @@
 									<Selection>1</Selection>
 								</Heating_Parameters>
 							</Device>
-							<Device index="5">
+							<Device index="3">
 								<Name>_unnamed_equipment_</Name>
-								<IdentNr>1</IdentNr>
-								<SystemType>8</SystemType>
-								<TypeDevice>8</TypeDevice>
+								<IdentNr>2</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>false</UsedFor_Heating>
-								<UsedFor_DHW>true</UsedFor_DHW>
+								<UsedFor_DHW>false</UsedFor_DHW>
 								<UsedFor_Cooling>false</UsedFor_Cooling>
 								<UsedFor_Ventilation>false</UsedFor_Ventilation>
 								<UsedFor_Humidification>false</UsedFor_Humidification>
 								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
 								<PH_Parameters>
-									<SolarThermalStorageCapacity>300.0</SolarThermalStorageCapacity>
-									<StorageLossesStandby>4.0</StorageLossesStandby>
-									<TotalSolarThermalStorageLosses>4.0</TotalSolarThermalStorageLosses>
-									<InputOption>1</InputOption>
-									<AverageHeatReleaseStorage>0.0</AverageHeatReleaseStorage>
-									<TankRoomTemp >20.0</TankRoomTemp >
-									<TypicalStorageWaterTemperature>60.0</TypicalStorageWaterTemperature>
-									<QauntityWS>1</QauntityWS>
 									<AuxiliaryEnergy/>
 									<AuxiliaryEnergyDHW/>
 									<InConditionedSpace>true</InConditionedSpace>
+									<AnnualCOP>2.5</AnnualCOP>
+									<TotalSystemPerformanceRatioHeatGenerator>0.4</TotalSystemPerformanceRatioHeatGenerator>
+									<HPType>3</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+							</Device>
+							<Device index="4">
+								<Name>_unnamed_equipment_</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>10</SystemType>
+								<TypeDevice>10</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<SelectionLocation>1</SelectionLocation>
+									<SelectionOnSiteUtilization>1</SelectionOnSiteUtilization>
+									<SelectionUtilization>1</SelectionUtilization>
+									<ArraySizePV>10.0</ArraySizePV>
+									<PhotovoltaicRenewableEnergy>1000.0</PhotovoltaicRenewableEnergy>
+									<OnsiteUtilization>1.0</OnsiteUtilization>
+									<AuxiliaryEnergy>0.0</AuxiliaryEnergy>
+									<AuxiliaryEnergyDHW>0.0</AuxiliaryEnergyDHW>
+									<InConditionedSpace>false</InConditionedSpace>
+								</PH_Parameters>
+							</Device>
+							<Device index="5">
+								<Name>test_ventilator</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>1</SystemType>
+								<TypeDevice>1</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>true</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<UseOptionalClimate>false</UseOptionalClimate>
+								<IdentNr_OptionalClimate>-1</IdentNr_OptionalClimate>
+								<HeatRecovery>0.73</HeatRecovery>
+								<MoistureRecovery >0.0</MoistureRecovery >
+								<PH_Parameters>
+									<Quantity>1</Quantity>
+									<HumidityRecoveryEfficiency>0.0</HumidityRecoveryEfficiency>
+									<ElectricEfficiency>0.45</ElectricEfficiency>
+									<DefrostRequired>true</DefrostRequired>
+									<FrostProtection>true</FrostProtection>
+									<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>
+									<InConditionedSpace>true</InConditionedSpace>
+									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
 							</Device>
 						</Devices>
 						<PHDistribution>
 							<DistributionDHW>
-								<CalculationMethodIndividualPipes>1</CalculationMethodIndividualPipes>
+								<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>
 								<DemandRecirculation>true</DemandRecirculation>
 								<SelectionhotWaterFixtureEff>1</SelectionhotWaterFixtureEff>
 								<NumberOfBathrooms>1</NumberOfBathrooms>
 								<AllPipesAreInsulated>true</AllPipesAreInsulated>
 								<SelectionUnitsOrFloors>2</SelectionUnitsOrFloors>
-								<PipeMaterialSimplifiedMethod>1</PipeMaterialSimplifiedMethod>
-								<PipeDiameterSimplifiedMethod>1.0</PipeDiameterSimplifiedMethod>
+								<PipeMaterialSimplifiedMethod>2</PipeMaterialSimplifiedMethod>
+								<PipeDiameterSimplifiedMethod>25.4</PipeDiameterSimplifiedMethod>
 								<TemperatureRoom_WR>20.0</TemperatureRoom_WR>
 								<DesignFlowTemperature_WR>60.0</DesignFlowTemperature_WR>
-								<DailyRunningHoursCirculation_WR>24</DailyRunningHoursCirculation_WR>
+								<DailyRunningHoursCirculation_WR>0.0</DailyRunningHoursCirculation_WR>
 								<LengthCirculationPipes_WR>0</LengthCirculationPipes_WR>
 								<HeatLossCoefficient_WR/>
 								<LengthIndividualPipes_WR>0</LengthIndividualPipes_WR>
 								<ExteriorPipeDiameter_WR/>
+								<Truncs count="0"/>
 							</DistributionDHW>
 							<DistributionCooling/>
 							<DistributionVentilation count="0"/>

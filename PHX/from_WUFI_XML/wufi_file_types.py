@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""Pydantic Model for WUFI-XML file format."""
+"""Pydantic Model Unit-Types for WUFI-XML file format."""
 
 from __future__ import annotations
 from typing import Dict, Union, Any, Optional
@@ -9,7 +9,7 @@ from ph_units.converter import convert
 
 
 # ------------------------------------------------------------------------------
-# -- Unit Types
+# -- Base Unit Type Converters
 
 
 class BaseConverter:
@@ -311,6 +311,9 @@ class Hours_per_Year(float, BaseCaster):
     __unit_type__ = ""
     __value_type__ = float
 
+class KiloHours_per_Year(float, BaseCaster):
+    __unit_type__ = ""
+    __value_type__ = float
 
 # ------------------------------------------------------------------------------
 # -- Lighting
