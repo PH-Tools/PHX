@@ -548,9 +548,9 @@ class PhxMechanicalSystemCollection:
     def cooling_devices(self) -> List[hvac.AnyPhxCooling]:
         """Returns a list of all the 'Cooling' devices in the collection."""
         return [
-            _
-            for _ in self.devices
-            if isinstance(_, hvac.PhxCoolingDevice) and _.usage_profile.cooling
+            d
+            for d in self.devices
+            if isinstance(d, hvac.PhxCoolingDevice) and d.usage_profile.cooling
         ]
 
     def device_in_collection(self, _device_key) -> bool:

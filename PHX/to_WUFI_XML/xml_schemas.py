@@ -1374,7 +1374,6 @@ def _DistributionDHW(_c: hvac.PhxMechanicalSystemCollection):
         ),
     ]
 
-
 class DistributionHeating:
     def __init__(self) -> None:
         raise NotImplementedError
@@ -1435,15 +1434,11 @@ It is stupid that things like COP are stored in there. So use a temp class for n
 class TempDistributionCooling:
     """Temporary wrapper class for WUFI format Cooling Distribution data"""
 
-    def __init__(self, _devices: List[hvac.AnyPhxCooling]):
+    def __init__(self, _devices: List[hvac.AnyPhxCooling]) -> None:
         # -- have to sort and combine the systems together
         self.ventilation_device = self.sum_devices(_devices, hvac.CoolingType.VENTILATION)
-        self.recirculation_device = self.sum_devices(
-            _devices, hvac.CoolingType.RECIRCULATION
-        )
-        self.dehumidification_device = self.sum_devices(
-            _devices, hvac.CoolingType.DEHUMIDIFICATION
-        )
+        self.recirculation_device = self.sum_devices(_devices, hvac.CoolingType.RECIRCULATION)
+        self.dehumidification_device = self.sum_devices(_devices, hvac.CoolingType.DEHUMIDIFICATION)
         self.panel_device = self.sum_devices(_devices, hvac.CoolingType.PANEL)
 
     def sum_devices(

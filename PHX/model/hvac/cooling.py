@@ -185,7 +185,7 @@ class PhxCoolingPanel(PhxCoolingDevice):
 
     def __add__(self, other: PhxCoolingPanel) -> PhxCoolingPanel:
         base: PhxCoolingPanel = super().__add__(other)
-        new_obj = self.__class__.from_kwargs(**vars(base))
+        new_obj: PhxCoolingPanel = self.__class__.from_kwargs(**vars(base))
         new_obj.device_type = self.device_type
         new_obj.cooling_type = self.cooling_type
         new_obj.params = self.params + other.params
