@@ -608,9 +608,13 @@ class PhxMechanicalSystemCollection:
     #  -- Distribution Piping
 
     def add_distribution_piping(self, _p: hvac.PhxPipeTrunk) -> None:
+        """Add a new DHW Trunc-Pipe to the System.
+        Note that all piping must be in a: Trunc > Branch > Fixture config.
+        """
         self._distribution_piping_trunks[_p.identifier] = _p
 
     def add_recirc_piping(self, _p: hvac.PhxPipeElement) -> None:
+        """Add a new DHW Recirc-Pipe to the System."""
         self._distribution_piping_recirc[_p.identifier] = _p
 
     @property

@@ -6,6 +6,8 @@ from rich import print
 from typing import Any, Dict, List, Optional, Tuple
 import sys
 
+from ph_units.unit_type import Unit
+
 from PHX.from_WUFI_XML import wufi_file_schema as wufi_xml
 
 from PHX.model.building import PhxBuilding, PhxZone
@@ -81,7 +83,7 @@ from PHX.model.project import (
     PhxVariant,
     WufiPlugin,
 )
-from PHX.model.hvac.collection import PhxZoneCoverage
+from PHX.model.hvac.collection import PhxZoneCoverage, AnyMechDevice, PhxRecirculationParameters
 from PHX.model.programs.occupancy import PhxProgramOccupancy
 from PHX.model.programs.ventilation import PhxProgramVentilation
 from PHX.model.hvac.ventilation import (
@@ -124,7 +126,17 @@ from PHX.model.elec_equip import (
     PhxDeviceCustomLighting,
     PhxDeviceCustomMEL,
 )
-
+from PHX.model.hvac.piping import (
+    PhxPipeSegment,
+    PhxPipeTrunk,
+    PhxPipeBranch,
+    PhxPipeElement,
+    PhxHotWaterPipingMaterial,
+    PhxHotWaterPipingDiameter,
+    PhxHotWaterPipingCalcMethod,
+    PhxHotWaterPipingMaterial,
+    PhxHotWaterSelectionUnitsOrFloors,
+)
 
 # ----------------------------------------------------------------------
 # -- Conversion Function
@@ -370,6 +382,7 @@ def _PhxScheduleOccupancy(_data: wufi_xml.UtilizationPattern) -> PhxScheduleOccu
     return phx_obj
 
 
+
 # ----------------------------------------------------------------------
 # -- Variants
 
@@ -385,34 +398,160 @@ def _WufiPlugin(_model: wufi_xml.Plugin) -> WufiPlugin:
     return phx_obj
 
 
-def _PhxVariant(_data: wufi_xml.Variant, _phx_project_host: PhxProject) -> PhxVariant:
+def _PhxVariant(_xml_variant_data: wufi_xml.Variant, _phx_project_host: PhxProject) -> PhxVariant:
     phx_obj = PhxVariant()
 
-    phx_obj.id_num = _data.IdentNr
-    phx_obj.name = _data.Name
-    phx_obj.remarks = _data.Remarks
-    phx_obj.plugin = as_phx_obj(_data.PlugIn, "WufiPlugin")
-    phx_obj.phius_cert = as_phx_obj(_data.PassivehouseData, "PhxPhiusCertification")
-    phx_obj.site = as_phx_obj(_data.ClimateLocation, "PhxSite")
+    phx_obj.id_num = _xml_variant_data.IdentNr
+    phx_obj.name = _xml_variant_data.Name
+    phx_obj.remarks = _xml_variant_data.Remarks
+    phx_obj.plugin = as_phx_obj(_xml_variant_data.PlugIn, "WufiPlugin")
+    phx_obj.phius_cert = as_phx_obj(_xml_variant_data.PassivehouseData, "PhxPhiusCertification")
+    phx_obj.site = as_phx_obj(_xml_variant_data.ClimateLocation, "PhxSite")
 
     phx_obj.building = as_phx_obj(
-        (_data.Building, _data.Graphics_3D),
+        (_xml_variant_data.Building, _xml_variant_data.Graphics_3D),
         "PhxBuilding",
         _phx_project_host=_phx_project_host,
     )
 
-    for system_data_dict in _data.HVAC.Systems:
-        phx_obj.mech_systems.display_name = system_data_dict.Name
-        phx_obj.mech_systems.id_num = system_data_dict.IdentNr
+    for xml_system_data in _xml_variant_data.HVAC.Systems:
+        phx_obj.mech_systems.display_name = xml_system_data.Name
+        phx_obj.mech_systems.id_num = xml_system_data.IdentNr
         phx_obj.mech_systems.zone_coverage = as_phx_obj(
-            system_data_dict.ZonesCoverage[0], "PhxZoneCoverage"
+            xml_system_data.ZonesCoverage[0], "PhxZoneCoverage"
         )
 
-        for device_data_dict in system_data_dict.Devices:
-            new_device = as_phx_obj(device_data_dict, "PhxMechanicalDevice")
+        # -- Devices
+        for xml_device_data in xml_system_data.Devices:
+            new_device = as_phx_obj(xml_device_data, "PhxMechanicalDevice") # type: AnyMechDevice
             phx_obj.mech_systems.add_new_mech_device(new_device.identifier, new_device)
 
+        xml_dist_dhw_data = xml_system_data.PHDistribution.DistributionDHW
+        if xml_dist_dhw_data is not None:
+            # -- Distribution Piping Elements
+            for trunc in xml_dist_dhw_data.Truncs or []:
+                new_trunc = as_phx_obj(trunc, "Trunc") # type: PhxPipeTrunk
+                phx_obj.mech_systems.add_distribution_piping(new_trunc)
+
+            # -- Recirculation Piping Parameters
+            phx_params = as_phx_obj(xml_dist_dhw_data, "PhxRecirculationParameters")
+            phx_obj.mech_systems._distribution_hw_recirculation_params = phx_params
+            
+            # -- Recirculation Piping Element
+            recirc_pipe_element =  as_phx_obj(xml_dist_dhw_data, "RecirculationTrunk") # type: PhxPipeElement
+            phx_obj.mech_systems.add_recirc_piping(recirc_pipe_element)
+
     return phx_obj
+
+
+# ----------------------------------------------------------------------
+# -- DHW Distribution
+
+
+def _PhxRecirculationParameters(_data: wufi_xml.DistributionDHW) -> PhxRecirculationParameters:
+    new_params = PhxRecirculationParameters()
+
+    new_params.calc_method = PhxHotWaterPipingCalcMethod(_data.CalculationMethodIndividualPipes)
+    new_params.pipe_material = PhxHotWaterPipingMaterial(_data.PipeMaterialSimplifiedMethod)
+    new_params.demand_recirc = _data.DemandRecirculation
+    new_params.num_bathrooms = _data.NumberOfBathrooms or 0
+    new_params.all_pipes_insulated = _data.AllPipesAreInsulated
+    new_params.units_or_floors = PhxHotWaterSelectionUnitsOrFloors(_data.SelectionUnitsOrFloors)
+    new_params.pipe_diameter = _data.PipeDiameterSimplifiedMethod or 0.0
+    new_params.air_temp = _data.TemperatureRoom_WR or 20.0
+    new_params.water_temp = _data.DesignFlowTemperature_WR or 50.0
+    new_params.daily_recirc_hours = _data.DailyRunningHoursCirculation_WR or 24.0
+
+    return new_params
+
+def _RecirculationTrunk(_data: wufi_xml.DistributionDHW) -> PhxPipeElement:
+    new_recirc_pipe = PhxPipeElement()
+    new_segment = PhxPipeSegment.from_length(
+        "Recirculation Pipe",
+        _data.LengthCirculationPipes_WR or 0.0,
+        PhxHotWaterPipingMaterial.COPPER_K,
+        PhxHotWaterPipingDiameter._1_0_0_IN,
+    )
+    new_segment.insulation_thickness_m = 25.4 / 1_000
+    new_segment.insulation_conductivity = 0.04
+
+    known_heat_loss_WMK = _data.HeatLossCoefficient_WR or 0.0
+    
+    # -- Try and determine the insulation conductivity, using the 
+    # -- known heat-loss conductivity value as a target.
+    # -- We have to do this since the heat-loss-coeff is only solved for 
+    # -- based on the piping when exporting to WUFI-XML from PHX.
+    # -- And for some reason the actual Pipe values are not saved in the XML?
+    insul_conductivity = new_segment.reverse_solve_for_insulation_conductivity(
+        target_result=known_heat_loss_WMK,
+        starting_conductivity=0.1,
+    )
+    new_segment.insulation_conductivity = insul_conductivity
+    new_recirc_pipe.add_segment(new_segment)
+
+    return new_recirc_pipe
+
+
+def _Trunc(_data: wufi_xml.Trunc) -> PhxPipeTrunk:
+    new_trunc = PhxPipeTrunk()
+    new_trunc.display_name = _data.Name or ""
+    new_trunc.multiplier = _data.CountUnitsOrFloors or 1
+
+    # -- Since we lose the actual geometry in WUFI, 
+    # -- we'll just make a new Pipe Element with the right length
+    new_trunc.pipe_element.add_segment(
+        PhxPipeSegment.from_length(
+            _data.Name or "",
+            _data.PipingLength or 0.0,
+            PhxHotWaterPipingMaterial(_data.PipeMaterial),
+            PhxHotWaterPipingDiameter(_data.PipingDiameter),
+        )
+    )
+
+    for branch in _data.Branches or []:
+        new_branch = as_phx_obj(branch, "Branch") # type: PhxPipeBranch
+        new_trunc.add_branch(new_branch)
+    
+    return new_trunc
+
+
+def _Branch(_data: wufi_xml.Branch) -> PhxPipeBranch:
+    new_branch = PhxPipeBranch()
+    new_branch.display_name = _data.Name or ""
+
+    # -- Since we lose the actual geometry in WUFI, 
+    # -- we'll just make a new Pipe Element with the right length
+    new_branch.pipe_element.add_segment(
+        PhxPipeSegment.from_length(
+            _data.Name or "",
+            _data.PipingLength or 0.0,
+            PhxHotWaterPipingMaterial(_data.PipeMaterial),
+            PhxHotWaterPipingDiameter(_data.PipingDiameter),
+        )
+    )
+
+    for pipe in _data.Twigs or []:
+        new_fixture = as_phx_obj(pipe, "Fixture") # type: PhxPipeElement
+        new_branch.add_fixture(new_fixture)
+
+    return new_branch
+
+
+def _Fixture(_data: wufi_xml.Twig) -> PhxPipeElement:
+    new_element = PhxPipeElement()
+
+    # -- Since we lose the actual geometry in WUFI, 
+    # -- we'll just make a new Pipe Element with the right length
+    new_element.add_segment(
+        PhxPipeSegment.from_length(
+            _data.Name or "",
+            _data.PipingLength or 0.0,
+            PhxHotWaterPipingMaterial(_data.PipeMaterial),
+            PhxHotWaterPipingDiameter(_data.PipingDiameter),
+        )
+    )
+
+    return new_element
 
 
 # ----------------------------------------------------------------------
@@ -1052,7 +1191,7 @@ def _PhxSpace(_data: wufi_xml.Room, _phx_project_host: PhxProject) -> PhxSpace:
 
 
 # ----------------------------------------------------------------------
-# -- Mechanicals
+# -- Mechanical Systems and Devices
 
 
 def _PhxZoneCoverage(_data: wufi_xml.ZoneCoverage) -> PhxZoneCoverage:
