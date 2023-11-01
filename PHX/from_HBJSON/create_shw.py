@@ -96,7 +96,7 @@ def build_phx_hw_heater(
         "PhSHWHeaterBoiler": hvac.PhxHeaterBoilerFossil,
         "PhSHWHeaterBoilerWood": hvac.PhxHeaterBoilerWood,
         "PhSHWHeaterDistrict": hvac.PhxHeaterDistrictHeat,
-        "PhSHWHeaterHeatPump": hvac.PhxHeaterHeatPumpHotWater,
+        "PhSHWHeaterHeatPump": hvac.PhxHeatPumpHotWater,
     }
 
     # -- Build the basic heater and set basic data

@@ -373,7 +373,7 @@ def create_thermal_bridges_from_hb_room(
         phx_tb = components.PhxComponentThermalBridge()
         phx_tb.display_name = thermal_bridge.display_name
         phx_tb.quantity = thermal_bridge.quantity
-        phx_tb.group_number = ThermalBridgeType(thermal_bridge.group_type.number)
+        phx_tb.group_type = ThermalBridgeType(thermal_bridge.group_type.number)
         phx_tb.identifier = str(thermal_bridge.identifier)
         phx_tb.psi_value = thermal_bridge.psi_value
         phx_tb.fRsi_value = thermal_bridge.fRsi_value

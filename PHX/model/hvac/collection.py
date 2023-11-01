@@ -13,6 +13,7 @@ from typing import ClassVar, Dict, Optional, List, Any, Union
 from PHX.model import hvac
 from PHX.model.enums.hvac import DeviceType, PhxSupportiveDeviceType
 from PHX.model.hvac.heating import AnyPhxHeater
+from PHX.model.hvac.heat_pumps import AnyPhxHeatPump
 from PHX.model.hvac.ventilation import (
     AnyPhxVentilation,
     AnyPhxExhaustVent,
@@ -20,7 +21,6 @@ from PHX.model.hvac.ventilation import (
     PhxExhaustVentilatorDryer,
     PhxExhaustVentilatorUserDefined,
 )
-from PHX.model.hvac.cooling import AnyPhxCooling
 from PHX.model.hvac.water import AnyWaterTank
 from PHX.model.hvac.piping import PhxRecirculationParameters
 from PHX.model.hvac.supportive_devices import PhxSupportiveDevice
@@ -64,7 +64,7 @@ class PhxZoneCoverage:
 
 
 AnyMechDevice = Union[
-    AnyPhxVentilation, AnyPhxHeater, AnyPhxCooling, AnyWaterTank, AnyRenewableDevice
+    AnyPhxVentilation, AnyPhxHeater, AnyPhxHeatPump, AnyWaterTank, AnyRenewableDevice
 ]
 
 
@@ -541,16 +541,16 @@ class PhxMechanicalSystemCollection:
         return [
             _
             for _ in self.devices
-            if isinstance(_, hvac.PhxHeatingDevice) and _.usage_profile.space_heating
+            if isinstance(_, hvac.PhxHeatingDevice)
         ]
 
     @property
-    def cooling_devices(self) -> List[hvac.AnyPhxCooling]:
-        """Returns a list of all the 'Cooling' devices in the collection."""
+    def heat_pump_devices(self) -> List[hvac.PhxHeatPumpDevice]:
+        """Returns a list of all the Heat-Pump devices in the collection."""
         return [
             d
             for d in self.devices
-            if isinstance(d, hvac.PhxCoolingDevice) and d.usage_profile.cooling
+            if isinstance(d, hvac.PhxHeatPumpDevice)
         ]
 
     def device_in_collection(self, _device_key) -> bool:

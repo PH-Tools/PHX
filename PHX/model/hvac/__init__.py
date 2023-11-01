@@ -1,10 +1,11 @@
-"""PHX Mechanical Equipment (water, heating, cooling, ventilation)"""
+"""PHX Mechanical Equipment (water, heating, heat-pumps (cooling), ventilation)"""
 
 from PHX.model.enums.hvac import *
 from PHX.model.hvac._base import *
 from PHX.model.hvac.collection import *
-from PHX.model.hvac.cooling import *
 from PHX.model.hvac.heating import *
+from PHX.model.hvac.cooling_params import *
+from PHX.model.hvac.heat_pumps import *
 from PHX.model.hvac.ventilation import *
 from PHX.model.hvac.water import *
 from PHX.model.hvac.piping import *

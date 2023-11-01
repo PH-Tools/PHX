@@ -21,6 +21,7 @@ from PHX.model import (
 )
 from tests.conftest import _reload_phx_classes, _reset_phx_class_counters
 
+# -- For PyTest files
 SOURCE_DIR = pathlib.Path("tests", "_source_hbjson")
 SOURCE_FILE_NAMES = [
     "Default_Model_Single_Zone.hbjson",
@@ -30,12 +31,12 @@ SOURCE_FILES = [SOURCE_DIR / file for file in SOURCE_FILE_NAMES]
 TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 
 # -- Temp
-SOURCE_FILES = [
-    pathlib.Path(
-        "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/no_vent_test.hbjson"
-    )
-]
-TARGET_DIR = pathlib.Path("sample")
+# SOURCE_FILES = [
+#     pathlib.Path(
+#         "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/test_multiple_cooling.hbjson"
+#     )
+# ]
+# TARGET_DIR = pathlib.Path("sample")
 
 
 def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):

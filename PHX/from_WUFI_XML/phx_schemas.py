@@ -94,19 +94,20 @@ from PHX.model.hvac.ventilation import (
     PhxExhaustVentilatorDryer,
     PhxExhaustVentilatorUserDefined,
 )
-from PHX.model.hvac.heating import (
+from PHX.model.hvac import (
     PhxHeaterBoilerFossil,
     PhxHeaterBoilerWood,
     PhxHeaterDistrictHeat,
     PhxHeaterElectric,
-    PhxHeaterHeatPumpAnnual,
-    PhxHeaterHeatPumpCombined,
-    PhxHeaterHeatPumpMonthly,
-    PhxHeaterHeatPumpHotWater,
-    PhxHeaterHeatPump,
-    PhxHeaterBoiler,
+    PhxHeatPumpAnnual,
+    PhxHeatPumpCombined,
+    PhxHeatPumpMonthly,
+    PhxHeatPumpHotWater,
+    PhxHeatPumpDevice,
+    AnyPhxHeaterBoiler,
 )
-from PHX.model.hvac.cooling import PhxCoolingRecirculation
+
+# from PHX.model.hvac.cooling_params import PhxCoolingRecirculation
 from PHX.model.hvac.water import PhxHotWaterTank
 from PHX.model.hvac.renewable_devices import PhxDevicePhotovoltaic
 from PHX.model.enums.elec_equip import ElectricEquipmentType
@@ -438,14 +439,14 @@ def _PhxVariant(_xml_variant_data: wufi_xml.Variant, _phx_project_host: PhxProje
             # -- total capacity across all the cooling devices? Seems like as 
             # -- good a solution as any I guess....
             
-            number_phx_cooling_devices = len(phx_obj.mech_systems.cooling_devices)
+            number_phx_cooling_devices = len(phx_obj.mech_systems.heat_pump_devices)
             if number_phx_cooling_devices == 0:
                 continue
             avg_power = xml_dist_cooling_data.MaxRecirculationAirCoolingPower or 0.0 / number_phx_cooling_devices
             avg_vol = xml_dist_cooling_data.RecirculationAirVolume or 0.0 / number_phx_cooling_devices
             
             # -- Apply the param values to all of the cooling heat-pumps found
-            for cooling_device in phx_obj.mech_systems.cooling_devices:
+            for cooling_device in phx_obj.mech_systems.heat_pump_devices:
                 cooling_device.params.single_speed = xml_dist_cooling_data.RecirculatingAirOnOff or 0.0
                 cooling_device.params.min_coil_temp = xml_dist_cooling_data.MinTempCoolingCoilRecirculatingAir or 0.0
                 cooling_device.params.capacity = avg_power
@@ -803,7 +804,7 @@ def _PhxComponentThermalBridge(
 
     phx_obj.quantity = 1.0
     phx_obj.display_name = _data.Name
-    phx_obj.group_number = ThermalBridgeType(_data.Type * -1)
+    phx_obj.group_type = ThermalBridgeType(_data.Type * -1)
     phx_obj.length = _data.Length
     phx_obj.psi_value = _data.PsiValue
 
@@ -1250,13 +1251,14 @@ def _PhxMechanicalDevice(_data: wufi_xml.Device) -> Any:
     system_type = hvac_enums.SystemType(_data.SystemType)
     if system_type is hvac_enums.SystemType.HEAT_PUMP:
         # -- Heat pumps might be heating, or might be cooling
-        if _data.UsedFor_Cooling:
-            builder_class = "PhxCoolingRecirculation"
-        elif _data.UsedFor_Cooling and _data.UsedFor_Heating:
-            msg = "Error: Cannot convert heat-pumps which serve both heating AND cooling."
-            raise NotImplementedError(msg)
-        else:
-            builder_class = "PhxDevice_HeatPump"
+        # if _data.UsedFor_Cooling:
+        #     builder_class = "PhxCoolingRecirculation"
+        # elif _data.UsedFor_Cooling and _data.UsedFor_Heating:
+        #     msg = "Error: Cannot convert heat-pumps which serve both heating AND cooling."
+        #     raise NotImplementedError(msg)
+        # else:
+        #     builder_class = "PhxDevice_HeatPump"
+        builder_class = "PhxDevice_HeatPump" # temp
     else:
         builder_class = system_type_map[system_type]
     
@@ -1292,7 +1294,7 @@ def _PhxDevice_Electric(_data: wufi_xml.Device) -> PhxHeaterElectric:
     return PhxHeaterElectric()
 
 
-def _PhxDevice_Boiler(_data: wufi_xml.Device) -> Optional[PhxHeaterBoiler]:
+def _PhxDevice_Boiler(_data: wufi_xml.Device) -> Optional[AnyPhxHeaterBoiler]:
     boiler_builders = {
         hvac_enums.PhxFuelType.NATURAL_GAS: "PhxHeaterBoilerFossil",
         hvac_enums.PhxFuelType.OIL: "PhxHeaterBoilerFossil",
@@ -1345,7 +1347,7 @@ def _PhxDevice_DistrictHeat(_data: wufi_xml.Device) -> PhxHeaterDistrictHeat:
     return PhxHeaterDistrictHeat()
 
 
-def _PhxDevice_HeatPump(_data: wufi_xml.Device) -> Optional[PhxHeaterHeatPump]:
+def _PhxDevice_HeatPump(_data: wufi_xml.Device) -> Optional[PhxHeatPumpDevice]:
     hp_builders = {
         hvac_enums.HeatPumpType.COMBINED: "PhxDevice_HeatPump_Combined",
         hvac_enums.HeatPumpType.ANNUAL: "PhxDevice_HeatPump_Annual",
@@ -1360,13 +1362,13 @@ def _PhxDevice_HeatPump(_data: wufi_xml.Device) -> Optional[PhxHeaterHeatPump]:
         return None
 
 
-def _PhxDevice_HeatPump_Combined(_data: wufi_xml.Device) -> PhxHeaterHeatPumpCombined:
-    phx_obj = PhxHeaterHeatPumpCombined()
+def _PhxDevice_HeatPump_Combined(_data: wufi_xml.Device) -> PhxHeatPumpCombined:
+    phx_obj = PhxHeatPumpCombined()
     return phx_obj
 
 
-def _PhxDevice_HeatPump_Annual(_data: wufi_xml.Device) -> PhxHeaterHeatPumpAnnual:
-    phx_obj = PhxHeaterHeatPumpAnnual()
+def _PhxDevice_HeatPump_Annual(_data: wufi_xml.Device) -> PhxHeatPumpAnnual:
+    phx_obj = PhxHeatPumpAnnual()
     if not _data.PH_Parameters:
         return phx_obj
 
@@ -1377,8 +1379,8 @@ def _PhxDevice_HeatPump_Annual(_data: wufi_xml.Device) -> PhxHeaterHeatPumpAnnua
     return phx_obj
 
 
-def _PhxDevice_HeatPump_RatedMonthly(_data: wufi_xml.Device) -> PhxHeaterHeatPumpMonthly:
-    phx_obj = PhxHeaterHeatPumpMonthly()
+def _PhxDevice_HeatPump_RatedMonthly(_data: wufi_xml.Device) -> PhxHeatPumpMonthly:
+    phx_obj = PhxHeatPumpMonthly()
     if not _data.PH_Parameters:
         return phx_obj
 
@@ -1389,8 +1391,8 @@ def _PhxDevice_HeatPump_RatedMonthly(_data: wufi_xml.Device) -> PhxHeaterHeatPum
     return phx_obj
 
 
-def _PhxDevice_HeatPump_HotWater(_data: wufi_xml.Device) -> PhxHeaterHeatPumpHotWater:
-    phx_obj = PhxHeaterHeatPumpHotWater()
+def _PhxDevice_HeatPump_HotWater(_data: wufi_xml.Device) -> PhxHeatPumpHotWater:
+    phx_obj = PhxHeatPumpHotWater()
     if not _data.PH_Parameters:
         return phx_obj
     
@@ -1402,15 +1404,15 @@ def _PhxDevice_HeatPump_HotWater(_data: wufi_xml.Device) -> PhxHeaterHeatPumpHot
     return phx_obj
 
 
-def _PhxCoolingRecirculation(_data: wufi_xml.Device) -> PhxCoolingRecirculation:
-    phx_obj = PhxCoolingRecirculation()
+# def _PhxCoolingRecirculation(_data: wufi_xml.Device) -> PhxCoolingRecirculation:
+#     phx_obj = PhxCoolingRecirculation()
     
-    # -- NOTE: The required data for this device's params is NOT here on the device
-    # -- Fucking WUFI puts this over in the 'Distribution' for some inexplicable reason
-    # -- So this data needs to get sorted out a different way when reading in the data
-    # -- from a WUFI-XML file. See the '_PhxVariant' for how its done currently.
+#     # -- NOTE: The required data for this device's params is NOT here on the device
+#     # -- Fucking WUFI puts this over in the 'Distribution' for some inexplicable reason
+#     # -- So this data needs to get sorted out a different way when reading in the data
+#     # -- from a WUFI-XML file. See the '_PhxVariant' for how its done currently.
 
-    return phx_obj
+#     return phx_obj
 
 
 def _PhxDevice_WaterStorage(_data: wufi_xml.Device) -> PhxHotWaterTank:

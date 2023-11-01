@@ -16,7 +16,7 @@ from honeybee_energy_ph.properties.load import equipment, people
 from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
 from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
 from honeybee_energy_ph.hvac.heating import PhHeatingSystem
-from honeybee_energy_ph.hvac.cooling import PhCoolingSystem
+from honeybee_energy_ph.hvac.heat_pumps import PhHeatPumpSystem
 from honeybee_energy_ph.hvac.ventilation import (
     PhVentilationSystem,
     _ExhaustVentilatorBase,
@@ -682,10 +682,10 @@ def add_heating_systems_from_hb_rooms(
     return None
 
 
-def add_cooling_systems_from_hb_rooms(
+def add_heat_pump_systems_from_hb_rooms(
     _variant: project.PhxVariant, _hb_room: room.Room
 ) -> None:
-    """Add new PHX-Cooling SubSystem to the Variant based on the HB-Rooms.
+    """Add new PHX-Heat-Pump SubSystem to the Variant based on the HB-Rooms.
 
     Arguments:
     ----------
@@ -704,24 +704,24 @@ def add_cooling_systems_from_hb_rooms(
         # -- as _hb_room, so always refer back to the space.host to be sure.
         room_prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
         hvac_prop_ph: IdealAirSystemPhProperties = room_prop_energy.hvac.properties.ph  # type: ignore
-        cooling_systems: Set[PhCoolingSystem] = hvac_prop_ph.cooling_systems
+        heat_pump_systems: Set[PhHeatPumpSystem] = hvac_prop_ph.heat_pump_systems
 
         # -- Get or Build the PHX-Cooling systems
-        for hbph_sys in cooling_systems:
+        for hbph_sys in heat_pump_systems:
             # -- If the system already exists, just use that one.
-            phx_cooling_device = _variant.mech_systems.get_mech_device_by_key(
+            phx_heat_pump_device = _variant.mech_systems.get_mech_device_by_key(
                 hbph_sys.key
             )
 
-            # -- otherwise, build a new PHX-Cooling-Sys from the HB-hvac
-            if not phx_cooling_device:
-                phx_cooling_device = create_hvac.build_phx_cooling_sys(hbph_sys)
+            # -- otherwise, build a new PHX-Heat-Pump-System from the HB-hvac
+            if not phx_heat_pump_device:
+                phx_heat_pump_device = create_hvac.build_phx_heat_pump_sys(hbph_sys)
                 _variant.mech_systems.add_new_mech_device(
-                    hbph_sys.key, phx_cooling_device
+                    hbph_sys.key, phx_heat_pump_device
                 )
 
             # -- Keep the ID-Numbers aligned
-            setattr(hbph_sys, "id_num", phx_cooling_device.id_num)
+            setattr(hbph_sys, "id_num", phx_heat_pump_device.id_num)
 
     return None
 
@@ -997,7 +997,7 @@ def from_hb_room(
     # -- Build the Variant Elements (Dev. note: order matters!!)
     add_ventilation_systems_from_hb_rooms(new_variant, _hb_room)
     add_heating_systems_from_hb_rooms(new_variant, _hb_room)
-    add_cooling_systems_from_hb_rooms(new_variant, _hb_room)
+    add_heat_pump_systems_from_hb_rooms(new_variant, _hb_room)
     add_dhw_heaters_from_hb_rooms(new_variant, _hb_room)
     add_dhw_piping_from_hb_rooms(new_variant, _hb_room)
     add_dhw_storage_from_hb_rooms(new_variant, _hb_room)

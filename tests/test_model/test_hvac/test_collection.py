@@ -3,8 +3,8 @@ from copy import copy
 
 from PHX.model.hvac import (
     collection,
+    cooling_params,
     heating,
-    cooling,
     water,
     ventilation,
     supportive_devices,

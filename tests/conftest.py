@@ -16,7 +16,6 @@ from PHX.model import (
 )
 from PHX.model.hvac import (
     _base,
-    cooling,
     collection,
     renewable_devices,
     water,
@@ -24,6 +23,7 @@ from PHX.model.hvac import (
     heating,
     ducting,
     piping,
+    heat_pumps,
 )
 from PHX.model.schedules import ventilation as sched_ventilation
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
@@ -105,21 +105,16 @@ def _reset_phx_class_counters():
     ventilation.PhxDeviceVentilation._count = 0
     ventilation.PhxDeviceVentilator._count = 0
 
-    cooling.PhxCoolingDevice._count = 0
-    cooling.PhxCoolingVentilation._count = 0
-    cooling.PhxCoolingRecirculation._count = 0
-    cooling.PhxCoolingDehumidification._count = 0
-    cooling.PhxCoolingPanel._count = 0
-
     heating.PhxHeatingDevice._count = 0
     heating.PhxHeaterElectric._count = 0
     heating.PhxHeaterBoilerFossil._count = 0
     heating.PhxHeaterBoilerWood._count = 0
     heating.PhxHeaterDistrictHeat._count = 0
-    heating.PhxHeaterHeatPumpAnnual._count = 0
-    heating.PhxHeaterHeatPumpMonthly._count = 0
-    heating.PhxHeaterHeatPumpHotWater._count = 0
-    heating.PhxHeaterHeatPumpCombined._count = 0
+    
+    heat_pumps.PhxHeatPumpAnnual._count = 0
+    heat_pumps.PhxHeatPumpMonthly._count = 0
+    heat_pumps.PhxHeatPumpHotWater._count = 0
+    heat_pumps.PhxHeatPumpCombined._count = 0
 
     water.PhxHotWaterDevice._count = 0
     water.PhxHotWaterTank._count = 0
@@ -163,6 +158,7 @@ def _reload_phx_classes():
     importlib.reload(sched_ventilation)
     importlib.reload(sched_occupancy)
     importlib.reload(piping)
+    importlib.reload(heat_pumps)
 
 
 @pytest.fixture

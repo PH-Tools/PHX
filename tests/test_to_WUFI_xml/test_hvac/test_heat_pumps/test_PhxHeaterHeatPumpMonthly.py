@@ -1,10 +1,10 @@
-from PHX.model.hvac import heating, _base, collection
+from PHX.model.hvac import heat_pumps, _base, collection
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
-def test_default_PhxHeaterHeatPumpAnnual(reset_class_counters):
-    h1 = heating.PhxHeaterHeatPumpAnnual()
+def test_default_PhxHeaterHeatPumpMonthly(reset_class_counters):
+    h1 = heat_pumps.PhxHeatPumpMonthly()
     h1.usage_profile.space_heating = True
     coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_device(h1.identifier, h1)
@@ -41,9 +41,11 @@ def test_default_PhxHeaterHeatPumpAnnual(reset_class_counters):
         "<AuxiliaryEnergy/>",
         "<AuxiliaryEnergyDHW/>",
         "<InConditionedSpace>true</InConditionedSpace>",
-        "<AnnualCOP/>",
-        "<TotalSystemPerformanceRatioHeatGenerator/>",
-        "<HPType>3</HPType>",
+        "<RatedCOP1/>",
+        "<RatedCOP2/>",
+        "<AmbientTemperature1/>",
+        "<AmbientTemperature2/>",
+        "<HPType>4</HPType>",
         "</PH_Parameters>",
         "<DHW_Parameters>",
         "<CoverageWithinSystem>0.0</CoverageWithinSystem>",

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
-"""PHX Mechanical Heating Devices"""
+"""PHX Mechanical Heating Devices."""
 
 from __future__ import annotations
 from typing import Optional, Union
@@ -15,7 +15,7 @@ from PHX.model.hvac import _base
 class PhxHeatingDevice(_base.PhxMechanicalDevice):
     def __post_init__(self):
         super().__post_init__()
-
+ 
 
 # -----------------------------------------------------------------------------
 # Electric
@@ -193,7 +193,7 @@ class PhxHeaterBoilerWood(PhxHeatingDevice):
     params: PhxHeaterBoilerWoodParams = field(default_factory=PhxHeaterBoilerWoodParams)
 
 
-PhxHeaterBoiler = Union[PhxHeaterBoilerFossil, PhxHeaterBoilerWood]
+AnyPhxHeaterBoiler = Union[PhxHeaterBoilerFossil, PhxHeaterBoilerWood]
 
 
 # -----------------------------------------------------------------------------
@@ -215,156 +215,13 @@ class PhxHeaterDistrictHeat(PhxHeatingDevice):
 
 
 # -----------------------------------------------------------------------------
-# Heat Pumps
 
-
-@dataclass
-class PhxHeaterHeatPumpAnnualParams(_base.PhxMechanicalDeviceParams):
-    hp_type: HeatPumpType = field(init=False, default=HeatPumpType.ANNUAL)
-    annual_COP: Optional[float] = None
-    total_system_perf_ratio: Optional[float] = None
-
-
-@dataclass
-class PhxHeaterHeatPumpMonthlyParams(_base.PhxMechanicalDeviceParams):
-    hp_type: HeatPumpType = field(init=False, default=HeatPumpType.RATED_MONTHLY)
-    _COP_1: Optional[float] = None
-    _COP_2: Optional[float] = None
-    _ambient_temp_1: Optional[float] = None
-    _ambient_temp_2: Optional[float] = None
-
-    @property
-    def monthly_COPS(self):
-        return None
-
-    @monthly_COPS.setter
-    def monthly_COPS(self, _in):
-        if not _in:
-            return
-
-        self.COP_1 = _in[0]
-        try:
-            self.COP_2 = _in[1]
-        except IndexError:
-            self.COP_2 = _in[0]
-
-    @property
-    def monthly_temps(self):
-        return None
-
-    @monthly_temps.setter
-    def monthly_temps(self, _in):
-        if not _in:
-            return
-
-        self.ambient_temp_1 = _in[0]
-        try:
-            self.ambient_temp_2 = _in[1]
-        except IndexError:
-            self.ambient_temp_2 = _in[0]
-
-    @property
-    def COP_1(self) -> Optional[float]:
-        return self._COP_1
-
-    @COP_1.setter
-    def COP_1(self, value: Optional[float]) -> None:
-        if value is not None:
-            self._COP_1 = value
-
-    @property
-    def COP_2(self) -> Optional[float]:
-        return self._COP_2
-
-    @COP_2.setter
-    def COP_2(self, value: Optional[float]) -> None:
-        if value is not None:
-            self._COP_2 = value
-
-    @property
-    def ambient_temp_1(self) -> Optional[float]:
-        return self._ambient_temp_1
-
-    @ambient_temp_1.setter
-    def ambient_temp_1(self, value: Optional[float]) -> None:
-        if value is not None:
-            self._ambient_temp_1 = value
-
-    @property
-    def ambient_temp_2(self) -> Optional[float]:
-        return self._ambient_temp_2
-
-    @ambient_temp_2.setter
-    def ambient_temp_2(self, value: Optional[float]) -> None:
-        if value is not None:
-            self._ambient_temp_2 = value
-
-
-@dataclass
-class PhxHeaterHeatPumpHotWaterParams(_base.PhxMechanicalDeviceParams):
-    hp_type: HeatPumpType = field(init=False, default=HeatPumpType.HOT_WATER)
-    annual_COP: Optional[float] = None
-    annual_system_perf_ratio: Optional[float] = None
-    annual_energy_factor: Optional[float] = None
-
-
-@dataclass
-class PhxHeaterHeatPumpCombinedParams(_base.PhxMechanicalDeviceParams):
-    hp_type: HeatPumpType = field(init=False, default=HeatPumpType.COMBINED)
-
-
-@dataclass
-class PhxHeaterHeatPumpAnnual(PhxHeatingDevice):
-    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
-    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
-    params: PhxHeaterHeatPumpAnnualParams = field(
-        default_factory=PhxHeaterHeatPumpAnnualParams
-    )
-
-
-@dataclass
-class PhxHeaterHeatPumpMonthly(PhxHeatingDevice):
-    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
-    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
-    params: PhxHeaterHeatPumpMonthlyParams = field(
-        default_factory=PhxHeaterHeatPumpMonthlyParams
-    )
-
-
-@dataclass
-class PhxHeaterHeatPumpHotWater(PhxHeatingDevice):
-    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
-    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
-    params: PhxHeaterHeatPumpHotWaterParams = field(
-        default_factory=PhxHeaterHeatPumpHotWaterParams
-    )
-
-
-@dataclass
-class PhxHeaterHeatPumpCombined(PhxHeatingDevice):
-    system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
-    device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
-    params: PhxHeaterHeatPumpCombinedParams = field(
-        default_factory=PhxHeaterHeatPumpCombinedParams
-    )
-
-
-PhxHeaterHeatPump = Union[
-    PhxHeaterHeatPumpAnnual,
-    PhxHeaterHeatPumpMonthly,
-    PhxHeaterHeatPumpHotWater,
-    PhxHeaterHeatPumpCombined,
-]
 
 AnyPhxHeater = Union[
     PhxHeaterElectric,
     PhxHeaterBoilerFossil,
     PhxHeaterBoilerWood,
     PhxHeaterDistrictHeat,
-    PhxHeaterHeatPumpAnnual,
-    PhxHeaterHeatPumpMonthly,
-    PhxHeaterHeatPumpHotWater,
-    PhxHeaterHeatPumpCombined,
 ]
 
 AnyPhxHotWaterHeater = Union[
@@ -372,5 +229,4 @@ AnyPhxHotWaterHeater = Union[
     PhxHeaterBoilerFossil,
     PhxHeaterBoilerWood,
     PhxHeaterDistrictHeat,
-    PhxHeaterHeatPumpHotWater,
 ]

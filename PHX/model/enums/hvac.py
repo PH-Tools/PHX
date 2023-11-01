@@ -30,6 +30,7 @@ class SystemType(Enum):
     BOILER = 3
     DISTRICT_HEAT = 4
     HEAT_PUMP = 5
+    USER_DEFINED = 7
     WATER_STORAGE = 8
     PHOTOVOLTAIC = 10
 
