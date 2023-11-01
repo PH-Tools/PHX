@@ -44,7 +44,7 @@ class ThermalBridgeRow:
         XLItemAreas = partial(xl_data.XlItem, _sheet_name)
         return [
             XLItemAreas(create_range("description"), f"'{self.phx_tb.display_name}"),
-            XLItemAreas(create_range("group_number"), self.phx_tb.group_number.value),
+            XLItemAreas(create_range("group_number"), self.phx_tb.group_type.value),
             XLItemAreas(create_range("quantity"), self.phx_tb.quantity),
             XLItemAreas(
                 create_range("length"),

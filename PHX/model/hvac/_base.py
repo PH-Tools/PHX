@@ -77,7 +77,7 @@ class PhxMechanicalDeviceParams:
 
 @dataclass
 class PhxMechanicalDevice:
-    """Base class for PHX Mechanical Devices (heaters, tanks, ventilators)
+    """Base class for PHX Mechanical Devices (heaters, tanks, ventilators, etc...)
 
     This equipment will be part of a PhxMechanicalSubSystem along with distribution.
     """

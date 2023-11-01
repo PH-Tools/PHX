@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_5_9b7f6703..Face4</Name>
+						<Name>Room_2_d0f83d8b..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_5_9b7f6703..Face5</Name>
+						<Name>Room_2_d0f83d8b..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -453,7 +453,7 @@
 						<PEF3 unit="kWh/kWh">1.1</PEF3>
 						<PEF4 unit="kWh/kWh">0.2</PEF4>
 						<PEF5 unit="kWh/kWh">1.8</PEF5>
-						<PEF6 unit="kWh/kWh">1.7</PEF6>
+						<PEF6 unit="kWh/kWh">0.7</PEF6>
 						<PEF7 unit="kWh/kWh">0.8</PEF7>
 						<PEF8 unit="kWh/kWh">1.1</PEF8>
 						<PEF9 unit="kWh/kWh">1.5</PEF9>

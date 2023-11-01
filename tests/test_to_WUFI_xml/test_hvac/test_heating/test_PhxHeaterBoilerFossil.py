@@ -6,8 +6,14 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 def test_default_PhxHeaterBoilerFossil(reset_class_counters):
     h1 = heating.PhxHeaterBoilerFossil()
     h1.usage_profile.space_heating = True
+    assert h1.usage_profile.cooling == False
+
     coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_device(h1.identifier, h1)
+
+    assert len(coll.heat_pump_devices) == 0
+    assert len(coll.space_heating_devices) == 1
+
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [
         '<Systems count="1">',

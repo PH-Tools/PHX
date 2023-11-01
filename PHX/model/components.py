@@ -579,7 +579,7 @@ class PhxComponentThermalBridge(PhxComponentBase):
 
         self._identifier: Optional[str] = ""
         self._quantity: Optional[float] = 0.0
-        self._group_number: Optional[ThermalBridgeType] = ThermalBridgeType.AMBIENT
+        self._group_type: Optional[ThermalBridgeType] = ThermalBridgeType.AMBIENT
         self._display_name: Optional[str] = ""
         self._psi_value: Optional[float] = 0.1
         self._fRsi_value: Optional[float] = 0.75
@@ -604,13 +604,20 @@ class PhxComponentThermalBridge(PhxComponentBase):
             self._quantity = value
 
     @property
-    def group_number(self) -> Optional[ThermalBridgeType]:
-        return self._group_number
+    def group_type(self) -> Optional[ThermalBridgeType]:
+        return self._group_type
 
-    @group_number.setter
-    def group_number(self, value: Optional[ThermalBridgeType]) -> None:
+    @group_type.setter
+    def group_type(self, value: Optional[ThermalBridgeType]) -> None:
         if value is not None:
-            self._group_number = value
+            self._group_type = value
+
+    @property
+    def group_number(self) -> int:
+        if self.group_type:
+            return self.group_type.value
+        else:
+            return 15
 
     @property
     def display_name(self) -> Optional[str]:

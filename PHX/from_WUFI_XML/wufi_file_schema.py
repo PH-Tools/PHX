@@ -384,12 +384,45 @@ class Building(BaseModel):
 # ------------------------------------------------------------------------------
 # -- HVAC
 
+class Twig(BaseModel):
+    Name: str
+    IdentNr: int
+    PipingLength: Optional[unit.M]
+    PipeMaterial: int
+    PipingDiameter: int
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class Branch(BaseModel):
+    Name: Optional[str]
+    IdentNr: int
+    PipingLength: Optional[unit.M]
+    PipeMaterial: int
+    PipingDiameter: int
+    Twigs: Optional[List[Twig]]
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class Trunc(BaseModel):
+    Name: Optional[str]
+    IdentNr: int
+    PipingLength: Optional[unit.M]
+    PipeMaterial: int
+    PipingDiameter: int
+    CountUnitsOrFloors: int
+    DemandRecirculation: bool
+    Branches: Optional[List[Branch]]
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
 
 class DistributionDHW(BaseModel):
     CalculationMethodIndividualPipes: int
     DemandRecirculation: bool
     SelectionhotWaterFixtureEff: int
-    NumberOfBathrooms: int
+    NumberOfBathrooms: Optional[int]
     AllPipesAreInsulated: bool
     SelectionUnitsOrFloors: int
     PipeMaterialSimplifiedMethod: int
@@ -401,6 +434,19 @@ class DistributionDHW(BaseModel):
     HeatLossCoefficient_WR: Optional[unit.Watts_per_MK]
     LengthIndividualPipes_WR: Optional[unit.M]
     ExteriorPipeDiameter_WR: Optional[unit.M]
+    Truncs: Optional[List[Trunc]]
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class DistributionCooling(BaseModel):
+    CoolingViaRecirculation: bool
+    RecirculatingAirOnOff: bool
+    MaxRecirculationAirCoolingPower: Optional[unit.KiloWatt]
+    MinTempCoolingCoilRecirculatingAir: Optional[unit.DegreeC]
+    RecirculationCoolingCOP: Optional[unit.Watt_per_Watt]
+    RecirculationAirVolume: Optional[unit.M3_per_Hour]
+    ControlledRecirculationVolumeFlow: bool
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -417,11 +463,34 @@ class SupportiveDevice(BaseModel):
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
+class AssignedVentUnits(BaseModel):
+    IdentNrVentUnit: int
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class Duct(BaseModel):
+    Name: Optional[str]
+    IdentNr: int
+    DuctDiameter: Optional[unit.MM]
+    DuctShapeHeight: Optional[unit.MM]
+    DuctShapeWidth: Optional[unit.MM]
+    DuctLength: Optional[unit.M]
+    InsulationThickness: Optional[unit.MM]
+    ThermalConductivity: Optional[unit.Watts_per_MK]
+    Quantity: Optional[unit._Int]
+    DuctType: int
+    DuctShape: int
+    IsReflective: bool
+    AssignedVentUnits: Optional[List[AssignedVentUnits]]
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
 class PHDistribution(BaseModel):
-    DistributionDHW: Optional[DistributionDHW]
     # TODO DistributionHeating: DistributionHeating
-    # TODO DistributionCooling: DistributionCooling
-    # TODO DistributionVentilation: List[Duct]
+    DistributionDHW: Optional[DistributionDHW]
+    DistributionCooling: DistributionCooling
+    DistributionVentilation: Optional[List[Duct]]
     UseDefaultValues: bool
     DeviceInConditionedSpace: Optional[bool]
     SupportiveDevices: Optional[List[SupportiveDevice]]

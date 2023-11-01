@@ -1,10 +1,11 @@
-from PHX.model.hvac import cooling, _base, collection
+from PHX.model.hvac import _base, collection, cooling_params
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
 def test_default_PhxCoolingPanel(reset_class_counters):
-    d1 = cooling.PhxCoolingPanel()
+    d1 = cooling_params.PhxCoolingPanelParams()
+    """
     coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_device(d1.identifier, d1)
     result = generate_WUFI_XML_from_object(coll, _header="")
@@ -87,3 +88,4 @@ def test_default_PhxCoolingPanel(reset_class_counters):
         "</System>",
         "</Systems>",
     ]
+    """

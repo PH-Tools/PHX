@@ -51,7 +51,88 @@
           "thermal_bridges": {}, 
           "num_dwelling_units": 1, 
           "co2e_factors": {
-            "factors": []
+            "factors": [
+              {
+                "value": 409.9966, 
+                "units": "g/kWh", 
+                "fuel_name": "OIL_CGS_0_CHP"
+              }, 
+              {
+                "value": 309.9966, 
+                "units": "g/kWh", 
+                "fuel_name": "OIL"
+              }, 
+              {
+                "value": 250.0171, 
+                "units": "g/kWh", 
+                "fuel_name": "ELECTRICITY_PV"
+              }, 
+              {
+                "value": 239.9864, 
+                "units": "g/kWh", 
+                "fuel_name": "HARD_COAL_CGS_70_CHP"
+              }, 
+              {
+                "value": 270.0102, 
+                "units": "g/kWh", 
+                "fuel_name": "LPG"
+              }, 
+              {
+                "value": 250.0171, 
+                "units": "g/kWh", 
+                "fuel_name": "NATURAL_GAS"
+              }, 
+              {
+                "value": 680.0068, 
+                "units": "g/kWh", 
+                "fuel_name": "ELECTRICITY_MIX"
+              }, 
+              {
+                "value": 319.9932, 
+                "units": "g/kWh", 
+                "fuel_name": "HARD_COAL_CGS_35_CHP"
+              }, 
+              {
+                "value": 129.9898, 
+                "units": "g/kWh", 
+                "fuel_name": "GAS_CGS_35_CHP"
+              }, 
+              {
+                "value": 100, 
+                "units": "g/kWh", 
+                "fuel_name": "OIL_CGS_70_CHP"
+              }, 
+              {
+                "value": 409.9966, 
+                "units": "g/kWh", 
+                "fuel_name": "HARD_COAL_CGS_0_CHP"
+              }, 
+              {
+                "value": 439.9864, 
+                "units": "g/kWh", 
+                "fuel_name": "HARD_COAL"
+              }, 
+              {
+                "value": 53.428899999999999, 
+                "units": "g/kWh", 
+                "fuel_name": "WOOD"
+              }, 
+              {
+                "value": -70.010199999999998, 
+                "units": "g/kWh", 
+                "fuel_name": "GAS_CGS_70_CHP"
+              }, 
+              {
+                "value": 319.9932, 
+                "units": "g/kWh", 
+                "fuel_name": "GAS_CGS_0_CHP"
+              }, 
+              {
+                "value": 250.0171, 
+                "units": "g/kWh", 
+                "fuel_name": "OIL_CGS_35_CHP"
+              }
+            ]
           }, 
           "set_points": {
             "user_data": {}, 
@@ -89,7 +170,7 @@
           }, 
           "name": "Unnamed_Bldg_Segment", 
           "mech_room_temp": 20.0, 
-          "identifier": "b5e89f8d-bb3e-46b3-953c-089682f7bb8b", 
+          "identifier": "ef12a649-e08e-4c7c-974a-b8514ed1a5ac", 
           "site": {
             "climate": {
               "user_data": {}, 
@@ -109,8 +190,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "d906c740-c03e-4164-a457-cbb73d9d86cf", 
-                  "display_name": "d906c740-c03e-4164-a457-cbb73d9d86cf"
+                  "identifier": "5b009b66-d5b6-4fc4-9b83-7e1c7a0fe564", 
+                  "display_name": "5b009b66-d5b6-4fc4-9b83-7e1c7a0fe564"
                 }, 
                 "south": {
                   "february": 0.0, 
@@ -126,8 +207,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "bb8b7a47-c5fe-4f32-b45a-3ecad9047748", 
-                  "display_name": "bb8b7a47-c5fe-4f32-b45a-3ecad9047748"
+                  "identifier": "0d3513a5-3ae2-4227-a403-82b297db0f37", 
+                  "display_name": "0d3513a5-3ae2-4227-a403-82b297db0f37"
                 }, 
                 "north": {
                   "february": 0.0, 
@@ -143,11 +224,11 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "6d6de577-8f90-42d1-b153-39a88b1470ad", 
-                  "display_name": "6d6de577-8f90-42d1-b153-39a88b1470ad"
+                  "identifier": "aeda93eb-b613-4305-897a-0393cb8629a5", 
+                  "display_name": "aeda93eb-b613-4305-897a-0393cb8629a5"
                 }, 
-                "identifier": "ca73ca7e-d3c1-42a0-9433-c15a067891d9", 
-                "display_name": "ca73ca7e-d3c1-42a0-9433-c15a067891d9", 
+                "identifier": "f19cdbfc-2e23-4fb9-9181-ced905cc9925", 
+                "display_name": "f19cdbfc-2e23-4fb9-9181-ced905cc9925", 
                 "glob": {
                   "february": 0.0, 
                   "july": 0.0, 
@@ -162,8 +243,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "c2453dcf-413a-485c-b6ad-58537e09c320", 
-                  "display_name": "c2453dcf-413a-485c-b6ad-58537e09c320"
+                  "identifier": "2b24404c-2a59-42ff-a064-2b33b5ab725c", 
+                  "display_name": "2b24404c-2a59-42ff-a064-2b33b5ab725c"
                 }, 
                 "west": {
                   "february": 0.0, 
@@ -179,16 +260,16 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "356877c3-627d-4569-a13b-aec8dbadc8c7", 
-                  "display_name": "356877c3-627d-4569-a13b-aec8dbadc8c7"
+                  "identifier": "2ca3037d-273e-469b-aecc-62d7c3e63f12", 
+                  "display_name": "2ca3037d-273e-469b-aecc-62d7c3e63f12"
                 }
               }, 
               "ground": {
                 "depth_groundwater": 3, 
                 "user_data": {}, 
                 "ground_thermal_conductivity": 2, 
-                "identifier": "ae4023cd-0d82-4ed5-b221-c8f57e0c55ce", 
-                "display_name": "ae4023cd-0d82-4ed5-b221-c8f57e0c55ce", 
+                "identifier": "d4c8ff01-fb78-455a-8017-3b70fda6bf9a", 
+                "display_name": "d4c8ff01-fb78-455a-8017-3b70fda6bf9a", 
                 "ground_heat_capacity": 1000, 
                 "ground_density": 2000, 
                 "flow_rate_groundwater": 0.050000000000000003
@@ -203,8 +284,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "a445f72b-220c-4230-b86a-de1a7b47009d", 
-                  "display_name": "a445f72b-220c-4230-b86a-de1a7b47009d", 
+                  "identifier": "5cbe3ed9-3c8b-4ae3-8dbc-7172668bd626", 
+                  "display_name": "5cbe3ed9-3c8b-4ae3-8dbc-7172668bd626", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
@@ -217,8 +298,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "fa4f4b43-ea80-46d9-8126-8786650617ec", 
-                  "display_name": "fa4f4b43-ea80-46d9-8126-8786650617ec", 
+                  "identifier": "22bc6a02-2b6f-4f50-bb2c-927667cbe056", 
+                  "display_name": "22bc6a02-2b6f-4f50-bb2c-927667cbe056", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
@@ -232,14 +313,14 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "4587cc51-d4af-4ee7-868f-80efc9a85525", 
-                  "display_name": "4587cc51-d4af-4ee7-868f-80efc9a85525", 
+                  "identifier": "3227cc78-3052-4bd6-a51a-e2ea63a95b17", 
+                  "display_name": "3227cc78-3052-4bd6-a51a-e2ea63a95b17", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
                 }, 
-                "identifier": "ce93043b-023d-4db0-8f90-5d56b2f0ea7b", 
-                "display_name": "ce93043b-023d-4db0-8f90-5d56b2f0ea7b", 
+                "identifier": "3c1b9bd7-edc8-4834-a978-f0656e703189", 
+                "display_name": "3c1b9bd7-edc8-4834-a978-f0656e703189", 
                 "cooling_load_2": {
                   "temp": 0.0, 
                   "user_data": {}, 
@@ -248,8 +329,8 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "af73fbdb-9dfb-4b12-bcfc-39b3455d861b", 
-                  "display_name": "af73fbdb-9dfb-4b12-bcfc-39b3455d861b", 
+                  "identifier": "62c766e7-250b-441a-bb73-ed173bfb6460", 
+                  "display_name": "62c766e7-250b-441a-bb73-ed173bfb6460", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
@@ -271,8 +352,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "9e9b3006-00ac-4a09-951d-31729efd19cf", 
-                  "display_name": "9e9b3006-00ac-4a09-951d-31729efd19cf"
+                  "identifier": "718e67ff-4e4a-42c9-bed4-dd2b0cfc18c3", 
+                  "display_name": "718e67ff-4e4a-42c9-bed4-dd2b0cfc18c3"
                 }, 
                 "sky_temps": {
                   "february": 0.0, 
@@ -288,8 +369,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "ec7785e9-8f93-4fa0-98b6-eb51bd31ef68", 
-                  "display_name": "ec7785e9-8f93-4fa0-98b6-eb51bd31ef68"
+                  "identifier": "f4b2a102-bfa3-4acb-bafa-74cc5a59fa7c", 
+                  "display_name": "f4b2a102-bfa3-4acb-bafa-74cc5a59fa7c"
                 }, 
                 "ground_temps": {
                   "february": 0.0, 
@@ -305,11 +386,11 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "14539d6b-7002-4747-9e81-1eb4e0c07cfd", 
-                  "display_name": "14539d6b-7002-4747-9e81-1eb4e0c07cfd"
+                  "identifier": "2ec74a09-a4d0-46c5-b596-58eb7661ba3e", 
+                  "display_name": "2ec74a09-a4d0-46c5-b596-58eb7661ba3e"
                 }, 
-                "identifier": "a27b1196-e6f6-4bae-bfa4-f858cfd4e314", 
-                "display_name": "a27b1196-e6f6-4bae-bfa4-f858cfd4e314", 
+                "identifier": "0b9545b2-3316-4a86-879f-b11004e77541", 
+                "display_name": "0b9545b2-3316-4a86-879f-b11004e77541", 
                 "dewpoints": {
                   "february": 0.0, 
                   "july": 0.0, 
@@ -324,11 +405,11 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "64ac9f81-8311-43a9-a88a-6bdcfc9d01bf", 
-                  "display_name": "64ac9f81-8311-43a9-a88a-6bdcfc9d01bf"
+                  "identifier": "8ed9774f-ad5c-4147-a717-a60008699b40", 
+                  "display_name": "8ed9774f-ad5c-4147-a717-a60008699b40"
                 }
               }, 
-              "identifier": "561869de-d7f5-4be6-a6b3-1b109493e2d6", 
+              "identifier": "fd795fa5-1537-44e0-937c-f6df55734fcb", 
               "display_name": "New York", 
               "summer_daily_temperature_swing": 8.0, 
               "station_elevation": 0.0
@@ -340,18 +421,18 @@
               "latitude": 40.600000000000001, 
               "longitude": -73.799999999999997, 
               "hours_from_UTC": -4, 
-              "identifier": "539c5aa6-de93-4101-a90b-12cac5a3680c", 
-              "display_name": "539c5aa6-de93-4101-a90b-12cac5a3680c", 
+              "identifier": "fdb96903-20d4-4833-8002-894cc42bed37", 
+              "display_name": "fdb96903-20d4-4833-8002-894cc42bed37", 
               "climate_zone": 1
             }, 
-            "identifier": "f0232083-3f3c-44a0-8881-6beb16b75048", 
-            "display_name": "f0232083-3f3c-44a0-8881-6beb16b75048", 
+            "identifier": "e58107e7-a0a9-46a5-a47b-be26e2c0b3af", 
+            "display_name": "e58107e7-a0a9-46a5-a47b-be26e2c0b3af", 
             "phpp_library_codes": {
               "user_data": {}, 
               "country_code": "US-United States of America", 
               "region_code": "New York", 
               "dataset_name": "US0055b-New York", 
-              "identifier": "ac15081b-2740-4794-a0dd-47033851c526", 
+              "identifier": "7a42224e-0f51-4fd1-8f38-da63fea54fdf", 
               "display_name": "US0055b-New York"
             }
           }, 
@@ -372,7 +453,88 @@
             }
           }, 
           "source_energy_factors": {
-            "factors": []
+            "factors": [
+              {
+                "value": 1.5, 
+                "units": "kWh/kWh", 
+                "fuel_name": "OIL_CGS_0_CHP"
+              }, 
+              {
+                "value": 1.1000000000000001, 
+                "units": "kWh/kWh", 
+                "fuel_name": "OIL"
+              }, 
+              {
+                "value": 1.7, 
+                "units": "kWh/kWh", 
+                "fuel_name": "ELECTRICITY_PV"
+              }, 
+              {
+                "value": 0.80000000000000004, 
+                "units": "kWh/kWh", 
+                "fuel_name": "HARD_COAL_CGS_70_CHP"
+              }, 
+              {
+                "value": 1.1000000000000001, 
+                "units": "kWh/kWh", 
+                "fuel_name": "LPG"
+              }, 
+              {
+                "value": 1.1000000000000001, 
+                "units": "kWh/kWh", 
+                "fuel_name": "NATURAL_GAS"
+              }, 
+              {
+                "value": 1.8, 
+                "units": "kWh/kWh", 
+                "fuel_name": "ELECTRICITY_MIX"
+              }, 
+              {
+                "value": 1.1000000000000001, 
+                "units": "kWh/kWh", 
+                "fuel_name": "HARD_COAL_CGS_35_CHP"
+              }, 
+              {
+                "value": 1.1000000000000001, 
+                "units": "kWh/kWh", 
+                "fuel_name": "GAS_CGS_35_CHP"
+              }, 
+              {
+                "value": 0.80000000000000004, 
+                "units": "kWh/kWh", 
+                "fuel_name": "OIL_CGS_70_CHP"
+              }, 
+              {
+                "value": 1.5, 
+                "units": "kWh/kWh", 
+                "fuel_name": "HARD_COAL_CGS_0_CHP"
+              }, 
+              {
+                "value": 1.1000000000000001, 
+                "units": "kWh/kWh", 
+                "fuel_name": "HARD_COAL"
+              }, 
+              {
+                "value": 0.20000000000000001, 
+                "units": "kWh/kWh", 
+                "fuel_name": "WOOD"
+              }, 
+              {
+                "value": 0.69999999999999996, 
+                "units": "kWh/kWh", 
+                "fuel_name": "GAS_CGS_70_CHP"
+              }, 
+              {
+                "value": 1.5, 
+                "units": "kWh/kWh", 
+                "fuel_name": "GAS_CGS_0_CHP"
+              }, 
+              {
+                "value": 1.1000000000000001, 
+                "units": "kWh/kWh", 
+                "fuel_name": "OIL_CGS_35_CHP"
+              }
+            ]
           }, 
           "num_floor_levels": 1
         }
@@ -393,7 +555,57 @@
             "ph": {
               "id_num": 0, 
               "supportive_devices": [], 
-              "heat_pump_systems": [], 
+              "heat_pump_systems": [
+                {
+                  "user_data": {}, 
+                  "cooling_params": {
+                    "recirculation": {
+                      "user_data": {}, 
+                      "flow_rate_m3_hr": 100.08, 
+                      "used": true, 
+                      "flow_rate_variable": true, 
+                      "capacity": 100.816424, 
+                      "single_speed": false, 
+                      "identifier": "a6a831f9-523f-4136-8f21-e57c6c152c7f", 
+                      "display_name": "_unnamed_recirculation_cooling__df8d488c", 
+                      "annual_COP": 23.0, 
+                      "min_coil_temp": 1.1111111111111112
+                    }, 
+                    "panel": {
+                      "user_data": {}, 
+                      "used": false, 
+                      "identifier": "e043b2d3-80fa-441d-9129-93b096f0d237", 
+                      "display_name": "e043b2d3-80fa-441d-9129-93b096f0d237", 
+                      "annual_COP": 4.0
+                    }, 
+                    "ventilation": {
+                      "user_data": {}, 
+                      "used": false, 
+                      "capacity": 10.0, 
+                      "single_speed": false, 
+                      "identifier": "4547adda-61d8-42a8-b9d7-c14badd375d4", 
+                      "display_name": "4547adda-61d8-42a8-b9d7-c14badd375d4", 
+                      "annual_COP": 4.0, 
+                      "min_coil_temp": 12.0
+                    }, 
+                    "percent_coverage": 1.0, 
+                    "dehumidification": {
+                      "user_data": {}, 
+                      "useful_heat_loss": false, 
+                      "used": false, 
+                      "identifier": "f3fdf466-7a7d-44d1-bad4-68909f84c127", 
+                      "display_name": "f3fdf466-7a7d-44d1-bad4-68909f84c127", 
+                      "annual_COP": 4.0
+                    }
+                  }, 
+                  "heat_pump_class_name": "PhHeatPumpAnnual", 
+                  "identifier": "e4bbff46-bba6-4077-8072-ee78dd2612a3", 
+                  "display_name": "e4bbff46-bba6-4077-8072-ee78dd2612a3", 
+                  "percent_coverage": 1.0, 
+                  "annual_COP": 2.5, 
+                  "total_system_perf_ratio": 0.40000000000000002
+                }
+              ], 
               "renewable_devices": [], 
               "heating_systems": [], 
               "ventilation_system": null, 
@@ -402,7 +614,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_2_d0f83d8b Ideal Loads Air System", 
+          "identifier": "Room_1_ec7ca38a Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": false, 
           "cooling_limit": {
@@ -2199,7 +2411,7 @@
               "ph": {
                 "type": "PeoplePhProperties", 
                 "dwellings": {
-                  "identifier": "792a1ae3-e14f-4e56-b8a2-347d94fd66d2", 
+                  "identifier": "7dc28094-8e9b-4ef6-a5b2-8557da2687ee", 
                   "num_dwellings": 0
                 }, 
                 "id_num": 0, 
@@ -2402,20 +2614,416 @@
     }
   }, 
   "version": "1.53.1", 
-  "identifier": "unnamed_1aaa125c", 
+  "identifier": "unnamed_a48eef3e", 
   "display_name": "unnamed", 
   "rooms": [
     {
       "properties": {
         "ph": {
           "specific_heat_capacity": "1-LIGHTWEIGHT", 
-          "spaces": [], 
+          "spaces": [
+            {
+              "volumes": [
+                {
+                  "user_data": {}, 
+                  "avg_ceiling_height": 2.5, 
+                  "geometry": [
+                    {
+                      "type": "Face3D", 
+                      "plane": {
+                        "x": [
+                          1.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        "n": [
+                          0.0, 
+                          0.0, 
+                          -1.0
+                        ], 
+                        "o": [
+                          10.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        "type": "Plane"
+                      }, 
+                      "boundary": [
+                        [
+                          10.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        [
+                          0.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        [
+                          0.0, 
+                          10.0, 
+                          0.0
+                        ], 
+                        [
+                          10.0, 
+                          10.0, 
+                          0.0
+                        ]
+                      ]
+                    }, 
+                    {
+                      "type": "Face3D", 
+                      "plane": {
+                        "x": [
+                          0.0, 
+                          0.0, 
+                          1.0
+                        ], 
+                        "n": [
+                          0.0, 
+                          -1.0, 
+                          0.0
+                        ], 
+                        "o": [
+                          10.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        "type": "Plane"
+                      }, 
+                      "boundary": [
+                        [
+                          10.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        [
+                          10.0, 
+                          0.0, 
+                          2.5
+                        ], 
+                        [
+                          0.0, 
+                          0.0, 
+                          2.5
+                        ], 
+                        [
+                          0.0, 
+                          0.0, 
+                          0.0
+                        ]
+                      ]
+                    }, 
+                    {
+                      "type": "Face3D", 
+                      "plane": {
+                        "x": [
+                          0.0, 
+                          0.0, 
+                          1.0
+                        ], 
+                        "n": [
+                          -1.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        "o": [
+                          0.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        "type": "Plane"
+                      }, 
+                      "boundary": [
+                        [
+                          0.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        [
+                          0.0, 
+                          0.0, 
+                          2.5
+                        ], 
+                        [
+                          0.0, 
+                          10.0, 
+                          2.5
+                        ], 
+                        [
+                          0.0, 
+                          10.0, 
+                          0.0
+                        ]
+                      ]
+                    }, 
+                    {
+                      "type": "Face3D", 
+                      "plane": {
+                        "x": [
+                          0.0, 
+                          0.0, 
+                          1.0
+                        ], 
+                        "n": [
+                          0.0, 
+                          1.0, 
+                          0.0
+                        ], 
+                        "o": [
+                          0.0, 
+                          10.0, 
+                          0.0
+                        ], 
+                        "type": "Plane"
+                      }, 
+                      "boundary": [
+                        [
+                          0.0, 
+                          10.0, 
+                          0.0
+                        ], 
+                        [
+                          0.0, 
+                          10.0, 
+                          2.5
+                        ], 
+                        [
+                          10.0, 
+                          10.0, 
+                          2.5
+                        ], 
+                        [
+                          10.0, 
+                          10.0, 
+                          0.0
+                        ]
+                      ]
+                    }, 
+                    {
+                      "type": "Face3D", 
+                      "plane": {
+                        "x": [
+                          0.0, 
+                          0.0, 
+                          1.0
+                        ], 
+                        "n": [
+                          1.0, 
+                          0.0, 
+                          -0.0
+                        ], 
+                        "o": [
+                          10.0, 
+                          10.0, 
+                          0.0
+                        ], 
+                        "type": "Plane"
+                      }, 
+                      "boundary": [
+                        [
+                          10.0, 
+                          10.0, 
+                          0.0
+                        ], 
+                        [
+                          10.0, 
+                          10.0, 
+                          2.5
+                        ], 
+                        [
+                          10.0, 
+                          0.0, 
+                          2.5
+                        ], 
+                        [
+                          10.0, 
+                          0.0, 
+                          0.0
+                        ]
+                      ]
+                    }, 
+                    {
+                      "type": "Face3D", 
+                      "plane": {
+                        "x": [
+                          0.0, 
+                          -1.0, 
+                          0.0
+                        ], 
+                        "n": [
+                          -0.0, 
+                          -0.0, 
+                          1.0
+                        ], 
+                        "o": [
+                          10.0, 
+                          0.0, 
+                          2.5
+                        ], 
+                        "type": "Plane"
+                      }, 
+                      "boundary": [
+                        [
+                          10.0, 
+                          0.0, 
+                          2.5
+                        ], 
+                        [
+                          10.0, 
+                          10.0, 
+                          2.5
+                        ], 
+                        [
+                          0.0, 
+                          10.0, 
+                          2.5
+                        ], 
+                        [
+                          0.0, 
+                          0.0, 
+                          2.5
+                        ]
+                      ]
+                    }
+                  ], 
+                  "identifier": "5b01b347-2833-4093-9ca0-150af1ee7db3", 
+                  "display_name": "5b01b347-2833-4093-9ca0-150af1ee7db3", 
+                  "floor": {
+                    "user_data": {}, 
+                    "geometry": {
+                      "type": "Face3D", 
+                      "plane": {
+                        "x": [
+                          0.0, 
+                          1.0, 
+                          0.0
+                        ], 
+                        "n": [
+                          0.0, 
+                          0.0, 
+                          -1.0
+                        ], 
+                        "o": [
+                          0.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        "type": "Plane"
+                      }, 
+                      "boundary": [
+                        [
+                          0.0, 
+                          0.0, 
+                          0.0
+                        ], 
+                        [
+                          0.0, 
+                          10.0, 
+                          0.0
+                        ], 
+                        [
+                          10.0, 
+                          10.0, 
+                          0.0
+                        ], 
+                        [
+                          10.0, 
+                          0.0, 
+                          0.0
+                        ]
+                      ]
+                    }, 
+                    "floor_segments": [
+                      {
+                        "weighting_factor": 1.0, 
+                        "reference_point": {
+                          "x": 5.0, 
+                          "y": 5.0, 
+                          "z": 0.0, 
+                          "type": "Point3D"
+                        }, 
+                        "user_data": {}, 
+                        "geometry": {
+                          "type": "Face3D", 
+                          "plane": {
+                            "x": [
+                              0.0, 
+                              1.0, 
+                              0.0
+                            ], 
+                            "n": [
+                              0.0, 
+                              0.0, 
+                              -1.0
+                            ], 
+                            "o": [
+                              0.0, 
+                              0.0, 
+                              0.0
+                            ], 
+                            "type": "Plane"
+                          }, 
+                          "boundary": [
+                            [
+                              0.0, 
+                              0.0, 
+                              0.0
+                            ], 
+                            [
+                              0.0, 
+                              10.0, 
+                              0.0
+                            ], 
+                            [
+                              10.0, 
+                              10.0, 
+                              0.0
+                            ], 
+                            [
+                              10.0, 
+                              0.0, 
+                              0.0
+                            ]
+                          ]
+                        }, 
+                        "identifier": "05b0cc36-5b74-4a46-a03d-7339edab69c8", 
+                        "display_name": "05b0cc36-5b74-4a46-a03d-7339edab69c8"
+                      }
+                    ], 
+                    "identifier": "c233bb30-9f26-4ee5-b304-e6698eda2519", 
+                    "display_name": "c233bb30-9f26-4ee5-b304-e6698eda2519"
+                  }
+                }
+              ], 
+              "user_data": {}, 
+              "number": "", 
+              "wufi_type": 99, 
+              "properties": {
+                "ph": {
+                  "id_num": 0, 
+                  "_v_eta": null, 
+                  "_v_tran": null, 
+                  "_v_sup": null, 
+                  "type": "SpacePhProperties"
+                }, 
+                "energy": {
+                  "type": "SpaceEnergyProperties", 
+                  "id_num": 0
+                }, 
+                "type": "SpaceProperties"
+              }, 
+              "name": "Room_1_default_space", 
+              "identifier": "fe666bc9-8374-43f0-9062-ced1e58a59f4", 
+              "quantity": 1
+            }
+          ], 
           "ph_foundations": [], 
-          "ph_bldg_segment_id": "b5e89f8d-bb3e-46b3-953c-089682f7bb8b", 
+          "ph_bldg_segment_id": "ef12a649-e08e-4c7c-974a-b8514ed1a5ac", 
           "type": "RoomPhPropertiesAbridged"
         }, 
         "energy": {
-          "hvac": "Room_2_d0f83d8b Ideal Loads Air System", 
+          "hvac": "Room_1_ec7ca38a Ideal Loads Air System", 
           "type": "RoomEnergyPropertiesAbridged", 
           "program_type": "Generic Office Program"
         }, 
@@ -2424,8 +3032,8 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_2_d0f83d8b", 
-      "display_name": "Room_2", 
+      "identifier": "Room_1_ec7ca38a", 
+      "display_name": "Room_1", 
       "faces": [
         {
           "boundary_condition": {
@@ -2468,12 +3076,12 @@
                 0.0
               ], 
               [
-                5.0, 
+                10.0, 
                 0.0, 
                 0.0
               ], 
               [
-                5.0, 
+                10.0, 
                 0.0, 
                 3.0
               ]
@@ -2493,8 +3101,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_2_d0f83d8b..Face0", 
-          "display_name": "Room_2_d0f83d8b..Face0", 
+          "identifier": "Room_1_ec7ca38a..Face0", 
+          "display_name": "Room_1_ec7ca38a..Face0", 
           "type": "Face"
         }, 
         {
@@ -2520,7 +3128,7 @@
                 0.0
               ], 
               "o": [
-                5.0, 
+                10.0, 
                 0.0, 
                 0.0
               ], 
@@ -2528,23 +3136,23 @@
             }, 
             "boundary": [
               [
-                5.0, 
+                10.0, 
                 0.0, 
                 3.0
               ], 
               [
-                5.0, 
+                10.0, 
                 0.0, 
                 0.0
               ], 
               [
-                5.0, 
-                4.0, 
+                10.0, 
+                10.0, 
                 0.0
               ], 
               [
-                5.0, 
-                4.0, 
+                10.0, 
+                10.0, 
                 3.0
               ]
             ]
@@ -2563,8 +3171,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_2_d0f83d8b..Face1", 
-          "display_name": "Room_2_d0f83d8b..Face1", 
+          "identifier": "Room_1_ec7ca38a..Face1", 
+          "display_name": "Room_1_ec7ca38a..Face1", 
           "type": "Face"
         }, 
         {
@@ -2590,31 +3198,31 @@
                 -0.0
               ], 
               "o": [
-                5.0, 
-                4.0, 
+                10.0, 
+                10.0, 
                 0.0
               ], 
               "type": "Plane"
             }, 
             "boundary": [
               [
-                5.0, 
-                4.0, 
+                10.0, 
+                10.0, 
                 3.0
               ], 
               [
-                5.0, 
-                4.0, 
+                10.0, 
+                10.0, 
                 0.0
               ], 
               [
                 0.0, 
-                4.0, 
+                10.0, 
                 0.0
               ], 
               [
                 0.0, 
-                4.0, 
+                10.0, 
                 3.0
               ]
             ]
@@ -2633,8 +3241,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_2_d0f83d8b..Face2", 
-          "display_name": "Room_2_d0f83d8b..Face2", 
+          "identifier": "Room_1_ec7ca38a..Face2", 
+          "display_name": "Room_1_ec7ca38a..Face2", 
           "type": "Face"
         }, 
         {
@@ -2661,7 +3269,7 @@
               ], 
               "o": [
                 0.0, 
-                4.0, 
+                10.0, 
                 0.0
               ], 
               "type": "Plane"
@@ -2669,12 +3277,12 @@
             "boundary": [
               [
                 0.0, 
-                4.0, 
+                10.0, 
                 3.0
               ], 
               [
                 0.0, 
-                4.0, 
+                10.0, 
                 0.0
               ], 
               [
@@ -2703,8 +3311,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_2_d0f83d8b..Face3", 
-          "display_name": "Room_2_d0f83d8b..Face3", 
+          "identifier": "Room_1_ec7ca38a..Face3", 
+          "display_name": "Room_1_ec7ca38a..Face3", 
           "type": "Face"
         }, 
         {
@@ -2733,23 +3341,23 @@
             }, 
             "boundary": [
               [
-                5.0, 
-                4.0, 
+                10.0, 
+                10.0, 
                 0.0
               ], 
               [
-                5.0, 
-                0.0, 
-                0.0
-              ], 
-              [
-                0.0, 
+                10.0, 
                 0.0, 
                 0.0
               ], 
               [
                 0.0, 
-                4.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                10.0, 
                 0.0
               ]
             ]
@@ -2768,8 +3376,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_2_d0f83d8b..Face4", 
-          "display_name": "Room_2_d0f83d8b..Face4", 
+          "identifier": "Room_1_ec7ca38a..Face4", 
+          "display_name": "Room_1_ec7ca38a..Face4", 
           "type": "Face"
         }, 
         {
@@ -2804,7 +3412,7 @@
             "boundary": [
               [
                 0.0, 
-                4.0, 
+                10.0, 
                 3.0
               ], 
               [
@@ -2813,13 +3421,13 @@
                 3.0
               ], 
               [
-                5.0, 
+                10.0, 
                 0.0, 
                 3.0
               ], 
               [
-                5.0, 
-                4.0, 
+                10.0, 
+                10.0, 
                 3.0
               ]
             ]
@@ -2838,8 +3446,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_2_d0f83d8b..Face5", 
-          "display_name": "Room_2_d0f83d8b..Face5", 
+          "identifier": "Room_1_ec7ca38a..Face5", 
+          "display_name": "Room_1_ec7ca38a..Face5", 
           "type": "Face"
         }
       ], 
