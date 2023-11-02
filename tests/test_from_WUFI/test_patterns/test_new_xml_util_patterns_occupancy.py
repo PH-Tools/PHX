@@ -7,6 +7,8 @@ def _find_matching_pattern(
     _util_pattern: PhxScheduleOccupancy,
     _util_patterns: ValuesView[PhxScheduleOccupancy],
 ) -> PhxScheduleOccupancy:
+    """Helper Function: Find the matching pattern in the XML set"""
+    
     for pat in _util_patterns:
         if _util_pattern.display_name == pat.display_name:
             return pat
@@ -20,16 +22,17 @@ def test_vent_patterns_match(
     create_phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Occupancy Patterns
-    util_pats_hbjson = (
+    utilization_patterns_from_hbjson = (
         create_phx_project_from_hbjson.utilization_patterns_occupancy.patterns
     )
-    util_pats_xml = (
+    utilization_patterns_from_xml = (
         create_phx_project_from_wufi_xml.utilization_patterns_occupancy.patterns
     )
 
-    assert len(util_pats_hbjson) == len(util_pats_xml)
+    assert len(utilization_patterns_from_hbjson) == len(utilization_patterns_from_xml)
 
-    for pattern_hbjson in util_pats_hbjson.values():
-        util_pat_xml = _find_matching_pattern(pattern_hbjson, util_pats_xml.values())
+    for pattern_from_hbjson in utilization_patterns_from_hbjson.values():
+        pattern_from_xml = _find_matching_pattern(pattern_from_hbjson, 
+                                                  utilization_patterns_from_xml.values())
 
-        assert util_pat_xml == pattern_hbjson
+        assert pattern_from_xml == pattern_from_hbjson

@@ -1412,7 +1412,7 @@ def _PhxMechanicalDevice(_data: wufi_xml.Device) -> Any:
 
 def _PhxDevice_Ventilation(_data: wufi_xml.Device) -> PhxDeviceVentilator:
     phx_obj = PhxDeviceVentilator()
-    phx_obj.display_name = _data.Name
+    phx_obj.display_name = _data.Name or "unnamed_device"
     phx_obj.id_num = _data.IdentNr
     phx_obj.identifier = str(_data.IdentNr)
 

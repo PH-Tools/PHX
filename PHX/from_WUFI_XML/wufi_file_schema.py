@@ -501,6 +501,7 @@ class Duct(BaseModel):
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
+
 class PHDistribution(BaseModel):
     # TODO DistributionHeating: DistributionHeating
     DistributionDHW: Optional[DistributionDHW]
@@ -599,7 +600,7 @@ class Heating_Parameters(BaseModel):
 
 
 class Device(BaseModel):
-    Name: str
+    Name: Optional[str]
     IdentNr: int
     SystemType: int
     TypeDevice: int
