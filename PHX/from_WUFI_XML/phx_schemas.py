@@ -154,6 +154,7 @@ from PHX.model.hvac.ducting import (
     PhxDuctSegment,
     PhxVentDuctType,
 )
+from PHX.model.hvac.supportive_devices import (PhxSupportiveDevice, PhxSupportiveDeviceParams, PhxSupportiveDeviceType)
 
 # ----------------------------------------------------------------------
 # -- Conversion Function
@@ -498,12 +499,29 @@ def _PhxVariant(_xml_variant_data: wufi_xml.Variant, _phx_project_host: PhxProje
 
         # ---------------------------------------------------------------------
         # -- Supportive Devices (Pumps, Fans, etc...)
-        # TODO
-        # 
-        # 
-
+        xml_supp_device_data = xml_system_data.PHDistribution.SupportiveDevices
+        for supportive_device_data in xml_supp_device_data or []:
+            new_supp_device = as_phx_obj(supportive_device_data, "PhxSupportiveDevice")
+            phx_obj.mech_systems.supportive_devices.add_new_device(new_supp_device.identifier, new_supp_device)
 
     return phx_obj
+
+
+# ----------------------------------------------------------------------
+# -- Distribution Supportive Devices
+
+
+def _PhxSupportiveDevice(_data: wufi_xml.SupportiveDevice) -> PhxSupportiveDevice:
+    new_supportive_device = PhxSupportiveDevice()
+    
+    new_supportive_device.display_name = _data.Name or ""
+    new_supportive_device.device_type = PhxSupportiveDeviceType(_data.Type or 10)
+    new_supportive_device.quantity = _data.Quantity or 0
+    new_supportive_device.params.in_conditioned_space = _data.InConditionedSpace or False
+    new_supportive_device.params.norm_energy_demand_W = _data.NormEnergyDemand or 0.0
+    new_supportive_device.params.annual_period_operation_khrs = _data.PeriodOperation or 0.0
+    
+    return new_supportive_device
 
 
 # ----------------------------------------------------------------------
