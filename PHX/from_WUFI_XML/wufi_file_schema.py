@@ -264,7 +264,7 @@ class ExhaustVent(BaseModel):
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
-class H_Device(BaseModel):
+class HomeDevice(BaseModel):
     # -- Basic
     Comment: Optional[str]
     ReferenceQuantity: Optional[int]
@@ -367,7 +367,7 @@ class Zone(BaseModel):
     SummerNaturalVentilationDay: unit.ACH
     SummerNaturalVentilationNight: unit.ACH
 
-    HomeDevice: Optional[List[H_Device]]
+    HomeDevice: Optional[List[HomeDevice]]
     ExhaustVents: Optional[List[ExhaustVent]]
     ThermalBridges: Optional[List[ThermalBridge]]
 

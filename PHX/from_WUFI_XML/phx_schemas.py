@@ -156,6 +156,7 @@ from PHX.model.hvac.ducting import (
 )
 from PHX.model.hvac.supportive_devices import (PhxSupportiveDevice, PhxSupportiveDeviceParams, PhxSupportiveDeviceType)
 
+
 # ----------------------------------------------------------------------
 # -- Conversion Function
 
@@ -1343,7 +1344,8 @@ def _add_lighting_data_to_space(
 def _PhxSpace(_data: wufi_xml.Room, _phx_project_host: PhxProject) -> PhxSpace:
     phx_obj = PhxSpace()
 
-    # phx_obj.id_num = int(_data."])   phx_obj.display_name = _data.Name
+    # phx_obj.id_num = int(_data."])   
+    phx_obj.display_name = _data.Name
     phx_obj.wufi_type = _data.Type
     phx_obj.quantity = _data.Quantity
     phx_obj.floor_area = _data.AreaRoom
@@ -1417,18 +1419,26 @@ def _PhxDevice_Ventilation(_data: wufi_xml.Device) -> PhxDeviceVentilator:
     phx_obj.params.sensible_heat_recovery = _data.HeatRecovery
     phx_obj.params.latent_heat_recovery = _data.MoistureRecovery
     if _data.PH_Parameters:
-        phx_obj.params.quantity = _data.PH_Parameters.Quantity
-        phx_obj.params.electric_efficiency = _data.PH_Parameters.ElectricEfficiency
+        phx_obj.params.in_conditioned_space = _data.PH_Parameters.InConditionedSpace or False
+        phx_obj.params.quantity = _data.PH_Parameters.Quantity or 0
+        phx_obj.params.electric_efficiency = _data.PH_Parameters.ElectricEfficiency or 0.0
         phx_obj.params.frost_protection_reqd = _data.PH_Parameters.FrostProtection
         phx_obj.params.temperature_below_defrost_used = (
-            _data.PH_Parameters.TemperatureBelowDefrostUsed
+            _data.PH_Parameters.TemperatureBelowDefrostUsed or 0.0
         )
 
     return phx_obj
 
 
 def _PhxDevice_Electric(_data: wufi_xml.Device) -> PhxHeaterElectric:
-    return PhxHeaterElectric()
+    new_heater =  PhxHeaterElectric()
+
+    if _data.DHW_Parameters is not None:
+        new_heater.percent_coverage = _data.DHW_Parameters.CoverageWithinSystem
+    if _data.Heating_Parameters is not None:
+        new_heater.percent_coverage = _data.Heating_Parameters.CoverageWithinSystem
+        
+    return new_heater
 
 
 def _PhxDevice_Boiler(_data: wufi_xml.Device) -> Optional[AnyPhxHeaterBoiler]:
@@ -1642,7 +1652,7 @@ def _PhxExhaustVent_UserDefined(
 # -- Electrical Devices
 
 
-def _PhxHomeDevice(_data: wufi_xml.H_Device) -> PhxElectricalDevice:
+def _PhxHomeDevice(_data: wufi_xml.HomeDevice) -> PhxElectricalDevice:
     device_builders = {
         ElectricEquipmentType.DISHWASHER: "PhxDeviceDishwasher",
         ElectricEquipmentType.CLOTHES_WASHER: "PhxDeviceClothesWasher",
@@ -1675,7 +1685,7 @@ def _PhxHomeDevice(_data: wufi_xml.H_Device) -> PhxElectricalDevice:
     return phx_obj
 
 
-def _PhxDeviceDishwasher(_data: wufi_xml.H_Device) -> PhxDeviceDishwasher:
+def _PhxDeviceDishwasher(_data: wufi_xml.HomeDevice) -> PhxDeviceDishwasher:
     phx_obj = PhxDeviceDishwasher()
     phx_obj.water_connection = _data.Connection
     phx_obj.capacity_type = _data.DishwasherCapacityPreselection
@@ -1683,7 +1693,7 @@ def _PhxDeviceDishwasher(_data: wufi_xml.H_Device) -> PhxDeviceDishwasher:
     return phx_obj
 
 
-def _PhxDeviceClothesWasher(_data: wufi_xml.H_Device) -> PhxDeviceClothesWasher:
+def _PhxDeviceClothesWasher(_data: wufi_xml.HomeDevice) -> PhxDeviceClothesWasher:
     phx_obj = PhxDeviceClothesWasher()
     phx_obj.water_connection = _data.Connection
     phx_obj.utilization_factor = _data.UtilizationFactor
@@ -1692,7 +1702,7 @@ def _PhxDeviceClothesWasher(_data: wufi_xml.H_Device) -> PhxDeviceClothesWasher:
     return phx_obj
 
 
-def _PhxDeviceClothesDryer(_data: wufi_xml.H_Device) -> PhxDeviceClothesDryer:
+def _PhxDeviceClothesDryer(_data: wufi_xml.HomeDevice) -> PhxDeviceClothesDryer:
     phx_obj = PhxDeviceClothesDryer()
     phx_obj.dryer_type = _data.Dryer_Choice or 4
     phx_obj.gas_consumption = _data.GasConsumption
@@ -1702,62 +1712,62 @@ def _PhxDeviceClothesDryer(_data: wufi_xml.H_Device) -> PhxDeviceClothesDryer:
     return phx_obj
 
 
-def _PhxDeviceRefrigerator(_data: wufi_xml.H_Device) -> PhxDeviceRefrigerator:
+def _PhxDeviceRefrigerator(_data: wufi_xml.HomeDevice) -> PhxDeviceRefrigerator:
     phx_obj = PhxDeviceRefrigerator()
     return phx_obj
 
 
-def _PhxDeviceFreezer(_data: wufi_xml.H_Device) -> PhxDeviceFreezer:
+def _PhxDeviceFreezer(_data: wufi_xml.HomeDevice) -> PhxDeviceFreezer:
     phx_obj = PhxDeviceFreezer()
     return phx_obj
 
 
-def _PhxDeviceFridgeFreezer(_data: wufi_xml.H_Device) -> PhxDeviceFridgeFreezer:
+def _PhxDeviceFridgeFreezer(_data: wufi_xml.HomeDevice) -> PhxDeviceFridgeFreezer:
     phx_obj = PhxDeviceFridgeFreezer()
     return phx_obj
 
 
-def _PhxDeviceCooktop(_data: wufi_xml.H_Device) -> PhxDeviceCooktop:
+def _PhxDeviceCooktop(_data: wufi_xml.HomeDevice) -> PhxDeviceCooktop:
     phx_obj = PhxDeviceCooktop()
     phx_obj.cooktop_type = _data.CookingWith
     return phx_obj
 
 
-def _PhxDeviceCustomElec(_data: wufi_xml.H_Device) -> PhxDeviceCustomElec:
+def _PhxDeviceCustomElec(_data: wufi_xml.HomeDevice) -> PhxDeviceCustomElec:
     phx_obj = PhxDeviceCustomElec()
     return phx_obj
 
 
-def _PhxDeviceMEL(_data: wufi_xml.H_Device) -> PhxDeviceMEL:
+def _PhxDeviceMEL(_data: wufi_xml.HomeDevice) -> PhxDeviceMEL:
     phx_obj = PhxDeviceMEL()
     return phx_obj
 
 
-def _PhxDeviceLightingInterior(_data: wufi_xml.H_Device) -> PhxDeviceLightingInterior:
+def _PhxDeviceLightingInterior(_data: wufi_xml.HomeDevice) -> PhxDeviceLightingInterior:
     phx_obj = PhxDeviceLightingInterior()
     phx_obj.frac_high_efficiency = _data.FractionHightEfficiency
     return phx_obj
 
 
-def _PhxDeviceLightingExterior(_data: wufi_xml.H_Device) -> PhxDeviceLightingExterior:
+def _PhxDeviceLightingExterior(_data: wufi_xml.HomeDevice) -> PhxDeviceLightingExterior:
     phx_obj = PhxDeviceLightingExterior()
     phx_obj.frac_high_efficiency = _data.FractionHightEfficiency
     return phx_obj
 
 
-def _PhxDeviceLightingGarage(_data: wufi_xml.H_Device) -> PhxDeviceLightingGarage:
+def _PhxDeviceLightingGarage(_data: wufi_xml.HomeDevice) -> PhxDeviceLightingGarage:
     phx_obj = PhxDeviceLightingGarage()
     phx_obj.frac_high_efficiency = _data.FractionHightEfficiency
     return phx_obj
 
 
-def _PhxDeviceCustomLighting(_data: wufi_xml.H_Device) -> PhxDeviceCustomLighting:
+def _PhxDeviceCustomLighting(_data: wufi_xml.HomeDevice) -> PhxDeviceCustomLighting:
     phx_obj = PhxDeviceCustomLighting()
 
     return phx_obj
 
 
-def _PhxDeviceCustomMEL(_data: wufi_xml.H_Device) -> PhxDeviceCustomMEL:
+def _PhxDeviceCustomMEL(_data: wufi_xml.HomeDevice) -> PhxDeviceCustomMEL:
     phx_obj = PhxDeviceCustomMEL()
 
     return phx_obj

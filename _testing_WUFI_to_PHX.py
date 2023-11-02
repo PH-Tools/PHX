@@ -14,7 +14,7 @@ from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 
 SOURCE_DIR = pathlib.Path("tests", "_reference_xml")
 SOURCE_FILE_NAMES = [
-    "Arverne_Proposed_NoWindows.xml",
+    "Arverne_D_231102.xml",
 ]
 TARGET_DIR = pathlib.Path("tests", "_regenerated_xml")
 
@@ -35,7 +35,7 @@ for i, xm_source_file_name in enumerate(SOURCE_FILE_NAMES):
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
     # ----------------------------------------------------------------
-    # -- 3) Output the PHX model to a WUFI-XML
+    # -- 3) Output the PHX model back to a WUFI-XML
     target_file = TARGET_DIR / xm_source_file_name
     xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
 
