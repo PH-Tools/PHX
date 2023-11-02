@@ -2,9 +2,13 @@
 # -*- Python Version: 3.7 -*-
 
 from dataclasses import asdict
+from functools import partial
 from rich import print
-from typing import Any, Dict, List, Optional, Tuple
 import sys
+from typing import Any, Dict, List, Optional, Tuple
+
+from ladybug_geometry.geometry3d.polyline import LineSegment3D
+from ladybug_geometry.geometry3d.pointvector import Vector3D, Point3D
 
 from ph_units.unit_type import Unit
 
@@ -107,7 +111,12 @@ from PHX.model.hvac import (
     AnyPhxHeaterBoiler,
 )
 
-# from PHX.model.hvac.cooling_params import PhxCoolingRecirculation
+from PHX.model.hvac.cooling_params import (
+    PhxCoolingVentilationParams,
+    PhxCoolingRecirculationParams,
+    PhxCoolingDehumidificationParams,
+    PhxCoolingPanelParams
+)
 from PHX.model.hvac.water import PhxHotWaterTank
 from PHX.model.hvac.renewable_devices import PhxDevicePhotovoltaic
 from PHX.model.enums.elec_equip import ElectricEquipmentType
@@ -139,6 +148,11 @@ from PHX.model.hvac.piping import (
     PhxHotWaterPipingCalcMethod,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
+)
+from PHX.model.hvac.ducting import (
+    PhxDuctElement,
+    PhxDuctSegment,
+    PhxVentDuctType,
 )
 
 # ----------------------------------------------------------------------
@@ -175,14 +189,14 @@ def _PhxProject(_model: wufi_xml.WUFIplusProject) -> PhxProject:
 
     # ----------------------------------------------------------------------
     # -- Build all the type collections first
-    for window_type_data in _model.WindowTypes:
+    for window_type_data in _model.WindowTypes or []:
         new_window = as_phx_obj(window_type_data, "PhxConstructionWindow")
         # -- Be sure to use the identifier as the key so the Component
         # -- lookup works properly. We don't use the name here since
         # -- wufi doesn't enforce unique names like HB does.
         phx_obj.add_new_window_type(new_window, _key=new_window.identifier)
 
-    for assembly_data in _model.Assemblies:
+    for assembly_data in _model.Assemblies or []:
         new_opaque: PhxConstructionOpaque = as_phx_obj(
             assembly_data, "PhxConstructionOpaque"
         )
@@ -198,17 +212,17 @@ def _PhxProject(_model: wufi_xml.WUFIplusProject) -> PhxProject:
         # -- wufi doesn't enforce unique names like HB does.
         phx_obj.add_new_shade_type(new_shade, _key=new_shade.identifier)
 
-    for vent_pattern_data in _model.UtilisationPatternsVentilation:
+    for vent_pattern_data in _model.UtilisationPatternsVentilation or []:
         new_pattern = as_phx_obj(vent_pattern_data, "PhxScheduleVentilation")
         phx_obj.utilization_patterns_ventilation.add_new_util_pattern(new_pattern)
 
-    for vent_pattern_data in _model.UtilizationPatternsPH:
+    for vent_pattern_data in _model.UtilizationPatternsPH or []:
         new_pattern = as_phx_obj(vent_pattern_data, "PhxScheduleOccupancy")
         phx_obj.utilization_patterns_occupancy.add_new_util_pattern(new_pattern)
 
     # ----------------------------------------------------------------------
     # -- Build all the actual Variants
-    for variant_dict in _model.Variants:
+    for variant_dict in _model.Variants or []:
         new_variant = as_phx_obj(variant_dict, "PhxVariant", _phx_project_host=phx_obj)
         phx_obj.add_new_variant(new_variant)
 
@@ -417,44 +431,47 @@ def _PhxVariant(_xml_variant_data: wufi_xml.Variant, _phx_project_host: PhxProje
         _phx_project_host=_phx_project_host,
     )
 
+    # -- Build the HVAC Systems, Devices, and Distribution
     for xml_system_data in _xml_variant_data.HVAC.Systems:
         phx_obj.mech_systems.display_name = xml_system_data.Name
         phx_obj.mech_systems.id_num = xml_system_data.IdentNr
         phx_obj.mech_systems.zone_coverage = as_phx_obj(
             xml_system_data.ZonesCoverage[0], "PhxZoneCoverage"
         )
-
-        # -- Mech Devices
+        
+        # ---------------------------------------------------------------------
+        # -- Build all the actual Mechanical Devices (boilers, heat-pumps, etc...)
         for xml_device_data in xml_system_data.Devices:
             new_device = as_phx_obj(xml_device_data, "PhxMechanicalDevice") # type: AnyMechDevice
             phx_obj.mech_systems.add_new_mech_device(new_device.identifier, new_device)
 
+        # ---------------------------------------------------------------------
         # -- Cooling Distribution
         xml_dist_cooling_data = xml_system_data.PHDistribution.DistributionCooling
         if xml_dist_cooling_data is not None:
-            # -- OK: this part is super stupid. Since WUFI doesn't store this 
+            # -- This part is super stupid. Since WUFI doesn't store this 
             # -- device information properly (ie: ON the device) but instead over
             # -- in the 'Distribution' part as single total values, we'll just
             # -- have to make some shit up. How about we evenly distribute the 
             # -- total capacity across all the cooling devices? Seems like as 
             # -- good a solution as any I guess....
             
-            number_phx_cooling_devices = len(phx_obj.mech_systems.heat_pump_devices)
+            all_cooling_devices = phx_obj.mech_systems.cooling_devices
+            number_phx_cooling_devices = len(all_cooling_devices)
             if number_phx_cooling_devices == 0:
                 continue
-            avg_power = xml_dist_cooling_data.MaxRecirculationAirCoolingPower or 0.0 / number_phx_cooling_devices
-            avg_vol = xml_dist_cooling_data.RecirculationAirVolume or 0.0 / number_phx_cooling_devices
-            
-            # -- Apply the param values to all of the cooling heat-pumps found
-            for cooling_device in phx_obj.mech_systems.heat_pump_devices:
-                cooling_device.params.single_speed = xml_dist_cooling_data.RecirculatingAirOnOff or 0.0
-                cooling_device.params.min_coil_temp = xml_dist_cooling_data.MinTempCoolingCoilRecirculatingAir or 0.0
-                cooling_device.params.capacity = avg_power
-                cooling_device.params.annual_COP = xml_dist_cooling_data.RecirculationCoolingCOP or 0.0
-                cooling_device.params.flow_rate_m3_hr = avg_vol
-                cooling_device.params.flow_rate_variable = xml_dist_cooling_data.ControlledRecirculationVolumeFlow
+            as_phx_w_num_devices = partial(as_phx_obj, number_phx_cooling_devices=number_phx_cooling_devices)
 
-        # -- DHW Distribution
+
+            # -- Apply the param values to all of the cooling heat-pumps found
+            for cooling_device in all_cooling_devices:
+                cooling_device.params_cooling.ventilation = as_phx_w_num_devices(xml_dist_cooling_data, "PhxCoolingVentilationParams")
+                cooling_device.params_cooling.recirculation = as_phx_w_num_devices(xml_dist_cooling_data, "PhxCoolingRecirculationParams")
+                cooling_device.params_cooling.dehumidification = as_phx_w_num_devices(xml_dist_cooling_data, "PhxCoolingDehumidificationParams")
+                cooling_device.params_cooling.panel = as_phx_w_num_devices(xml_dist_cooling_data, "PhxCoolingPanelParams")
+        
+        # ---------------------------------------------------------------------
+        # -- DHW Distribution (Piping)
         xml_dist_dhw_data = xml_system_data.PHDistribution.DistributionDHW
         if xml_dist_dhw_data is not None:
             # -- Distribution Piping Elements
@@ -469,6 +486,114 @@ def _PhxVariant(_xml_variant_data: wufi_xml.Variant, _phx_project_host: PhxProje
             # -- Recirculation Piping Element
             recirc_pipe_element =  as_phx_obj(xml_dist_dhw_data, "RecirculationTrunk") # type: PhxPipeElement
             phx_obj.mech_systems.add_recirc_piping(recirc_pipe_element)
+
+        # ---------------------------------------------------------------------
+        # -- Ventilation Distribution (Ducting)
+        for wufi_duct_data in xml_system_data.PHDistribution.DistributionVentilation or []:
+            # -- PHX has a 1:1 duct-to-ventilator relationship, so we'll just
+            # -- duplicate the duct for each one its assigned to in WUFI-XML
+            for i in wufi_duct_data.AssignedVentUnits or []:
+                new_duct = as_phx_obj(wufi_duct_data, "PhxDuctElement", ventilator=i)
+                phx_obj.mech_systems.add_vent_ducting(new_duct)
+
+        # ---------------------------------------------------------------------
+        # -- Supportive Devices (Pumps, Fans, etc...)
+        # TODO
+        # 
+        # 
+
+
+    return phx_obj
+
+
+# ----------------------------------------------------------------------
+# -- Ventilation Distribution
+
+
+def _PhxDuctSegment(_data : wufi_xml.Duct, ) -> PhxDuctSegment:
+    # -- WUFI doesn't keep the actual duct geometry, so we'll just make a
+    # -- new Line with the same length as the original duct.
+    fake_duct_geometry = LineSegment3D.from_sdl(
+        s = Point3D(0,0,0), 
+        d = Vector3D(1,0,0), 
+        length = _data.DuctLength or 0.0,
+    )
+
+    # -- Build the actual segment
+    new_segment = PhxDuctSegment(
+            identifier = str(_data.IdentNr),
+            display_name= _data.Name or "",
+            geometry = fake_duct_geometry,
+            diameter = _data.DuctDiameter or 0.0,
+            height = _data.DuctShapeHeight or None,
+            width = _data.DuctShapeWidth or None,
+            insulation_thickness = _data.InsulationThickness or 0.0,
+            insulation_conductivity = _data.ThermalConductivity or 0.0,
+            insulation_reflective = _data.IsReflective,
+    )
+
+    return new_segment
+
+
+def _PhxDuctElement(_data: wufi_xml.Duct, ventilator: wufi_xml.AssignedVentUnit) -> PhxDuctElement:
+    new_phx_duct = PhxDuctElement(
+        identifier = str(_data.IdentNr),
+        display_name = _data.Name or "",
+        vent_unit_id = ventilator.IdentNrVentUnit,
+    )
+    new_phx_duct.duct_type = PhxVentDuctType(_data.DuctType)
+
+    # -- Build and add the Duct Segments
+    new_phx_duct.add_segment(as_phx_obj(_data, "PhxDuctSegment"))
+
+    return new_phx_duct
+
+
+# ----------------------------------------------------------------------
+# -- Cooling Distribution
+
+
+def _PhxCoolingVentilationParams(_data: wufi_xml.DistributionCooling, number_phx_cooling_devices: int=1) -> PhxCoolingVentilationParams:
+    phx_obj = PhxCoolingVentilationParams()
+    
+    phx_obj.used = _data.CoolingViaVentilationAir or False
+    phx_obj.single_speed = _data.SupplyAirCoolingOnOff or False
+    phx_obj.min_coil_temp = _data.MinTemperatureCoolingCoilSupplyAir or 0.0
+    phx_obj.capacity = _data.MaxSupplyAirCoolingPower or 0.0 / number_phx_cooling_devices
+    phx_obj.annual_COP = _data.SupplyAirCoolinCOP or 0.0
+    
+    return phx_obj
+
+
+def _PhxCoolingRecirculationParams(_data: wufi_xml.DistributionCooling, number_phx_cooling_devices: int=1) -> PhxCoolingRecirculationParams:
+    phx_obj = PhxCoolingRecirculationParams()
+    
+    phx_obj.used = _data.CoolingViaRecirculation or False
+    phx_obj.single_speed = _data.RecirculatingAirOnOff or False
+    phx_obj.min_coil_temp = _data.MinTempCoolingCoilRecirculatingAir or 0.0
+    phx_obj.capacity = _data.MaxRecirculationAirCoolingPower or 0.0 / number_phx_cooling_devices
+    phx_obj.annual_COP = _data.RecirculationCoolingCOP or 0.0
+    phx_obj.flow_rate_m3_hr = _data.RecirculationAirVolume or 0.0 / number_phx_cooling_devices
+    phx_obj.flow_rate_variable = _data.ControlledRecirculationVolumeFlow
+    
+    return phx_obj
+
+
+def _PhxCoolingDehumidificationParams(_data: wufi_xml.DistributionCooling, number_phx_cooling_devices: int=1) -> PhxCoolingDehumidificationParams:
+    phx_obj = PhxCoolingDehumidificationParams()
+    
+    phx_obj.used = _data.Dehumidification or False
+    phx_obj.annual_COP = _data.DehumdificationCOP or 0.0
+    phx_obj.useful_heat_loss = _data.UsefullDehumidificationHeatLoss or False
+    
+    return phx_obj
+
+
+def _PhxCoolingPanelParams(_data: wufi_xml.DistributionCooling, number_phx_cooling_devices: int=1) -> PhxCoolingPanelParams:
+    phx_obj = PhxCoolingPanelParams()
+    
+    phx_obj.used = _data.PanelCooling or False
+    phx_obj.annual_COP = _data.DehumdificationCOP or 0.0
 
     return phx_obj
 
@@ -1238,7 +1363,7 @@ def _PhxZoneCoverage(_data: wufi_xml.ZoneCoverage) -> PhxZoneCoverage:
 
 
 def _PhxMechanicalDevice(_data: wufi_xml.Device) -> Any:    
-    system_type_map = {
+    device_builder_classnames = {
         hvac_enums.SystemType.VENTILATION: "PhxDevice_Ventilation",
         hvac_enums.SystemType.ELECTRIC: "PhxDevice_Electric",
         hvac_enums.SystemType.BOILER: "PhxDevice_Boiler",
@@ -1248,24 +1373,18 @@ def _PhxMechanicalDevice(_data: wufi_xml.Device) -> Any:
         hvac_enums.SystemType.PHOTOVOLTAIC: "PhxDevice_Photovoltaic",
     }
 
-    system_type = hvac_enums.SystemType(_data.SystemType)
-    if system_type is hvac_enums.SystemType.HEAT_PUMP:
-        # -- Heat pumps might be heating, or might be cooling
-        # if _data.UsedFor_Cooling:
-        #     builder_class = "PhxCoolingRecirculation"
-        # elif _data.UsedFor_Cooling and _data.UsedFor_Heating:
-        #     msg = "Error: Cannot convert heat-pumps which serve both heating AND cooling."
-        #     raise NotImplementedError(msg)
-        # else:
-        #     builder_class = "PhxDevice_HeatPump"
-        builder_class = "PhxDevice_HeatPump" # temp
-    else:
-        builder_class = system_type_map[system_type]
+    # -- Find the right device-builder-classname
+    try:
+        system_type = hvac_enums.SystemType(_data.SystemType)
+    except:
+        print(f"Error: I do not understand the mech device type: '{_data.SystemType}'?")
+        return None
+    builder_class_name = device_builder_classnames[system_type]
     
-    # -- Pass the data off to the correct device builder class
-    new_mech_device = as_phx_obj(_data, builder_class)
+    # -- Pass the data off using the correct device-builder-classname
+    new_mech_device = as_phx_obj(_data, builder_class_name)
 
-    # -- Set the usage profile of the device
+    # -- Set the usage profile (heating, cooling, etc.) of the device
     new_mech_device.usage_profile = as_phx_obj(_data, "PhxUsageProfile")
 
     return new_mech_device
@@ -1402,17 +1521,6 @@ def _PhxDevice_HeatPump_HotWater(_data: wufi_xml.Device) -> PhxHeatPumpHotWater:
     )
     phx_obj.params.annual_energy_factor = _data.PH_Parameters.HPWH_EF
     return phx_obj
-
-
-# def _PhxCoolingRecirculation(_data: wufi_xml.Device) -> PhxCoolingRecirculation:
-#     phx_obj = PhxCoolingRecirculation()
-    
-#     # -- NOTE: The required data for this device's params is NOT here on the device
-#     # -- Fucking WUFI puts this over in the 'Distribution' for some inexplicable reason
-#     # -- So this data needs to get sorted out a different way when reading in the data
-#     # -- from a WUFI-XML file. See the '_PhxVariant' for how its done currently.
-
-#     return phx_obj
 
 
 def _PhxDevice_WaterStorage(_data: wufi_xml.Device) -> PhxHotWaterTank:

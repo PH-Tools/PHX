@@ -276,7 +276,7 @@ class H_Device(BaseModel):
     CEF_CombinedEnergyFactor: Optional[unit._Percentage]
     Type: int
 
-    # -- Cooktops
+    # -- Cook-tops
     CookingWith: Optional[int]
 
     # -- Lighting
@@ -440,13 +440,28 @@ class DistributionDHW(BaseModel):
 
 
 class DistributionCooling(BaseModel):
-    CoolingViaRecirculation: bool
-    RecirculatingAirOnOff: bool
+    CoolingViaRecirculation: Optional[bool]
+    RecirculatingAirOnOff: Optional[bool]
     MaxRecirculationAirCoolingPower: Optional[unit.KiloWatt]
     MinTempCoolingCoilRecirculatingAir: Optional[unit.DegreeC]
-    RecirculationCoolingCOP: Optional[unit.Watt_per_Watt]
+    RecirculationCoolingCOP: Optional[unit._Percentage]
     RecirculationAirVolume: Optional[unit.M3_per_Hour]
     ControlledRecirculationVolumeFlow: bool
+
+    # -- Ventilation Air
+    CoolingViaVentilationAir: Optional[bool]
+    SupplyAirCoolingOnOff: Optional[bool]
+    SupplyAirCoolinCOP: Optional[unit._Percentage]
+    MaxSupplyAirCoolingPower: Optional[unit.KiloWatt]
+    MinTemperatureCoolingCoilSupplyAir: Optional[unit.DegreeC]
+
+    # -- Dehumidification
+    Dehumidification: Optional[bool]
+    DehumdificationCOP: Optional[unit._Percentage]
+    UsefullDehumidificationHeatLoss: Optional[bool]
+
+    # -- Panel
+    PanelCooling: Optional[bool]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -463,7 +478,7 @@ class SupportiveDevice(BaseModel):
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
-class AssignedVentUnits(BaseModel):
+class AssignedVentUnit(BaseModel):
     IdentNrVentUnit: int
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
@@ -482,14 +497,14 @@ class Duct(BaseModel):
     DuctType: int
     DuctShape: int
     IsReflective: bool
-    AssignedVentUnits: Optional[List[AssignedVentUnits]]
+    AssignedVentUnits: Optional[List[AssignedVentUnit]]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 class PHDistribution(BaseModel):
     # TODO DistributionHeating: DistributionHeating
     DistributionDHW: Optional[DistributionDHW]
-    DistributionCooling: DistributionCooling
+    DistributionCooling: Optional[DistributionCooling]
     DistributionVentilation: Optional[List[Duct]]
     UseDefaultValues: bool
     DeviceInConditionedSpace: Optional[bool]
@@ -906,11 +921,11 @@ class WUFIplusProject(BaseModel):
     Scope: int
     DimensionsVisualizedGeometry: int
     ProjectData: ProjectData
-    UtilizationPatternsPH: List[UtilizationPattern]
-    UtilisationPatternsVentilation: List[UtilizationPatternVent]
-    WindowTypes: List[WindowType]
-    Assemblies: List[Assembly]
-    Variants: List[Variant]
+    UtilizationPatternsPH: Optional[List[UtilizationPattern]]
+    UtilisationPatternsVentilation: Optional[List[UtilizationPatternVent]]
+    WindowTypes: Optional[List[WindowType]]
+    Assemblies: Optional[List[Assembly]]
+    Variants: Optional[List[Variant]]
     SolarProtectionTypes: Optional[List[SolarProtectionType]]
 
     @validator("UnitSystem", pre=True)

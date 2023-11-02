@@ -532,7 +532,7 @@ class PhxMechanicalSystemCollection:
         return [
             _
             for _ in self.devices
-            if isinstance(_, hvac.PhxDeviceVentilation) and _.usage_profile.ventilation
+            if isinstance(_, hvac.PhxDeviceVentilation)
         ]
 
     @property
@@ -551,6 +551,15 @@ class PhxMechanicalSystemCollection:
             d
             for d in self.devices
             if isinstance(d, hvac.PhxHeatPumpDevice)
+        ]
+
+    @property
+    def cooling_devices(self) -> List[hvac.PhxHeatPumpDevice]:
+        """Returns a list of all the Cooling devices (heat pumps) in the collection."""
+        return [
+            d
+            for d in self.heat_pump_devices
+            if d.usage_profile.cooling == True
         ]
 
     def device_in_collection(self, _device_key) -> bool:

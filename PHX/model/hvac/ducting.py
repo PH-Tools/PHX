@@ -64,35 +64,55 @@ class PhxDuctElement:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * seg.diameter
-        return weighted_total / self.length
+        
+        try:
+            return weighted_total / self.length
+        except ZeroDivisionError:
+            return 0.0
 
     @property
     def height(self) -> float: 
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * (seg.height or 0.0)
-        return weighted_total / self.length 
+        
+        try:
+            return weighted_total / self.length 
+        except ZeroDivisionError:
+            return 0.0
     
     @property
     def width(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * (seg.width or 0.0)
-        return weighted_total / self.length 
+        
+        try:
+            return weighted_total / self.length 
+        except ZeroDivisionError:
+            return 0.0
 
     @property
     def insulation_thickness(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * seg.insulation_thickness
-        return weighted_total / self.length
+        
+        try:
+            return weighted_total / self.length
+        except ZeroDivisionError:
+            return 0.0
     
     @property
     def insulation_conductivity(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * seg.insulation_conductivity
-        return weighted_total / self.length
+        
+        try:
+            return weighted_total / self.length
+        except ZeroDivisionError:
+            return 0.0
     
     @property
     def duct_shape(self) -> int:
