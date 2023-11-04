@@ -6,6 +6,7 @@
 from __future__ import annotations
 from inspect import signature
 from dataclasses import dataclass, field
+import math
 from typing import Optional, ClassVar, Union, Any
 import uuid
 
@@ -16,21 +17,94 @@ from PHX.model.enums.hvac import DeviceType, SystemType
 class PhxUsageProfile:
     """Is the device used to provide..."""
 
-    space_heating: bool = False
-    dhw_heating: bool = False
-    cooling: bool = False
-    ventilation: bool = False
-    humidification: bool = False
-    dehumidification: bool = False
+    # -- Percent of total energy demand covered by this device
+    space_heating_percent: float = 0.0
+    dhw_heating_percent: float = 0.0
+    cooling_percent: float = 0.0
+    ventilation_percent: float = 0.0
+    humidification_percent: float = 0.0
+    dehumidification_percent: float = 0.0
+
+    @property
+    def space_heating(self) -> bool:
+        """True if the device used to provide space heating."""
+        return not math.isclose(self.space_heating_percent, 0)
+    
+    @space_heating.setter
+    def space_heating(self, _in: bool) -> None:
+        if _in and self.space_heating_percent == 0:
+            self.space_heating_percent = 1.0
+        elif _in == False:
+            self.space_heating_percent = 0.0
+
+    @property
+    def dhw_heating(self) -> bool:
+        """True if the device used to provide domestic hot water heating."""
+        return not math.isclose(self.dhw_heating_percent, 0)
+    
+    @dhw_heating.setter
+    def dhw_heating(self, _in: bool) -> None:
+        if _in and self.dhw_heating_percent == 0:
+            self.dhw_heating_percent = 1.0
+        elif _in == False:
+            self.dhw_heating_percent = 0.0
+
+    @property
+    def cooling(self) -> bool:
+        """True if the device used to provide cooling."""
+        return not math.isclose(self.cooling_percent, 0)
+        
+    @cooling.setter
+    def cooling(self, _in: bool) -> None:
+        if _in and self.cooling_percent == 0:
+            self.cooling_percent = 1.0
+        elif _in == False:
+            self.cooling_percent = 0.0
+            
+    @property
+    def ventilation(self) -> bool:
+        """True if the device used to provide ventilation."""
+        return not math.isclose(self.ventilation_percent, 0)
+    
+    @ventilation.setter
+    def ventilation(self, _in: bool) -> None:
+        if _in and self.ventilation_percent == 0:
+            self.ventilation_percent = 1.0
+        elif _in == False:
+            self.ventilation_percent = 0.0
+
+    @property
+    def humidification(self) -> bool:
+        """True if the device used to provide humidification."""
+        return not math.isclose(self.humidification_percent, 0)
+    
+    @humidification.setter
+    def humidification(self, _in: bool) -> None:
+        if _in and self.humidification_percent == 0:
+            self.humidification_percent = 1.0
+        elif _in == False:
+            self.humidification_percent = 0.0
+
+    @property
+    def dehumidification(self) -> bool:
+        """True if the device used to provide dehumidification."""
+        return not math.isclose(self.dehumidification_percent, 0)
+    
+    @dehumidification.setter
+    def dehumidification(self, _in: bool) -> None:
+        if _in and self.dehumidification_percent == 0:
+            self.dehumidification_percent = 1.0
+        elif _in == False:
+            self.dehumidification_percent = 0.0
 
     def __add__(self, other: PhxUsageProfile) -> PhxUsageProfile:
         obj = self.__class__()
-        obj.space_heating = any((self.space_heating, other.space_heating))
-        obj.dhw_heating = any((self.dhw_heating, other.dhw_heating))
-        obj.cooling = any((self.cooling, other.cooling))
-        obj.ventilation = any((self.ventilation, other.ventilation))
-        obj.humidification = any((self.humidification, other.humidification))
-        obj.dehumidification = any((self.dehumidification, other.dehumidification))
+        obj.space_heating_percent = self.space_heating_percent + other.space_heating_percent
+        obj.dhw_heating_percent = self.dhw_heating_percent + other.dhw_heating_percent
+        obj.cooling_percent = self.cooling_percent + other.cooling_percent
+        obj.ventilation_percent = self.ventilation_percent + other.ventilation_percent
+        obj.humidification_percent = self.humidification_percent + other.humidification_percent
+        obj.dehumidification_percent = self.dehumidification_percent + other.dehumidification_percent
         return obj
 
 

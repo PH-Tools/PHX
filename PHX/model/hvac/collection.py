@@ -14,6 +14,9 @@ from PHX.model import hvac
 from PHX.model.enums.hvac import DeviceType, PhxSupportiveDeviceType
 from PHX.model.hvac.heating import AnyPhxHeater
 from PHX.model.hvac.heat_pumps import AnyPhxHeatPump
+from PHX.model.hvac.piping import PhxRecirculationParameters
+from PHX.model.hvac.renewable_devices import AnyRenewableDevice, PhxDevicePhotovoltaic
+from PHX.model.hvac.supportive_devices import PhxSupportiveDevice
 from PHX.model.hvac.ventilation import (
     AnyPhxVentilation,
     AnyPhxExhaustVent,
@@ -22,9 +25,6 @@ from PHX.model.hvac.ventilation import (
     PhxExhaustVentilatorUserDefined,
 )
 from PHX.model.hvac.water import AnyWaterTank
-from PHX.model.hvac.piping import PhxRecirculationParameters
-from PHX.model.hvac.supportive_devices import PhxSupportiveDevice
-from PHX.model.hvac.renewable_devices import AnyRenewableDevice, PhxDevicePhotovoltaic
 
 
 # ------------------------------------------------------------------------------

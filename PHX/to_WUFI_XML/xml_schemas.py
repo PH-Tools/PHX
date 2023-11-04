@@ -3,7 +3,7 @@
 
 """Conversion Schemas for how to write PH/HB objects to WUFI XML"""
 
-from typing import List, Optional, Any, TypeVar
+from typing import List, Optional, Any, TypeVar, Dict
 import sys
 from functools import reduce
 
@@ -117,9 +117,18 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
         XML_Object("Building", _variant.building),
         XML_Object("ClimateLocation", _variant.site),
         XML_Object("PassivehouseData", _variant.phius_cert),
-        XML_Object(
-            "HVAC", _variant.mech_systems, _schema_name="_PhxMechanicalSystemCollection"
-        ),
+        XML_Object("HVAC", _variant._mech_collections, _schema_name="_Systems"),
+    ]
+
+
+def _Systems(_collections: List[hvac.PhxMechanicalSystemCollection]) -> List[xml_writable]:
+    return [
+        XML_List("Systems", 
+                    [
+                        XML_Object("System", collection, "index", i, _schema_name="_PhxMechanicalSystemCollection") 
+                        for i, collection in enumerate(_collections)
+                    ]
+            ) 
     ]
 
 
@@ -1161,12 +1170,17 @@ def _DeviceHeaterDistrictDeviceParams(
 
 
 def _PhxDeviceHeaterHeatPump(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
-    param_schemas = {
-        hvac.PhxHeatPumpAnnualParams.hp_type.value: "_DeviceHeaterHeatPumpPhParamsAnnual",
-        hvac.PhxHeatPumpMonthlyParams.hp_type.value: "_DeviceHeaterHeatPumpPhParamsMonthly",
-        hvac.PhxHeatPumpHotWaterParams.hp_type.value: "_DeviceHeaterHeatPumpPhParamsHotWater",
-        hvac.PhxHeatPumpCombinedParams.hp_type.value: "_DeviceHeaterHeatPumpPhParamsCombined",
+    param_schemas: Dict[hvac.HeatPumpType, str] = {
+        hvac.PhxHeatPumpAnnualParams.hp_type: "_DeviceHeaterHeatPumpPhParamsAnnual",
+        hvac.PhxHeatPumpMonthlyParams.hp_type: "_DeviceHeaterHeatPumpPhParamsMonthly",
+        hvac.PhxHeatPumpHotWaterParams.hp_type: "_DeviceHeaterHeatPumpPhParamsHotWater",
+        hvac.PhxHeatPumpCombinedParams.hp_type: "_DeviceHeaterHeatPumpPhParamsCombined",
     }
+    
+    hp_type: Optional[hvac.HeatPumpType] = getattr(_d.params, "hp_type", None)
+    if not hp_type:
+        return []
+    
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
@@ -1178,16 +1192,15 @@ def _PhxDeviceHeaterHeatPump(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
         XML_Node("UsedFor_Ventilation", _d.usage_profile.ventilation),
         XML_Node("UsedFor_Humidification", _d.usage_profile.humidification),
         XML_Node("UsedFor_Dehumidification", _d.usage_profile.dehumidification),
+        XML_Object("PH_Parameters", _d.params, _schema_name=param_schemas[hp_type]),
         XML_Object(
-            "PH_Parameters",
-            _d.params,
-            _schema_name=param_schemas[_d.params.hp_type.value],
-        ),
-        XML_Object(
-            "DHW_Parameters", _d, _schema_name="_DeviceHeaterHeatPumpDeviceParams"
+            "DHW_Parameters", _d, _schema_name="_DeviceHotWaterHeatPumpDeviceParams"
         ),
         XML_Object(
             "Heating_Parameters", _d, _schema_name="_DeviceHeaterHeatPumpDeviceParams"
+        ),
+        XML_Object(
+            "Cooling_Parameters", _d, _schema_name="_DeviceCoolingHeatPumpDeviceParams"
         ),
     ]
 
@@ -1245,9 +1258,24 @@ def _DeviceHeaterHeatPumpPhParamsCombined(
     ]
 
 
+def _DeviceHotWaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
+    return [
+        XML_Node("CoverageWithinSystem", _d.usage_profile.dhw_heating_percent),
+        XML_Node("Unit", _d.unit),
+        XML_Node("Selection", 1),
+    ]
+
 def _DeviceHeaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
     return [
-        XML_Node("CoverageWithinSystem", _d.percent_coverage),
+        XML_Node("CoverageWithinSystem", _d.usage_profile.space_heating_percent),
+        XML_Node("Unit", _d.unit),
+        XML_Node("Selection", 1),
+    ]
+
+
+def _DeviceCoolingHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
+    return [
+        XML_Node("CoverageWithinSystem", _d.usage_profile.cooling_percent),
         XML_Node("Unit", _d.unit),
         XML_Node("Selection", 1),
     ]
@@ -1559,7 +1587,7 @@ def _PhxZoneCoverage(_zc: hvac.PhxZoneCoverage) -> List[xml_writable]:
     ]
 
 
-def _PhxMechanicalDevices(
+def _PhxMechanicalSystemCollection(
     _hvac_collection: hvac.PhxMechanicalSystemCollection,
 ) -> List[xml_writable]:
     devices = {
@@ -1572,7 +1600,7 @@ def _PhxMechanicalDevices(
         hvac.DeviceType.PHOTOVOLTAIC: "_PhxDevicePhotovoltaic",
     }
 
-    wufi_devices = []
+    wufi_devices: List[hvac.AnyMechDevice] = []
     wufi_devices.extend(_hvac_collection.devices)
     wufi_devices.extend(_hvac_collection.renewable_devices)
     return [
@@ -1596,20 +1624,6 @@ def _PhxMechanicalDevices(
             ],
         ),
         XML_Object("PHDistribution", _hvac_collection, _schema_name="_PHDistribution"),
-    ]
-
-
-def _PhxMechanicalSystemCollection(
-    _hvac: hvac.PhxMechanicalSystemCollection,
-) -> List[xml_writable]:
-    return [
-        XML_List(
-            "Systems",
-            [
-                XML_Object("System", n, "index", i, _schema_name="_PhxMechanicalDevices")
-                for i, n in enumerate([_hvac])
-            ],
-        ),
     ]
 
 

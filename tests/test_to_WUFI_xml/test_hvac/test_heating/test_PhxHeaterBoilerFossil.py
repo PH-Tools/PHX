@@ -5,7 +5,7 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 def test_default_PhxHeaterBoilerFossil(reset_class_counters):
     h1 = heating.PhxHeaterBoilerFossil()
-    h1.usage_profile.space_heating = True
+    h1.usage_profile.space_heating_percent = 1.0
     assert h1.usage_profile.cooling == False
 
     coll = collection.PhxMechanicalSystemCollection()
@@ -16,8 +16,6 @@ def test_default_PhxHeaterBoilerFossil(reset_class_counters):
 
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [
-        '<Systems count="1">',
-        '<System index="0">',
         "<Name>Ideal Air System</Name>",
         '<Type choice="User defined (ideal system)">1</Type>',
         "<IdentNr>1</IdentNr>",
@@ -96,6 +94,4 @@ def test_default_PhxHeaterBoilerFossil(reset_class_counters):
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         '<SupportiveDevices count="0"/>',
         "</PHDistribution>",
-        "</System>",
-        "</Systems>",
     ]

@@ -14,7 +14,7 @@ from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 
 SOURCE_DIR = pathlib.Path("tests", "_reference_xml")
 SOURCE_FILE_NAMES = [
-    "Arverne_D_231102.xml",
+    "test_multiple_cooling_2_systems.xml",
 ]
 TARGET_DIR = pathlib.Path("tests", "_regenerated_xml")
 
@@ -25,14 +25,15 @@ for i, xm_source_file_name in enumerate(SOURCE_FILE_NAMES):
 
     # ----------------------------------------------------------------
     # -- 1) Read in the WUFI-XML File as a new Pydantic Model
-    print(f"[green bold]> Reading in the file: {xm_source_file}[/green bold]")
+    print(f"[green bold]> Reading in data from XML-File: {xm_source_file}[/green bold]")
     wufi_xml_data = get_WUFI_XML_file_as_dict(xm_source_file)
     wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
 
     # ----------------------------------------------------------------
     # -- 2) Convert the Pydantic WUFI model over to a PHX model
-    print(f"[green bold]> Converting XML file to PHX Model[/green bold]")
+    print(f"[green bold]> Converting XML-data to a PHX-Model[/green bold]")
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
+
 
     # ----------------------------------------------------------------
     # -- 3) Output the PHX model back to a WUFI-XML

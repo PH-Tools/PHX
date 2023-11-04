@@ -18,8 +18,6 @@ def test_default_PhxRoomVentilation(reset_class_counters):
     coll.add_new_mech_device(v1.identifier, v1)
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [
-        '<Systems count="1">',
-        '<System index="0">',
         "<Name>Ideal Air System</Name>",
         '<Type choice="User defined (ideal system)">1</Type>',
         "<IdentNr>1</IdentNr>",
@@ -86,6 +84,4 @@ def test_default_PhxRoomVentilation(reset_class_counters):
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         '<SupportiveDevices count="0"/>',
         "</PHDistribution>",
-        "</System>",
-        "</Systems>",
     ]

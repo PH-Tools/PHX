@@ -270,7 +270,7 @@ def build_phx_heating_electric(
 ) -> hvac.PhxHeaterElectric:
     phx_obj = hvac.PhxHeaterElectric()
     phx_obj = _transfer_attributes(_hbeph_heater, phx_obj)
-    phx_obj.usage_profile.space_heating = True
+    phx_obj.usage_profile.space_heating_percent = _hbeph_heater.percent_coverage
     return phx_obj
 
 
@@ -279,7 +279,7 @@ def build_phx_heating_fossil_boiler(
 ) -> hvac.PhxHeaterBoilerFossil:
     phx_obj = hvac.PhxHeaterBoilerFossil()
     phx_obj = _transfer_attributes(_hbeph_heater, phx_obj)
-    phx_obj.usage_profile.space_heating = True
+    phx_obj.usage_profile.space_heating_percent = _hbeph_heater.percent_coverage
     return phx_obj
 
 
@@ -288,7 +288,7 @@ def build_phx_heating_wood_boiler(
 ) -> hvac.PhxHeaterBoilerWood:
     phx_obj = hvac.PhxHeaterBoilerWood()
     phx_obj = _transfer_attributes(_hbeph_heater, phx_obj)
-    phx_obj.usage_profile.space_heating = True
+    phx_obj.usage_profile.space_heating_percent = _hbeph_heater.percent_coverage
     return phx_obj
 
 
@@ -297,7 +297,7 @@ def build_phx_heating_district(
 ) -> hvac.PhxHeaterDistrictHeat:
     phx_obj = hvac.PhxHeaterDistrictHeat()
     phx_obj = _transfer_attributes(_hbeph_heater, phx_obj)
-    phx_obj.usage_profile.space_heating = True
+    phx_obj.usage_profile.space_heating_percent = _hbeph_heater.percent_coverage
     return phx_obj
 
 
@@ -362,10 +362,10 @@ def build_phx_heating_hp_annual(
 
     phx_obj = hvac.PhxHeatPumpAnnual()
     phx_obj = _transfer_attributes(_hbph_heat_pump, phx_obj)
-    phx_obj.usage_profile.space_heating = True
+    phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
     
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling = True
+        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
     
     return phx_obj
@@ -378,10 +378,10 @@ def build_phx_heating_hp_monthly(
     
     phx_obj = hvac.PhxHeatPumpMonthly()
     phx_obj = _transfer_attributes(_hbph_heat_pump, phx_obj)
-    phx_obj.usage_profile.space_heating = True
+    phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
     
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling = True
+        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
     
     return phx_obj
@@ -394,10 +394,10 @@ def build_phx_heating_hp_combined(
     
     phx_obj = hvac.PhxHeatPumpCombined()
     phx_obj = _transfer_attributes(_hbph_heat_pump, phx_obj)
-    phx_obj.usage_profile.space_heating = True
+    phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
     
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling = True
+        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
     
     return phx_obj

@@ -40,13 +40,38 @@ class PhxVariant:
     phius_cert: PhxPhiusCertification = field(default_factory=PhxPhiusCertification)
     phi_cert: PhxPhiCertification = field(default_factory=PhxPhiCertification)
     site: PhxSite = field(default_factory=PhxSite)
-    mech_systems: PhxMechanicalSystemCollection = field(
-        default_factory=PhxMechanicalSystemCollection
+    # mech_systems: PhxMechanicalSystemCollection = field(
+    #     default_factory=PhxMechanicalSystemCollection
+    # )
+    # -- Allow for multiple mechanical 'collections' in a variant
+    # -- If WUFI, these are called 'systems', but they also use 
+    # -- the word 'system' in other places. So to avoid confusion, lets 
+    # -- call them 'collections' here
+    _mech_collections: List[PhxMechanicalSystemCollection] = field(
+        default_factory=list
     )
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
+
+        # -- Always Add a default mech-collection
+        self._mech_collections.append(PhxMechanicalSystemCollection())
+
+    @property
+    def mech_systems(self) -> PhxMechanicalSystemCollection:
+        """Return the Default Mechanical System Collection for the variant.
+        
+        This is a facade to allow for backwards compatibility as well.
+        """
+        print("Warning: You should be using the 'mech_collections' property "\
+              "to access PHX mechanical devices instead of 'mech_systems'.")
+        return self._mech_collections[0]
+
+    @property
+    def mech_collections(self) -> List[PhxMechanicalSystemCollection]:
+        """Return the list of Mechanical System Collections for the variant."""
+        return self._mech_collections
 
     @property
     def graphics3D(self):
@@ -90,6 +115,13 @@ class PhxVariant:
         """Returns the total window area of the variant.building"""
         return self.building.get_total_roof_aperture_area()
 
+    def add_mechanical_collection(self, _mech_collection: PhxMechanicalSystemCollection) -> None:
+        """Add a new mechanical collection to the variant."""
+        self._mech_collections.append(_mech_collection)
+
+    def clear_mechanical_collections(self) -> None:
+        """Clear all mechanical collections from the variant."""
+        self._mech_collections = []
 
 @dataclass
 class ProjectData_Agent:

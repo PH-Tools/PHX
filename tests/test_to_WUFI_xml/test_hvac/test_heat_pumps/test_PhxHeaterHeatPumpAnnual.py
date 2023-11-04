@@ -5,7 +5,7 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 def test_default_PhxHeaterHeatPumpAnnual_with_no_cooling(reset_class_counters):
     h1 = heat_pumps.PhxHeatPumpAnnual()
-    h1.usage_profile.space_heating = True
+    h1.usage_profile.space_heating_percent = 1.0
 
     # -- Set all the cooling 'off'
     h1.params_cooling.ventilation.used = False
@@ -17,8 +17,6 @@ def test_default_PhxHeaterHeatPumpAnnual_with_no_cooling(reset_class_counters):
     coll.add_new_mech_device(h1.identifier, h1)
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [
-        '<Systems count="1">',
-        '<System index="0">',
         "<Name>Ideal Air System</Name>",
         '<Type choice="User defined (ideal system)">1</Type>',
         "<IdentNr>1</IdentNr>",
@@ -58,10 +56,15 @@ def test_default_PhxHeaterHeatPumpAnnual_with_no_cooling(reset_class_counters):
         "<Selection>1</Selection>",
         "</DHW_Parameters>",
         "<Heating_Parameters>",
-        "<CoverageWithinSystem>0.0</CoverageWithinSystem>",
+        "<CoverageWithinSystem>1.0</CoverageWithinSystem>",
         "<Unit>0.0</Unit>",
         "<Selection>1</Selection>",
         "</Heating_Parameters>",
+        "<Cooling_Parameters>",
+        "<CoverageWithinSystem>0.0</CoverageWithinSystem>",
+        "<Unit>0.0</Unit>",
+        "<Selection>1</Selection>",
+        "</Cooling_Parameters>",
         "</Device>",
         "</Devices>",
         "<PHDistribution>",
@@ -89,15 +92,13 @@ def test_default_PhxHeaterHeatPumpAnnual_with_no_cooling(reset_class_counters):
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         '<SupportiveDevices count="0"/>',
         "</PHDistribution>",
-        "</System>",
-        "</Systems>",
     ]
 
 
 def test_default_PhxHeaterHeatPumpAnnual_with_single_recirc_cooling(reset_class_counters):
     h1 = heat_pumps.PhxHeatPumpAnnual()
-    h1.usage_profile.space_heating = True
-    h1.usage_profile.cooling = True
+    h1.usage_profile.space_heating_percent = 1.0
+    h1.usage_profile.cooling_percent = 1.0
 
     # -- Turn on only the Recirculation cooling
     h1.params_cooling.ventilation.used = False
@@ -111,8 +112,6 @@ def test_default_PhxHeaterHeatPumpAnnual_with_single_recirc_cooling(reset_class_
     # -- Check the result
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [
-        '<Systems count="1">',
-        '<System index="0">',
         '<Name>Ideal Air System</Name>',
         '<Type choice="User defined (ideal system)">1</Type>',
         '<IdentNr>1</IdentNr>',
@@ -152,10 +151,15 @@ def test_default_PhxHeaterHeatPumpAnnual_with_single_recirc_cooling(reset_class_
         '<Selection>1</Selection>',
         '</DHW_Parameters>',
         '<Heating_Parameters>',
-        '<CoverageWithinSystem>0.0</CoverageWithinSystem>',
+        '<CoverageWithinSystem>1.0</CoverageWithinSystem>',
         '<Unit>0.0</Unit>',
         '<Selection>1</Selection>',
         '</Heating_Parameters>',
+        "<Cooling_Parameters>",
+        "<CoverageWithinSystem>1.0</CoverageWithinSystem>",
+        "<Unit>0.0</Unit>",
+        "<Selection>1</Selection>",
+        "</Cooling_Parameters>",
         '</Device>',
         '</Devices>',
         '<PHDistribution>',
@@ -191,6 +195,4 @@ def test_default_PhxHeaterHeatPumpAnnual_with_single_recirc_cooling(reset_class_
         '<DeviceInConditionedSpace>true</DeviceInConditionedSpace>',
         '<SupportiveDevices count="0"/>',
         '</PHDistribution>',
-        '</System>',
-        '</Systems>',
     ]

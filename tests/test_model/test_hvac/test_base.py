@@ -3,8 +3,8 @@ from PHX.model.hvac import _base
 
 
 def test_PhxUsageProfile_add(reset_class_counters):
-    use_1 = _base.PhxUsageProfile(False, False, False, True, True, False)
-    use_2 = _base.PhxUsageProfile(False, False, True, True, False, False)
+    use_1 = _base.PhxUsageProfile(0, 0, 0, 1.0, 1.0, 0)
+    use_2 = _base.PhxUsageProfile(0, 0, 1.0, 1.0, 0, 0)
 
     use_3 = use_1 + use_2
     assert use_3 != use_2 != use_1

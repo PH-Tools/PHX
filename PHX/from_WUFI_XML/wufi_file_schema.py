@@ -599,6 +599,18 @@ class Heating_Parameters(BaseModel):
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
+class Cooling_Parameters(BaseModel):
+    CoverageWithinSystem: Optional[unit._Percentage]
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class Ventilation_Parameters(BaseModel):
+    CoverageWithinSystem: Optional[unit._Percentage]
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
 class Device(BaseModel):
     Name: Optional[str]
     IdentNr: int
@@ -615,6 +627,8 @@ class Device(BaseModel):
     PH_Parameters: Optional[PH_Parameters]
     DHW_Parameters: Optional[DHW_Parameters]
     Heating_Parameters: Optional[Heating_Parameters]
+    Cooling_Parameters: Optional[Cooling_Parameters]
+    Ventilation_Parameters: Optional[Ventilation_Parameters]
 
     HeatRecovery: Optional[unit._Percentage]
     MoistureRecovery: Optional[unit._Percentage]

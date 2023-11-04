@@ -5,13 +5,11 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 def test_default_PhxHeaterHeatPumpMonthly(reset_class_counters):
     h1 = heat_pumps.PhxHeatPumpMonthly()
-    h1.usage_profile.space_heating = True
+    h1.usage_profile.space_heating_percent = 1.0
     coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_device(h1.identifier, h1)
     result = generate_WUFI_XML_from_object(coll, _header="")
     assert xml_string_to_list(result) == [
-        '<Systems count="1">',
-        '<System index="0">',
         "<Name>Ideal Air System</Name>",
         '<Type choice="User defined (ideal system)">1</Type>',
         "<IdentNr>1</IdentNr>",
@@ -53,10 +51,15 @@ def test_default_PhxHeaterHeatPumpMonthly(reset_class_counters):
         "<Selection>1</Selection>",
         "</DHW_Parameters>",
         "<Heating_Parameters>",
-        "<CoverageWithinSystem>0.0</CoverageWithinSystem>",
+        "<CoverageWithinSystem>1.0</CoverageWithinSystem>",
         "<Unit>0.0</Unit>",
         "<Selection>1</Selection>",
         "</Heating_Parameters>",
+        '<Cooling_Parameters>',
+        '<CoverageWithinSystem>0.0</CoverageWithinSystem>',
+        '<Unit>0.0</Unit>',
+        '<Selection>1</Selection>',
+        '</Cooling_Parameters>',
         "</Device>",
         "</Devices>",
         "<PHDistribution>",
@@ -84,6 +87,4 @@ def test_default_PhxHeaterHeatPumpMonthly(reset_class_counters):
         "<DeviceInConditionedSpace>true</DeviceInConditionedSpace>",
         '<SupportiveDevices count="0"/>',
         "</PHDistribution>",
-        "</System>",
-        "</Systems>",
     ]
