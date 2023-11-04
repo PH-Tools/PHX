@@ -944,9 +944,10 @@ class WUFIplusProject(BaseModel):
     SolarProtectionTypes: Optional[List[SolarProtectionType]]
 
     @validator("UnitSystem", pre=True)
-    def unpack_unit_system(cls, v):
+    def unpack_unit_system(cls, v) -> int:
         """
-        Since the model gets converted to SI units, always set this to 1, no matter what.
+        Since the model gets converted to SI units when it is read in, 
+        always set this to 1, no matter what.
         """
         return 1
 

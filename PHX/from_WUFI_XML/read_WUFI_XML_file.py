@@ -6,6 +6,7 @@
 from typing import Dict, Any, Union, List, Optional
 import pathlib
 from lxml import etree
+from typing import Dict
 from dataclasses import dataclass
 
 
@@ -105,3 +106,10 @@ def get_WUFI_xml_file_as_str(_file_address: pathlib.Path) -> str:
     with open(_file_address) as xml_file:
         data = xml_file.read()
     return data
+
+
+def string_to_xml_dict(xml_str: str) -> Dict:
+    """Take a string, and convert it to a dict of XML elements."""
+    parser = etree.XMLParser(remove_comments=True)
+    root = etree.fromstring(xml_str, parser=parser)
+    return {child.tag: child.text for child in root}
