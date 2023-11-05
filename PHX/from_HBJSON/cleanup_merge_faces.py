@@ -70,7 +70,6 @@ def angle_between_planes(plane1, plane2, _tolerance):
         # ---- that will cause a domain error, so try again with a rounded value
         angle_rad = 0.0
         try:
-            print(round(dot_product_value, 8))
             angle_rad = math.acos(round(dot_product_value, 8))
         except Exception as e:
             raise Exception(e)

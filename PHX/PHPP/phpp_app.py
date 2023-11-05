@@ -6,7 +6,7 @@
 from typing import List, Dict
 
 from PHX.model import project, certification, building, components
-from PHX.model.hvac.collection import NoVentUnitFoundError
+from PHX.model.hvac.collection import NoDeviceFoundError
 
 from PHX.xl import xl_app
 from PHX.xl.xl_typing import xl_Sheet_Protocol
@@ -348,12 +348,13 @@ class PHPPConnection:
 
         phpp_ventilator_rows: List[component_vent.VentilatorRow] = []
         for phx_variant in phx_project.variants:
-            for phx_ventilator in phx_variant.mech_systems.ventilation_devices:
-                new_vent_row = component_vent.VentilatorRow(
-                    shape=self.shape.COMPONENTS,
-                    phx_vent_sys=phx_ventilator,
-                )
-                phpp_ventilator_rows.append(new_vent_row)
+            for mech_collection in phx_variant.mech_collections:
+                for phx_ventilator in mech_collection.ventilation_devices:
+                    new_vent_row = component_vent.VentilatorRow(
+                        shape=self.shape.COMPONENTS,
+                        phx_vent_sys=phx_ventilator,
+                    )
+                    phpp_ventilator_rows.append(new_vent_row)
         self.components.write_ventilators(phpp_ventilator_rows)
         return None
 
@@ -548,18 +549,19 @@ class PHPPConnection:
 
         phpp_vent_unit_rows: List[vent_units.VentUnitRow] = []
         for phx_variant in phx_project.variants:
-            for phx_ventilator in phx_variant.mech_systems.ventilation_devices:
-                phpp_id_ventilator = (
-                    self.components.ventilators.get_ventilator_phpp_id_by_name(
-                        phx_ventilator.display_name
+            for mech_collection in phx_variant.mech_collections:
+                for phx_ventilator in mech_collection.ventilation_devices:
+                    phpp_id_ventilator = (
+                        self.components.ventilators.get_ventilator_phpp_id_by_name(
+                            phx_ventilator.display_name
+                        )
                     )
-                )
-                new_vent_row = vent_units.VentUnitRow(
-                    shape=self.shape.ADDNL_VENT,
-                    phx_vent_sys=phx_ventilator,
-                    phpp_id_ventilator=phpp_id_ventilator,
-                )
-                phpp_vent_unit_rows.append(new_vent_row)
+                    new_vent_row = vent_units.VentUnitRow(
+                        shape=self.shape.ADDNL_VENT,
+                        phx_vent_sys=phx_ventilator,
+                        phpp_id_ventilator=phpp_id_ventilator,
+                    )
+                    phpp_vent_unit_rows.append(new_vent_row)
 
         self.addnl_vent.write_vent_units(phpp_vent_unit_rows)
         return None
@@ -573,11 +575,7 @@ class PHPPConnection:
                 for room in zone.spaces:
                     # -- Find the right Ventilator assigned to the Space.
                     try:
-                        phx_mech_ventilator = (
-                            phx_variant.mech_systems.get_mech_device_by_id(
-                                room.vent_unit_id_num
-                            )
-                        )
+                        phx_mech_ventilator = (phx_variant.get_mech_device_by_id(room.vent_unit_id_num))
                         phpp_id_ventilator = (
                             self.components.ventilators.get_ventilator_phpp_id_by_name(
                                 phx_mech_ventilator.display_name
@@ -588,7 +586,7 @@ class PHPPConnection:
                                 phpp_id_ventilator
                             )
                         )
-                    except NoVentUnitFoundError:
+                    except NoDeviceFoundError:
                         # If no ventilation system / unit has not been applied yet
                         phpp_row_ventilator = None
 
@@ -678,18 +676,20 @@ class PHPPConnection:
     def write_project_hot_water(self, phx_project: project.PhxProject) -> None:
         """Write the Hot Water data to the PHPP 'DHW+Distribution' worksheet."""
         for variant in phx_project.variants:
+            mech_collection = variant.default_mech_collection
+            
             # -- Tanks
             # Use only the first 2 tanks for PHPP
-            if len(variant.mech_systems.dhw_tank_devices) > 2:
+            if len(mech_collection.dhw_tank_devices) > 2:
                 print(
                     f"Warning: PHPP only allows 2 tanks."
-                    f"{len(variant.mech_systems.dhw_tank_devices)} tank"
+                    f"{len(mech_collection.dhw_tank_devices)} tank"
                     f'found in the Variant "{variant.name}"'
                 )
 
             tank_inputs = []
             for i, phx_dhw_tank in enumerate(
-                variant.mech_systems.dhw_tank_devices[:2], start=1
+                mech_collection.dhw_tank_devices[:2], start=1
             ):
                 tank_inputs.append(
                     hot_water_tank.TankInput(
@@ -703,7 +703,7 @@ class PHPPConnection:
             # -- Branch Piping
             branch_piping_inputs = []
             branch_pipe_groups = (
-                variant.mech_systems.dhw_distribution_piping_segments_by_diam
+                mech_collection.dhw_distribution_piping_segments_by_diam
             )
             if len(branch_pipe_groups) > 5:
                 print(
@@ -719,14 +719,14 @@ class PHPPConnection:
                         self.shape.DHW,
                         phx_branch_piping,  # type: piping.PhxPipeSegment
                         i,
-                        variant.mech_systems._distribution_num_hw_tap_points,
+                        mech_collection._distribution_num_hw_tap_points,
                     )
                 )
             self.hot_water.write_branch_piping(branch_piping_inputs)
 
             # -- Recirculation Piping
             recirc_piping_inputs = []
-            recirc_pipe_groups = variant.mech_systems.dhw_recirc_piping_segments_by_diam
+            recirc_pipe_groups = mech_collection.dhw_recirc_piping_segments_by_diam
             if len(recirc_pipe_groups) > 5:
                 print(
                     "Warning: PHPP only allows 5 groups of DHW Recirc. piping. "

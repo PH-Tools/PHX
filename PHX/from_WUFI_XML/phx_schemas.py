@@ -1029,16 +1029,19 @@ def _PhxVentedCrawlspace(_data: wufi_xml.FoundationInterface) -> PhxVentedCrawls
     return phx_obj
 
 
-def _PhxFoundation(_data: wufi_xml.FoundationInterface) -> PhxFoundation:
+def _PhxFoundation(_data: wufi_xml.FoundationInterface) -> Optional[PhxFoundation]:
     foundation_type_builders = {
         FoundationType.HEATED_BASEMENT: "PhxHeatedBasement",
         FoundationType.UNHEATED_BASEMENT: "PhxUnHeatedBasement",
         FoundationType.SLAB_ON_GRADE: "PhxSlabOnGrade",
         FoundationType.VENTED_CRAWLSPACE: "PhxVentedCrawlspace",
+        FoundationType.NONE: None,
     }
 
     device_type = FoundationType(_data.FloorSlabType)
     builder_class = foundation_type_builders[device_type]
+    if not builder_class:
+        return None
 
     # -- Pass the data off to the correct foundation builder class
     return as_phx_obj(_data, builder_class)
@@ -1102,6 +1105,8 @@ def _PhxPhBuildingData(_data: wufi_xml.PH_Building) -> PhxPhBuildingData:
     )
 
     for foundation_data in _data.FoundationInterfaces or []:
+        
+
         phx_obj.add_foundation(as_phx_obj(foundation_data, "PhxFoundation"))
 
     return phx_obj
@@ -1544,8 +1549,6 @@ def _PhxDevice_HeatPump_Annual(_data: wufi_xml.Device) -> PhxHeatPumpAnnual:
     phx_obj.params.total_system_perf_ratio = (
         _data.PH_Parameters.TotalSystemPerformanceRatioHeatGenerator
     )
-    print(">>>", phx_obj.display_name, phx_obj.usage_profile)
-    print("-")
     return phx_obj
 
 

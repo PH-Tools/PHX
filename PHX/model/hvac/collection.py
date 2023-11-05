@@ -30,7 +30,7 @@ from PHX.model.hvac.water import AnyWaterTank
 # ------------------------------------------------------------------------------
 
 
-class NoVentUnitFoundError(Exception):
+class NoDeviceFoundError(Exception):
     def __init__(self, _id_num):
         self.msg = f"Error: Cannot locate the Mechanical Device with id num: {_id_num}"
         super().__init__(self.msg)
@@ -424,7 +424,7 @@ class PhxExhaustVentilatorCollection:
             if device.id_num == _id_num:
                 return device
 
-        raise NoVentUnitFoundError(_id_num)
+        raise NoDeviceFoundError(_id_num)
 
     def add_new_ventilator(self, _key: str, _d: AnyPhxExhaustVent) -> None:
         """Adds a new PHX Exhaust Ventilator to the collection.
@@ -596,7 +596,7 @@ class PhxMechanicalSystemCollection:
             if device.id_num == _id_num:
                 return device
 
-        raise NoVentUnitFoundError(_id_num)
+        raise NoDeviceFoundError(_id_num)
 
     def add_new_mech_device(self, _key: str, _d: AnyMechDevice) -> None:
         """Adds a new PHX Mechanical device to the collection.

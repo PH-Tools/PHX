@@ -4,14 +4,15 @@
 """PHX Project Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, List, Dict, Optional, Any, Set
+from typing import ClassVar, List, Dict, Optional, Any, Set, Tuple
 from dataclasses import dataclass, field
 
 from PHX.model.building import PhxBuilding, PhxZone
 from PHX.model.certification import PhxPhiusCertification, PhxPhiCertification
 from PHX.model.constructions import PhxConstructionOpaque, PhxConstructionWindow
 from PHX.model.geometry import PhxGraphics3D
-from PHX.model.hvac.collection import PhxMechanicalSystemCollection
+from PHX.model.hvac.collection import PhxMechanicalSystemCollection, NoDeviceFoundError
+from PHX.model.hvac import PhxMechanicalDevice
 from PHX.model.phx_site import PhxSite
 from PHX.model.schedules import ventilation, occupancy, lighting
 from PHX.model.shades import PhxWindowShade
@@ -40,9 +41,7 @@ class PhxVariant:
     phius_cert: PhxPhiusCertification = field(default_factory=PhxPhiusCertification)
     phi_cert: PhxPhiCertification = field(default_factory=PhxPhiCertification)
     site: PhxSite = field(default_factory=PhxSite)
-    # mech_systems: PhxMechanicalSystemCollection = field(
-    #     default_factory=PhxMechanicalSystemCollection
-    # )
+    
     # -- Allow for multiple mechanical 'collections' in a variant
     # -- If WUFI, these are called 'systems', but they also use 
     # -- the word 'system' in other places. So to avoid confusion, lets 
@@ -72,6 +71,11 @@ class PhxVariant:
     def mech_collections(self) -> List[PhxMechanicalSystemCollection]:
         """Return the list of Mechanical System Collections for the variant."""
         return self._mech_collections
+
+    @property
+    def default_mech_collection(self) -> PhxMechanicalSystemCollection:
+        """Return the Default Mechanical System Collection for the variant."""
+        return self._mech_collections[0]
 
     @property
     def graphics3D(self):
@@ -122,6 +126,56 @@ class PhxVariant:
     def clear_mechanical_collections(self) -> None:
         """Clear all mechanical collections from the variant."""
         self._mech_collections = []
+
+    def get_mech_device_by_key(
+            self, 
+            _key: str
+    ) -> Tuple[Optional[PhxMechanicalSystemCollection], Optional[PhxMechanicalDevice]]:
+        """Return a Tuple of a mech-collection and a mechanical device based on the specified device key, or None if not found."""
+        
+        found: List[Tuple[Optional[PhxMechanicalSystemCollection], Optional[PhxMechanicalDevice]]] = []
+        for mech_collection in self._mech_collections:
+            found.append(
+                (mech_collection, mech_collection._devices.get(_key, None)))
+
+        if len(found) == 0:
+            return None, None
+        elif len(found) == 1:
+            return found[0]
+        else:
+            raise ValueError(
+                f"Multiple mechanical devices found with key: {_key}."
+            )
+
+    def device_in_collections(self, _key: str) -> bool:
+        """See if the variant's mechanical device collections already includes the specified key."""
+        for mech_collection in self._mech_collections:
+            if mech_collection.device_in_collection(_key):
+                return True
+        return False
+
+    def supportive_device_in_collections(self, _key:str) -> bool:
+        """Return a supportive device based on the specified device key, or None if not found."""
+        for mech_collection in self._mech_collections:
+            if mech_collection.supportive_devices.device_in_collection(_key) == True:
+                return True
+        return False
+
+    def renewable_device_in_collections(self, _key:str) -> bool:
+        """Return a renewable device based on the specified device key, or None if not found."""
+        for mech_collection in self._mech_collections:
+            if mech_collection.renewable_devices.device_in_collection(_key) == True:
+                return True
+        return False
+
+    def get_mech_device_by_id(self, _id_num: int) -> PhxMechanicalDevice:
+        """Returns a Mechanical Device from the collections which has a matching id-num."""
+        for mech_collection in self._mech_collections:
+            phx_mech_ventilator = mech_collection.get_mech_device_by_id(_id_num)
+            if phx_mech_ventilator:
+                return phx_mech_ventilator
+
+        raise NoDeviceFoundError(_id_num)
 
 @dataclass
 class ProjectData_Agent:

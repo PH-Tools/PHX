@@ -51,7 +51,7 @@ def test_get_mech_device_by_id(reset_class_counters):
 
 def test_get_mech_device_by_NONE_id(reset_class_counters):
     c1 = collection.PhxMechanicalSystemCollection()
-    with pytest.raises(collection.NoVentUnitFoundError):
+    with pytest.raises(collection.NoDeviceFoundError):
         c1.get_mech_device_by_id(999_999_999)
 
 
@@ -110,7 +110,7 @@ def test_get_exhaust_ventilation_device_error(reset_class_counters):
 
     assert c1.get_ventilator_by_key(vent_device2.identifier) == None
 
-    with pytest.raises(collection.NoVentUnitFoundError):
+    with pytest.raises(collection.NoDeviceFoundError):
         c1.get_ventilator_by_id(vent_device2.id_num)
 
 

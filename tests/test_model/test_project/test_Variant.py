@@ -8,17 +8,17 @@ def test_blank_variant(reset_class_counters):
     assert str(var)
     assert not var.graphics3D
     assert not var.building
-    assert not var.mech_systems.devices
-    assert not var.mech_systems.ventilation_devices
-    assert not var.mech_systems.space_heating_devices
-    assert not var.mech_systems.heat_pump_devices
-    assert not var.mech_systems.dhw_heating_devices
-    assert not var.mech_systems.dhw_tank_devices
-    assert not var.mech_systems.dhw_distribution_piping_segments
-    assert not var.mech_systems.dhw_distribution_piping_segments_by_diam
-    assert not var.mech_systems.dhw_recirc_piping
-    assert not var.mech_systems.dhw_recirc_piping_segments_by_diam
-    assert not var.mech_systems.supportive_devices
+    assert not var.default_mech_collection.devices
+    assert not var.default_mech_collection.ventilation_devices
+    assert not var.default_mech_collection.space_heating_devices
+    assert not var.default_mech_collection.heat_pump_devices
+    assert not var.default_mech_collection.dhw_heating_devices
+    assert not var.default_mech_collection.dhw_tank_devices
+    assert not var.default_mech_collection.dhw_distribution_piping_segments
+    assert not var.default_mech_collection.dhw_distribution_piping_segments_by_diam
+    assert not var.default_mech_collection.dhw_recirc_piping
+    assert not var.default_mech_collection.dhw_recirc_piping_segments_by_diam
+    assert not var.default_mech_collection.supportive_devices
     assert var.id_num == 1
     assert project.PhxVariant._count == 1
 

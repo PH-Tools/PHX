@@ -555,11 +555,13 @@ def add_ventilation_systems_from_hb_rooms(
         # ---------------------------------------------------------------------
         # -- Get or Build the PHX Ventilation Device
         # -- If the ventilator already exists, just use that one.
-        phx_ventilator = _variant.mech_systems.get_mech_device_by_key(hbph_vent_sys.key)
-        if not phx_ventilator:
-            # -- otherwise, build a new PH-Ventilator from the HB-hvac
+        mech_collection, phx_ventilator = _variant.get_mech_device_by_key(hbph_vent_sys.key)
+        if not phx_ventilator or not mech_collection:
+            # -- otherwise, build a new PH-Ventilator from the HB-hvac, add it to the
+            # -- base mech-system
+            mech_collection = _variant.mech_collections[0]
             phx_ventilator = create_hvac.build_phx_ventilator(hbph_vent_sys)
-            _variant.mech_systems.add_new_mech_device(hbph_vent_sys.key, phx_ventilator)
+            mech_collection.add_new_mech_device(hbph_vent_sys.key, phx_ventilator)
 
         # ---------------------------------------------------------------------
         # -- Re-set the HBPH Ventilator and sys id_num to keep everything aligned
@@ -570,11 +572,11 @@ def add_ventilation_systems_from_hb_rooms(
         # ---------------------------------------------------------------------
         # -- Add PHX Distribution Ducting from the HBPH Ducts
         for hbph_supply_duct in hbph_vent_sys.supply_ducting:
-            _variant.mech_systems.add_vent_ducting(
+            mech_collection.add_vent_ducting(
                 create_hvac.build_phx_duct(hbph_supply_duct, phx_ventilator.id_num)
             )
         for hbph_exhaust_duct in hbph_vent_sys.exhaust_ducting:
-            _variant.mech_systems.add_vent_ducting(
+            mech_collection.add_vent_ducting(
                 create_hvac.build_phx_duct(hbph_exhaust_duct, phx_ventilator.id_num)
             )
 
@@ -664,15 +666,15 @@ def add_heating_systems_from_hb_rooms(
 
         # -- Get or Build the PHX Heating systems
         for hbph_sys in heating_systems:
-            # -- If the system already exists, just use that one.
-            phx_heating_device = _variant.mech_systems.get_mech_device_by_key(
+            # -- If the device already exists, just use that one.
+            mech_collection, phx_heating_device = _variant.get_mech_device_by_key(
                 hbph_sys.key
             )
 
             # -- otherwise, build a new PHX-Heating-Sys from the HB-hvac
-            if not phx_heating_device:
+            if not phx_heating_device or not mech_collection:
                 phx_heating_device = create_hvac.build_phx_heating_sys(hbph_sys)
-                _variant.mech_systems.add_new_mech_device(
+                _variant.default_mech_collection.add_new_mech_device(
                     hbph_sys.key, phx_heating_device
                 )
 
@@ -709,14 +711,14 @@ def add_heat_pump_systems_from_hb_rooms(
         # -- Get or Build the PHX-Cooling systems
         for hbph_sys in heat_pump_systems:
             # -- If the system already exists, just use that one.
-            phx_heat_pump_device = _variant.mech_systems.get_mech_device_by_key(
+            mech_collection, phx_heat_pump_device = _variant.get_mech_device_by_key(
                 hbph_sys.key
             )
 
             # -- otherwise, build a new PHX-Heat-Pump-System from the HB-hvac
-            if not phx_heat_pump_device:
+            if not phx_heat_pump_device or not mech_collection:
                 phx_heat_pump_device = create_hvac.build_phx_heat_pump_sys(hbph_sys)
-                _variant.mech_systems.add_new_mech_device(
+                _variant.default_mech_collection.add_new_mech_device(
                     hbph_sys.key, phx_heat_pump_device
                 )
 
@@ -753,13 +755,14 @@ def add_dhw_storage_from_hb_rooms(
         for hw_tank in shw_prop_ph.tanks:
             if not hw_tank:
                 continue
-
-            if _variant.mech_systems.device_in_collection(hw_tank.key):
+            
+            # -- If the tank already exists, move on
+            if _variant.device_in_collections(hw_tank.key):
                 continue
 
             # -- Build a new PHS-HW-Tank from the HB-hvac
             phx_dhw_tank = build_phx_hw_storage(hw_tank)
-            _variant.mech_systems.add_new_mech_device(hw_tank.key, phx_dhw_tank)
+            _variant.default_mech_collection.add_new_mech_device(hw_tank.key, phx_dhw_tank)
 
     return None
 
@@ -787,12 +790,14 @@ def add_dhw_heaters_from_hb_rooms(
 
         shw_prop_ph: SHWSystemPhProperties = host_prop_energy.shw.properties.ph  # type: ignore
         for heater in shw_prop_ph.heaters:
-            if _variant.mech_systems.device_in_collection(heater.identifier):
+            
+            # -- If the heater already exists, move on
+            if _variant.device_in_collections(heater.identifier):
                 continue
 
             # -- Build a new PHX-HW-Heater from the Honeybee-PH HW-Heater
             phx_hw_heater = build_phx_hw_heater(heater)
-            _variant.mech_systems.add_new_mech_device(heater.identifier, phx_hw_heater)
+            _variant.default_mech_collection.add_new_mech_device(heater.identifier, phx_hw_heater)
 
 
 def dhw_recirc_temp(_recirc_temps: Set[float]):
@@ -821,7 +826,7 @@ def add_dhw_piping_from_hb_rooms(
     _variant: project.PhxVariant, _hb_room: room.Room
 ) -> None:
     ph_prop: RoomPhProperties = _hb_room.properties.ph  # type: ignore
-    phx_mech_sys = _variant.mech_systems
+    phx_mech_sys = _variant.default_mech_collection
     recirc_temps: Set[float] = set()
     recirc_hours: Set[int] = set()
 
@@ -902,21 +907,19 @@ def add_supportive_devices_from_hb_room(
         for hbph_device in _get_space_supportive_devices(hbph_space):
             # -- Get or Build the PHX Supportive Device
             # -- If the Device already exists, just use that one.
-            # -- If the device is already in the Mech System's collection, dont add another one.
-            if _variant.mech_systems.supportive_devices.device_in_collection(
-                hbph_device.key
-            ):
+            # -- If the device is already in one of the Mech System's collection, move on.
+            if _variant.supportive_device_in_collections(hbph_device.key):
                 continue
 
             # -- Otherwise, build a new PHX-Exhaust Ventilator from the HBPH-Object
             phx_device = create_hvac.build_phx_supportive_device(hbph_device)
-            _variant.mech_systems.supportive_devices.add_new_device(
+            _variant.default_mech_collection.supportive_devices.add_new_device(
                 hbph_device.key, phx_device
             )
 
     # -- Once all the Supportive Devices have been added to the Zones, merge them together
     if _merge_devices:
-        _variant.mech_systems.supportive_devices.merge_all_devices()
+        _variant.default_mech_collection.supportive_devices.merge_all_devices()
 
     return None
 
@@ -943,21 +946,19 @@ def add_renewable_devices_from_hb_room(
         for hbph_device in _get_space_renewable_devices(hbph_space):
             # -- Get or Build the PHX Renewable Device
             # -- If the Device already exists, just use that one.
-            # -- If the device is already in the Mech System's collection, dont add another one.
-            if _variant.mech_systems.renewable_devices.device_in_collection(
-                hbph_device.key
-            ):
+            # -- If the device is already in the Mech System's collection, move on.
+            if _variant.renewable_device_in_collections(hbph_device.key):
                 continue
 
             # -- Otherwise, build a new PHX-Renewable Device from the HBPH-Object
             phx_device = create_hvac.build_phx_renewable_device(hbph_device)
-            _variant.mech_systems.renewable_devices.add_new_device(
+            _variant.default_mech_collection.renewable_devices.add_new_device(
                 hbph_device.key, phx_device
             )
 
     # -- Once all the Renewable Devices have been added to the Zones, merge them together
     if _merge_devices:
-        _variant.mech_systems.renewable_devices.merge_all_devices()
+        _variant.default_mech_collection.renewable_devices.merge_all_devices()
 
     return None
 

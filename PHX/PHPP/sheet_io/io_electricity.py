@@ -57,9 +57,7 @@ class Electricity:
         """Build a PHX Electrical Device object from the PHPP worksheet data."""
 
         # -- Get the right device class based on the device-type
-        print(_reader.type)
         cls = self.device_map[_reader.type]
-        print(cls)
         phx_elec_device = cls()
 
         # -- Build the new Device using the input data from the PHPP Reader

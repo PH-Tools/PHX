@@ -49,7 +49,9 @@ class PhxPhBuildingData:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
-    def add_foundation(self, _input: ground.PhxFoundation) -> None:
+    def add_foundation(self, _input: Optional[ground.PhxFoundation]) -> None:
+        if not _input:
+            return
         self.foundations.append(_input)
 
     def __eq__(self, other: PhxPhBuildingData) -> bool:
