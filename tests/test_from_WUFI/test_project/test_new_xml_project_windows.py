@@ -4,15 +4,15 @@ from PHX.model.constructions import PhxConstructionWindow
 
 
 def test_project_data(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Project Data
-    hbjson_windows = create_phx_project_from_hbjson.window_types
-    xml_windwows = create_phx_project_from_wufi_xml.window_types
+    hbjson_windows = phx_project_from_hbjson.window_types
+    xml_windows = phx_project_from_wufi_xml.window_types
 
     # -- Check the two
-    assert len(hbjson_windows) == len(xml_windwows)
+    assert len(hbjson_windows) == len(xml_windows)
 
 
 def _find_matching_window(
@@ -25,12 +25,12 @@ def _find_matching_window(
 
 
 def test_window_type_attributes_match(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Project Data
-    hbjson_windows = create_phx_project_from_hbjson.window_types
-    xml_windows = create_phx_project_from_wufi_xml.window_types
+    hbjson_windows = phx_project_from_hbjson.window_types
+    xml_windows = phx_project_from_wufi_xml.window_types
 
     assert len(hbjson_windows) == len(xml_windows)
 
@@ -46,13 +46,13 @@ def test_window_type_attributes_match(
         # assert hbjson_type.id_num_shade == xml_type.id_num_shade
 
 
-def test_window_FrameElememt_attributes_match(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+def test_window_FrameElement_attributes_match(
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Project Data
-    hbjson_windows = create_phx_project_from_hbjson.window_types
-    xml_windows = create_phx_project_from_wufi_xml.window_types
+    hbjson_windows = phx_project_from_hbjson.window_types
+    xml_windows = phx_project_from_wufi_xml.window_types
 
     for hbjson_type in hbjson_windows.values():
         xml_type = _find_matching_window(hbjson_type, xml_windows.values())

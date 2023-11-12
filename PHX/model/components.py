@@ -470,10 +470,18 @@ class PhxComponentAperture(PhxComponentBase):
     @property
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
-        return (
-            f"{self.face_type.value}-{self.face_opacity.value}-{self.exposure_interior}-{self.interior_attachment_id}-"
-            f"{self.exposure_exterior.value}-{self.window_type_id_num}-{self.shade_type_id_num}-{self.variant_type_name}-{self.default_monthly_shading_correction_factor}"
-        )
+        attributes = {
+            "face_type":self.face_type.value,
+            "face_opacity":self.face_opacity.value,
+            "exposure_interior":self.exposure_interior,
+            "interior_attachment_id":self.interior_attachment_id,
+            "exposure_exterior":self.exposure_exterior.value,
+            "window_type_id_num":self.window_type_id_num,
+            "shade_type_id_num":self.shade_type_id_num,
+            "variant_type_name":self.variant_type_name,
+            "default_monthly_shading_correction_factor":self.default_monthly_shading_correction_factor
+        }
+        return "-".join(f"{v}" for k, v in attributes.items())
 
     def add_elements(self, _elements: Collection[PhxApertureElement]) -> None:
         """Add one or more new 'Elements' (Sashes) to the Aperture"""
@@ -486,6 +494,7 @@ class PhxComponentAperture(PhxComponentBase):
 
     def set_window_type(self, _window_type: constructions.PhxConstructionWindow) -> None:
         """Set the Component's Window Type."""
+        print(f"Setting Component's window type: {id(_window_type)}")
         self.window_type = _window_type
 
     def __add__(self, other: PhxComponentAperture) -> PhxComponentAperture:

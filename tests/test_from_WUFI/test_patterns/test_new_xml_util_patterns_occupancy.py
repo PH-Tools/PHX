@@ -18,15 +18,15 @@ def _find_matching_pattern(
 
 
 def test_vent_patterns_match(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Occupancy Patterns
     utilization_patterns_from_hbjson = (
-        create_phx_project_from_hbjson.utilization_patterns_occupancy.patterns
+        phx_project_from_hbjson.utilization_patterns_occupancy.patterns
     )
     utilization_patterns_from_xml = (
-        create_phx_project_from_wufi_xml.utilization_patterns_occupancy.patterns
+        phx_project_from_wufi_xml.utilization_patterns_occupancy.patterns
     )
 
     assert len(utilization_patterns_from_hbjson) == len(utilization_patterns_from_xml)

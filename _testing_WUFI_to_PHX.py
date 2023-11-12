@@ -13,9 +13,7 @@ from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 
 SOURCE_DIR = pathlib.Path("tests", "_reference_xml")
-SOURCE_FILE_NAMES = [
-    "test_multiple_cooling_2_systems.xml",
-]
+SOURCE_FILE_NAMES = ["_la_mora.xml"]
 TARGET_DIR = pathlib.Path("tests", "_regenerated_xml")
 
 print(" -" * 50)
@@ -33,14 +31,17 @@ for i, xm_source_file_name in enumerate(SOURCE_FILE_NAMES):
     # -- 2) Convert the Pydantic WUFI model over to a PHX model
     print(f"[green bold]> Converting XML-data to a PHX-Model[/green bold]")
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
+    for variant in phx_project.variants:
+        print(f" - - - - {variant.name} - - - - - ")
+        for i, aperture in enumerate(variant.building.aperture_components):
+            print(f"\t{i :03d} |  ap-id={aperture.id_num :04d}  | host-id={aperture.host.id_num :04d}  |  {aperture.display_name}")
 
+    # # ----------------------------------------------------------------
+    # # -- 3) Output the PHX model back to a WUFI-XML
+    # target_file = TARGET_DIR / xm_source_file_name
+    # xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
 
-    # ----------------------------------------------------------------
-    # -- 3) Output the PHX model back to a WUFI-XML
-    target_file = TARGET_DIR / xm_source_file_name
-    xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
-
-    # ----------------------------------------------------------------
-    # -- 4) Save the XML file
-    print(f"[bold]> Saving the XML file to: ./{target_file}[/bold]")
-    xml_txt_to_file.write_XML_text_file(target_file, xml_txt, False)
+    # # ----------------------------------------------------------------
+    # # -- 4) Save the XML file
+    # print(f"[bold]> Saving the XML file to: ./{target_file}[/bold]")
+    # xml_txt_to_file.write_XML_text_file(target_file, xml_txt, False)

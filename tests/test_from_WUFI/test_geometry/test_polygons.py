@@ -11,12 +11,12 @@ def _total_num_polygons(variant: PhxVariant) -> int:
     )
 
 def test_building_has_same_number_of_polygons(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     for hbjson_variant, wufi_xml_variant in zip(
-        create_phx_project_from_hbjson.variants,
-        create_phx_project_from_wufi_xml.variants,
+        phx_project_from_hbjson.variants,
+        phx_project_from_wufi_xml.variants,
     ):
         num_hbjson_polygons = _total_num_polygons(hbjson_variant)
         num_xml_polygons = _total_num_polygons(wufi_xml_variant)

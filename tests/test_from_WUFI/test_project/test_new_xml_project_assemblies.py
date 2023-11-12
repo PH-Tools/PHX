@@ -4,12 +4,12 @@ from PHX.model.constructions import PhxConstructionOpaque
 
 
 def test_assembly_types_match(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Assemblies
-    hbjson_assemblies = create_phx_project_from_hbjson.assembly_types
-    xml_assemblies = create_phx_project_from_wufi_xml.assembly_types
+    hbjson_assemblies = phx_project_from_hbjson.assembly_types
+    xml_assemblies = phx_project_from_wufi_xml.assembly_types
     assert len(hbjson_assemblies) == len(xml_assemblies)
 
     # -- From WUFI uses id-num as the key. while HBJSON uses the display_name
@@ -29,12 +29,12 @@ def _find_matching_assembly(
 
 
 def test_assembly_type_layers_match(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Assemblies
-    hbjson_assemblies = create_phx_project_from_hbjson.assembly_types
-    xml_assemblies = create_phx_project_from_wufi_xml.assembly_types
+    hbjson_assemblies = phx_project_from_hbjson.assembly_types
+    xml_assemblies = phx_project_from_wufi_xml.assembly_types
 
     for hbjson_type in hbjson_assemblies.values():
         xml_type = _find_matching_assembly(hbjson_type, xml_assemblies.values())
@@ -42,12 +42,12 @@ def test_assembly_type_layers_match(
 
 
 def test_assembly_type_materials_match(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Assemblies
-    hbjson_assemblies = create_phx_project_from_hbjson.assembly_types
-    xml_assemblies = create_phx_project_from_wufi_xml.assembly_types
+    hbjson_assemblies = phx_project_from_hbjson.assembly_types
+    xml_assemblies = phx_project_from_wufi_xml.assembly_types
 
     for hbjson_type in hbjson_assemblies.values():
         xml_type = _find_matching_assembly(hbjson_type, xml_assemblies.values())

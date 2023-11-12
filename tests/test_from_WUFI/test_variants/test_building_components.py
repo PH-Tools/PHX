@@ -2,14 +2,14 @@ from PHX.model.project import PhxProject
 
 
 def test_building_all_components_are_equal(
-    create_phx_project_from_hbjson: PhxProject,
-    create_phx_project_from_wufi_xml: PhxProject,
+    phx_project_from_hbjson: PhxProject,
+    phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     TOLERANCE = 0.01
 
     # -- Pull out the Variants
-    variants_hbjson = create_phx_project_from_hbjson.variants
-    variants_xml = create_phx_project_from_wufi_xml.variants
+    variants_hbjson = phx_project_from_hbjson.variants
+    variants_xml = phx_project_from_wufi_xml.variants
 
     assert len(variants_hbjson) == len(variants_xml)
 
@@ -19,5 +19,5 @@ def test_building_all_components_are_equal(
 
         # -- Ensure each starting component is in the new list
         for hbjson_compo in hbjson_all_compos:
-            # -- This checks, the component, the assembly, and the geometry
+            # -- This checks: the component, the assembly, and the geometry
             assert any((xml_c == hbjson_compo for xml_c in xml_all_compos))

@@ -216,8 +216,8 @@ class Room(BaseModel):
     IdentNrUtilizationPatternVent: int
     IdentNrVentilationUnit: int
     Quantity: int
-    AreaRoom: unit.M2
-    ClearRoomHeight: unit.M
+    AreaRoom: Optional[unit.M2]
+    ClearRoomHeight: Optional[unit.M]
     DesignVolumeFlowRateSupply: unit.M3_per_Hour
     DesignVolumeFlowRateExhaust: unit.M3_per_Hour
 
@@ -313,7 +313,7 @@ class IdentNrPolygons(BaseModel):
 
 class Component(BaseModel):
     IdentNr: int
-    Name: str
+    Name: Optional[str]
     Visual: bool
     Type: int
     IdentNrColorI: int
@@ -348,24 +348,24 @@ class Zone(BaseModel):
     Name: str
     KindZone: int
     IdentNr: int
-    RoomsVentilation: List[Room]
+    RoomsVentilation: Optional[List[Room]]
     LoadsPersonsPH: Optional[List[LoadPerson]]
     LoadsLightingsPH: Optional[List[LoadsLighting]]
     GrossVolume_Selection: int
-    GrossVolume: unit.M3
+    GrossVolume: Optional[unit.M3]
     NetVolume_Selection: int
-    NetVolume: unit.M3
+    NetVolume:  Optional[unit.M3]
     FloorArea_Selection: int
-    FloorArea: unit.M2
+    FloorArea: Optional[unit.M2]
     ClearanceHeight_Selection: int
-    ClearanceHeight: unit.M
+    ClearanceHeight: Optional[unit.M]
     SpecificHeatCapacity_Selection: int
     SpecificHeatCapacity: unit.Wh_per_M2K
     IdentNrPH_Building: int
     OccupantQuantityUserDef: unit._Int
-    NumberBedrooms: unit._Int
-    SummerNaturalVentilationDay: unit.ACH
-    SummerNaturalVentilationNight: unit.ACH
+    NumberBedrooms: Optional[unit._Int]
+    SummerNaturalVentilationDay: Optional[unit.ACH]
+    SummerNaturalVentilationNight: Optional[unit.ACH]
 
     HomeDevice: Optional[List[HomeDevice]]
     ExhaustVents: Optional[List[ExhaustVent]]
@@ -813,26 +813,27 @@ class WindowType(BaseModel):
     g_Value: unit._Percentage
     SHGC_Hemispherical: unit._Percentage
     U_Value_Frame: unit.Watts_per_M2K
+    
+    # -- WUFI might not provide these...
+    Frame_Width_Left: Optional[unit.M]
+    Frame_Psi_Left: Optional[unit.Watts_per_MK]
+    Frame_U_Left: Optional[unit.Watts_per_M2K]
+    Glazing_Psi_Left: Optional[unit.Watts_per_MK]
 
-    Frame_Width_Left: unit.M
-    Frame_Psi_Left: unit.Watts_per_MK
-    Frame_U_Left: unit.Watts_per_M2K
-    Glazing_Psi_Left: unit.Watts_per_MK
+    Frame_Width_Right: Optional[unit.M]
+    Frame_Psi_Right: Optional[unit.Watts_per_MK]
+    Frame_U_Right: Optional[unit.Watts_per_M2K]
+    Glazing_Psi_Right: Optional[unit.Watts_per_MK]
 
-    Frame_Width_Right: unit.M
-    Frame_Psi_Right: unit.Watts_per_MK
-    Frame_U_Right: unit.Watts_per_M2K
-    Glazing_Psi_Right: unit.Watts_per_MK
+    Frame_Width_Top: Optional[unit.M]
+    Frame_Psi_Top: Optional[unit.Watts_per_MK]
+    Frame_U_Top: Optional[unit.Watts_per_M2K]
+    Glazing_Psi_Top: Optional[unit.Watts_per_MK]
 
-    Frame_Width_Top: unit.M
-    Frame_Psi_Top: unit.Watts_per_MK
-    Frame_U_Top: unit.Watts_per_M2K
-    Glazing_Psi_Top: unit.Watts_per_MK
-
-    Frame_Width_Bottom: unit.M
-    Frame_Psi_Bottom: unit.Watts_per_MK
-    Frame_U_Bottom: unit.Watts_per_M2K
-    Glazing_Psi_Bottom: unit.Watts_per_MK
+    Frame_Width_Bottom: Optional[unit.M]
+    Frame_Psi_Bottom: Optional[unit.Watts_per_MK]
+    Frame_U_Bottom: Optional[unit.Watts_per_M2K]
+    Glazing_Psi_Bottom: Optional[unit.Watts_per_MK]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 

@@ -263,7 +263,25 @@ class PhxProject:
 
     def get_window_type(self, _key: str) -> PhxConstructionWindow:
         """Returns the PhxConstructionWindow with the specified key"""
-        return self.window_types[_key]
+        try:
+            return self.window_types[_key]
+        except KeyError as e:
+            valid_keys = '  |  '.join([f"{k}::{v.display_name}" for k, v in self.window_types.items()])
+            msg =   f"Window Type: '{_key}' not found in project collection? "\
+                    f"Valid window-types include only: {valid_keys}."
+            raise KeyError(msg)
+
+    def get_window_types_by_name(self, _name: str) -> List[PhxConstructionWindow]:
+        """Returns a list of PhxConstructionWindow with the specified name.
+        
+        CAUTION: Multiple window types can have the same name. 
+        Use the .get_window_type() and use the 'key' to get an exact window type.
+        """
+        return [
+            window_type
+            for window_type in self.window_types.values()
+            if window_type.display_name == _name
+        ]
 
     def add_new_shade_type(self, _shade_type: PhxWindowShade, _key=None) -> None:
         """Adds a new PhxWindowShade to the Project's collection"""
