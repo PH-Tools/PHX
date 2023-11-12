@@ -189,7 +189,9 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
 
     return [
         XML_Node("Name", _z.display_name),
-        XML_Node("KindZone", 1, "choice", "Simulated zone"),
+        XML_Node("KindZone", _z.zone_type.value),
+        XML_Node("KindAttachedZone", _z.attached_zone_type.value),
+        XML_Node("TemperatureReductionFactorUserDefined", _z.attached_zone_reduction_factor),
         XML_Node("IdentNr", _z.id_num),
         XML_List(
             "RoomsVentilation",

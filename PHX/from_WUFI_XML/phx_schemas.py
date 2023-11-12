@@ -36,6 +36,8 @@ from PHX.model.enums.building import (
     ComponentColor,
     ThermalBridgeType,
     SpecificHeatCapacity,
+    ZoneType,
+    AttachedZoneType,
 )
 from PHX.model.enums import hvac as hvac_enums
 from PHX.model.enums.phius_certification import (
@@ -1257,6 +1259,9 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
 
     phx_obj = PhxZone()
 
+    phx_obj.zone_type = ZoneType(_data.KindZone)
+    phx_obj.attached_zone_type = AttachedZoneType(_data.KindAttachedZone or 0)
+    phx_obj.attached_zone_reduction_factor = _data.TemperatureReductionFactorUserDefined or 1.0
     phx_obj.id_num = _data.IdentNr
     phx_obj.display_name = _data.Name
     phx_obj.volume_gross = _data.GrossVolume or 0.0

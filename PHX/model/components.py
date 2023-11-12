@@ -494,7 +494,6 @@ class PhxComponentAperture(PhxComponentBase):
 
     def set_window_type(self, _window_type: constructions.PhxConstructionWindow) -> None:
         """Set the Component's Window Type."""
-        print(f"Setting Component's window type: {id(_window_type)}")
         self.window_type = _window_type
 
     def __add__(self, other: PhxComponentAperture) -> PhxComponentAperture:

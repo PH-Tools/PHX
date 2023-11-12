@@ -66,3 +66,17 @@ class SpecificHeatCapacity(Enum):
     LIGHTWEIGHT = 1
     MIXED = 2
     MASSIVE = 3
+
+
+class ZoneType(Enum):
+    SIMULATED = 1
+    ATTACHED = 2
+
+class AttachedZoneType(Enum):
+    NONE = 0
+    UNHEATED_SPACE = 1
+    UNHEATED_CELLAR = 2
+    UNHEATED_CRAWLSPACE = 3
+    UNHEATED_WINTER_GARDEN = 4
+    UNHEATED_ATTIC = 5
+    CONDITIONED = 6

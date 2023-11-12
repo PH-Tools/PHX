@@ -347,6 +347,8 @@ class ThermalBridge(BaseModel):
 class Zone(BaseModel):
     Name: str
     KindZone: int
+    KindAttachedZone: Optional[int]
+    TemperatureReductionFactorUserDefined: Optional[unit._Percentage]
     IdentNr: int
     RoomsVentilation: Optional[List[Room]]
     LoadsPersonsPH: Optional[List[LoadPerson]]

@@ -31,13 +31,12 @@ from PHX.model.components import (
 )
 from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
-from PHX.model.enums.building import SpecificHeatCapacity
+from PHX.model.enums.building import SpecificHeatCapacity, ZoneType, AttachedZoneType
 
 
 @dataclass
 class PhxZone:
     _count: ClassVar[int] = 0
-    id_num: int = field(init=False, default=0)
     display_name: str = ""
     volume_gross: float = 0.0
     volume_net: float = 0.0
@@ -47,6 +46,12 @@ class PhxZone:
     res_number_bedrooms: int = 0
     res_number_dwellings: int = 0
     specific_heat_capacity: SpecificHeatCapacity = SpecificHeatCapacity.LIGHTWEIGHT
+    
+    # -- Neeed for WUFI's Attached Zones
+    zone_type: ZoneType = ZoneType.SIMULATED
+    attached_zone_type = AttachedZoneType.NONE
+    attached_zone_reduction_factor: float = 1.0
+    id_num: int = field(init=False, default=0)
 
     spaces: List[spaces.PhxSpace] = field(default_factory=list)
     _thermal_bridges: Dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
