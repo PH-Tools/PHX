@@ -63,7 +63,7 @@ def test_default_PhxHeaterBoilerFossil(reset_class_counters):
         "<Selection>1</Selection>",
         "</DHW_Parameters>",
         "<Heating_Parameters>",
-        "<CoverageWithinSystem>0.0</CoverageWithinSystem>",
+        "<CoverageWithinSystem>1.0</CoverageWithinSystem>",
         "<Unit>0.0</Unit>",
         "<Selection>1</Selection>",
         "</Heating_Parameters>",

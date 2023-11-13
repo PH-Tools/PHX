@@ -1025,12 +1025,13 @@ def _PhxDeviceHeaterElec(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
         XML_Object("PH_Parameters", _d.params, _schema_name="_DeviceHeaterElecPhParams"),
         XML_Object("DHW_Parameters", _d, _schema_name="_DeviceHeaterElecDeviceParams"),
         XML_Object(
-            "Heating_Parameters", _d, _schema_name="_DeviceHeaterElecDeviceParams"
+            "Heating_Parameters", _d, _schema_name="_DeviceHeaterHeatingDeviceParams"
         ),
     ]
 
 
 def _DeviceHeaterElecPhParams(_p: hvac.PhxMechanicalDeviceParams) -> List[xml_writable]:
+    
     return [
         XML_Node("AuxiliaryEnergy", _p.aux_energy),
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
@@ -1039,8 +1040,18 @@ def _DeviceHeaterElecPhParams(_p: hvac.PhxMechanicalDeviceParams) -> List[xml_wr
 
 
 def _DeviceHeaterElecDeviceParams(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
+    _d.usage_profile.space_heating_percent
     return [
-        XML_Node("CoverageWithinSystem", _d.percent_coverage),
+        XML_Node("CoverageWithinSystem", _d.usage_profile.dhw_heating_percent),
+        XML_Node("Unit", _d.unit),
+        XML_Node("Selection", 1),
+    ]
+
+
+def _DeviceHeaterHeatingDeviceParams(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
+    _d.usage_profile.space_heating_percent
+    return [
+        XML_Node("CoverageWithinSystem", _d.usage_profile.space_heating_percent),
         XML_Node("Unit", _d.unit),
         XML_Node("Selection", 1),
     ]
@@ -1070,9 +1081,9 @@ def _PhxDeviceHeaterBoiler(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writable]:
         XML_Object(
             "PH_Parameters", _d.params, _schema_name=ph_params[_d.params.fuel.name]
         ),
-        XML_Object("DHW_Parameters", _d, _schema_name="_DeviceHeaterBoilerDeviceParams"),
+        XML_Object("DHW_Parameters", _d, _schema_name="_DeviceHeaterBoilerDHWParams"),
         XML_Object(
-            "Heating_Parameters", _d, _schema_name="_DeviceHeaterBoilerDeviceParams"
+            "Heating_Parameters", _d, _schema_name="_DeviceHeaterBoilerHeatingParams"
         ),
     ]
 
@@ -1126,9 +1137,17 @@ def _DeviceHeaterBoilerFossilPhParams(
     ]
 
 
-def _DeviceHeaterBoilerDeviceParams(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writable]:
+def _DeviceHeaterBoilerDHWParams(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writable]:
     return [
-        XML_Node("CoverageWithinSystem", _d.percent_coverage),
+        XML_Node("CoverageWithinSystem", _d.usage_profile.dhw_heating_percent),
+        XML_Node("Unit", _d.unit),
+        XML_Node("Selection", 1),
+    ]
+
+
+def _DeviceHeaterBoilerHeatingParams(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writable]:
+    return [
+        XML_Node("CoverageWithinSystem", _d.usage_profile.space_heating_percent),
         XML_Node("Unit", _d.unit),
         XML_Node("Selection", 1),
     ]
@@ -1266,6 +1285,7 @@ def _DeviceHotWaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_
         XML_Node("Unit", _d.unit),
         XML_Node("Selection", 1),
     ]
+
 
 def _DeviceHeaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
     return [
