@@ -118,7 +118,7 @@ class UtilizationPatternCollection_Occupancy:
 
         self.patterns[_util_pattern.identifier] = _util_pattern
 
-    def key_is_in_collection(self, _id) -> bool:
+    def key_is_in_collection(self, _id: Union[str, uuid.UUID]) -> bool:
         """Check if the id is in the collection."""
         return _id in self.patterns.keys()
 

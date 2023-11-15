@@ -16,7 +16,7 @@ class PhxScheduleOccupancy:
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
     identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
-    display_name = "__unnamed_occupancy_schedule__"
+    display_name: str = "__unnamed_occupancy_schedule__"
     start_hour: float = 0.0
     end_hour: float = 1.0
     annual_utilization_days: float = 0.0
@@ -82,3 +82,14 @@ class PhxScheduleOccupancy:
     def unique_key(self):
         """Return a key unique to this 'type' (collection of values) of pattern"""
         return f"{self.start_hour :.3f}_{self.end_hour :.3f}_{self.annual_utilization_days :.3f}_{self.annual_utilization_factor :.3f}_"
+
+    @classmethod
+    def constant_operation(cls) -> PhxScheduleOccupancy:
+        """Return a constant operation (24/7, 365d) schedule."""
+        return cls(
+            display_name="Constant Operation",
+            start_hour=0.0,
+            end_hour=24.0,
+            annual_utilization_days=365.0,
+            relative_utilization_factor=1.0,
+        )

@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.7.0, pytest-7.2.0, pluggy-1.0.0 -- /Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/.venv/bin/python3.7
+cachedir: .pytest_cache
+rootdir: /Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX, configfile: pyproject.toml
+plugins: cov-4.0.0
+collecting ... collected 1 item
+
+tests/test_from_WUFI/test_patterns/test_new_xml_util_patterns_occupancy.py::test_vent_patterns_match -------------------------
+PASSED
+
+============================== 1 passed in 0.07s ===============================

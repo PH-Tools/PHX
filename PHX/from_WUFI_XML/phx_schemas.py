@@ -160,7 +160,7 @@ from PHX.model.hvac.ducting import (
 from PHX.model.hvac.supportive_devices import (PhxSupportiveDevice, PhxSupportiveDeviceParams, PhxSupportiveDeviceType)
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Conversion Function
 
 
@@ -178,7 +178,7 @@ def as_phx_obj(_model, _schema_name, **kwargs) -> Any:
     return builder(_model, **kwargs)
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Project
 
 
@@ -221,8 +221,8 @@ def _PhxProject(_model: wufi_xml.WUFIplusProject) -> PhxProject:
         new_pattern = as_phx_obj(vent_pattern_data, "PhxScheduleVentilation")
         phx_obj.utilization_patterns_ventilation.add_new_util_pattern(new_pattern)
 
-    for vent_pattern_data in _model.UtilizationPatternsPH or []:
-        new_pattern = as_phx_obj(vent_pattern_data, "PhxScheduleOccupancy")
+    for ph_pattern_data in _model.UtilizationPatternsPH or []:
+        new_pattern = as_phx_obj(ph_pattern_data, "PhxScheduleOccupancy")
         phx_obj.utilization_patterns_occupancy.add_new_util_pattern(new_pattern)
 
     # ----------------------------------------------------------------------
@@ -274,7 +274,7 @@ def _PhxProjectData(_model: wufi_xml.ProjectData) -> PhxProjectData:
     return phx_obj
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Envelope Types
 
 
@@ -375,7 +375,7 @@ def _PhxWindowShade(_data: wufi_xml.SolarProtectionType) -> PhxWindowShade:
     return phx_obj
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Utilization Patterns
 
 
@@ -414,7 +414,7 @@ def _PhxScheduleOccupancy(_data: wufi_xml.UtilizationPattern) -> PhxScheduleOccu
 
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Variants
 
 
@@ -528,7 +528,7 @@ def _PhxVariant(_xml_variant_data: wufi_xml.Variant, _phx_project_host: PhxProje
     return phx_obj
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Distribution Supportive Devices
 
 
@@ -545,7 +545,7 @@ def _PhxSupportiveDevice(_data: wufi_xml.SupportiveDevice) -> PhxSupportiveDevic
     return new_supportive_device
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Ventilation Distribution
 
 
@@ -588,7 +588,7 @@ def _PhxDuctElement(_data: wufi_xml.Duct, ventilator: wufi_xml.AssignedVentUnit)
     return new_phx_duct
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Cooling Distribution
 
 
@@ -637,7 +637,7 @@ def _PhxCoolingPanelParams(_data: wufi_xml.DistributionCooling, number_phx_cooli
     return phx_obj
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- DHW Distribution
 
 
@@ -748,7 +748,7 @@ def _Fixture(_data: wufi_xml.Twig) -> PhxPipeElement:
     return new_element
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Building & Geometry
 
 
@@ -975,7 +975,7 @@ def _PhxComponentThermalBridge(
     return phx_obj
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Foundations
 
 
@@ -1058,7 +1058,7 @@ def _PhxFoundation(_data: wufi_xml.FoundationInterface) -> Optional[PhxFoundatio
     return as_phx_obj(_data, builder_class)
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Site & Climate
 
 
@@ -1244,7 +1244,7 @@ def _PhxSiteEnergyFactors(_data: wufi_xml.PH_ClimateLocation) -> PhxSiteEnergyFa
     return phx_obj
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Zones
 
 
@@ -1256,7 +1256,7 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
             return 2
         else:
             return 3
-
+    print("-"*25)
     phx_obj = PhxZone()
 
     phx_obj.zone_type = ZoneType(_data.KindZone)
@@ -1327,10 +1327,24 @@ def _add_occupancy_data_to_space(
     """Add occupancy data to a space, if any is supplied."""
     if not _occupancy_data:
         return _space
+    
+    # -- Get the Project's Occupancy Utilization Pattern
+    project_util_patterns_occ = _phx_project_host.utilization_patterns_occupancy
 
-    project_util_pat_occ = _phx_project_host.utilization_patterns_occupancy
-    occ_pattern_id = _occupancy_data.IdentNrUtilizationPattern
-    _space.occupancy.schedule = project_util_pat_occ[str(occ_pattern_id)]
+    # -- Ensure that the Space's Occupancy pattern is in the project collection. If
+    # -- not, create a new one.
+    occ_pattern_id = str(_occupancy_data.IdentNrUtilizationPattern)
+    if not project_util_patterns_occ.key_is_in_collection(occ_pattern_id):
+        new_schedule = PhxScheduleOccupancy.constant_operation()
+        new_schedule.display_name = _occupancy_data.Name
+        new_schedule.id_num = int(occ_pattern_id)
+        new_schedule.identifier = str(occ_pattern_id)
+        project_util_patterns_occ.add_new_util_pattern(new_schedule)
+
+    # -- Assign the occupancy pattern to the space.
+    _space.occupancy.schedule = project_util_patterns_occ[str(occ_pattern_id)]
+
+    # -- Set the occupancy load for the space.
     _space.peak_occupancy = _occupancy_data.NumberOccupants
 
     return _space
@@ -1360,7 +1374,7 @@ def _add_lighting_data_to_space(
         new_schedule.identifier = str(lighting_pattern_id)
         project_util_pat_lighting.add_new_util_pattern(new_schedule)
 
-    # -- Assign the pattern to the space.
+    # -- Assign the lighting pattern to the space.
     _space.lighting.schedule = project_util_pat_lighting[str(lighting_pattern_id)]
 
     # -- Set the lighting load for the space.
@@ -1393,7 +1407,7 @@ def _PhxSpace(_data: wufi_xml.Room, _phx_project_host: PhxProject) -> PhxSpace:
     return phx_obj
 
 
-# ----------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # -- Mechanical Systems and Devices
 
 
@@ -1474,6 +1488,8 @@ def _PhxDevice_Boiler(_data: wufi_xml.Device) -> Optional[AnyPhxHeaterBoiler]:
         hvac_enums.PhxFuelType.WOOD_LOG: "PhxHeaterBoilerWood",
         hvac_enums.PhxFuelType.WOOD_PELLET: "PhxHeaterBoilerWood",
     }
+    if not  _data.PH_Parameters:
+        return None
     boiler_type = hvac_enums.PhxFuelType(_data.PH_Parameters.EnergySourceBoilerType)
     return as_phx_obj(_data, boiler_builders[boiler_type])
 
