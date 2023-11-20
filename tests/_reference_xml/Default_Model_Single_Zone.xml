@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_a3a32de2..Face4</Name>
+						<Name>Room_1_5855aef6..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_a3a32de2..Face5</Name>
+						<Name>Room_1_5855aef6..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -255,7 +255,9 @@
 				<Zones count="1">
 					<Zone index="0">
 						<Name>Unnamed_Bldg_Segment</Name>
-						<KindZone choice="Simulated zone">1</KindZone>
+						<KindZone>1</KindZone>
+						<KindAttachedZone>0</KindAttachedZone>
+						<TemperatureReductionFactorUserDefined>1.0</TemperatureReductionFactorUserDefined>
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="0"/>
 						<LoadsPersonsPH count="0"/>

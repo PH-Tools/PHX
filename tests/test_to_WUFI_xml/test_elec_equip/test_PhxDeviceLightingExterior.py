@@ -10,7 +10,7 @@ def test_default_PhxDeviceLightingExterior(reset_class_counters):
         "<Comment></Comment>",
         "<ReferenceQuantity>1</ReferenceQuantity>",
         "<Quantity>1</Quantity>",
-        "<InConditionedSpace>true</InConditionedSpace>",
+        "<InConditionedSpace>false</InConditionedSpace>",
         "<ReferenceEnergyDemandNorm>2</ReferenceEnergyDemandNorm>",
         "<EnergyDemandNorm>100.0</EnergyDemandNorm>",
         "<EnergyDemandNormUse>100.0</EnergyDemandNormUse>",

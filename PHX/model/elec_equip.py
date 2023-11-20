@@ -216,6 +216,7 @@ class PhxDeviceLightingExterior(PhxElectricalDevice):
         self.display_name = "PHIUS+ Exterior Lighting"
         self.frac_high_efficiency: Optional[float] = 1.0
         self.device_type = ElectricEquipmentType.LIGHTING_EXTERIOR
+        self.in_conditioned_space = False
 
 
 class PhxDeviceLightingGarage(PhxElectricalDevice):
@@ -224,6 +225,7 @@ class PhxDeviceLightingGarage(PhxElectricalDevice):
         self.display_name = "PHIUS+ Garage Lighting"
         self.frac_high_efficiency: Optional[float] = 1.0
         self.device_type = ElectricEquipmentType.LIGHTING_GARAGE
+        self.in_conditioned_space = False
 
 
 class PhxDeviceCustomElec(PhxElectricalDevice):

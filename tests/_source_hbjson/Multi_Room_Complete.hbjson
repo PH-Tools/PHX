@@ -60,8 +60,8 @@
           "type": "ShadeRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Shade_9f1351ce", 
-      "display_name": "Shade_9f1351ce", 
+      "identifier": "Shade_406b1c18", 
+      "display_name": "Shade_406b1c18", 
       "type": "Shade"
     }, 
     {
@@ -122,8 +122,8 @@
           "type": "ShadeRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Shade_e55d7d1a", 
-      "display_name": "Shade_e55d7d1a", 
+      "identifier": "Shade_534ce8f9", 
+      "display_name": "Shade_534ce8f9", 
       "type": "Shade"
     }
   ], 
@@ -175,49 +175,7 @@
           "non_combustible_materials": false, 
           "user_data": {}, 
           "thermal_bridges": {
-            "c98e5dcf-600e-4036-b1c8-9ed76dc12c8c": {
-              "id_num": 0, 
-              "psi_value": 0.01, 
-              "user_data": {}, 
-              "geometry": {
-                "vertices": [
-                  [
-                    0.82294901687515765, 
-                    0.0, 
-                    0.49376941012509468
-                  ], 
-                  [
-                    4.1770509831248424, 
-                    0.0, 
-                    0.49376941012509468
-                  ], 
-                  [
-                    4.1770509831248424, 
-                    0.0, 
-                    2.5062305898749053
-                  ], 
-                  [
-                    0.82294901687515765, 
-                    0.0, 
-                    2.5062305898749053
-                  ], 
-                  [
-                    0.82294901687515765, 
-                    0.0, 
-                    0.49376941012509468
-                  ]
-                ], 
-                "type": "Polyline3D"
-              }, 
-              "fRsi_value": 0.75, 
-              "_group_type": {
-                "value": "15-AMBIENT"
-              }, 
-              "identifier": "c98e5dcf-600e-4036-b1c8-9ed76dc12c8c", 
-              "display_name": "_unnamed_bldg_segment__cc5b88ea", 
-              "quantity": 1.0
-            }, 
-            "8de06aca-a4fc-47fb-91fb-2dc5713620e5": {
+            "12e6807a-9026-4a83-b63b-29c48f3dca35": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
@@ -255,206 +213,38 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "8de06aca-a4fc-47fb-91fb-2dc5713620e5", 
-              "display_name": "_unnamed_bldg_segment__0838c088", 
+              "identifier": "12e6807a-9026-4a83-b63b-29c48f3dca35", 
+              "display_name": "_unnamed_bldg_segment__2f768590", 
               "quantity": 1.0
             }, 
-            "a57e591b-a44e-40a5-bc14-2f550cfb872f": {
+            "5b39d543-6fea-4c02-a6eb-1783dac6b764": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
               "geometry": {
                 "vertices": [
                   [
-                    12.0, 
-                    0.0, 
-                    0.0
-                  ], 
-                  [
-                    12.0, 
-                    4.0, 
-                    0.0
-                  ], 
-                  [
-                    12.0, 
-                    4.0, 
-                    3.0
-                  ], 
-                  [
-                    12.0, 
-                    0.0, 
-                    3.0
-                  ], 
-                  [
-                    12.0, 
-                    0.0, 
-                    0.0
-                  ]
-                ], 
-                "type": "Polyline3D"
-              }, 
-              "fRsi_value": 0.75, 
-              "_group_type": {
-                "value": "15-AMBIENT"
-              }, 
-              "identifier": "a57e591b-a44e-40a5-bc14-2f550cfb872f", 
-              "display_name": "_unnamed_bldg_segment__d3593c1d", 
-              "quantity": 1.0
-            }, 
-            "777405f6-6433-4534-9561-4872317d728f": {
-              "id_num": 0, 
-              "psi_value": 0.01, 
-              "user_data": {}, 
-              "geometry": {
-                "vertices": [
-                  [
-                    5.0, 
-                    0.0, 
-                    3.0
-                  ], 
-                  [
-                    12.0, 
-                    0.0, 
-                    3.0
-                  ], 
-                  [
-                    12.0, 
-                    4.0, 
-                    3.0
-                  ], 
-                  [
-                    5.0, 
-                    4.0, 
-                    3.0
-                  ], 
-                  [
-                    5.0, 
-                    0.0, 
-                    3.0
-                  ]
-                ], 
-                "type": "Polyline3D"
-              }, 
-              "fRsi_value": 0.75, 
-              "_group_type": {
-                "value": "15-AMBIENT"
-              }, 
-              "identifier": "777405f6-6433-4534-9561-4872317d728f", 
-              "display_name": "_unnamed_bldg_segment__05999c0b", 
-              "quantity": 1.0
-            }, 
-            "b8ec7e20-e973-463d-bc03-55f9adfb1094": {
-              "id_num": 0, 
-              "psi_value": 0.01, 
-              "user_data": {}, 
-              "geometry": {
-                "vertices": [
-                  [
-                    5.0, 
-                    4.0, 
-                    0.0
-                  ], 
-                  [
-                    5.0, 
-                    0.0, 
-                    0.0
-                  ], 
-                  [
-                    5.0, 
-                    0.0, 
-                    3.0
-                  ], 
-                  [
-                    5.0, 
-                    4.0, 
-                    3.0
-                  ], 
-                  [
-                    5.0, 
-                    4.0, 
-                    0.0
-                  ]
-                ], 
-                "type": "Polyline3D"
-              }, 
-              "fRsi_value": 0.75, 
-              "_group_type": {
-                "value": "15-AMBIENT"
-              }, 
-              "identifier": "b8ec7e20-e973-463d-bc03-55f9adfb1094", 
-              "display_name": "_unnamed_bldg_segment__126b340b", 
-              "quantity": 1.0
-            }, 
-            "ea202a90-1596-4be3-8c90-acc219ab35ce": {
-              "id_num": 0, 
-              "psi_value": 0.01, 
-              "user_data": {}, 
-              "geometry": {
-                "vertices": [
-                  [
-                    5.0, 
-                    0.0, 
-                    0.0
-                  ], 
-                  [
-                    12.0, 
-                    0.0, 
-                    0.0
-                  ], 
-                  [
-                    12.0, 
-                    0.0, 
-                    3.0
-                  ], 
-                  [
-                    5.0, 
-                    0.0, 
-                    3.0
-                  ], 
-                  [
-                    5.0, 
-                    0.0, 
-                    0.0
-                  ]
-                ], 
-                "type": "Polyline3D"
-              }, 
-              "fRsi_value": 0.75, 
-              "_group_type": {
-                "value": "15-AMBIENT"
-              }, 
-              "identifier": "ea202a90-1596-4be3-8c90-acc219ab35ce", 
-              "display_name": "_unnamed_bldg_segment__5d79b81d", 
-              "quantity": 1.0
-            }, 
-            "f94a697a-9ba5-442d-b11e-4570c3bc72eb": {
-              "id_num": 0, 
-              "psi_value": 0.01, 
-              "user_data": {}, 
-              "geometry": {
-                "vertices": [
-                  [
-                    6.1521286236252202, 
+                    0.82294901687515765, 
                     0.0, 
                     0.49376941012509468
                   ], 
                   [
-                    10.84787137637478, 
+                    4.1770509831248424, 
                     0.0, 
                     0.49376941012509468
                   ], 
                   [
-                    10.84787137637478, 
+                    4.1770509831248424, 
                     0.0, 
                     2.5062305898749053
                   ], 
                   [
-                    6.1521286236252202, 
+                    0.82294901687515765, 
                     0.0, 
                     2.5062305898749053
                   ], 
                   [
-                    6.1521286236252202, 
+                    0.82294901687515765, 
                     0.0, 
                     0.49376941012509468
                   ]
@@ -465,11 +255,11 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "f94a697a-9ba5-442d-b11e-4570c3bc72eb", 
-              "display_name": "_unnamed_bldg_segment__5c51efc5", 
+              "identifier": "5b39d543-6fea-4c02-a6eb-1783dac6b764", 
+              "display_name": "_unnamed_bldg_segment__7fa240dc", 
               "quantity": 1.0
             }, 
-            "ea4aa395-8265-44a7-9f9f-7e881ae7d6fa": {
+            "28e32ac5-4ae9-4bd8-87c2-415884075b8d": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
@@ -481,13 +271,13 @@
                     0.0
                   ], 
                   [
-                    5.0, 
-                    4.0, 
+                    12.0, 
+                    0.0, 
                     0.0
                   ], 
                   [
-                    5.0, 
-                    4.0, 
+                    12.0, 
+                    0.0, 
                     3.0
                   ], 
                   [
@@ -507,11 +297,53 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "ea4aa395-8265-44a7-9f9f-7e881ae7d6fa", 
-              "display_name": "_unnamed_bldg_segment__55eb4306", 
+              "identifier": "28e32ac5-4ae9-4bd8-87c2-415884075b8d", 
+              "display_name": "_unnamed_bldg_segment__d6972688", 
               "quantity": 1.0
             }, 
-            "22d3364a-a1fe-47ae-a204-85dba1914e4a": {
+            "beed6854-e079-4ea8-a2bc-7b144193b704": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    0.0, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    5.0, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    5.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    0.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    0.0, 
+                    0.0, 
+                    0.0
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "beed6854-e079-4ea8-a2bc-7b144193b704", 
+              "display_name": "_unnamed_bldg_segment__b9b76e7d", 
+              "quantity": 1.0
+            }, 
+            "a553a9c8-385b-41a5-8472-4b9babccde69": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
@@ -549,19 +381,61 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "22d3364a-a1fe-47ae-a204-85dba1914e4a", 
-              "display_name": "_unnamed_bldg_segment__870c5728", 
+              "identifier": "a553a9c8-385b-41a5-8472-4b9babccde69", 
+              "display_name": "_unnamed_bldg_segment__04edae72", 
               "quantity": 1.0
             }, 
-            "d33fa2d4-e5c8-4e0b-bed1-af6effb1404b": {
+            "0c15f998-1225-4e35-8520-13f8df11db43": {
               "id_num": 0, 
               "psi_value": 0.01, 
               "user_data": {}, 
               "geometry": {
                 "vertices": [
                   [
+                    6.1521286236252202, 
                     0.0, 
+                    0.49376941012509468
+                  ], 
+                  [
+                    10.84787137637478, 
                     0.0, 
+                    0.49376941012509468
+                  ], 
+                  [
+                    10.84787137637478, 
+                    0.0, 
+                    2.5062305898749053
+                  ], 
+                  [
+                    6.1521286236252202, 
+                    0.0, 
+                    2.5062305898749053
+                  ], 
+                  [
+                    6.1521286236252202, 
+                    0.0, 
+                    0.49376941012509468
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "0c15f998-1225-4e35-8520-13f8df11db43", 
+              "display_name": "_unnamed_bldg_segment__303ac981", 
+              "quantity": 1.0
+            }, 
+            "145189ef-4924-45cc-8cab-a17ee5b26c88": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    5.0, 
+                    4.0, 
                     0.0
                   ], 
                   [
@@ -575,12 +449,96 @@
                     3.0
                   ], 
                   [
-                    0.0, 
+                    5.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    4.0, 
+                    0.0
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "145189ef-4924-45cc-8cab-a17ee5b26c88", 
+              "display_name": "_unnamed_bldg_segment__ed2deaab", 
+              "quantity": 1.0
+            }, 
+            "233022cd-e50a-42a0-9d5c-0788551c7233": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    5.0, 
                     0.0, 
                     3.0
                   ], 
                   [
+                    12.0, 
                     0.0, 
+                    3.0
+                  ], 
+                  [
+                    12.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    0.0, 
+                    3.0
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "233022cd-e50a-42a0-9d5c-0788551c7233", 
+              "display_name": "_unnamed_bldg_segment__80bfac3f", 
+              "quantity": 1.0
+            }, 
+            "1200978e-d603-4d6e-87bb-4bfa2ba3c3c6": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    5.0, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    5.0, 
+                    4.0, 
+                    0.0
+                  ], 
+                  [
+                    5.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    5.0, 
                     0.0, 
                     0.0
                   ]
@@ -591,8 +549,50 @@
               "_group_type": {
                 "value": "15-AMBIENT"
               }, 
-              "identifier": "d33fa2d4-e5c8-4e0b-bed1-af6effb1404b", 
-              "display_name": "_unnamed_bldg_segment__92056f79", 
+              "identifier": "1200978e-d603-4d6e-87bb-4bfa2ba3c3c6", 
+              "display_name": "_unnamed_bldg_segment__7a1e31d8", 
+              "quantity": 1.0
+            }, 
+            "ca226ac5-cf0d-4a2d-a75e-ececa9aac5a5": {
+              "id_num": 0, 
+              "psi_value": 0.01, 
+              "user_data": {}, 
+              "geometry": {
+                "vertices": [
+                  [
+                    12.0, 
+                    0.0, 
+                    0.0
+                  ], 
+                  [
+                    12.0, 
+                    4.0, 
+                    0.0
+                  ], 
+                  [
+                    12.0, 
+                    4.0, 
+                    3.0
+                  ], 
+                  [
+                    12.0, 
+                    0.0, 
+                    3.0
+                  ], 
+                  [
+                    12.0, 
+                    0.0, 
+                    0.0
+                  ]
+                ], 
+                "type": "Polyline3D"
+              }, 
+              "fRsi_value": 0.75, 
+              "_group_type": {
+                "value": "15-AMBIENT"
+              }, 
+              "identifier": "ca226ac5-cf0d-4a2d-a75e-ececa9aac5a5", 
+              "display_name": "_unnamed_bldg_segment__9a744a7d", 
               "quantity": 1.0
             }
           }, 
@@ -717,7 +717,7 @@
           }, 
           "name": "Unnamed_Bldg_Segment", 
           "mech_room_temp": 20.0, 
-          "identifier": "e6d339ac-cfc9-4ea1-899b-ece3f398b590", 
+          "identifier": "94b5afc3-88b4-41a3-ae71-b530e7f26e57", 
           "site": {
             "climate": {
               "user_data": {}, 
@@ -737,8 +737,8 @@
                   "may": 149.97, 
                   "june": 165.0, 
                   "november": 42.049999999999997, 
-                  "identifier": "c63acbbf-7785-4c21-a2c1-a83e8dc4fed6", 
-                  "display_name": "c63acbbf-7785-4c21-a2c1-a83e8dc4fed6"
+                  "identifier": "79c955d8-2163-4cdc-bba9-b09009d2f1ce", 
+                  "display_name": "79c955d8-2163-4cdc-bba9-b09009d2f1ce"
                 }, 
                 "south": {
                   "february": 0.0, 
@@ -754,8 +754,8 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "5a0e81a2-c268-496b-b76b-086be5e27f5a", 
-                  "display_name": "5a0e81a2-c268-496b-b76b-086be5e27f5a"
+                  "identifier": "55afdb90-732b-44aa-8589-ff743b219834", 
+                  "display_name": "55afdb90-732b-44aa-8589-ff743b219834"
                 }, 
                 "north": {
                   "february": 26.66, 
@@ -771,11 +771,11 @@
                   "may": 149.97, 
                   "june": 165.0, 
                   "november": 42.049999999999997, 
-                  "identifier": "98bd145e-74bf-42c1-9865-e2ec27f25709", 
-                  "display_name": "98bd145e-74bf-42c1-9865-e2ec27f25709"
+                  "identifier": "c314d94a-bdc4-4778-a425-05fa50adbc8f", 
+                  "display_name": "c314d94a-bdc4-4778-a425-05fa50adbc8f"
                 }, 
-                "identifier": "360e9736-c09d-499c-b038-df7b61d6f406", 
-                "display_name": "360e9736-c09d-499c-b038-df7b61d6f406", 
+                "identifier": "9eed8302-5f0f-43e1-86eb-e00348cec371", 
+                "display_name": "9eed8302-5f0f-43e1-86eb-e00348cec371", 
                 "glob": {
                   "february": 26.66, 
                   "july": 200.0, 
@@ -790,8 +790,8 @@
                   "may": 149.97, 
                   "june": 165.0, 
                   "november": 42.049999999999997, 
-                  "identifier": "ec2c1620-70ff-4ae2-beab-9ce06afb40b7", 
-                  "display_name": "ec2c1620-70ff-4ae2-beab-9ce06afb40b7"
+                  "identifier": "003048ea-bd2a-4d75-af09-b372a67c662a", 
+                  "display_name": "003048ea-bd2a-4d75-af09-b372a67c662a"
                 }, 
                 "west": {
                   "february": 26.66, 
@@ -807,16 +807,16 @@
                   "may": 149.97, 
                   "june": 165.0, 
                   "november": 42.049999999999997, 
-                  "identifier": "06322a8b-fab1-45bf-869b-526af93c5db6", 
-                  "display_name": "06322a8b-fab1-45bf-869b-526af93c5db6"
+                  "identifier": "1c9509ad-b523-4435-89a1-45506c2fefc9", 
+                  "display_name": "1c9509ad-b523-4435-89a1-45506c2fefc9"
                 }
               }, 
               "ground": {
                 "depth_groundwater": 3, 
                 "user_data": {}, 
                 "ground_thermal_conductivity": 2, 
-                "identifier": "d3ab9421-806e-47f9-b43b-0b3cbddc611a", 
-                "display_name": "d3ab9421-806e-47f9-b43b-0b3cbddc611a", 
+                "identifier": "dd8e4927-7ef1-45c4-acee-bd5099619e9a", 
+                "display_name": "dd8e4927-7ef1-45c4-acee-bd5099619e9a", 
                 "ground_heat_capacity": 1000, 
                 "ground_density": 2000, 
                 "flow_rate_groundwater": 0.050000000000000003
@@ -831,7 +831,7 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "bd81a772-7ee2-42de-9d48-12c668d16e0c", 
+                  "identifier": "6a4e980e-48b0-49aa-9c78-eca867444d7b", 
                   "display_name": "test_peak_heat_2", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
@@ -845,7 +845,7 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "59d731e9-9bf7-45c3-8127-71be5b5f8447", 
+                  "identifier": "314ee29d-286a-4536-bfea-1c84889bf23e", 
                   "display_name": "test_peak_heat_1", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
@@ -860,14 +860,14 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "fcd0b8c1-bea8-4815-ac30-d560dc24342e", 
+                  "identifier": "58e851c3-ec83-4d3b-a5e6-7acd1c2b26c8", 
                   "display_name": "test_peak_cooling_1", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
                   "sky_temp": null
                 }, 
-                "identifier": "03766203-76ed-43ed-ac9e-0bbef75af833", 
-                "display_name": "03766203-76ed-43ed-ac9e-0bbef75af833", 
+                "identifier": "3b28cf1b-99f4-4e52-9ed5-51493168af05", 
+                "display_name": "3b28cf1b-99f4-4e52-9ed5-51493168af05", 
                 "cooling_load_2": {
                   "temp": 0.0, 
                   "user_data": {}, 
@@ -876,7 +876,7 @@
                   "dewpoint": null, 
                   "rad_west": 0.0, 
                   "ground_temp": null, 
-                  "identifier": "8df213f8-1202-4606-942f-882755ae1dab", 
+                  "identifier": "dadc210a-8dac-4881-b5eb-2fb39cfcb7a0", 
                   "display_name": "test_peak_cooling_2", 
                   "rad_north": 0.0, 
                   "rad_south": 0.0, 
@@ -899,8 +899,8 @@
                   "may": 21.5, 
                   "june": 24.75, 
                   "november": 6.0700000000000003, 
-                  "identifier": "fed74184-56ff-4086-942f-e54c77fcde2c", 
-                  "display_name": "fed74184-56ff-4086-942f-e54c77fcde2c"
+                  "identifier": "66e765c2-946d-4159-b94c-2c83913a12e2", 
+                  "display_name": "66e765c2-946d-4159-b94c-2c83913a12e2"
                 }, 
                 "sky_temps": {
                   "february": 3.3300000000000001, 
@@ -916,8 +916,8 @@
                   "may": 17.920000000000002, 
                   "june": 20.620000000000001, 
                   "november": 5.0599999999999996, 
-                  "identifier": "7880b825-d37d-4e01-8015-ef348cb92a08", 
-                  "display_name": "7880b825-d37d-4e01-8015-ef348cb92a08"
+                  "identifier": "3469cef1-0ab9-478e-9446-02c96ca51518", 
+                  "display_name": "3469cef1-0ab9-478e-9446-02c96ca51518"
                 }, 
                 "ground_temps": {
                   "february": 0.0, 
@@ -933,11 +933,11 @@
                   "may": 0.0, 
                   "june": 0.0, 
                   "november": 0.0, 
-                  "identifier": "68569683-d033-4618-aba9-0324ded330d8", 
-                  "display_name": "68569683-d033-4618-aba9-0324ded330d8"
+                  "identifier": "0a454edc-4fd8-4f28-a395-9064fe21f64c", 
+                  "display_name": "0a454edc-4fd8-4f28-a395-9064fe21f64c"
                 }, 
-                "identifier": "fac78c81-e2f9-4415-9684-88112c2b289c", 
-                "display_name": "fac78c81-e2f9-4415-9684-88112c2b289c", 
+                "identifier": "44a94aea-bb2f-42bd-8dc2-4705ab7557a8", 
+                "display_name": "44a94aea-bb2f-42bd-8dc2-4705ab7557a8", 
                 "dewpoints": {
                   "february": 2.6699999999999999, 
                   "july": 4.9500000000000002, 
@@ -952,11 +952,11 @@
                   "may": 5.1299999999999999, 
                   "june": 6.9500000000000002, 
                   "november": 1.6200000000000001, 
-                  "identifier": "060dcd13-f3f1-4792-b185-e3088b5143cd", 
-                  "display_name": "060dcd13-f3f1-4792-b185-e3088b5143cd"
+                  "identifier": "8fa71cc8-2610-4484-98b2-a9588a535a65", 
+                  "display_name": "8fa71cc8-2610-4484-98b2-a9588a535a65"
                 }
               }, 
-              "identifier": "19de46d4-7f1b-4359-ac03-90fafbfd572d", 
+              "identifier": "9f01d9cf-9917-4993-872b-5257fd7628f7", 
               "display_name": "My_Test_Climate", 
               "summer_daily_temperature_swing": 10.0, 
               "station_elevation": 0.0
@@ -968,18 +968,18 @@
               "latitude": 40.600000000000001, 
               "longitude": -73.799999999999997, 
               "hours_from_UTC": -4, 
-              "identifier": "d7643bd8-b986-4f04-b76e-85651a6de019", 
+              "identifier": "22e01349-da5f-468d-b280-bfdd12181591", 
               "display_name": "New_York", 
               "climate_zone": 1
             }, 
-            "identifier": "4bdbbb36-c9d8-4fef-a0bd-9c7ead21c9f1", 
+            "identifier": "429f4e50-0b94-4f01-84e6-e56047841a7a", 
             "display_name": "_unnamed_", 
             "phpp_library_codes": {
               "user_data": {}, 
               "country_code": "US-United States of America", 
               "region_code": "New York", 
               "dataset_name": "US0055b-New York", 
-              "identifier": "b08fce7b-4f2a-4f17-81cf-20396f390bb0", 
+              "identifier": "aa124a25-38ab-4af1-8004-3b012c805ba7", 
               "display_name": "US0055b-New York"
             }
           }, 
@@ -1108,7 +1108,7 @@
                   "norm_energy_demand_W": 123.0, 
                   "device_class_name": "PhSupportiveDevice", 
                   "in_conditioned_space": false, 
-                  "identifier": "e0c1e6d9-4cd1-4b41-8c18-f4c1c9ae1dae", 
+                  "identifier": "0190b9ee-da3a-49cc-ab6f-a08072d1f24a", 
                   "display_name": "Example Device", 
                   "quantity": 3, 
                   "device_type": 10
@@ -1126,16 +1126,16 @@
                       "flow_rate_variable": true, 
                       "capacity": 10.0, 
                       "single_speed": false, 
-                      "identifier": "28a3f497-8cea-4401-a7dd-9774888e80e8", 
-                      "display_name": "_unnamed_recirculation_cooling__306a7ed2", 
+                      "identifier": "78d86494-8447-433f-b408-82d3170179fa", 
+                      "display_name": "_unnamed_recirculation_cooling__3053c219", 
                       "annual_COP": 2.0, 
                       "min_coil_temp": 12.0
                     }, 
                     "panel": {
                       "user_data": {}, 
                       "used": false, 
-                      "identifier": "88e813cd-9f2c-4311-88f3-66d52b575b95", 
-                      "display_name": "88e813cd-9f2c-4311-88f3-66d52b575b95", 
+                      "identifier": "5e2ca5ac-5292-4738-ac89-573d02ca07d9", 
+                      "display_name": "5e2ca5ac-5292-4738-ac89-573d02ca07d9", 
                       "annual_COP": 4.0
                     }, 
                     "ventilation": {
@@ -1143,8 +1143,8 @@
                       "used": false, 
                       "capacity": 10.0, 
                       "single_speed": false, 
-                      "identifier": "0bf6a647-5151-4f8d-8f08-cbf9df2bf264", 
-                      "display_name": "0bf6a647-5151-4f8d-8f08-cbf9df2bf264", 
+                      "identifier": "fd3773ac-7317-4e13-bac0-83d69b1bad25", 
+                      "display_name": "fd3773ac-7317-4e13-bac0-83d69b1bad25", 
                       "annual_COP": 4.0, 
                       "min_coil_temp": 12.0
                     }, 
@@ -1153,16 +1153,16 @@
                       "user_data": {}, 
                       "useful_heat_loss": false, 
                       "used": false, 
-                      "identifier": "67ccc626-1120-4e9e-9561-842a77ad119d", 
-                      "display_name": "67ccc626-1120-4e9e-9561-842a77ad119d", 
+                      "identifier": "17ed5301-6f7f-471f-942a-aec2b0bac640", 
+                      "display_name": "17ed5301-6f7f-471f-942a-aec2b0bac640", 
                       "annual_COP": 4.0
                     }
                   }, 
                   "heat_pump_class_name": "PhHeatPumpRatedMonthly", 
                   "COP_2": 4.1200000000000001, 
                   "ambient_temp_2": 12.0, 
-                  "identifier": "0e954e1d-c3d0-490b-817a-4691c05fc0d5", 
-                  "display_name": "0e954e1d-c3d0-490b-817a-4691c05fc0d5", 
+                  "identifier": "af317495-9b20-4f76-a8b7-24c83f45de50", 
+                  "display_name": "af317495-9b20-4f76-a8b7-24c83f45de50", 
                   "percent_coverage": 1.0, 
                   "COP_1": 3.3999999999999999
                 }
@@ -1173,7 +1173,7 @@
                   "utilization_factor": 1.0, 
                   "array_size": 0.0, 
                   "device_typename": "PhPhotovoltaicDevice", 
-                  "identifier": "0821ba54-1448-4b78-b23f-b693446aeb34", 
+                  "identifier": "4d59399e-cec0-4712-b4f3-b1a4a859189f", 
                   "display_name": "my_PV_system", 
                   "percent_coverage": 1.0, 
                   "photovoltaic_renewable_energy": 1000.0
@@ -1190,8 +1190,8 @@
                   "effic_at_30_percent_load": 0.97999999999999998, 
                   "in_conditioned_space": true, 
                   "avg_temp_at_32C_28C": 24, 
-                  "identifier": "3182818d-47f6-403f-852b-a488a39a8d28", 
-                  "display_name": "3182818d-47f6-403f-852b-a488a39a8d28", 
+                  "identifier": "9fef4183-6fe7-48d6-948d-8f2eb4e1785d", 
+                  "display_name": "9fef4183-6fe7-48d6-948d-8f2eb4e1785d", 
                   "percent_coverage": 1.0, 
                   "effic_at_nominal_load": 0.93999999999999995, 
                   "avg_temp_at_55C_45C": 35
@@ -1206,7 +1206,7 @@
                   "temperature_below_defrost_used": -5.0, 
                   "frost_protection_reqd": true, 
                   "in_conditioned_space": true, 
-                  "identifier": "13e1ace6-2dc7-4110-acce-3aa3f2982c77", 
+                  "identifier": "07b5ed93-fac2-4cf6-a86f-259a357cbb0f", 
                   "display_name": "Test_Unit", 
                   "quantity": 1, 
                   "sensible_heat_recovery": 0.82999999999999996
@@ -1216,7 +1216,7 @@
                   {
                     "user_data": {}, 
                     "segments": {
-                      "0e27278c-40b5-4db9-9138-d098e64dfe33": {
+                      "c33ecbf4-e71a-4571-a22c-974938ff5a3e": {
                         "user_data": {}, 
                         "diameter": 160, 
                         "geometry": {
@@ -1234,26 +1234,26 @@
                         }, 
                         "insulation_thickness": 25.399999999999999, 
                         "width": null, 
-                        "identifier": "0e27278c-40b5-4db9-9138-d098e64dfe33", 
-                        "display_name": "0e27278c-40b5-4db9-9138-d098e64dfe33", 
+                        "identifier": "c33ecbf4-e71a-4571-a22c-974938ff5a3e", 
+                        "display_name": "c33ecbf4-e71a-4571-a22c-974938ff5a3e", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "height": null, 
                         "insulation_reflective": true
                       }
                     }, 
                     "duct_type": 2, 
-                    "identifier": "74ccfc24-82dd-47bf-bc31-ec4ecc970187", 
+                    "identifier": "1f4ea74b-14f5-435b-9851-d5233712242c", 
                     "display_name": "Test_Vent_System_exhaust"
                   }
                 ], 
                 "sys_type": 1, 
-                "identifier": "9dcada1e-17a0-416b-82e6-976f820f3270", 
+                "identifier": "4f83e455-88ab-4556-b188-2a08e5fea206", 
                 "display_name": "Test_Vent_System", 
                 "supply_ducting": [
                   {
                     "user_data": {}, 
                     "segments": {
-                      "e87063ee-05e0-41a5-a3e1-db7dd8c4dfd2": {
+                      "47edcdd9-8c3f-4f76-ac7b-0e0033bc5ae0": {
                         "user_data": {}, 
                         "diameter": 160, 
                         "geometry": {
@@ -1271,15 +1271,15 @@
                         }, 
                         "insulation_thickness": 25.399999999999999, 
                         "width": null, 
-                        "identifier": "e87063ee-05e0-41a5-a3e1-db7dd8c4dfd2", 
-                        "display_name": "e87063ee-05e0-41a5-a3e1-db7dd8c4dfd2", 
+                        "identifier": "47edcdd9-8c3f-4f76-ac7b-0e0033bc5ae0", 
+                        "display_name": "47edcdd9-8c3f-4f76-ac7b-0e0033bc5ae0", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "height": null, 
                         "insulation_reflective": true
                       }
                     }, 
                     "duct_type": 1, 
-                    "identifier": "8e1e7434-2840-4f7a-9970-b5c3780196d4", 
+                    "identifier": "9917f588-7888-41f1-9b2f-4c7a3beceadd", 
                     "display_name": "Test_Vent_System_supply"
                   }
                 ]
@@ -1290,7 +1290,7 @@
                   "exhaust_flow_rate_m3s": 123.0, 
                   "annual_runtime_minutes": 7.625, 
                   "device_class_name": "ExhaustVentDryer", 
-                  "identifier": "8f9d1f4f-b9cd-4163-a34f-924608fbfc25", 
+                  "identifier": "4c331a05-1c50-4e68-8aba-05430e69ae43", 
                   "display_name": "example_dryer_vent", 
                   "quantity": 1
                 }
@@ -1299,7 +1299,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_3_cee7549a Ideal Loads Air System", 
+          "identifier": "Room_3_381260a3 Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": true, 
           "cooling_limit": {
@@ -1325,7 +1325,7 @@
                   "norm_energy_demand_W": 123.0, 
                   "device_class_name": "PhSupportiveDevice", 
                   "in_conditioned_space": false, 
-                  "identifier": "e0c1e6d9-4cd1-4b41-8c18-f4c1c9ae1dae", 
+                  "identifier": "0190b9ee-da3a-49cc-ab6f-a08072d1f24a", 
                   "display_name": "Example Device", 
                   "quantity": 3, 
                   "device_type": 10
@@ -1343,16 +1343,16 @@
                       "flow_rate_variable": true, 
                       "capacity": 10.0, 
                       "single_speed": false, 
-                      "identifier": "28a3f497-8cea-4401-a7dd-9774888e80e8", 
-                      "display_name": "_unnamed_recirculation_cooling__306a7ed2", 
+                      "identifier": "78d86494-8447-433f-b408-82d3170179fa", 
+                      "display_name": "_unnamed_recirculation_cooling__3053c219", 
                       "annual_COP": 2.0, 
                       "min_coil_temp": 12.0
                     }, 
                     "panel": {
                       "user_data": {}, 
                       "used": false, 
-                      "identifier": "88e813cd-9f2c-4311-88f3-66d52b575b95", 
-                      "display_name": "88e813cd-9f2c-4311-88f3-66d52b575b95", 
+                      "identifier": "5e2ca5ac-5292-4738-ac89-573d02ca07d9", 
+                      "display_name": "5e2ca5ac-5292-4738-ac89-573d02ca07d9", 
                       "annual_COP": 4.0
                     }, 
                     "ventilation": {
@@ -1360,8 +1360,8 @@
                       "used": false, 
                       "capacity": 10.0, 
                       "single_speed": false, 
-                      "identifier": "0bf6a647-5151-4f8d-8f08-cbf9df2bf264", 
-                      "display_name": "0bf6a647-5151-4f8d-8f08-cbf9df2bf264", 
+                      "identifier": "fd3773ac-7317-4e13-bac0-83d69b1bad25", 
+                      "display_name": "fd3773ac-7317-4e13-bac0-83d69b1bad25", 
                       "annual_COP": 4.0, 
                       "min_coil_temp": 12.0
                     }, 
@@ -1370,16 +1370,16 @@
                       "user_data": {}, 
                       "useful_heat_loss": false, 
                       "used": false, 
-                      "identifier": "67ccc626-1120-4e9e-9561-842a77ad119d", 
-                      "display_name": "67ccc626-1120-4e9e-9561-842a77ad119d", 
+                      "identifier": "17ed5301-6f7f-471f-942a-aec2b0bac640", 
+                      "display_name": "17ed5301-6f7f-471f-942a-aec2b0bac640", 
                       "annual_COP": 4.0
                     }
                   }, 
                   "heat_pump_class_name": "PhHeatPumpRatedMonthly", 
                   "COP_2": 4.1200000000000001, 
                   "ambient_temp_2": 12.0, 
-                  "identifier": "0e954e1d-c3d0-490b-817a-4691c05fc0d5", 
-                  "display_name": "0e954e1d-c3d0-490b-817a-4691c05fc0d5", 
+                  "identifier": "af317495-9b20-4f76-a8b7-24c83f45de50", 
+                  "display_name": "af317495-9b20-4f76-a8b7-24c83f45de50", 
                   "percent_coverage": 1.0, 
                   "COP_1": 3.3999999999999999
                 }
@@ -1390,7 +1390,7 @@
                   "utilization_factor": 1.0, 
                   "array_size": 0.0, 
                   "device_typename": "PhPhotovoltaicDevice", 
-                  "identifier": "0821ba54-1448-4b78-b23f-b693446aeb34", 
+                  "identifier": "4d59399e-cec0-4712-b4f3-b1a4a859189f", 
                   "display_name": "my_PV_system", 
                   "percent_coverage": 1.0, 
                   "photovoltaic_renewable_energy": 1000.0
@@ -1407,8 +1407,8 @@
                   "effic_at_30_percent_load": 0.97999999999999998, 
                   "in_conditioned_space": true, 
                   "avg_temp_at_32C_28C": 24, 
-                  "identifier": "3182818d-47f6-403f-852b-a488a39a8d28", 
-                  "display_name": "3182818d-47f6-403f-852b-a488a39a8d28", 
+                  "identifier": "9fef4183-6fe7-48d6-948d-8f2eb4e1785d", 
+                  "display_name": "9fef4183-6fe7-48d6-948d-8f2eb4e1785d", 
                   "percent_coverage": 1.0, 
                   "effic_at_nominal_load": 0.93999999999999995, 
                   "avg_temp_at_55C_45C": 35
@@ -1423,7 +1423,7 @@
                   "temperature_below_defrost_used": -5.0, 
                   "frost_protection_reqd": true, 
                   "in_conditioned_space": true, 
-                  "identifier": "13e1ace6-2dc7-4110-acce-3aa3f2982c77", 
+                  "identifier": "07b5ed93-fac2-4cf6-a86f-259a357cbb0f", 
                   "display_name": "Test_Unit", 
                   "quantity": 1, 
                   "sensible_heat_recovery": 0.82999999999999996
@@ -1433,7 +1433,7 @@
                   {
                     "user_data": {}, 
                     "segments": {
-                      "0e27278c-40b5-4db9-9138-d098e64dfe33": {
+                      "c33ecbf4-e71a-4571-a22c-974938ff5a3e": {
                         "user_data": {}, 
                         "diameter": 160, 
                         "geometry": {
@@ -1451,26 +1451,26 @@
                         }, 
                         "insulation_thickness": 25.399999999999999, 
                         "width": null, 
-                        "identifier": "0e27278c-40b5-4db9-9138-d098e64dfe33", 
-                        "display_name": "0e27278c-40b5-4db9-9138-d098e64dfe33", 
+                        "identifier": "c33ecbf4-e71a-4571-a22c-974938ff5a3e", 
+                        "display_name": "c33ecbf4-e71a-4571-a22c-974938ff5a3e", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "height": null, 
                         "insulation_reflective": true
                       }
                     }, 
                     "duct_type": 2, 
-                    "identifier": "74ccfc24-82dd-47bf-bc31-ec4ecc970187", 
+                    "identifier": "1f4ea74b-14f5-435b-9851-d5233712242c", 
                     "display_name": "Test_Vent_System_exhaust"
                   }
                 ], 
                 "sys_type": 1, 
-                "identifier": "9dcada1e-17a0-416b-82e6-976f820f3270", 
+                "identifier": "4f83e455-88ab-4556-b188-2a08e5fea206", 
                 "display_name": "Test_Vent_System", 
                 "supply_ducting": [
                   {
                     "user_data": {}, 
                     "segments": {
-                      "e87063ee-05e0-41a5-a3e1-db7dd8c4dfd2": {
+                      "47edcdd9-8c3f-4f76-ac7b-0e0033bc5ae0": {
                         "user_data": {}, 
                         "diameter": 160, 
                         "geometry": {
@@ -1488,15 +1488,15 @@
                         }, 
                         "insulation_thickness": 25.399999999999999, 
                         "width": null, 
-                        "identifier": "e87063ee-05e0-41a5-a3e1-db7dd8c4dfd2", 
-                        "display_name": "e87063ee-05e0-41a5-a3e1-db7dd8c4dfd2", 
+                        "identifier": "47edcdd9-8c3f-4f76-ac7b-0e0033bc5ae0", 
+                        "display_name": "47edcdd9-8c3f-4f76-ac7b-0e0033bc5ae0", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "height": null, 
                         "insulation_reflective": true
                       }
                     }, 
                     "duct_type": 1, 
-                    "identifier": "8e1e7434-2840-4f7a-9970-b5c3780196d4", 
+                    "identifier": "9917f588-7888-41f1-9b2f-4c7a3beceadd", 
                     "display_name": "Test_Vent_System_supply"
                   }
                 ]
@@ -1507,7 +1507,7 @@
                   "exhaust_flow_rate_m3s": 123.0, 
                   "annual_runtime_minutes": 7.625, 
                   "device_class_name": "ExhaustVentDryer", 
-                  "identifier": "8f9d1f4f-b9cd-4163-a34f-924608fbfc25", 
+                  "identifier": "4c331a05-1c50-4e68-8aba-05430e69ae43", 
                   "display_name": "example_dryer_vent", 
                   "quantity": 1
                 }
@@ -1516,7 +1516,7 @@
             }, 
             "type": "IdealAirSystemProperties"
           }, 
-          "identifier": "Room_4_4083f5de Ideal Loads Air System", 
+          "identifier": "Room_4_27b0487e Ideal Loads Air System", 
           "cooling_air_temperature": 13.0, 
           "demand_controlled_ventilation": true, 
           "cooling_limit": {
@@ -1527,78 +1527,6 @@
         }
       ], 
       "constructions": [
-        {
-          "materials": [
-            "PhWindowConstruction_4ddc10c6"
-          ], 
-          "identifier": "PhWindowConstruction_4ddc10c6", 
-          "type": "WindowConstructionAbridged", 
-          "properties": {
-            "ph": {
-              "ph_glazing": {
-                "id_num": 0, 
-                "user_data": {}, 
-                "g_value": 0.40000000000000002, 
-                "u_factor": 0.80000000000000004, 
-                "identifier": "PhWindowGlazing_16cb4b24", 
-                "display_name": "PhWindowGlazing_16cb4b24"
-              }, 
-              "type": "WindowConstructionPhProperties", 
-              "id_num": 0, 
-              "ph_frame": {
-                "id_num": 0, 
-                "user_data": {}, 
-                "bottom": {
-                  "id_num": 0, 
-                  "user_data": {}, 
-                  "psi_install": 0.040000000000000001, 
-                  "chi_value": 0.0, 
-                  "psi_glazing": 0.040000000000000001, 
-                  "u_factor": 1.0, 
-                  "width": 0.10000000000000001, 
-                  "identifier": "PhWindowFrameElement_3d949aea", 
-                  "display_name": "PhWindowFrameElement_3d949aea"
-                }, 
-                "left": {
-                  "id_num": 0, 
-                  "user_data": {}, 
-                  "psi_install": 0.040000000000000001, 
-                  "chi_value": 0.0, 
-                  "psi_glazing": 0.040000000000000001, 
-                  "u_factor": 1.0, 
-                  "width": 0.10000000000000001, 
-                  "identifier": "PhWindowFrameElement_3d949aea", 
-                  "display_name": "PhWindowFrameElement_3d949aea"
-                }, 
-                "right": {
-                  "id_num": 0, 
-                  "user_data": {}, 
-                  "psi_install": 0.040000000000000001, 
-                  "chi_value": 0.0, 
-                  "psi_glazing": 0.040000000000000001, 
-                  "u_factor": 1.0, 
-                  "width": 0.10000000000000001, 
-                  "identifier": "PhWindowFrameElement_3d949aea", 
-                  "display_name": "PhWindowFrameElement_3d949aea"
-                }, 
-                "identifier": "PhWindowFrame_0cc3a37c", 
-                "display_name": "PhWindowFrame_0cc3a37c", 
-                "top": {
-                  "id_num": 0, 
-                  "user_data": {}, 
-                  "psi_install": 0.040000000000000001, 
-                  "chi_value": 0.0, 
-                  "psi_glazing": 0.040000000000000001, 
-                  "u_factor": 1.0, 
-                  "width": 0.10000000000000001, 
-                  "identifier": "PhWindowFrameElement_3d949aea", 
-                  "display_name": "PhWindowFrameElement_3d949aea"
-                }
-              }
-            }, 
-            "type": "WindowConstructionProperties"
-          }
-        }, 
         {
           "control_type": "AlwaysOn", 
           "properties": {
@@ -1611,9 +1539,9 @@
           "shade_location": "Interior", 
           "window_construction": {
             "materials": [
-              "PhWindowConstruction_05f2eb7e"
+              "PhWindowConstruction_690c43f4"
             ], 
-            "identifier": "PhWindowConstruction_05f2eb7e", 
+            "identifier": "PhWindowConstruction_690c43f4", 
             "type": "WindowConstructionAbridged", 
             "properties": {
               "ph": {
@@ -1622,8 +1550,8 @@
                   "user_data": {}, 
                   "g_value": 0.40000000000000002, 
                   "u_factor": 0.80000000000000004, 
-                  "identifier": "PhWindowGlazing_4df12e09", 
-                  "display_name": "PhWindowGlazing_4df12e09"
+                  "identifier": "PhWindowGlazing_d3d1c2a7", 
+                  "display_name": "PhWindowGlazing_d3d1c2a7"
                 }, 
                 "type": "WindowConstructionPhProperties", 
                 "id_num": 0, 
@@ -1638,8 +1566,8 @@
                     "psi_glazing": 0.040000000000000001, 
                     "u_factor": 1.0, 
                     "width": 0.10000000000000001, 
-                    "identifier": "PhWindowFrameElement_5b6fd7e0", 
-                    "display_name": "PhWindowFrameElement_5b6fd7e0"
+                    "identifier": "PhWindowFrameElement_29cbf0d2", 
+                    "display_name": "PhWindowFrameElement_29cbf0d2"
                   }, 
                   "left": {
                     "id_num": 0, 
@@ -1649,8 +1577,8 @@
                     "psi_glazing": 0.040000000000000001, 
                     "u_factor": 1.0, 
                     "width": 0.10000000000000001, 
-                    "identifier": "PhWindowFrameElement_5b6fd7e0", 
-                    "display_name": "PhWindowFrameElement_5b6fd7e0"
+                    "identifier": "PhWindowFrameElement_29cbf0d2", 
+                    "display_name": "PhWindowFrameElement_29cbf0d2"
                   }, 
                   "right": {
                     "id_num": 0, 
@@ -1660,11 +1588,11 @@
                     "psi_glazing": 0.040000000000000001, 
                     "u_factor": 1.0, 
                     "width": 0.10000000000000001, 
-                    "identifier": "PhWindowFrameElement_5b6fd7e0", 
-                    "display_name": "PhWindowFrameElement_5b6fd7e0"
+                    "identifier": "PhWindowFrameElement_29cbf0d2", 
+                    "display_name": "PhWindowFrameElement_29cbf0d2"
                   }, 
-                  "identifier": "PhWindowFrame_9acdc0ee", 
-                  "display_name": "PhWindowFrame_9acdc0ee", 
+                  "identifier": "PhWindowFrame_01727c66", 
+                  "display_name": "PhWindowFrame_01727c66", 
                   "top": {
                     "id_num": 0, 
                     "user_data": {}, 
@@ -1673,17 +1601,89 @@
                     "psi_glazing": 0.040000000000000001, 
                     "u_factor": 1.0, 
                     "width": 0.10000000000000001, 
-                    "identifier": "PhWindowFrameElement_5b6fd7e0", 
-                    "display_name": "PhWindowFrameElement_5b6fd7e0"
+                    "identifier": "PhWindowFrameElement_29cbf0d2", 
+                    "display_name": "PhWindowFrameElement_29cbf0d2"
                   }
                 }
               }, 
               "type": "WindowConstructionProperties"
             }
           }, 
-          "identifier": "PhWindowConstruction_05f2eb7e", 
+          "identifier": "PhWindowConstruction_690c43f4", 
           "shade_material": "test-shade", 
           "type": "WindowConstructionShadeAbridged"
+        }, 
+        {
+          "materials": [
+            "PhWindowConstruction_99972b86"
+          ], 
+          "identifier": "PhWindowConstruction_99972b86", 
+          "type": "WindowConstructionAbridged", 
+          "properties": {
+            "ph": {
+              "ph_glazing": {
+                "id_num": 0, 
+                "user_data": {}, 
+                "g_value": 0.40000000000000002, 
+                "u_factor": 0.80000000000000004, 
+                "identifier": "PhWindowGlazing_0fb8be6a", 
+                "display_name": "PhWindowGlazing_0fb8be6a"
+              }, 
+              "type": "WindowConstructionPhProperties", 
+              "id_num": 0, 
+              "ph_frame": {
+                "id_num": 0, 
+                "user_data": {}, 
+                "bottom": {
+                  "id_num": 0, 
+                  "user_data": {}, 
+                  "psi_install": 0.040000000000000001, 
+                  "chi_value": 0.0, 
+                  "psi_glazing": 0.040000000000000001, 
+                  "u_factor": 1.0, 
+                  "width": 0.10000000000000001, 
+                  "identifier": "PhWindowFrameElement_84d5fc9f", 
+                  "display_name": "PhWindowFrameElement_84d5fc9f"
+                }, 
+                "left": {
+                  "id_num": 0, 
+                  "user_data": {}, 
+                  "psi_install": 0.040000000000000001, 
+                  "chi_value": 0.0, 
+                  "psi_glazing": 0.040000000000000001, 
+                  "u_factor": 1.0, 
+                  "width": 0.10000000000000001, 
+                  "identifier": "PhWindowFrameElement_84d5fc9f", 
+                  "display_name": "PhWindowFrameElement_84d5fc9f"
+                }, 
+                "right": {
+                  "id_num": 0, 
+                  "user_data": {}, 
+                  "psi_install": 0.040000000000000001, 
+                  "chi_value": 0.0, 
+                  "psi_glazing": 0.040000000000000001, 
+                  "u_factor": 1.0, 
+                  "width": 0.10000000000000001, 
+                  "identifier": "PhWindowFrameElement_84d5fc9f", 
+                  "display_name": "PhWindowFrameElement_84d5fc9f"
+                }, 
+                "identifier": "PhWindowFrame_6153c11d", 
+                "display_name": "PhWindowFrame_6153c11d", 
+                "top": {
+                  "id_num": 0, 
+                  "user_data": {}, 
+                  "psi_install": 0.040000000000000001, 
+                  "chi_value": 0.0, 
+                  "psi_glazing": 0.040000000000000001, 
+                  "u_factor": 1.0, 
+                  "width": 0.10000000000000001, 
+                  "identifier": "PhWindowFrameElement_84d5fc9f", 
+                  "display_name": "PhWindowFrameElement_84d5fc9f"
+                }
+              }
+            }, 
+            "type": "WindowConstructionProperties"
+          }
         }
       ], 
       "schedule_type_limits": [
@@ -1719,9 +1719,9 @@
       "construction_sets": [
         {
           "aperture_set": {
-            "operable_construction": "PhWindowConstruction_05f2eb7e", 
-            "skylight_construction": "PhWindowConstruction_05f2eb7e", 
-            "window_construction": "PhWindowConstruction_05f2eb7e", 
+            "operable_construction": "PhWindowConstruction_99972b86", 
+            "skylight_construction": "PhWindowConstruction_99972b86", 
+            "window_construction": "PhWindowConstruction_99972b86", 
             "interior_construction": null, 
             "type": "ApertureConstructionSetAbridged"
           }, 
@@ -1733,7 +1733,7 @@
             "exterior_construction": null, 
             "type": "FloorConstructionSetAbridged"
           }, 
-          "identifier": "ConstructionSet_bc145fad", 
+          "identifier": "ConstructionSet_c6fdc2f3", 
           "wall_set": {
             "interior_construction": null, 
             "ground_construction": null, 
@@ -1745,7 +1745,7 @@
             "overhead_construction": null, 
             "interior_glass_construction": null, 
             "interior_construction": null, 
-            "exterior_glass_construction": "PhWindowConstruction_05f2eb7e", 
+            "exterior_glass_construction": "PhWindowConstruction_99972b86", 
             "type": "DoorConstructionSetAbridged"
           }, 
           "roof_ceiling_set": {
@@ -1758,9 +1758,9 @@
         }, 
         {
           "aperture_set": {
-            "operable_construction": "PhWindowConstruction_4ddc10c6", 
-            "skylight_construction": "PhWindowConstruction_4ddc10c6", 
-            "window_construction": "PhWindowConstruction_4ddc10c6", 
+            "operable_construction": "PhWindowConstruction_690c43f4", 
+            "skylight_construction": "PhWindowConstruction_690c43f4", 
+            "window_construction": "PhWindowConstruction_690c43f4", 
             "interior_construction": null, 
             "type": "ApertureConstructionSetAbridged"
           }, 
@@ -1772,7 +1772,7 @@
             "exterior_construction": null, 
             "type": "FloorConstructionSetAbridged"
           }, 
-          "identifier": "ConstructionSet_007826ad", 
+          "identifier": "ConstructionSet_683dd2d5", 
           "wall_set": {
             "interior_construction": null, 
             "ground_construction": null, 
@@ -1784,7 +1784,7 @@
             "overhead_construction": null, 
             "interior_glass_construction": null, 
             "interior_construction": null, 
-            "exterior_glass_construction": "PhWindowConstruction_4ddc10c6", 
+            "exterior_glass_construction": "PhWindowConstruction_690c43f4", 
             "type": "DoorConstructionSetAbridged"
           }, 
           "roof_ceiling_set": {
@@ -1805,12 +1805,12 @@
             "ph": {
               "id_num": 0, 
               "recirc_piping": {
-                "270f6709-fcdc-4156-b226-a1ba0729c547": {
+                "a9de0ce0-4dfb-41a8-a114-5d4968c55807": {
                   "user_data": {}, 
                   "display_name": "_unnamed_", 
-                  "identifier": "270f6709-fcdc-4156-b226-a1ba0729c547", 
+                  "identifier": "a9de0ce0-4dfb-41a8-a114-5d4968c55807", 
                   "segments": {
-                    "1b8514f9-cfcf-4098-aa89-7c4263b67b76": {
+                    "0a857560-fb0f-4f57-a87c-766c32446332": {
                       "material_value": "2-COPPER_L", 
                       "user_data": {}, 
                       "insulation_thickness_m": 0.025399999999999999, 
@@ -1830,8 +1830,8 @@
                       "daily_period": 23.0, 
                       "water_temp": 48.0, 
                       "diameter_value": "8-2IN", 
-                      "identifier": "1b8514f9-cfcf-4098-aa89-7c4263b67b76", 
-                      "display_name": "1b8514f9-cfcf-4098-aa89-7c4263b67b76", 
+                      "identifier": "0a857560-fb0f-4f57-a87c-766c32446332", 
+                      "display_name": "0a857560-fb0f-4f57-a87c-766c32446332", 
                       "insulation_conductivity": 0.040000000000000001, 
                       "insulation_quality": null, 
                       "insulation_reflective": true
@@ -1841,13 +1841,13 @@
               }, 
               "recirc_hours": 23, 
               "heaters": {
-                "2331": {
+                "1397": {
                   "user_data": {}, 
                   "heater_type": "PhSHWHeaterHeatPump", 
                   "annual_system_perf_ratio": null, 
                   "in_conditioned_space": true, 
-                  "identifier": "5d52ac30-0560-49f0-820a-ddb3d99b243c", 
-                  "display_name": "5d52ac30-0560-49f0-820a-ddb3d99b243c", 
+                  "identifier": "5c88e857-0c53-48ff-abdf-ed93ef929c5b", 
+                  "display_name": "5c88e857-0c53-48ff-abdf-ed93ef929c5b", 
                   "percent_coverage": 1.0, 
                   "annual_COP": null, 
                   "annual_energy_factor": null
@@ -1866,7 +1866,7 @@
                 }, 
                 "in_conditioned_space": true, 
                 "storage_capacity": 300, 
-                "identifier": "9419b4d0-0833-4097-b40f-40f7e63a640c", 
+                "identifier": "59b45f1b-d6d8-47aa-8013-81c8fe3586df", 
                 "display_name": "_unnamed_hw_tank_", 
                 "quantity": 1, 
                 "storage_loss_rate": 0.0
@@ -1874,14 +1874,14 @@
               "number_tap_points": null, 
               "recirc_temp": 48.0, 
               "distribution_piping": {
-                "96259053-4a53-48cf-b409-ab330a35fd08": {
+                "caa9f603-9cc4-4f0f-b1dd-fa1fb3eba6cf": {
                   "user_data": {}, 
                   "pipe_element": {
                     "user_data": {}, 
-                    "display_name": "0310824b-c8b6-423c-8842-51f24e84ddfa", 
-                    "identifier": "0310824b-c8b6-423c-8842-51f24e84ddfa", 
+                    "display_name": "c7d606cc-1ce7-4b1b-9279-c303eb692767", 
+                    "identifier": "c7d606cc-1ce7-4b1b-9279-c303eb692767", 
                     "segments": {
-                      "77ee9b16-d4c3-4354-8ed7-f888ec6077cf": {
+                      "1a505d6f-6222-4ac8-b5c9-e9727658e9c2": {
                         "material_value": "6-PEX", 
                         "user_data": {}, 
                         "insulation_thickness_m": 0.0, 
@@ -1901,8 +1901,8 @@
                         "daily_period": 24, 
                         "water_temp": 60.0, 
                         "diameter_value": "6-1-1/4IN", 
-                        "identifier": "77ee9b16-d4c3-4354-8ed7-f888ec6077cf", 
-                        "display_name": "77ee9b16-d4c3-4354-8ed7-f888ec6077cf", 
+                        "identifier": "1a505d6f-6222-4ac8-b5c9-e9727658e9c2", 
+                        "display_name": "1a505d6f-6222-4ac8-b5c9-e9727658e9c2", 
                         "insulation_conductivity": 0.040000000000000001, 
                         "insulation_quality": null, 
                         "insulation_reflective": false
@@ -1910,17 +1910,17 @@
                     }
                   }, 
                   "multiplier": 1, 
-                  "identifier": "96259053-4a53-48cf-b409-ab330a35fd08", 
+                  "identifier": "caa9f603-9cc4-4f0f-b1dd-fa1fb3eba6cf", 
                   "display_name": "Test_Trunk", 
                   "branches": {
-                    "3160d83f-0477-47a2-91de-d84806383541": {
+                    "6dfd0819-fe5e-4532-87a9-32e37333ace5": {
                       "user_data": {}, 
                       "pipe_element": {
                         "user_data": {}, 
-                        "display_name": "cc80a800-4203-43f9-ace5-d7b7a623b16b", 
-                        "identifier": "cc80a800-4203-43f9-ace5-d7b7a623b16b", 
+                        "display_name": "0d931fe2-7ddd-429a-a076-95df002ac4d6", 
+                        "identifier": "0d931fe2-7ddd-429a-a076-95df002ac4d6", 
                         "segments": {
-                          "044c7f70-b69c-4184-8a8b-68095a75e8c4": {
+                          "dee7bb55-65d4-4690-979c-b11a98be97b8": {
                             "material_value": "3-COPPER_K", 
                             "user_data": {}, 
                             "insulation_thickness_m": 0.0, 
@@ -1940,8 +1940,8 @@
                             "daily_period": 24, 
                             "water_temp": 60.0, 
                             "diameter_value": "4-3/4IN", 
-                            "identifier": "044c7f70-b69c-4184-8a8b-68095a75e8c4", 
-                            "display_name": "044c7f70-b69c-4184-8a8b-68095a75e8c4", 
+                            "identifier": "dee7bb55-65d4-4690-979c-b11a98be97b8", 
+                            "display_name": "dee7bb55-65d4-4690-979c-b11a98be97b8", 
                             "insulation_conductivity": 0.040000000000000001, 
                             "insulation_quality": null, 
                             "insulation_reflective": false
@@ -1949,12 +1949,12 @@
                         }
                       }, 
                       "fixtures": {
-                        "7417322e-fc69-41f3-b661-26d6c6007832": {
+                        "58f4fe84-0eec-4085-900d-e0e58793b36e": {
                           "user_data": {}, 
                           "display_name": "Test_Fixture", 
-                          "identifier": "7417322e-fc69-41f3-b661-26d6c6007832", 
+                          "identifier": "58f4fe84-0eec-4085-900d-e0e58793b36e", 
                           "segments": {
-                            "0a1c4287-fb91-40cd-9abb-60b8b4514f11": {
+                            "0c3f28a9-541d-4546-bba4-012871b94275": {
                               "material_value": "1-COPPER_M", 
                               "user_data": {}, 
                               "insulation_thickness_m": 0.0, 
@@ -1974,8 +1974,8 @@
                               "daily_period": 24, 
                               "water_temp": 60.0, 
                               "diameter_value": "1-3/8IN", 
-                              "identifier": "0a1c4287-fb91-40cd-9abb-60b8b4514f11", 
-                              "display_name": "0a1c4287-fb91-40cd-9abb-60b8b4514f11", 
+                              "identifier": "0c3f28a9-541d-4546-bba4-012871b94275", 
+                              "display_name": "0c3f28a9-541d-4546-bba4-012871b94275", 
                               "insulation_conductivity": 0.040000000000000001, 
                               "insulation_quality": null, 
                               "insulation_reflective": false
@@ -1983,7 +1983,7 @@
                           }
                         }
                       }, 
-                      "identifier": "3160d83f-0477-47a2-91de-d84806383541", 
+                      "identifier": "6dfd0819-fe5e-4532-87a9-32e37333ace5", 
                       "display_name": "_unnamed_Branch_"
                     }
                   }
@@ -1993,17 +1993,17 @@
             }, 
             "type": "SHWSystemProperties"
           }, 
-          "identifier": "SHW System_147bf40d", 
+          "identifier": "SHW System_cfd70e39", 
           "ambient_condition": 22.0, 
-          "display_name": "SHW System_147bf40d", 
+          "display_name": "SHW System_cfd70e39", 
           "type": "SHWSystem"
         }
       ], 
       "materials": [
         {
-          "display_name": "PhWindowConstruction_05f2eb7e", 
+          "display_name": "PhWindowConstruction_690c43f4", 
           "u_factor": 1.075763568446495, 
-          "identifier": "PhWindowConstruction_05f2eb7e", 
+          "identifier": "PhWindowConstruction_690c43f4", 
           "vt": 0.59999999999999998, 
           "shgc": 0.40000000000000002, 
           "type": "EnergyWindowMaterialSimpleGlazSys"
@@ -2028,9 +2028,9 @@
           "infrared_transmittance": 0.0
         }, 
         {
-          "display_name": "PhWindowConstruction_4ddc10c6", 
+          "display_name": "PhWindowConstruction_99972b86", 
           "u_factor": 1.075763568446495, 
-          "identifier": "PhWindowConstruction_4ddc10c6", 
+          "identifier": "PhWindowConstruction_99972b86", 
           "vt": 0.59999999999999998, 
           "shgc": 0.40000000000000002, 
           "type": "EnergyWindowMaterialSimpleGlazSys"
@@ -3823,7 +3823,7 @@
               "ph": {
                 "type": "PeoplePhProperties", 
                 "dwellings": {
-                  "identifier": "0b508195-7f6e-4376-9c96-274978304b41", 
+                  "identifier": "1c2d0aee-040b-4eb0-aab7-665dfc06f4ec", 
                   "num_dwellings": 0
                 }, 
                 "id_num": 0, 
@@ -4038,7 +4038,7 @@
     }
   }, 
   "version": "1.53.1", 
-  "identifier": "unnamed_6410c906", 
+  "identifier": "unnamed_4c5179b4", 
   "display_name": "unnamed", 
   "rooms": [
     {
@@ -4311,8 +4311,8 @@
                       ]
                     }
                   ], 
-                  "identifier": "cccfe39b-a414-4c60-a12f-350ef2d7d3c2", 
-                  "display_name": "cccfe39b-a414-4c60-a12f-350ef2d7d3c2", 
+                  "identifier": "496aa23e-7cfb-4569-9c3d-4f10bc4736f0", 
+                  "display_name": "496aa23e-7cfb-4569-9c3d-4f10bc4736f0", 
                   "floor": {
                     "user_data": {}, 
                     "geometry": {
@@ -4411,12 +4411,12 @@
                             ]
                           ]
                         }, 
-                        "identifier": "c328fd55-1a58-491d-8eb6-ee04aa78aa97", 
-                        "display_name": "c328fd55-1a58-491d-8eb6-ee04aa78aa97"
+                        "identifier": "73d2037d-9b63-4596-b0df-ce963d5fc8c5", 
+                        "display_name": "73d2037d-9b63-4596-b0df-ce963d5fc8c5"
                       }
                     ], 
-                    "identifier": "6cb173e6-d23d-460c-a689-84d5b98764e4", 
-                    "display_name": "6cb173e6-d23d-460c-a689-84d5b98764e4"
+                    "identifier": "11269ce2-fc15-439f-a2dc-26bb91aa0c78", 
+                    "display_name": "11269ce2-fc15-439f-a2dc-26bb91aa0c78"
                   }
                 }
               ], 
@@ -4438,17 +4438,17 @@
                 "type": "SpaceProperties"
               }, 
               "name": "Room_3", 
-              "identifier": "a6303561-8a15-4dc3-949c-a2f2f61ea3d8", 
+              "identifier": "f4f89c10-3892-4088-a4a1-5d0291448f6c", 
               "quantity": 1
             }
           ], 
           "ph_foundations": [], 
-          "ph_bldg_segment_id": "e6d339ac-cfc9-4ea1-899b-ece3f398b590", 
+          "ph_bldg_segment_id": "94b5afc3-88b4-41a3-ae71-b530e7f26e57", 
           "type": "RoomPhPropertiesAbridged"
         }, 
         "energy": {
-          "shw": "SHW System_147bf40d", 
-          "construction_set": "ConstructionSet_007826ad", 
+          "shw": "SHW System_cfd70e39", 
+          "construction_set": "ConstructionSet_c6fdc2f3", 
           "program_type": "Generic Office Program", 
           "service_hot_water": {
             "flow_per_area": 3.5714285714285717e-05, 
@@ -4456,10 +4456,10 @@
             "latent_fraction": 0.050000000000000003, 
             "target_temperature": 60.0, 
             "schedule": "Always On", 
-            "identifier": "Room_3_cee7549a_service_hot_water", 
+            "identifier": "Room_3_381260a3_service_hot_water", 
             "type": "ServiceHotWaterAbridged"
           }, 
-          "hvac": "Room_3_cee7549a Ideal Loads Air System", 
+          "hvac": "Room_3_381260a3 Ideal Loads Air System", 
           "people": {
             "radiant_fraction": 0.29999999999999999, 
             "occupancy_schedule": "Generic Office Occupancy", 
@@ -4471,7 +4471,7 @@
               "ph": {
                 "type": "PeoplePhProperties", 
                 "dwellings": {
-                  "identifier": "a6076f6f-c4d2-4a3c-afde-4e0825aac89f", 
+                  "identifier": "c45579ad-fc14-4fd3-84f3-ce807e039e6c", 
                   "num_dwellings": 1
                 }, 
                 "id_num": 0, 
@@ -4491,43 +4491,21 @@
               "ph": {
                 "equipment_collection": {
                   "equipment_set": {
-                    "78e54a9d-38f5-4eac-8067-4d969f3256f2": {
-                      "energy_demand_per_use": 1.1000000000000001, 
-                      "reference_quantity": 1, 
-                      "reference_energy_norm": 2, 
-                      "user_data": {}, 
-                      "equipment_type": "PhDishwasher", 
-                      "capacity_type": 1, 
-                      "comment": "default", 
-                      "capacity": 12, 
-                      "in_conditioned_space": true, 
-                      "identifier": "78e54a9d-38f5-4eac-8067-4d969f3256f2", 
-                      "display_name": "Kitchen dishwasher", 
-                      "quantity": 1, 
-                      "combined_energy_factor": 0, 
-                      "_water_connection": {
-                        "value": "2-COLD WATER CONNECTION"
-                      }, 
-                      "energy_demand": 0
-                    }, 
-                    "a7423268-0fbb-4936-9787-5f5fc1ab4802": {
-                      "energy_demand_per_use": 0.25, 
-                      "reference_quantity": 1, 
+                    "db5fb311-0826-4838-982f-c5749c79c16f": {
+                      "energy_demand_per_use": 1.0, 
+                      "reference_quantity": 4, 
                       "reference_energy_norm": 1, 
                       "user_data": {}, 
-                      "equipment_type": "PhCooktop", 
+                      "equipment_type": "PhFridgeFreezer", 
                       "comment": "default", 
                       "in_conditioned_space": true, 
-                      "identifier": "a7423268-0fbb-4936-9787-5f5fc1ab4802", 
-                      "display_name": "Kitchen cooking", 
+                      "identifier": "db5fb311-0826-4838-982f-c5749c79c16f", 
+                      "display_name": "Kitchen fridge/freeze combo", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
-                      "energy_demand": 0.0, 
-                      "_cooktop_type": {
-                        "value": "1-ELECTRICITY"
-                      }
+                      "energy_demand": 0
                     }, 
-                    "ab5d22cf-f796-470a-8423-8bf0ade010c7": {
+                    "2b4af132-4311-41ef-af1c-259099d1d298": {
                       "energy_demand_per_use": 1.1000000000000001, 
                       "reference_quantity": 1, 
                       "reference_energy_norm": 2, 
@@ -4538,7 +4516,7 @@
                       "capacity": 0.12740000000000001, 
                       "in_conditioned_space": true, 
                       "modified_energy_factor": 2.7000000000000002, 
-                      "identifier": "ab5d22cf-f796-470a-8423-8bf0ade010c7", 
+                      "identifier": "2b4af132-4311-41ef-af1c-259099d1d298", 
                       "display_name": "Laundry - washer", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
@@ -4547,7 +4525,26 @@
                       }, 
                       "energy_demand": 0
                     }, 
-                    "c6f618e6-a9c0-4c98-83cc-c022c88ed221": {
+                    "939d7405-498d-4657-ad31-231034c36e6a": {
+                      "energy_demand_per_use": 1.1000000000000001, 
+                      "reference_quantity": 1, 
+                      "reference_energy_norm": 2, 
+                      "user_data": {}, 
+                      "equipment_type": "PhDishwasher", 
+                      "capacity_type": 1, 
+                      "comment": "default", 
+                      "capacity": 12, 
+                      "in_conditioned_space": true, 
+                      "identifier": "939d7405-498d-4657-ad31-231034c36e6a", 
+                      "display_name": "Kitchen dishwasher", 
+                      "quantity": 1, 
+                      "combined_energy_factor": 0, 
+                      "_water_connection": {
+                        "value": "2-COLD WATER CONNECTION"
+                      }, 
+                      "energy_demand": 0
+                    }, 
+                    "7918fe39-2af2-4a50-acdb-2628040b386c": {
                       "energy_demand_per_use": 3.5, 
                       "reference_quantity": 1, 
                       "reference_energy_norm": 2, 
@@ -4557,7 +4554,7 @@
                       "comment": "default", 
                       "gas_consumption": 0, 
                       "in_conditioned_space": true, 
-                      "identifier": "c6f618e6-a9c0-4c98-83cc-c022c88ed221", 
+                      "identifier": "7918fe39-2af2-4a50-acdb-2628040b386c", 
                       "display_name": "Laundry - dryer", 
                       "quantity": 1, 
                       "_dryer_type": {
@@ -4568,19 +4565,22 @@
                       "energy_demand": 0, 
                       "field_utilization_factor_type": 1
                     }, 
-                    "ed1fd29d-69e1-47c0-99ef-ec8caf0c2e50": {
-                      "energy_demand_per_use": 1.0, 
-                      "reference_quantity": 4, 
+                    "c9818bf5-7afe-436a-8794-5f0a9e817582": {
+                      "energy_demand_per_use": 0.25, 
+                      "reference_quantity": 1, 
                       "reference_energy_norm": 1, 
                       "user_data": {}, 
-                      "equipment_type": "PhFridgeFreezer", 
+                      "equipment_type": "PhCooktop", 
                       "comment": "default", 
                       "in_conditioned_space": true, 
-                      "identifier": "ed1fd29d-69e1-47c0-99ef-ec8caf0c2e50", 
-                      "display_name": "Kitchen fridge/freeze combo", 
+                      "identifier": "c9818bf5-7afe-436a-8794-5f0a9e817582", 
+                      "display_name": "Kitchen cooking", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
-                      "energy_demand": 0
+                      "energy_demand": 0.0, 
+                      "_cooktop_type": {
+                        "value": "1-ELECTRICITY"
+                      }
                     }
                   }
                 }, 
@@ -4590,7 +4590,7 @@
             }, 
             "lost_fraction": 0.0, 
             "schedule": "Generic Office Equipment", 
-            "identifier": "Generic Office Equipment_b3b10e4f", 
+            "identifier": "Generic Office Equipment_9c3c99e5", 
             "watts_per_area": 10.33, 
             "type": "ElectricEquipmentAbridged"
           }, 
@@ -4601,7 +4601,7 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_3_cee7549a", 
+      "identifier": "Room_3_381260a3", 
       "display_name": "Room_3", 
       "faces": [
         {
@@ -4728,8 +4728,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_3_cee7549a..Face0_Glz0", 
-              "display_name": "Room_3_cee7549a..Face0_Glz0", 
+              "identifier": "Room_3_381260a3..Face0_Glz0", 
+              "display_name": "Room_3_381260a3..Face0_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -4747,8 +4747,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_cee7549a..Face0", 
-          "display_name": "Room_3_cee7549a..Face0", 
+          "identifier": "Room_3_381260a3..Face0", 
+          "display_name": "Room_3_381260a3..Face0", 
           "type": "Face"
         }, 
         {
@@ -4875,8 +4875,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_3_cee7549a..Face1_Glz0", 
-              "display_name": "Room_3_cee7549a..Face1_Glz0", 
+              "identifier": "Room_3_381260a3..Face1_Glz0", 
+              "display_name": "Room_3_381260a3..Face1_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -4894,8 +4894,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_cee7549a..Face1", 
-          "display_name": "Room_3_cee7549a..Face1", 
+          "identifier": "Room_3_381260a3..Face1", 
+          "display_name": "Room_3_381260a3..Face1", 
           "type": "Face"
         }, 
         {
@@ -5022,8 +5022,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_3_cee7549a..Face2_Glz0", 
-              "display_name": "Room_3_cee7549a..Face2_Glz0", 
+              "identifier": "Room_3_381260a3..Face2_Glz0", 
+              "display_name": "Room_3_381260a3..Face2_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -5041,15 +5041,15 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_cee7549a..Face2", 
-          "display_name": "Room_3_cee7549a..Face2", 
+          "identifier": "Room_3_381260a3..Face2", 
+          "display_name": "Room_3_381260a3..Face2", 
           "type": "Face"
         }, 
         {
           "boundary_condition": {
             "boundary_condition_objects": [
-              "Room_4_4083f5de..Face1", 
-              "Room_4_4083f5de"
+              "Room_4_27b0487e..Face1", 
+              "Room_4_27b0487e"
             ], 
             "type": "Surface"
           }, 
@@ -5110,8 +5110,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_cee7549a..Face3", 
-          "display_name": "Room_3_cee7549a..Face3", 
+          "identifier": "Room_3_381260a3..Face3", 
+          "display_name": "Room_3_381260a3..Face3", 
           "type": "Face"
         }, 
         {
@@ -5175,8 +5175,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_cee7549a..Face4", 
-          "display_name": "Room_3_cee7549a..Face4", 
+          "identifier": "Room_3_381260a3..Face4", 
+          "display_name": "Room_3_381260a3..Face4", 
           "type": "Face"
         }, 
         {
@@ -5303,8 +5303,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_3_cee7549a..Face5_Glz0", 
-              "display_name": "Room_3_cee7549a..Face5_Glz0", 
+              "identifier": "Room_3_381260a3..Face5_Glz0", 
+              "display_name": "Room_3_381260a3..Face5_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -5322,8 +5322,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_3_cee7549a..Face5", 
-          "display_name": "Room_3_cee7549a..Face5", 
+          "identifier": "Room_3_381260a3..Face5", 
+          "display_name": "Room_3_381260a3..Face5", 
           "type": "Face"
         }
       ], 
@@ -5599,8 +5599,8 @@
                       ]
                     }
                   ], 
-                  "identifier": "d4eb0e6f-1e0f-41d0-9627-51367c98a024", 
-                  "display_name": "d4eb0e6f-1e0f-41d0-9627-51367c98a024", 
+                  "identifier": "23d660ec-1b10-448f-8935-1f10f34c3f61", 
+                  "display_name": "23d660ec-1b10-448f-8935-1f10f34c3f61", 
                   "floor": {
                     "user_data": {}, 
                     "geometry": {
@@ -5699,12 +5699,12 @@
                             ]
                           ]
                         }, 
-                        "identifier": "8cf057f2-ae12-4775-90b9-fc96ea4b5b73", 
-                        "display_name": "8cf057f2-ae12-4775-90b9-fc96ea4b5b73"
+                        "identifier": "dff8e6b4-0851-40f9-b978-9aee93b50d9a", 
+                        "display_name": "dff8e6b4-0851-40f9-b978-9aee93b50d9a"
                       }
                     ], 
-                    "identifier": "16a15331-562e-4f6a-add9-36af91426125", 
-                    "display_name": "16a15331-562e-4f6a-add9-36af91426125"
+                    "identifier": "a9feae7d-c9df-4107-9827-9e6fbf4a80b4", 
+                    "display_name": "a9feae7d-c9df-4107-9827-9e6fbf4a80b4"
                   }
                 }
               ], 
@@ -5726,17 +5726,17 @@
                 "type": "SpaceProperties"
               }, 
               "name": "Room_4", 
-              "identifier": "7f7feded-ee35-4d82-bad8-38a671970077", 
+              "identifier": "cce0e5e5-7b38-4628-986a-2a6b50c50129", 
               "quantity": 1
             }
           ], 
           "ph_foundations": [], 
-          "ph_bldg_segment_id": "e6d339ac-cfc9-4ea1-899b-ece3f398b590", 
+          "ph_bldg_segment_id": "94b5afc3-88b4-41a3-ae71-b530e7f26e57", 
           "type": "RoomPhPropertiesAbridged"
         }, 
         "energy": {
-          "shw": "SHW System_147bf40d", 
-          "construction_set": "ConstructionSet_bc145fad", 
+          "shw": "SHW System_cfd70e39", 
+          "construction_set": "ConstructionSet_683dd2d5", 
           "program_type": "Generic Office Program", 
           "service_hot_water": {
             "flow_per_area": 5.0000000000000002e-05, 
@@ -5744,10 +5744,10 @@
             "latent_fraction": 0.050000000000000003, 
             "target_temperature": 60.0, 
             "schedule": "Always On", 
-            "identifier": "Room_4_4083f5de_service_hot_water", 
+            "identifier": "Room_4_27b0487e_service_hot_water", 
             "type": "ServiceHotWaterAbridged"
           }, 
-          "hvac": "Room_4_4083f5de Ideal Loads Air System", 
+          "hvac": "Room_4_27b0487e Ideal Loads Air System", 
           "people": {
             "radiant_fraction": 0.29999999999999999, 
             "occupancy_schedule": "Generic Office Occupancy", 
@@ -5759,7 +5759,7 @@
               "ph": {
                 "type": "PeoplePhProperties", 
                 "dwellings": {
-                  "identifier": "81da30d4-c46e-4bd7-8384-d4889ef62b11", 
+                  "identifier": "93369dbb-6756-49e9-83fb-a3f55840eadd", 
                   "num_dwellings": 2
                 }, 
                 "id_num": 0, 
@@ -5779,43 +5779,21 @@
               "ph": {
                 "equipment_collection": {
                   "equipment_set": {
-                    "78e54a9d-38f5-4eac-8067-4d969f3256f2": {
-                      "energy_demand_per_use": 1.1000000000000001, 
-                      "reference_quantity": 1, 
-                      "reference_energy_norm": 2, 
-                      "user_data": {}, 
-                      "equipment_type": "PhDishwasher", 
-                      "capacity_type": 1, 
-                      "comment": "default", 
-                      "capacity": 12, 
-                      "in_conditioned_space": true, 
-                      "identifier": "78e54a9d-38f5-4eac-8067-4d969f3256f2", 
-                      "display_name": "Kitchen dishwasher", 
-                      "quantity": 1, 
-                      "combined_energy_factor": 0, 
-                      "_water_connection": {
-                        "value": "2-COLD WATER CONNECTION"
-                      }, 
-                      "energy_demand": 0
-                    }, 
-                    "a7423268-0fbb-4936-9787-5f5fc1ab4802": {
-                      "energy_demand_per_use": 0.25, 
-                      "reference_quantity": 1, 
+                    "db5fb311-0826-4838-982f-c5749c79c16f": {
+                      "energy_demand_per_use": 1.0, 
+                      "reference_quantity": 4, 
                       "reference_energy_norm": 1, 
                       "user_data": {}, 
-                      "equipment_type": "PhCooktop", 
+                      "equipment_type": "PhFridgeFreezer", 
                       "comment": "default", 
                       "in_conditioned_space": true, 
-                      "identifier": "a7423268-0fbb-4936-9787-5f5fc1ab4802", 
-                      "display_name": "Kitchen cooking", 
+                      "identifier": "db5fb311-0826-4838-982f-c5749c79c16f", 
+                      "display_name": "Kitchen fridge/freeze combo", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
-                      "energy_demand": 0.0, 
-                      "_cooktop_type": {
-                        "value": "1-ELECTRICITY"
-                      }
+                      "energy_demand": 0
                     }, 
-                    "ab5d22cf-f796-470a-8423-8bf0ade010c7": {
+                    "2b4af132-4311-41ef-af1c-259099d1d298": {
                       "energy_demand_per_use": 1.1000000000000001, 
                       "reference_quantity": 1, 
                       "reference_energy_norm": 2, 
@@ -5826,7 +5804,7 @@
                       "capacity": 0.12740000000000001, 
                       "in_conditioned_space": true, 
                       "modified_energy_factor": 2.7000000000000002, 
-                      "identifier": "ab5d22cf-f796-470a-8423-8bf0ade010c7", 
+                      "identifier": "2b4af132-4311-41ef-af1c-259099d1d298", 
                       "display_name": "Laundry - washer", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
@@ -5835,7 +5813,26 @@
                       }, 
                       "energy_demand": 0
                     }, 
-                    "c6f618e6-a9c0-4c98-83cc-c022c88ed221": {
+                    "939d7405-498d-4657-ad31-231034c36e6a": {
+                      "energy_demand_per_use": 1.1000000000000001, 
+                      "reference_quantity": 1, 
+                      "reference_energy_norm": 2, 
+                      "user_data": {}, 
+                      "equipment_type": "PhDishwasher", 
+                      "capacity_type": 1, 
+                      "comment": "default", 
+                      "capacity": 12, 
+                      "in_conditioned_space": true, 
+                      "identifier": "939d7405-498d-4657-ad31-231034c36e6a", 
+                      "display_name": "Kitchen dishwasher", 
+                      "quantity": 1, 
+                      "combined_energy_factor": 0, 
+                      "_water_connection": {
+                        "value": "2-COLD WATER CONNECTION"
+                      }, 
+                      "energy_demand": 0
+                    }, 
+                    "7918fe39-2af2-4a50-acdb-2628040b386c": {
                       "energy_demand_per_use": 3.5, 
                       "reference_quantity": 1, 
                       "reference_energy_norm": 2, 
@@ -5845,7 +5842,7 @@
                       "comment": "default", 
                       "gas_consumption": 0, 
                       "in_conditioned_space": true, 
-                      "identifier": "c6f618e6-a9c0-4c98-83cc-c022c88ed221", 
+                      "identifier": "7918fe39-2af2-4a50-acdb-2628040b386c", 
                       "display_name": "Laundry - dryer", 
                       "quantity": 1, 
                       "_dryer_type": {
@@ -5856,19 +5853,22 @@
                       "energy_demand": 0, 
                       "field_utilization_factor_type": 1
                     }, 
-                    "ed1fd29d-69e1-47c0-99ef-ec8caf0c2e50": {
-                      "energy_demand_per_use": 1.0, 
-                      "reference_quantity": 4, 
+                    "c9818bf5-7afe-436a-8794-5f0a9e817582": {
+                      "energy_demand_per_use": 0.25, 
+                      "reference_quantity": 1, 
                       "reference_energy_norm": 1, 
                       "user_data": {}, 
-                      "equipment_type": "PhFridgeFreezer", 
+                      "equipment_type": "PhCooktop", 
                       "comment": "default", 
                       "in_conditioned_space": true, 
-                      "identifier": "ed1fd29d-69e1-47c0-99ef-ec8caf0c2e50", 
-                      "display_name": "Kitchen fridge/freeze combo", 
+                      "identifier": "c9818bf5-7afe-436a-8794-5f0a9e817582", 
+                      "display_name": "Kitchen cooking", 
                       "quantity": 1, 
                       "combined_energy_factor": 0, 
-                      "energy_demand": 0
+                      "energy_demand": 0.0, 
+                      "_cooktop_type": {
+                        "value": "1-ELECTRICITY"
+                      }
                     }
                   }
                 }, 
@@ -5878,7 +5878,7 @@
             }, 
             "lost_fraction": 0.0, 
             "schedule": "Generic Office Equipment", 
-            "identifier": "Generic Office Equipment_b3b10e4f", 
+            "identifier": "Generic Office Equipment_9c3c99e5", 
             "watts_per_area": 10.33, 
             "type": "ElectricEquipmentAbridged"
           }, 
@@ -5889,7 +5889,7 @@
           "type": "RoomRadiancePropertiesAbridged"
         }
       }, 
-      "identifier": "Room_4_4083f5de", 
+      "identifier": "Room_4_27b0487e", 
       "display_name": "Room_4", 
       "faces": [
         {
@@ -6016,8 +6016,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_4_4083f5de..Face0_Glz0", 
-              "display_name": "Room_4_4083f5de..Face0_Glz0", 
+              "identifier": "Room_4_27b0487e..Face0_Glz0", 
+              "display_name": "Room_4_27b0487e..Face0_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -6035,15 +6035,15 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_4083f5de..Face0", 
-          "display_name": "Room_4_4083f5de..Face0", 
+          "identifier": "Room_4_27b0487e..Face0", 
+          "display_name": "Room_4_27b0487e..Face0", 
           "type": "Face"
         }, 
         {
           "boundary_condition": {
             "boundary_condition_objects": [
-              "Room_3_cee7549a..Face3", 
-              "Room_3_cee7549a"
+              "Room_3_381260a3..Face3", 
+              "Room_3_381260a3"
             ], 
             "type": "Surface"
           }, 
@@ -6104,8 +6104,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_4083f5de..Face1", 
-          "display_name": "Room_4_4083f5de..Face1", 
+          "identifier": "Room_4_27b0487e..Face1", 
+          "display_name": "Room_4_27b0487e..Face1", 
           "type": "Face"
         }, 
         {
@@ -6232,8 +6232,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_4_4083f5de..Face2_Glz0", 
-              "display_name": "Room_4_4083f5de..Face2_Glz0", 
+              "identifier": "Room_4_27b0487e..Face2_Glz0", 
+              "display_name": "Room_4_27b0487e..Face2_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -6251,8 +6251,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_4083f5de..Face2", 
-          "display_name": "Room_4_4083f5de..Face2", 
+          "identifier": "Room_4_27b0487e..Face2", 
+          "display_name": "Room_4_27b0487e..Face2", 
           "type": "Face"
         }, 
         {
@@ -6379,8 +6379,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_4_4083f5de..Face3_Glz0", 
-              "display_name": "Room_4_4083f5de..Face3_Glz0", 
+              "identifier": "Room_4_27b0487e..Face3_Glz0", 
+              "display_name": "Room_4_27b0487e..Face3_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -6398,8 +6398,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_4083f5de..Face3", 
-          "display_name": "Room_4_4083f5de..Face3", 
+          "identifier": "Room_4_27b0487e..Face3", 
+          "display_name": "Room_4_27b0487e..Face3", 
           "type": "Face"
         }, 
         {
@@ -6463,8 +6463,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_4083f5de..Face4", 
-          "display_name": "Room_4_4083f5de..Face4", 
+          "identifier": "Room_4_27b0487e..Face4", 
+          "display_name": "Room_4_27b0487e..Face4", 
           "type": "Face"
         }, 
         {
@@ -6591,8 +6591,8 @@
                   "type": "ApertureRadiancePropertiesAbridged"
                 }
               }, 
-              "identifier": "Room_4_4083f5de..Face5_Glz0", 
-              "display_name": "Room_4_4083f5de..Face5_Glz0", 
+              "identifier": "Room_4_27b0487e..Face5_Glz0", 
+              "display_name": "Room_4_27b0487e..Face5_Glz0", 
               "is_operable": false, 
               "type": "Aperture"
             }
@@ -6610,8 +6610,8 @@
               "type": "FaceRadiancePropertiesAbridged"
             }
           }, 
-          "identifier": "Room_4_4083f5de..Face5", 
-          "display_name": "Room_4_4083f5de..Face5", 
+          "identifier": "Room_4_27b0487e..Face5", 
+          "display_name": "Room_4_27b0487e..Face5", 
           "type": "Face"
         }
       ], 
