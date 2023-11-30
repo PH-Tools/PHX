@@ -5,7 +5,8 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Tuple, Generator, Any
+
 
 from PHX.model.enums.phx_site import (
     SiteSelection,
@@ -182,6 +183,20 @@ class PhxClimatePeakLoad:
                 return False
         return True
 
+@dataclass
+class PhxClimateIterOutput:
+    """Wrapper class for organizing output of the 'PhxClimate.monthly_values' property."""
+    
+    month_name: str 
+    month_hours: float
+    temperature_air: float
+    temperature_dewpoint: float
+    temperature_sky: float
+    radiation_north: float
+    radiation_east: float
+    radiation_south: float
+    radiation_west:float
+    radiation_global: float
 
 @dataclass
 class PhxClimate:
@@ -257,6 +272,46 @@ class PhxClimate:
         This value is primarily used to calculate the ground heat loss in PHPP.
         """
         return (self.max_air_temperature_amplitude) / 2
+
+    @property
+    def monthly_hours(self) -> List[Tuple[str, int]]:
+        """The a ordered (Jan-Dec) list of tuples containing the month-name and the number of hours in that month."""
+        return [
+        ("JAN", 744),
+        ("FEB", 672),
+        ("MAR", 744),
+        ("APR", 720),
+        ("MAY", 744),
+        ("JUN", 720),
+        ("JUL", 744),
+        ("AUG", 744),
+        ("SEP", 720),
+        ("OCT", 744),
+        ("NOV", 720),
+        ("DEC", 744),
+    ]
+
+    @property
+    def monthly_values(self) -> Generator[PhxClimateIterOutput, Any, Any]:
+        """A generator that yields the monthly values one at a time for the climate data."""
+        for i in range(len(self.monthly_hours)):
+            try:
+                yield PhxClimateIterOutput(
+                    self.monthly_hours[i][0],
+                    self.monthly_hours[i][1],
+                    self.temperature_air[i],
+                    self.temperature_dewpoint[i],
+                    self.temperature_sky[i],
+                    self.radiation_north[i],
+                    self.radiation_east[i],
+                    self.radiation_south[i],
+                    self.radiation_west[i],
+                    self.radiation_global[i],
+                )
+            except IndexError:
+                msg = "Error: Climate data lengths do not match?"
+                raise IndexError(msg)         
+
 
 
 @dataclass
