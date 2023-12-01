@@ -176,6 +176,11 @@ class PhxComponentOpaque(PhxComponentBase):
         """Return a Set of all the Aperture-id numbers found in the Component's Aperture group."""
         return {aperture.id_num for aperture in self.apertures}
 
+    @property
+    def aperture_elements(self) -> List[PhxApertureElement]:
+        """Return a list of all the Aperture Elements found in the Component's Aperture group."""
+        return [element for aperture in self.apertures for element in aperture.elements]
+
     def __add__(self, other: PhxComponentOpaque) -> PhxComponentOpaque:
         """Merge with another Component into a single new Component.
 
@@ -234,6 +239,49 @@ class PhxComponentOpaque(PhxComponentBase):
                 return polygon
         raise Exception(
             f"Error: Cannot find a host polygon for the child id_num: {_id_num}"
+        )
+
+    def get_aperture_polygon_by_id_num(self, _id_num: int) -> geometry.PhxPolygon:
+        """Return a single Polygon from the collection if it has the specified ID as a 'child'.
+
+        If the specified ID number is not found, an Exception is raised.
+
+        Arguments:
+        ----------
+            * _id_num: (int) The Polygon id-number to search the Component's collection for.
+        Returns:
+        -------
+            * (PhxPolygon): The PhxPolygon with the specified id-number.
+        """
+        for aperture in self.apertures:
+            for polygon in aperture.polygons:
+                if polygon.id_num == _id_num:
+                    return polygon
+        raise Exception(
+            f"Error: Cannot find an aperture polygon for the id_num: {_id_num}"
+        )
+
+    def get_aperture_element_by_polygon_id_num(self, _id_num:int) -> PhxApertureElement:
+        """Return a single Aperture Element from the collection if it has the specified ID.
+
+        If the specified ID number is not found, an Exception is raised.
+
+        Arguments:
+        ----------
+            * _id_num: (int) The Polygon id-number to search the Component's collection for.
+        Returns:
+        -------
+            * (PhxApertureElement): The PhxApertureElement with the specified id-number.
+        """
+        for aperture in self.apertures:
+            for element in aperture.elements:
+                if not element.polygon:
+                    continue
+                
+                if element.polygon.id_num == _id_num:
+                    return element
+        raise Exception(
+            f"Error: Cannot find an aperture element for the id_num: {_id_num}"
         )
 
     def set_assembly_type(self, _phx_construction: constructions.PhxConstructionOpaque):
