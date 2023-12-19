@@ -312,17 +312,35 @@ class PhxComponentOpaque(PhxComponentBase):
 
 
 class PhxApertureShadingDimensions(PhxComponentBase):
-    """PHPP old-style shading dimensions data."""
+    """PHPP old-style shading dimensions data.
 
-    def __init__(self):
+    ### Horizon Objects:
+    - d_hori = Distance away from glass
+    - h_hori = Height of the shading from glass bottom edge
+    
+    ### Shading to the sides (reveal):
+    - d_reveal = Reveal distance 'over' from glass
+    - o_reveal = Reveal depth from glass
+    
+    ### Overhand Shading:
+    - d_over = Overhang height 'up' from glass top edge
+    - o_over = Overhang depth from glass
+    """
+
+    def __init__(self) -> None:
         super().__init__()
 
-        self.d_hori: Optional[float] = None
-        self.h_hori: Optional[float] = None
-        self.d_reveal: Optional[float] = None
-        self.o_reveal: Optional[float] = None
-        self.d_over: Optional[float] = None
-        self.o_over: Optional[float] = None
+        # -- Horizon Objects
+        self.d_hori: Optional[float] = None # Vertical distance to the shading top
+        self.h_hori: Optional[float] = None # Horizontal distance to the shading
+        
+        # -- Shading to the sides (reveal)
+        self.d_reveal: Optional[float] = None # Reveal distance 'over' from glass
+        self.o_reveal: Optional[float] = None # Reveal depth from glass
+        
+        # -- Overhand Shading
+        self.d_over: Optional[float] = None # Overhang height 'up' from glass
+        self.o_over: Optional[float] = None # Overhang Depth from glass
 
 
 class PhxApertureElement(PhxComponentBase):
@@ -333,14 +351,10 @@ class PhxApertureElement(PhxComponentBase):
 
         self.host: PhxComponentAperture = _host
         self.display_name: str = ""
-        self.polygon: Optional[
-            Union[geometry.PhxPolygonRectangular, geometry.PhxPolygon]
-        ] = None
+        self.polygon: Union[geometry.PhxPolygonRectangular, geometry.PhxPolygon, None] = None
         self.winter_shading_factor: float = 0.75
         self.summer_shading_factor: float = 0.75
-        self.shading_dimensions: PhxApertureShadingDimensions = (
-            PhxApertureShadingDimensions()
-        )
+        self.shading_dimensions = PhxApertureShadingDimensions()
 
     @property
     def area(self) -> float:
@@ -442,7 +456,7 @@ class PhxApertureElement(PhxComponentBase):
 class PhxComponentAperture(PhxComponentBase):
     """An Aperture (window, door) component with one or more 'element' (sash)."""
 
-    def __init__(self, _host: PhxComponentOpaque):
+    def __init__(self, _host: PhxComponentOpaque) -> None:
         super().__init__()
 
         self.host = _host
@@ -478,6 +492,18 @@ class PhxComponentAperture(PhxComponentBase):
         """Set the installation depth of the Aperture."""
         if _depth != None:
             self._install_depth = _depth
+
+    @property
+    def average_shading_d_reveal(self) -> Optional[float]:
+        """The average shading 'reveal' distance of the Aperture's Elements from the glass."""
+        if not all(e.shading_dimensions.d_reveal for e in self.elements):
+            return None
+        
+        try:
+            total_d_reveal = sum(e.shading_dimensions.d_reveal or 0.0 for e in self.elements)
+            return total_d_reveal / len(self.elements)
+        except ZeroDivisionError:
+            return 0.0
 
     @property
     def default_monthly_shading_correction_factor(self) -> float:

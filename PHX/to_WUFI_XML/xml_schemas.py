@@ -290,6 +290,9 @@ def _PhxComponentOpaque(_c: components.PhxComponentOpaque) -> List[xml_writable]
 
 
 def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writable]:
+    # Use the shading, if set, otherwise use the Top-Frame width
+    shading_reveal_distance = _c.average_shading_d_reveal or _c.window_type.frame_top.width
+    
     return [
         XML_Node("IdentNr", _c.id_num),
         XML_Node("Name", _c.display_name),
@@ -309,6 +312,7 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
             [XML_Node("IdentNr", n, "index", i) for i, n in enumerate(_c.polygon_ids)],
         ),
         XML_Node("DepthWindowReveal", _c._install_depth, "unit", "m"),
+        XML_Node("DistanceDaylightOpeningToReveal", shading_reveal_distance, "unit", "m"),
         XML_Node("IdentNrSolarProtection", _c.shade_type_id_num),
         XML_Node("IdentNrOverhang", -1),
         XML_Node(
@@ -863,7 +867,7 @@ def _PhxConstructionWindow(
     ]
 
 
-def _PhxWindowShade(_s: shades.PhxWindowShade) -> List[xml_writable]:
+def _PhxWindowShade(_s: shades.PhxWindowShade) -> List[xml_writable]:  
     return [
         XML_Node("IdentNr", _s.id_num),
         XML_Node("Name", _s.display_name),
