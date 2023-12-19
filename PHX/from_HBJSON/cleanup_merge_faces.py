@@ -6,7 +6,7 @@
 from copy import copy
 from collections import defaultdict
 import math
-from typing import List, Sequence, Tuple, Union, TypeVar
+from typing import List, Sequence, Tuple, Union, TypeVar, Any
 
 from honeybee.face import Face
 from honeybee.shade import Shade
@@ -16,10 +16,12 @@ from ladybug_geometry.geometry2d.polygon import Polygon2D
 from ladybug_geometry.geometry3d.face import Face3D
 from ladybug_geometry.geometry3d.plane import Plane
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
+import ladybug_geometry.boolean as pb
 
 
 # -----------------------------------------------------------------------------
 # -- Geometry Functions
+
 def cross_product(
     a: Union[Sequence[float], Vector3D], b: Union[Sequence[float], Vector3D]
 ) -> Sequence[float]:
@@ -83,7 +85,7 @@ def angle_between_planes(plane1, plane2, _tolerance):
 
 
 # -----------------------------------------------------------------------------
-# Sorting
+# Sorting HB-Faces
 
 TFaceOrShade = TypeVar("TFaceOrShade", Face, Shade)
 
@@ -230,7 +232,7 @@ def sort_hb_faces(
 
 
 # -----------------------------------------------------------------------------
-# -- Merging Faces
+# -- Merging HB-Faces
 
 
 def _get_polygon2d_in_reference_space(
@@ -278,7 +280,7 @@ def _check_and_add_sub_face(
     _apertures: List[Aperture],
     _tolerance: float,
     _angle_tolerance: float,
-):
+) -> None:
     """Check whether a HB-sub-face is valid for an HB-face and, if so, add it.
 
     NOTE: this method is copied from honeybee's Grasshopper component "HB Add Subface"
@@ -392,7 +394,13 @@ def merge_hb_face_polygons(
 
     # -------------------------------------------------------------------------
     # -- Try and merge all the new Polygon2Ds together.
-    merged_polygons = Polygon2D.boolean_union_all(polygons_in_ref_space, _tolerance)
+    try:
+        merged_polygons = Polygon2D.boolean_union_all(polygons_in_ref_space, _tolerance)
+    except Exception as e:
+        msg = f"ERROR merging faces: {[f.display_name for f in _faces]} [Tolerance: {_tolerance}]"
+        merged_polygons = poly2ds
+        print(msg)
+        print(e)
 
     if len(poly2ds) > 100:
         print(f"merge_hb_face_polygons resulted in: {len(merged_polygons)} faces.")
@@ -402,7 +410,7 @@ def merge_hb_face_polygons(
 
 def merge_hb_faces(
     _faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float
-):
+) -> List[Face]:
     """Merge a group of HB-Faces into the fewest number of faces possible."""
 
     if not _faces:
@@ -418,7 +426,7 @@ def merge_hb_faces(
         apertures.extend([ap.duplicate() for ap in getattr(f, "apertures", [])])
 
     # -------------------------------------------------------------------------
-    # -- Merge the Polygons togther
+    # -- Merge the Polygons together
     merged_polygons, ref_plane, ref_face = merge_hb_face_polygons(
         _faces, _tolerance, _angle_tolerance_degrees
     )
@@ -454,7 +462,7 @@ def merge_hb_faces(
 
     # -------------------------------------------------------------------------
     # -- Add the apertures back in
-    faces_with_apertures_ = []
+    faces_with_apertures_: List[Face] = []
     for _face in faces:
         _check_and_add_sub_face(_face, apertures, _tolerance, _angle_tolerance_degrees)
         faces_with_apertures_.append(_face)
