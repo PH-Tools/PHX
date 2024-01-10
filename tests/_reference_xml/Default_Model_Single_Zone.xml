@@ -134,7 +134,7 @@
 					<Polygon index="1">
 						<IdentNr>6</IdentNr>
 						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorY>-0.0</NormalVectorY>
 						<NormalVectorZ>1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">33</IdentNr>
@@ -161,7 +161,7 @@
 						<IdentNr>2</IdentNr>
 						<NormalVectorX>1.0</NormalVectorX>
 						<NormalVectorY>0.0</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
+						<NormalVectorZ>-0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">35</IdentNr>
 							<IdentNr index="1">28</IdentNr>
@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_5_23c6cbf9..Face4</Name>
+						<Name>Room_1_bfb7b23e..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_5_23c6cbf9..Face5</Name>
+						<Name>Room_1_bfb7b23e..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>

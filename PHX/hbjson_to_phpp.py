@@ -13,12 +13,13 @@ from PHX.PHPP import phpp_app
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.xl import xl_app
 
+
 if __name__ == "__main__":
     # --- Command line arguments
     # -------------------------------------------------------------------------
-    SOURCE_FILE = pathlib.Path(sys.argv[1]).resolve()
-    LBT_PYTHON_SITE_PACKAGES = pathlib.Path(sys.argv[2]).resolve()
-    ACTIVATE_VARIANTS = pathlib.Path(sys.argv[3]).resolve()
+    SOURCE_FILE = pathlib.Path(str(sys.argv[1])).resolve()
+    ACTIVATE_VARIANTS = pathlib.Path(sys.argv[2]).resolve()
+
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -42,7 +43,7 @@ if __name__ == "__main__":
         xl.output(f"> connected to excel doc: {phpp_conn.xl.wb.name}")
     except xl_app.NoActiveExcelRunningError as e:
         raise e
-
+    
     with phpp_conn.xl.in_silent_mode():
         phpp_conn.xl.unprotect_all_sheets()
         phpp_conn.write_certification_config(phx_project)

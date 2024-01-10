@@ -37,9 +37,18 @@ def _run_subprocess(commands):
             - [0]: stdout
             - [1]: stderr
     """
+    # -- Create a new PYTHONHOME to avoid the Rhino-8 issues
+    CUSTOM_ENV =os.environ.copy()
+    CUSTOM_ENV["PYTHONHOME"] = ""
+
     use_shell = True if os.name == "nt" else False
+
     process = subprocess.Popen(
-        commands, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=use_shell
+        commands,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        shell=use_shell,
+        env=CUSTOM_ENV,
     )
 
     stdout, stderr = process.communicate()
@@ -55,6 +64,58 @@ def _run_subprocess(commands):
 
     return stdout, stderr
 
+def _run_subprocess_from_shell(commands):
+    # type: (List[str]) -> Tuple[Any, Any]
+    """Run a python subprocess.Popen THROUGH a MacOS terminal via a shell, using the supplied commands.
+
+    When talking to Excel on MacOS it is necessary to run through a Terminal since Rhino
+    cannot get the right 'permissions' to interact with Excel. This is a workaround and not
+    required on Windows OS.
+
+    Arguments:
+    ----------
+        * _commands: (List[str]): A list of the commands to pass to Popen
+
+    Returns:
+    --------
+        * Tuple:
+            - [0]: stdout
+            - [1]: stderr
+    """
+
+    # -- Create a new PYTHONHOME to avoid the Rhino-8 issues
+    CUSTOM_ENV =os.environ.copy()
+    CUSTOM_ENV["PYTHONHOME"] = ""
+
+    use_shell = True if os.name == "nt" else False
+
+    # -- Make sure the files are executable
+    shell_file = commands[0]
+    subprocess.check_call(["chmod", "u+x", shell_file])
+
+    python_script_path = commands[3]
+    subprocess.check_call(["chmod", "u+x", python_script_path])
+
+    process = subprocess.Popen(
+        commands,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        shell=use_shell,
+        env=CUSTOM_ENV,
+    )
+
+    stdout, stderr = process.communicate()
+
+    if stderr:
+        if "Defaulting to Windows directory." in str(stderr):
+            print("Warning: {}".format(stderr))
+        else:
+            raise Exception(stderr)
+
+    for _ in str(stdout).split("\\n"):
+        print(_)
+
+    return stdout, stderr
 
 def convert_hbjson_to_WUFI_XML(
     _hbjson_file,
@@ -114,7 +175,6 @@ def convert_hbjson_to_WUFI_XML(
     # directory, file_name = os.path.split(_hbjson_file)
     return _save_folder, _save_file_name
 
-
 def write_hbjson_to_phpp(
     _hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"
 ):
@@ -157,15 +217,38 @@ def write_hbjson_to_phpp(
                 _lbt_python_site_packages_path
             )
         )
-
+    
     # -------------------------------------------------------------------------
-    # -- Read in the HBJSON, write our to PHPP
-    commands = [
-        hb_folders.python_exe_path,
-        run_file_path,
-        _hbjson_file,
-        _lbt_python_site_packages_path,
-        _activate_variants,
-    ]
-    stdout, stderr = _run_subprocess(commands)
+    # -- Read in the HBJSON, write out to PHPP
+    if os.name == "nt":
+        commands = [
+            hb_folders.python_exe_path,
+            run_file_path,
+            _hbjson_file,
+            _lbt_python_site_packages_path,
+            _activate_variants,
+        ]
+        stdout, stderr = _run_subprocess(commands)
+    else:
+        # -- If on MacOS, run the subprocess through a shell
+        # -- and another terminal window in order to connect to Excel.
+        # -- This is a workaround for the permissions issue on MacOS.
+        # -- See:
+        # -- https://discourse.mcneel.com/t/python-subprocess-permissions-error-on-mac-os-1743/142830/6
+        # -- Find the files to run
+        shell_file = os.path.join(_lbt_python_site_packages_path, "PHX", "_hbjson_to_phpp.sh")
+        execution_root = os.path.join(_lbt_python_site_packages_path, "PHX")
+        python_script_path = os.path.join(_lbt_python_site_packages_path, "PHX", "hbjson_to_phpp.py")
+        
+        # -- Build up the commands to run
+        commands = [
+            shell_file,
+            execution_root,
+            hb_folders.python_exe_path,
+            python_script_path,
+            _hbjson_file,
+            _activate_variants
+        ]
+        stdout, stderr = _run_subprocess_from_shell(commands)
+    
     return stdout, stderr
