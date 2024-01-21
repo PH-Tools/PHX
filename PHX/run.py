@@ -13,7 +13,7 @@ import os
 import subprocess
 
 try:
-    from typing import List, Tuple, Any, Dict
+    from typing import List, Tuple, Any, Dict, Union
 except ImportError:
     pass  # Python 2.7
 
@@ -55,8 +55,9 @@ def _run_subprocess(commands):
 
     if stderr:
         if "Defaulting to Windows directory." in str(stderr):
-            print("Warning: {}".format(stderr))
+            print("WARNING: {}".format(stderr))
         else:
+            print(stderr)
             raise Exception(stderr)
 
     for _ in str(stdout).split("\\n"):
@@ -121,12 +122,13 @@ def convert_hbjson_to_WUFI_XML(
     _hbjson_file,
     _save_file_name,
     _save_folder,
-    _group_components,
-    _merge_faces,
+    _group_components=True,
+    _merge_faces=False,
+    _log_level=0,
     *args,
     **kwargs
 ):
-    # type: (str, str, str, bool, bool, List, Dict) -> tuple[str, str]
+    # type: (str, str, str, bool, Union[bool, float], int, List, Dict) -> tuple[str, str, str, str]
     """Read in an hbjson file and output a new WUFI XML file in the designated location.
 
     Arguments:
@@ -134,14 +136,20 @@ def convert_hbjson_to_WUFI_XML(
         * _hbjson (str): File path to an HBJSON file to be read in and converted to a PHX-Model.
         * _save_file_name (str): The XML filename.
         * _save_folder (str): The folder to save the new XML file in.
-        * _group_components (bool): Group components by construction.
-        * _merge_faces (bool): Merge together faces of the same type and touching.
+        * _group_components (bool): Group components by construction? Default=True
+        * _merge_faces (bool | float): Merge together faces of the same type and touching? If
+            a number is provided, it will be used as the tolerance when merging faces. Default=False
+        * _log_level (int): Set the logging level for the subprocess. Default=0
+        * args (List): Additional arguments to pass to the subprocess.
+        * kwargs (Dict): Additional keyword arguments to pass to the subprocess.
 
     Returns:
     --------
         * tuple
             - [0] (str): The path to the output XML file.
             - [1] (str): The output xml filename.
+            - [2] (str): The stdout from the subprocess.
+            - [3] (str): The stderr from the subprocess.
     """
 
     # -- Specify the path to the subprocess python script to run
@@ -159,6 +167,8 @@ def convert_hbjson_to_WUFI_XML(
 
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, convert to WUFI XML
+    print("Using python interpreter: '{}'".format(hb_folders.python_exe_path))
+    print("Running py script: '{}' Using HBJSON file: '{}'".format(run_file_path, _hbjson_file))
     commands = [
         hb_folders.python_exe_path,
         run_file_path,
@@ -167,13 +177,13 @@ def convert_hbjson_to_WUFI_XML(
         _save_folder,
         str(_group_components),
         str(_merge_faces),
+        str(_log_level),
     ]
-    _run_subprocess(commands)
+    stdout, stderr = _run_subprocess(commands)
 
     # -------------------------------------------------------------------------
     # -- return the dir and filename of the xml created
-    # directory, file_name = os.path.split(_hbjson_file)
-    return _save_folder, _save_file_name
+    return _save_folder, _save_file_name, stdout, stderr
 
 def write_hbjson_to_phpp(
     _hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"

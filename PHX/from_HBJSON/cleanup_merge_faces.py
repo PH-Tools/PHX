@@ -5,6 +5,7 @@
 
 from copy import copy
 from collections import defaultdict
+import logging
 import math
 from typing import List, Sequence, Tuple, Union, TypeVar, Any
 
@@ -18,6 +19,7 @@ from ladybug_geometry.geometry3d.plane import Plane
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
 import ladybug_geometry.boolean as pb
 
+logger = logging.getLogger()
 
 # -----------------------------------------------------------------------------
 # -- Geometry Functions
@@ -397,10 +399,11 @@ def merge_hb_face_polygons(
     try:
         merged_polygons = Polygon2D.boolean_union_all(polygons_in_ref_space, _tolerance)
     except Exception as e:
-        msg = f"ERROR merging faces: {[f.display_name for f in _faces]} [Tolerance: {_tolerance}]"
+        msg = f"\nWARNING: merging faces: {[f'{f.display_name}:{f.properties.energy.construction.display_name}' for f in _faces]} [Tolerance: {_tolerance}]"
         merged_polygons = poly2ds
+        logger.warning(msg)
         print(msg)
-        print(e)
+        print(e, "\n")
 
     if len(poly2ds) > 100:
         print(f"merge_hb_face_polygons resulted in: {len(merged_polygons)} faces.")
@@ -412,11 +415,13 @@ def merge_hb_faces(
     _faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float
 ) -> List[Face]:
     """Merge a group of HB-Faces into the fewest number of faces possible."""
-
+    
     if not _faces:
+        logger.debug("No faces in group. Skipping merge.")
         return []
 
     if len(_faces) == 1:
+        logger.debug(f"Single face: {_faces[0].display_name} in group. Skipping merge.")
         return _faces
 
     # -------------------------------------------------------------------------
@@ -427,6 +432,7 @@ def merge_hb_faces(
 
     # -------------------------------------------------------------------------
     # -- Merge the Polygons together
+    logger.debug(f"Merging faces: {[f.display_name for f in _faces]}")
     merged_polygons, ref_plane, ref_face = merge_hb_face_polygons(
         _faces, _tolerance, _angle_tolerance_degrees
     )

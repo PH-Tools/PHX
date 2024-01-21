@@ -6,27 +6,33 @@
 # -- Dev Note: Required to import all the base packages to run the __init__ startup routines
 # -- which ensures that .ph properties slot is added to all HB Objects. This must be done before
 # -- running read_hb_json to ensure there is a place for all the .ph properties to go.
-# -- Dev Note: Do not remove --
+
+# -----------------------------------------------------------------------------
+# -- Dev Note: Do not remove v ------------------------------------------------
+
 import honeybee
 import honeybee_ph
 import honeybee_energy
 import honeybee_energy_ph
 
-# -- Dev Note: Do not remove --
+# -- Dev Note: Do not remove ^ ------------------------------------------------
+# -----------------------------------------------------------------------------
 
 import os
 import json
+import logging
 import pathlib
 from typing import Dict
 
 from honeybee import model
 
+logger = logging.getLogger()
 
 class HBJSONModelReadError(Exception):
-    def __init__(self, _in):
+    def __init__(self, _in) -> None:
         self.message = (
-            f"Error: Can only convert a Honeybee 'Model' to WUFI XML.\n"
-            "Got a Honeybee object of type: {_in}."
+            f"HBJSONModelReadError: Can only convert a Honeybee 'Model' to WUFI XML.\n"
+            f"Got a Honeybee object of type: {_in}."
         )
 
         super(HBJSONModelReadError, self).__init__(self.message)
@@ -45,15 +51,18 @@ def read_hb_json_from_file(_file_address: pathlib.Path) -> Dict:
     """
 
     if not os.path.isfile(_file_address):
-        raise FileNotFoundError(
-            "Error: {} is not a valid file path?".format(_file_address)
-        )
+        msg = f"FileNotFoundError: {_file_address} is not a valid file path?"
+        e = FileNotFoundError(msg)
+        logger.critical(e)
+        raise e
 
     with open(_file_address) as json_file:
         data = json.load(json_file)
 
     if data.get("type", None) != "Model":
-        raise HBJSONModelReadError(data.get("type", None))
+        e = HBJSONModelReadError(data.get("type", None))
+        logger.critical(e.message)
+        raise e
     else:
         return data
 
