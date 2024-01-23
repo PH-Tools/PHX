@@ -409,16 +409,26 @@ def merge_hb_face_polygons(
     try:
         merged_polygons = Polygon2D.boolean_union_all(polygons_in_ref_space, _tolerance)
     except Exception as e:
-        def get_const_name(f) -> str:
+        def _face_const_name_(f: List[TFaceOrShade]) -> str:
             try:
-                return f.properties.energy.construction.display_name
+                return f[0].properties.energy.construction.display_name
             except:
                 return "NO-CONSTRUCTION"
-        msg = (f"Merging {len(_faces)} face-polygons failed using Tolerance: {_tolerance}]"\
-               f"\n\tFailed Face Group: {[f'{f.display_name}:{get_const_name(f)}' for f in _faces]} ")
+        
+        logger.warning(
+            (
+                f"Merging {len(_faces)} face-polygons with construction "\
+                f"'{_face_const_name_(_faces)}' failed using Tolerance: '{_tolerance :.5f}'"\
+                "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" \
+                f"\nFailed face-merge group: {[f'{f.display_name}' for f in _faces]} "\
+                "\nExporting the un-merged polygons for this group instead."\
+                "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"
+            )
+        )
+        logger.warning(e)
+
+        # -- Just send back the unmerged polygons
         merged_polygons = face_polys_2D
-        logger.error(e)
-        logger.error(msg)
 
     if len(face_polys_2D) > 100:
         logger.info(f"merge_hb_face_polygons resulted in: {len(merged_polygons)} faces.")
