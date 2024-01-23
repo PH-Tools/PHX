@@ -5,6 +5,7 @@
 
 from datetime import datetime
 import logging
+import glob
 import os
 import pathlib
 import sys
@@ -44,7 +45,7 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
     target_dir = pathlib.Path(_args[3])
 
     if not target_dir.exists():
-        mkdir(target_dir)
+        os.mkdir(target_dir)
 
     target = pathlib.Path(target_dir, target_file)
 
@@ -104,6 +105,26 @@ def log_level(_args: List[str]) -> int:
         return 0
 
 
+def remove_old_logs(directory: pathlib.Path, max_files: int=10):
+    """Remove old log files from the directory.
+    
+    Arguments:
+    ----------
+        * directory (pathlib.Path): The directory to remove the old logs from.
+        * max_files (int): The maximum number of log files to keep.
+    
+    Returns:
+    --------
+        * None
+    """
+
+    all_log_files = glob.glob(os.path.join(directory, "*.log"))
+    if len(all_log_files) > max_files:
+        sorted_files = sorted(all_log_files, key=os.path.getmtime)
+        oldest_log_file = sorted_files[0]
+        os.remove(oldest_log_file)
+
+
 def setup_logging_dir(_source_file_path: pathlib.Path) -> pathlib.Path:
     """Return logging directory. Create it if needed.
 
@@ -119,7 +140,7 @@ def setup_logging_dir(_source_file_path: pathlib.Path) -> pathlib.Path:
     
     if not log_dir.exists():
         os.mkdir(log_dir)
-
+    
     return log_dir
 
 
@@ -142,23 +163,24 @@ def startup_logging(_log_level: int) -> logging.Logger:
     current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(funcName)s - %(message)s')
     
-    # -- Setup the STDERR log stream-handler for any WARNING and above
+    # -- Setup the STDERR log stream-handler for stderr
     stream_handler = logging.StreamHandler(stream=sys.stderr)
     stream_handler.setLevel(logging.WARNING)
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
     
-    # -- Setup the STDOUT log stream-handler for any INFO and above
+    # -- Setup the STDOUT log stream-handler for stdout
     stream_handler = logging.StreamHandler(stream=sys.stdout)
     stream_handler.setLevel(logging.INFO)
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
 
     if _log_level > 0:
-        # -- Find the right path, create if needed
+        # -- Find the right path, create if needed. Clean up old logs.
         log_path = setup_logging_dir(SOURCE_FILE)
+        remove_old_logs(log_path, 10)
     
-        # -- Setup the log file-handler for DEBUG and above
+        # -- Setup the log file-handle
         file_handler = logging.FileHandler(log_path / f'PHX_{current_time}.log')
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(formatter)
@@ -167,6 +189,7 @@ def startup_logging(_log_level: int) -> logging.Logger:
         logger.info(f"> LOGGING TO: {log_path / 'PHX.log'}")
 
     return logger
+
 
 if __name__ == "__main__":
     print("- " * 50)
@@ -180,6 +203,7 @@ if __name__ == "__main__":
 
     ## -- Setup the logging
     logger = startup_logging(LOG_LEVEL)
+    logger.info(f"Logging with log-level: {LOG_LEVEL}")
 
     # --- Read in the existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -196,7 +220,7 @@ if __name__ == "__main__":
     )
 
     # --- Output the WUFI Project as an XML Text File
-    # ---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     logger.info(f'> Generating XML Text for the PHX-Project: "{phx_Project}"')
     xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_Project)
 

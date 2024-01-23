@@ -3,8 +3,9 @@
 
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
-from typing import List, Dict
 from functools import reduce
+import logging
+from typing import List, Dict
 
 try:
     from ladybug_geometry.geometry2d.pointvector import Vector2D
@@ -50,6 +51,7 @@ try:
 except ImportError as e:
     raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
 
+logger = logging.getLogger()
 
 def _dup_face(_hb_face: face.Face) -> face.Face:
     """Duplicate a Honeybee Face and all it's properties.
@@ -422,6 +424,8 @@ def merge_rooms(
         face_groups = sort_hb_faces(exposed_faces, _tolerance, _angle_tolerance_degrees)
         merged_faces = []
         for face_group in face_groups:
+            const_name = face_group[0].properties.energy.construction.display_name
+            logger.debug(f"Merging {len(face_group)} Faces with Construction: {const_name}")
             merged_faces.extend(
                 merge_hb_faces(face_group, _tolerance, _angle_tolerance_degrees)
             )

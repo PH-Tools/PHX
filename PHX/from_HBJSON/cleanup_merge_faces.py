@@ -17,7 +17,6 @@ from ladybug_geometry.geometry2d.polygon import Polygon2D
 from ladybug_geometry.geometry3d.face import Face3D
 from ladybug_geometry.geometry3d.plane import Plane
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
-import ladybug_geometry.boolean as pb
 
 logger = logging.getLogger()
 
@@ -49,8 +48,10 @@ def normalize(a: Union[Sequence[float], Vector3D]) -> List[float]:
     return [a[i] / mag for i in range(len(a))]
 
 
-def angle_between_planes(plane1, plane2, _tolerance):
+def radians_angle_between_planes(plane1, plane2, _tolerance):
     # type: (Plane, Plane, float) -> float
+    """Calculate the angle between two planes in radians."""
+    
     # Calculate the x-axes of the planes
     plane1_x_axis = cross_product(plane1.n, plane1.x)
     plane2_x_axis = cross_product(plane2.n, plane2.x)
@@ -64,13 +65,17 @@ def angle_between_planes(plane1, plane2, _tolerance):
 
     # Calculate the angle between the x-axes
     # Handle parallel or coincident planes
-    if (1.0 - dot_product_value) < _tolerance:
+    logger.debug(f"[abs(1.0 - {dot_product_value}) < {_tolerance}] -> {abs(1.0 - dot_product_value)}")
+    if abs(1.0 - dot_product_value) < _tolerance:
+        test_tolerance = _tolerance / 10
+        if abs(1.0 - dot_product_value) > test_tolerance:
+            logging.info("Your merge-faces tolerance is appears to be too large. Try reducing it?")
         return 0.0
     
     try:
         angle_rad = math.acos(dot_product_value)
     except ValueError as e:
-        # ---- if its a floating point value like -1.0000000000000002
+        # ---- if the result a floating point value like -1.0000000000000002
         # ---- that will cause a domain error, so try again with a rounded value
         angle_rad = 0.0
         try:
@@ -83,6 +88,7 @@ def angle_between_planes(plane1, plane2, _tolerance):
     if dot_product(plane1.n, orientation) < 0:
         angle_rad = 2 * math.pi - angle_rad
 
+    logger.debug(f"Angle between planes: {math.degrees(angle_rad)} (tolerance: {_tolerance})")
     return angle_rad
 
 
@@ -241,10 +247,10 @@ def _get_polygon2d_in_reference_space(
     _polygon2d: Polygon2D, _poly2d_plane: Plane, _base_plane: Plane, _tolerance: float
 ) -> Polygon2D:
     """Return a Polygon2D in the reference space of the base polygon."""
-
     # -- Create a Vector2D from each face's origin to the base-geom's origin
     face_origin_in_base_plane_space = _base_plane.xyz_to_xy(_poly2d_plane.o)
     base_plane_origin = copy(_base_plane.xyz_to_xy(_base_plane.o))
+
     # ------------------------------------------------------------------------
     # -- Construct a Move vector from the face's origin to the base-plane's origin
     mv_x = face_origin_in_base_plane_space.x - base_plane_origin.x
@@ -257,17 +263,18 @@ def _get_polygon2d_in_reference_space(
 
     # ------------------------------------------------------------------------
     # -- Rotate the Polygon to align with the base-plane
-    angle = angle_between_planes(_base_plane, _poly2d_plane, _tolerance)
+    angle_radians = radians_angle_between_planes(_base_plane, _poly2d_plane, _tolerance)
     rotated_polygon = moved_polygon.rotate(
-        angle=angle, origin=face_origin_in_base_plane_space
+        angle=angle_radians, origin=face_origin_in_base_plane_space
     )
+
     return rotated_polygon
 
 
 def _add_sub_face(_face: Face, _aperture: Aperture):
     """Add an HB-sub-face (either HB-Aperture or HB-Door) to a parent Face.
 
-    NOTE: this method is copied from honeybee's Grasshopper component "HB Add Subface"
+    NOTE: this method is copied from honeybee's Grasshopper component "HB Add Sub-face"
     """
     if isinstance(_aperture, Aperture):  # the sub-face is an Aperture
         _face.add_aperture(_aperture)
@@ -285,7 +292,7 @@ def _check_and_add_sub_face(
 ) -> None:
     """Check whether a HB-sub-face is valid for an HB-face and, if so, add it.
 
-    NOTE: this method is copied from honeybee's Grasshopper component "HB Add Subface"
+    NOTE: this method is copied from honeybee's Grasshopper component "HB Add Sub-face"
     """
     for aperture in _apertures:
         if _face.geometry.is_sub_face(aperture.geometry, _tolerance, _angle_tolerance):
@@ -371,26 +378,29 @@ def merge_hb_face_polygons(
 ) -> Tuple[List[Polygon2D], Plane, TFaceOrShade]:
     # -------------------------------------------------------------------------
     # -- This will be the reference face for everything else to match
-    reference_face: TFaceOrShade = _faces.pop(0).duplicate()  # type: ignore
+    reference_face: TFaceOrShade = _faces[0].duplicate()  # type: ignore
     reference_plane: Plane = copy(reference_face.geometry.plane)
+    
+    # -- Get the reference face's Polygon2D in it's reference space
     polygons_in_ref_space: List[Polygon2D] = []
     polygons_in_ref_space.append(reference_face.geometry.polygon2d)
 
     # -------------------------------------------------------------------------
-    # -- Get all the Polygon2Ds in the same reference space
-    poly2ds = [f.geometry.polygon2d for f in _faces]
-    planes = (f.geometry.plane for f in _faces)
+    # -- Get all the other Polygon2Ds and Planes
+    other_faces = _faces[1:]
+    face_polys_2D: List[Polygon2D] = [f.geometry.polygon2d for f in other_faces]
+    face_planes_2D = [f.geometry.plane for f in other_faces]
 
-    if len(poly2ds) > 100:
-        print(
-            f"Merging together {len(poly2ds)} polygons for '{reference_face.display_name}'."
+    if len(face_polys_2D) > 100:
+        logging.warning(
+            f"Merging together {len(face_polys_2D)} polygons for '{reference_face.display_name}'."\
+            f"Consider reducing the complexity of the geometry."
         )
-        print("Consider reducing the complexity of the geometry.")
 
-    for poly2d_plane, poly2d in zip(planes, poly2ds):
+    for face_plane_2D, face_poly_2D in zip(face_planes_2D, face_polys_2D):
         polygons_in_ref_space.append(
             _get_polygon2d_in_reference_space(
-                poly2d, poly2d_plane, reference_plane, _tolerance
+                face_poly_2D, face_plane_2D, reference_plane, _tolerance
             )
         )
 
@@ -399,14 +409,19 @@ def merge_hb_face_polygons(
     try:
         merged_polygons = Polygon2D.boolean_union_all(polygons_in_ref_space, _tolerance)
     except Exception as e:
-        msg = f"\nWARNING: merging faces: {[f'{f.display_name}:{f.properties.energy.construction.display_name}' for f in _faces]} [Tolerance: {_tolerance}]"
-        merged_polygons = poly2ds
-        logger.warning(msg)
-        print(msg)
-        print(e, "\n")
+        def get_const_name(f) -> str:
+            try:
+                return f.properties.energy.construction.display_name
+            except:
+                return "NO-CONSTRUCTION"
+        msg = (f"Merging {len(_faces)} face-polygons failed using Tolerance: {_tolerance}]"\
+               f"\n\tFailed Face Group: {[f'{f.display_name}:{get_const_name(f)}' for f in _faces]} ")
+        merged_polygons = face_polys_2D
+        logger.error(e)
+        logger.error(msg)
 
-    if len(poly2ds) > 100:
-        print(f"merge_hb_face_polygons resulted in: {len(merged_polygons)} faces.")
+    if len(face_polys_2D) > 100:
+        logger.info(f"merge_hb_face_polygons resulted in: {len(merged_polygons)} faces.")
 
     return (merged_polygons, reference_plane, reference_face)
 
@@ -418,7 +433,7 @@ def merge_hb_faces(
     
     if not _faces:
         logger.debug("No faces in group. Skipping merge.")
-        return []
+        return [] 
 
     if len(_faces) == 1:
         logger.debug(f"Single face: {_faces[0].display_name} in group. Skipping merge.")
@@ -432,7 +447,8 @@ def merge_hb_faces(
 
     # -------------------------------------------------------------------------
     # -- Merge the Polygons together
-    logger.debug(f"Merging faces: {[f.display_name for f in _faces]}")
+    logger.info(f"Merging {len(_faces)} faces")
+    logger.debug(f"Merging faces: {[f.display_name for f in _faces]}")   
     merged_polygons, ref_plane, ref_face = merge_hb_face_polygons(
         _faces, _tolerance, _angle_tolerance_degrees
     )
@@ -487,7 +503,7 @@ def merge_hb_shades(
         return _faces
 
     # -------------------------------------------------------------------------
-    # -- Merge the Polygons togther
+    # -- Merge the Polygons together
     merged_polygons, ref_plane, ref_face = merge_hb_face_polygons(
         _faces, _tolerance, _angle_tolerance_degrees
     )

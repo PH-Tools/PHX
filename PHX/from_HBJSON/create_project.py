@@ -6,6 +6,8 @@
 from collections import defaultdict
 from typing import Tuple, List, Union
 
+import logging
+
 from honeybee import model
 from honeybee import room
 from honeybee.aperture import Aperture
@@ -17,6 +19,7 @@ from PHX.model.project import PhxProject, PhxProjectData, ProjectData_Agent
 from PHX.from_HBJSON import cleanup, create_assemblies, create_variant, create_shades
 from PHX.from_HBJSON import create_schedules
 
+logger = logging.getLogger()
 
 class MissingPropertiesError(Exception):
     def __init__(self, _lbt_obj):
