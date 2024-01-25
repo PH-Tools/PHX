@@ -162,7 +162,9 @@ class Variants:
             str(_): i for i, _ in enumerate(read_data, start=self.start_ventilation + 1)
         }
 
-    def write_assembly_layer(self, _assembly_name: str, _assembly_num: int) -> None:
+    async def write_assembly_layer(
+        self, _assembly_name: str, _assembly_num: int
+    ) -> None:
         """Write a new assembly layer to the Variants worksheet."""
 
         if not self.start_assembly_layers:
@@ -170,7 +172,7 @@ class Variants:
 
         # -- Variants assemblies are input every other row
         row_offset = (_assembly_num * 2) + 1
-        self.xl.write_xl_item(
+        await self.xl.write_xl_item(
             xl_data.XlItem(
                 self.shape.name,
                 f"{self.shape.assemblies.input_col}{self.start_assembly_layers + row_offset}",
@@ -180,14 +182,16 @@ class Variants:
 
         return None
 
-    def write_window_type(self, _window_type_name: str, _window_type_num: int) -> None:
+    async def write_window_type(
+        self, _window_type_name: str, _window_type_num: int
+    ) -> None:
         """Write a new Window Type name to the Variants worksheet."""
         if not self.start_window_types:
             self.start_window_types = self.get_window_types_start()
 
         # -- Window types are input every 8th row
         row_offset = (_window_type_num * 8) + 1
-        self.xl.write_xl_item(
+        await self.xl.write_xl_item(
             xl_data.XlItem(
                 self.shape.name,
                 f"{self.shape.assemblies.input_col}{self.start_window_types + row_offset}",

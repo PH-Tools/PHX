@@ -107,12 +107,14 @@ class Verification:
             _input_row_offset=phpp_obj_shape.input_row_offset,
         )
 
-    def write_item(self, _phpp_model_obj: verification_data.VerificationInput) -> None:
+    async def write_item(
+        self, _phpp_model_obj: verification_data.VerificationInput
+    ) -> None:
         """Write the VerificationInputItem item out to the PHPP Verification Worksheet."""
         input_object = self._create_input_location_object(_phpp_model_obj)
         input_row = input_object.find_input_row()
         xl_item = _phpp_model_obj.create_xl_item(self.shape.name, input_row)
-        self.xl.write_xl_item(xl_item)
+        await self.xl.write_xl_item(xl_item)
 
     def read_architect(self) -> TeamMemberData:
         """Return a TeamMemberData object with the architect info from PHPP."""

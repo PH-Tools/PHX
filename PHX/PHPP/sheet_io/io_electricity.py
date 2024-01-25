@@ -21,7 +21,7 @@ class Electricity:
         self.shape = shape
         self.device_map = elec_equip.get_device_type_map()
 
-    def _turn_off_all_equipment(self) -> None:
+    async def _turn_off_all_equipment(self) -> None:
         """Sets all the 'used' values to 0 to reset the sheet before writing new equipment."""
         for item in self.shape.input_rows:
             # Some items cannot be turned off....
@@ -35,21 +35,21 @@ class Electricity:
             if item[0] in excluded:
                 continue
 
-            self.xl.write_xl_item(
+            await self.xl.write_xl_item(
                 xl_data.XlItem(
                     self.shape.name, f"{self.shape.input_columns.used}{item[1].data}", 0
                 )
             )
 
-    def write_equipment(
+    async def write_equipment(
         self, _equipment_inputs: List[electricity_item.ElectricityItemXLWriter]
     ) -> None:
         """Write a list of equipment-input objects to the Worksheet."""
-        self._turn_off_all_equipment()
+        await self._turn_off_all_equipment()
 
         for equip_input in _equipment_inputs:
             for item in equip_input.create_xl_items(self.shape):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
     def build_phx_device_from_phpp(
         self, _reader: electricity_item.ReaderDataItem

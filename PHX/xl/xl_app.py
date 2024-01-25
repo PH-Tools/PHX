@@ -582,7 +582,7 @@ class XLConnection:
             # If _input=None, ignore...
             pass
 
-    def unprotect_all_sheets(self) -> None:
+    async def unprotect_all_sheets(self) -> None:
         """Walk through all the sheets and unprotect them all."""
         for sheet in self.wb.sheets:
             if self.os_is_windows:
@@ -590,7 +590,7 @@ class XLConnection:
             else:
                 sheet.api.unprotect()
 
-    def write_xl_item(
+    async def write_xl_item(
         self,
         _xl_item: Union[xl_data.XlItem, xl_data.XLItem_List],
         _transpose: bool = False,

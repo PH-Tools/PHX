@@ -23,7 +23,9 @@ class Climate:
         # TODO: make this find the right starting rows.
         return [self.shape.ud_block.start_row]
 
-    def write_climate_block(self, _climate_entry: climate_entry.ClimateDataBlock) -> None:
+    async def write_climate_block(
+        self, _climate_entry: climate_entry.ClimateDataBlock
+    ) -> None:
         if not self.weather_data_start_rows:
             self.weather_data_start_rows = self.get_start_rows()
 
@@ -32,14 +34,14 @@ class Climate:
         start_row = self.weather_data_start_rows[0]
 
         for item in _climate_entry.create_xl_items(self.shape.name, start_row):
-            self.xl.write_xl_item(item)
+            await self.xl.write_xl_item(item)
 
-    def write_active_climate(
+    async def write_active_climate(
         self, _active_climate: climate_entry.ClimateSettings
     ) -> None:
         start_row = 9
         for item in _active_climate.create_xl_items(self.shape.name, start_row):
-            self.xl.write_xl_item(item)
+            await self.xl.write_xl_item(item)
 
     def read_active_country(self) -> str:
         return str(

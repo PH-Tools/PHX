@@ -90,7 +90,7 @@ class Ventilation:
             self.shape.multi_unit_on.locator_string,
         )
 
-    def _write_input(
+    async def _write_input(
         self,
         _input_item: VentilationInputLocation,
         _phpp_model_item: ventilation_data.VentilationInputItem,
@@ -99,37 +99,37 @@ class Ventilation:
 
         input_row = _input_item.find_input_row()
         xl_item = _phpp_model_item.create_xl_item(self.shape.name, input_row)
-        self.xl.write_xl_item(xl_item)
+        await self.xl.write_xl_item(xl_item)
 
-    def write_ventilation_type(
+    async def write_ventilation_type(
         self, _phpp_model_obj: ventilation_data.VentilationInputItem
     ) -> None:
-        self._write_input(self.io_vent_type, _phpp_model_obj)
+        await self._write_input(self.io_vent_type, _phpp_model_obj)
 
-    def write_wind_coeff_e(
+    async def write_wind_coeff_e(
         self, _phpp_model_obj: ventilation_data.VentilationInputItem
     ) -> None:
-        self._write_input(self.io_wind_coeff_e, _phpp_model_obj)
+        await self._write_input(self.io_wind_coeff_e, _phpp_model_obj)
 
-    def write_wind_coeff_f(
+    async def write_wind_coeff_f(
         self, _phpp_model_obj: ventilation_data.VentilationInputItem
     ) -> None:
-        self._write_input(self.io_wind_coeff_f, _phpp_model_obj)
+        await self._write_input(self.io_wind_coeff_f, _phpp_model_obj)
 
-    def write_airtightness_n50(
+    async def write_airtightness_n50(
         self, _phpp_model_obj: ventilation_data.VentilationInputItem
     ) -> None:
-        self._write_input(self.io_air_change_rate, _phpp_model_obj)
+        await self._write_input(self.io_air_change_rate, _phpp_model_obj)
 
-    def write_Vn50_volume(
+    async def write_Vn50_volume(
         self, _phpp_model_obj: ventilation_data.VentilationInputItem
     ) -> None:
-        self._write_input(self.io_net_volume, _phpp_model_obj)
+        await self._write_input(self.io_net_volume, _phpp_model_obj)
 
-    def write_multi_vent_worksheet_on(
+    async def write_multi_vent_worksheet_on(
         self, _phpp_model_obj: ventilation_data.VentilationInputItem
     ) -> None:
-        self._write_input(self.io_multi_vent_worksheet_on, _phpp_model_obj)
+        await self._write_input(self.io_multi_vent_worksheet_on, _phpp_model_obj)
 
     def activate_variants(self):
         """Link Ventilation Type and Airtightness to the Variants worksheet."""

@@ -104,9 +104,9 @@ class Shading:
             f"marker on the '{self.shape.name}' sheet, column {self.shape.shading_rows_end.locator_col_entry}?"
         )
 
-    def write_shading(self, _shading_rows: List[shading_rows.ShadingRow]) -> None:
+    async def write_shading(self, _shading_rows: List[shading_rows.ShadingRow]) -> None:
         """Write a list of ShadingRow objects to the Shading worksheet."""
 
         for i, shading_row in enumerate(_shading_rows, start=self.entry_row_start):
             for item in shading_row.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
