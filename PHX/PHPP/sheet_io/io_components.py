@@ -503,7 +503,9 @@ class Components:
         """Return the row number of the first empty row in the Frames section."""
         return self.frames.find_first_empty_row()
 
-    def write_single_glazing(self, _row_num: int, _glazing_row: GlazingRow) -> str:
+    async def write_single_glazing(
+        self, _row_num: int, _glazing_row: GlazingRow
+    ) -> str:
         """Write a single GlazingRow object to the PHPP "Components" worksheet.
 
         Return:
@@ -512,17 +514,17 @@ class Components:
         """
 
         for item in _glazing_row.create_xl_items(self.shape.name, _row_num=_row_num):
-            self.xl.write_xl_item(item)
+            await self.xl.write_xl_item(item)
         return self.glazings.get_glazing_phpp_id_by_row_num(_row_num)
 
-    def write_glazings(self, _glazing_rows: List[GlazingRow]) -> None:
+    async def write_glazings(self, _glazing_rows: List[GlazingRow]) -> None:
         """Write a list of GlazingRow objects to the PHPP "Components" worksheet."""
         for i, glazing_row in enumerate(
             _glazing_rows, start=self.glazings.section_first_entry_row
         ):
-            self.write_single_glazing(i, glazing_row)
+            await self.write_single_glazing(i, glazing_row)
 
-    def write_single_frame(self, _row_num: int, _frame_row: FrameRow) -> str:
+    async def write_single_frame(self, _row_num: int, _frame_row: FrameRow) -> str:
         """Write a single FrameRow object to the PHPP "Components" worksheet.
 
         Return:
@@ -530,16 +532,16 @@ class Components:
             * (str): The PHPP ID-name of the frame component written to the PHPP.
         """
         for item in _frame_row.create_xl_items(self.shape.name, _row_num=_row_num):
-            self.xl.write_xl_item(item)
+            await self.xl.write_xl_item(item)
         return self.frames.get_frame_phpp_id_by_row_num(_row_num)
 
-    def write_frames(self, _frame_row: List[FrameRow]) -> None:
+    async def write_frames(self, _frame_row: List[FrameRow]) -> None:
         """Write a list of FrameRow objects to the PHPP "Components" worksheet."""
         start = self.frames.section_first_entry_row
         for i, frame_row in enumerate(_frame_row, start=start):
-            self.write_single_frame(i, frame_row)
+            await self.write_single_frame(i, frame_row)
 
-    def write_single_ventilator(
+    async def write_single_ventilator(
         self, _row_num: int, _ventilator_row: VentilatorRow
     ) -> str:
         """Write a single VentilatorRow object to the PHPP "Components" worksheet.
@@ -549,11 +551,11 @@ class Components:
             * (str): The PHPP ID-name of the ventilator component written to the PHPP.
         """
         for item in _ventilator_row.create_xl_items(self.shape.name, _row_num=_row_num):
-            self.xl.write_xl_item(item)
+            await self.xl.write_xl_item(item)
         return self.ventilators.get_ventilator_phpp_id_by_row_num(_row_num)
 
-    def write_ventilators(self, _ventilator_row: List[VentilatorRow]) -> None:
+    async def write_ventilators(self, _ventilator_row: List[VentilatorRow]) -> None:
         """Write a list of VentilatorRow objects to the PHPP "Components" worksheet."""
         start = self.ventilators.section_first_entry_row
         for i, ventilator_row in enumerate(_ventilator_row, start):
-            self.write_single_ventilator(i, ventilator_row)
+            await self.write_single_ventilator(i, ventilator_row)

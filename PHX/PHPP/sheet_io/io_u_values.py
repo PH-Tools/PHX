@@ -231,19 +231,19 @@ class UValues:
         )
         self.write_single_constructor_block(new_constructor, _start_row)
 
-    def write_single_constructor_block(
+    async def write_single_constructor_block(
         self, _construction: uvalues_constructor.ConstructorBlock, _start_row: int
     ) -> None:
         """Write a single Construction with all the layers to the PHPP worksheet."""
         for item in _construction.create_xl_items(self.shape.name, _start_row):
-            self.xl.write_xl_item(item)
+            await self.xl.write_xl_item(item)
 
-    def write_constructor_blocks(
+    async def write_constructor_blocks(
         self, _const_blocks: List[uvalues_constructor.ConstructorBlock]
     ) -> None:
         """Write a list of ConstructorBlocks to the U-Values worksheet."""
 
-        self.clear_all_constructor_data(_clear_name=True)
+        await self.clear_all_constructor_data(_clear_name=True)
 
         assert len(_const_blocks) <= len(
             self.all_constructor_start_rows
@@ -252,7 +252,7 @@ class UValues:
         for construction, start_row in zip(
             _const_blocks, self.all_constructor_start_rows
         ):
-            self.write_single_constructor_block(construction, start_row)
+            await self.write_single_constructor_block(construction, start_row)
 
     def add_new_phx_construction(self, _phx_construction: PhxConstructionOpaque) -> str:
         """Add a new PHX Construction to the PHPP worksheet in the first empty slot found.
@@ -273,16 +273,20 @@ class UValues:
     # -------------------------------------------------------------------------
     # -- Removers
 
-    def clear_single_constructor_data(self, _row_num, _clear_name: bool = False) -> None:
+    async def clear_single_constructor_data(
+        self, _row_num, _clear_name: bool = False
+    ) -> None:
         """Clears the existing data from a single constructor block."""
         # -- main body data
         data_block_start = f"{self.shape.constructor.inputs.sec_1_description.column}{_row_num + self.shape.constructor.inputs.first_layer_row_offset}"
         data_block_end = f"{self.shape.constructor.inputs.thickness.column}{_row_num + self.shape.constructor.inputs.last_layer_row_offset}"
         data_block_range = f"{data_block_start}:{data_block_end}"
-        self.xl.write_xl_item(xl_data.XlItem(self.shape.name, data_block_range, None))
+        await self.xl.write_xl_item(
+            xl_data.XlItem(self.shape.name, data_block_range, None)
+        )
 
         # -- surface films
-        self.xl.write_xl_item(
+        await self.xl.write_xl_item(
             xl_data.XlItem(
                 self.shape.name,
                 f"{self.shape.constructor.inputs.r_si.column}{_row_num + 4}:{self.shape.constructor.inputs.r_se.column}{_row_num + 5}",
@@ -292,7 +296,7 @@ class UValues:
 
         # -- Assembly Name (Sometimes, like with Variants, will want to keep this)
         if _clear_name:
-            self.xl.write_xl_item(
+            await self.xl.write_xl_item(
                 xl_data.XlItem(
                     self.shape.name,
                     f"{self.shape.constructor.inputs.display_name.column}{_row_num + self.shape.constructor.inputs.name_row_offset}",
@@ -300,14 +304,14 @@ class UValues:
                 )
             )
 
-    def clear_all_constructor_data(self, _clear_name: bool = True) -> None:
+    async def clear_all_constructor_data(self, _clear_name: bool = True) -> None:
         """Remove all of the existing input data from all of the constructors in the PHPP."""
         for row_num in self.all_constructor_start_rows:
-            self.clear_single_constructor_data(row_num, _clear_name)
+            await self.clear_single_constructor_data(row_num, _clear_name)
 
     # -------------------------------------------------------------------------
 
-    def activate_variants(
+    async def activate_variants(
         self, _assembly_phpp_ids: List[VariantAssemblyLayerName]
     ) -> None:
         """Connect all the links to make the 'Variants' page drive the input values."""
@@ -327,7 +331,7 @@ class UValues:
             for variant_layer_id in _assembly_phpp_ids:
                 if variant_layer_id.display_name == assembly_name:
                     # -- Link to the variants layer name
-                    self.xl.write_xl_item(
+                    await self.xl.write_xl_item(
                         xl_data.XlItem(
                             self.shape.name,
                             f"{self.shape.constructor.inputs.variants_layer_name}{row_num + self.shape.constructor.inputs.first_layer_row_offset}",
@@ -336,7 +340,7 @@ class UValues:
                     )
 
                     # -- Link the variants layer conductivity
-                    self.xl.write_xl_item(
+                    await self.xl.write_xl_item(
                         xl_data.XlItem(
                             self.shape.name,
                             f"{self.shape.constructor.inputs.sec_1_conductivity.column}{row_num + self.shape.constructor.inputs.first_layer_row_offset}",
@@ -345,7 +349,7 @@ class UValues:
                     )
 
                     # -- Link the variants layer thickness
-                    self.xl.write_xl_item(
+                    await self.xl.write_xl_item(
                         xl_data.XlItem(
                             self.shape.name,
                             f"{self.shape.constructor.inputs.thickness.column}{row_num + self.shape.constructor.inputs.first_layer_row_offset}",
@@ -354,7 +358,7 @@ class UValues:
                     )
 
                     # -- Set the surface films to zero
-                    self.xl.write_xl_item(
+                    await self.xl.write_xl_item(
                         xl_data.XlItem(
                             self.shape.name,
                             f"{self.shape.constructor.inputs.r_si.column}{row_num + self.shape.constructor.inputs.rse_row_offset}:{self.shape.constructor.inputs.r_se.column}{row_num + self.shape.constructor.inputs.rsi_row_offset}",

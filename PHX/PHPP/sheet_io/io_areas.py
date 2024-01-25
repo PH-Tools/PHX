@@ -318,21 +318,21 @@ class Areas:
         self.surfaces = Surfaces(self.xl, self.shape, self.group_type_exposures)
         self.thermal_bridges = ThermalBridges(self.xl, self.shape)
 
-    def write_thermal_bridges(
+    async def write_thermal_bridges(
         self, _tbs: List[areas_thermal_bridges.ThermalBridgeRow]
     ) -> None:
         """Write all of the the thermal bridge data to the PHPP Areas worksheet."""
 
         for i, tb in enumerate(_tbs, start=self.thermal_bridges.section_first_entry_row):
             for item in tb.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
-    def write_surfaces(self, _surfaces: List[areas_surface.SurfaceRow]) -> None:
+    async def write_surfaces(self, _surfaces: List[areas_surface.SurfaceRow]) -> None:
         """Write all of the the surface data to the PHPP Areas worksheet."""
         start = self.surfaces.section_first_entry_row
         for i, surface in enumerate(_surfaces, start=start):
             for item in surface.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
     def _create_input_location_object(
         self, _phpp_model_obj: areas_data.AreasInput
@@ -349,12 +349,12 @@ class Areas:
             _input_row_offset=phpp_obj_shape.input_row_offset,
         )
 
-    def write_item(self, _phpp_model_obj: areas_data.AreasInput) -> None:
+    async def write_item(self, _phpp_model_obj: areas_data.AreasInput) -> None:
         """Write the VerificationInputItem item out to the PHPP Areas Worksheet."""
         input_object = self._create_input_location_object(_phpp_model_obj)
         input_row = input_object.find_input_row()
         xl_item = _phpp_model_obj.create_xl_item(self.shape.name, input_row)
-        self.xl.write_xl_item(xl_item)
+        await self.xl.write_xl_item(xl_item)
 
     def get_group_type_exposures(self) -> Dict[int, str]:
         """Return the group type exposures dictionary from the PHPP Areas worksheet."""
@@ -425,26 +425,28 @@ class Areas:
         value = self.xl.get_single_data_item(self.shape.name, f"{item.column}{item.row}")
         return Unit(float(value or 0.0), str(item.unit))
 
-    def set_surface_row_construction(
+    async def set_surface_row_construction(
         self, _row_num: int, _phpp_constriction_id: str
     ) -> None:
         """Set the construction-id for the surface row in the PHPP Areas worksheet."""
         col = self.shape.surface_rows.inputs.assembly_id.column
-        item = xl_data.XlItem(self.shape.name, f"{col}{_row_num}", _phpp_constriction_id)
-        self.xl.write_xl_item(item)
+        item = xl_data.XlItem(
+            self.shape.name, f"{col}{_row_num}", _phpp_constriction_id
+        )
+        await self.xl.write_xl_item(item)
 
-    def set_surface_row_solar_absorptivity(
+    async def set_surface_row_solar_absorptivity(
         self, _row_num: int, _absorptivity: float = 0.75
     ) -> None:
         """Set the solar absorptivity for the surface row in the PHPP Areas worksheet."""
         col = self.shape.surface_rows.inputs.absorptivity.column
         item = xl_data.XlItem(self.shape.name, f"{col}{_row_num}", _absorptivity)
-        self.xl.write_xl_item(item)
+        await self.xl.write_xl_item(item)
 
-    def set_surface_row_emissivity(
+    async def set_surface_row_emissivity(
         self, _row_num: int, _emissivity: float = 0.90
     ) -> None:
         """Set the emissivity for the surface row in the PHPP Areas worksheet."""
         col = self.shape.surface_rows.inputs.emissivity.column
         item = xl_data.XlItem(self.shape.name, f"{col}{_row_num}", _emissivity)
-        self.xl.write_xl_item(item)
+        await self.xl.write_xl_item(item)

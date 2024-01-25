@@ -148,7 +148,7 @@ class Windows:
         else:
             return self.find_last_entry_row(_row_end)
 
-    def set_single_window_construction_ids(
+    async def set_single_window_construction_ids(
         self,
         _row_num: int,
         _glazing_construction_id: str,
@@ -171,25 +171,25 @@ class Windows:
         """
         glazing_col = str(self.shape.window_rows.inputs.glazing_id.column)
         glazing_range = f"{glazing_col}{_row_num}"
-        self.xl.write_xl_item(
+        await self.xl.write_xl_item(
             XlItem(self.shape.name, glazing_range, _glazing_construction_id)
         )
 
         frame_col = str(self.shape.window_rows.inputs.frame_id.column)
         frame_range = f"{frame_col}{_row_num}"
-        self.xl.write_xl_item(
+        await self.xl.write_xl_item(
             XlItem(self.shape.name, frame_range, _frame_construction_id)
         )
 
-    def write_single_window(self, _row_num: int, _window_row: WindowRow) -> None:
+    async def write_single_window(self, _row_num: int, _window_row: WindowRow) -> None:
         """Write a single WindowRow object to the Windows worksheet."""
         for item in _window_row.create_xl_items(self.shape.name, _row_num=_row_num):
-            self.xl.write_xl_item(item)
+            await self.xl.write_xl_item(item)
 
-    def write_windows(self, _window_rows: List[WindowRow]) -> None:
+    async def write_windows(self, _window_rows: List[WindowRow]) -> None:
         """Write a list of WindowRow objects to the Windows worksheet."""
         for i, window_row in enumerate(_window_rows, start=self.first_entry_row):
-            self.write_single_window(i, window_row)
+            await self.write_single_window(i, window_row)
 
     def get_all_window_names(self) -> List[str]:
         """Return a list of all the window names found in the worksheet."""
@@ -262,12 +262,12 @@ class Windows:
         )
         return {get_name_from_glazing_id(_d) for _d in glazing_data}
 
-    def activate_variants(self) -> None:
+    async def activate_variants(self) -> None:
         """Set the frame and glass values to link to the Variants worksheet."""
 
         for row_num in range(self.first_entry_row, self.last_entry_row):
             # -- Link Glazing to the variants type
-            self.xl.write_xl_item(
+            await self.xl.write_xl_item(
                 XlItem(
                     self.shape.name,
                     f"{self.shape.window_rows.inputs.glazing_id.column}{row_num}",
@@ -276,7 +276,7 @@ class Windows:
             )
 
             # -- Link Frame to the variants type
-            self.xl.write_xl_item(
+            await self.xl.write_xl_item(
                 XlItem(
                     self.shape.name,
                     f"{self.shape.window_rows.inputs.frame_id.column}{row_num}",
@@ -284,7 +284,7 @@ class Windows:
                 )
             )
 
-    def scale_window_size(self, _row_num: int, _scale_factor: float) -> None:
+    async def scale_window_size(self, _row_num: int, _scale_factor: float) -> None:
         """Scale the size of a single window based on an overall scale-factor.
 
         This is used during baseline model generation to scale the size of the windows
@@ -324,14 +324,14 @@ class Windows:
         new_height = height * edge_scaling_factor
 
         # -- Set the new dimensions
-        self.xl.write_xl_item(
+        await self.xl.write_xl_item(
             XlItem(
                 self.shape.name,
                 f"{self.shape.window_rows.inputs.width.column}{_row_num}",
                 new_width,
             )
         )
-        self.xl.write_xl_item(
+        await self.xl.write_xl_item(
             XlItem(
                 self.shape.name,
                 f"{self.shape.window_rows.inputs.height.column}{_row_num}",

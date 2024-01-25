@@ -177,7 +177,7 @@ class PHPPConnection:
             return False
         return True
 
-    def write_certification_config(self, phx_project: project.PhxProject) -> None:
+    async def write_certification_config(self, phx_project: project.PhxProject) -> None:
         for phx_variant in phx_project.variants:
             # TODO: how to handle multiple variants?
 
@@ -193,28 +193,28 @@ class PHPPConnection:
                 return
 
             # --- Building Type / Use
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_building_category_type",
                     input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_category_type,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_building_use_type",
                     input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_use_type,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_building_ihg_type",
                     input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_ihg_type,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_building_occupancy_type",
@@ -223,35 +223,35 @@ class PHPPConnection:
             )
 
             # --- Certification Config
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_certification_type",
                     input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_type,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_certification_class",
                     input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_class,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_pe_type",
                     input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_pe_type,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_enerphit_type",
                     input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_enerphit_type,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.enum(
                     shape=self.shape.VERIFICATION,
                     input_type="phi_retrofit_type",
@@ -262,14 +262,14 @@ class PHPPConnection:
             # ---- Model Parameters
             if not phx_variant.phius_cert.ph_building_data:
                 continue
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type="num_of_units",
                     input_data=phx_variant.phius_cert.ph_building_data.num_of_units,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type="setpoint_winter",
@@ -278,7 +278,7 @@ class PHPPConnection:
                     target_unit=self.shape.VERIFICATION.setpoint_winter.unit,
                 )
             )
-            self.verification.write_item(
+            await self.verification.write_item(
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type="setpoint_summer",
@@ -290,7 +290,7 @@ class PHPPConnection:
 
         return None
 
-    def write_climate_data(self, phx_project: project.PhxProject) -> None:
+    async def write_climate_data(self, phx_project: project.PhxProject) -> None:
         """Write the variant's weather-station data to the PHPP 'Climate' worksheet."""
 
         for phx_variant in phx_project.variants:
@@ -298,16 +298,18 @@ class PHPPConnection:
             weather_station_data = climate_entry.ClimateDataBlock(
                 shape=self.shape.CLIMATE, phx_site=phx_variant.site
             )
-            self.climate.write_climate_block(weather_station_data)
+            await self.climate.write_climate_block(weather_station_data)
 
             # -- Set the active weather station
             active_climate_data = climate_entry.ClimateSettings(
                 shape=self.shape.CLIMATE, phx_site=phx_variant.site
             )
-            self.climate.write_active_climate(active_climate_data)
+            await self.climate.write_active_climate(active_climate_data)
         return None
 
-    def write_project_constructions(self, phx_project: project.PhxProject) -> None:
+    async def write_project_constructions(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write all of the opaque constructions to the PHPP 'U-Values' worksheet."""
 
         construction_blocks: List[uvalues_constructor.ConstructorBlock] = []
@@ -318,10 +320,12 @@ class PHPPConnection:
                 )
             )
 
-        self.u_values.write_constructor_blocks(construction_blocks)
+        await self.u_values.write_constructor_blocks(construction_blocks)
         return None
 
-    def write_project_window_components(self, phx_project: project.PhxProject) -> None:
+    async def write_project_window_components(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write all of the frame and glass constructions from a PhxProject to the PHPP 'Components' worksheet."""
 
         glazing_component_rows: List[component_glazing.GlazingRow] = []
@@ -337,11 +341,11 @@ class PHPPConnection:
                     shape=self.shape.COMPONENTS, phx_construction=phx_construction
                 )
             )
-        self.components.write_glazings(glazing_component_rows)
-        self.components.write_frames(frame_component_rows)
+        await self.components.write_glazings(glazing_component_rows)
+        await self.components.write_frames(frame_component_rows)
         return None
 
-    def write_project_ventilation_components(
+    async def write_project_ventilation_components(
         self, phx_project: project.PhxProject
     ) -> None:
         """Write all of the ventilators from a PhxProject to the PHPP 'Components' worksheet."""
@@ -355,12 +359,12 @@ class PHPPConnection:
                         phx_vent_sys=phx_ventilator,
                     )
                     phpp_ventilator_rows.append(new_vent_row)
-        self.components.write_ventilators(phpp_ventilator_rows)
+        await self.components.write_ventilators(phpp_ventilator_rows)
         return None
 
-    def write_project_tfa(self, phx_project: project.PhxProject) -> None:
+    async def write_project_tfa(self, phx_project: project.PhxProject) -> None:
         for phx_variant in phx_project.variants:
-            self.areas.write_item(
+            await self.areas.write_item(
                 areas_data.AreasInput(
                     shape=self.shape.AREAS,
                     input_type="tfa_input",
@@ -371,7 +375,9 @@ class PHPPConnection:
             )
         return None
 
-    def write_project_opaque_surfaces(self, phx_project: project.PhxProject) -> None:
+    async def write_project_opaque_surfaces(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write all of the opaque surfaces from a PhxProject to the PHPP 'Areas' worksheet."""
 
         surfaces: List[areas_surface.SurfaceRow] = []
@@ -396,10 +402,12 @@ class PHPPConnection:
                 "By default the PHPP can only have 100 surfaces input."
             )
 
-        self.areas.write_surfaces(surfaces)
+        await self.areas.write_surfaces(surfaces)
         return None
 
-    def write_project_thermal_bridges(self, phx_project: project.PhxProject) -> None:
+    async def write_project_thermal_bridges(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write all of the thermal-bridge elements of a PhxProject to the PHPP 'Areas' worksheet."""
 
         thermal_bridges: List[areas_thermal_bridges.ThermalBridgeRow] = []
@@ -417,10 +425,12 @@ class PHPPConnection:
                 "By default the PHPP can only have 100 thermal bridges input."
             )
 
-        self.areas.write_thermal_bridges(thermal_bridges)
+        await self.areas.write_thermal_bridges(thermal_bridges)
         return None
 
-    def write_project_window_surfaces(self, phx_project: project.PhxProject) -> None:
+    async def write_project_window_surfaces(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write all of the window surfaces from a PhxProject to the PHPP 'Windows' worksheet."""
 
         # -- First, populate the Variant types
@@ -431,7 +441,7 @@ class PHPPConnection:
             for phx_aperture in phx_component.apertures
         ]
         for i, variant_type_name in enumerate(sorted(variant_type_names)):
-            self.variants.write_window_type(variant_type_name, i)
+            await self.variants.write_window_type(variant_type_name, i)
 
         # -- Get the variant types in a dict
         window_type_phpp_ids = self.variants.get_window_type_phpp_ids()
@@ -482,10 +492,12 @@ class PHPPConnection:
                 "By default the PHPP can only have 150 windows input."
             )
 
-        self.windows.write_windows(phpp_windows)
+        await self.windows.write_windows(phpp_windows)
         return None
 
-    def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
+    async def write_project_window_shading(
+        self, phx_project: project.PhxProject
+    ) -> None:
         def _get_ap_element_from_dict(
             _window_name: str, _dict: Dict[str, components.PhxApertureElement]
         ) -> components.PhxApertureElement:
@@ -538,13 +550,13 @@ class PHPPConnection:
                     phx_aperture_element.summer_shading_factor,
                 )
             )
-        self.shading.write_shading(phpp_shading_rows)
+        await self.shading.write_shading(phpp_shading_rows)
 
         # TODO: option to clear all the dimensional info?
 
         return None
 
-    def write_project_ventilators(self, phx_project: project.PhxProject) -> None:
+    async def write_project_ventilators(self, phx_project: project.PhxProject) -> None:
         """Write all of the used Ventilator Units from a PhxProject to the PHPP 'Additional Vent' worksheet."""
 
         phpp_vent_unit_rows: List[vent_units.VentUnitRow] = []
@@ -563,10 +575,10 @@ class PHPPConnection:
                     )
                     phpp_vent_unit_rows.append(new_vent_row)
 
-        self.addnl_vent.write_vent_units(phpp_vent_unit_rows)
+        await self.addnl_vent.write_vent_units(phpp_vent_unit_rows)
         return None
 
-    def write_project_spaces(self, phx_project: project.PhxProject) -> None:
+    async def write_project_spaces(self, phx_project: project.PhxProject) -> None:
         """Write all of the PH-Spaces from a PhxProject to the PHPP 'Additional Vent' worksheet."""
 
         phpp_vent_rooms: List[vent_space.VentSpaceRow] = []
@@ -609,28 +621,30 @@ class PHPPConnection:
                 "By default the PHPP can only have 30 spaces input."
             )
 
-        self.addnl_vent.write_spaces(phpp_vent_rooms)
+        await self.addnl_vent.write_spaces(phpp_vent_rooms)
         return None
 
-    def write_project_ventilation_type(self, phx_project: project.PhxProject) -> None:
+    async def write_project_ventilation_type(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Set the Ventilation-Type to the PHPP 'Ventilation' worksheet."""
 
         for variant in phx_project.variants:
-            self.ventilation.write_ventilation_type(
+            await self.ventilation.write_ventilation_type(
                 # TODO: Get the actual type from the model someplace?
                 # TODO: How to combine Variants?
                 ventilation_data.VentilationInputItem.vent_type(
                     self.shape.VENTILATION, "1-Balanced PH ventilation with HR"
                 )
             )
-            self.ventilation.write_multi_vent_worksheet_on(
+            await self.ventilation.write_multi_vent_worksheet_on(
                 ventilation_data.VentilationInputItem.multi_unit_on(
                     self.shape.VENTILATION, "x"
                 )
             )
         return None
 
-    def write_project_volume(self, phx_project: project.PhxProject) -> None:
+    async def write_project_volume(self, phx_project: project.PhxProject) -> None:
         """Write the Vn50 and Vv to the PHPP 'Ventilation Worksheet."""
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
@@ -639,13 +653,13 @@ class PHPPConnection:
                 continue
             bldg: building.PhxBuilding = variant.building
 
-            self.ventilation.write_Vn50_volume(
+            await self.ventilation.write_Vn50_volume(
                 ventilation_data.VentilationInputItem.airtightness_Vn50(
                     self.shape.VENTILATION, bldg.net_volume
                 )
             )
 
-    def write_project_airtightness(self, phx_project: project.PhxProject) -> None:
+    async def write_project_airtightness(self, phx_project: project.PhxProject) -> None:
         """Write the Airtightness data to the PHPP 'Ventilation' worksheet."""
 
         for variant in phx_project.variants:
@@ -656,28 +670,28 @@ class PHPPConnection:
             ph_bldg: certification.PhxPhBuildingData = variant.phius_cert.ph_building_data
 
             # TODO: Get the actual values from the Model somehow
-            self.ventilation.write_wind_coeff_e(
+            await self.ventilation.write_wind_coeff_e(
                 ventilation_data.VentilationInputItem.wind_coeff_e(
                     self.shape.VENTILATION, ph_bldg.wind_coefficient_e
                 )
             )
-            self.ventilation.write_wind_coeff_f(
+            await self.ventilation.write_wind_coeff_f(
                 ventilation_data.VentilationInputItem.wind_coeff_f(
                     self.shape.VENTILATION, ph_bldg.wind_coefficient_f
                 )
             )
-            self.ventilation.write_airtightness_n50(
+            await self.ventilation.write_airtightness_n50(
                 ventilation_data.VentilationInputItem.airtightness_n50(
                     self.shape.VENTILATION, ph_bldg.airtightness_n50
                 )
             )
         return None
 
-    def write_project_hot_water(self, phx_project: project.PhxProject) -> None:
+    async def write_project_hot_water(self, phx_project: project.PhxProject) -> None:
         """Write the Hot Water data to the PHPP 'DHW+Distribution' worksheet."""
         for variant in phx_project.variants:
             mech_collection = variant.default_mech_collection
-            
+
             # -- Tanks
             # Use only the first 2 tanks for PHPP
             if len(mech_collection.dhw_tank_devices) > 2:
@@ -698,7 +712,7 @@ class PHPPConnection:
                         i,
                     )
                 )
-            self.hot_water.write_tanks(tank_inputs)
+            await self.hot_water.write_tanks(tank_inputs)
 
             # -- Branch Piping
             branch_piping_inputs = []
@@ -722,7 +736,7 @@ class PHPPConnection:
                         mech_collection._distribution_num_hw_tap_points,
                     )
                 )
-            self.hot_water.write_branch_piping(branch_piping_inputs)
+            await self.hot_water.write_branch_piping(branch_piping_inputs)
 
             # -- Recirculation Piping
             recirc_piping_inputs = []
@@ -743,11 +757,13 @@ class PHPPConnection:
                         i,
                     )
                 )
-            self.hot_water.write_recirc_piping(recirc_piping_inputs)
+            await self.hot_water.write_recirc_piping(recirc_piping_inputs)
 
         return None
 
-    def write_project_res_elec_appliances(self, phx_project: project.PhxProject) -> None:
+    async def write_project_res_elec_appliances(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write out all of the detailed residential appliances to the "Electricity" Worksheet."""
         equipment_inputs = []
         for phx_variant in phx_project.variants:
@@ -756,25 +772,29 @@ class PHPPConnection:
                     equipment_inputs.append(
                         electricity_item.ElectricityItemXLWriter(phx_equip)
                     )
-            self.electricity.write_equipment(equipment_inputs)
+            await self.electricity.write_equipment(equipment_inputs)
 
         return None
 
-    def write_non_res_utilization_profiles(self, phx_project: project.PhxProject) -> None:
+    async def write_non_res_utilization_profiles(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write out all of the Utilization patterns to the "Use non-res" Worksheet."""
         # TODO: build this....
         # for pattern in phx_project.utilization_patterns_occupancy:
         #     print(pattern)
 
-    def write_non_res_space_lighting(self, phx_project: project.PhxProject) -> None:
+    async def write_non_res_space_lighting(
+        self, phx_project: project.PhxProject
+    ) -> None:
         """Write out all of the Space Lighting values to the "Electricity non-res" Worksheet."""
         return
 
-    def write_non_res_IHG(self, phx_project: project.PhxProject) -> None:
+    async def write_non_res_IHG(self, phx_project: project.PhxProject) -> None:
         """Write out all of the Occupancy patterns to the "IHG non-res" Worksheet."""
         return
 
-    def activate_variant_assemblies(self) -> None:
+    async def activate_variant_assemblies(self) -> None:
         """Remove all existing U-Value information and link assemblies to the Variants worksheet."""
 
         # -- Collect all the assemblies from the U-Values page
@@ -788,7 +808,7 @@ class PHPPConnection:
                     "You will have to set up the assembly-layer Variants links manually."
                 )
                 continue
-            self.variants.write_assembly_layer(assembly_name, i)
+            await self.variants.write_assembly_layer(assembly_name, i)
 
         # -- Get all the Variant assembly names with prefix
         assembly_phpp_ids = self.variants.get_assembly_layer_phpp_ids()
@@ -798,21 +818,21 @@ class PHPPConnection:
 
         return None
 
-    def activate_variant_windows(self) -> None:
+    async def activate_variant_windows(self) -> None:
         """Set the Frame and Glass Components to link to the Variants worksheet for all windows."""
 
         self.windows.activate_variants()
 
         return None
 
-    def activate_variant_ventilation(self) -> None:
+    async def activate_variant_ventilation(self) -> None:
         """Set the ACH, Ventilation type to link to the Variants worksheet."""
 
         self.ventilation.activate_variants()
 
         return None
 
-    def activate_variant_additional_vent(self) -> None:
+    async def activate_variant_additional_vent(self) -> None:
         """Set the Ventilator, duct length and insulation to link to the Variants worksheet."""
 
         # -- Find the locations of the Ventilation input items

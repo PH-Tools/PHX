@@ -144,12 +144,12 @@ class Lighting:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.lighting_rows.inputs, _field_name).unit
 
-    def set_lighting_power_density(
+    async def set_lighting_power_density(
         self, _row_num: int, _power_density: float, _unit: str = "W/M2"
     ) -> None:
         """Set the lighting power density for the given row number."""
         _range = f"{self.shape.lighting_rows.inputs.installed_power.column}{_row_num}"
-        self.xl.write_xl_item(
+        await self.xl.write_xl_item(
             xl_data.XlItem(
                 sheet_name=self.shape.name,
                 xl_range=_range,

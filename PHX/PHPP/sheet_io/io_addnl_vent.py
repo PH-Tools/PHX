@@ -358,7 +358,7 @@ class AddnlVent:
         self.vent_units = VentUnits(self.xl, self.shape)
         self.vent_ducts = VentDucts(self.xl, self.shape)
 
-    def write_spaces(self, _spaces: List[vent_space.VentSpaceRow]) -> None:
+    async def write_spaces(self, _spaces: List[vent_space.VentSpaceRow]) -> None:
         if not self.spaces.section_first_entry_row:
             self.spaces.section_first_entry_row = (
                 self.spaces.find_section_first_entry_row()
@@ -366,16 +366,16 @@ class AddnlVent:
 
         for i, space in enumerate(_spaces, start=self.spaces.section_first_entry_row):
             for item in space.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
-    def write_vent_units(self, _vent_units: List[vent_units.VentUnitRow]) -> None:
+    async def write_vent_units(self, _vent_units: List[vent_units.VentUnitRow]) -> None:
         for i, vent_unit in enumerate(
             _vent_units, start=self.vent_units.section_first_entry_row
         ):
             for item in vent_unit.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
-    def write_vent_ducts(self, _vent_ducts: List) -> None:
+    async def write_vent_ducts(self, _vent_ducts: List) -> None:
         if not self.vent_ducts.section_first_entry_row:
             self.vent_ducts.section_first_entry_row = (
                 self.vent_ducts.find_section_first_entry_row()
@@ -385,9 +385,9 @@ class AddnlVent:
             _vent_ducts, start=self.vent_ducts.section_first_entry_row
         ):
             for item in vent_duct.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
-    def activate_variants(
+    async def activate_variants(
         self, variants_worksheet_name: str, vent_unit_range: str
     ) -> None:
         """Link the Vent unit to the Variants worksheet."""
@@ -396,7 +396,7 @@ class AddnlVent:
         start_row = self.vent_units.find_section_first_entry_row()
         end_row = self.vent_units.find_section_last_entry_row()
         for i in range(start_row, end_row + 1):
-            self.xl.write_xl_item(
+            await self.xl.write_xl_item(
                 xl_data.XlItem(
                     self.shape.name,
                     f"{self.shape.units.inputs.unit_selected.column}{i}",

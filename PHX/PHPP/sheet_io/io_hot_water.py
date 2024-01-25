@@ -233,15 +233,15 @@ class HotWater:
         self.tanks = Tanks(self.xl, self.shape)
         self.dhw_piping = DHWPiping(self.xl, self.shape)
 
-    def write_tanks(self, _phpp_hw_tanks: List[hot_water_tank.TankInput]) -> None:
+    async def write_tanks(self, _phpp_hw_tanks: List[hot_water_tank.TankInput]) -> None:
         """Write the tank data to the spreadsheet."""
         for phpp_Tank_input in _phpp_hw_tanks:
             for item in phpp_Tank_input.create_xl_items(
                 self.shape.name, self.tanks.tank_1.entry_row_start
             ):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
-    def write_branch_piping(
+    async def write_branch_piping(
         self, _phpp_branch_piping: List[hot_water_piping.BranchPipingInput]
     ) -> None:
         """Write the branch piping data to the spreadsheet."""
@@ -249,9 +249,9 @@ class HotWater:
             for item in pipe_inputs.create_xl_items(
                 self.shape.name, self.dhw_piping.branch_piping.header_row
             ):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
-    def write_recirc_piping(
+    async def write_recirc_piping(
         self, _phpp_recirc_piping: List[hot_water_piping.BranchPipingInput]
     ) -> None:
         """Write the recirc piping data to the spreadsheet."""
@@ -259,7 +259,7 @@ class HotWater:
             for item in pipe_inputs.create_xl_items(
                 self.shape.name, self.dhw_piping.recirc_piping.header_row
             ):
-                self.xl.write_xl_item(item)
+                await self.xl.write_xl_item(item)
 
     def get_all_tank_device_data(self) -> List[TankData]:
         """Get all the tank data from the PHPP worksheet."""
