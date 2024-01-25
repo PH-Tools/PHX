@@ -116,8 +116,12 @@ class XLConnection:
         self._output: Callable[[str], Any] = output
         self.xl_file_path: Optional[pathlib.Path] = xl_file_path
 
+        # A dict with sheet names as keys, and XL data as values
+        self.sheet_cache: Dict[str, xl_Sheet_Protocol] = {}
+
         self._wb: Optional[xl_Book_Protocol] = None
         self.output(f"> connected to excel doc: '{self.wb.fullname}'")
+        self.worksheet_names: Set[str] = self.get_worksheet_names()
 
     def activate_new_workbook(self) -> xl_Book_Protocol:
         """Create a new blank workbook and set as the 'Active' book. Returns the new book."""
@@ -297,11 +301,15 @@ class XLConnection:
         --------
             * (xw.main.Sheet): The excel sheet found.
         """
-        if str(_sheet_name).upper() not in self.get_worksheet_names():
+        if str(_sheet_name).upper() not in self.worksheet_names:
             msg = f"Error: Key '{_sheet_name}' was not found in the Workbook '{self.wb.name}' Sheets?"
             raise KeyError(msg)
 
-        return self.wb.sheets[_sheet_name]
+        # if the sheet dict doesn't exist, create it in the cache
+        if _sheet_name not in self.sheet_cache:
+            self.sheet_cache[_sheet_name] = self.wb.sheets[_sheet_name]
+
+        return self.sheet_cache[_sheet_name]
 
     def get_last_sheet(self) -> xl_Sheet_Protocol:
         """Return the last Worksheet in the Workbook.
