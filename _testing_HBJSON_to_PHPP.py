@@ -12,11 +12,17 @@ from PHX.from_HBJSON import read_HBJSON_file, create_project
 from PHX.PHPP import phpp_app
 from PHX.xl import xl_app
 
-# --- Input file Path
+sys.argv = sys.argv[1:]
+# --- Input file Path; optionally provided as first argument
 # -------------------------------------------------------------------------
-SOURCE_FILE = pathlib.Path(
-    "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/LEVINE_240106.hbjson"
-)
+if len(sys.argv) < 1:
+    SOURCE_FILE = pathlib.Path(
+        "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/sample/hbjson/LEVINE_240106.hbjson"
+    ).resolve()
+else:
+    SOURCE_FILE = pathlib.Path(str(sys.argv[0])).resolve()
+
+
 
 if __name__ == "__main__":
     # --- Read in an existing HB_JSON and re-build the HB Objects
