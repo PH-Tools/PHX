@@ -80,18 +80,20 @@ def test_xl_app_unprotect_all_sheets():
         assert sheet.protected == False
 
 
-def test_xl_app_create_new_worksheet():
+def test_xl_app_create_new_worksheet() -> None:
     mock_xw = Mock_XL_Framework()
     app = xl_app.XLConnection(xl_framework=mock_xw)
 
+    # -- Make sure the sheet isn't in the book to start
     new_sheet_name = "A Test Worksheet"
     assert new_sheet_name not in app.wb.sheets
 
+    # -- Add the sheet
     app.create_new_worksheet(new_sheet_name)
-    # assert new_sheet_name in app.wb.sheets
+    assert new_sheet_name in app.wb.sheets
 
 
-def test_xl_app_create_new_worksheet_already_in_raises_ValueError():
+def test_xl_app_create_new_worksheet_already_in_raises_ValueError() -> None:
     mock_xw = Mock_XL_Framework()
     app = xl_app.XLConnection(xl_framework=mock_xw)
 

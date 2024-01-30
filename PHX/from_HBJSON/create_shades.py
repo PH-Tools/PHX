@@ -22,10 +22,15 @@ try:
         ComponentFaceOpacity,
         ComponentColor,
     )
-    from PHX.from_HBJSON.cleanup_merge_faces import sort_hb_faces, merge_hb_shades
+    from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_shades
     from PHX.from_HBJSON import create_geometry
 except ImportError as e:
     raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
+
+try:
+    from honeybee_ph_utils import face_tools
+except ImportError as e:
+    raise ImportError("\nFailed to import honeybee_ph_utils:\n\t{}".format(e))
 
 
 def create_new_component_from_orphaned_shade(
@@ -89,7 +94,7 @@ def add_hb_model_shades_to_variant(
     for hb_shade_group in hb_shade_groups.values():
         # -- Merge HB-Shade-Faces
         if _merge_faces:
-            face_groups = sort_hb_faces(
+            face_groups = face_tools.group_hb_faces(
                 hb_shade_group, _tolerance, _angle_tolerance_degrees
             )
             hb_shade_group: List[Shade] = []

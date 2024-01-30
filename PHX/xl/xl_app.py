@@ -116,8 +116,15 @@ class XLConnection:
         self._output: Callable[[str], Any] = output
         self.xl_file_path: Optional[pathlib.Path] = xl_file_path
 
+        # A dict with sheet names as keys, and XL data as values
+        self.sheet_cache: Dict[str, xl_Sheet_Protocol] = {}
+        
         self._wb: Optional[xl_Book_Protocol] = None
         self.output(f"> connected to excel doc: '{self.wb.fullname}'")
+    
+    @property
+    def worksheet_names(self)->Set[str]:
+        return self.get_worksheet_names()
 
     def activate_new_workbook(self) -> xl_Book_Protocol:
         """Create a new blank workbook and set as the 'Active' book. Returns the new book."""
@@ -227,11 +234,14 @@ class XLConnection:
         """Try and add a new Worksheet to the Workbook."""
         try:
             self.wb.sheets.add(_sheet_name, before, after)
+            self.sheet_cache[_sheet_name] = self.wb.sheets[_sheet_name]
             self.output(f"Adding '{_sheet_name}' to Workbook")
         except ValueError:
             self.output(f"Worksheet '{_sheet_name}' already in Workbook.")
 
-        self.get_sheet_by_name(_sheet_name).clear()
+        #-- Clear the new sheet
+        new_sheet = self.get_sheet_by_name(_sheet_name)
+        new_sheet.clear()
 
     def find_row(
         self,
@@ -286,22 +296,29 @@ class XLConnection:
         """
         return {sh.name.upper() for sh in self.wb.sheets}
 
-    def get_sheet_by_name(self, _sheet_name: Union[str, int]) -> xl_Sheet_Protocol:
+    def get_sheet_by_name(self, _sheet_name: Optional[Union[str, int]]) -> xl_Sheet_Protocol:
         """Returns an Excel Sheet with the specified name, or KeyError if not found.
 
         Arguments:
         ----------
-            * _sheet_name: (Union[str, int]): The excel sheet name or index num. to locate.
+            * _sheet_name: (str): The excel sheet name or index num. to locate.
 
         Returns:
         --------
             * (xw.main.Sheet): The excel sheet found.
         """
-        if str(_sheet_name).upper() not in self.get_worksheet_names():
+        if not _sheet_name:
+            raise WriteValueError(_sheet_name, "None", "None", "No sheet name provided.")
+
+        if str(_sheet_name).upper() not in self.worksheet_names:
             msg = f"Error: Key '{_sheet_name}' was not found in the Workbook '{self.wb.name}' Sheets?"
             raise KeyError(msg)
+        
+        # if the sheet dict doesn't exist, create it in the cache
+        if _sheet_name not in self.sheet_cache:
+            self.sheet_cache[str(_sheet_name)] = self.wb.sheets[_sheet_name]
 
-        return self.wb.sheets[_sheet_name]
+        return self.sheet_cache[str(_sheet_name)]
 
     def get_last_sheet(self) -> xl_Sheet_Protocol:
         """Return the last Worksheet in the Workbook.
