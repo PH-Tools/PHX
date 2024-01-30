@@ -47,9 +47,14 @@ except ImportError as e:
 
 try:
     from PHX.model import project
-    from PHX.from_HBJSON.cleanup_merge_faces import sort_hb_faces, merge_hb_faces
+    from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_faces
 except ImportError as e:
     raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
+
+try:
+    from honeybee_ph_utils import face_tools
+except ImportError as e:
+    raise ImportError("\nFailed to import honeybee_ph_utils:\n\t{}".format(e))
 
 logger = logging.getLogger()
 
@@ -371,15 +376,17 @@ def merge_foundations(_hb_rooms: List[room.Room]) -> Dict[str, PhFoundation]:
     # -- Group by Identifier
     foundation_groups = {}
     for rm in _hb_rooms:
-        for foundation in rm.properties.ph.ph_foundations:
+        foundations = rm.properties.ph.ph_foundations # type: ignore
+        for foundation in foundations:
             foundation_groups[foundation.identifier] = foundation
 
     # -- Warn if more than 3 of them
     if len(foundation_groups) > 3:
+        name = _hb_rooms[0].properties.ph.ph_bldg_segment.display_name # type: ignore
         msg = (
             f"\tWarning: WUFI-Passive only allows 3 Foundation types. "
             f" {len(foundation_groups)} found on the Building Segment '"
-            f"{_hb_rooms[0].properties.ph.ph_bldg_segment.display_name}'?"
+            f"{name}'?" 
         )
         print(msg)
 
@@ -422,7 +429,7 @@ def merge_rooms(
     # -- Try and merge the Faces to simplify the geometry
     if _merge_faces:
         logger.debug(f"Merging Faces with tolerance: {_tolerance}")
-        face_groups = sort_hb_faces(exposed_faces, _tolerance, _angle_tolerance_degrees)
+        face_groups = face_tools.group_hb_faces(exposed_faces, _tolerance, _angle_tolerance_degrees)
         merged_faces = []
         for face_group in face_groups:
             const_name = face_group[0].properties.energy.construction.display_name
