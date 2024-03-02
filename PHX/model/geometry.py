@@ -253,7 +253,7 @@ class PhxPolygon:
             if not _ in other.child_polygon_ids:
                 return False
 
-        # # -- Chech the actual vertices
+        # # -- Check the actual vertices
         if not len(self.vertices) == len(other.vertices):
             return False
         # -- For each Vertix, make sure this is an equivalent vertix in the other
