@@ -235,7 +235,7 @@ def _set_phx_window_type_u_w_value(
         _phx_window_type.frame_factor = iso_10077_1.calculate_window_frame_factor(
             _hbph_frame, _hbph_glazing
         )
-        _phx_window_type.u_value_window = iso_10077_1.calculate_window_uw(
+        _phx_window_type.u_value_window = iso_10077_1.calculate_standard_window_uw(
             _hbph_frame, _hbph_glazing
         )
     return _phx_window_type
