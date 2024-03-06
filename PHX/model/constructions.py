@@ -8,6 +8,13 @@ from typing import ClassVar, Union, List, Optional, Generator
 from dataclasses import dataclass, field
 import uuid
 
+@dataclass
+class PhxColor:
+    # Default color is white
+    alpha: int = 255
+    red: int = 255
+    green: int = 255
+    blue: int = 255
 
 @dataclass
 class PhxMaterial:
@@ -19,6 +26,7 @@ class PhxMaterial:
     water_vapor_resistance: float = 0.0
     reference_water: float = 0.0
     percentage_of_assembly: float = 1.0
+    argb_color: PhxColor = field(default_factory=PhxColor)
 
 
 @dataclass

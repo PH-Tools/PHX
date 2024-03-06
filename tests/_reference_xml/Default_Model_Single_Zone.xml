@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_bfb7b23e..Face4</Name>
+						<Name>Room_1_95f6e17f..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_bfb7b23e..Face5</Name>
+						<Name>Room_1_95f6e17f..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -586,6 +586,12 @@
 						<HeatCapacity>790.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -598,6 +604,12 @@
 						<HeatCapacity>840.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="2">
@@ -610,6 +622,12 @@
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="3">
@@ -622,6 +640,12 @@
 						<HeatCapacity>1000.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="4">
@@ -634,6 +658,12 @@
 						<HeatCapacity>1090.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 			</Layers>
@@ -654,6 +684,12 @@
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -666,6 +702,12 @@
 						<HeatCapacity>900.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 			</Layers>
@@ -686,6 +728,12 @@
 						<HeatCapacity>1460.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -698,6 +746,12 @@
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="2">
@@ -710,6 +764,12 @@
 						<HeatCapacity>840.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="3">
@@ -722,6 +782,12 @@
 						<HeatCapacity>1000.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="4">
@@ -734,6 +800,12 @@
 						<HeatCapacity>590.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 			</Layers>

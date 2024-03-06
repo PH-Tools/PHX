@@ -16,5 +16,11 @@ def test_default_PhxLayer(reset_class_counters):
         "<HeatCapacity>0.0</HeatCapacity>",
         "<WaterVaporResistance>0.0</WaterVaporResistance>",
         "<ReferenceWaterContent>0.0</ReferenceWaterContent>",
+        "<Color>",
+        "<Alpha>255</Alpha>",
+        "<Red>255</Red>",
+        "<Green>255</Green>",
+        "<Blue>255</Blue>",
+        "</Color>",
         "</Material>",
     ]

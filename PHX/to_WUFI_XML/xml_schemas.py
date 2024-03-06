@@ -825,8 +825,16 @@ def _PhxMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
         XML_Node("HeatCapacity", _m.heat_capacity),
         XML_Node("WaterVaporResistance", _m.water_vapor_resistance),
         XML_Node("ReferenceWaterContent", _m.reference_water),
+        XML_Object("Color", _m.argb_color, _schema_name="_PhxColor"),
     ]
 
+def _PhxColor(_c: constructions.PhxColor) -> List[xml_writable]:
+    return [
+        XML_Node("Alpha", _c.alpha),
+        XML_Node("Red", _c.red),
+        XML_Node("Green", _c.green),
+        XML_Node("Blue", _c.blue),
+    ]
 
 def _PhxConstructionWindow(
     _wt: constructions.PhxConstructionWindow,

@@ -64,7 +64,7 @@
 	<Variants count="1">
 		<Variant index="0">
 			<IdentNr>1</IdentNr>
-			<Name>Unnamed_Bldg_Segment</Name>
+			<Name>_unnamed_bldg_segment_</Name>
 			<Remarks/>
 			<Graphics_3D>
 				<Vertices count="48">
@@ -585,7 +585,7 @@
 				<Components count="7">
 					<Component index="0">
 						<IdentNr>23</IdentNr>
-						<Name>Room_3_8f9257a7..Face4</Name>
+						<Name>Room_3_807e6764..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -601,7 +601,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>24</IdentNr>
-						<Name>Room_3_8f9257a7..Face5</Name>
+						<Name>Room_3_807e6764..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -636,7 +636,7 @@
 					</Component>
 					<Component index="3">
 						<IdentNr>44</IdentNr>
-						<Name>PhWindowConstruction_516ecc62</Name>
+						<Name>PhWindowConstruction_2dd8788e</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -658,7 +658,7 @@
 					</Component>
 					<Component index="4">
 						<IdentNr>49</IdentNr>
-						<Name>PhWindowConstruction_516ecc62</Name>
+						<Name>PhWindowConstruction_2dd8788e</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -684,7 +684,7 @@
 					</Component>
 					<Component index="5">
 						<IdentNr>50</IdentNr>
-						<Name>Shade_89a8dca6</Name>
+						<Name>Shade_cd3ca829</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -700,7 +700,7 @@
 					</Component>
 					<Component index="6">
 						<IdentNr>51</IdentNr>
-						<Name>Shade_26525c64</Name>
+						<Name>Shade_a3b41759</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -717,7 +717,7 @@
 				</Components>
 				<Zones count="1">
 					<Zone index="0">
-						<Name>Unnamed_Bldg_Segment</Name>
+						<Name>_unnamed_bldg_segment_</Name>
 						<KindZone>1</KindZone>
 						<KindAttachedZone>0</KindAttachedZone>
 						<TemperatureReductionFactorUserDefined>1.0</TemperatureReductionFactorUserDefined>
@@ -893,72 +893,72 @@
 						</ExhaustVents>
 						<ThermalBridges count="10">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__016697d3</Name>
+								<Name>_unnamed_bldg_segment__01c1c89b</Name>
 								<Type>-15</Type>
 								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__37ccdaf8</Name>
+								<Name>_unnamed_bldg_segment__07c1db81</Name>
 								<Type>-15</Type>
-								<Length>16.0</Length>
+								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__484789da</Name>
+								<Name>_unnamed_bldg_segment__0b103a24</Name>
 								<Type>-15</Type>
 								<Length>13.416407864998739</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__4d52ee09</Name>
+								<Name>_unnamed_bldg_segment__37dbd491</Name>
 								<Type>-15</Type>
 								<Length>9.391485505499118</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__617a4acb</Name>
+								<Name>_unnamed_bldg_segment__6d0bd4e9</Name>
+								<Type>-15</Type>
+								<Length>16.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="5">
+								<Name>_unnamed_bldg_segment__7415b3dc</Name>
 								<Type>-15</Type>
 								<Length>10.733126291998989</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
-							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__68403331</Name>
+							<ThermalBridge index="6">
+								<Name>_unnamed_bldg_segment__76e85fe4</Name>
 								<Type>-15</Type>
 								<Length>20.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
-							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__98eb3ec7</Name>
-								<Type>-15</Type>
-								<Length>13.416407864998739</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
 							<ThermalBridge index="7">
-								<Name>_unnamed_bldg_segment__9ded8819</Name>
+								<Name>_unnamed_bldg_segment__8af85f9f</Name>
 								<Type>-15</Type>
 								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="8">
-								<Name>_unnamed_bldg_segment__a507a813</Name>
+								<Name>_unnamed_bldg_segment__b1df133b</Name>
 								<Type>-15</Type>
 								<Length>14.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="9">
-								<Name>_unnamed_bldg_segment__efd95d84</Name>
+								<Name>_unnamed_bldg_segment__f02e0f10</Name>
 								<Type>-15</Type>
-								<Length>14.0</Length>
+								<Length>13.416407864998739</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
@@ -1225,80 +1225,7 @@
 						</ZonesCoverage>
 						<Devices count="5">
 							<Device index="0">
-								<Name>01a8f87c-f0f2-4143-942a-d3d28b2a4d0b</Name>
-								<IdentNr>1</IdentNr>
-								<SystemType>5</SystemType>
-								<TypeDevice>5</TypeDevice>
-								<UsedFor_Heating>false</UsedFor_Heating>
-								<UsedFor_DHW>true</UsedFor_DHW>
-								<UsedFor_Cooling>false</UsedFor_Cooling>
-								<UsedFor_Ventilation>false</UsedFor_Ventilation>
-								<UsedFor_Humidification>false</UsedFor_Humidification>
-								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
-								<PH_Parameters>
-									<AuxiliaryEnergy/>
-									<AuxiliaryEnergyDHW/>
-									<InConditionedSpace>true</InConditionedSpace>
-									<AnnualCOP/>
-									<TotalSystemPerformanceRatioHeatGenerator/>
-									<HPWH_EF/>
-									<HPType>5</HPType>
-								</PH_Parameters>
-								<DHW_Parameters>
-									<CoverageWithinSystem>1.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</DHW_Parameters>
-								<Heating_Parameters>
-									<CoverageWithinSystem>0.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</Heating_Parameters>
-								<Cooling_Parameters>
-									<CoverageWithinSystem>0.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</Cooling_Parameters>
-							</Device>
-							<Device index="1">
-								<Name>1416d84a-94db-4aeb-acbe-bf16d858cbcd</Name>
-								<IdentNr>1</IdentNr>
-								<SystemType>5</SystemType>
-								<TypeDevice>5</TypeDevice>
-								<UsedFor_Heating>true</UsedFor_Heating>
-								<UsedFor_DHW>false</UsedFor_DHW>
-								<UsedFor_Cooling>true</UsedFor_Cooling>
-								<UsedFor_Ventilation>false</UsedFor_Ventilation>
-								<UsedFor_Humidification>false</UsedFor_Humidification>
-								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
-								<PH_Parameters>
-									<AuxiliaryEnergy/>
-									<AuxiliaryEnergyDHW/>
-									<InConditionedSpace>true</InConditionedSpace>
-									<RatedCOP1>3.4</RatedCOP1>
-									<RatedCOP2>4.12</RatedCOP2>
-									<AmbientTemperature1>-3.33</AmbientTemperature1>
-									<AmbientTemperature2>12.0</AmbientTemperature2>
-									<HPType>4</HPType>
-								</PH_Parameters>
-								<DHW_Parameters>
-									<CoverageWithinSystem>0.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</DHW_Parameters>
-								<Heating_Parameters>
-									<CoverageWithinSystem>1.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</Heating_Parameters>
-								<Cooling_Parameters>
-									<CoverageWithinSystem>1.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</Cooling_Parameters>
-							</Device>
-							<Device index="2">
-								<Name>257ae256-9506-4af3-8126-483bf0d53fff</Name>
+								<Name>3dd251fa-9131-444c-a4b3-53e4d5d61157</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>3</SystemType>
 								<TypeDevice>3</TypeDevice>
@@ -1335,7 +1262,43 @@
 									<Selection>1</Selection>
 								</Heating_Parameters>
 							</Device>
-							<Device index="3">
+							<Device index="1">
+								<Name>89a01089-d436-44ee-9c81-974716509a05</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>true</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy/>
+									<AuxiliaryEnergyDHW/>
+									<InConditionedSpace>true</InConditionedSpace>
+									<AnnualCOP/>
+									<TotalSystemPerformanceRatioHeatGenerator/>
+									<HPWH_EF/>
+									<HPType>5</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+								<Cooling_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Cooling_Parameters>
+							</Device>
+							<Device index="2">
 								<Name>Test_Unit</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>1</SystemType>
@@ -1360,6 +1323,43 @@
 									<InConditionedSpace>true</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
+							</Device>
+							<Device index="3">
+								<Name>bf586e40-9eda-4454-85a9-79ebd86c7e32</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>true</UsedFor_Heating>
+								<UsedFor_DHW>false</UsedFor_DHW>
+								<UsedFor_Cooling>true</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy/>
+									<AuxiliaryEnergyDHW/>
+									<InConditionedSpace>true</InConditionedSpace>
+									<RatedCOP1>3.4</RatedCOP1>
+									<RatedCOP2>4.12</RatedCOP2>
+									<AmbientTemperature1>-3.33</AmbientTemperature1>
+									<AmbientTemperature2>12.0</AmbientTemperature2>
+									<HPType>4</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+								<Cooling_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Cooling_Parameters>
 							</Device>
 							<Device index="4">
 								<Name>my_PV_system</Name>
@@ -1512,6 +1512,12 @@
 						<HeatCapacity>790.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -1524,6 +1530,12 @@
 						<HeatCapacity>840.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="2">
@@ -1536,6 +1548,12 @@
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="3">
@@ -1548,6 +1566,12 @@
 						<HeatCapacity>1000.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="4">
@@ -1560,6 +1584,12 @@
 						<HeatCapacity>1090.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 			</Layers>
@@ -1580,6 +1610,12 @@
 						<HeatCapacity>1090.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -1592,6 +1628,12 @@
 						<HeatCapacity>1000.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="2">
@@ -1604,6 +1646,12 @@
 						<HeatCapacity>1090.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 			</Layers>
@@ -1624,6 +1672,12 @@
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -1636,6 +1690,12 @@
 						<HeatCapacity>900.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 			</Layers>
@@ -1656,6 +1716,12 @@
 						<HeatCapacity>1460.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="1">
@@ -1668,6 +1734,12 @@
 						<HeatCapacity>1210.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="2">
@@ -1680,6 +1752,12 @@
 						<HeatCapacity>840.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="3">
@@ -1692,6 +1770,12 @@
 						<HeatCapacity>1000.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 				<Layer index="4">
@@ -1704,6 +1788,12 @@
 						<HeatCapacity>590.0</HeatCapacity>
 						<WaterVaporResistance>1.0</WaterVaporResistance>
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
+						<Color>
+							<Alpha>255</Alpha>
+							<Red>255</Red>
+							<Green>255</Green>
+							<Blue>255</Blue>
+						</Color>
 					</Material>
 				</Layer>
 			</Layers>
@@ -1712,7 +1802,7 @@
 	<WindowTypes count="2">
 		<WindowType index="0">
 			<IdentNr>1</IdentNr>
-			<Name>PhWindowConstruction_516ecc62</Name>
+			<Name>PhWindowConstruction_2dd8788e</Name>
 			<Uw_Detailed>true</Uw_Detailed>
 			<GlazingFrameDetailed>true</GlazingFrameDetailed>
 			<FrameFactor>0.7242364315535045</FrameFactor>
@@ -1741,7 +1831,7 @@
 		</WindowType>
 		<WindowType index="1">
 			<IdentNr>2</IdentNr>
-			<Name>PhWindowConstruction_922f34f0</Name>
+			<Name>PhWindowConstruction_59facd99</Name>
 			<Uw_Detailed>true</Uw_Detailed>
 			<GlazingFrameDetailed>true</GlazingFrameDetailed>
 			<FrameFactor>0.7242364315535045</FrameFactor>
