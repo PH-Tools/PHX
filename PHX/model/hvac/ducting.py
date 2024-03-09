@@ -12,6 +12,7 @@ from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
 from PHX.model.enums.hvac import PhxVentDuctType
 
+
 @dataclass
 class PhxDuctSegment:
     """An individual Duct Segment Segment."""
@@ -29,7 +30,8 @@ class PhxDuctSegment:
     @property
     def length(self) -> float:
         return self.geometry.length
-    
+
+
 @dataclass
 class PhxDuctElement:
     """A Duct Element / Run made of one or more PhxDuctSegments."""
@@ -64,31 +66,31 @@ class PhxDuctElement:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * seg.diameter
-        
+
         try:
             return weighted_total / self.length
         except ZeroDivisionError:
             return 0.0
 
     @property
-    def height(self) -> float: 
+    def height(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * (seg.height or 0.0)
-        
+
         try:
-            return weighted_total / self.length 
+            return weighted_total / self.length
         except ZeroDivisionError:
             return 0.0
-    
+
     @property
     def width(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * (seg.width or 0.0)
-        
+
         try:
-            return weighted_total / self.length 
+            return weighted_total / self.length
         except ZeroDivisionError:
             return 0.0
 
@@ -97,29 +99,29 @@ class PhxDuctElement:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * seg.insulation_thickness
-        
+
         try:
             return weighted_total / self.length
         except ZeroDivisionError:
             return 0.0
-    
+
     @property
     def insulation_conductivity(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
             weighted_total += seg.length * seg.insulation_conductivity
-        
+
         try:
             return weighted_total / self.length
         except ZeroDivisionError:
             return 0.0
-    
+
     @property
     def duct_shape(self) -> int:
         if self.height and self.width:
-            return 2 # Rectangular Duct
+            return 2  # Rectangular Duct
         else:
-            return 1 # Round Duct
+            return 1  # Round Duct
 
     @property
     def is_reflective(self) -> bool:

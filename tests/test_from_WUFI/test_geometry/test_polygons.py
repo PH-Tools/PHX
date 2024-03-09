@@ -3,12 +3,8 @@ from PHX.model.project import PhxProject, PhxVariant
 
 def _total_num_polygons(variant: PhxVariant) -> int:
     """Calculate the total number of Polygons in a variant."""
-    return len(
-        [
-            p for c in variant.building.all_components 
-            for p in c.polygons
-        ]
-    )
+    return len([p for c in variant.building.all_components for p in c.polygons])
+
 
 def test_building_has_same_number_of_polygons(
     phx_project_from_hbjson: PhxProject,

@@ -14,13 +14,14 @@ def test_default_component_aperture(reset_class_counters) -> None:
     assert id(ap1) != id(ap2)
 
     assert len(ap1.polygon_ids) == 0
-    assert len(ap2.polygon_ids) == 0 
+    assert len(ap2.polygon_ids) == 0
+
 
 def test_reset_aperture_construction(reset_class_counters):
-    """Since a single Aperture can be in multiple opaque-components, 
+    """Since a single Aperture can be in multiple opaque-components,
     resetting the Construction on any one should re-set it for all.
     """
-    
+
     c1 = components.PhxComponentOpaque()
     c2 = components.PhxComponentOpaque()
     ap1 = components.PhxComponentAperture(_host=c1)
@@ -32,7 +33,6 @@ def test_reset_aperture_construction(reset_class_counters):
 
     for ap in c1.apertures:
         assert ap.window_type == new_const
-    
+
     for ap in c2.apertures:
         assert ap.window_type == new_const
-

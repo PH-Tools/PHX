@@ -356,7 +356,7 @@ class Zone(BaseModel):
     GrossVolume_Selection: int
     GrossVolume: Optional[unit.M3]
     NetVolume_Selection: int
-    NetVolume:  Optional[unit.M3]
+    NetVolume: Optional[unit.M3]
     FloorArea_Selection: int
     FloorArea: Optional[unit.M2]
     ClearanceHeight_Selection: int
@@ -385,6 +385,7 @@ class Building(BaseModel):
 
 # ------------------------------------------------------------------------------
 # -- HVAC
+
 
 class Twig(BaseModel):
     Name: str
@@ -815,7 +816,7 @@ class WindowType(BaseModel):
     g_Value: unit._Percentage
     SHGC_Hemispherical: unit._Percentage
     U_Value_Frame: unit.Watts_per_M2K
-    
+
     # -- WUFI might not provide these...
     Frame_Width_Left: Optional[unit.M]
     Frame_Psi_Left: Optional[unit.Watts_per_MK]
@@ -949,7 +950,7 @@ class WUFIplusProject(BaseModel):
     @validator("UnitSystem", pre=True)
     def unpack_unit_system(cls, v) -> int:
         """
-        Since the model gets converted to SI units when it is read in, 
+        Since the model gets converted to SI units when it is read in,
         always set this to 1, no matter what.
         """
         return 1

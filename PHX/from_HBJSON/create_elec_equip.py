@@ -59,7 +59,7 @@ def build_phx_elec_device(
             try:
                 setattr(phx_device, attr_name, getattr(_hbph_device, attr_name))
             except KeyError:
-                raise 
+                raise
             except Exception as e:
                 msg = f"\n\tError setting attribute '{attr_name}' on '{phx_device.__class__.__name__}'?"
                 raise Exception(msg)

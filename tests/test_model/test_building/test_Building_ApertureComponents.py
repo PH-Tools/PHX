@@ -1,6 +1,7 @@
 from PHX.model import building, components
 from PHX.model import components
 
+
 def test_building_with_no_apertures(reset_class_counters) -> None:
     b1 = building.PhxBuilding()
     wall_compo = components.PhxComponentOpaque()
@@ -8,9 +9,10 @@ def test_building_with_no_apertures(reset_class_counters) -> None:
 
     assert len(b1.aperture_components) == 0
 
+
 def test_building_with_single_aperture_in_single_component(reset_class_counters) -> None:
     """This is the simplest scenario: a single Aperture 'in' a single opaque component"""
-    
+
     b1 = building.PhxBuilding()
     c1 = components.PhxComponentOpaque()
     c2 = components.PhxComponentOpaque()
@@ -23,9 +25,12 @@ def test_building_with_single_aperture_in_single_component(reset_class_counters)
 
     assert len(b1.aperture_components) == 1
 
-def test_building_with_single_aperture_in_multiple_components(reset_class_counters) -> None:
+
+def test_building_with_single_aperture_in_multiple_components(
+    reset_class_counters,
+) -> None:
     """A single Aperture might be have Elements 'in' multiple opaque components."""
-    
+
     b1 = building.PhxBuilding()
     c1 = components.PhxComponentOpaque()
     c2 = components.PhxComponentOpaque()

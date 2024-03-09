@@ -142,10 +142,10 @@ def merge_hb_faces(
     _faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float
 ) -> List[Face]:
     """Merge a group of HB-Faces into the fewest number of faces possible."""
-    
+
     if not _faces:
         logger.debug("No faces in group. Skipping merge.")
-        return [] 
+        return []
 
     if len(_faces) == 1:
         logger.debug(f"Single face: {_faces[0].display_name} in group. Skipping merge.")
@@ -159,7 +159,9 @@ def merge_hb_faces(
 
     # -------------------------------------------------------------------------
     # -- Merge the HB-Faces' Polygons together
-    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(face3Ds(_faces), _tolerance)
+    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(
+        face3Ds(_faces), _tolerance
+    )
 
     # -------------------------------------------------------------------------
     # -- Create new LBT-Face3D, and HB-Faces from the Polygon2Ds
@@ -214,7 +216,9 @@ def merge_hb_shades(
 
     # -------------------------------------------------------------------------
     # -- Merge the HB-Face's Polygons together
-    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(face3Ds(_faces), _tolerance)
+    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(
+        face3Ds(_faces), _tolerance
+    )
 
     # -------------------------------------------------------------------------
     # -- Create new LBT-Face3D, and HB-Faces from the Polygon2Ds

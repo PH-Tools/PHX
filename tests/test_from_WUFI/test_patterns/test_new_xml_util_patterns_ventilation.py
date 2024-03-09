@@ -18,12 +18,8 @@ def test_vent_patterns_match(
     phx_project_from_wufi_xml: PhxProject,
 ) -> None:
     # -- Pull out the Ventilation Patterns
-    util_pats_hbjson = (
-        phx_project_from_hbjson.utilization_patterns_ventilation.patterns
-    )
-    util_pats_xml = (
-        phx_project_from_wufi_xml.utilization_patterns_ventilation.patterns
-    )
+    util_pats_hbjson = phx_project_from_hbjson.utilization_patterns_ventilation.patterns
+    util_pats_xml = phx_project_from_wufi_xml.utilization_patterns_ventilation.patterns
 
     assert len(util_pats_hbjson) == len(util_pats_xml)
 

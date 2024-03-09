@@ -183,11 +183,12 @@ class PhxClimatePeakLoad:
                 return False
         return True
 
+
 @dataclass
 class PhxClimateIterOutput:
     """Wrapper class for organizing output of the 'PhxClimate.monthly_values' property."""
-    
-    month_name: str 
+
+    month_name: str
     month_hours: float
     temperature_air: float
     temperature_dewpoint: float
@@ -195,8 +196,9 @@ class PhxClimateIterOutput:
     radiation_north: float
     radiation_east: float
     radiation_south: float
-    radiation_west:float
+    radiation_west: float
     radiation_global: float
+
 
 @dataclass
 class PhxClimate:
@@ -277,19 +279,19 @@ class PhxClimate:
     def monthly_hours(self) -> List[Tuple[str, int]]:
         """The a ordered (Jan-Dec) list of tuples containing the month-name and the number of hours in that month."""
         return [
-        ("JAN", 744),
-        ("FEB", 672),
-        ("MAR", 744),
-        ("APR", 720),
-        ("MAY", 744),
-        ("JUN", 720),
-        ("JUL", 744),
-        ("AUG", 744),
-        ("SEP", 720),
-        ("OCT", 744),
-        ("NOV", 720),
-        ("DEC", 744),
-    ]
+            ("JAN", 744),
+            ("FEB", 672),
+            ("MAR", 744),
+            ("APR", 720),
+            ("MAY", 744),
+            ("JUN", 720),
+            ("JUL", 744),
+            ("AUG", 744),
+            ("SEP", 720),
+            ("OCT", 744),
+            ("NOV", 720),
+            ("DEC", 744),
+        ]
 
     @property
     def monthly_values(self) -> Generator[PhxClimateIterOutput, Any, Any]:
@@ -310,8 +312,7 @@ class PhxClimate:
                 )
             except IndexError:
                 msg = "Error: Climate data lengths do not match?"
-                raise IndexError(msg)         
-
+                raise IndexError(msg)
 
 
 @dataclass

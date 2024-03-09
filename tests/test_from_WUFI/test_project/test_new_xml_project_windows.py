@@ -22,7 +22,7 @@ def _find_matching_window(
         if hbjson_type.display_name == xml_type.display_name:
             return xml_type
     raise Exception(
-        f"Window Type {hbjson_type.display_name} not found in XML set?"\
+        f"Window Type {hbjson_type.display_name} not found in XML set?"
         f"XML window display-name include only: '{[_.display_name for _ in xml_types]}'"
     )
 

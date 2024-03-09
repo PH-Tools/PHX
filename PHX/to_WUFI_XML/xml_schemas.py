@@ -121,14 +121,23 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
     ]
 
 
-def _Systems(_collections: List[hvac.PhxMechanicalSystemCollection]) -> List[xml_writable]:
+def _Systems(
+    _collections: List[hvac.PhxMechanicalSystemCollection],
+) -> List[xml_writable]:
     return [
-        XML_List("Systems", 
-                    [
-                        XML_Object("System", collection, "index", i, _schema_name="_PhxMechanicalSystemCollection") 
-                        for i, collection in enumerate(_collections)
-                    ]
-            ) 
+        XML_List(
+            "Systems",
+            [
+                XML_Object(
+                    "System",
+                    collection,
+                    "index",
+                    i,
+                    _schema_name="_PhxMechanicalSystemCollection",
+                )
+                for i, collection in enumerate(_collections)
+            ],
+        )
     ]
 
 
@@ -191,7 +200,9 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         XML_Node("Name", _z.display_name),
         XML_Node("KindZone", _z.zone_type.value),
         XML_Node("KindAttachedZone", _z.attached_zone_type.value),
-        XML_Node("TemperatureReductionFactorUserDefined", _z.attached_zone_reduction_factor),
+        XML_Node(
+            "TemperatureReductionFactorUserDefined", _z.attached_zone_reduction_factor
+        ),
         XML_Node("IdentNr", _z.id_num),
         XML_List(
             "RoomsVentilation",
@@ -291,8 +302,10 @@ def _PhxComponentOpaque(_c: components.PhxComponentOpaque) -> List[xml_writable]
 
 def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writable]:
     # Use the shading, if set, otherwise use the Top-Frame width
-    shading_reveal_distance = _c.average_shading_d_reveal or _c.window_type.frame_top.width
-    
+    shading_reveal_distance = (
+        _c.average_shading_d_reveal or _c.window_type.frame_top.width
+    )
+
     return [
         XML_Node("IdentNr", _c.id_num),
         XML_Node("Name", _c.display_name),
@@ -828,6 +841,7 @@ def _PhxMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
         XML_Object("Color", _m.argb_color, _schema_name="_PhxColor"),
     ]
 
+
 def _PhxColor(_c: constructions.PhxColor) -> List[xml_writable]:
     return [
         XML_Node("Alpha", _c.alpha),
@@ -835,6 +849,7 @@ def _PhxColor(_c: constructions.PhxColor) -> List[xml_writable]:
         XML_Node("Green", _c.green),
         XML_Node("Blue", _c.blue),
     ]
+
 
 def _PhxConstructionWindow(
     _wt: constructions.PhxConstructionWindow,
@@ -875,7 +890,7 @@ def _PhxConstructionWindow(
     ]
 
 
-def _PhxWindowShade(_s: shades.PhxWindowShade) -> List[xml_writable]:  
+def _PhxWindowShade(_s: shades.PhxWindowShade) -> List[xml_writable]:
     return [
         XML_Node("IdentNr", _s.id_num),
         XML_Node("Name", _s.display_name),
@@ -1043,7 +1058,6 @@ def _PhxDeviceHeaterElec(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
 
 
 def _DeviceHeaterElecPhParams(_p: hvac.PhxMechanicalDeviceParams) -> List[xml_writable]:
-    
     return [
         XML_Node("AuxiliaryEnergy", _p.aux_energy),
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
@@ -1209,11 +1223,11 @@ def _PhxDeviceHeaterHeatPump(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
         hvac.PhxHeatPumpHotWaterParams.hp_type: "_DeviceHeaterHeatPumpPhParamsHotWater",
         hvac.PhxHeatPumpCombinedParams.hp_type: "_DeviceHeaterHeatPumpPhParamsCombined",
     }
-    
+
     hp_type: Optional[hvac.HeatPumpType] = getattr(_d.params, "hp_type", None)
     if not hp_type:
         return []
-    
+
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
@@ -1437,6 +1451,7 @@ def _DistributionDHW(_c: hvac.PhxMechanicalSystemCollection):
         ),
     ]
 
+
 class DistributionHeating:
     def __init__(self) -> None:
         raise NotImplementedError
@@ -1492,11 +1507,12 @@ def _PhxDuctElement(_d: hvac.PhxDuctElement) -> List[xml_writable]:
 
 # -- MECHANICAL SYSTEMS / COOLING-DISTRIBUTION --------------------------------
 # -- DEV-NOTE: I don't want to have the Cooling 'distribution' as part of the PHX model
-# -- separate from the actual mechanical devices. It is stupid that things like COP are 
+# -- separate from the actual mechanical devices. It is stupid that things like COP are
 # -- stored in there. So use a temp class to unwrap all the relevant data from the devices.
 
 
 T = TypeVar("T", bound=hvac.AnyPhxCoolingParamsType)
+
 
 class TempDistributionCooling:
     """Temporary wrapper class for WUFI format Cooling Distribution data."""
@@ -1504,27 +1520,33 @@ class TempDistributionCooling:
     def __init__(self, _devices: List[hvac.PhxHeatPumpDevice]) -> None:
         # -- If there are no heat-pump systems, the input list will be empty.
         # -- Have to combine the heat-pump parameters all together for each type.
-        self.ventilation_params = self.sum_params([d.params_cooling.ventilation for d in _devices])
-        self.recirculation_params = self.sum_params([d.params_cooling.recirculation for d in _devices])
-        self.dehumidification_params = self.sum_params([d.params_cooling.dehumidification for d in _devices])
+        self.ventilation_params = self.sum_params(
+            [d.params_cooling.ventilation for d in _devices]
+        )
+        self.recirculation_params = self.sum_params(
+            [d.params_cooling.recirculation for d in _devices]
+        )
+        self.dehumidification_params = self.sum_params(
+            [d.params_cooling.dehumidification for d in _devices]
+        )
         self.panel_params = self.sum_params([d.params_cooling.panel for d in _devices])
 
-    def sum_params(
-        self, _cooling_params: List[T]
-    ) -> Optional[T]:
-        """Returns a single HVAC Cooling Params, made from a list of input devices, or None if no devices input."""        
+    def sum_params(self, _cooling_params: List[T]) -> Optional[T]:
+        """Returns a single HVAC Cooling Params, made from a list of input devices, or None if no devices input."""
         if not _cooling_params:
             return None
-        
-        return reduce(lambda a, b: a+b, _cooling_params, _cooling_params[0])
+
+        return reduce(lambda a, b: a + b, _cooling_params, _cooling_params[0])
 
     def __bool__(self) -> bool:
-        return all([
-            self.ventilation_params is not None,
-            self.recirculation_params is not None,
-            self.dehumidification_params is not None,
-            self.panel_params is not None,
-        ])
+        return all(
+            [
+                self.ventilation_params is not None,
+                self.recirculation_params is not None,
+                self.dehumidification_params is not None,
+                self.panel_params is not None,
+            ]
+        )
 
 
 def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writable]:
@@ -1535,9 +1557,7 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
         return base
 
     if _clg_distr.ventilation_params and _clg_distr.ventilation_params.used:
-        vent_params: hvac.PhxCoolingVentilationParams = (
-            _clg_distr.ventilation_params
-        )
+        vent_params: hvac.PhxCoolingVentilationParams = _clg_distr.ventilation_params
         base += [
             XML_Node("CoolingViaVentilationAir", True),
             XML_Node("SupplyAirCoolingOnOff", vent_params.single_speed),
@@ -1560,7 +1580,7 @@ def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writab
                 "ControlledRecirculationVolumeFlow", recirc_params.flow_rate_variable
             ),
         ]
-    if  _clg_distr.dehumidification_params and _clg_distr.dehumidification_params.used:
+    if _clg_distr.dehumidification_params and _clg_distr.dehumidification_params.used:
         dehumid_params: hvac.PhxCoolingDehumidificationParams = (
             _clg_distr.dehumidification_params
         )

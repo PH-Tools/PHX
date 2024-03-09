@@ -15,7 +15,7 @@ from PHX.model.hvac import _base
 class PhxHeatingDevice(_base.PhxMechanicalDevice):
     def __post_init__(self):
         super().__post_init__()
- 
+
 
 # -----------------------------------------------------------------------------
 # Electric

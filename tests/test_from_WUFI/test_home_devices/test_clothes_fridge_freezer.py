@@ -17,6 +17,7 @@ XML_STRING = """
 </Device>
 """
 
+
 def test_create_xml_object_from_string() -> None:
     xml_dict = string_to_xml_dict(XML_STRING)
     new_wufi_xml_obj = HomeDevice(**xml_dict)
@@ -31,12 +32,13 @@ def test_create_xml_object_from_string() -> None:
     assert new_wufi_xml_obj.CEF_CombinedEnergyFactor == 0
     assert new_wufi_xml_obj.Type == 6
 
+
 def test_create_phx_object_from_xml_string() -> None:
     xml_dict = string_to_xml_dict(XML_STRING)
     new_wufi_xml_obj = HomeDevice(**xml_dict)
 
     # -- Test using the device factory which transfers *all* attributes
-    new_phx_obj: PhxDeviceFridgeFreezer = _PhxHomeDevice(new_wufi_xml_obj) # type: ignore
+    new_phx_obj: PhxDeviceFridgeFreezer = _PhxHomeDevice(new_wufi_xml_obj)  # type: ignore
     assert new_phx_obj.comment == "default"
     assert new_phx_obj.quantity == 2
     assert new_phx_obj.in_conditioned_space == True

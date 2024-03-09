@@ -8,6 +8,7 @@ from typing import ClassVar, Union, List, Optional, Generator
 from dataclasses import dataclass, field
 import uuid
 
+
 @dataclass
 class PhxColor:
     # Default color is white
@@ -15,6 +16,7 @@ class PhxColor:
     red: int = 255
     green: int = 255
     blue: int = 255
+
 
 @dataclass
 class PhxMaterial:

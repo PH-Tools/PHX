@@ -10,10 +10,11 @@ from PHX.model.project import PhxProject
 
 from tests.conftest import _reset_phx_class_counters
 
+
 @pytest.fixture(scope="session")
 def phx_project_from_hbjson() -> PhxProject:
     """A PhxProject created from an HBJSON file."""
-    
+
     _reset_phx_class_counters()
     SOURCE_HBJSON_FILE = Path("tests", "_source_hbjson", "Multi_Room_Complete.hbjson")
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(SOURCE_HBJSON_FILE)
@@ -21,7 +22,7 @@ def phx_project_from_hbjson() -> PhxProject:
     phx_project_hbjson = create_project.convert_hb_model_to_PhxProject(
         hb_model, _group_components=True, _merge_faces=True
     )
-    
+
     return phx_project_hbjson
 
 

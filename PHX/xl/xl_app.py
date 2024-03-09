@@ -118,12 +118,12 @@ class XLConnection:
 
         # A dict with sheet names as keys, and XL data as values
         self.sheet_cache: Dict[str, xl_Sheet_Protocol] = {}
-        
+
         self._wb: Optional[xl_Book_Protocol] = None
         self.output(f"> connected to excel doc: '{self.wb.fullname}'")
-    
+
     @property
-    def worksheet_names(self)->Set[str]:
+    def worksheet_names(self) -> Set[str]:
         return self.get_worksheet_names()
 
     def activate_new_workbook(self) -> xl_Book_Protocol:
@@ -239,7 +239,7 @@ class XLConnection:
         except ValueError:
             self.output(f"Worksheet '{_sheet_name}' already in Workbook.")
 
-        #-- Clear the new sheet
+        # -- Clear the new sheet
         new_sheet = self.get_sheet_by_name(_sheet_name)
         new_sheet.clear()
 
@@ -296,7 +296,9 @@ class XLConnection:
         """
         return {sh.name.upper() for sh in self.wb.sheets}
 
-    def get_sheet_by_name(self, _sheet_name: Optional[Union[str, int]]) -> xl_Sheet_Protocol:
+    def get_sheet_by_name(
+        self, _sheet_name: Optional[Union[str, int]]
+    ) -> xl_Sheet_Protocol:
         """Returns an Excel Sheet with the specified name, or KeyError if not found.
 
         Arguments:
@@ -313,7 +315,7 @@ class XLConnection:
         if str(_sheet_name).upper() not in self.worksheet_names:
             msg = f"Error: Key '{_sheet_name}' was not found in the Workbook '{self.wb.name}' Sheets?"
             raise KeyError(msg)
-        
+
         # if the sheet dict doesn't exist, create it in the cache
         if _sheet_name not in self.sheet_cache:
             self.sheet_cache[str(_sheet_name)] = self.wb.sheets[_sheet_name]

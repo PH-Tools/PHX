@@ -34,7 +34,9 @@ for i, xm_source_file_name in enumerate(SOURCE_FILE_NAMES):
     for variant in phx_project.variants:
         print(f" - - - - {variant.name} - - - - - ")
         for i, aperture in enumerate(variant.building.aperture_components):
-            print(f"\t{i :03d} |  ap-id={aperture.id_num :04d}  | host-id={aperture.host.id_num :04d}  |  {aperture.display_name}")
+            print(
+                f"\t{i :03d} |  ap-id={aperture.id_num :04d}  | host-id={aperture.host.id_num :04d}  |  {aperture.display_name}"
+            )
 
     # # ----------------------------------------------------------------
     # # -- 3) Output the PHX model back to a WUFI-XML

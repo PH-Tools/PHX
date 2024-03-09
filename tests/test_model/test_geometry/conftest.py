@@ -518,7 +518,6 @@ def phx_polygon_sq_pyramid_rotated_horizontal_downward_facing() -> geometry.PhxP
 
 @pytest.fixture
 def phx_polygons() -> Dict[str, Dict[str, geometry.PhxPolygon]]:
-
     horizontal: Dict[str, geometry.PhxPolygon] = {
         "downward": phx_polygon_horizontal_downward_facing(),
         "upward": phx_polygon_horizontal_upward_facing(),

@@ -99,6 +99,7 @@ def add_building_from_hb_room(
     if group_components:
         _variant.building.merge_opaque_components_by_assembly()
         _variant.building.merge_aperture_components_by_assembly()
+        _variant.building.merge_thermal_bridges()
 
 
 def add_phius_certification_from_hb_room(
@@ -555,7 +556,9 @@ def add_ventilation_systems_from_hb_rooms(
         # ---------------------------------------------------------------------
         # -- Get or Build the PHX Ventilation Device
         # -- If the ventilator already exists, just use that one.
-        mech_collection, phx_ventilator = _variant.get_mech_device_by_key(hbph_vent_sys.key)
+        mech_collection, phx_ventilator = _variant.get_mech_device_by_key(
+            hbph_vent_sys.key
+        )
         if not phx_ventilator or not mech_collection:
             # -- otherwise, build a new PH-Ventilator from the HB-hvac, add it to the
             # -- base mech-system
@@ -755,14 +758,16 @@ def add_dhw_storage_from_hb_rooms(
         for hw_tank in shw_prop_ph.tanks:
             if not hw_tank:
                 continue
-            
+
             # -- If the tank already exists, move on
             if _variant.device_in_collections(hw_tank.key):
                 continue
 
             # -- Build a new PHS-HW-Tank from the HB-hvac
             phx_dhw_tank = build_phx_hw_storage(hw_tank)
-            _variant.default_mech_collection.add_new_mech_device(hw_tank.key, phx_dhw_tank)
+            _variant.default_mech_collection.add_new_mech_device(
+                hw_tank.key, phx_dhw_tank
+            )
 
     return None
 
@@ -790,14 +795,15 @@ def add_dhw_heaters_from_hb_rooms(
 
         shw_prop_ph: SHWSystemPhProperties = host_prop_energy.shw.properties.ph  # type: ignore
         for heater in shw_prop_ph.heaters:
-            
             # -- If the heater already exists, move on
             if _variant.device_in_collections(heater.identifier):
                 continue
 
             # -- Build a new PHX-HW-Heater from the Honeybee-PH HW-Heater
             phx_hw_heater = build_phx_hw_heater(heater)
-            _variant.default_mech_collection.add_new_mech_device(heater.identifier, phx_hw_heater)
+            _variant.default_mech_collection.add_new_mech_device(
+                heater.identifier, phx_hw_heater
+            )
 
 
 def dhw_recirc_temp(_recirc_temps: Set[float]):

@@ -124,9 +124,11 @@ class Watts_per_DegreeK(float, BaseConverter):
     __unit_type__ = "W/K"
     __value_type__ = float
 
+
 class KiloWatt(float, BaseConverter):
     __unit_type__ = "KW"
     __value_type__ = float
+
 
 class Watt_per_Watt(float, BaseConverter):
     __unit_type__ = "W/W"
@@ -191,6 +193,7 @@ class Wh_per_M2K(float, BaseConverter):
 class M(float, BaseConverter):
     __unit_type__ = "M"
     __value_type__ = float
+
 
 class MM(float, BaseConverter):
     __unit_type__ = "MM"
@@ -323,9 +326,11 @@ class Hours_per_Year(float, BaseCaster):
     __unit_type__ = ""
     __value_type__ = float
 
+
 class KiloHours_per_Year(float, BaseCaster):
     __unit_type__ = ""
     __value_type__ = float
+
 
 # ------------------------------------------------------------------------------
 # -- Lighting

@@ -28,6 +28,7 @@ from honeybee import model
 
 logger = logging.getLogger()
 
+
 class HBJSONModelReadError(Exception):
     def __init__(self, _in) -> None:
         self.message = (

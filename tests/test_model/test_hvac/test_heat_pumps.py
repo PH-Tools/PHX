@@ -1,7 +1,6 @@
 from PHX.model.hvac import heat_pumps
 
 
-
 def test_default_PhxHeatPumpAnnual(reset_class_counters):
     d1 = heat_pumps.PhxHeatPumpAnnual()
     d2 = heat_pumps.PhxHeatPumpAnnual()

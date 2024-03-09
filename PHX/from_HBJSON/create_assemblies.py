@@ -38,7 +38,9 @@ def _conductivity_from_r_value(_r_value: float, _thickness: float) -> float:
     return conductivity
 
 
-def create_phx_color_from_hbph_color(_hbph_color: Optional[color.PhColor]) -> constructions.PhxColor:
+def create_phx_color_from_hbph_color(
+    _hbph_color: Optional[color.PhColor],
+) -> constructions.PhxColor:
     """Create a new PHX-Color from a Honeybee-PH-Utils PhColor.
 
     Arguments:
@@ -56,6 +58,7 @@ def create_phx_color_from_hbph_color(_hbph_color: Optional[color.PhColor]) -> co
         new_color.green = int(_hbph_color.g)
         new_color.blue = int(_hbph_color.b)
     return new_color
+
 
 def build_phx_material_from_hb_EnergyMaterial(
     _hb_material: EnergyMaterial,
@@ -78,9 +81,11 @@ def build_phx_material_from_hb_EnergyMaterial(
     new_mat.density = _hb_material.density
     new_mat.heat_capacity = _hb_material.specific_heat
 
-    _prop_ph = _hb_material.properties.ph # type: EnergyMaterialPhProperties # type: ignore
-    new_mat.percentage_of_assembly = _prop_ph.percentage_of_assembly  
-    
+    _prop_ph = (
+        _hb_material.properties.ph
+    )  # type: EnergyMaterialPhProperties # type: ignore
+    new_mat.percentage_of_assembly = _prop_ph.percentage_of_assembly
+
     try:
         hbph_color = _prop_ph.ph_color
     except AttributeError:
@@ -117,7 +122,9 @@ def build_phx_material_from_hb_EnergyMaterialNoMass(
     new_mat.density = _hb_material.mass_area_density
     new_mat.heat_capacity = _hb_material.area_heat_capacity
 
-    _prop_ph = _hb_material.properties.ph # type: EnergyMaterialPhProperties # type: ignore
+    _prop_ph = (
+        _hb_material.properties.ph
+    )  # type: EnergyMaterialPhProperties # type: ignore
     try:
         hbph_color = _prop_ph.ph_color
     except AttributeError:

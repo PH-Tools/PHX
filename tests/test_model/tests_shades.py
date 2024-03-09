@@ -1,5 +1,6 @@
 from PHX.model.shades import PhxWindowShade
 
+
 def test_default_PhxWindowShade():
     s1 = PhxWindowShade()
     s2 = PhxWindowShade()

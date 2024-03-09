@@ -105,14 +105,14 @@ def log_level(_args: List[str]) -> int:
         return 0
 
 
-def remove_old_logs(directory: pathlib.Path, max_files: int=10):
+def remove_old_logs(directory: pathlib.Path, max_files: int = 10):
     """Remove old log files from the directory.
-    
+
     Arguments:
     ----------
         * directory (pathlib.Path): The directory to remove the old logs from.
         * max_files (int): The maximum number of log files to keep.
-    
+
     Returns:
     --------
         * None
@@ -137,16 +137,16 @@ def setup_logging_dir(_source_file_path: pathlib.Path) -> pathlib.Path:
         * pathlib.Path: The logging directory.
     """
     log_dir = _source_file_path.parent / "PHX_Logs"
-    
+
     if not log_dir.exists():
         os.mkdir(log_dir)
-    
+
     return log_dir
 
 
 def startup_logging(_log_level: int) -> logging.Logger:
     """Setup the logging. Create a new dir if needed..
-    
+
     Arguments:
     ----------
         * _log_level (int): The logging level.
@@ -156,19 +156,21 @@ def startup_logging(_log_level: int) -> logging.Logger:
         * logging.Logger: The root logger.
     """
 
-    logger = logging.getLogger() # Root Logger
+    logger = logging.getLogger()  # Root Logger
     logger.setLevel(_log_level)
 
     # -- Set Format
     current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(funcName)s - %(message)s')
-    
+    formatter = logging.Formatter(
+        "%(asctime)s - %(levelname)s - %(funcName)s - %(message)s"
+    )
+
     # -- Setup the STDERR log stream-handler for stderr
     stream_handler = logging.StreamHandler(stream=sys.stderr)
     stream_handler.setLevel(logging.WARNING)
     stream_handler.setFormatter(formatter)
     logger.addHandler(stream_handler)
-    
+
     # -- Setup the STDOUT log stream-handler for stdout
     stream_handler = logging.StreamHandler(stream=sys.stdout)
     stream_handler.setLevel(logging.INFO)
@@ -179,13 +181,13 @@ def startup_logging(_log_level: int) -> logging.Logger:
         # -- Find the right path, create if needed. Clean up old logs.
         log_path = setup_logging_dir(SOURCE_FILE)
         remove_old_logs(log_path, 10)
-    
+
         # -- Setup the log file-handle
-        file_handler = logging.FileHandler(log_path / f'PHX_{current_time}.log')
+        file_handler = logging.FileHandler(log_path / f"PHX_{current_time}.log")
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
-        
+
         logger.info(f"> LOGGING TO: {log_path / 'PHX.log'}")
 
     return logger

@@ -75,7 +75,7 @@ class PhxZone:
 
     def add_thermal_bridge(self, _thermal_bridge: PhxComponentThermalBridge) -> None:
         """Add a new PhxComponentThermalBridge to the PhxZone."""
-        self._thermal_bridges[_thermal_bridge.identifier] = _thermal_bridge
+        self._thermal_bridges[str(_thermal_bridge.identifier)] = _thermal_bridge
 
     def add_thermal_bridges(
         self,
@@ -88,9 +88,13 @@ class PhxZone:
             _thermal_bridges = (_thermal_bridges,)
 
         for tb in _thermal_bridges:
-            self._thermal_bridges[tb.identifier] = tb
+            self._thermal_bridges[str(tb.identifier)] = tb
 
         return None
+
+    def clear_thermal_bridges(self) -> None:
+        """Clear all of the PhxComponentThermalBridge objects from the PhxZone."""
+        self._thermal_bridges = dict()
 
     @property
     def thermal_bridges(self) -> ValuesView[PhxComponentThermalBridge]:
@@ -101,6 +105,23 @@ class PhxZone:
     def spaces_with_ventilation(self) -> List[spaces.PhxSpace]:
         """Return a list of all the spaces in the PhxZone which hav ventilation airflow."""
         return [s for s in self.spaces if s.has_ventilation_airflow]
+
+    def merge_thermal_bridges(self) -> None:
+        """Merge together all the Thermal Bridges in the Zone if they have the same 'unique_key' attribute."""
+        # -- Group the thermal bridges by their unique key
+        unique_tbs: defaultdict[str, List[PhxComponentThermalBridge]] = defaultdict(list)
+        for tb in self.thermal_bridges:
+            unique_tbs[tb.unique_key].append(tb)
+        
+        # -- Create a new merged TB from each of the groups
+        merged_tb_components: List[PhxComponentThermalBridge] = []
+        for tb_group in unique_tbs.values():
+            merged_tb_components.append(reduce(operator.add, tb_group))
+
+        # -- Reset the Zone's Thermal Bridges
+        self.clear_thermal_bridges()
+        for tb in merged_tb_components:
+            self.add_thermal_bridge(tb)
 
 
 @dataclass
@@ -183,6 +204,11 @@ class PhxBuilding:
 
         # -- Reset the Building's Components
         self._components = new_components
+
+    def merge_thermal_bridges(self) -> None:
+        """Merge together all the Thermal Bridges in each of the Building's Zones if they have the same Attributes."""
+        for z in self.zones:
+            z.merge_thermal_bridges()
 
     @property
     def all_components(self) -> List[Union[PhxComponentOpaque, PhxComponentAperture]]:

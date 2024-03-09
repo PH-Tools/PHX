@@ -42,6 +42,7 @@ class PhxRecirculationParameters:
     water_temp: float = 60.0  # Deg C
     daily_recirc_hours: float = 0.0
 
+
 @dataclass
 class PhxPipeSegment:
     """An individual Pipe Segment."""
@@ -99,12 +100,14 @@ class PhxPipeSegment:
         else:
             return 8.0
 
-    def _calc_pipe_heat_loss_coeff(self, _alpha: float, _conductivity: Optional[float]=None) -> float:
+    def _calc_pipe_heat_loss_coeff(
+        self, _alpha: float, _conductivity: Optional[float] = None
+    ) -> float:
         """Calculate the pipe heat-loss coefficient (W/mk) with a known Alpha (W/m2k) value."""
-        
+
         # -- Allow for 'reverse' solver....
         conductivity = _conductivity or self.insulation_conductivity
-        
+
         _a = self.diameter_outer_m / self.diameter_inner_m
         _b = self.diameter_with_insulation_m / self.diameter_outer_m
         _c = (
@@ -114,12 +117,14 @@ class PhxPipeSegment:
         )
         return math.pi / _c
 
-    def _calc_pipe_surface_temp(self, dT, _k, _conductivity: Optional[float]=None) -> float:
+    def _calc_pipe_surface_temp(
+        self, dT, _k, _conductivity: Optional[float] = None
+    ) -> float:
         """Return a surface temp (k) for the pipe with a known heat-loss-coefficient (W/mk) value."""
-        
+
         # -- Allow for 'reverse' solver....
         conductivity = _conductivity or self.insulation_conductivity
-        
+
         _a = self.diameter_outer_m / self.diameter_inner_m
         _b = self.diameter_with_insulation_m / self.diameter_outer_m
         _c = 1 / 2 / 55 * math.log(_a) + 1 / 2 / conductivity * math.log(_b)
@@ -162,7 +167,7 @@ class PhxPipeSegment:
             self._solve_for_pipe_heat_loss_coeff(_alpha, _k1, _k2, _surface_temp)
 
         return _k2
-    
+
     def reverse_solve_for_insulation_conductivity(
         self,
         target_result: float,
@@ -200,25 +205,23 @@ class PhxPipeSegment:
                 return conductivity
 
             # Adjust conductivity for the next iteration
-            STEP = 0.001 # You can adjust the step size as needed
-            conductivity -= STEP 
+            STEP = 0.001  # You can adjust the step size as needed
+            conductivity -= STEP
 
     @classmethod
-    def from_length(cls,
+    def from_length(
+        cls,
         display_name: str,
         length: float,
         pipe_material: PhxHotWaterPipingMaterial,
         pipe_diameter: PhxHotWaterPipingDiameter,
-    ) -> 'PhxPipeSegment':
+    ) -> "PhxPipeSegment":
         """Create a Pipe Segment from a length value (m)."""
-        
+
         return cls(
             identifier=str(uuid4()),
             display_name=display_name,
-            geometry= LineSegment3D(
-                Point3D(0,0,0),
-                Vector3D(length, 0, 0)
-            ),
+            geometry=LineSegment3D(Point3D(0, 0, 0), Vector3D(length, 0, 0)),
             pipe_material=pipe_material,
             pipe_diameter=pipe_diameter,
             insulation_thickness_m=0.0,
@@ -227,7 +230,8 @@ class PhxPipeSegment:
             insulation_quality=None,
             daily_period=24,
         )
-    
+
+
 @dataclass
 class PhxPipeElement:
     """A Pipe Element / Run made of one or more PhxPipeSegments."""

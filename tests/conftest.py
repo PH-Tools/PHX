@@ -110,7 +110,7 @@ def _reset_phx_class_counters():
     heating.PhxHeaterBoilerFossil._count = 0
     heating.PhxHeaterBoilerWood._count = 0
     heating.PhxHeaterDistrictHeat._count = 0
-    
+
     heat_pumps.PhxHeatPumpAnnual._count = 0
     heat_pumps.PhxHeatPumpMonthly._count = 0
     heat_pumps.PhxHeatPumpHotWater._count = 0

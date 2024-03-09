@@ -5,7 +5,7 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 def test_default_PhxHeaterHeatPumpCombined(reset_class_counters):
     h1 = heat_pumps.PhxHeatPumpCombined()
-    h1.usage_profile.space_heating_percent = 1.0    
+    h1.usage_profile.space_heating_percent = 1.0
     coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_device(h1.identifier, h1)
     result = generate_WUFI_XML_from_object(coll, _header="")
@@ -50,7 +50,7 @@ def test_default_PhxHeaterHeatPumpCombined(reset_class_counters):
         "<CoverageWithinSystem>1.0</CoverageWithinSystem>",
         "<Unit>0.0</Unit>",
         "<Selection>1</Selection>",
-        "</Heating_Parameters>",        
+        "</Heating_Parameters>",
         "<Cooling_Parameters>",
         "<CoverageWithinSystem>0.0</CoverageWithinSystem>",
         "<Unit>0.0</Unit>",

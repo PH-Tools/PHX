@@ -21,6 +21,7 @@ from PHX.from_HBJSON import create_schedules
 
 logger = logging.getLogger()
 
+
 class MissingPropertiesError(Exception):
     def __init__(self, _lbt_obj):
         self.message = (
@@ -85,7 +86,9 @@ def get_hb_apertures(_hb_model: model.Model) -> List[Aperture]:
 
 
 def convert_hb_model_to_PhxProject(
-    _hb_model: model.Model, _group_components: bool = True, _merge_faces: Union[bool, float] = False
+    _hb_model: model.Model,
+    _group_components: bool = True,
+    _merge_faces: Union[bool, float] = False,
 ) -> PhxProject:
     """Return a complete WUFI Project object with values based on the HB Model
 
@@ -97,7 +100,7 @@ def convert_hb_model_to_PhxProject(
             group the components by assembly-type.
 
         * _merge_faces (bool | float): default=False. Set to true to have the converter try and
-            group together co-planar faces in the output room using the HB model tolerance. 
+            group together co-planar faces in the output room using the HB model tolerance.
             If a number is given, it will be used as the tolerance for merging faces.
 
     Returns:
@@ -118,8 +121,7 @@ def convert_hb_model_to_PhxProject(
     # -- Merge the rooms together by their Building Segment, Add to the Project
     # -- then create a new variant from the merged room.
     # -- try and weld the vertices too in order to reduce load-time.
-    for room_group in sort_hb_rooms_by_bldg_segment(_hb_model.rooms): # type: ignore
-        
+    for room_group in sort_hb_rooms_by_bldg_segment(_hb_model.rooms):  # type: ignore
         # -- Configure the merge_faces and merge_face_tolerance
         if isinstance(_merge_faces, bool):
             merge_faces: bool = _merge_faces
@@ -127,7 +129,7 @@ def convert_hb_model_to_PhxProject(
         else:
             merge_faces: bool = True
             merge_face_tolerance: float = _merge_faces
-        
+
         merged_hb_room = cleanup.merge_rooms(
             room_group, merge_face_tolerance, _hb_model.angle_tolerance, merge_faces
         )

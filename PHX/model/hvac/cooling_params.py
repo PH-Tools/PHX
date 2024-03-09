@@ -28,7 +28,7 @@ class PhxCoolingVentilationParams(_base.PhxMechanicalDeviceParams):
     def __add__(self, other: PhxCoolingVentilationParams) -> PhxCoolingVentilationParams:
         if not other:
             return self
-        
+
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.used = any([self.used, other.used])
@@ -58,7 +58,7 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
     ) -> PhxCoolingRecirculationParams:
         if not other:
             return self
-        
+
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.used = any([self.used, other.used])
@@ -71,7 +71,7 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
         )
         new_obj.annual_COP = (self.annual_COP + other.annual_COP) / 2
         return new_obj
-   
+
 
 @dataclass
 class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
@@ -88,7 +88,7 @@ class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
     ) -> PhxCoolingDehumidificationParams:
         if not other:
             return self
-        
+
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.used = any([self.used, other.used])
@@ -109,7 +109,7 @@ class PhxCoolingPanelParams(_base.PhxMechanicalDeviceParams):
     def __add__(self, other: PhxCoolingPanelParams) -> PhxCoolingPanelParams:
         if not other:
             return self
-        
+
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.used = any([self.used, other.used])
@@ -117,21 +117,30 @@ class PhxCoolingPanelParams(_base.PhxMechanicalDeviceParams):
         return new_obj
 
 
-AnyPhxCoolingParamsType = Union[PhxCoolingVentilationParams,
-                            PhxCoolingRecirculationParams,
-                            PhxCoolingDehumidificationParams,
-                            PhxCoolingPanelParams,
-                            ]
+AnyPhxCoolingParamsType = Union[
+    PhxCoolingVentilationParams,
+    PhxCoolingRecirculationParams,
+    PhxCoolingDehumidificationParams,
+    PhxCoolingPanelParams,
+]
 
 # -- Param Collection ---------------------------------------------------------
 
+
 @dataclass
 class PhxCoolingParams:
-    ventilation: PhxCoolingVentilationParams = field(default_factory=PhxCoolingVentilationParams)
-    recirculation: PhxCoolingRecirculationParams = field(default_factory=PhxCoolingRecirculationParams)
-    dehumidification: PhxCoolingDehumidificationParams = field(default_factory=PhxCoolingDehumidificationParams)
+    ventilation: PhxCoolingVentilationParams = field(
+        default_factory=PhxCoolingVentilationParams
+    )
+    recirculation: PhxCoolingRecirculationParams = field(
+        default_factory=PhxCoolingRecirculationParams
+    )
+    dehumidification: PhxCoolingDehumidificationParams = field(
+        default_factory=PhxCoolingDehumidificationParams
+    )
     panel: PhxCoolingPanelParams = field(default_factory=PhxCoolingPanelParams)
 
     def __bool__(self) -> bool:
-        return any([self.ventilation, self.recirculation, self.dehumidification, self.panel])
-
+        return any(
+            [self.ventilation, self.recirculation, self.dehumidification, self.panel]
+        )

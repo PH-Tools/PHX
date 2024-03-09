@@ -8,9 +8,9 @@ def test_default_PhxProject(reset_class_counters):
     result = generate_WUFI_XML_from_object(z1, _header="")
     assert xml_string_to_list(result) == [
         "<Name></Name>",
-        '<KindZone>1</KindZone>',
-        '<KindAttachedZone>0</KindAttachedZone>',
-        '<TemperatureReductionFactorUserDefined>1.0</TemperatureReductionFactorUserDefined>',
+        "<KindZone>1</KindZone>",
+        "<KindAttachedZone>0</KindAttachedZone>",
+        "<TemperatureReductionFactorUserDefined>1.0</TemperatureReductionFactorUserDefined>",
         "<IdentNr>1</IdentNr>",
         '<RoomsVentilation count="0"/>',
         '<LoadsPersonsPH count="0"/>',

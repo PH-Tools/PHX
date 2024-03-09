@@ -529,38 +529,22 @@ class PhxMechanicalSystemCollection:
     @property
     def ventilation_devices(self) -> List[hvac.AnyPhxVentilation]:
         """Returns a list of the 'Ventilation' devices in the collection."""
-        return [
-            _
-            for _ in self.devices
-            if isinstance(_, hvac.PhxDeviceVentilation)
-        ]
+        return [_ for _ in self.devices if isinstance(_, hvac.PhxDeviceVentilation)]
 
     @property
     def space_heating_devices(self) -> List[hvac.AnyPhxHeater]:
         """Returns a list of the 'Space Heating' devices in the collection."""
-        return [
-            _
-            for _ in self.devices
-            if isinstance(_, hvac.PhxHeatingDevice)
-        ]
+        return [_ for _ in self.devices if isinstance(_, hvac.PhxHeatingDevice)]
 
     @property
     def heat_pump_devices(self) -> List[hvac.PhxHeatPumpDevice]:
         """Returns a list of all the Heat-Pump devices in the collection."""
-        return [
-            d
-            for d in self.devices
-            if isinstance(d, hvac.PhxHeatPumpDevice)
-        ]
+        return [d for d in self.devices if isinstance(d, hvac.PhxHeatPumpDevice)]
 
     @property
     def cooling_devices(self) -> List[hvac.PhxHeatPumpDevice]:
         """Returns a list of all the Cooling devices (heat pumps) in the collection."""
-        return [
-            d
-            for d in self.heat_pump_devices
-            if d.usage_profile.cooling == True
-        ]
+        return [d for d in self.heat_pump_devices if d.usage_profile.cooling == True]
 
     def device_in_collection(self, _device_key) -> bool:
         """Return True if the a Mech device with the matching key is already in the collection."""

@@ -305,7 +305,9 @@ def build_phx_heating_device(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeati
     """Returns a new PHX-Heating-Device based on an input Honeybee-PH Heating System."""
 
     # -- Mapping Honeybee-PH -> PHX types
-    phx_heater_classes: Dict[str, Callable[[heating.PhHeatingSystem], hvac.PhxHeatingDevice]] = {
+    phx_heater_classes: Dict[
+        str, Callable[[heating.PhHeatingSystem], hvac.PhxHeatingDevice]
+    ] = {
         "PhHeatingDirectElectric": build_phx_heating_electric,
         "PhHeatingFossilBoiler": build_phx_heating_fossil_boiler,
         "PhHeatingWoodBoiler": build_phx_heating_wood_boiler,
@@ -330,6 +332,7 @@ def build_phx_heating_sys(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeatingD
 # -----------------------------------------------------------------------------
 # -- Heat Pumps
 
+
 def hbph_heat_pump_has_cooling(_hbph_heat_pump: heat_pumps.PhHeatPumpSystem) -> bool:
     """Return True if the input Honeybee-PH Heat-Pump System has any type of cooling enabled."""
     return any(
@@ -342,16 +345,26 @@ def hbph_heat_pump_has_cooling(_hbph_heat_pump: heat_pumps.PhHeatPumpSystem) -> 
     )
 
 
-def build_phx_heat_pump_cooling_params(_hbph_heat_pump: heat_pumps.PhHeatPumpSystem) -> hvac.PhxCoolingParams:
+def build_phx_heat_pump_cooling_params(
+    _hbph_heat_pump: heat_pumps.PhHeatPumpSystem,
+) -> hvac.PhxCoolingParams:
     """Return a new PHX Cooling Params object based on an input Honeybee-PH Heat-Pump System."""
-    
+
     new_params_obj = hvac.PhxCoolingParams()
 
-    new_params_obj.ventilation = build_phx_cooling_ventilation_params(_hbph_heat_pump.cooling_params.ventilation)
-    new_params_obj.recirculation = build_phx_cooling_recirculation_params(_hbph_heat_pump.cooling_params.recirculation)
-    new_params_obj.dehumidification = build_phx_cooling_dehumidification_params(_hbph_heat_pump.cooling_params.dehumidification)
-    new_params_obj.panel = build_phx_cooling_panel_params(_hbph_heat_pump.cooling_params.panel)
-    
+    new_params_obj.ventilation = build_phx_cooling_ventilation_params(
+        _hbph_heat_pump.cooling_params.ventilation
+    )
+    new_params_obj.recirculation = build_phx_cooling_recirculation_params(
+        _hbph_heat_pump.cooling_params.recirculation
+    )
+    new_params_obj.dehumidification = build_phx_cooling_dehumidification_params(
+        _hbph_heat_pump.cooling_params.dehumidification
+    )
+    new_params_obj.panel = build_phx_cooling_panel_params(
+        _hbph_heat_pump.cooling_params.panel
+    )
+
     return new_params_obj
 
 
@@ -363,11 +376,13 @@ def build_phx_heating_hp_annual(
     phx_obj = hvac.PhxHeatPumpAnnual()
     phx_obj = _transfer_attributes(_hbph_heat_pump, phx_obj)
     phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
-    
+
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
+        phx_obj.usage_profile.cooling_percent = (
+            _hbph_heat_pump.cooling_params.percent_coverage
+        )
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
-    
+
     return phx_obj
 
 
@@ -375,15 +390,17 @@ def build_phx_heating_hp_monthly(
     _hbph_heat_pump: heat_pumps.PhHeatPumpSystem,
 ) -> hvac.PhxHeatPumpMonthly:
     """Returns a new Monthly PHX-Heat-Pump-Device based on an input Honeybee-PH Heat-Pump System."""
-    
+
     phx_obj = hvac.PhxHeatPumpMonthly()
     phx_obj = _transfer_attributes(_hbph_heat_pump, phx_obj)
     phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
-    
+
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
+        phx_obj.usage_profile.cooling_percent = (
+            _hbph_heat_pump.cooling_params.percent_coverage
+        )
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
-    
+
     return phx_obj
 
 
@@ -391,34 +408,44 @@ def build_phx_heating_hp_combined(
     _hbph_heat_pump: heat_pumps.PhHeatPumpSystem,
 ) -> hvac.PhxHeatPumpCombined:
     """Returns a new Combined PHX-Heat-Pump-Device based on an input Honeybee-PH Heat-Pump System."""
-    
+
     phx_obj = hvac.PhxHeatPumpCombined()
     phx_obj = _transfer_attributes(_hbph_heat_pump, phx_obj)
     phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
-    
+
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
+        phx_obj.usage_profile.cooling_percent = (
+            _hbph_heat_pump.cooling_params.percent_coverage
+        )
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
-    
+
     return phx_obj
 
 
-def build_phx_heat_pump_device(_hbph_heat_pump: heat_pumps.PhHeatPumpSystem) -> hvac.PhxHeatPumpDevice:
+def build_phx_heat_pump_device(
+    _hbph_heat_pump: heat_pumps.PhHeatPumpSystem,
+) -> hvac.PhxHeatPumpDevice:
     """Returns a new PHX-He"at-Pump-Device based on an input Honeybee-PH Heat-Pump System."""
 
     # -- Mapping Honeybee-PH -> PHX types
-    phx_heat_pump_classes: Dict[str, Callable[[heat_pumps.PhHeatPumpSystem], hvac.PhxHeatPumpDevice]] = {
+    phx_heat_pump_classes: Dict[
+        str, Callable[[heat_pumps.PhHeatPumpSystem], hvac.PhxHeatPumpDevice]
+    ] = {
         "PhHeatPumpAnnual": build_phx_heating_hp_annual,
         "PhHeatPumpRatedMonthly": build_phx_heating_hp_monthly,
         "PhHeatPumpCombined": build_phx_heating_hp_combined,
     }
 
     # -- Get and build the right heater equipment type
-    phx_heat_pump = phx_heat_pump_classes[_hbph_heat_pump.heat_pump_class_name](_hbph_heat_pump)
+    phx_heat_pump = phx_heat_pump_classes[_hbph_heat_pump.heat_pump_class_name](
+        _hbph_heat_pump
+    )
     return phx_heat_pump
 
 
-def build_phx_heat_pump_sys(_hbph_heat_pump: heat_pumps.PhHeatPumpSystem) -> hvac.PhxHeatPumpDevice:
+def build_phx_heat_pump_sys(
+    _hbph_heat_pump: heat_pumps.PhHeatPumpSystem,
+) -> hvac.PhxHeatPumpDevice:
     """Build a new PHX-Heat-Pump-Device Device from a Honeybee-PH Heat-Pump System."""
 
     phx_htg_device = build_phx_heat_pump_device(_hbph_heat_pump)
@@ -426,7 +453,6 @@ def build_phx_heat_pump_sys(_hbph_heat_pump: heat_pumps.PhHeatPumpSystem) -> hva
     # TODO: Distribution...
 
     return phx_htg_device
-
 
 
 # -----------------------------------------------------------------------------
@@ -453,7 +479,7 @@ def build_phx_cooling_ventilation_params(
     _hbph_cooling_params: heat_pumps.PhHeatPumpCoolingParams_Ventilation,
 ) -> hvac.PhxCoolingVentilationParams:
     """Build a new PHX Cooling Ventilation Params object from a Honeybee-PH Cooling Ventilation Params object."""
-    
+
     phx_obj = hvac.PhxCoolingVentilationParams()
     phx_obj = _transfer_cooling_attributes(_hbph_cooling_params, phx_obj)
     return phx_obj
@@ -463,7 +489,7 @@ def build_phx_cooling_recirculation_params(
     _hbph_cooling_params: heat_pumps.PhHeatPumpCoolingParams_Recirculation,
 ) -> hvac.PhxCoolingRecirculationParams:
     """Build a new PHX-Cooling-Recirculation-Params object from a Honeybee-PH Cooling-Params object."""
-    
+
     phx_obj = hvac.PhxCoolingRecirculationParams()
     phx_obj = _transfer_cooling_attributes(_hbph_cooling_params, phx_obj)
     return phx_obj
@@ -473,7 +499,7 @@ def build_phx_cooling_dehumidification_params(
     _hbph_cooling_params: heat_pumps.PhHeatPumpCoolingParams_Dehumidification,
 ) -> hvac.PhxCoolingDehumidificationParams:
     """Build a new PHX-Cooling-Dehumidification-Params object from a Honeybee-PH Cooling-Params object."""
-    
+
     phx_obj = hvac.PhxCoolingDehumidificationParams()
     phx_obj = _transfer_cooling_attributes(_hbph_cooling_params, phx_obj)
     return phx_obj
@@ -483,7 +509,7 @@ def build_phx_cooling_panel_params(
     _hbph_cooling_params: heat_pumps.PhHeatPumpCoolingParams_Panel,
 ) -> hvac.PhxCoolingPanelParams:
     """Build a new PHX-Cooling-Panel-Params object from a Honeybee-PH Cooling-Params object."""
-    
+
     phx_obj = hvac.PhxCoolingPanelParams()
     phx_obj = _transfer_cooling_attributes(_hbph_cooling_params, phx_obj)
     return phx_obj

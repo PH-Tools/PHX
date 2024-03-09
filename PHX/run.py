@@ -38,7 +38,7 @@ def _run_subprocess(commands):
             - [1]: stderr
     """
     # -- Create a new PYTHONHOME to avoid the Rhino-8 issues
-    CUSTOM_ENV =os.environ.copy()
+    CUSTOM_ENV = os.environ.copy()
     CUSTOM_ENV["PYTHONHOME"] = ""
 
     use_shell = True if os.name == "nt" else False
@@ -65,6 +65,7 @@ def _run_subprocess(commands):
 
     return stdout, stderr
 
+
 def _run_subprocess_from_shell(commands):
     # type: (List[str]) -> Tuple[Any, Any]
     """Run a python subprocess.Popen THROUGH a MacOS terminal via a shell, using the supplied commands.
@@ -85,7 +86,7 @@ def _run_subprocess_from_shell(commands):
     """
 
     # -- Create a new PYTHONHOME to avoid the Rhino-8 issues
-    CUSTOM_ENV =os.environ.copy()
+    CUSTOM_ENV = os.environ.copy()
     CUSTOM_ENV["PYTHONHOME"] = ""
 
     use_shell = True if os.name == "nt" else False
@@ -117,6 +118,7 @@ def _run_subprocess_from_shell(commands):
         print(_)
 
     return stdout, stderr
+
 
 def convert_hbjson_to_WUFI_XML(
     _hbjson_file,
@@ -168,7 +170,11 @@ def convert_hbjson_to_WUFI_XML(
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, convert to WUFI XML
     print("Using python interpreter: '{}'".format(hb_folders.python_exe_path))
-    print("Running py script: '{}' Using HBJSON file: '{}'".format(run_file_path, _hbjson_file))
+    print(
+        "Running py script: '{}' Using HBJSON file: '{}'".format(
+            run_file_path, _hbjson_file
+        )
+    )
     commands = [
         hb_folders.python_exe_path,
         run_file_path,
@@ -184,6 +190,7 @@ def convert_hbjson_to_WUFI_XML(
     # -------------------------------------------------------------------------
     # -- return the dir and filename of the xml created
     return _save_folder, _save_file_name, stdout, stderr
+
 
 def write_hbjson_to_phpp(
     _hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"
@@ -227,7 +234,7 @@ def write_hbjson_to_phpp(
                 _lbt_python_site_packages_path
             )
         )
-    
+
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, write out to PHPP
     if os.name == "nt":
@@ -246,10 +253,14 @@ def write_hbjson_to_phpp(
         # -- See:
         # -- https://discourse.mcneel.com/t/python-subprocess-permissions-error-on-mac-os-1743/142830/6
         # -- Find the files to run
-        shell_file = os.path.join(_lbt_python_site_packages_path, "PHX", "_hbjson_to_phpp.sh")
+        shell_file = os.path.join(
+            _lbt_python_site_packages_path, "PHX", "_hbjson_to_phpp.sh"
+        )
         execution_root = os.path.join(_lbt_python_site_packages_path, "PHX")
-        python_script_path = os.path.join(_lbt_python_site_packages_path, "PHX", "hbjson_to_phpp.py")
-        
+        python_script_path = os.path.join(
+            _lbt_python_site_packages_path, "PHX", "hbjson_to_phpp.py"
+        )
+
         # -- Build up the commands to run
         commands = [
             shell_file,
@@ -257,8 +268,8 @@ def write_hbjson_to_phpp(
             hb_folders.python_exe_path,
             python_script_path,
             _hbjson_file,
-            _activate_variants
+            _activate_variants,
         ]
         stdout, stderr = _run_subprocess_from_shell(commands)
-    
+
     return stdout, stderr

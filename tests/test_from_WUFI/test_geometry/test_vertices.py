@@ -5,11 +5,13 @@ def _total_num_vertices(variant: PhxVariant) -> int:
     """Calculate the total number of vertices in a variant."""
     return len(
         [
-            v for c in variant.building.all_components 
-            for p in c.polygons 
+            v
+            for c in variant.building.all_components
+            for p in c.polygons
             for v in p.vertices
         ]
     )
+
 
 def test_building_has_same_number_of_vertices(
     phx_project_from_hbjson: PhxProject,

@@ -41,14 +41,12 @@ class PhxVariant:
     phius_cert: PhxPhiusCertification = field(default_factory=PhxPhiusCertification)
     phi_cert: PhxPhiCertification = field(default_factory=PhxPhiCertification)
     site: PhxSite = field(default_factory=PhxSite)
-    
+
     # -- Allow for multiple mechanical 'collections' in a variant
-    # -- If WUFI, these are called 'systems', but they also use 
-    # -- the word 'system' in other places. So to avoid confusion, lets 
+    # -- If WUFI, these are called 'systems', but they also use
+    # -- the word 'system' in other places. So to avoid confusion, lets
     # -- call them 'collections' here
-    _mech_collections: List[PhxMechanicalSystemCollection] = field(
-        default_factory=list
-    )
+    _mech_collections: List[PhxMechanicalSystemCollection] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
@@ -60,11 +58,13 @@ class PhxVariant:
     @property
     def mech_systems(self) -> PhxMechanicalSystemCollection:
         """Return the Default Mechanical System Collection for the variant.
-        
+
         This is a facade to allow for backwards compatibility as well.
         """
-        print("Warning: You should be using the 'mech_collections' property "\
-              "to access PHX mechanical devices instead of 'mech_systems'.")
+        print(
+            "Warning: You should be using the 'mech_collections' property "
+            "to access PHX mechanical devices instead of 'mech_systems'."
+        )
         return self._mech_collections[0]
 
     @property
@@ -119,7 +119,9 @@ class PhxVariant:
         """Returns the total window area of the variant.building"""
         return self.building.get_total_roof_aperture_area()
 
-    def add_mechanical_collection(self, _mech_collection: PhxMechanicalSystemCollection) -> None:
+    def add_mechanical_collection(
+        self, _mech_collection: PhxMechanicalSystemCollection
+    ) -> None:
         """Add a new mechanical collection to the variant."""
         self._mech_collections.append(_mech_collection)
 
@@ -128,24 +130,22 @@ class PhxVariant:
         self._mech_collections = []
 
     def get_mech_device_by_key(
-            self, 
-            _key: str
+        self, _key: str
     ) -> Tuple[Optional[PhxMechanicalSystemCollection], Optional[PhxMechanicalDevice]]:
         """Return a Tuple of a mech-collection and a mechanical device based on the specified device key, or None if not found."""
-        
-        found: List[Tuple[Optional[PhxMechanicalSystemCollection], Optional[PhxMechanicalDevice]]] = []
+
+        found: List[
+            Tuple[Optional[PhxMechanicalSystemCollection], Optional[PhxMechanicalDevice]]
+        ] = []
         for mech_collection in self._mech_collections:
-            found.append(
-                (mech_collection, mech_collection._devices.get(_key, None)))
+            found.append((mech_collection, mech_collection._devices.get(_key, None)))
 
         if len(found) == 0:
             return None, None
         elif len(found) == 1:
             return found[0]
         else:
-            raise ValueError(
-                f"Multiple mechanical devices found with key: {_key}."
-            )
+            raise ValueError(f"Multiple mechanical devices found with key: {_key}.")
 
     def device_in_collections(self, _key: str) -> bool:
         """See if the variant's mechanical device collections already includes the specified key."""
@@ -154,14 +154,14 @@ class PhxVariant:
                 return True
         return False
 
-    def supportive_device_in_collections(self, _key:str) -> bool:
+    def supportive_device_in_collections(self, _key: str) -> bool:
         """Return a supportive device based on the specified device key, or None if not found."""
         for mech_collection in self._mech_collections:
             if mech_collection.supportive_devices.device_in_collection(_key) == True:
                 return True
         return False
 
-    def renewable_device_in_collections(self, _key:str) -> bool:
+    def renewable_device_in_collections(self, _key: str) -> bool:
         """Return a renewable device based on the specified device key, or None if not found."""
         for mech_collection in self._mech_collections:
             if mech_collection.renewable_devices.device_in_collection(_key) == True:
@@ -176,6 +176,7 @@ class PhxVariant:
                 return phx_mech_ventilator
 
         raise NoDeviceFoundError(_id_num)
+
 
 @dataclass
 class ProjectData_Agent:
@@ -266,15 +267,19 @@ class PhxProject:
         try:
             return self.window_types[_key]
         except KeyError as e:
-            valid_keys = '  |  '.join([f"{k}::{v.display_name}" for k, v in self.window_types.items()])
-            msg =   f"Window Type: '{_key}' not found in project collection? "\
-                    f"Valid window-types include only: {valid_keys}."
+            valid_keys = "  |  ".join(
+                [f"{k}::{v.display_name}" for k, v in self.window_types.items()]
+            )
+            msg = (
+                f"Window Type: '{_key}' not found in project collection? "
+                f"Valid window-types include only: {valid_keys}."
+            )
             raise KeyError(msg)
 
     def get_window_types_by_name(self, _name: str) -> List[PhxConstructionWindow]:
         """Returns a list of PhxConstructionWindow with the specified name.
-        
-        CAUTION: Multiple window types can have the same name. 
+
+        CAUTION: Multiple window types can have the same name.
         Use the .get_window_type() and use the 'key' to get an exact window type.
         """
         return [

@@ -27,6 +27,7 @@ class PhxHeatPumpDevice(_base.PhxMechanicalDevice):
 # -----------------------------------------------------------------------------
 # Params
 
+
 @dataclass
 class PhxHeatPumpAnnualParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.ANNUAL)
@@ -138,9 +139,7 @@ AnyHeatPumpParams = Union[
 class PhxHeatPumpAnnual(PhxHeatPumpDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
-    params: PhxHeatPumpAnnualParams = field(
-        default_factory=PhxHeatPumpAnnualParams
-    )
+    params: PhxHeatPumpAnnualParams = field(default_factory=PhxHeatPumpAnnualParams)
     params_cooling: PhxCoolingParams = field(default_factory=PhxCoolingParams)
 
 
@@ -148,9 +147,7 @@ class PhxHeatPumpAnnual(PhxHeatPumpDevice):
 class PhxHeatPumpMonthly(PhxHeatPumpDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
-    params: PhxHeatPumpMonthlyParams = field(
-        default_factory=PhxHeatPumpMonthlyParams
-    )
+    params: PhxHeatPumpMonthlyParams = field(default_factory=PhxHeatPumpMonthlyParams)
     params_cooling: PhxCoolingParams = field(default_factory=PhxCoolingParams)
 
 
@@ -158,9 +155,7 @@ class PhxHeatPumpMonthly(PhxHeatPumpDevice):
 class PhxHeatPumpCombined(PhxHeatPumpDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
-    params: PhxHeatPumpCombinedParams = field(
-        default_factory=PhxHeatPumpCombinedParams
-    )
+    params: PhxHeatPumpCombinedParams = field(default_factory=PhxHeatPumpCombinedParams)
     params_cooling: PhxCoolingParams = field(default_factory=PhxCoolingParams)
 
 
@@ -168,9 +163,7 @@ class PhxHeatPumpCombined(PhxHeatPumpDevice):
 class PhxHeatPumpHotWater(PhxHeatPumpDevice):
     system_type: SystemType = field(init=False, default=SystemType.HEAT_PUMP)
     device_type: DeviceType = field(init=False, default=DeviceType.HEAT_PUMP)
-    params: PhxHeatPumpHotWaterParams = field(
-        default_factory=PhxHeatPumpHotWaterParams
-    )
+    params: PhxHeatPumpHotWaterParams = field(default_factory=PhxHeatPumpHotWaterParams)
     params_cooling: PhxCoolingParams = field(default_factory=PhxCoolingParams)
 
 

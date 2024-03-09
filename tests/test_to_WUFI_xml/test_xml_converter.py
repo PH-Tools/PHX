@@ -14,7 +14,7 @@ def test_get_PHX_object_conversion_schema_with_valid_PHX():
 def test_get_PHX_object_conversion_schema_with_valid_PHX_schema_name_override():
     phx_obj = project.PhxProject()
     correct_func = xml_schemas._PhxBuilding
-    found_func = xml_converter.get_PHX_object_conversion_schema(phx_obj, '_PhxBuilding')
+    found_func = xml_converter.get_PHX_object_conversion_schema(phx_obj, "_PhxBuilding")
 
     assert found_func == correct_func
 

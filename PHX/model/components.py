@@ -261,7 +261,7 @@ class PhxComponentOpaque(PhxComponentBase):
             f"Error: Cannot find an aperture polygon for the id_num: {_id_num}"
         )
 
-    def get_aperture_element_by_polygon_id_num(self, _id_num:int) -> PhxApertureElement:
+    def get_aperture_element_by_polygon_id_num(self, _id_num: int) -> PhxApertureElement:
         """Return a single Aperture Element from the collection if it has the specified ID.
 
         If the specified ID number is not found, an Exception is raised.
@@ -277,7 +277,7 @@ class PhxComponentOpaque(PhxComponentBase):
             for element in aperture.elements:
                 if not element.polygon:
                     continue
-                
+
                 if element.polygon.id_num == _id_num:
                     return element
         raise Exception(
@@ -317,11 +317,11 @@ class PhxApertureShadingDimensions(PhxComponentBase):
     ### Horizon Objects:
     - d_hori = Distance away from glass
     - h_hori = Height of the shading from glass bottom edge
-    
+
     ### Shading to the sides (reveal):
     - d_reveal = Reveal distance 'over' from glass
     - o_reveal = Reveal depth from glass
-    
+
     ### Overhand Shading:
     - d_over = Overhang height 'up' from glass top edge
     - o_over = Overhang depth from glass
@@ -331,16 +331,16 @@ class PhxApertureShadingDimensions(PhxComponentBase):
         super().__init__()
 
         # -- Horizon Objects
-        self.d_hori: Optional[float] = None # Vertical distance to the shading top
-        self.h_hori: Optional[float] = None # Horizontal distance to the shading
-        
+        self.d_hori: Optional[float] = None  # Vertical distance to the shading top
+        self.h_hori: Optional[float] = None  # Horizontal distance to the shading
+
         # -- Shading to the sides (reveal)
-        self.d_reveal: Optional[float] = None # Reveal distance 'over' from glass
-        self.o_reveal: Optional[float] = None # Reveal depth from glass
-        
+        self.d_reveal: Optional[float] = None  # Reveal distance 'over' from glass
+        self.o_reveal: Optional[float] = None  # Reveal depth from glass
+
         # -- Overhand Shading
-        self.d_over: Optional[float] = None # Overhang height 'up' from glass
-        self.o_over: Optional[float] = None # Overhang Depth from glass
+        self.d_over: Optional[float] = None  # Overhang height 'up' from glass
+        self.o_over: Optional[float] = None  # Overhang Depth from glass
 
 
 class PhxApertureElement(PhxComponentBase):
@@ -351,7 +351,9 @@ class PhxApertureElement(PhxComponentBase):
 
         self.host: PhxComponentAperture = _host
         self.display_name: str = ""
-        self.polygon: Union[geometry.PhxPolygonRectangular, geometry.PhxPolygon, None] = None
+        self.polygon: Union[
+            geometry.PhxPolygonRectangular, geometry.PhxPolygon, None
+        ] = None
         self.winter_shading_factor: float = 0.75
         self.summer_shading_factor: float = 0.75
         self.shading_dimensions = PhxApertureShadingDimensions()
@@ -498,9 +500,11 @@ class PhxComponentAperture(PhxComponentBase):
         """The average shading 'reveal' distance of the Aperture's Elements from the glass."""
         if not all(e.shading_dimensions.d_reveal for e in self.elements):
             return None
-        
+
         try:
-            total_d_reveal = sum(e.shading_dimensions.d_reveal or 0.0 for e in self.elements)
+            total_d_reveal = sum(
+                e.shading_dimensions.d_reveal or 0.0 for e in self.elements
+            )
             return total_d_reveal / len(self.elements)
         except ZeroDivisionError:
             return 0.0
@@ -537,7 +541,7 @@ class PhxComponentAperture(PhxComponentBase):
         return {polygon.id_num for polygon in self.polygons}
 
     @property
-    def polygon_ids_sorted(self) -> Tuple[int]:
+    def polygon_ids_sorted(self) -> Tuple[int, ...]:
         """Return a Tuple of all the Polygon-id numbers found in the Component's Polygon group, sorted."""
         return tuple(sorted(self.polygon_ids))
 
@@ -545,15 +549,15 @@ class PhxComponentAperture(PhxComponentBase):
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
         attributes = {
-            "face_type":self.face_type.value,
-            "face_opacity":self.face_opacity.value,
-            "exposure_interior":self.exposure_interior,
-            "interior_attachment_id":self.interior_attachment_id,
-            "exposure_exterior":self.exposure_exterior.value,
-            "window_type_id_num":self.window_type_id_num,
-            "shade_type_id_num":self.shade_type_id_num,
-            "variant_type_name":self.variant_type_name,
-            "default_monthly_shading_correction_factor":self.default_monthly_shading_correction_factor
+            "face_type": self.face_type.value,
+            "face_opacity": self.face_opacity.value,
+            "exposure_interior": self.exposure_interior,
+            "interior_attachment_id": self.interior_attachment_id,
+            "exposure_exterior": self.exposure_exterior.value,
+            "window_type_id_num": self.window_type_id_num,
+            "shade_type_id_num": self.shade_type_id_num,
+            "variant_type_name": self.variant_type_name,
+            "default_monthly_shading_correction_factor": self.default_monthly_shading_correction_factor,
         }
         return "-".join(f"{v}" for k, v in attributes.items())
 
@@ -736,3 +740,56 @@ class PhxComponentThermalBridge(PhxComponentBase):
     def length(self, value: Optional[float]) -> None:
         if value is not None:
             self._length = value
+
+    @property
+    def unique_key(self) -> str:
+        """Returns a unique text key,. Useful for sorting / grouping / merging components."""
+        return f"{self.group_number}-{self.psi_value :.4f}-{self.display_name}"
+
+    def __add__(self, other: PhxComponentThermalBridge) -> PhxComponentThermalBridge:
+        """Merge with another Component into a single new Component.
+
+        Arguments:
+        ----------
+            * other (PhxComponentThermalBridge): The other PhxComponentThermalBridge to merge with.
+
+        Returns:
+        --------
+            * (PhxComponentThermalBridge): A new Component with attributes merged.
+        """
+        new_compo = self.__class__()
+
+        # -- Copy the basic attribute values over
+        new_compo.identifier = self.identifier
+        new_compo.display_name = self.display_name
+        new_compo.group_type = self.group_type
+        new_compo.fRsi_value = self.fRsi_value
+        new_compo.quantity = 1
+
+        # -- Calculate the new length
+        _self_total_len = (self.length or 0) * (self.quantity or 0)
+        _other_total_len = (other.length or 0) * (other.quantity or 0)
+        new_compo.length = _self_total_len + _other_total_len
+
+        # -- Calculate the new psi value
+        _self_weighted_psi_value = _self_total_len * (self.psi_value or 0.0)
+        _other_weighted_psi_value = _other_total_len * (other.psi_value or 0.0)
+        _total_weighted_psi_value = _self_weighted_psi_value + _other_weighted_psi_value
+        try:
+            new_compo.psi_value = _total_weighted_psi_value / new_compo.length
+        except ZeroDivisionError:
+            new_compo.psi_value = 0.0
+
+        return new_compo
+
+    def __eq__(self, other: PhxComponentThermalBridge) -> bool:
+        TOLERANCE = 0.001
+        if (
+            self.group_type != other.group_type
+            or self.display_name != other.display_name
+            or abs((self.psi_value or 0) - (other.psi_value or 0)) > TOLERANCE
+            or abs((self.fRsi_value or 0) - (other.fRsi_value or 0)) > TOLERANCE
+            or abs((self.length or 0) - (other.length or 0)) > TOLERANCE
+        ):
+            return False
+        return True

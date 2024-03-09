@@ -30,11 +30,12 @@ class PhiusCertificationBuildingType(Enum):
     RETROFIT = 2
     MIXED = 3
 
+
 class PhiusCertificationProgram(Enum):
     DEFAULT = 1
     PHIUS_2015 = 2
     PHIUS_2018 = 3
-    ITALIAN  = 4
+    ITALIAN = 4
     PHIUS_2018_CORE = 5
     PHIUS_2018_ZERO = 6
     PHIUS_2021_CORE = 7

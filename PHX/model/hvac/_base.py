@@ -29,7 +29,7 @@ class PhxUsageProfile:
     def space_heating(self) -> bool:
         """True if the device used to provide space heating."""
         return not math.isclose(self.space_heating_percent, 0)
-    
+
     @space_heating.setter
     def space_heating(self, _in: bool) -> None:
         if _in and self.space_heating_percent == 0:
@@ -41,7 +41,7 @@ class PhxUsageProfile:
     def dhw_heating(self) -> bool:
         """True if the device used to provide domestic hot water heating."""
         return not math.isclose(self.dhw_heating_percent, 0)
-    
+
     @dhw_heating.setter
     def dhw_heating(self, _in: bool) -> None:
         if _in and self.dhw_heating_percent == 0:
@@ -53,19 +53,19 @@ class PhxUsageProfile:
     def cooling(self) -> bool:
         """True if the device used to provide cooling."""
         return not math.isclose(self.cooling_percent, 0)
-        
+
     @cooling.setter
     def cooling(self, _in: bool) -> None:
         if _in and self.cooling_percent == 0:
             self.cooling_percent = 1.0
         elif _in == False:
             self.cooling_percent = 0.0
-            
+
     @property
     def ventilation(self) -> bool:
         """True if the device used to provide ventilation."""
         return not math.isclose(self.ventilation_percent, 0)
-    
+
     @ventilation.setter
     def ventilation(self, _in: bool) -> None:
         if _in and self.ventilation_percent == 0:
@@ -77,7 +77,7 @@ class PhxUsageProfile:
     def humidification(self) -> bool:
         """True if the device used to provide humidification."""
         return not math.isclose(self.humidification_percent, 0)
-    
+
     @humidification.setter
     def humidification(self, _in: bool) -> None:
         if _in and self.humidification_percent == 0:
@@ -89,7 +89,7 @@ class PhxUsageProfile:
     def dehumidification(self) -> bool:
         """True if the device used to provide dehumidification."""
         return not math.isclose(self.dehumidification_percent, 0)
-    
+
     @dehumidification.setter
     def dehumidification(self, _in: bool) -> None:
         if _in and self.dehumidification_percent == 0:
@@ -99,12 +99,18 @@ class PhxUsageProfile:
 
     def __add__(self, other: PhxUsageProfile) -> PhxUsageProfile:
         obj = self.__class__()
-        obj.space_heating_percent = self.space_heating_percent + other.space_heating_percent
+        obj.space_heating_percent = (
+            self.space_heating_percent + other.space_heating_percent
+        )
         obj.dhw_heating_percent = self.dhw_heating_percent + other.dhw_heating_percent
         obj.cooling_percent = self.cooling_percent + other.cooling_percent
         obj.ventilation_percent = self.ventilation_percent + other.ventilation_percent
-        obj.humidification_percent = self.humidification_percent + other.humidification_percent
-        obj.dehumidification_percent = self.dehumidification_percent + other.dehumidification_percent
+        obj.humidification_percent = (
+            self.humidification_percent + other.humidification_percent
+        )
+        obj.dehumidification_percent = (
+            self.dehumidification_percent + other.dehumidification_percent
+        )
         return obj
 
 
