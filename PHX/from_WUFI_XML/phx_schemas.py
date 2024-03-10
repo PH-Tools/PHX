@@ -1307,7 +1307,6 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
         else:
             return 3
 
-    print("-" * 25)
     phx_obj = PhxZone()
 
     phx_obj.zone_type = ZoneType(_data.KindZone)
