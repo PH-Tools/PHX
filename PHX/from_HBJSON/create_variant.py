@@ -83,9 +83,7 @@ def add_building_from_hb_room(
         * None
     """
     _variant.building.add_components(
-        create_building.create_components_from_hb_room(
-            _hb_room, _assembly_dict, _window_type_dict, _tolerance
-        )
+        create_building.create_components_from_hb_room(_hb_room, _assembly_dict, _window_type_dict, _tolerance)
     )
     _variant.building.add_zones(
         create_building.create_zones_from_hb_room(
@@ -102,9 +100,7 @@ def add_building_from_hb_room(
         _variant.building.merge_thermal_bridges()
 
 
-def add_phius_certification_from_hb_room(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Set all the PhxPhiusCertificationCriteria on a PhxVariant based on a Honeybee-Room's Building Segment.
 
     Arguments:
@@ -123,49 +119,29 @@ def add_phius_certification_from_hb_room(
     phx_phius_cert_settings = _variant.phius_cert.phius_certification_settings  # alias
 
     # -- some random bullshit
-    phx_phius_cert_criteria.ph_selection_target_data = (
-        hbph_phius_cert.localization_selection_type
-    )
+    phx_phius_cert_criteria.ph_selection_target_data = hbph_phius_cert.localization_selection_type
 
     # -- certification thresholds (for Phius, they change with climate)
-    phx_phius_cert_criteria.phius_annual_heating_demand = (
-        hbph_phius_cert.PHIUS2021_heating_demand
-    )
-    phx_phius_cert_criteria.phius_annual_cooling_demand = (
-        hbph_phius_cert.PHIUS2021_cooling_demand
-    )
-    phx_phius_cert_criteria.phius_peak_heating_load = (
-        hbph_phius_cert.PHIUS2021_heating_load
-    )
-    phx_phius_cert_criteria.phius_peak_cooling_load = (
-        hbph_phius_cert.PHIUS2021_cooling_load
-    )
+    phx_phius_cert_criteria.phius_annual_heating_demand = hbph_phius_cert.PHIUS2021_heating_demand
+    phx_phius_cert_criteria.phius_annual_cooling_demand = hbph_phius_cert.PHIUS2021_cooling_demand
+    phx_phius_cert_criteria.phius_peak_heating_load = hbph_phius_cert.PHIUS2021_heating_load
+    phx_phius_cert_criteria.phius_peak_cooling_load = hbph_phius_cert.PHIUS2021_cooling_load
 
     # -- certification settings / types
-    phx_phius_cert_settings.phius_building_certification_program = (
-        phius_certification.PhiusCertificationProgram(
-            hbph_phius_cert.certification_program.number
-        )
+    phx_phius_cert_settings.phius_building_certification_program = phius_certification.PhiusCertificationProgram(
+        hbph_phius_cert.certification_program.number
     )
-    phx_phius_cert_settings.phius_building_category_type = (
-        phius_certification.PhiusCertificationBuildingCategoryType(
-            hbph_phius_cert.building_category_type.number
-        )
+    phx_phius_cert_settings.phius_building_category_type = phius_certification.PhiusCertificationBuildingCategoryType(
+        hbph_phius_cert.building_category_type.number
     )
-    phx_phius_cert_settings.phius_building_use_type = (
-        phius_certification.PhiusCertificationBuildingUseType(
-            hbph_phius_cert.building_use_type.number
-        )
+    phx_phius_cert_settings.phius_building_use_type = phius_certification.PhiusCertificationBuildingUseType(
+        hbph_phius_cert.building_use_type.number
     )
-    phx_phius_cert_settings.phius_building_status = (
-        phius_certification.PhiusCertificationBuildingStatus(
-            hbph_phius_cert.building_status.number
-        )
+    phx_phius_cert_settings.phius_building_status = phius_certification.PhiusCertificationBuildingStatus(
+        hbph_phius_cert.building_status.number
     )
-    phx_phius_cert_settings.phius_building_type = (
-        phius_certification.PhiusCertificationBuildingType(
-            hbph_phius_cert.building_type.number
-        )
+    phx_phius_cert_settings.phius_building_type = phius_certification.PhiusCertificationBuildingType(
+        hbph_phius_cert.building_type.number
     )
 
     return None
@@ -186,36 +162,24 @@ def set_phx_phpp9_settings(
     --------
         * None
     """
-    _phx_settings.phi_building_category_type = (
-        phi_certification_phpp_9.PhiCertBuildingCategoryType(
-            _attributes.building_category_type.number
-        )
+    _phx_settings.phi_building_category_type = phi_certification_phpp_9.PhiCertBuildingCategoryType(
+        _attributes.building_category_type.number
     )
     _phx_settings.phi_building_use_type = phi_certification_phpp_9.PhiCertBuildingUseType(
         _attributes.building_use_type.number
     )
-    _phx_settings.phi_building_ihg_type = phi_certification_phpp_9.PhiCertIHGType(
-        _attributes.ihg_type.number
-    )
-    _phx_settings.phi_building_occupancy_type = (
-        phi_certification_phpp_9.PhiCertOccupancyType(_attributes.occupancy_type.number)
+    _phx_settings.phi_building_ihg_type = phi_certification_phpp_9.PhiCertIHGType(_attributes.ihg_type.number)
+    _phx_settings.phi_building_occupancy_type = phi_certification_phpp_9.PhiCertOccupancyType(
+        _attributes.occupancy_type.number
     )
 
-    _phx_settings.phi_certification_type = phi_certification_phpp_9.PhiCertType(
-        _attributes.certification_type.number
-    )
+    _phx_settings.phi_certification_type = phi_certification_phpp_9.PhiCertType(_attributes.certification_type.number)
     _phx_settings.phi_certification_class = phi_certification_phpp_9.PhiCertClass(
         _attributes.certification_class.number
     )
-    _phx_settings.phi_pe_type = phi_certification_phpp_9.PhiCertificationPEType(
-        _attributes.primary_energy_type.number
-    )
-    _phx_settings.phi_enerphit_type = phi_certification_phpp_9.PhiCertEnerPHitType(
-        _attributes.enerphit_type.number
-    )
-    _phx_settings.phi_retrofit_type = phi_certification_phpp_9.PhiCertRetrofitType(
-        _attributes.retrofit_type.number
-    )
+    _phx_settings.phi_pe_type = phi_certification_phpp_9.PhiCertificationPEType(_attributes.primary_energy_type.number)
+    _phx_settings.phi_enerphit_type = phi_certification_phpp_9.PhiCertEnerPHitType(_attributes.enerphit_type.number)
+    _phx_settings.phi_retrofit_type = phi_certification_phpp_9.PhiCertRetrofitType(_attributes.retrofit_type.number)
 
 
 def set_phx_phpp10_settings(
@@ -233,32 +197,20 @@ def set_phx_phpp10_settings(
     --------
         * None
     """
-    _phx_settings.phi_building_use_type = (
-        phi_certification_phpp_10.PhiCertBuildingUseType(
-            _attributes.building_use_type.number
-        )
+    _phx_settings.phi_building_use_type = phi_certification_phpp_10.PhiCertBuildingUseType(
+        _attributes.building_use_type.number
     )
-    _phx_settings.phi_building_ihg_type = phi_certification_phpp_10.PhiCertIHGType(
-        _attributes.ihg_type.number
-    )
+    _phx_settings.phi_building_ihg_type = phi_certification_phpp_10.PhiCertIHGType(_attributes.ihg_type.number)
 
-    _phx_settings.phi_certification_type = phi_certification_phpp_10.PhiCertType(
-        _attributes.certification_type.number
-    )
+    _phx_settings.phi_certification_type = phi_certification_phpp_10.PhiCertType(_attributes.certification_type.number)
     _phx_settings.phi_certification_class = phi_certification_phpp_10.PhiCertClass(
         _attributes.certification_class.number
     )
-    _phx_settings.phi_pe_type = phi_certification_phpp_10.PhiCertificationPEType(
-        _attributes.primary_energy_type.number
-    )
-    _phx_settings.phi_retrofit_type = phi_certification_phpp_10.PhiCertRetrofitType(
-        _attributes.retrofit_type.number
-    )
+    _phx_settings.phi_pe_type = phi_certification_phpp_10.PhiCertificationPEType(_attributes.primary_energy_type.number)
+    _phx_settings.phi_retrofit_type = phi_certification_phpp_10.PhiCertRetrofitType(_attributes.retrofit_type.number)
 
 
-def add_phi_certification_from_hb_room(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Set all the PhxPhiCertificationCriteria on a PhxVariant based on a Honeybee-Room's Building Segment.
 
     Arguments:
@@ -283,17 +235,14 @@ def add_phi_certification_from_hb_room(
         set_phx_phpp9_settings(phx_settings, hbph_settings.attributes)
     else:
         msg = (
-            "Error: Unknown PHPP Settings Version? Expected 9 | 10, "
-            f"Got: '{hbph_settings.attributes.phpp_version}'"
+            "Error: Unknown PHPP Settings Version? Expected 9 | 10, " f"Got: '{hbph_settings.attributes.phpp_version}'"
         )
         raise Exception(msg)
 
     return None
 
 
-def add_PhxPhBuildingData_from_hb_room(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Create and add a PhxPhBuildingData with data from a Honeybee-Room to a PHX-Variant.
 
     Arguments:
@@ -320,9 +269,7 @@ def add_PhxPhBuildingData_from_hb_room(
 
     # -- Add Foundations
     for hbph_foundation in hb_prop_ph.ph_foundations:
-        phx_foundation = create_foundations.create_phx_foundation_from_hbph(
-            hbph_foundation
-        )
+        phx_foundation = create_foundations.create_phx_foundation_from_hbph(hbph_foundation)
         ph_bldg.add_foundation(phx_foundation)
 
     # -- Set the airtightness for Building
@@ -377,9 +324,7 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     _variant.site.phpp_codes.dataset_name = ud_site.phpp_library_codes.dataset_name
 
     # -- Ground
-    _variant.site.ground.ground_thermal_conductivity = (
-        ud_ground.ground_thermal_conductivity
-    )
+    _variant.site.ground.ground_thermal_conductivity = ud_ground.ground_thermal_conductivity
     _variant.site.ground.ground_heat_capacity = ud_ground.ground_heat_capacity
     _variant.site.ground.ground_density = ud_ground.ground_density
     _variant.site.ground.depth_groundwater = ud_ground.depth_groundwater
@@ -397,88 +342,38 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     phx_climate.radiation_global = ud_site.climate.monthly_radiation.glob.values
 
     # -- Peak Load Values
-    phx_climate.peak_heating_1.temperature_air = (
-        ud_site.climate.peak_loads.heat_load_1.temp
-    )
-    phx_climate.peak_heating_1.radiation_north = (
-        ud_site.climate.peak_loads.heat_load_1.rad_north
-    )
-    phx_climate.peak_heating_1.radiation_east = (
-        ud_site.climate.peak_loads.heat_load_1.rad_east
-    )
-    phx_climate.peak_heating_1.radiation_south = (
-        ud_site.climate.peak_loads.heat_load_1.rad_south
-    )
-    phx_climate.peak_heating_1.radiation_west = (
-        ud_site.climate.peak_loads.heat_load_1.rad_west
-    )
-    phx_climate.peak_heating_1.radiation_global = (
-        ud_site.climate.peak_loads.heat_load_1.rad_global
-    )
+    phx_climate.peak_heating_1.temperature_air = ud_site.climate.peak_loads.heat_load_1.temp
+    phx_climate.peak_heating_1.radiation_north = ud_site.climate.peak_loads.heat_load_1.rad_north
+    phx_climate.peak_heating_1.radiation_east = ud_site.climate.peak_loads.heat_load_1.rad_east
+    phx_climate.peak_heating_1.radiation_south = ud_site.climate.peak_loads.heat_load_1.rad_south
+    phx_climate.peak_heating_1.radiation_west = ud_site.climate.peak_loads.heat_load_1.rad_west
+    phx_climate.peak_heating_1.radiation_global = ud_site.climate.peak_loads.heat_load_1.rad_global
 
-    phx_climate.peak_heating_2.temperature_air = (
-        ud_site.climate.peak_loads.heat_load_2.temp
-    )
-    phx_climate.peak_heating_2.radiation_north = (
-        ud_site.climate.peak_loads.heat_load_2.rad_north
-    )
-    phx_climate.peak_heating_2.radiation_east = (
-        ud_site.climate.peak_loads.heat_load_2.rad_east
-    )
-    phx_climate.peak_heating_2.radiation_south = (
-        ud_site.climate.peak_loads.heat_load_2.rad_south
-    )
-    phx_climate.peak_heating_2.radiation_west = (
-        ud_site.climate.peak_loads.heat_load_2.rad_west
-    )
-    phx_climate.peak_heating_2.radiation_global = (
-        ud_site.climate.peak_loads.heat_load_2.rad_global
-    )
+    phx_climate.peak_heating_2.temperature_air = ud_site.climate.peak_loads.heat_load_2.temp
+    phx_climate.peak_heating_2.radiation_north = ud_site.climate.peak_loads.heat_load_2.rad_north
+    phx_climate.peak_heating_2.radiation_east = ud_site.climate.peak_loads.heat_load_2.rad_east
+    phx_climate.peak_heating_2.radiation_south = ud_site.climate.peak_loads.heat_load_2.rad_south
+    phx_climate.peak_heating_2.radiation_west = ud_site.climate.peak_loads.heat_load_2.rad_west
+    phx_climate.peak_heating_2.radiation_global = ud_site.climate.peak_loads.heat_load_2.rad_global
 
-    phx_climate.peak_cooling_1.temperature_air = (
-        ud_site.climate.peak_loads.cooling_load_1.temp
-    )
-    phx_climate.peak_cooling_1.radiation_north = (
-        ud_site.climate.peak_loads.cooling_load_1.rad_north
-    )
-    phx_climate.peak_cooling_1.radiation_east = (
-        ud_site.climate.peak_loads.cooling_load_1.rad_east
-    )
-    phx_climate.peak_cooling_1.radiation_south = (
-        ud_site.climate.peak_loads.cooling_load_1.rad_south
-    )
-    phx_climate.peak_cooling_1.radiation_west = (
-        ud_site.climate.peak_loads.cooling_load_1.rad_west
-    )
-    phx_climate.peak_cooling_1.radiation_global = (
-        ud_site.climate.peak_loads.cooling_load_1.rad_global
-    )
+    phx_climate.peak_cooling_1.temperature_air = ud_site.climate.peak_loads.cooling_load_1.temp
+    phx_climate.peak_cooling_1.radiation_north = ud_site.climate.peak_loads.cooling_load_1.rad_north
+    phx_climate.peak_cooling_1.radiation_east = ud_site.climate.peak_loads.cooling_load_1.rad_east
+    phx_climate.peak_cooling_1.radiation_south = ud_site.climate.peak_loads.cooling_load_1.rad_south
+    phx_climate.peak_cooling_1.radiation_west = ud_site.climate.peak_loads.cooling_load_1.rad_west
+    phx_climate.peak_cooling_1.radiation_global = ud_site.climate.peak_loads.cooling_load_1.rad_global
 
-    phx_climate.peak_cooling_2.temperature_air = (
-        ud_site.climate.peak_loads.cooling_load_2.temp
-    )
-    phx_climate.peak_cooling_2.radiation_north = (
-        ud_site.climate.peak_loads.cooling_load_2.rad_north
-    )
-    phx_climate.peak_cooling_2.radiation_east = (
-        ud_site.climate.peak_loads.cooling_load_2.rad_east
-    )
-    phx_climate.peak_cooling_2.radiation_south = (
-        ud_site.climate.peak_loads.cooling_load_2.rad_south
-    )
-    phx_climate.peak_cooling_2.radiation_west = (
-        ud_site.climate.peak_loads.cooling_load_2.rad_west
-    )
-    phx_climate.peak_cooling_2.radiation_global = (
-        ud_site.climate.peak_loads.cooling_load_2.rad_global
-    )
+    phx_climate.peak_cooling_2.temperature_air = ud_site.climate.peak_loads.cooling_load_2.temp
+    phx_climate.peak_cooling_2.radiation_north = ud_site.climate.peak_loads.cooling_load_2.rad_north
+    phx_climate.peak_cooling_2.radiation_east = ud_site.climate.peak_loads.cooling_load_2.rad_east
+    phx_climate.peak_cooling_2.radiation_south = ud_site.climate.peak_loads.cooling_load_2.rad_south
+    phx_climate.peak_cooling_2.radiation_west = ud_site.climate.peak_loads.cooling_load_2.rad_west
+    phx_climate.peak_cooling_2.radiation_global = ud_site.climate.peak_loads.cooling_load_2.rad_global
 
     return None
 
 
-def add_local_pe_conversion_factors(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_local_pe_conversion_factors(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Copy local Site->Source conversion factors from a Honeybee-Room over to a PHX-Variant.
 
     Arguments:
@@ -499,9 +394,7 @@ def add_local_pe_conversion_factors(
     return
 
 
-def add_local_co2_conversion_factors(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_local_co2_conversion_factors(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Copy local Site->CO2e conversion factors from a Honeybee-Room over to a PHX-Variant.
 
     Arguments:
@@ -519,15 +412,11 @@ def add_local_co2_conversion_factors(
         new_phx_factor.fuel_name = factor.fuel_name
         new_phx_factor.value = factor.value
         new_phx_factor.unit = factor.unit
-        _variant.site.energy_factors.co2_factors[
-            new_phx_factor.fuel_name
-        ] = new_phx_factor
+        _variant.site.energy_factors.co2_factors[new_phx_factor.fuel_name] = new_phx_factor
     return
 
 
-def add_ventilation_systems_from_hb_rooms(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Add new HVAC (Ventilation, etc) Systems to the Variant based on the HB-Rooms.
 
     Arguments:
@@ -556,9 +445,7 @@ def add_ventilation_systems_from_hb_rooms(
         # ---------------------------------------------------------------------
         # -- Get or Build the PHX Ventilation Device
         # -- If the ventilator already exists, just use that one.
-        mech_collection, phx_ventilator = _variant.get_mech_device_by_key(
-            hbph_vent_sys.key
-        )
+        mech_collection, phx_ventilator = _variant.get_mech_device_by_key(hbph_vent_sys.key)
         if not phx_ventilator or not mech_collection:
             # -- otherwise, build a new PH-Ventilator from the HB-hvac, add it to the
             # -- base mech-system
@@ -575,13 +462,9 @@ def add_ventilation_systems_from_hb_rooms(
         # ---------------------------------------------------------------------
         # -- Add PHX Distribution Ducting from the HBPH Ducts
         for hbph_supply_duct in hbph_vent_sys.supply_ducting:
-            mech_collection.add_vent_ducting(
-                create_hvac.build_phx_duct(hbph_supply_duct, phx_ventilator.id_num)
-            )
+            mech_collection.add_vent_ducting(create_hvac.build_phx_duct(hbph_supply_duct, phx_ventilator.id_num))
         for hbph_exhaust_duct in hbph_vent_sys.exhaust_ducting:
-            mech_collection.add_vent_ducting(
-                create_hvac.build_phx_duct(hbph_exhaust_duct, phx_ventilator.id_num)
-            )
+            mech_collection.add_vent_ducting(create_hvac.build_phx_duct(hbph_exhaust_duct, phx_ventilator.id_num))
 
     return None
 
@@ -643,9 +526,7 @@ def add_exhaust_vent_devices_from_hb_rooms(
     return None
 
 
-def add_heating_systems_from_hb_rooms(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Add a new PHX-Heating SubSystem to the Variant based on the HB-Rooms.
 
     Arguments:
@@ -670,16 +551,12 @@ def add_heating_systems_from_hb_rooms(
         # -- Get or Build the PHX Heating systems
         for hbph_sys in heating_systems:
             # -- If the device already exists, just use that one.
-            mech_collection, phx_heating_device = _variant.get_mech_device_by_key(
-                hbph_sys.key
-            )
+            mech_collection, phx_heating_device = _variant.get_mech_device_by_key(hbph_sys.key)
 
             # -- otherwise, build a new PHX-Heating-Sys from the HB-hvac
             if not phx_heating_device or not mech_collection:
                 phx_heating_device = create_hvac.build_phx_heating_sys(hbph_sys)
-                _variant.default_mech_collection.add_new_mech_device(
-                    hbph_sys.key, phx_heating_device
-                )
+                _variant.default_mech_collection.add_new_mech_device(hbph_sys.key, phx_heating_device)
 
             # -- Keep the ID-Numbers aligned
             setattr(hbph_sys, "id_num", phx_heating_device.id_num)
@@ -687,9 +564,7 @@ def add_heating_systems_from_hb_rooms(
     return None
 
 
-def add_heat_pump_systems_from_hb_rooms(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_heat_pump_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Add new PHX-Heat-Pump SubSystem to the Variant based on the HB-Rooms.
 
     Arguments:
@@ -714,16 +589,12 @@ def add_heat_pump_systems_from_hb_rooms(
         # -- Get or Build the PHX-Cooling systems
         for hbph_sys in heat_pump_systems:
             # -- If the system already exists, just use that one.
-            mech_collection, phx_heat_pump_device = _variant.get_mech_device_by_key(
-                hbph_sys.key
-            )
+            mech_collection, phx_heat_pump_device = _variant.get_mech_device_by_key(hbph_sys.key)
 
             # -- otherwise, build a new PHX-Heat-Pump-System from the HB-hvac
             if not phx_heat_pump_device or not mech_collection:
                 phx_heat_pump_device = create_hvac.build_phx_heat_pump_sys(hbph_sys)
-                _variant.default_mech_collection.add_new_mech_device(
-                    hbph_sys.key, phx_heat_pump_device
-                )
+                _variant.default_mech_collection.add_new_mech_device(hbph_sys.key, phx_heat_pump_device)
 
             # -- Keep the ID-Numbers aligned
             setattr(hbph_sys, "id_num", phx_heat_pump_device.id_num)
@@ -731,9 +602,7 @@ def add_heat_pump_systems_from_hb_rooms(
     return None
 
 
-def add_dhw_storage_from_hb_rooms(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_dhw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Add new Service Hot Water Equipment to the Variant based on the HB-Rooms.
 
     Arguments:
@@ -765,16 +634,12 @@ def add_dhw_storage_from_hb_rooms(
 
             # -- Build a new PHS-HW-Tank from the HB-hvac
             phx_dhw_tank = build_phx_hw_storage(hw_tank)
-            _variant.default_mech_collection.add_new_mech_device(
-                hw_tank.key, phx_dhw_tank
-            )
+            _variant.default_mech_collection.add_new_mech_device(hw_tank.key, phx_dhw_tank)
 
     return None
 
 
-def add_dhw_heaters_from_hb_rooms(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_dhw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """
 
     Arguments:
@@ -801,9 +666,7 @@ def add_dhw_heaters_from_hb_rooms(
 
             # -- Build a new PHX-HW-Heater from the Honeybee-PH HW-Heater
             phx_hw_heater = build_phx_hw_heater(heater)
-            _variant.default_mech_collection.add_new_mech_device(
-                heater.identifier, phx_hw_heater
-            )
+            _variant.default_mech_collection.add_new_mech_device(heater.identifier, phx_hw_heater)
 
 
 def dhw_recirc_temp(_recirc_temps: Set[float]):
@@ -828,9 +691,7 @@ def dhw_recirc_hours(_recirc_temps: Set[int]) -> int:
         return 24
 
 
-def add_dhw_piping_from_hb_rooms(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_dhw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     ph_prop: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     phx_mech_sys = _variant.default_mech_collection
     recirc_temps: Set[float] = set()
@@ -845,9 +706,7 @@ def add_dhw_piping_from_hb_rooms(
 
         # -- Add the DHW Distribution Piping
         for distribution_piping_element in hb_shw_prop_ph.distribution_piping:
-            phx_mech_sys.add_distribution_piping(
-                build_phx_trunk_pipe(distribution_piping_element)
-            )
+            phx_mech_sys.add_distribution_piping(build_phx_trunk_pipe(distribution_piping_element))
 
         # -- Set the tap points
         phx_mech_sys._distribution_num_hw_tap_points = hb_shw_prop_ph.number_tap_points
@@ -868,9 +727,7 @@ def add_dhw_piping_from_hb_rooms(
     return None
 
 
-def add_elec_equip_from_hb_room(
-    _variant: project.PhxVariant, _hb_room: room.Room
-) -> None:
+def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Creates new PHX-Elec-Equipment (Appliances) and adds them to each of the Variant.building.zones
 
     Arguments:
@@ -919,9 +776,7 @@ def add_supportive_devices_from_hb_room(
 
             # -- Otherwise, build a new PHX-Exhaust Ventilator from the HBPH-Object
             phx_device = create_hvac.build_phx_supportive_device(hbph_device)
-            _variant.default_mech_collection.supportive_devices.add_new_device(
-                hbph_device.key, phx_device
-            )
+            _variant.default_mech_collection.supportive_devices.add_new_device(hbph_device.key, phx_device)
 
     # -- Once all the Supportive Devices have been added to the Zones, merge them together
     if _merge_devices:
@@ -958,9 +813,7 @@ def add_renewable_devices_from_hb_room(
 
             # -- Otherwise, build a new PHX-Renewable Device from the HBPH-Object
             phx_device = create_hvac.build_phx_renewable_device(hbph_device)
-            _variant.default_mech_collection.renewable_devices.add_new_device(
-                hbph_device.key, phx_device
-            )
+            _variant.default_mech_collection.renewable_devices.add_new_device(hbph_device.key, phx_device)
 
     # -- Once all the Renewable Devices have been added to the Zones, merge them together
     if _merge_devices:

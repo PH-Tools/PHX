@@ -43,49 +43,37 @@ class VentilationInputItem:
         )
 
     @classmethod
-    def vent_type(
-        cls, shape: shape_model.Ventilation, input_data: xl_writable
-    ) -> VentilationInputItem:
+    def vent_type(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
         obj.input_type = "vent_type"
         return obj
 
     @classmethod
-    def multi_unit_on(
-        cls, shape: shape_model.Ventilation, input_data: xl_writable
-    ) -> VentilationInputItem:
+    def multi_unit_on(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
         obj.input_type = "multi_unit_on"
         return obj
 
     @classmethod
-    def wind_coeff_e(
-        cls, shape: shape_model.Ventilation, input_data: xl_writable
-    ) -> VentilationInputItem:
+    def wind_coeff_e(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
         obj.input_type = "wind_coeff_e"
         return obj
 
     @classmethod
-    def wind_coeff_f(
-        cls, shape: shape_model.Ventilation, input_data: xl_writable
-    ) -> VentilationInputItem:
+    def wind_coeff_f(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
         obj.input_type = "wind_coeff_f"
         return obj
 
     @classmethod
-    def airtightness_n50(
-        cls, shape: shape_model.Ventilation, input_data: xl_writable
-    ) -> VentilationInputItem:
+    def airtightness_n50(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
         obj.input_type = "airtightness_n50"
         return obj
 
     @classmethod
-    def airtightness_Vn50(
-        cls, shape: shape_model.Ventilation, input_data: xl_writable
-    ) -> VentilationInputItem:
+    def airtightness_Vn50(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
         obj.input_type = "airtightness_Vn50"
         obj.input_unit = "M3"

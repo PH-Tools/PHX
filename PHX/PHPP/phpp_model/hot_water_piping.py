@@ -24,9 +24,7 @@ class RecircPipingInput:
     @property
     def input_column(self) -> str:
         """Return the right input column based on the pipe-group-number."""
-        return xl_data.col_offset(
-            self.shape.recirc_piping.input_col_start, self.pipe_group_num
-        )
+        return xl_data.col_offset(self.shape.recirc_piping.input_col_start, self.pipe_group_num)
 
     def _create_range(
         self,
@@ -66,8 +64,7 @@ class RecircPipingInput:
             ),
             XLItemDHW(
                 create_range("insul_thickness"),
-                sum(s.insulation_thickness_m * s.length_m for s in self.phx_pipe)
-                / total_length,
+                sum(s.insulation_thickness_m * s.length_m for s in self.phx_pipe) / total_length,
                 "M",
                 self._get_target_unit("insul_thickness"),
             ),
@@ -77,8 +74,7 @@ class RecircPipingInput:
             ),
             XLItemDHW(
                 create_range("insul_conductivity"),
-                sum(s.insulation_thickness_m * s.length_m for s in self.phx_pipe)
-                / total_length,
+                sum(s.insulation_thickness_m * s.length_m for s in self.phx_pipe) / total_length,
                 "W/MK",
                 self._get_target_unit("insul_conductivity"),
             ),
@@ -98,9 +94,7 @@ class BranchPipingInput:
     @property
     def input_column(self) -> str:
         """Return the right input column based on the pipe-group-number."""
-        return xl_data.col_offset(
-            self.shape.branch_piping.input_col_start, self.pipe_group_num
-        )
+        return xl_data.col_offset(self.shape.branch_piping.input_col_start, self.pipe_group_num)
 
     def create_range(self, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -118,8 +112,7 @@ class BranchPipingInput:
             # -- Branch Piping
             XLItemDHW(
                 self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.diameter.row),  # type: ignore
-                sum(s.diameter_m * s.length_m for s in self.phx_pipe)
-                / sum(s.length_m for s in self.phx_pipe),
+                sum(s.diameter_m * s.length_m for s in self.phx_pipe) / sum(s.length_m for s in self.phx_pipe),
                 "M",
                 self._get_target_unit("diameter"),
             ),
@@ -131,9 +124,7 @@ class BranchPipingInput:
             ),
             # -- Add Tapping Points
             XLItemDHW(
-                self.create_range(
-                    _row_num + self.shape.branch_piping.input_rows_offset.num_taps
-                ),
+                self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.num_taps),
                 self.num_tap_points,
             ),
         ]

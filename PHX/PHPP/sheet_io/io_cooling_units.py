@@ -56,9 +56,7 @@ class CoolingUnitData:
 
 
 class SupplyAir:
-    def __init__(
-        self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits
-    ) -> None:
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape
 
@@ -75,9 +73,7 @@ class SupplyAir:
 
 
 class RecirculationAir:
-    def __init__(
-        self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits
-    ) -> None:
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape
 
@@ -94,9 +90,7 @@ class RecirculationAir:
 
 
 class Dehumidification:
-    def __init__(
-        self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits
-    ) -> None:
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape
 
@@ -111,9 +105,7 @@ class Dehumidification:
 
 
 class Panel:
-    def __init__(
-        self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits
-    ) -> None:
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape
 
@@ -131,9 +123,7 @@ class Panel:
 class CoolingUnits:
     """IO Controller for the PHPP Cooling Units worksheet."""
 
-    def __init__(
-        self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits
-    ) -> None:
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape
         self.supply_air = SupplyAir(self.xl, self.shape)

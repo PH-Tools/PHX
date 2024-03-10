@@ -146,9 +146,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         new_obj.tank_type = self.tank_type
         new_obj.input_option = self.input_option
 
-        new_obj.in_conditioned_space = any(
-            [self.in_conditioned_space, other.in_conditioned_space]
-        )
+        new_obj.in_conditioned_space = any([self.in_conditioned_space, other.in_conditioned_space])
         new_obj.solar_connection = any([self.solar_connection, other.solar_connection])
         new_obj.solar_losses = (self.solar_losses + other.solar_losses) / 2
 

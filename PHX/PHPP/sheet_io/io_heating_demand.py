@@ -15,28 +15,18 @@ from PHX.PHPP.phpp_localization import shape_model
 class HeatingDemand:
     """IO Controller for the PHPP 'Heating' (Annual Heating Energy Demand) Worksheet."""
 
-    def __init__(
-        self, _xl: xl_app.XLConnection, _shape: shape_model.HeatingDemand
-    ) -> None:
+    def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.HeatingDemand) -> None:
         self.xl = _xl
         self.shape = _shape
 
     def _get_annual_demand(self, _col: str) -> Dict[str, Unit]:
         shp = self.shape
-        qT = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_losses_transmission}"
-        )
-        qV = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_losses_ventilation}"
-        )
+        qT = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses_transmission}")
+        qV = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses_ventilation}")
         qL = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses}")
         qS = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_solar}")
-        qI = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_gains_internal}"
-        )
-        util = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_utilization_factor}"
-        )
+        qI = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_internal}")
+        util = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_utilization_factor}")
         qG = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_useful_gains}")
         qH = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_annual_demand}")
 

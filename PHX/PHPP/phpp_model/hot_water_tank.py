@@ -46,39 +46,27 @@ class TankInput:
         return [
             XLItemDHW(
                 self.create_range(_row_num + self.shape.tanks.input_rows.tank_type.row),
-                self.shape.tanks.tank_type.options[
-                    str(self.phx_tank.params.tank_type.value)
-                ],
+                self.shape.tanks.tank_type.options[str(self.phx_tank.params.tank_type.value)],
             ),
             XLItemDHW(
-                self.create_range(
-                    _row_num + self.shape.tanks.input_rows.standby_losses.row
-                ),
+                self.create_range(_row_num + self.shape.tanks.input_rows.standby_losses.row),
                 self.phx_tank.params.standby_losses * self.phx_tank.quantity,
                 "W/K",
                 self.shape.tanks.input_rows.standby_losses.unit,
             ),
             XLItemDHW(
-                self.create_range(
-                    _row_num + self.shape.tanks.input_rows.storage_capacity.row
-                ),
+                self.create_range(_row_num + self.shape.tanks.input_rows.storage_capacity.row),
                 self.phx_tank.params.storage_capacity * self.phx_tank.quantity,
                 "LITER",
                 self.shape.tanks.input_rows.storage_capacity.unit,
             ),
             XLItemDHW(
-                self.create_range(
-                    _row_num + self.shape.tanks.input_rows.standby_fraction.row
-                ),
+                self.create_range(_row_num + self.shape.tanks.input_rows.standby_fraction.row),
                 self.phx_tank.params.standby_fraction,
             ),
             XLItemDHW(
-                self.create_range(
-                    _row_num + self.shape.tanks.input_rows.tank_location.row
-                ),
-                self.shape.tanks.tank_location.options[
-                    str(int(self.phx_tank.params.in_conditioned_space))
-                ],
+                self.create_range(_row_num + self.shape.tanks.input_rows.tank_location.row),
+                self.shape.tanks.tank_location.options[str(int(self.phx_tank.params.in_conditioned_space))],
             ),
             XLItemDHW(
                 self.create_range(_row_num + self.shape.tanks.input_rows.water_temp.row),

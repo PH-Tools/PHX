@@ -22,9 +22,7 @@ from PHX.model.constructions import PhxConstructionOpaque
 class NoEmptyConstructorError(Exception):
     def __init__(self):
         """Raises if there are no empty COnstructors in the worksheet."""
-        self.msg = (
-            "No empty constructors found. Please remove some constructors and try again."
-        )
+        self.msg = "No empty constructors found. Please remove some constructors and try again."
         super().__init__(self.msg)
 
 
@@ -61,9 +59,7 @@ class UValues:
         """Return the PHPP Constructors that have any data in them, one at a time."""
         for row_num in self.all_constructor_start_rows:
             name_col = self.shape.constructor.inputs.display_name.column
-            name_range = (
-                f"{name_col}{row_num + self.shape.constructor.inputs.name_row_offset}"
-            )
+            name_range = f"{name_col}{row_num + self.shape.constructor.inputs.name_row_offset}"
             if self.xl.get_data(self.shape.name, name_range):
                 yield row_num
 
@@ -139,9 +135,7 @@ class UValues:
             return
 
         id_num_offset = self.shape.constructor.inputs.phpp_id_num_col_offset
-        if_num_column = col_offset(
-            str(self.shape.constructor.inputs.display_name.column), id_num_offset
-        )
+        if_num_column = col_offset(str(self.shape.constructor.inputs.display_name.column), id_num_offset)
         prefix = self.xl.get_data(self.shape.name, f"{if_num_column}{row}")
         name_with_id = f"{prefix}-{_name}"
         self.cache[_name] = name_with_id
@@ -226,9 +220,7 @@ class UValues:
 
     def write_single_PHX_construction(self, _phx_construction, _start_row) -> None:
         """Write a single PHX Construction to the PHPP worksheet."""
-        new_constructor = uvalues_constructor.ConstructorBlock(
-            self.shape, _phx_construction
-        )
+        new_constructor = uvalues_constructor.ConstructorBlock(self.shape, _phx_construction)
         self.write_single_constructor_block(new_constructor, _start_row)
 
     def write_single_constructor_block(
@@ -238,9 +230,7 @@ class UValues:
         for item in _construction.create_xl_items(self.shape.name, _start_row):
             self.xl.write_xl_item(item)
 
-    def write_constructor_blocks(
-        self, _const_blocks: List[uvalues_constructor.ConstructorBlock]
-    ) -> None:
+    def write_constructor_blocks(self, _const_blocks: List[uvalues_constructor.ConstructorBlock]) -> None:
         """Write a list of ConstructorBlocks to the U-Values worksheet."""
 
         self.clear_all_constructor_data(_clear_name=True)
@@ -249,9 +239,7 @@ class UValues:
             self.all_constructor_start_rows
         ), f"Error: Too many U-Value Constructions: {len(self.all_constructor_start_rows)}"
 
-        for construction, start_row in zip(
-            _const_blocks, self.all_constructor_start_rows
-        ):
+        for construction, start_row in zip(_const_blocks, self.all_constructor_start_rows):
             self.write_single_constructor_block(construction, start_row)
 
     def add_new_phx_construction(self, _phx_construction: PhxConstructionOpaque) -> str:
@@ -261,12 +249,8 @@ class UValues:
         --------
             * (str): The PHPP-id of the new construction.
         """
-        new_constructor = uvalues_constructor.ConstructorBlock(
-            self.shape, _phx_construction
-        )
-        self.write_single_constructor_block(
-            new_constructor, self.get_first_empty_constructor_start_row()
-        )
+        new_constructor = uvalues_constructor.ConstructorBlock(self.shape, _phx_construction)
+        self.write_single_constructor_block(new_constructor, self.get_first_empty_constructor_start_row())
 
         return self.get_constructor_phpp_id_by_name(_phx_construction.display_name)
 
@@ -307,9 +291,7 @@ class UValues:
 
     # -------------------------------------------------------------------------
 
-    def activate_variants(
-        self, _assembly_phpp_ids: List[VariantAssemblyLayerName]
-    ) -> None:
+    def activate_variants(self, _assembly_phpp_ids: List[VariantAssemblyLayerName]) -> None:
         """Connect all the links to make the 'Variants' page drive the input values."""
 
         self.clear_all_constructor_data(_clear_name=False)

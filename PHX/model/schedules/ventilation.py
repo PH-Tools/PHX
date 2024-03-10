@@ -62,9 +62,7 @@ class PhxScheduleVentilation:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
-    def force_max_utilization_hours(
-        self, _max_hours: float = 24.0, _tol: int = 2
-    ) -> None:
+    def force_max_utilization_hours(self, _max_hours: float = 24.0, _tol: int = 2) -> None:
         """Ensure that the total utilization hours never exceed target (default=24).
         Will adjust the minimum daily_op_sched as needed.
         """

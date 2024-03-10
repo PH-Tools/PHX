@@ -29,15 +29,11 @@ class OverviewBasicData:
             return int(val_res)
 
         address_nonres = self.shape.address_number_dwellings_nonres
-        val_nonres = self.xl.get_single_data_item(
-            self.host.worksheet_name, address_nonres
-        )
+        val_nonres = self.xl.get_single_data_item(self.host.worksheet_name, address_nonres)
         if val_nonres:
             return int(val_nonres)
 
-        raise PHPPDataMissingException(
-            self.host.worksheet_name, [address_res, address_nonres]
-        )
+        raise PHPPDataMissingException(self.host.worksheet_name, [address_res, address_nonres])
 
     def get_num_occupants(self) -> float:
         """Return the number of occupants.
@@ -50,15 +46,11 @@ class OverviewBasicData:
             return float(val_res)
 
         address_nonres = self.shape.address_number_occupants_nonres
-        val_nonres = self.xl.get_single_data_item(
-            self.host.worksheet_name, address_nonres
-        )
+        val_nonres = self.xl.get_single_data_item(self.host.worksheet_name, address_nonres)
         if val_nonres:
             return float(val_nonres)
 
-        raise PHPPDataMissingException(
-            self.host.worksheet_name, [address_res, address_nonres]
-        )
+        raise PHPPDataMissingException(self.host.worksheet_name, [address_res, address_nonres])
 
     def get_project_name(self) -> str:
         """Return the name of the Project / Building"""
@@ -86,9 +78,7 @@ class OverviewVentilation:
 class OverviewBuildingEnvelope:
     """IO Controller for the PHPP 'Overview' worksheet."""
 
-    def __init__(
-        self, _host, _xl: XLConnection, _shape: shp.OverviewBuildingEnvelope
-    ) -> None:
+    def __init__(self, _host, _xl: XLConnection, _shape: shp.OverviewBuildingEnvelope) -> None:
         self.host = _host
         self.xl = _xl
         self.shape = _shape
@@ -113,9 +103,7 @@ class Overview:
         self.xl = _xl
         self.shape = _shape
         self.basic_data = OverviewBasicData(self, _xl, self.shape.basic_data)
-        self.building_envelope = OverviewBuildingEnvelope(
-            self, _xl, self.shape.building_envelope
-        )
+        self.building_envelope = OverviewBuildingEnvelope(self, _xl, self.shape.building_envelope)
         self.ventilation = OverviewVentilation(self, _xl, self.shape.ventilation)
 
     @property

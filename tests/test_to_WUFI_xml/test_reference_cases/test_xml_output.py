@@ -17,9 +17,7 @@ def test_xml_output(to_xml_reference_cases) -> None:
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
 
     # -- PhxProject file.
-    phx_project = create_project.convert_hb_model_to_PhxProject(
-        hb_model, _group_components=True, _merge_faces=True
-    )
+    phx_project = create_project.convert_hb_model_to_PhxProject(hb_model, _group_components=True, _merge_faces=True)
 
     # -- WUFI text
     new_xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)

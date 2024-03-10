@@ -91,9 +91,7 @@ def _dup_face(_hb_face: face.Face) -> face.Face:
     return new_face
 
 
-def _get_thermal_envelope_faces(
-    _hb_room: room.Room, _all_room_ids: List[str]
-) -> List[face.Face]:
+def _get_thermal_envelope_faces(_hb_room: room.Room, _all_room_ids: List[str]) -> List[face.Face]:
     """Return a list of all the thermal-envelope faces for a Honeybee Room.
 
     This will include all the 'Outdoor', 'Ground' and 'Adiabatic' faces.
@@ -143,11 +141,7 @@ def _get_room_exposed_face_area(_hb_room: room.Room) -> float:
         * (float) The total surface area.
     """
 
-    return sum(
-        fc.area
-        for fc in _hb_room.faces
-        if isinstance(fc.boundary_condition, (Outdoors, Ground))
-    )
+    return sum(fc.area for fc in _hb_room.faces if isinstance(fc.boundary_condition, (Outdoors, Ground)))
 
 
 def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellings]:
@@ -242,9 +236,7 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
     for room in _hb_rooms:
         room_infil_exposed_area = _get_room_exposed_face_area(room)
         room_prop_energy: RoomEnergyProperties = room.properties.energy  # type: ignore
-        room_infil_m3_s = (
-            room_infil_exposed_area * room_prop_energy.infiltration.flow_per_exterior_area
-        )
+        room_infil_m3_s = room_infil_exposed_area * room_prop_energy.infiltration.flow_per_exterior_area
 
         total_exposed_area += room_infil_exposed_area
         total_m3_s += room_infil_m3_s
@@ -331,16 +323,13 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     # -- Calculate the total Watts of elec-equipment, total floor-area
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
     total_watts = sum(
-        (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area)  # type: ignore
-        for rm in _hb_rooms
+        (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area) for rm in _hb_rooms  # type: ignore
     )
 
     # -- Build a new HB-Elec-Equip from the reference room, add all the PH-Equipment to it.
     reference_room = _hb_rooms[0]
     reference_room_prop_energy: RoomEnergyProperties = reference_room.properties.energy  # type: ignore
-    ref_room_ee: equipment.ElectricEquipment = (
-        reference_room_prop_energy.electric_equipment
-    )
+    ref_room_ee: equipment.ElectricEquipment = reference_room_prop_energy.electric_equipment
 
     new_hb_equip: equipment.ElectricEquipment = ref_room_ee.duplicate()  # type: ignore
     new_hb_equip.watts_per_area = total_watts / total_floor_area
@@ -356,10 +345,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
 def check_room_has_spaces(_hb_room: room.Room) -> None:
     rm_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     if len(rm_prop_ph.spaces) == 0:
-        print(
-            f"Warning: Room '{_hb_room.display_name}' has no spaces?"
-            " Merge may not work correctly"
-        )
+        print(f"Warning: Room '{_hb_room.display_name}' has no spaces?" " Merge may not work correctly")
 
 
 def merge_foundations(_hb_rooms: List[room.Room]) -> Dict[str, PhFoundation]:
@@ -430,18 +416,12 @@ def merge_rooms(
     # -- Try and merge the Faces to simplify the geometry
     if _merge_faces:
         logger.debug(f"Merging Faces with tolerance: {_tolerance}")
-        face_groups = face_tools.group_hb_faces(
-            exposed_faces, _tolerance, _angle_tolerance_degrees
-        )
+        face_groups = face_tools.group_hb_faces(exposed_faces, _tolerance, _angle_tolerance_degrees)
         merged_faces = []
         for face_group in face_groups:
             const_name = face_group[0].properties.energy.construction.display_name
-            logger.debug(
-                f"Merging {len(face_group)} Faces with Construction: {const_name}"
-            )
-            merged_faces.extend(
-                merge_hb_faces(face_group, _tolerance, _angle_tolerance_degrees)
-            )
+            logger.debug(f"Merging {len(face_group)} Faces with Construction: {const_name}")
+            merged_faces.extend(merge_hb_faces(face_group, _tolerance, _angle_tolerance_degrees))
         exposed_faces = merged_faces
 
     # -------------------------------------------------------------------------

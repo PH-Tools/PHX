@@ -43,23 +43,15 @@ def _transfer_attributes(_hbeph_obj: _base._PhHVACBase, _phx_obj: T) -> T:
     """
 
     # -- Copy the base scope attributes from HB->PHX
-    hb_attrs = {
-        attr_name for attr_name in dir(_hbeph_obj) if not attr_name.startswith("_")
-    }
-    phx_base_attrs = {
-        attr_name for attr_name in dir(_phx_obj) if not attr_name.startswith("_")
-    }
+    hb_attrs = {attr_name for attr_name in dir(_hbeph_obj) if not attr_name.startswith("_")}
+    phx_base_attrs = {attr_name for attr_name in dir(_phx_obj) if not attr_name.startswith("_")}
 
     for attr_nm in hb_attrs.intersection(phx_base_attrs):
         setattr(_phx_obj, attr_nm, getattr(_hbeph_obj, attr_nm))
 
     # -- Also copy attrs to PHX.params for objects which have them
     if _phx_obj.params:
-        phx_params_attrs = {
-            attr_name
-            for attr_name in dir(_phx_obj.params)
-            if not attr_name.startswith("_")
-        }
+        phx_params_attrs = {attr_name for attr_name in dir(_phx_obj.params) if not attr_name.startswith("_")}
         for attr_nm in hb_attrs.intersection(phx_params_attrs):
             setattr(_phx_obj.params, attr_nm, getattr(_hbeph_obj, attr_nm))
 
@@ -126,9 +118,7 @@ def build_phx_ventilator(
     return phx_vent
 
 
-def build_phx_duct(
-    _hbph_duct: ducting.PhDuctElement, _vent_unit_id: int
-) -> hvac.PhxDuctElement:
+def build_phx_duct(_hbph_duct: ducting.PhDuctElement, _vent_unit_id: int) -> hvac.PhxDuctElement:
     """Return a new PHX Ventilation Duct based on an HB-PH Duct.
 
     Arguments:
@@ -255,9 +245,7 @@ def build_phx_exhaust_vent_device(
     }
 
     # -- Get and build the right device type
-    phx_device = phx_device_classes[_hbeph_exhaust_vent.device_class_name](
-        _hbeph_exhaust_vent
-    )
+    phx_device = phx_device_classes[_hbeph_exhaust_vent.device_class_name](_hbeph_exhaust_vent)
     return phx_device
 
 
@@ -305,9 +293,7 @@ def build_phx_heating_device(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeati
     """Returns a new PHX-Heating-Device based on an input Honeybee-PH Heating System."""
 
     # -- Mapping Honeybee-PH -> PHX types
-    phx_heater_classes: Dict[
-        str, Callable[[heating.PhHeatingSystem], hvac.PhxHeatingDevice]
-    ] = {
+    phx_heater_classes: Dict[str, Callable[[heating.PhHeatingSystem], hvac.PhxHeatingDevice]] = {
         "PhHeatingDirectElectric": build_phx_heating_electric,
         "PhHeatingFossilBoiler": build_phx_heating_fossil_boiler,
         "PhHeatingWoodBoiler": build_phx_heating_wood_boiler,
@@ -352,18 +338,12 @@ def build_phx_heat_pump_cooling_params(
 
     new_params_obj = hvac.PhxCoolingParams()
 
-    new_params_obj.ventilation = build_phx_cooling_ventilation_params(
-        _hbph_heat_pump.cooling_params.ventilation
-    )
-    new_params_obj.recirculation = build_phx_cooling_recirculation_params(
-        _hbph_heat_pump.cooling_params.recirculation
-    )
+    new_params_obj.ventilation = build_phx_cooling_ventilation_params(_hbph_heat_pump.cooling_params.ventilation)
+    new_params_obj.recirculation = build_phx_cooling_recirculation_params(_hbph_heat_pump.cooling_params.recirculation)
     new_params_obj.dehumidification = build_phx_cooling_dehumidification_params(
         _hbph_heat_pump.cooling_params.dehumidification
     )
-    new_params_obj.panel = build_phx_cooling_panel_params(
-        _hbph_heat_pump.cooling_params.panel
-    )
+    new_params_obj.panel = build_phx_cooling_panel_params(_hbph_heat_pump.cooling_params.panel)
 
     return new_params_obj
 
@@ -378,9 +358,7 @@ def build_phx_heating_hp_annual(
     phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
 
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling_percent = (
-            _hbph_heat_pump.cooling_params.percent_coverage
-        )
+        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
 
     return phx_obj
@@ -396,9 +374,7 @@ def build_phx_heating_hp_monthly(
     phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
 
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling_percent = (
-            _hbph_heat_pump.cooling_params.percent_coverage
-        )
+        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
 
     return phx_obj
@@ -414,9 +390,7 @@ def build_phx_heating_hp_combined(
     phx_obj.usage_profile.space_heating_percent = _hbph_heat_pump.percent_coverage
 
     if hbph_heat_pump_has_cooling(_hbph_heat_pump):
-        phx_obj.usage_profile.cooling_percent = (
-            _hbph_heat_pump.cooling_params.percent_coverage
-        )
+        phx_obj.usage_profile.cooling_percent = _hbph_heat_pump.cooling_params.percent_coverage
         phx_obj.params_cooling = build_phx_heat_pump_cooling_params(_hbph_heat_pump)
 
     return phx_obj
@@ -428,18 +402,14 @@ def build_phx_heat_pump_device(
     """Returns a new PHX-He"at-Pump-Device based on an input Honeybee-PH Heat-Pump System."""
 
     # -- Mapping Honeybee-PH -> PHX types
-    phx_heat_pump_classes: Dict[
-        str, Callable[[heat_pumps.PhHeatPumpSystem], hvac.PhxHeatPumpDevice]
-    ] = {
+    phx_heat_pump_classes: Dict[str, Callable[[heat_pumps.PhHeatPumpSystem], hvac.PhxHeatPumpDevice]] = {
         "PhHeatPumpAnnual": build_phx_heating_hp_annual,
         "PhHeatPumpRatedMonthly": build_phx_heating_hp_monthly,
         "PhHeatPumpCombined": build_phx_heating_hp_combined,
     }
 
     # -- Get and build the right heater equipment type
-    phx_heat_pump = phx_heat_pump_classes[_hbph_heat_pump.heat_pump_class_name](
-        _hbph_heat_pump
-    )
+    phx_heat_pump = phx_heat_pump_classes[_hbph_heat_pump.heat_pump_class_name](_hbph_heat_pump)
     return phx_heat_pump
 
 
@@ -462,12 +432,8 @@ def build_phx_heat_pump_sys(
 def _transfer_cooling_attributes(_hbph_params, _phx_params):
     """Copy the common attributes from a Honeybee-PH Cooling-Params obj to a PHX-Cooling-Params object"""
     # -- Copy the base scope attributes from HBPH->PHX
-    hb_attrs = {
-        attr_name for attr_name in dir(_hbph_params) if not attr_name.startswith("_")
-    }
-    phx_base_attrs = {
-        attr_name for attr_name in dir(_phx_params) if not attr_name.startswith("_")
-    }
+    hb_attrs = {attr_name for attr_name in dir(_hbph_params) if not attr_name.startswith("_")}
+    phx_base_attrs = {attr_name for attr_name in dir(_phx_params) if not attr_name.startswith("_")}
 
     for attr_nm in hb_attrs.intersection(phx_base_attrs):
         setattr(_phx_params, attr_nm, getattr(_hbph_params, attr_nm))
@@ -534,9 +500,7 @@ def build_phx_supportive_device(
     # -- params
     phx_device.params.in_conditioned_space = _hbph_supportive_device.in_conditioned_space
     phx_device.params.norm_energy_demand_W = _hbph_supportive_device.norm_energy_demand_W
-    phx_device.params.annual_period_operation_khrs = (
-        _hbph_supportive_device.annual_period_operation_khrs
-    )
+    phx_device.params.annual_period_operation_khrs = _hbph_supportive_device.annual_period_operation_khrs
 
     return phx_device
 

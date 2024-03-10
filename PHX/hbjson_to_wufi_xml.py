@@ -12,11 +12,11 @@ import sys
 from typing import Tuple, List, Union
 
 from PHX.from_HBJSON import read_HBJSON_file, create_project
-from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
+from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file, _bug_fixes
 
 
 class InputFileError(Exception):
-    def __init__(self, path):
+    def __init__(self, path) -> None:
         self.msg = f"\nError: Cannot find HBJSON file: {path}"
         super().__init__(self.msg)
 
@@ -161,9 +161,7 @@ def startup_logging(_log_level: int) -> logging.Logger:
 
     # -- Set Format
     current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    formatter = logging.Formatter(
-        "%(asctime)s - %(levelname)s - %(funcName)s - %(message)s"
-    )
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(funcName)s - %(message)s")
 
     # -- Setup the STDERR log stream-handler for stderr
     stream_handler = logging.StreamHandler(stream=sys.stderr)
@@ -220,6 +218,9 @@ if __name__ == "__main__":
         _group_components=GROUP_COMPONENTS,
         _merge_faces=MERGE_FACES,
     )
+
+    # --- Apply the WUFI-Passive Cooling Bug fix (200 KW limit)
+    phx_Project = _bug_fixes.split_cooling_into_multiple_systems(phx_Project)
 
     # --- Output the WUFI Project as an XML Text File
     # -------------------------------------------------------------------------

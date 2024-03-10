@@ -172,9 +172,7 @@ def test_group_mixed_supportive_devices(reset_class_counters):
 
 def test_merge_homogeneous_supportive_devices(reset_class_counters):
     c1 = collection.PhxSupportiveDeviceCollection()
-    supp_device1 = supportive_devices.PhxSupportiveDevice(
-        device_type=PhxSupportiveDeviceType.OTHER
-    )
+    supp_device1 = supportive_devices.PhxSupportiveDevice(device_type=PhxSupportiveDeviceType.OTHER)
     supp_device2 = copy(supp_device1)
     supp_device3 = copy(supp_device1)
 
@@ -194,15 +192,9 @@ def test_merge_homogeneous_supportive_devices(reset_class_counters):
 
 def test_merge_mixed_supportive_devices(reset_class_counters):
     c1 = collection.PhxSupportiveDeviceCollection()
-    supp_device1 = supportive_devices.PhxSupportiveDevice(
-        device_type=PhxSupportiveDeviceType.OTHER
-    )
-    supp_device2 = supportive_devices.PhxSupportiveDevice(
-        device_type=PhxSupportiveDeviceType.OTHER
-    )
-    supp_device3 = supportive_devices.PhxSupportiveDevice(
-        device_type=PhxSupportiveDeviceType.OTHER
-    )
+    supp_device1 = supportive_devices.PhxSupportiveDevice(device_type=PhxSupportiveDeviceType.OTHER)
+    supp_device2 = supportive_devices.PhxSupportiveDevice(device_type=PhxSupportiveDeviceType.OTHER)
+    supp_device3 = supportive_devices.PhxSupportiveDevice(device_type=PhxSupportiveDeviceType.OTHER)
 
     assert supp_device1.identifier != supp_device2.identifier
     assert supp_device1.identifier != supp_device3.identifier
@@ -222,9 +214,7 @@ def test_merge_mixed_supportive_devices(reset_class_counters):
 
 def test_merge_homogeneous_DHW_recirc_supportive_devices(reset_class_counters):
     c1 = collection.PhxSupportiveDeviceCollection()
-    supp_device1 = supportive_devices.PhxSupportiveDevice(
-        device_type=PhxSupportiveDeviceType.DHW_CIRCULATING_PUMP
-    )
+    supp_device1 = supportive_devices.PhxSupportiveDevice(device_type=PhxSupportiveDeviceType.DHW_CIRCULATING_PUMP)
     supp_device2 = copy(supp_device1)
     supp_device3 = copy(supp_device1)
 
@@ -243,9 +233,7 @@ def test_merge_homogeneous_DHW_recirc_supportive_devices(reset_class_counters):
 
 def test_merge_homogeneous_DHW_storage_supportive_devices(reset_class_counters):
     c1 = collection.PhxSupportiveDeviceCollection()
-    supp_device1 = supportive_devices.PhxSupportiveDevice(
-        device_type=PhxSupportiveDeviceType.DHW_STORAGE_LOAD_PUMP
-    )
+    supp_device1 = supportive_devices.PhxSupportiveDevice(device_type=PhxSupportiveDeviceType.DHW_STORAGE_LOAD_PUMP)
     supp_device2 = copy(supp_device1)
     supp_device3 = copy(supp_device1)
 
@@ -264,9 +252,7 @@ def test_merge_homogeneous_DHW_storage_supportive_devices(reset_class_counters):
 
 def test_merge_homogeneous_Heat_Recirc_supportive_devices(reset_class_counters):
     c1 = collection.PhxSupportiveDeviceCollection()
-    supp_device1 = supportive_devices.PhxSupportiveDevice(
-        device_type=PhxSupportiveDeviceType.HEAT_CIRCULATING_PUMP
-    )
+    supp_device1 = supportive_devices.PhxSupportiveDevice(device_type=PhxSupportiveDeviceType.HEAT_CIRCULATING_PUMP)
     supp_device2 = copy(supp_device1)
     supp_device3 = copy(supp_device1)
 

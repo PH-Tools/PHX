@@ -181,9 +181,7 @@ class PhxHeaterBoilerWoodParams(_base.PhxMechanicalDeviceParams):
 class PhxHeaterBoilerFossil(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.BOILER)
     device_type: DeviceType = field(init=False, default=DeviceType.BOILER)
-    params: PhxHeaterBoilerFossilParams = field(
-        default_factory=PhxHeaterBoilerFossilParams
-    )
+    params: PhxHeaterBoilerFossilParams = field(default_factory=PhxHeaterBoilerFossilParams)
 
 
 @dataclass
@@ -209,9 +207,7 @@ class PhxHeaterDistrictHeatParams(_base.PhxMechanicalDeviceParams):
 class PhxHeaterDistrictHeat(PhxHeatingDevice):
     system_type: SystemType = field(init=False, default=SystemType.DISTRICT_HEAT)
     device_type: DeviceType = field(init=False, default=DeviceType.DISTRICT_HEAT)
-    params: PhxHeaterDistrictHeatParams = field(
-        default_factory=PhxHeaterDistrictHeatParams
-    )
+    params: PhxHeaterDistrictHeatParams = field(default_factory=PhxHeaterDistrictHeatParams)
 
 
 # -----------------------------------------------------------------------------

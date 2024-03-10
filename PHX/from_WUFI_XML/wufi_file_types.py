@@ -47,10 +47,7 @@ class BaseConverter:
             msg = f"Error converting input for '{cls.__name__}' using inputs: {v}"
             raise Exception(msg)
         if result is None:
-            msg = (
-                f"Error, could not convert:\n"
-                f"\t{v['value']} from {v['unit_type']} to {cls.__unit_type__}"
-            )
+            msg = f"Error, could not convert:\n" f"\t{v['value']} from {v['unit_type']} to {cls.__unit_type__}"
             raise Exception(msg)
         return cls.__value_type__(result)
 
@@ -170,9 +167,7 @@ class kWh_per_kWh(float):
 
         result = convert(v["value"], v["unit_type"], cls.__unit_type__)
         if result is None:
-            raise Exception(
-                f"Could not convert: {v['value']} from {v['unit_type']} to {cls.__unit_type__}"
-            )
+            raise Exception(f"Could not convert: {v['value']} from {v['unit_type']} to {cls.__unit_type__}")
         return cls.__value_type__(result)
 
 
@@ -231,9 +226,7 @@ class Liter(float):
 
         result = convert(v["value"], v["unit_type"], cls.__unit_type__)
         if result is None:
-            raise Exception(
-                f"Could not convert: {v['value']} from {v['unit_type']} to {cls.__unit_type__}"
-            )
+            raise Exception(f"Could not convert: {v['value']} from {v['unit_type']} to {cls.__unit_type__}")
         return cls.__value_type__(result)
 
 
@@ -399,7 +392,5 @@ class WUFI_Vapor_Resistance_Factor(float):
 
         result = convert(v["value"], v["unit_type"], cls.__unit_type__)
         if result is None:
-            raise Exception(
-                f"Could not convert: {v['value']} from {v['unit_type']} to {cls.__unit_type__}"
-            )
+            raise Exception(f"Could not convert: {v['value']} from {v['unit_type']} to {cls.__unit_type__}")
         return cls.__value_type__(result)

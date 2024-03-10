@@ -127,9 +127,7 @@ class Surfaces:
             if val == self.shape.surface_rows.locator_string_entry:
                 return i
 
-        raise Exception(
-            f'\n\tError: Not able to find the first surface entry row in the "Areas input" section?'
-        )
+        raise Exception(f'\n\tError: Not able to find the first surface entry row in the "Areas input" section?')
 
     def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
         """Return the row number of the last user-input entry row in the 'Area input' section."""
@@ -137,9 +135,7 @@ class Surfaces:
         if not _start_row:
             _start_row = self.section_first_entry_row
         elif _start_row > 10_000:
-            raise Exception(
-                f'\n\tError: Not able to find the last surface entry row in the "Areas input" section?'
-            )
+            raise Exception(f'\n\tError: Not able to find the last surface entry row in the "Areas input" section?')
 
         _row_end = _start_row + 500
         xl_data = self.xl.get_single_column_data(
@@ -318,9 +314,7 @@ class Areas:
         self.surfaces = Surfaces(self.xl, self.shape, self.group_type_exposures)
         self.thermal_bridges = ThermalBridges(self.xl, self.shape)
 
-    def write_thermal_bridges(
-        self, _tbs: List[areas_thermal_bridges.ThermalBridgeRow]
-    ) -> None:
+    def write_thermal_bridges(self, _tbs: List[areas_thermal_bridges.ThermalBridgeRow]) -> None:
         """Write all of the the thermal bridge data to the PHPP Areas worksheet."""
 
         for i, tb in enumerate(_tbs, start=self.thermal_bridges.section_first_entry_row):
@@ -334,13 +328,9 @@ class Areas:
             for item in surface.create_xl_items(self.shape.name, _row_num=i):
                 self.xl.write_xl_item(item)
 
-    def _create_input_location_object(
-        self, _phpp_model_obj: areas_data.AreasInput
-    ) -> AreasInputLocation:
+    def _create_input_location_object(self, _phpp_model_obj: areas_data.AreasInput) -> AreasInputLocation:
         """Create and setup the AreasInputLocation object with the correct data."""
-        phpp_obj_shape: shape_model.AreasDataInput = getattr(
-            self.shape, _phpp_model_obj.input_type
-        )
+        phpp_obj_shape: shape_model.AreasDataInput = getattr(self.shape, _phpp_model_obj.input_type)
         return AreasInputLocation(
             _xl=self.xl,
             _sheet_name=self.shape.name,
@@ -425,25 +415,19 @@ class Areas:
         value = self.xl.get_single_data_item(self.shape.name, f"{item.column}{item.row}")
         return Unit(float(value or 0.0), str(item.unit))
 
-    def set_surface_row_construction(
-        self, _row_num: int, _phpp_constriction_id: str
-    ) -> None:
+    def set_surface_row_construction(self, _row_num: int, _phpp_constriction_id: str) -> None:
         """Set the construction-id for the surface row in the PHPP Areas worksheet."""
         col = self.shape.surface_rows.inputs.assembly_id.column
         item = xl_data.XlItem(self.shape.name, f"{col}{_row_num}", _phpp_constriction_id)
         self.xl.write_xl_item(item)
 
-    def set_surface_row_solar_absorptivity(
-        self, _row_num: int, _absorptivity: float = 0.75
-    ) -> None:
+    def set_surface_row_solar_absorptivity(self, _row_num: int, _absorptivity: float = 0.75) -> None:
         """Set the solar absorptivity for the surface row in the PHPP Areas worksheet."""
         col = self.shape.surface_rows.inputs.absorptivity.column
         item = xl_data.XlItem(self.shape.name, f"{col}{_row_num}", _absorptivity)
         self.xl.write_xl_item(item)
 
-    def set_surface_row_emissivity(
-        self, _row_num: int, _emissivity: float = 0.90
-    ) -> None:
+    def set_surface_row_emissivity(self, _row_num: int, _emissivity: float = 0.90) -> None:
         """Set the emissivity for the surface row in the PHPP Areas worksheet."""
         col = self.shape.surface_rows.inputs.emissivity.column
         item = xl_data.XlItem(self.shape.name, f"{col}{_row_num}", _emissivity)

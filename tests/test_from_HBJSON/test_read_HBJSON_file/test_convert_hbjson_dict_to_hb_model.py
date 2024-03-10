@@ -20,10 +20,7 @@ def hb_rooms_are_equal(hb_room_1, hb_room_2):
     assert hb_room_1.exterior_wall_area == hb_room_2.exterior_wall_area
     assert hb_room_1.exterior_aperture_area == hb_room_2.exterior_aperture_area
     assert hb_room_1.exterior_wall_aperture_area == hb_room_2.exterior_wall_aperture_area
-    assert (
-        hb_room_1.exterior_skylight_aperture_area
-        == hb_room_2.exterior_skylight_aperture_area
-    )
+    assert hb_room_1.exterior_skylight_aperture_area == hb_room_2.exterior_skylight_aperture_area
     assert hb_room_1.average_floor_height == hb_room_2.average_floor_height
     assert hb_room_1.user_data == hb_room_2.user_data
     for face1, face2 in zip(

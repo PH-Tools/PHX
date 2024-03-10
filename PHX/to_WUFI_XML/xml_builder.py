@@ -32,9 +32,7 @@ def add_node_attributes(_data: xml_writables.xml_writable, _element: Element) ->
         _element.setAttributeNS(None, str(_data.attr_name), str(_data.attr_value))
 
 
-def _add_text_node(
-    _doc: Document, _parent_node: Element, _data: xml_writables.XML_Node
-) -> None:
+def _add_text_node(_doc: Document, _parent_node: Element, _data: xml_writables.XML_Node) -> None:
     """Adds a basic text-node ie: "<node_name>node_value</node_name>" to the XML Parent Node.
 
     Arguments:
@@ -61,9 +59,7 @@ def _add_text_node(
     _parent_node.appendChild(new_element)
 
 
-def add_children(
-    _doc: Document, _parent_node: Element, _item: xml_writables.xml_writable
-) -> None:
+def add_children(_doc: Document, _parent_node: Element, _item: xml_writables.xml_writable) -> None:
     """Adds 'child' nodes to the XML Document and parent node recursively.
 
     - If the _item is an Object (xml_writables.XML_Object), the function
@@ -91,9 +87,7 @@ def add_children(
         add_node_attributes(_item, new_parent_node)
         _parent_node.appendChild(new_parent_node)
 
-        for item in xml_converter.convert_HB_object_to_xml_writables_list(
-            _item.node_object, _item.schema_name
-        ):
+        for item in xml_converter.convert_HB_object_to_xml_writables_list(_item.node_object, _item.schema_name):
             add_children(_doc, new_parent_node, item)
 
     elif hasattr(_item, "node_items"):
@@ -137,9 +131,7 @@ def generate_WUFI_XML_from_object(
     root = doc.createElementNS(None, _header)
     doc.appendChild(root)
 
-    for item in xml_converter.convert_HB_object_to_xml_writables_list(
-        _phx_object, _schema_name
-    ):
+    for item in xml_converter.convert_HB_object_to_xml_writables_list(_phx_object, _schema_name):
         add_children(doc, root, item)
 
     return doc.toprettyxml()

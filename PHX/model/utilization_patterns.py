@@ -13,21 +13,15 @@ from PHX.model.schedules import ventilation, occupancy, lighting
 
 @dataclass
 class UtilizationPatternCollection_Ventilation:
-    patterns: Dict[Union[str, uuid.UUID], ventilation.PhxScheduleVentilation] = field(
-        init=False, default_factory=dict
-    )
+    patterns: Dict[Union[str, uuid.UUID], ventilation.PhxScheduleVentilation] = field(init=False, default_factory=dict)
 
     def __getitem__(self, key) -> ventilation.PhxScheduleVentilation:
         return self.patterns[key]
 
-    def __setitem__(
-        self, key: Union[str, uuid.UUID], value: ventilation.PhxScheduleVentilation
-    ) -> None:
+    def __setitem__(self, key: Union[str, uuid.UUID], value: ventilation.PhxScheduleVentilation) -> None:
         self.patterns[key] = value
 
-    def add_new_util_pattern(
-        self, _util_pattern: Optional[ventilation.PhxScheduleVentilation]
-    ) -> None:
+    def add_new_util_pattern(self, _util_pattern: Optional[ventilation.PhxScheduleVentilation]) -> None:
         """Add a new ventilation.PhxScheduleVentilation to the Collection.
 
         Arguments:
@@ -87,21 +81,15 @@ class UtilizationPatternCollection_Ventilation:
 
 @dataclass
 class UtilizationPatternCollection_Occupancy:
-    patterns: Dict[Union[str, uuid.UUID], occupancy.PhxScheduleOccupancy] = field(
-        init=False, default_factory=dict
-    )
+    patterns: Dict[Union[str, uuid.UUID], occupancy.PhxScheduleOccupancy] = field(init=False, default_factory=dict)
 
     def __getitem__(self, key) -> occupancy.PhxScheduleOccupancy:
         return self.patterns[key]
 
-    def __setitem__(
-        self, key: Union[str, uuid.UUID], value: occupancy.PhxScheduleOccupancy
-    ) -> None:
+    def __setitem__(self, key: Union[str, uuid.UUID], value: occupancy.PhxScheduleOccupancy) -> None:
         self.patterns[key] = value
 
-    def add_new_util_pattern(
-        self, _util_pattern: Optional[occupancy.PhxScheduleOccupancy]
-    ) -> None:
+    def add_new_util_pattern(self, _util_pattern: Optional[occupancy.PhxScheduleOccupancy]) -> None:
         """Add a new occupancy.PhxScheduleOccupancy to the Collection.
 
         Arguments:
@@ -161,21 +149,15 @@ class UtilizationPatternCollection_Occupancy:
 
 @dataclass
 class UtilizationPatternCollection_Lighting:
-    patterns: Dict[Union[str, uuid.UUID], lighting.PhxScheduleLighting] = field(
-        init=False, default_factory=dict
-    )
+    patterns: Dict[Union[str, uuid.UUID], lighting.PhxScheduleLighting] = field(init=False, default_factory=dict)
 
     def __getitem__(self, key) -> lighting.PhxScheduleLighting:
         return self.patterns[key]
 
-    def __setitem__(
-        self, key: Union[str, uuid.UUID], value: lighting.PhxScheduleLighting
-    ) -> None:
+    def __setitem__(self, key: Union[str, uuid.UUID], value: lighting.PhxScheduleLighting) -> None:
         self.patterns[key] = value
 
-    def add_new_util_pattern(
-        self, _util_pattern: Optional[lighting.PhxScheduleLighting]
-    ) -> None:
+    def add_new_util_pattern(self, _util_pattern: Optional[lighting.PhxScheduleLighting]) -> None:
         """Add a new lighting.PhxScheduleLighting to the Collection.
 
         Arguments:

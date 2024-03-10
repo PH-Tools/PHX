@@ -44,15 +44,11 @@ class PhxComponentOpaque(PhxComponentBase):
         self.face_opacity: ComponentFaceOpacity = ComponentFaceOpacity.OPAQUE
         self.color_interior: ComponentColor = ComponentColor.EXT_WALL_INNER
         self.color_exterior: ComponentColor = ComponentColor.EXT_WALL_INNER
-        self.exposure_exterior: ComponentExposureExterior = (
-            ComponentExposureExterior.EXTERIOR
-        )
+        self.exposure_exterior: ComponentExposureExterior = ComponentExposureExterior.EXTERIOR
         self.exposure_interior: int = 1
         self.interior_attachment_id: int = -1
 
-        self.assembly: constructions.PhxConstructionOpaque = (
-            constructions.PhxConstructionOpaque()
-        )
+        self.assembly: constructions.PhxConstructionOpaque = constructions.PhxConstructionOpaque()
         self.assembly_type_id_num: int = -1
 
         self.apertures: List[PhxComponentAperture] = []
@@ -151,9 +147,7 @@ class PhxComponentOpaque(PhxComponentBase):
             return False
         return True
 
-    def add_polygons(
-        self, _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]
-    ) -> None:
+    def add_polygons(self, _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]) -> None:
         """Adds a new Polygon or Polygons to the Component's collection.
 
         Arguments:
@@ -237,9 +231,7 @@ class PhxComponentOpaque(PhxComponentBase):
         for polygon in self.polygons:
             if _id_num in polygon.child_polygon_ids:
                 return polygon
-        raise Exception(
-            f"Error: Cannot find a host polygon for the child id_num: {_id_num}"
-        )
+        raise Exception(f"Error: Cannot find a host polygon for the child id_num: {_id_num}")
 
     def get_aperture_polygon_by_id_num(self, _id_num: int) -> geometry.PhxPolygon:
         """Return a single Polygon from the collection if it has the specified ID as a 'child'.
@@ -257,9 +249,7 @@ class PhxComponentOpaque(PhxComponentBase):
             for polygon in aperture.polygons:
                 if polygon.id_num == _id_num:
                     return polygon
-        raise Exception(
-            f"Error: Cannot find an aperture polygon for the id_num: {_id_num}"
-        )
+        raise Exception(f"Error: Cannot find an aperture polygon for the id_num: {_id_num}")
 
     def get_aperture_element_by_polygon_id_num(self, _id_num: int) -> PhxApertureElement:
         """Return a single Aperture Element from the collection if it has the specified ID.
@@ -280,9 +270,7 @@ class PhxComponentOpaque(PhxComponentBase):
 
                 if element.polygon.id_num == _id_num:
                     return element
-        raise Exception(
-            f"Error: Cannot find an aperture element for the id_num: {_id_num}"
-        )
+        raise Exception(f"Error: Cannot find an aperture element for the id_num: {_id_num}")
 
     def set_assembly_type(self, _phx_construction: constructions.PhxConstructionOpaque):
         """Set the Assembly Type for the Component.
@@ -351,9 +339,7 @@ class PhxApertureElement(PhxComponentBase):
 
         self.host: PhxComponentAperture = _host
         self.display_name: str = ""
-        self.polygon: Union[
-            geometry.PhxPolygonRectangular, geometry.PhxPolygon, None
-        ] = None
+        self.polygon: Union[geometry.PhxPolygonRectangular, geometry.PhxPolygon, None] = None
         self.winter_shading_factor: float = 0.75
         self.summer_shading_factor: float = 0.75
         self.shading_dimensions = PhxApertureShadingDimensions()
@@ -401,12 +387,8 @@ class PhxApertureElement(PhxComponentBase):
         # -- Get the frame lengths (remove the top/bottom frame width from the sides)
         frame_l_top = self.width
         frame_l_bottom = self.width
-        frame_l_left = self.height - self.height / self.height * (
-            frame_w_top + frame_w_bottom
-        )
-        frame_l_right = self.height - self.height / self.height * (
-            frame_w_top + frame_w_bottom
-        )
+        frame_l_left = self.height - self.height / self.height * (frame_w_top + frame_w_bottom)
+        frame_l_right = self.height - self.height / self.height * (frame_w_top + frame_w_bottom)
         # -- Calc. the frame area
         frame_area = (
             +(frame_l_top * frame_w_top)
@@ -469,14 +451,10 @@ class PhxComponentAperture(PhxComponentBase):
         self.color_interior: ComponentColor = ComponentColor.WINDOW
         self.color_exterior: ComponentColor = ComponentColor.WINDOW
         self.exposure_interior: int = 1
-        self.exposure_exterior: ComponentExposureExterior = (
-            ComponentExposureExterior.EXTERIOR
-        )
+        self.exposure_exterior: ComponentExposureExterior = ComponentExposureExterior.EXTERIOR
         self.interior_attachment_id: int = -1
 
-        self.window_type: constructions.PhxConstructionWindow = (
-            constructions.PhxConstructionWindow()
-        )
+        self.window_type: constructions.PhxConstructionWindow = constructions.PhxConstructionWindow()
 
         self.variant_type_name: str = "_unnamed_type_"
         self._install_depth: float = 0.1016  # m
@@ -502,9 +480,7 @@ class PhxComponentAperture(PhxComponentBase):
             return None
 
         try:
-            total_d_reveal = sum(
-                e.shading_dimensions.d_reveal or 0.0 for e in self.elements
-            )
+            total_d_reveal = sum(e.shading_dimensions.d_reveal or 0.0 for e in self.elements)
             return total_d_reveal / len(self.elements)
         except ZeroDivisionError:
             return 0.0
@@ -595,9 +571,7 @@ class PhxComponentAperture(PhxComponentBase):
 
         # -- Get the Properties as well
         new_compo.install_depth = self.install_depth
-        new_compo.default_monthly_shading_correction_factor = (
-            self.default_monthly_shading_correction_factor
-        )
+        new_compo.default_monthly_shading_correction_factor = self.default_monthly_shading_correction_factor
 
         if self.window_type.display_name == other.window_type.display_name:
             new_compo.display_name = self.window_type.display_name
@@ -623,10 +597,7 @@ class PhxComponentAperture(PhxComponentBase):
             or self.window_type_id_num != other.window_type_id_num
             or self.variant_type_name != other.variant_type_name
             or abs(self.install_depth - other.install_depth) > 0.001
-            or abs(
-                self.default_monthly_shading_correction_factor
-                - other.default_monthly_shading_correction_factor
-            )
+            or abs(self.default_monthly_shading_correction_factor - other.default_monthly_shading_correction_factor)
             > 0.001
         ):
             return False

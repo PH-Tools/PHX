@@ -68,9 +68,7 @@ def _create_new_HB_Face(_face3D: Face3D, _ref_face: Face) -> Face:
         boundary_condition=_ref_face.boundary_condition,
     )
     new_face.display_name = _ref_face.display_name
-    new_face._user_data = (
-        None if _ref_face.user_data is None else _ref_face.user_data.copy()
-    )
+    new_face._user_data = None if _ref_face.user_data is None else _ref_face.user_data.copy()
     new_face._properties._duplicate_extension_attr(_ref_face._properties)
 
     return new_face
@@ -84,17 +82,13 @@ def _create_new_HB_Shade(_face3D: Face3D, _ref_face: Shade) -> Shade:
         is_detached=True,
     )
     new_face.display_name = _ref_face.display_name
-    new_face._user_data = (
-        None if _ref_face.user_data is None else _ref_face.user_data.copy()
-    )
+    new_face._user_data = None if _ref_face.user_data is None else _ref_face.user_data.copy()
     new_face._properties._duplicate_extension_attr(_ref_face._properties)
 
     return new_face
 
 
-def _create_new_Face3D(
-    _poly2D: Polygon2D, _base_plane: Plane, _ref_face: TFaceOrShade
-) -> Face3D:
+def _create_new_Face3D(_poly2D: Polygon2D, _base_plane: Plane, _ref_face: TFaceOrShade) -> Face3D:
     """Return a new Face3D based on a Polygon2D and a reference HB-Face."""
     return Face3D(
         boundary=tuple(_base_plane.xy_to_xyz(v) for v in _poly2D.vertices),
@@ -138,9 +132,7 @@ def face3Ds(_faces: Sequence[TFaceOrShade]) -> List[Face3D]:
     return [f.geometry for f in _faces]
 
 
-def merge_hb_faces(
-    _faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float
-) -> List[Face]:
+def merge_hb_faces(_faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float) -> List[Face]:
     """Merge a group of HB-Faces into the fewest number of faces possible."""
 
     if not _faces:
@@ -159,9 +151,7 @@ def merge_hb_faces(
 
     # -------------------------------------------------------------------------
     # -- Merge the HB-Faces' Polygons together
-    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(
-        face3Ds(_faces), _tolerance
-    )
+    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(face3Ds(_faces), _tolerance)
 
     # -------------------------------------------------------------------------
     # -- Create new LBT-Face3D, and HB-Faces from the Polygon2Ds
@@ -185,12 +175,8 @@ def merge_hb_faces(
             return _faces
 
         # -- If only 1 parent, lets make some Face3Ds and Faces
-        parent_face_3d = [
-            _create_new_Face3D(p, ref_plane, ref_face) for p in parent_polygon
-        ]
-        child_face_3ds = [
-            _create_new_Face3D(p, ref_plane, ref_face) for p in child_polygons
-        ]
+        parent_face_3d = [_create_new_Face3D(p, ref_plane, ref_face) for p in parent_polygon]
+        child_face_3ds = [_create_new_Face3D(p, ref_plane, ref_face) for p in child_polygons]
         face_3ds = [Face3D.from_punched_geometry(parent_face_3d[0], child_face_3ds)]
         faces = [_create_new_HB_Face(f3d, ref_face) for f3d in face_3ds]
 
@@ -204,9 +190,7 @@ def merge_hb_faces(
     return faces_with_apertures_
 
 
-def merge_hb_shades(
-    _faces: List[Shade], _tolerance: float, _angle_tolerance_degrees: float
-) -> List[Shade]:
+def merge_hb_shades(_faces: List[Shade], _tolerance: float, _angle_tolerance_degrees: float) -> List[Shade]:
     """Merge a group of HB-Shades into the fewest number of shades possible."""
     if not _faces:
         return []
@@ -216,9 +200,7 @@ def merge_hb_shades(
 
     # -------------------------------------------------------------------------
     # -- Merge the HB-Face's Polygons together
-    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(
-        face3Ds(_faces), _tolerance
-    )
+    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(face3Ds(_faces), _tolerance)
 
     # -------------------------------------------------------------------------
     # -- Create new LBT-Face3D, and HB-Faces from the Polygon2Ds
@@ -242,12 +224,8 @@ def merge_hb_shades(
             return _faces
 
         # -- If only 1 parent, lets make some Face3Ds and Faces
-        parent_face_3d = [
-            _create_new_Face3D(p, ref_plane, ref_face) for p in parent_polygon
-        ]
-        child_face_3ds = [
-            _create_new_Face3D(p, ref_plane, ref_face) for p in child_polygons
-        ]
+        parent_face_3d = [_create_new_Face3D(p, ref_plane, ref_face) for p in parent_polygon]
+        child_face_3ds = [_create_new_Face3D(p, ref_plane, ref_face) for p in child_polygons]
         face_3ds = Face3D.from_punched_geometry(parent_face_3d[0], child_face_3ds)
         hb_shades_ = [_create_new_HB_Shade(f3d, ref_face) for f3d in face_3ds]
 

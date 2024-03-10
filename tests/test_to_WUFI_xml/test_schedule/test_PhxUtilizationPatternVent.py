@@ -5,9 +5,7 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 def test_default_PhxRoomVentilation(reset_class_counters):
     s1 = ventilation.PhxScheduleVentilation()
-    result = generate_WUFI_XML_from_object(
-        s1, _header="", _schema_name="_UtilizationPatternVent"
-    )
+    result = generate_WUFI_XML_from_object(s1, _header="", _schema_name="_UtilizationPatternVent")
     assert xml_string_to_list(result) == [
         "<Name>__unnamed_vent_schedule__</Name>",
         "<IdentNr>1</IdentNr>",

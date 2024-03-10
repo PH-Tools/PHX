@@ -96,9 +96,7 @@ class Verification:
         self, _phpp_model_obj: verification_data.VerificationInput
     ) -> VerificationInputLocation:
         """Create and setup the VerificationInputLocation object with the correct data."""
-        phpp_obj_shape: shape_model.VerificationInputItem = getattr(
-            self.shape, _phpp_model_obj.input_type
-        )
+        phpp_obj_shape: shape_model.VerificationInputItem = getattr(self.shape, _phpp_model_obj.input_type)
         return VerificationInputLocation(
             _xl=self.xl,
             _sheet_name=self.shape.name,

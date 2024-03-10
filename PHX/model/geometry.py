@@ -30,11 +30,7 @@ class PhxVertix2D:
 
     def __eq__(self, other: PhxVertix2D) -> bool:
         TOLERANCE = 0.0001
-        return (
-            abs(self.x - other.x) < TOLERANCE
-            and abs(self.y - other.y) < TOLERANCE
-            and self.id_num == other.id_num
-        )
+        return abs(self.x - other.x) < TOLERANCE and abs(self.y - other.y) < TOLERANCE and self.id_num == other.id_num
 
     def is_equivalent(self, other: PhxVertix) -> bool:
         TOLERANCE = 0.001
@@ -93,9 +89,7 @@ class PhxVertix:
 
     def distance_to(self, other: PhxVertix) -> float:
         """Return the distance between this vertex and another."""
-        return math.sqrt(
-            (self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2
-        )
+        return math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2)
 
 
 @dataclass
@@ -107,9 +101,7 @@ class PhxVector:
     @classmethod
     def from_2_points(cls, _start_pt: PhxVertix, _end_pt: PhxVertix) -> PhxVector:
         """Return a new PhxVector based on a start and end point."""
-        return cls(
-            _end_pt.x - _start_pt.x, _end_pt.y - _start_pt.y, _end_pt.z - _start_pt.z
-        )
+        return cls(_end_pt.x - _start_pt.x, _end_pt.y - _start_pt.y, _end_pt.z - _start_pt.z)
 
     def scale(self, _factor: float) -> None:
         self.x = self.x * _factor
@@ -183,9 +175,7 @@ class PhxPlane:
         Copied from Ladybug-Geometry
         https://github.com/ladybug-tools/ladybug-geometry/blob/master/ladybug_geometry/geometry3d/plane.py
         """
-        _diff = PhxVector(
-            point.x - self.origin.x, point.y - self.origin.y, point.z - self.origin.z
-        )
+        _diff = PhxVector(point.x - self.origin.x, point.y - self.origin.y, point.z - self.origin.z)
         return PhxVertix2D(self.x.dot(_diff), self.y.dot(_diff))
 
     def xy_to_xyz(self, point):
@@ -328,10 +318,7 @@ class PhxPolygon:
         try:
             angle = math.acos(
                 (a.x * b.x + a.y * b.y + a.z * b.z)
-                / (
-                    math.sqrt(a.x**2 + a.y**2 + a.z**2)
-                    * math.sqrt(b.x**2 + b.y**2 + b.z**2)
-                )
+                / (math.sqrt(a.x**2 + a.y**2 + a.z**2) * math.sqrt(b.x**2 + b.y**2 + b.z**2))
             )
         except ZeroDivisionError:
             angle = 0.0
@@ -355,9 +342,7 @@ class PhxPolygon:
         return False
 
     @property
-    def cardinal_orientation_angle(
-        self, _reference_vector: Optional[PhxVector] = None
-    ) -> float:
+    def cardinal_orientation_angle(self, _reference_vector: Optional[PhxVector] = None) -> float:
         """Calculate polygon normal's horizontal angle off a reference. By default, the
         reference vector will be (x=0,y=1,z=0) assuming north is y-direction.
 
@@ -414,14 +399,7 @@ class PhxPolygon:
         x_coords.append(x_coords[0])
         y_coords.append(y_coords[0])
         return (
-            abs(
-                sum(
-                    [
-                        x_coords[i] * y_coords[i + 1] - x_coords[i + 1] * y_coords[i]
-                        for i in range(len(x_coords) - 1)
-                    ]
-                )
-            )
+            abs(sum([x_coords[i] * y_coords[i + 1] - x_coords[i + 1] * y_coords[i] for i in range(len(x_coords) - 1)]))
             / 2
         )
 
@@ -586,9 +564,7 @@ class PhxGraphics3D:
         if not isinstance(_ids, Collection):
             _ids = {_ids}
 
-        return sorted(
-            [p for p in self.polygons if p.id_num in _ids], key=lambda _: _.display_name
-        )
+        return sorted([p for p in self.polygons if p.id_num in _ids], key=lambda _: _.display_name)
 
     def __bool__(self) -> bool:
         return bool(self.polygons)

@@ -77,12 +77,7 @@ def get_project_data_from_hb_model(_hb_model: model.Model) -> PhxProjectData:
 
 def get_hb_apertures(_hb_model: model.Model) -> List[Aperture]:
     """Return a list of all the HB Apertures in the Model."""
-    return [
-        aperture
-        for room in _hb_model.rooms
-        for face in room.faces
-        for aperture in face.apertures
-    ]
+    return [aperture for room in _hb_model.rooms for face in room.faces for aperture in face.apertures]
 
 
 def convert_hb_model_to_PhxProject(
@@ -111,9 +106,7 @@ def convert_hb_model_to_PhxProject(
     phx_project = PhxProject()
     phx_project.project_data = get_project_data_from_hb_model(_hb_model)
     create_assemblies.build_opaque_assemblies_from_HB_model(phx_project, _hb_model)
-    create_assemblies.build_transparent_assembly_types_from_HB_Model(
-        phx_project, get_hb_apertures(_hb_model)
-    )
+    create_assemblies.build_transparent_assembly_types_from_HB_Model(phx_project, get_hb_apertures(_hb_model))
     create_schedules.add_all_HB_schedules_to_PHX_Project(phx_project, _hb_model)
 
     # -- TODO: Make all these operations if..else... with flags in the func arguments.
@@ -130,9 +123,7 @@ def convert_hb_model_to_PhxProject(
             merge_faces: bool = True
             merge_face_tolerance: float = _merge_faces
 
-        merged_hb_room = cleanup.merge_rooms(
-            room_group, merge_face_tolerance, _hb_model.angle_tolerance, merge_faces
-        )
+        merged_hb_room = cleanup.merge_rooms(room_group, merge_face_tolerance, _hb_model.angle_tolerance, merge_faces)
 
         new_variant = create_variant.from_hb_room(
             _hb_room=merged_hb_room,

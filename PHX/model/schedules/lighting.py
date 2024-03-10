@@ -23,9 +23,7 @@ class PhxScheduleLighting:
     relative_utilization_factor: float = 0.0  # Relative to the 'annual_utilization_days'
 
     @classmethod
-    def from_annual_operating_hours(
-        cls, _annual_operating_hours: float
-    ) -> PhxScheduleLighting:
+    def from_annual_operating_hours(cls, _annual_operating_hours: float) -> PhxScheduleLighting:
         new_schedule = cls()
         hours_per_day = _annual_operating_hours / 365
         new_schedule.start_hour = 12 - (hours_per_day / 2)
@@ -48,10 +46,7 @@ class PhxScheduleLighting:
             return False
         if abs(self.annual_utilization_days - other.annual_utilization_days) > TOLERANCE:
             return False
-        if (
-            abs(self.relative_utilization_factor - other.relative_utilization_factor)
-            > TOLERANCE
-        ):
+        if abs(self.relative_utilization_factor - other.relative_utilization_factor) > TOLERANCE:
             return False
         if self.unique_key != other.unique_key:
             return False
@@ -61,9 +56,7 @@ class PhxScheduleLighting:
     def annual_utilization_factor(self) -> float:
         """Return the annual Utilization Rate (0-1) relative to the entire year (8760 hours)"""
 
-        operating_period_utilization_factor = (
-            self.annual_operating_hours / 8760
-        )  # Hrs / year
+        operating_period_utilization_factor = self.annual_operating_hours / 8760  # Hrs / year
 
         return operating_period_utilization_factor * self.relative_utilization_factor
 

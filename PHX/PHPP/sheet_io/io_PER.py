@@ -80,14 +80,10 @@ class BaseBlock:
         if not self._reference_area:
             try:
                 self._reference_area = float(
-                    self.xl.get_single_data_item(
-                        self.worksheet_name, self.reference_area_address
-                    )  # type: ignore
+                    self.xl.get_single_data_item(self.worksheet_name, self.reference_area_address)  # type: ignore
                 )
             except:
-                raise PerReferenceAreaException(
-                    self.worksheet_name, self.reference_area_address
-                )
+                raise PerReferenceAreaException(self.worksheet_name, self.reference_area_address)
 
         return self._reference_area
 
@@ -134,9 +130,7 @@ class BaseBlock:
         search_string = self.shape.locator_string_heading
         row_number = self.xl.find_row(search_string, data, self.host.heading_row)
         if not row_number:
-            raise FindSectionMarkerException(
-                search_string, self.worksheet_name, self.locator_column
-            )
+            raise FindSectionMarkerException(search_string, self.worksheet_name, self.locator_column)
         return row_number
 
     def find_block_start_row(self) -> int:
@@ -151,9 +145,7 @@ class BaseBlock:
         search_string = self.shape.locator_string_start
         row_number = self.xl.find_row(search_string, data, self.block_header_row)
         if not row_number:
-            raise FindSectionMarkerException(
-                search_string, self.worksheet_name, self.locator_column
-            )
+            raise FindSectionMarkerException(search_string, self.worksheet_name, self.locator_column)
         return row_number
 
     def find_block_end_row(self) -> int:
@@ -168,9 +160,7 @@ class BaseBlock:
         search_string = self.shape.locator_string_end
         row_number = self.xl.find_row(search_string, data, self.block_start_row)
         if not row_number:
-            raise FindSectionMarkerException(
-                search_string, self.worksheet_name, self.locator_column
-            )
+            raise FindSectionMarkerException(search_string, self.worksheet_name, self.locator_column)
         return row_number
 
     def get_data(self) -> Dict[str, List[Union[str, Unit]]]:
@@ -193,18 +183,14 @@ class BaseBlock:
         unit_dict: Dict[str, List[Union[str, Unit]]] = {}
 
         # -- Grab the index column data first
-        unit_dict[self.locator_column] = [
-            str(_) for _ in xl_raw_data[self.locator_column]
-        ]
+        unit_dict[self.locator_column] = [str(_) for _ in xl_raw_data[self.locator_column]]
 
         # -- Get the numeric values as units
         unit_dict[self.host.shape.columns.final_energy] = [
-            Unit(_, self.host.shape.unit)
-            for _ in xl_raw_data[self.host.shape.columns.final_energy]
+            Unit(_, self.host.shape.unit) for _ in xl_raw_data[self.host.shape.columns.final_energy]
         ]
         unit_dict[self.host.shape.columns.pe_energy] = [
-            Unit(_, self.host.shape.unit)
-            for _ in xl_raw_data[self.host.shape.columns.pe_energy]
+            Unit(_, self.host.shape.unit) for _ in xl_raw_data[self.host.shape.columns.pe_energy]
         ]
 
         return unit_dict

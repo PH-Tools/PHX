@@ -19,14 +19,10 @@ class PhxSupportiveDeviceParams(_base.PhxMechanicalDeviceParams):
     def __add__(self, other: PhxSupportiveDeviceParams) -> PhxSupportiveDeviceParams:
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
-        new_obj.in_conditioned_space = any(
-            [self.in_conditioned_space, other.in_conditioned_space]
-        )
+        new_obj.in_conditioned_space = any([self.in_conditioned_space, other.in_conditioned_space])
 
         # -- Merge the energy usage and hours of operation
-        total_kilohours = (
-            self.annual_period_operation_khrs + other.annual_period_operation_khrs
-        )
+        total_kilohours = self.annual_period_operation_khrs + other.annual_period_operation_khrs
         new_obj.annual_period_operation_khrs = total_kilohours
         total_watt_kilohours = (
             self.norm_energy_demand_W * self.annual_period_operation_khrs
@@ -53,9 +49,7 @@ class PhxSupportiveDevice(_base.PhxMechanicalDevice):
 
     def __add__(self, other: PhxSupportiveDevice) -> PhxSupportiveDevice:
         if self.device_type != other.device_type:
-            raise ValueError(
-                f"Cannot add two different device types: {self.device_type} and {other.device_type}"
-            )
+            raise ValueError(f"Cannot add two different device types: {self.device_type} and {other.device_type}")
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         new_obj.display_name = f"Supportive Device ({new_obj.quantity})"

@@ -36,10 +36,7 @@ class PhxScheduleOccupancy:
             return False
         if abs(self.annual_utilization_days - other.annual_utilization_days) > TOLERANCE:
             return False
-        if (
-            abs(self.relative_utilization_factor - other.relative_utilization_factor)
-            > TOLERANCE
-        ):
+        if abs(self.relative_utilization_factor - other.relative_utilization_factor) > TOLERANCE:
             return False
         if self.unique_key != other.unique_key:
             return False
@@ -49,9 +46,7 @@ class PhxScheduleOccupancy:
     def annual_utilization_factor(self) -> float:
         """Return the annual Utilization Rate (0-1) relative to the entire year (8760 hours)"""
 
-        operating_period_utilization_factor = (
-            self.annual_operating_hours / 8760
-        )  # Hrs / year
+        operating_period_utilization_factor = self.annual_operating_hours / 8760  # Hrs / year
 
         return operating_period_utilization_factor * self.relative_utilization_factor
 

@@ -48,9 +48,7 @@ def create_PhxPlane_from_lbt_Plane(_lbt_plane: Plane) -> geometry.PhxPlane:
     )
 
 
-def create_PhxPolygon_from_hb_Face(
-    _hb_face: Union[aperture.Aperture, face.Face, shade.Shade]
-) -> geometry.PhxPolygon:
+def create_PhxPolygon_from_hb_Face(_hb_face: Union[aperture.Aperture, face.Face, shade.Shade]) -> geometry.PhxPolygon:
     """Return a new PhxPolygon based on an input honeybee-Face.
 
     Arguments:

@@ -52,9 +52,7 @@ def get_PHX_object_conversion_schema(
     return schema_function
 
 
-def convert_HB_object_to_xml_writables_list(
-    _phx_object, _schema_nm: Optional[str] = None
-) -> List[xml_writable]:
+def convert_HB_object_to_xml_writables_list(_phx_object, _schema_nm: Optional[str] = None) -> List[xml_writable]:
     """Returns a list of the PHX-Object's Properties in WUFI-XML format.
 
         * _phx_object (Any): The PHX-Object to convert into XML text.

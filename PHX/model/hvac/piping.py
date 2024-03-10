@@ -24,12 +24,8 @@ from PHX.model.enums.hvac import (
 
 @dataclass
 class PhxRecirculationParameters:
-    calc_method: PhxHotWaterPipingCalcMethod = field(
-        default=PhxHotWaterPipingCalcMethod.HOT_WATER_PIPING_FLOOR_METHOD
-    )
-    pipe_material: PhxHotWaterPipingMaterial = field(
-        default=PhxHotWaterPipingMaterial.COPPER_L
-    )
+    calc_method: PhxHotWaterPipingCalcMethod = field(default=PhxHotWaterPipingCalcMethod.HOT_WATER_PIPING_FLOOR_METHOD)
+    pipe_material: PhxHotWaterPipingMaterial = field(default=PhxHotWaterPipingMaterial.COPPER_L)
     demand_recirc: bool = True
     num_bathrooms: int = 1
     hot_water_fixtures: int = 1
@@ -100,9 +96,7 @@ class PhxPipeSegment:
         else:
             return 8.0
 
-    def _calc_pipe_heat_loss_coeff(
-        self, _alpha: float, _conductivity: Optional[float] = None
-    ) -> float:
+    def _calc_pipe_heat_loss_coeff(self, _alpha: float, _conductivity: Optional[float] = None) -> float:
         """Calculate the pipe heat-loss coefficient (W/mk) with a known Alpha (W/m2k) value."""
 
         # -- Allow for 'reverse' solver....
@@ -117,9 +111,7 @@ class PhxPipeSegment:
         )
         return math.pi / _c
 
-    def _calc_pipe_surface_temp(
-        self, dT, _k, _conductivity: Optional[float] = None
-    ) -> float:
+    def _calc_pipe_surface_temp(self, dT, _k, _conductivity: Optional[float] = None) -> float:
         """Return a surface temp (k) for the pipe with a known heat-loss-coefficient (W/mk) value."""
 
         # -- Allow for 'reverse' solver....
@@ -286,9 +278,7 @@ class PhxPipeElement:
         if len(materials) != 1:
             raise ValueError(
                 "Error: Pipe Element '{}' has multiple materials: '{}'."
-                "Please rebuild the pipe with a single material. {}".format(
-                    self.display_name, materials, self.segments
-                )
+                "Please rebuild the pipe with a single material. {}".format(self.display_name, materials, self.segments)
             )
         else:
             return materials[0]
@@ -302,9 +292,7 @@ class PhxPipeElement:
         if len(diameters) != 1:
             raise ValueError(
                 "Error: Pipe Element '{}' has multiple diameters: '{}'."
-                "Please rebuild the pipe with a single diameter.".format(
-                    self.display_name, diameters
-                )
+                "Please rebuild the pipe with a single diameter.".format(self.display_name, diameters)
             )
         else:
             return diameters[0]

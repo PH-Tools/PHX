@@ -68,9 +68,7 @@ class Variants:
             f'"{self.shape.input_header.locator_col_header}"?'
         )
 
-    def get_assembly_layers_start(
-        self, _row_start: Optional[int] = None, _rows: int = 100
-    ) -> int:
+    def get_assembly_layers_start(self, _row_start: Optional[int] = None, _rows: int = 100) -> int:
         """Return the row number of the start of the Building Assembly Layers variant section."""
         if not self.user_input_section_start_row:
             self.user_input_section_start_row = self.get_user_input_section_start()
@@ -94,9 +92,7 @@ class Variants:
             f'"{self.shape.assemblies.locator_col_header}"?'
         )
 
-    def get_window_types_start(
-        self, _row_start: Optional[int] = None, _rows: int = 300
-    ) -> int:
+    def get_window_types_start(self, _row_start: Optional[int] = None, _rows: int = 300) -> int:
         """Return the row number of the start of the Window Types input section."""
         if not self.start_assembly_layers:
             self.start_assembly_layers = self.get_assembly_layers_start()
@@ -120,9 +116,7 @@ class Variants:
             f'"{self.shape.windows.locator_col_header}"?'
         )
 
-    def get_ventilation_start(
-        self, _row_start: Optional[int] = None, _rows: int = 300
-    ) -> int:
+    def get_ventilation_start(self, _row_start: Optional[int] = None, _rows: int = 300) -> int:
         """Return the row number of the start of the Ventilation input section."""
         if not self.start_window_types:
             self.start_window_types = self.get_window_types_start()
@@ -158,9 +152,7 @@ class Variants:
             self.start_ventilation + 10,
         )
 
-        return {
-            str(_): i for i, _ in enumerate(read_data, start=self.start_ventilation + 1)
-        }
+        return {str(_): i for i, _ in enumerate(read_data, start=self.start_ventilation + 1)}
 
     def write_assembly_layer(self, _assembly_name: str, _assembly_num: int) -> None:
         """Write a new assembly layer to the Variants worksheet."""
@@ -212,9 +204,7 @@ class Variants:
         )
 
         return [
-            VariantAssemblyLayerName(str(data_list[0]), str(data_list[1]))
-            for data_list in col_data
-            if all(data_list)
+            VariantAssemblyLayerName(str(data_list[0]), str(data_list[1])) for data_list in col_data if all(data_list)
         ]
 
     def get_window_type_phpp_ids(self) -> Dict[str, VariantWindowTypeName]:

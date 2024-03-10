@@ -9,9 +9,7 @@ import shutil
 from pathlib import Path
 
 
-def write_XML_text_file(
-    _file_address: Path, _xml_text: str, _write_copy: bool = True
-) -> None:
+def write_XML_text_file(_file_address: Path, _xml_text: str, _write_copy: bool = True) -> None:
     """Write xml text out to the specified file.
 
     Arguments:

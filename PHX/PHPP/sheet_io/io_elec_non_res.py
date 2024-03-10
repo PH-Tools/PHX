@@ -75,9 +75,7 @@ class Lighting:
             if val == self.shape.lighting_rows.locator_string_entry:
                 return i + 1
 
-        raise Exception(
-            f'\n\tError: Not able to find the first surface entry row in the "Lighting input" section?'
-        )
+        raise Exception(f'\n\tError: Not able to find the first surface entry row in the "Lighting input" section?')
 
     def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
         """Return the row number of the last user-input entry row in the 'Lighting input' section."""
@@ -85,9 +83,7 @@ class Lighting:
         if not _start_row:
             _start_row = self.section_first_entry_row
         elif _start_row > 10_000:
-            raise Exception(
-                f'\n\tError: Not able to find the last surface entry row in the "Lighting input" section?'
-            )
+            raise Exception(f'\n\tError: Not able to find the last surface entry row in the "Lighting input" section?')
 
         _row_end = _start_row + 500
         xl_data = self.xl.get_single_column_data(
@@ -134,19 +130,13 @@ class Lighting:
             self.section_first_entry_row,
             self.section_last_entry_row,
         )
-        return (
-            i
-            for i, val in enumerate(data, start=self.section_first_entry_row)
-            if val is not None
-        )
+        return (i for i, val in enumerate(data, start=self.section_first_entry_row) if val is not None)
 
     def _get_target_unit(self, _field_name: str) -> str:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.lighting_rows.inputs, _field_name).unit
 
-    def set_lighting_power_density(
-        self, _row_num: int, _power_density: float, _unit: str = "W/M2"
-    ) -> None:
+    def set_lighting_power_density(self, _row_num: int, _power_density: float, _unit: str = "W/M2") -> None:
         """Set the lighting power density for the given row number."""
         _range = f"{self.shape.lighting_rows.inputs.installed_power.column}{_row_num}"
         self.xl.write_xl_item(

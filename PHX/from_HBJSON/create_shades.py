@@ -94,14 +94,10 @@ def add_hb_model_shades_to_variant(
     for hb_shade_group in hb_shade_groups.values():
         # -- Merge HB-Shade-Faces
         if _merge_faces:
-            face_groups = face_tools.group_hb_faces(
-                hb_shade_group, _tolerance, _angle_tolerance_degrees
-            )
+            face_groups = face_tools.group_hb_faces(hb_shade_group, _tolerance, _angle_tolerance_degrees)
             hb_shade_group: List[Shade] = []
             for face_group in face_groups:
-                hb_shade_group += merge_hb_shades(
-                    face_group, _tolerance, _angle_tolerance_degrees
-                )
+                hb_shade_group += merge_hb_shades(face_group, _tolerance, _angle_tolerance_degrees)
 
         phx_compos = (create_new_component_from_orphaned_shade(s) for s in hb_shade_group)
         merged_phx_component: PhxComponentOpaque = reduce(operator.add, phx_compos)

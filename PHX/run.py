@@ -155,26 +155,16 @@ def convert_hbjson_to_WUFI_XML(
     """
 
     # -- Specify the path to the subprocess python script to run
-    run_file_path = os.path.join(
-        hb_folders.python_package_path, "PHX", "hbjson_to_wufi_xml.py"
-    )
+    run_file_path = os.path.join(hb_folders.python_package_path, "PHX", "hbjson_to_wufi_xml.py")
 
     # -- check the file paths
-    assert os.path.isfile(_hbjson_file), "No HBJSON file found at {}.".format(
-        _hbjson_file
-    )
-    assert os.path.isfile(run_file_path), "No Python file to run found at: {}".format(
-        run_file_path
-    )
+    assert os.path.isfile(_hbjson_file), "No HBJSON file found at {}.".format(_hbjson_file)
+    assert os.path.isfile(run_file_path), "No Python file to run found at: {}".format(run_file_path)
 
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, convert to WUFI XML
     print("Using python interpreter: '{}'".format(hb_folders.python_exe_path))
-    print(
-        "Running py script: '{}' Using HBJSON file: '{}'".format(
-            run_file_path, _hbjson_file
-        )
-    )
+    print("Running py script: '{}' Using HBJSON file: '{}'".format(run_file_path, _hbjson_file))
     commands = [
         hb_folders.python_exe_path,
         run_file_path,
@@ -192,9 +182,7 @@ def convert_hbjson_to_WUFI_XML(
     return _save_folder, _save_file_name, stdout, stderr
 
 
-def write_hbjson_to_phpp(
-    _hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"
-):
+def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"):
     # type: (str, str, str) -> Tuple[Any, Any]
     """Read in an hbjson file and write out to a PHPP file.
 
@@ -219,9 +207,7 @@ def write_hbjson_to_phpp(
     """
 
     # -- Specify the path to the subprocess python script to run
-    run_file_path = os.path.join(
-        hb_folders.python_package_path, "PHX", "hbjson_to_phpp.py"
-    )
+    run_file_path = os.path.join(hb_folders.python_package_path, "PHX", "hbjson_to_phpp.py")
 
     # -- check the file paths
     if not os.path.isfile(_hbjson_file):
@@ -229,11 +215,7 @@ def write_hbjson_to_phpp(
     if not os.path.isfile(run_file_path):
         raise Exception("\nNo Python file to run found at: {}?".format(run_file_path))
     if not os.path.exists(_lbt_python_site_packages_path):
-        raise Exception(
-            "\nNo Python site_packages folder found at: {}?".format(
-                _lbt_python_site_packages_path
-            )
-        )
+        raise Exception("\nNo Python site_packages folder found at: {}?".format(_lbt_python_site_packages_path))
 
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, write out to PHPP
@@ -253,13 +235,9 @@ def write_hbjson_to_phpp(
         # -- See:
         # -- https://discourse.mcneel.com/t/python-subprocess-permissions-error-on-mac-os-1743/142830/6
         # -- Find the files to run
-        shell_file = os.path.join(
-            _lbt_python_site_packages_path, "PHX", "_hbjson_to_phpp.sh"
-        )
+        shell_file = os.path.join(_lbt_python_site_packages_path, "PHX", "_hbjson_to_phpp.sh")
         execution_root = os.path.join(_lbt_python_site_packages_path, "PHX")
-        python_script_path = os.path.join(
-            _lbt_python_site_packages_path, "PHX", "hbjson_to_phpp.py"
-        )
+        python_script_path = os.path.join(_lbt_python_site_packages_path, "PHX", "hbjson_to_phpp.py")
 
         # -- Build up the commands to run
         commands = [

@@ -30,9 +30,7 @@ class PhxSpace:
 
     # -- Programs
     ventilation: PhxProgramVentilation = field(default_factory=PhxProgramVentilation)
-    occupancy: occupancy_prog.PhxProgramOccupancy = field(
-        default_factory=occupancy_prog.PhxProgramOccupancy
-    )
+    occupancy: occupancy_prog.PhxProgramOccupancy = field(default_factory=occupancy_prog.PhxProgramOccupancy)
     lighting: PhxProgramLighting = field(default_factory=PhxProgramLighting)
 
     electric_equipment = None

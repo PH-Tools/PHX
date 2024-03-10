@@ -47,16 +47,9 @@ class VentSpaceRow:
     def _calc_minimum_speed(self) -> float:
         # Weighted average of Min and Basic since PHPP only has 3 values
         periods = self.phx_vent_pattern.operating_periods
-        weighted_basic = (
-            periods.basic.period_operation_speed * periods.basic.period_operating_hours
-        )
-        weighed_minimum = (
-            periods.minimum.period_operation_speed
-            * periods.minimum.period_operating_hours
-        )
-        total_hours = (
-            periods.basic.period_operating_hours + periods.minimum.period_operating_hours
-        )
+        weighted_basic = periods.basic.period_operation_speed * periods.basic.period_operating_hours
+        weighed_minimum = periods.minimum.period_operation_speed * periods.minimum.period_operating_hours
+        total_hours = periods.basic.period_operating_hours + periods.minimum.period_operating_hours
 
         try:
             return (weighted_basic + weighed_minimum) / total_hours
@@ -66,9 +59,7 @@ class VentSpaceRow:
     def _get_speeds(self) -> Tuple[float, float, float]:
         """Return a tuple of the high, standard and minimum speeds as % of max"""
         speed_high = self.phx_vent_pattern.operating_periods.high.period_operation_speed
-        speed_standard = (
-            self.phx_vent_pattern.operating_periods.standard.period_operation_speed
-        )
+        speed_standard = self.phx_vent_pattern.operating_periods.standard.period_operation_speed
         speed_minimum = self._calc_minimum_speed()
 
         return speed_high, speed_standard, speed_minimum
@@ -93,9 +84,7 @@ class VentSpaceRow:
         XLItemAddnlVent = partial(xl_data.XlItem, _sheet_name)
         items: List[xl_data.XlItem] = [
             XLItemAddnlVent(create_range("quantity"), self.phx_room_vent.quantity),
-            XLItemAddnlVent(
-                create_range("display_name"), f"'{self.phx_room_vent.display_name}"
-            ),
+            XLItemAddnlVent(create_range("display_name"), f"'{self.phx_room_vent.display_name}"),
             XLItemAddnlVent(create_range("vent_unit_assigned"), self.phpp_row_ventilator),
             XLItemAddnlVent(
                 create_range("weighted_floor_area"),
@@ -128,15 +117,9 @@ class VentSpaceRow:
                 self._get_target_unit("V_trans"),
             ),
             # -- Operating Days / weeks
-            XLItemAddnlVent(
-                create_range("operating_hours"), self.phx_vent_pattern.operating_hours
-            ),
-            XLItemAddnlVent(
-                create_range("operating_days"), self.phx_vent_pattern.operating_days
-            ),
-            XLItemAddnlVent(
-                create_range("holiday_days"), self.phx_vent_pattern.holiday_days
-            ),
+            XLItemAddnlVent(create_range("operating_hours"), self.phx_vent_pattern.operating_hours),
+            XLItemAddnlVent(create_range("operating_days"), self.phx_vent_pattern.operating_days),
+            XLItemAddnlVent(create_range("holiday_days"), self.phx_vent_pattern.holiday_days),
             # -- Operating hours / speeds
             XLItemAddnlVent(create_range("period_high_speed"), speed_high),
             XLItemAddnlVent(create_range("period_high_time"), time_high),

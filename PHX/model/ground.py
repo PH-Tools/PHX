@@ -61,9 +61,7 @@ class PhxSlabOnGrade(PhxFoundation):
         self.floor_slab_area_m2: Optional[float] = 0.0
         self.floor_slab_u_value: Optional[float] = 1.0
         self.floor_slab_exposed_perimeter_m: Optional[float] = 0.0
-        self._perim_insulation_position: PerimeterInsulationPosition = (
-            PerimeterInsulationPosition.VERTICAL
-        )
+        self._perim_insulation_position: PerimeterInsulationPosition = PerimeterInsulationPosition.VERTICAL
         self.perim_insulation_width_or_depth_m: Optional[float] = 0.300
         self.perim_insulation_thickness_m: Optional[float] = 0.050
         self.perim_insulation_conductivity: Optional[float] = 0.04
@@ -73,9 +71,7 @@ class PhxSlabOnGrade(PhxFoundation):
         return self._perim_insulation_position
 
     @perim_insulation_position.setter
-    def perim_insulation_position(
-        self, _input: Union[PerimeterInsulationPosition, int, None]
-    ) -> None:
+    def perim_insulation_position(self, _input: Union[PerimeterInsulationPosition, int, None]) -> None:
         if not _input:
             return
         if isinstance(_input, PerimeterInsulationPosition):

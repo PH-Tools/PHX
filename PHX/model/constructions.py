@@ -118,9 +118,7 @@ class PhxConstructionOpaque:
         return hash(self.identifier)
 
     @classmethod
-    def from_total_u_value(
-        cls, _total_u_value: float, _display_name: str = ""
-    ) -> PhxConstructionOpaque:
+    def from_total_u_value(cls, _total_u_value: float, _display_name: str = "") -> PhxConstructionOpaque:
         """Returns a new PhxConstructionOpaque with a single layer with the given U-Value."""
         obj = cls()
         obj.display_name = _display_name or f"U-Value: {_total_u_value}"

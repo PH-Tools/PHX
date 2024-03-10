@@ -26,19 +26,13 @@ from PHX.xl.xl_typing import (
 
 class ReadRowsError(Exception):
     def __init__(self, row_start, row_end):
-        self.msg = (
-            f"Error: row_start should be less than "
-            f"row_end. Got {row_start}, {row_end}"
-        )
+        self.msg = f"Error: row_start should be less than " f"row_end. Got {row_start}, {row_end}"
         super().__init__(self.msg)
 
 
 class NoActiveExcelRunningError(Exception):
     def __init__(self):
-        self.msg = (
-            "\n\tError: No active instance of Excel running?"
-            "\n\tPlease open Excel and try again."
-        )
+        self.msg = "\n\tError: No active instance of Excel running?" "\n\tPlease open Excel and try again."
         super().__init__(self.msg)
 
 
@@ -228,9 +222,7 @@ class XLConnection:
         """Clears the content and formatting of the whole sheet."""
         self.get_sheet_by_name(_sheet_name).clear()
 
-    def create_new_worksheet(
-        self, _sheet_name: str, before: Optional[str] = None, after: Optional[str] = None
-    ) -> None:
+    def create_new_worksheet(self, _sheet_name: str, before: Optional[str] = None, after: Optional[str] = None) -> None:
         """Try and add a new Worksheet to the Workbook."""
         try:
             self.wb.sheets.add(_sheet_name, before, after)
@@ -296,9 +288,7 @@ class XLConnection:
         """
         return {sh.name.upper() for sh in self.wb.sheets}
 
-    def get_sheet_by_name(
-        self, _sheet_name: Optional[Union[str, int]]
-    ) -> xl_Sheet_Protocol:
+    def get_sheet_by_name(self, _sheet_name: Optional[Union[str, int]]) -> xl_Sheet_Protocol:
         """Returns an Excel Sheet with the specified name, or KeyError if not found.
 
         Arguments:
@@ -401,9 +391,7 @@ class XLConnection:
         group_last_cell_range = row_last_cell_range.end("left")  # same as 'Ctrl-Left'
         return xl_data.xl_chr(xl_data.xl_ord("A") + group_last_cell_range.column - 1)
 
-    def get_single_row_data(
-        self, _sheet_name: str, _row_number: int
-    ) -> List[xl_data.xl_range_single_value]:
+    def get_single_row_data(self, _sheet_name: str, _row_number: int) -> List[xl_data.xl_range_single_value]:
         """Return all the data from a single Row in the Excel Workbook.
 
         Arguments:
@@ -474,9 +462,7 @@ class XLConnection:
         self.output(f"Reading: {_sheet_name}:{_range}")
         return self.get_sheet_by_name(_sheet_name).range(_range).value
 
-    def get_single_data_item(
-        self, _sheet_name: str, _range: str
-    ) -> xl_data.xl_range_single_value:
+    def get_single_data_item(self, _sheet_name: str, _range: str) -> xl_data.xl_range_single_value:
         """Return a single value from the Excel document.
 
         Arguments:
@@ -494,9 +480,7 @@ class XLConnection:
         self.output(f"Reading: {_sheet_name}:{_range}")
         return self.get_sheet_by_name(_sheet_name).range(_range).value  # type: ignore
 
-    def get_data_by_columns(
-        self, _sheet_name: str, _range_address: str
-    ) -> List[List[xl_data.xl_range_single_value]]:
+    def get_data_by_columns(self, _sheet_name: str, _range_address: str) -> List[List[xl_data.xl_range_single_value]]:
         """Returns a List of column data, each column in a list.
         ie: "A1:D12" -> [[A1, A2, ... A12], [B1, B2, ... B12], ... [D1, D2, ... D12]]
 
@@ -536,10 +520,7 @@ class XLConnection:
         rng = self.xl.Range(_range_address)
         start_col_letter = xl_data.xl_col_num_as_chr(rng.column)
         start_col_number = xl_data.xl_ord(start_col_letter)
-        return {
-            xl_data.xl_chr(i): data_list
-            for i, data_list in enumerate(raw_data, start=start_col_number)
-        }
+        return {xl_data.xl_chr(i): data_list for i, data_list in enumerate(raw_data, start=start_col_number)}
 
     def group_rows(self, _sheet_name: str, _row_start: int, _row_end: int) -> None:
         """Group one or more rows."""
@@ -616,9 +597,7 @@ class XLConnection:
                 written as rows instead of as columns.
         """
 
-        self.output(
-            f"Writing: {_xl_item.sheet_name}:{_xl_item.xl_range}={_xl_item.write_value}"
-        )
+        self.output(f"Writing: {_xl_item.sheet_name}:{_xl_item.xl_range}={_xl_item.write_value}")
 
         try:
             xl_sheet = self.get_sheet_by_name(_xl_item.sheet_name)
@@ -639,6 +618,4 @@ class XLConnection:
         except AttributeError as e:
             raise AttributeError(e)
         except Exception as e:
-            raise WriteValueError(
-                _xl_item.write_value, _xl_item.xl_range, _xl_item.sheet_name, e
-            )
+            raise WriteValueError(_xl_item.write_value, _xl_item.xl_range, _xl_item.sheet_name, e)

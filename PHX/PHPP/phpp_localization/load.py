@@ -34,9 +34,7 @@ def get_shape_filepath(version: version.PHPPVersion, _shape_file_directory: path
     shape_file_path = pathlib.Path(_shape_file_directory, shape_file_name)
 
     if not os.path.exists(shape_file_path):
-        raise FileNotFoundError(
-            f'\n\tError: The PHPP shapefile "{shape_file_path}" was not found?'
-        )
+        raise FileNotFoundError(f'\n\tError: The PHPP shapefile "{shape_file_path}" was not found?')
 
     return shape_file_path
 

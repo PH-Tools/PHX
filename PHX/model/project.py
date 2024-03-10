@@ -119,9 +119,7 @@ class PhxVariant:
         """Returns the total window area of the variant.building"""
         return self.building.get_total_roof_aperture_area()
 
-    def add_mechanical_collection(
-        self, _mech_collection: PhxMechanicalSystemCollection
-    ) -> None:
+    def add_mechanical_collection(self, _mech_collection: PhxMechanicalSystemCollection) -> None:
         """Add a new mechanical collection to the variant."""
         self._mech_collections.append(_mech_collection)
 
@@ -134,9 +132,7 @@ class PhxVariant:
     ) -> Tuple[Optional[PhxMechanicalSystemCollection], Optional[PhxMechanicalDevice]]:
         """Return a Tuple of a mech-collection and a mechanical device based on the specified device key, or None if not found."""
 
-        found: List[
-            Tuple[Optional[PhxMechanicalSystemCollection], Optional[PhxMechanicalDevice]]
-        ] = []
+        found: List[Tuple[Optional[PhxMechanicalSystemCollection], Optional[PhxMechanicalDevice]]] = []
         for mech_collection in self._mech_collections:
             found.append((mech_collection, mech_collection._devices.get(_key, None)))
 
@@ -267,9 +263,7 @@ class PhxProject:
         try:
             return self.window_types[_key]
         except KeyError as e:
-            valid_keys = "  |  ".join(
-                [f"{k}::{v.display_name}" for k, v in self.window_types.items()]
-            )
+            valid_keys = "  |  ".join([f"{k}::{v.display_name}" for k, v in self.window_types.items()])
             msg = (
                 f"Window Type: '{_key}' not found in project collection? "
                 f"Valid window-types include only: {valid_keys}."
@@ -282,11 +276,7 @@ class PhxProject:
         CAUTION: Multiple window types can have the same name.
         Use the .get_window_type() and use the 'key' to get an exact window type.
         """
-        return [
-            window_type
-            for window_type in self.window_types.values()
-            if window_type.display_name == _name
-        ]
+        return [window_type for window_type in self.window_types.values() if window_type.display_name == _name]
 
     def add_new_shade_type(self, _shade_type: PhxWindowShade, _key=None) -> None:
         """Adds a new PhxWindowShade to the Project's collection"""
@@ -310,21 +300,15 @@ class PhxProject:
         """See if the project Lighting schedule collection already includes the specified key."""
         return self.utilization_patterns_lighting.key_is_in_collection(_key)
 
-    def add_vent_sched_to_collection(
-        self, vent_sched: ventilation.PhxScheduleVentilation
-    ) -> None:
+    def add_vent_sched_to_collection(self, vent_sched: ventilation.PhxScheduleVentilation) -> None:
         """Add a new Ventilation schedule to the project's collection."""
         self.utilization_patterns_ventilation.add_new_util_pattern(vent_sched)
 
-    def add_occupancy_sched_to_collection(
-        self, vent_sched: Optional[occupancy.PhxScheduleOccupancy]
-    ) -> None:
+    def add_occupancy_sched_to_collection(self, vent_sched: Optional[occupancy.PhxScheduleOccupancy]) -> None:
         """Add a new Occupancy schedule to the project's collection."""
         self.utilization_patterns_occupancy.add_new_util_pattern(vent_sched)
 
-    def add_lighting_sched_to_collection(
-        self, lighting_sched: Optional[lighting.PhxScheduleLighting]
-    ) -> None:
+    def add_lighting_sched_to_collection(self, lighting_sched: Optional[lighting.PhxScheduleLighting]) -> None:
         """Add a new Occupancy schedule to the project's collection."""
         self.utilization_patterns_lighting.add_new_util_pattern(lighting_sched)
 

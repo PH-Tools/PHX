@@ -173,9 +173,7 @@ def build_phx_branch_pipe(_hbph_branch: hot_water.PhPipeBranch) -> hvac.PhxPipeB
         * The new PHX-Branch created.
     """
 
-    phx_pipe_branch = piping.PhxPipeBranch(
-        _hbph_branch.identifier, _hbph_branch.display_name
-    )
+    phx_pipe_branch = piping.PhxPipeBranch(_hbph_branch.identifier, _hbph_branch.display_name)
     for segment in _hbph_branch.segments:
         phx_pipe_branch.pipe_element.add_segment(
             piping.PhxPipeSegment(

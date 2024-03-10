@@ -23,17 +23,11 @@ class HeatingPeakLoad:
         """Return a Dict of all the Peak Heating Load data from the specified column."""
         shp = self.shape
 
-        pT = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_losses_transmission}"
-        )
-        pV = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_losses_ventilation}"
-        )
+        pT = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses_transmission}")
+        pV = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses_ventilation}")
         pL = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses}")
         pS = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_solar}")
-        pI = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_gains_internal}"
-        )
+        pI = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_internal}")
         pG = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains}")
         pH = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_load}")
 

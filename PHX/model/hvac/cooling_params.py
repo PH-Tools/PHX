@@ -53,9 +53,7 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
     def total_system_perf_ratio(self):
         return 1 / self.annual_COP
 
-    def __add__(
-        self, other: PhxCoolingRecirculationParams
-    ) -> PhxCoolingRecirculationParams:
+    def __add__(self, other: PhxCoolingRecirculationParams) -> PhxCoolingRecirculationParams:
         if not other:
             return self
 
@@ -66,9 +64,7 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
         new_obj.min_coil_temp = (self.min_coil_temp + other.min_coil_temp) / 2
         new_obj.flow_rate_m3_hr = (self.flow_rate_m3_hr + other.flow_rate_m3_hr) / 2
         new_obj.capacity = (self.capacity + other.capacity) / 2
-        new_obj.flow_rate_variable = any(
-            [self.flow_rate_variable, other.flow_rate_variable]
-        )
+        new_obj.flow_rate_variable = any([self.flow_rate_variable, other.flow_rate_variable])
         new_obj.annual_COP = (self.annual_COP + other.annual_COP) / 2
         return new_obj
 
@@ -83,9 +79,7 @@ class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
     def total_system_perf_ratio(self):
         return 1 / self.annual_COP
 
-    def __add__(
-        self, other: PhxCoolingDehumidificationParams
-    ) -> PhxCoolingDehumidificationParams:
+    def __add__(self, other: PhxCoolingDehumidificationParams) -> PhxCoolingDehumidificationParams:
         if not other:
             return self
 
@@ -129,18 +123,10 @@ AnyPhxCoolingParamsType = Union[
 
 @dataclass
 class PhxCoolingParams:
-    ventilation: PhxCoolingVentilationParams = field(
-        default_factory=PhxCoolingVentilationParams
-    )
-    recirculation: PhxCoolingRecirculationParams = field(
-        default_factory=PhxCoolingRecirculationParams
-    )
-    dehumidification: PhxCoolingDehumidificationParams = field(
-        default_factory=PhxCoolingDehumidificationParams
-    )
+    ventilation: PhxCoolingVentilationParams = field(default_factory=PhxCoolingVentilationParams)
+    recirculation: PhxCoolingRecirculationParams = field(default_factory=PhxCoolingRecirculationParams)
+    dehumidification: PhxCoolingDehumidificationParams = field(default_factory=PhxCoolingDehumidificationParams)
     panel: PhxCoolingPanelParams = field(default_factory=PhxCoolingPanelParams)
 
     def __bool__(self) -> bool:
-        return any(
-            [self.ventilation, self.recirculation, self.dehumidification, self.panel]
-        )
+        return any([self.ventilation, self.recirculation, self.dehumidification, self.panel])

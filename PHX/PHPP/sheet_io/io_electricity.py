@@ -35,15 +35,9 @@ class Electricity:
             if item[0] in excluded:
                 continue
 
-            self.xl.write_xl_item(
-                xl_data.XlItem(
-                    self.shape.name, f"{self.shape.input_columns.used}{item[1].data}", 0
-                )
-            )
+            self.xl.write_xl_item(xl_data.XlItem(self.shape.name, f"{self.shape.input_columns.used}{item[1].data}", 0))
 
-    def write_equipment(
-        self, _equipment_inputs: List[electricity_item.ElectricityItemXLWriter]
-    ) -> None:
+    def write_equipment(self, _equipment_inputs: List[electricity_item.ElectricityItemXLWriter]) -> None:
         """Write a list of equipment-input objects to the Worksheet."""
         self._turn_off_all_equipment()
 
@@ -51,9 +45,7 @@ class Electricity:
             for item in equip_input.create_xl_items(self.shape):
                 self.xl.write_xl_item(item)
 
-    def build_phx_device_from_phpp(
-        self, _reader: electricity_item.ReaderDataItem
-    ) -> elec_equip.PhxElectricalDevice:
+    def build_phx_device_from_phpp(self, _reader: electricity_item.ReaderDataItem) -> elec_equip.PhxElectricalDevice:
         """Build a PHX Electrical Device object from the PHPP worksheet data."""
 
         # -- Get the right device class based on the device-type
@@ -62,9 +54,7 @@ class Electricity:
 
         # -- Build the new Device using the input data from the PHPP Reader
         for phpp_read_address in _reader.data:
-            phpp_data = self.xl.get_single_data_item(
-                self.shape.name, phpp_read_address.phpp_address
-            )
+            phpp_data = self.xl.get_single_data_item(self.shape.name, phpp_read_address.phpp_address)
             setattr(phx_elec_device, phpp_read_address.attr_name, phpp_data)
         return phx_elec_device
 

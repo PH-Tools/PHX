@@ -81,9 +81,7 @@ def build_phx_material_from_hb_EnergyMaterial(
     new_mat.density = _hb_material.density
     new_mat.heat_capacity = _hb_material.specific_heat
 
-    _prop_ph = (
-        _hb_material.properties.ph
-    )  # type: EnergyMaterialPhProperties # type: ignore
+    _prop_ph = _hb_material.properties.ph  # type: EnergyMaterialPhProperties # type: ignore
     new_mat.percentage_of_assembly = _prop_ph.percentage_of_assembly
 
     try:
@@ -122,9 +120,7 @@ def build_phx_material_from_hb_EnergyMaterialNoMass(
     new_mat.density = _hb_material.mass_area_density
     new_mat.heat_capacity = _hb_material.area_heat_capacity
 
-    _prop_ph = (
-        _hb_material.properties.ph
-    )  # type: EnergyMaterialPhProperties # type: ignore
+    _prop_ph = _hb_material.properties.ph  # type: EnergyMaterialPhProperties # type: ignore
     try:
         hbph_color = _prop_ph.ph_color
     except AttributeError:
@@ -139,9 +135,7 @@ def build_phx_material_from_hb_EnergyMaterialNoMass(
     return new_mat
 
 
-def build_layer_from_hb_material(
-    _hb_material: Union[EnergyMaterial, EnergyMaterialNoMass]
-) -> constructions.PhxLayer:
+def build_layer_from_hb_material(_hb_material: Union[EnergyMaterial, EnergyMaterialNoMass]) -> constructions.PhxLayer:
     """Returns a new PHX-Layer with attributes based on a Honeybee-Material.
 
     Arguments:
@@ -160,25 +154,15 @@ def build_layer_from_hb_material(
         if _hb_material.properties.ph.base_materials:  # type: ignore
             ## -- Layer is a heterogeneous material layer (ie: stud + insulation)
             for hb_sub_material in _hb_material.properties.ph.base_materials:  # type: ignore
-                new_layer.add_material(
-                    build_phx_material_from_hb_EnergyMaterial(hb_sub_material)
-                )
+                new_layer.add_material(build_phx_material_from_hb_EnergyMaterial(hb_sub_material))
         else:
             # -- Layer is homogeneous, use the base HB Material
-            new_layer.add_material(
-                build_phx_material_from_hb_EnergyMaterial(_hb_material)
-            )
+            new_layer.add_material(build_phx_material_from_hb_EnergyMaterial(_hb_material))
 
     elif isinstance(_hb_material, EnergyMaterialNoMass):
         # -- NoMass layers cannot be heterogeneous (yet....)
-        new_layer.thickness_m = (
-            0.1  # 0.1m = 4". Use as default since No-Mass has no thickness
-        )
-        new_layer.add_material(
-            build_phx_material_from_hb_EnergyMaterialNoMass(
-                _hb_material, new_layer.thickness_m
-            )
-        )
+        new_layer.thickness_m = 0.1  # 0.1m = 4". Use as default since No-Mass has no thickness
+        new_layer.add_material(build_phx_material_from_hb_EnergyMaterialNoMass(_hb_material, new_layer.thickness_m))
 
     else:
         raise TypeError(f"Error: Unsupported Material type: '{type(_hb_material)}'.")
@@ -186,9 +170,7 @@ def build_layer_from_hb_material(
     return new_layer
 
 
-def build_opaque_assemblies_from_HB_model(
-    _project: project.PhxProject, _hb_model: model.Model
-) -> None:
+def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_model: model.Model) -> None:
     """Build Opaque Constructions from Honeybee Faces and add to the PHX-Project.
 
     Will also align the id_nums of the face's Construction with the Assembly in the Project dict.
@@ -211,9 +193,7 @@ def build_opaque_assemblies_from_HB_model(
                 new_assembly = constructions.PhxConstructionOpaque()
                 new_assembly.id_num = constructions.PhxConstructionOpaque._count
                 new_assembly.display_name = hb_const.display_name
-                new_assembly.layers = [
-                    build_layer_from_hb_material(layer) for layer in hb_const.materials
-                ]
+                new_assembly.layers = [build_layer_from_hb_material(layer) for layer in hb_const.materials]
 
                 # -- Add the assembly to the Project
                 _project.add_assembly_type(new_assembly, hb_const.identifier)
@@ -274,12 +254,8 @@ def _set_phx_window_type_u_w_value(
 ) -> constructions.PhxConstructionWindow:
     """Set the U-Value and Frame-Factor of a PhxConstructionWindow based on the given HBPH-Params."""
     if _hbph_frame and _hbph_glazing:
-        _phx_window_type.frame_factor = iso_10077_1.calculate_window_frame_factor(
-            _hbph_frame, _hbph_glazing
-        )
-        _phx_window_type.u_value_window = iso_10077_1.calculate_standard_window_uw(
-            _hbph_frame, _hbph_glazing
-        )
+        _phx_window_type.frame_factor = iso_10077_1.calculate_window_frame_factor(_hbph_frame, _hbph_glazing)
+        _phx_window_type.u_value_window = iso_10077_1.calculate_standard_window_uw(_hbph_frame, _hbph_glazing)
     return _phx_window_type
 
 
@@ -332,9 +308,7 @@ def build_phx_window_type_from_HB_WindowConstruction(
     phx_window_type = _set_phx_window_type_frames(phx_window_type, ph_frame)
 
     # -- Window Params as per ISO-10077-1 -------------------------------------
-    phx_window_type = _set_phx_window_type_u_w_value(
-        phx_window_type, ph_frame, ph_glazing
-    )
+    phx_window_type = _set_phx_window_type_u_w_value(phx_window_type, ph_frame, ph_glazing)
 
     # -- Add Shading to the Window, if any -------------------------------------
     if _shade_const:
@@ -387,9 +361,7 @@ def _get_hbph_window_constructions(
     return hb_win_const, hb_shade_const
 
 
-def _new_shade_type(
-    _project: project.PhxProject, hb_shade_const: WindowConstructionShade
-) -> bool:
+def _new_shade_type(_project: project.PhxProject, hb_shade_const: WindowConstructionShade) -> bool:
     """Check if a new shade type needs to be created for the given HB-WindowConstructionShade."""
     if hb_shade_const.shade_material.identifier in _project.shade_types:
         return False
@@ -397,9 +369,7 @@ def _new_shade_type(
         return True
 
 
-def build_transparent_assembly_types_from_HB_Model(
-    _project: project.PhxProject, _hb_apertures: List[Aperture]
-) -> None:
+def build_transparent_assembly_types_from_HB_Model(_project: project.PhxProject, _hb_apertures: List[Aperture]) -> None:
     """Create PHX-WindowTypes (constructions) from an HB Model and add to the PHX-Project
 
     Will also align the id_nums of the Aperture Construction's with the WindowType in the Project dict.
@@ -422,9 +392,7 @@ def build_transparent_assembly_types_from_HB_Model(
         # ---------------------------------------------------------------------
         # --- Build all the PHX Shades first since the window needs to know their ID num
         if hb_shade_const and _new_shade_type(_project, hb_shade_const):
-            phx_shade_type = build_phx_shade_type_from_HB_WindowConstructionShade(
-                hb_shade_const
-            )
+            phx_shade_type = build_phx_shade_type_from_HB_WindowConstructionShade(hb_shade_const)
             _project.add_new_shade_type(phx_shade_type)
 
         # ---------------------------------------------------------------------

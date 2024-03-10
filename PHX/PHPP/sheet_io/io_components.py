@@ -123,9 +123,7 @@ class Glazings:
             f"Error: Cannot find the first empty row in the '{self.shape.name}' sheet, column {search_col}?"
         )
 
-    def get_glazing_phpp_id_by_name(
-        self, _name: str, _use_cache: bool = False
-    ) -> Optional[str]:
+    def get_glazing_phpp_id_by_name(self, _name: str, _use_cache: bool = False) -> Optional[str]:
         """Return the PHPP Glazing ID for the given name."""
         if _use_cache:
             try:
@@ -450,9 +448,7 @@ class Ventilators:
             f"Error: Cannot find the first empty row in the '{self.shape.name}' sheet, column {search_col}?"
         )
 
-    def get_ventilator_phpp_id_by_name(
-        self, _name: str, _row_start: int = 1, _row_end: int = 500
-    ) -> str:
+    def get_ventilator_phpp_id_by_name(self, _name: str, _row_start: int = 1, _row_end: int = 500) -> str:
         """Return the PHPP ID of a Ventilator component by name."""
         row = self.xl.get_row_num_of_value_in_column(
             sheet_name=self.shape.name,
@@ -517,9 +513,7 @@ class Components:
 
     def write_glazings(self, _glazing_rows: List[GlazingRow]) -> None:
         """Write a list of GlazingRow objects to the PHPP "Components" worksheet."""
-        for i, glazing_row in enumerate(
-            _glazing_rows, start=self.glazings.section_first_entry_row
-        ):
+        for i, glazing_row in enumerate(_glazing_rows, start=self.glazings.section_first_entry_row):
             self.write_single_glazing(i, glazing_row)
 
     def write_single_frame(self, _row_num: int, _frame_row: FrameRow) -> str:
@@ -539,9 +533,7 @@ class Components:
         for i, frame_row in enumerate(_frame_row, start=start):
             self.write_single_frame(i, frame_row)
 
-    def write_single_ventilator(
-        self, _row_num: int, _ventilator_row: VentilatorRow
-    ) -> str:
+    def write_single_ventilator(self, _row_num: int, _ventilator_row: VentilatorRow) -> str:
         """Write a single VentilatorRow object to the PHPP "Components" worksheet.
 
         Return:

@@ -95,15 +95,9 @@ class PhxPhiusCertificationCriteria:
 
     def __eq__(self, other: PhxPhiusCertificationCriteria) -> bool:
         TOLERANCE = 0.001
-        if (
-            abs(self.phius_annual_heating_demand - other.phius_annual_heating_demand)
-            > TOLERANCE
-        ):
+        if abs(self.phius_annual_heating_demand - other.phius_annual_heating_demand) > TOLERANCE:
             return False
-        if (
-            abs(self.phius_annual_cooling_demand - other.phius_annual_cooling_demand)
-            > TOLERANCE
-        ):
+        if abs(self.phius_annual_cooling_demand - other.phius_annual_cooling_demand) > TOLERANCE:
             return False
         if abs(self.phius_peak_heating_load - other.phius_peak_heating_load) > TOLERANCE:
             return False
@@ -114,27 +108,14 @@ class PhxPhiusCertificationCriteria:
 
 @dataclass
 class PhxPhiusCertificationSettings:
-    phius_building_certification_program = (
-        phius_certification.PhiusCertificationProgram.PHIUS_2021_CORE
-    )
-    phius_building_category_type = (
-        phius_certification.PhiusCertificationBuildingCategoryType.RESIDENTIAL_BUILDING
-    )
-    phius_building_use_type = (
-        phius_certification.PhiusCertificationBuildingUseType.RESIDENTIAL
-    )
-    phius_building_status = (
-        phius_certification.PhiusCertificationBuildingStatus.IN_PLANNING
-    )
-    phius_building_type = (
-        phius_certification.PhiusCertificationBuildingType.NEW_CONSTRUCTION
-    )
+    phius_building_certification_program = phius_certification.PhiusCertificationProgram.PHIUS_2021_CORE
+    phius_building_category_type = phius_certification.PhiusCertificationBuildingCategoryType.RESIDENTIAL_BUILDING
+    phius_building_use_type = phius_certification.PhiusCertificationBuildingUseType.RESIDENTIAL
+    phius_building_status = phius_certification.PhiusCertificationBuildingStatus.IN_PLANNING
+    phius_building_type = phius_certification.PhiusCertificationBuildingType.NEW_CONSTRUCTION
 
     def __eq__(self, other: PhxPhiusCertificationSettings) -> bool:
-        if (
-            self.phius_building_certification_program
-            != other.phius_building_certification_program
-        ):
+        if self.phius_building_certification_program != other.phius_building_certification_program:
             return False
         if self.phius_building_category_type != other.phius_building_category_type:
             return False
@@ -149,12 +130,8 @@ class PhxPhiusCertificationSettings:
 
 @dataclass
 class PhxPhiusCertification:
-    phius_certification_criteria: PhxPhiusCertificationCriteria = field(
-        default_factory=PhxPhiusCertificationCriteria
-    )
-    phius_certification_settings: PhxPhiusCertificationSettings = field(
-        default_factory=PhxPhiusCertificationSettings
-    )
+    phius_certification_criteria: PhxPhiusCertificationCriteria = field(default_factory=PhxPhiusCertificationCriteria)
+    phius_certification_settings: PhxPhiusCertificationSettings = field(default_factory=PhxPhiusCertificationSettings)
 
     # TODO: Refactor this out to someplace more general than inside Phius....
     ph_building_data: PhxPhBuildingData = field(default_factory=PhxPhBuildingData)
@@ -175,14 +152,10 @@ class PhxPhiusCertification:
 # -----------------------------------------------------------------------------
 @dataclass
 class PhxPhiCertificationSettings:
-    phi_building_category_type: Enum = (
-        phi_certification_phpp_9.PhiCertBuildingCategoryType.RESIDENTIAL_BUILDING
-    )
+    phi_building_category_type: Enum = phi_certification_phpp_9.PhiCertBuildingCategoryType.RESIDENTIAL_BUILDING
     phi_building_use_type: Enum = phi_certification_phpp_9.PhiCertBuildingUseType.DWELLING
     phi_building_ihg_type: Enum = phi_certification_phpp_9.PhiCertIHGType.STANDARD
-    phi_building_occupancy_type: Enum = (
-        phi_certification_phpp_9.PhiCertOccupancyType.STANDARD
-    )
+    phi_building_occupancy_type: Enum = phi_certification_phpp_9.PhiCertOccupancyType.STANDARD
 
     phi_certification_type: Enum = phi_certification_phpp_9.PhiCertType.PASSIVE_HOUSE
     phi_certification_class: Enum = phi_certification_phpp_9.PhiCertClass.CLASSIC
@@ -214,9 +187,7 @@ class PhxPhiCertificationSettings:
 
 @dataclass
 class PhxPhiCertification:
-    phi_certification_settings: PhxPhiCertificationSettings = field(
-        default_factory=PhxPhiCertificationSettings
-    )
+    phi_certification_settings: PhxPhiCertificationSettings = field(default_factory=PhxPhiCertificationSettings)
     version: int = 9
 
     def __eq__(self, other: PhxPhiCertification) -> bool:

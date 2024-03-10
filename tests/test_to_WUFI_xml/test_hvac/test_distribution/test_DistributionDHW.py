@@ -41,9 +41,7 @@ def test_add_Trunk_to_HW_System(reset_class_counters):
     phx_mech_collection = PhxMechanicalSystemCollection()
     phx_mech_collection.add_distribution_piping(phx_pipe_trunk)
 
-    result = generate_WUFI_XML_from_object(
-        phx_mech_collection, _header="", _schema_name="_DistributionDHW"
-    )
+    result = generate_WUFI_XML_from_object(phx_mech_collection, _header="", _schema_name="_DistributionDHW")
     assert xml_string_to_list(result) == [
         "<CalculationMethodIndividualPipes>4</CalculationMethodIndividualPipes>",
         "<DemandRecirculation>true</DemandRecirculation>",

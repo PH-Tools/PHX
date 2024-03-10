@@ -29,9 +29,7 @@ def test_create_phx_window_from_hb_window_default():
         ],
     )
 
-    phx_window_type = build_phx_window_type_from_HB_WindowConstruction(
-        phx_proj, hb_const, None
-    )
+    phx_window_type = build_phx_window_type_from_HB_WindowConstruction(phx_proj, hb_const, None)
 
     # -- Basic Values
     assert phx_window_type.display_name == "test_window_construction"
@@ -73,9 +71,7 @@ def test_create_phx_window_from_hb_window_with_ph_glazing():
     hb_const.properties.ph.ph_glazing = ph_glazing  # type: ignore
 
     # -- build the PHX Window Type
-    phx_window_type = build_phx_window_type_from_HB_WindowConstruction(
-        phx_proj, hb_const, None
-    )
+    phx_window_type = build_phx_window_type_from_HB_WindowConstruction(phx_proj, hb_const, None)
 
     # -- Basic Values
     assert phx_window_type.display_name == "test_window_construction"
@@ -134,9 +130,7 @@ def test_create_phx_window_from_hb_window_with_ph_frame():
     hb_const.properties.ph.ph_frame = hb_frame  # type: ignore
 
     # -- build the PHX Window Type
-    phx_window_type = build_phx_window_type_from_HB_WindowConstruction(
-        phx_proj, hb_const, None
-    )
+    phx_window_type = build_phx_window_type_from_HB_WindowConstruction(phx_proj, hb_const, None)
 
     # -- Basic Values
     assert phx_window_type.display_name == "test_window_construction"
@@ -218,9 +212,7 @@ def test_creat_phx_window_from_hb_window_with_ph_frame_and_ph_glazing():
     hb_const.properties.ph.ph_frame = hb_frame  # type: ignore
 
     # -- build the PHX Window Type
-    phx_window_type = build_phx_window_type_from_HB_WindowConstruction(
-        phx_proj, hb_const, None
-    )
+    phx_window_type = build_phx_window_type_from_HB_WindowConstruction(phx_proj, hb_const, None)
 
     # -- Basic Values
     assert phx_window_type.display_name == "test_window_construction"

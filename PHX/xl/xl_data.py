@@ -11,12 +11,8 @@ from ph_units import converter
 xl_writable = Optional[Union[str, float, int, List, Tuple]]
 xl_range_single_value = Union[str, float, int, None]
 xl_range_list1D_value = Union[List[str], List[float], List[int], List[None]]
-xl_range_list2D_value = Union[
-    List[List[str]], List[List[float]], List[List[int]], List[List[None]]
-]
-xl_range_value = Union[
-    xl_range_single_value, xl_range_list1D_value, xl_range_list2D_value
-]
+xl_range_list2D_value = Union[List[List[str]], List[List[float]], List[List[int]], List[List[None]]]
+xl_range_value = Union[xl_range_single_value, xl_range_list1D_value, xl_range_list2D_value]
 
 
 def xl_ord(_col: str) -> int:
@@ -95,10 +91,7 @@ class XlItem:
             return self._write_value
 
         if isinstance(self._write_value, (tuple, list)):
-            return [
-                converter.convert(v, self.input_unit, self.target_unit)
-                for v in self._write_value
-            ]
+            return [converter.convert(v, self.input_unit, self.target_unit) for v in self._write_value]
         else:
             return converter.convert(self._write_value, self.input_unit, self.target_unit)
 
@@ -118,7 +111,9 @@ class XlItem:
         return f"{self.__class__.__name__}({self.sheet_name}, {self.xl_range}, {self.write_value})"
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(sheet_name={self.sheet_name}, range={self.xl_range}, value={self.write_value})"
+        return (
+            f"{self.__class__.__name__}(sheet_name={self.sheet_name}, range={self.xl_range}, value={self.write_value})"
+        )
 
     def __len__(self) -> int:
         try:

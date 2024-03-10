@@ -55,12 +55,8 @@ class VentilatorRow:
         params = self.phx_vent_sys.params
         items: List[xl_data.XlItem] = [
             XLItemCompo(create_range("display_name"), self.phx_vent_sys.display_name),
-            XLItemCompo(
-                create_range("sensible_heat_recovery"), params.sensible_heat_recovery
-            ),
-            XLItemCompo(
-                create_range("latent_heat_recovery"), params.latent_heat_recovery
-            ),
+            XLItemCompo(create_range("sensible_heat_recovery"), params.sensible_heat_recovery),
+            XLItemCompo(create_range("latent_heat_recovery"), params.latent_heat_recovery),
             XLItemCompo(
                 create_range("electric_efficiency"),
                 params.electric_efficiency,

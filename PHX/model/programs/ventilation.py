@@ -15,12 +15,8 @@ class PhxProgramVentilation:
     """A PHX Program for the Fresh-Air Ventilation with a load and schedule."""
 
     display_name: str = "Unnamed_Ventilation_Program"
-    load: vent_loads.PhxLoadVentilation = field(
-        default_factory=vent_loads.PhxLoadVentilation
-    )
-    schedule: vent_schedules.PhxScheduleVentilation = field(
-        default_factory=vent_schedules.PhxScheduleVentilation
-    )
+    load: vent_loads.PhxLoadVentilation = field(default_factory=vent_loads.PhxLoadVentilation)
+    schedule: vent_schedules.PhxScheduleVentilation = field(default_factory=vent_schedules.PhxScheduleVentilation)
 
     @property
     def has_ventilation_airflow(self) -> bool:

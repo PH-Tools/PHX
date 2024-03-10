@@ -23,10 +23,7 @@ def get_name_from_glazing_id(
         if _phpp_glazing_id == None or _phpp_glazing_id == "None":
             return ""
         else:
-            msg = (
-                f"Error getting construction PHPP-Name? "
-                f"Could not split {_phpp_glazing_id} on '-'?"
-            )
+            msg = f"Error getting construction PHPP-Name? " f"Could not split {_phpp_glazing_id} on '-'?"
             raise Exception(msg)
 
 
@@ -76,9 +73,7 @@ class WindowRow:
         items: List[xl_data.XlItem] = [
             XLItemWindows(create_range("variant_input"), self.phpp_id_variant_type),
             XLItemWindows(create_range("quantity"), 1),
-            XLItemWindows(
-                create_range("description"), f"'{self.phx_polygon.display_name}"
-            ),
+            XLItemWindows(create_range("description"), f"'{self.phx_polygon.display_name}"),
             XLItemWindows(create_range("host"), self.phpp_host_surface_id_name),
             XLItemWindows(create_range("glazing_id"), self.phpp_id_glazing),
             XLItemWindows(create_range("frame_id"), self.phpp_id_frame),
@@ -95,9 +90,7 @@ class WindowRow:
                 self._get_target_unit("height"),
             ),
             # -- TODO: Install condition, not Psi-Install
-            XLItemWindows(
-                create_range("psi_i_left"), self.phx_construction.frame_left.psi_install
-            ),
+            XLItemWindows(create_range("psi_i_left"), self.phx_construction.frame_left.psi_install),
             XLItemWindows(
                 create_range("psi_i_right"),
                 self.phx_construction.frame_right.psi_install,
@@ -106,9 +99,7 @@ class WindowRow:
                 create_range("psi_i_bottom"),
                 self.phx_construction.frame_bottom.psi_install,
             ),
-            XLItemWindows(
-                create_range("psi_i_top"), self.phx_construction.frame_top.psi_install
-            ),
+            XLItemWindows(create_range("psi_i_top"), self.phx_construction.frame_top.psi_install),
         ]
 
         items_merged = xl_data.merge_xl_item_row(items)

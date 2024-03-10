@@ -77,9 +77,7 @@ class SurfaceRow:
                 self._get_target_unit("area"),
             ),
             XLItemAreas(create_range("assembly_id"), self.phpp_assembly_id_name),
-            XLItemAreas(
-                create_range("orientation"), self.phx_polygon.cardinal_orientation_angle
-            ),
+            XLItemAreas(create_range("orientation"), self.phx_polygon.cardinal_orientation_angle),
             XLItemAreas(create_range("angle"), self.phx_polygon.angle_from_horizontal),
             XLItemAreas(create_range("shading"), 0.5),
             XLItemAreas(create_range("absorptivity"), 0.6),
@@ -97,10 +95,7 @@ def get_name_from_assembly_id(
         if _phpp_assembly_id == None or _phpp_assembly_id == "None":
             return ""
         else:
-            msg = (
-                f"Error getting construction PHPP-Name? "
-                f"Could not split {_phpp_assembly_id} on '-'?"
-            )
+            msg = f"Error getting construction PHPP-Name? " f"Could not split {_phpp_assembly_id} on '-'?"
             raise Exception(msg)
 
 
@@ -199,9 +194,7 @@ class ExistingSurfaceRow:
             "B": ComponentExposureExterior.GROUND,
             "": ComponentExposureExterior.NONE,
         }
-        return type_map.get(
-            self.face_exposure_phpp_letter, ComponentExposureExterior.SURFACE
-        )
+        return type_map.get(self.face_exposure_phpp_letter, ComponentExposureExterior.SURFACE)
 
     @property
     def face_construction_phpp_id(self) -> str:

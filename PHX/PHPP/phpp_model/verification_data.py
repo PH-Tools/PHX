@@ -36,9 +36,7 @@ class VerificationInput:
         return cls(shape, input_type, input_data, input_unit, target_unit)
 
     @classmethod
-    def enum(
-        cls, shape: shape_model.Verification, input_type: str, input_enum_value: Enum
-    ) -> VerificationInput:
+    def enum(cls, shape: shape_model.Verification, input_type: str, input_enum_value: Enum) -> VerificationInput:
         """Create a new options-input item."""
         shape_data = getattr(shape, input_type).options
         return cls(shape, input_type, shape_data[str(input_enum_value.value)])

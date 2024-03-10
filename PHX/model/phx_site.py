@@ -26,8 +26,7 @@ class PhxGround:
     def __eq__(self, other: PhxGround) -> bool:
         TOLERANCE = 0.0001
         return (
-            abs(self.ground_thermal_conductivity - other.ground_thermal_conductivity)
-            < TOLERANCE
+            abs(self.ground_thermal_conductivity - other.ground_thermal_conductivity) < TOLERANCE
             and abs(self.ground_heat_capacity - other.ground_heat_capacity) < TOLERANCE
             and abs(self.ground_density - other.ground_density) < TOLERANCE
             and abs(self.depth_groundwater - other.depth_groundwater) < TOLERANCE
@@ -46,9 +45,7 @@ class PhxPEFactor:
     def __eq__(self, other: PhxPEFactor) -> bool:
         TOLERANCE = 0.0001
         return (
-            abs(self.value - other.value) < TOLERANCE
-            and self.unit == other.unit
-            and self.fuel_name == other.fuel_name
+            abs(self.value - other.value) < TOLERANCE and self.unit == other.unit and self.fuel_name == other.fuel_name
         )
 
 
@@ -63,9 +60,7 @@ class PhxCO2Factor:
     def __eq__(self, other: PhxCO2Factor) -> bool:
         TOLERANCE = 0.0001
         return (
-            abs(self.value - other.value) < TOLERANCE
-            and self.unit == other.unit
-            and self.fuel_name == other.fuel_name
+            abs(self.value - other.value) < TOLERANCE and self.unit == other.unit and self.fuel_name == other.fuel_name
         )
 
 
@@ -74,9 +69,7 @@ PhxEnergyFactorAlias = Union[PhxPEFactor, PhxCO2Factor]
 
 @dataclass
 class PhxSiteEnergyFactors:
-    selection_pe_co2_factor: SiteEnergyFactorSelection = (
-        SiteEnergyFactorSelection.USER_DEFINED
-    )
+    selection_pe_co2_factor: SiteEnergyFactorSelection = SiteEnergyFactorSelection.USER_DEFINED
     pe_factors: dict[str, PhxEnergyFactorAlias] = field(default_factory=dict)
     co2_factors: dict[str, PhxEnergyFactorAlias] = field(default_factory=dict)
 
@@ -107,12 +100,8 @@ class PhxSiteEnergyFactors:
             "WOOD": PhxCO2Factor(53.4289, "g/kWh", "WOOD"),
             "ELECTRICITY_MIX": PhxCO2Factor(680.0068, "g/kWh", "ELECTRICITY_MIX"),
             "ELECTRICITY_PV": PhxCO2Factor(250.0171, "g/kWh", "ELECTRICITY_PV"),
-            "HARD_COAL_CGS_70_CHP": PhxCO2Factor(
-                239.9864, "g/kWh", "HARD_COAL_CGS_70_CHP"
-            ),
-            "HARD_COAL_CGS_35_CHP": PhxCO2Factor(
-                319.9932, "g/kWh", "HARD_COAL_CGS_35_CHP"
-            ),
+            "HARD_COAL_CGS_70_CHP": PhxCO2Factor(239.9864, "g/kWh", "HARD_COAL_CGS_70_CHP"),
+            "HARD_COAL_CGS_35_CHP": PhxCO2Factor(319.9932, "g/kWh", "HARD_COAL_CGS_35_CHP"),
             "HARD_COAL_CGS_0_CHP": PhxCO2Factor(409.9966, "g/kWh", "HARD_COAL_CGS_0_CHP"),
             "GAS_CGS_70_CHP": PhxCO2Factor(-70.0102, "g/kWh", "GAS_CGS_70_CHP"),
             "GAS_CGS_35_CHP": PhxCO2Factor(129.9898, "g/kWh", "GAS_CGS_35_CHP"),
@@ -145,8 +134,7 @@ class PhxLocation:
         return (
             abs(self.latitude - other.latitude) < TOLERANCE
             and abs(self.longitude - other.longitude) < TOLERANCE
-            and abs((self.site_elevation or 0.0) - (other.site_elevation or 0.0))
-            < TOLERANCE
+            and abs((self.site_elevation or 0.0) - (other.site_elevation or 0.0)) < TOLERANCE
             and self.climate_zone == other.climate_zone
             and self.hours_from_UTC == other.hours_from_UTC
         )

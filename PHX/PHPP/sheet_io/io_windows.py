@@ -77,11 +77,7 @@ class Windows:
             self.first_entry_row,
             self.last_entry_row,
         )
-        return (
-            i
-            for i, val in enumerate(data, start=self.first_entry_row)
-            if has_window_data(val)
-        )
+        return (i for i, val in enumerate(data, start=self.first_entry_row) if has_window_data(val))
 
     def find_header_row(self, _row_start: int = 1, _read_length: int = 100) -> int:
         """Return the row number for the Window entry section 'Header'"""
@@ -171,15 +167,11 @@ class Windows:
         """
         glazing_col = str(self.shape.window_rows.inputs.glazing_id.column)
         glazing_range = f"{glazing_col}{_row_num}"
-        self.xl.write_xl_item(
-            XlItem(self.shape.name, glazing_range, _glazing_construction_id)
-        )
+        self.xl.write_xl_item(XlItem(self.shape.name, glazing_range, _glazing_construction_id))
 
         frame_col = str(self.shape.window_rows.inputs.frame_id.column)
         frame_range = f"{frame_col}{_row_num}"
-        self.xl.write_xl_item(
-            XlItem(self.shape.name, frame_range, _frame_construction_id)
-        )
+        self.xl.write_xl_item(XlItem(self.shape.name, frame_range, _frame_construction_id))
 
     def write_single_window(self, _row_num: int, _window_row: WindowRow) -> None:
         """Write a single WindowRow object to the Windows worksheet."""

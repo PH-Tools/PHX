@@ -62,9 +62,7 @@ def _hb_face_type_to_phx_enum(_hb_face: face.Face) -> ComponentFaceType:
     return mapping[str(_hb_face.type)]
 
 
-def _hb_ext_exposure_to_phx_enum(
-    _hb_face: Union[face.Face, aperture.Aperture]
-) -> ComponentExposureExterior:
+def _hb_ext_exposure_to_phx_enum(_hb_face: Union[face.Face, aperture.Aperture]) -> ComponentExposureExterior:
     mapping = {
         "Outdoors": ComponentExposureExterior.EXTERIOR,
         "Ground": ComponentExposureExterior.GROUND,
@@ -171,11 +169,7 @@ def create_component_from_hb_aperture(
     # -- Create new Aperture Element (Sash)
     new_phx_ap_element = components.PhxApertureElement(_host=phx_ap)
     new_phx_ap_element.display_name = _hb_aperture.display_name
-    new_phx_ap_element.polygon = (
-        create_geometry.create_PhxPolygonRectangular_from_hb_Face(
-            _hb_aperture, _tolerance
-        )
-    )
+    new_phx_ap_element.polygon = create_geometry.create_PhxPolygonRectangular_from_hb_Face(_hb_aperture, _tolerance)
 
     # -- Set the shading object dimensions, if there are any
     if hb_ap_prop_ph.shading_dimensions:
@@ -271,9 +265,7 @@ def create_components_from_hb_room(
         * (List[components.PhxComponentOpaque]): A list of the new opaque PhxComponents.
     """
     return [
-        create_components_from_hb_face(
-            hb_face, _hb_room, _assembly_dict, _window_type_dict, _tolerance
-        )
+        create_components_from_hb_face(hb_face, _hb_room, _assembly_dict, _window_type_dict, _tolerance)
         for hb_face in _hb_room
     ]
 
@@ -329,13 +321,9 @@ def create_zones_from_hb_room(
 
     # -- Set Zone properties
     new_zone.volume_gross = _hb_room.volume
-    new_zone.weighted_net_floor_area = sum(
-        (rm.weighted_floor_area for rm in new_zone.spaces)
-    )
+    new_zone.weighted_net_floor_area = sum((rm.weighted_floor_area for rm in new_zone.spaces))
     new_zone.volume_net = sum((rm.net_volume for rm in new_zone.spaces))
-    new_zone.specific_heat_capacity = SpecificHeatCapacity(
-        rm_prop_ph.specific_heat_capacity.number
-    )
+    new_zone.specific_heat_capacity = SpecificHeatCapacity(rm_prop_ph.specific_heat_capacity.number)
 
     # -- Set the Zone's Occupancy based on the merged HB room
     new_zone = set_zone_occupancy(_hb_room, new_zone)

@@ -81,9 +81,7 @@ def _create_vent_schedule_from_hb_style(
     op_periods = new_phx_vent_schedule.operating_periods
     op_periods.high.period_operating_hours = wufi_sched.high.period_operating_hours
     op_periods.high.period_operation_speed = wufi_sched.high.period_speed
-    op_periods.standard.period_operating_hours = (
-        wufi_sched.standard.period_operating_hours
-    )
+    op_periods.standard.period_operating_hours = wufi_sched.standard.period_operating_hours
     op_periods.standard.period_operation_speed = wufi_sched.standard.period_speed
     op_periods.basic.period_operating_hours = wufi_sched.basic.period_operating_hours
     op_periods.basic.period_operation_speed = wufi_sched.basic.period_speed
@@ -131,14 +129,10 @@ def _create_vent_schedule_from_ph_style(
     new_phx_vent_schedule.operating_weeks = hbe_vent_sched_prop_ph.operating_weeks_year
 
     for op_period in hbe_vent_sched_prop_ph.daily_operating_periods:
-        phx_vent_util_period = getattr(
-            new_phx_vent_schedule.operating_periods, op_period.name
-        )
+        phx_vent_util_period = getattr(new_phx_vent_schedule.operating_periods, op_period.name)
         phx_vent_util_period.period_operating_hours = op_period.operation_hours
         phx_vent_util_period.period_operation_speed = op_period.operation_fraction
-        setattr(
-            new_phx_vent_schedule.operating_periods, op_period.name, phx_vent_util_period
-        )
+        setattr(new_phx_vent_schedule.operating_periods, op_period.name, phx_vent_util_period)
 
     # -- Keep all the IDs in alignment....
     new_phx_vent_schedule.identifier = hbe_room_prop.ventilation.schedule.identifier
@@ -220,12 +214,8 @@ def build_occupancy_schedule_from_hb_room(
     new_phx_occ_schedule = occupancy.PhxScheduleOccupancy()
     new_phx_occ_schedule.identifier = hbe_schedule.identifier
     new_phx_occ_schedule.display_name = hbe_schedule.display_name
-    new_phx_occ_schedule.annual_utilization_days = (
-        hbe_schedule_prop_ph.operating_days_year
-    )
-    new_phx_occ_schedule.relative_utilization_factor = (
-        hbe_schedule_prop_ph.annual_average_operating_fraction
-    )
+    new_phx_occ_schedule.annual_utilization_days = hbe_schedule_prop_ph.operating_days_year
+    new_phx_occ_schedule.relative_utilization_factor = hbe_schedule_prop_ph.annual_average_operating_fraction
 
     if daily_period:
         new_phx_occ_schedule.start_hour = daily_period.start_hour
@@ -268,12 +258,8 @@ def build_lighting_schedule_from_hb_room(
     new_phx_occ_schedule = lighting.PhxScheduleLighting()
     new_phx_occ_schedule.identifier = hbe_schedule.identifier
     new_phx_occ_schedule.display_name = hbe_schedule.display_name
-    new_phx_occ_schedule.annual_utilization_days = (
-        hbe_schedule_prop_ph.operating_days_year
-    )
-    new_phx_occ_schedule.relative_utilization_factor = (
-        hbe_schedule_prop_ph.annual_average_operating_fraction
-    )
+    new_phx_occ_schedule.annual_utilization_days = hbe_schedule_prop_ph.operating_days_year
+    new_phx_occ_schedule.relative_utilization_factor = hbe_schedule_prop_ph.annual_average_operating_fraction
 
     if daily_period:
         new_phx_occ_schedule.start_hour = daily_period.start_hour
@@ -302,9 +288,7 @@ def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
             any Rooms which were missing them.
     """
     type_limit = schedule_type_limit_by_identifier("Fractional")
-    default_ventilation_schedule = hbe_ruleset.ScheduleRuleset.from_constant_value(
-        "default_schedule", 1.0, type_limit
-    )
+    default_ventilation_schedule = hbe_ruleset.ScheduleRuleset.from_constant_value("default_schedule", 1.0, type_limit)
 
     for hb_room in _hb_model.rooms:
         if hb_room.properties.energy.ventilation.schedule is None:
@@ -315,9 +299,7 @@ def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
     return _hb_model
 
 
-def add_all_HB_Model_ventilation_schedules_to_PHX_Project(
-    _project: project.PhxProject, _hb_model: model.Model
-) -> None:
+def add_all_HB_Model_ventilation_schedules_to_PHX_Project(_project: project.PhxProject, _hb_model: model.Model) -> None:
     """Add all the Room's Ventilation Schedules to the project's Collection.
 
     Arguments:
@@ -350,9 +332,7 @@ def add_all_HB_Model_ventilation_schedules_to_PHX_Project(
             _project.add_vent_sched_to_collection(new_phx_vent_schedule)
 
 
-def add_all_HB_Model_occupancy_schedules_to_PHX_Project(
-    _project: project.PhxProject, _hb_model: model.Model
-) -> None:
+def add_all_HB_Model_occupancy_schedules_to_PHX_Project(_project: project.PhxProject, _hb_model: model.Model) -> None:
     """Add all the Room's Occupancy Schedules to the project's Collection.
 
     Arguments:
@@ -383,9 +363,7 @@ def add_all_HB_Model_occupancy_schedules_to_PHX_Project(
         _project.add_occupancy_sched_to_collection(new_phx_occ_schedule)
 
 
-def add_all_HB_Model_lighting_schedules_to_PHX_Project(
-    _project: project.PhxProject, _hb_model: model.Model
-) -> None:
+def add_all_HB_Model_lighting_schedules_to_PHX_Project(_project: project.PhxProject, _hb_model: model.Model) -> None:
     for hb_room in _hb_model.rooms:
         hbe_room_energy_prop: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
 
@@ -402,9 +380,7 @@ def add_all_HB_Model_lighting_schedules_to_PHX_Project(
         _project.add_lighting_sched_to_collection(new_phx_lighting_schedule)
 
 
-def add_all_HB_schedules_to_PHX_Project(
-    _project: project.PhxProject, _hb_model: model.Model
-) -> None:
+def add_all_HB_schedules_to_PHX_Project(_project: project.PhxProject, _hb_model: model.Model) -> None:
     """Add all the schedules (Ventilation, Occupancy, Lighting) to the PHX Project's Collections.
 
     Arguments:

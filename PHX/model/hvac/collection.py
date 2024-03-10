@@ -63,9 +63,7 @@ class PhxZoneCoverage:
     dehumidification: float = 1.0
 
 
-AnyMechDevice = Union[
-    AnyPhxVentilation, AnyPhxHeater, AnyPhxHeatPump, AnyWaterTank, AnyRenewableDevice
-]
+AnyMechDevice = Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxHeatPump, AnyWaterTank, AnyRenewableDevice]
 
 
 # ------------------------------------------------------------------------------
@@ -151,17 +149,13 @@ class PhxRenewableDeviceCollection:
             return
         self._devices[_key] = _d
 
-    def group_devices_by_identifier(
-        self, _devices: List[AnyRenewableDevice]
-    ) -> Dict[str, List[AnyRenewableDevice]]:
+    def group_devices_by_identifier(self, _devices: List[AnyRenewableDevice]) -> Dict[str, List[AnyRenewableDevice]]:
         d = defaultdict(list)
         for device in _devices:
             d[device.identifier].append(copy(device))
         return d
 
-    def merge_group_of_devices(
-        self, _groups: Dict[str, List[AnyRenewableDevice]]
-    ) -> List[AnyRenewableDevice]:
+    def merge_group_of_devices(self, _groups: Dict[str, List[AnyRenewableDevice]]) -> List[AnyRenewableDevice]:
         """Merge a group of Dict of device-groups together into a single device."""
         merged_devices = []
         for group in _groups.values():
@@ -213,29 +207,17 @@ class PhxSupportiveDeviceCollection:
     @property
     def heat_circulating_pumps(self) -> List[PhxSupportiveDevice]:
         """Return a List of all the Kitchen Hood devices"""
-        return [
-            d
-            for d in self.devices
-            if d.device_type == PhxSupportiveDeviceType.HEAT_CIRCULATING_PUMP
-        ]
+        return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.HEAT_CIRCULATING_PUMP]
 
     @property
     def dhw_circulating_pumps(self) -> List[PhxSupportiveDevice]:
         """Return a List of all the Kitchen Hood devices"""
-        return [
-            d
-            for d in self.devices
-            if d.device_type == PhxSupportiveDeviceType.DHW_CIRCULATING_PUMP
-        ]
+        return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.DHW_CIRCULATING_PUMP]
 
     @property
     def dhw_storage_pumps(self) -> List[PhxSupportiveDevice]:
         """Return a List of all the Kitchen Hood devices"""
-        return [
-            d
-            for d in self.devices
-            if d.device_type == PhxSupportiveDeviceType.DHW_STORAGE_LOAD_PUMP
-        ]
+        return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.DHW_STORAGE_LOAD_PUMP]
 
     @property
     def other_devices(self) -> List[PhxSupportiveDevice]:
@@ -299,17 +281,13 @@ class PhxSupportiveDeviceCollection:
             return
         self._devices[_key] = _d
 
-    def group_devices_by_identifier(
-        self, _devices: List[PhxSupportiveDevice]
-    ) -> Dict[str, List[PhxSupportiveDevice]]:
+    def group_devices_by_identifier(self, _devices: List[PhxSupportiveDevice]) -> Dict[str, List[PhxSupportiveDevice]]:
         d = defaultdict(list)
         for device in _devices:
             d[device.identifier].append(copy(device))
         return d
 
-    def merge_group_of_devices(
-        self, _groups: Dict[str, List[PhxSupportiveDevice]]
-    ) -> List[PhxSupportiveDevice]:
+    def merge_group_of_devices(self, _groups: Dict[str, List[PhxSupportiveDevice]]) -> List[PhxSupportiveDevice]:
         """Merge a group of Dict of device-groups together into a single device."""
         merged_devices = []
         for group in _groups.values():
@@ -318,12 +296,8 @@ class PhxSupportiveDeviceCollection:
 
     def merge_all_devices(self) -> None:
         """Merge all the devices in the collection together by identifier."""
-        heat_circulating_pumps = self.group_devices_by_identifier(
-            self.heat_circulating_pumps
-        )
-        dhw_circulating_pumps = self.group_devices_by_identifier(
-            self.dhw_circulating_pumps
-        )
+        heat_circulating_pumps = self.group_devices_by_identifier(self.heat_circulating_pumps)
+        dhw_circulating_pumps = self.group_devices_by_identifier(self.dhw_circulating_pumps)
         dhw_storage_pumps = self.group_devices_by_identifier(self.dhw_storage_pumps)
         others = self.group_devices_by_identifier(self.other_devices)
 
@@ -498,21 +472,13 @@ class PhxMechanicalSystemCollection:
     _distribution_hw_recirculation_params: PhxRecirculationParameters = field(
         default_factory=PhxRecirculationParameters
     )
-    _distribution_piping_trunks: Dict[str, hvac.PhxPipeTrunk] = field(
-        default_factory=dict
-    )
-    _distribution_piping_recirc: Dict[str, hvac.PhxPipeElement] = field(
-        default_factory=dict
-    )
+    _distribution_piping_trunks: Dict[str, hvac.PhxPipeTrunk] = field(default_factory=dict)
+    _distribution_piping_recirc: Dict[str, hvac.PhxPipeElement] = field(default_factory=dict)
     _distribution_num_hw_tap_points: int = 1
     _distribution_ducting: Dict[str, hvac.PhxDuctElement] = field(default_factory=dict)
 
-    supportive_devices: PhxSupportiveDeviceCollection = field(
-        default_factory=PhxSupportiveDeviceCollection
-    )
-    renewable_devices: PhxRenewableDeviceCollection = field(
-        default_factory=PhxRenewableDeviceCollection
-    )
+    supportive_devices: PhxSupportiveDeviceCollection = field(default_factory=PhxSupportiveDeviceCollection)
+    renewable_devices: PhxRenewableDeviceCollection = field(default_factory=PhxRenewableDeviceCollection)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
@@ -634,9 +600,7 @@ class PhxMechanicalSystemCollection:
 
     @property
     def dhw_distribution_trunks(self) -> list[hvac.PhxPipeTrunk]:
-        return sorted(
-            self._distribution_piping_trunks.values(), key=lambda p: p.display_name
-        )
+        return sorted(self._distribution_piping_trunks.values(), key=lambda p: p.display_name)
 
     @property
     def dhw_distribution_piping(self) -> List[hvac.PhxPipeElement]:
@@ -704,10 +668,7 @@ class PhxMechanicalSystemCollection:
 
         weighted_total = 0.0
         for phx_pipe_element in self.dhw_recirc_piping:
-            weighted_total += (
-                phx_pipe_element.weighted_pipe_heat_loss_coefficient
-                * phx_pipe_element.length_m
-            )
+            weighted_total += phx_pipe_element.weighted_pipe_heat_loss_coefficient * phx_pipe_element.length_m
         return weighted_total / self.dhw_recirc_total_length_m
 
     @property
@@ -722,9 +683,7 @@ class PhxMechanicalSystemCollection:
 
         weighted_total = 0.0
         for phx_pipe_element in self.dhw_distribution_piping:
-            weighted_total += (
-                phx_pipe_element.weighted_diameter_mm * phx_pipe_element.length_m
-            )
+            weighted_total += phx_pipe_element.weighted_diameter_mm * phx_pipe_element.length_m
         return weighted_total / self.dhw_distribution_total_length_m
 
     # -------------------------------------------------------------------------

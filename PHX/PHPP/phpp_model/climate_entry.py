@@ -31,15 +31,9 @@ class ClimateSettings:
         XLItemClimate = partial(xl_data.XlItem, _sheet_name)
 
         xl_item_list: List[xl_data.XlItem] = [
-            XLItemClimate(
-                create_range("country", 0), self.phx_site.phpp_codes.country_code
-            ),
-            XLItemClimate(
-                create_range("region", 1), self.phx_site.phpp_codes.region_code
-            ),
-            XLItemClimate(
-                create_range("dataset", 3), f"{self.phx_site.phpp_codes.dataset_name}"
-            ),
+            XLItemClimate(create_range("country", 0), self.phx_site.phpp_codes.country_code),
+            XLItemClimate(create_range("region", 1), self.phx_site.phpp_codes.region_code),
+            XLItemClimate(create_range("dataset", 3), f"{self.phx_site.phpp_codes.dataset_name}"),
         ]
 
         if self.phx_site.location.site_elevation:

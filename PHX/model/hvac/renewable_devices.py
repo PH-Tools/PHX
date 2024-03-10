@@ -113,12 +113,8 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
             _onsite_utilization_type=self.onsite_utilization_type,
             _utilization_type=self.utilization_type,
             _array_size=self.array_size + other.array_size,
-            _photovoltaic_renewable_energy=self.photovoltaic_renewable_energy
-            + other.photovoltaic_renewable_energy,
-            _onsite_utilization_factor=(
-                self.onsite_utilization_factor + other.onsite_utilization_factor
-            )
-            / 2,
+            _photovoltaic_renewable_energy=self.photovoltaic_renewable_energy + other.photovoltaic_renewable_energy,
+            _onsite_utilization_factor=(self.onsite_utilization_factor + other.onsite_utilization_factor) / 2,
             _auxiliary_energy=self.auxiliary_energy + other.auxiliary_energy,
             _auxiliary_energy_DHW=self.auxiliary_energy_DHW + other.auxiliary_energy_DHW,
             in_conditioned_space=self.in_conditioned_space,
@@ -131,22 +127,16 @@ class PhxDevicePhotovoltaic(_base.PhxMechanicalDevice):
 
     system_type: SystemType = field(init=False, default=SystemType.PHOTOVOLTAIC)
     device_type: DeviceType = field(init=False, default=DeviceType.PHOTOVOLTAIC)
-    params: PhxDevicePhotovoltaicParams = field(
-        default_factory=PhxDevicePhotovoltaicParams
-    )
+    params: PhxDevicePhotovoltaicParams = field(default_factory=PhxDevicePhotovoltaicParams)
 
     def __post_init__(self) -> None:
         super().__post_init__()
 
     def __add__(self, other: PhxDevicePhotovoltaic) -> PhxDevicePhotovoltaic:
         if self.system_type.value != other.system_type.value:
-            raise ValueError(
-                f"Error: Cannot add {self.system_type.value} to {other.system_type.value}"
-            )
+            raise ValueError(f"Error: Cannot add {self.system_type.value} to {other.system_type.value}")
         if self.device_type.value != other.device_type.value:
-            raise ValueError(
-                f"Error: Cannot add {self.device_type.value} to {other.device_type.value}"
-            )
+            raise ValueError(f"Error: Cannot add {self.device_type.value} to {other.device_type.value}")
         return self + other
 
 

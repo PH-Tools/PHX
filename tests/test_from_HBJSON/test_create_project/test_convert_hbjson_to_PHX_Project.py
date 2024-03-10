@@ -16,8 +16,6 @@ def test_convert_model_PhxProject(filename, results):
     # -- Build the HB-Model, convert to a PhxProject
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(file_path)
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
-    phx_project = create_project.convert_hb_model_to_PhxProject(
-        hb_model, _group_components=True
-    )
+    phx_project = create_project.convert_hb_model_to_PhxProject(hb_model, _group_components=True)
 
     assert phx_project

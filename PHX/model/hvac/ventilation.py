@@ -87,19 +87,11 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
     def __add__(self, other: PhxDeviceVentilatorParams) -> PhxDeviceVentilatorParams:
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
-        new_obj.sensible_heat_recovery = (
-            self.sensible_heat_recovery + other.sensible_heat_recovery
-        ) / 2
-        new_obj.latent_heat_recovery = (
-            self.latent_heat_recovery + other.latent_heat_recovery
-        ) / 2
+        new_obj.sensible_heat_recovery = (self.sensible_heat_recovery + other.sensible_heat_recovery) / 2
+        new_obj.latent_heat_recovery = (self.latent_heat_recovery + other.latent_heat_recovery) / 2
         new_obj.quantity = self.quantity + other.quantity
-        new_obj.electric_efficiency = (
-            self.electric_efficiency + other.electric_efficiency
-        ) / 2
-        new_obj.frost_protection_reqd = any(
-            [self.frost_protection_reqd, other.frost_protection_reqd]
-        )
+        new_obj.electric_efficiency = (self.electric_efficiency + other.electric_efficiency) / 2
+        new_obj.frost_protection_reqd = any([self.frost_protection_reqd, other.frost_protection_reqd])
         new_obj.temperature_below_defrost_used = (
             self.temperature_below_defrost_used + other.temperature_below_defrost_used
         ) / 2
@@ -157,9 +149,7 @@ class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
         if value is not None:
             self._exhaust_flow_rate_m3h = value
 
-    def _calc_flow_weighted_annual_minutes(
-        self, other: PhxExhaustVentilatorParams
-    ) -> float:
+    def _calc_flow_weighted_annual_minutes(self, other: PhxExhaustVentilatorParams) -> float:
         """Return the flow-weighted annual runtime minutes.
 
         ie: Device A (50 mins @ 450 m3/h) + Device B (40 mins @ 200 m3/h) -> 47 mins
@@ -183,13 +173,9 @@ class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
         new_obj = self.__class__(**vars(base))
 
         if (self.annual_runtime_minutes > 0) or (other.annual_runtime_minutes > 0):
-            new_obj.annual_runtime_minutes = self._calc_flow_weighted_annual_minutes(
-                other
-            )
+            new_obj.annual_runtime_minutes = self._calc_flow_weighted_annual_minutes(other)
 
-        new_obj.exhaust_flow_rate_m3h = (
-            self.exhaust_flow_rate_m3h + other.exhaust_flow_rate_m3h
-        )
+        new_obj.exhaust_flow_rate_m3h = self.exhaust_flow_rate_m3h + other.exhaust_flow_rate_m3h
         return new_obj
 
 
@@ -224,9 +210,7 @@ class PhxExhaustVentilatorRangeHood(PhxExhaustVentilatorBase):
         super().__post_init__()
         self.params.exhaust_type = PhxExhaustVentType.KITCHEN_HOOD
 
-    def __add__(
-        self, other: PhxExhaustVentilatorRangeHood
-    ) -> PhxExhaustVentilatorRangeHood:
+    def __add__(self, other: PhxExhaustVentilatorRangeHood) -> PhxExhaustVentilatorRangeHood:
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         new_obj.quantity = self.quantity + other.quantity
@@ -269,9 +253,7 @@ class PhxExhaustVentilatorUserDefined(PhxExhaustVentilatorBase):
         super().__post_init__()
         self.params.exhaust_type = PhxExhaustVentType.USER_DEFINED
 
-    def __add__(
-        self, other: PhxExhaustVentilatorUserDefined
-    ) -> PhxExhaustVentilatorUserDefined:
+    def __add__(self, other: PhxExhaustVentilatorUserDefined) -> PhxExhaustVentilatorUserDefined:
         base = super().__add__(other)
         new_obj = self.__class__.from_kwargs(**vars(base))
         new_obj.quantity = self.quantity + other.quantity

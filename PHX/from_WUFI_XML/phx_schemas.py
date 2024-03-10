@@ -210,9 +210,7 @@ def _PhxProject(_model: wufi_xml.WUFIplusProject) -> PhxProject:
         phx_obj.add_new_window_type(new_window, _key=new_window.identifier)
 
     for assembly_data in _model.Assemblies or []:
-        new_opaque: PhxConstructionOpaque = as_phx_obj(
-            assembly_data, "PhxConstructionOpaque"
-        )
+        new_opaque: PhxConstructionOpaque = as_phx_obj(assembly_data, "PhxConstructionOpaque")
         # -- Be sure to use the identifier as the key so the Component
         # -- lookup works properly. We don't use the name here since
         # -- wufi doesn't enforce unique names like HB does.
@@ -436,18 +434,14 @@ def _WufiPlugin(_model: wufi_xml.Plugin) -> WufiPlugin:
     return phx_obj
 
 
-def _PhxVariant(
-    _xml_variant_data: wufi_xml.Variant, _phx_project_host: PhxProject
-) -> PhxVariant:
+def _PhxVariant(_xml_variant_data: wufi_xml.Variant, _phx_project_host: PhxProject) -> PhxVariant:
     phx_obj = PhxVariant()
 
     phx_obj.id_num = _xml_variant_data.IdentNr
     phx_obj.name = _xml_variant_data.Name
     phx_obj.remarks = _xml_variant_data.Remarks
     phx_obj.plugin = as_phx_obj(_xml_variant_data.PlugIn, "WufiPlugin")
-    phx_obj.phius_cert = as_phx_obj(
-        _xml_variant_data.PassivehouseData, "PhxPhiusCertification"
-    )
+    phx_obj.phius_cert = as_phx_obj(_xml_variant_data.PassivehouseData, "PhxPhiusCertification")
     phx_obj.site = as_phx_obj(_xml_variant_data.ClimateLocation, "PhxSite")
 
     phx_obj.building = as_phx_obj(
@@ -462,19 +456,13 @@ def _PhxVariant(
         new_mechanical_collection = PhxMechanicalSystemCollection()
         new_mechanical_collection.display_name = xml_system_data.Name
         new_mechanical_collection.id_num = xml_system_data.IdentNr
-        new_mechanical_collection.zone_coverage = as_phx_obj(
-            xml_system_data.ZonesCoverage[0], "PhxZoneCoverage"
-        )
+        new_mechanical_collection.zone_coverage = as_phx_obj(xml_system_data.ZonesCoverage[0], "PhxZoneCoverage")
 
         # ---------------------------------------------------------------------
         # -- Build all the actual Mechanical Devices (boilers, heat-pumps, etc...)
         for xml_device_data in xml_system_data.Devices:
-            new_device = as_phx_obj(
-                xml_device_data, "PhxMechanicalDevice"
-            )  # type: AnyMechDevice
-            new_mechanical_collection.add_new_mech_device(
-                new_device.identifier, new_device
-            )
+            new_device = as_phx_obj(xml_device_data, "PhxMechanicalDevice")  # type: AnyMechDevice
+            new_mechanical_collection.add_new_mech_device(new_device.identifier, new_device)
 
         # ---------------------------------------------------------------------
         # -- Cooling Distribution
@@ -491,9 +479,7 @@ def _PhxVariant(
             number_phx_cooling_devices = len(all_cooling_devices)
             if number_phx_cooling_devices == 0:
                 continue
-            as_phx_w_num_devices = partial(
-                as_phx_obj, number_phx_cooling_devices=number_phx_cooling_devices
-            )
+            as_phx_w_num_devices = partial(as_phx_obj, number_phx_cooling_devices=number_phx_cooling_devices)
 
             # -- Apply the param values to all of the cooling heat-pumps found
             for cooling_device in all_cooling_devices:
@@ -524,16 +510,12 @@ def _PhxVariant(
             new_mechanical_collection._distribution_hw_recirculation_params = phx_params
 
             # -- Recirculation Piping Element
-            recirc_pipe_element = as_phx_obj(
-                xml_dist_dhw_data, "RecirculationTrunk"
-            )  # type: PhxPipeElement
+            recirc_pipe_element = as_phx_obj(xml_dist_dhw_data, "RecirculationTrunk")  # type: PhxPipeElement
             new_mechanical_collection.add_recirc_piping(recirc_pipe_element)
 
         # ---------------------------------------------------------------------
         # -- Ventilation Distribution (Ducting)
-        for wufi_duct_data in (
-            xml_system_data.PHDistribution.DistributionVentilation or []
-        ):
+        for wufi_duct_data in xml_system_data.PHDistribution.DistributionVentilation or []:
             # -- PHX has a 1:1 duct-to-ventilator relationship, so we'll just
             # -- duplicate the duct for each one its assigned to in WUFI-XML
             for i in wufi_duct_data.AssignedVentUnits or []:
@@ -545,9 +527,7 @@ def _PhxVariant(
         xml_supp_device_data = xml_system_data.PHDistribution.SupportiveDevices
         for supportive_device_data in xml_supp_device_data or []:
             new_supp_device = as_phx_obj(supportive_device_data, "PhxSupportiveDevice")
-            new_mechanical_collection.supportive_devices.add_new_device(
-                new_supp_device.identifier, new_supp_device
-            )
+            new_mechanical_collection.supportive_devices.add_new_device(new_supp_device.identifier, new_supp_device)
 
         phx_obj.add_mechanical_collection(new_mechanical_collection)
 
@@ -566,9 +546,7 @@ def _PhxSupportiveDevice(_data: wufi_xml.SupportiveDevice) -> PhxSupportiveDevic
     new_supportive_device.quantity = _data.Quantity or 0
     new_supportive_device.params.in_conditioned_space = _data.InConditionedSpace or False
     new_supportive_device.params.norm_energy_demand_W = _data.NormEnergyDemand or 0.0
-    new_supportive_device.params.annual_period_operation_khrs = (
-        _data.PeriodOperation or 0.0
-    )
+    new_supportive_device.params.annual_period_operation_khrs = _data.PeriodOperation or 0.0
 
     return new_supportive_device
 
@@ -604,9 +582,7 @@ def _PhxDuctSegment(
     return new_segment
 
 
-def _PhxDuctElement(
-    _data: wufi_xml.Duct, ventilator: wufi_xml.AssignedVentUnit
-) -> PhxDuctElement:
+def _PhxDuctElement(_data: wufi_xml.Duct, ventilator: wufi_xml.AssignedVentUnit) -> PhxDuctElement:
     new_phx_duct = PhxDuctElement(
         identifier=str(_data.IdentNr),
         display_name=_data.Name or "",
@@ -646,13 +622,9 @@ def _PhxCoolingRecirculationParams(
     phx_obj.used = _data.CoolingViaRecirculation or False
     phx_obj.single_speed = _data.RecirculatingAirOnOff or False
     phx_obj.min_coil_temp = _data.MinTempCoolingCoilRecirculatingAir or 0.0
-    phx_obj.capacity = (
-        _data.MaxRecirculationAirCoolingPower or 0.0 / number_phx_cooling_devices
-    )
+    phx_obj.capacity = _data.MaxRecirculationAirCoolingPower or 0.0 / number_phx_cooling_devices
     phx_obj.annual_COP = _data.RecirculationCoolingCOP or 0.0
-    phx_obj.flow_rate_m3_hr = (
-        _data.RecirculationAirVolume or 0.0 / number_phx_cooling_devices
-    )
+    phx_obj.flow_rate_m3_hr = _data.RecirculationAirVolume or 0.0 / number_phx_cooling_devices
     phx_obj.flow_rate_variable = _data.ControlledRecirculationVolumeFlow
 
     return phx_obj
@@ -690,18 +662,12 @@ def _PhxRecirculationParameters(
 ) -> PhxRecirculationParameters:
     new_params = PhxRecirculationParameters()
 
-    new_params.calc_method = PhxHotWaterPipingCalcMethod(
-        _data.CalculationMethodIndividualPipes
-    )
-    new_params.pipe_material = PhxHotWaterPipingMaterial(
-        _data.PipeMaterialSimplifiedMethod
-    )
+    new_params.calc_method = PhxHotWaterPipingCalcMethod(_data.CalculationMethodIndividualPipes)
+    new_params.pipe_material = PhxHotWaterPipingMaterial(_data.PipeMaterialSimplifiedMethod)
     new_params.demand_recirc = _data.DemandRecirculation
     new_params.num_bathrooms = _data.NumberOfBathrooms or 0
     new_params.all_pipes_insulated = _data.AllPipesAreInsulated
-    new_params.units_or_floors = PhxHotWaterSelectionUnitsOrFloors(
-        _data.SelectionUnitsOrFloors
-    )
+    new_params.units_or_floors = PhxHotWaterSelectionUnitsOrFloors(_data.SelectionUnitsOrFloors)
     new_params.pipe_diameter = _data.PipeDiameterSimplifiedMethod or 0.0
     new_params.air_temp = _data.TemperatureRoom_WR or 20.0
     new_params.water_temp = _data.DesignFlowTemperature_WR or 50.0
@@ -836,12 +802,9 @@ def _PhxBuilding(
     # ------------------------------------------------------------------
     # -- First, build all the vertices and polygons needed by the Components
     bldg_data, geom_data = _data
-    vertix_dict: Dict[int, PhxVertix] = {
-        v.IdentNr: as_phx_obj(v, "PhxVertix") for v in geom_data.Vertices
-    }
+    vertix_dict: Dict[int, PhxVertix] = {v.IdentNr: as_phx_obj(v, "PhxVertix") for v in geom_data.Vertices}
     polygon_dict: Dict[int, PhxPolygon] = {
-        v.IdentNr: as_phx_obj(v, "PhxPolygon", _vertix_dict=vertix_dict)
-        for v in geom_data.Polygons
+        v.IdentNr: as_phx_obj(v, "PhxPolygon", _vertix_dict=vertix_dict) for v in geom_data.Polygons
     }
 
     # ------------------------------------------------------------------
@@ -873,9 +836,7 @@ def _PhxBuilding(
     # ------------------------------------------------------------------
     # -- Build and add the Zones
     for zone_data_dict in bldg_data.Zones:
-        new_zone = as_phx_obj(
-            zone_data_dict, "PhxZone", _phx_project_host=_phx_project_host
-        )
+        new_zone = as_phx_obj(zone_data_dict, "PhxZone", _phx_project_host=_phx_project_host)
         phx_obj.add_zone(new_zone)
 
     return phx_obj
@@ -890,9 +851,7 @@ def _PhxVertix(_data: wufi_xml.Vertix) -> PhxVertix:
     return phx_obj
 
 
-def _PhxPolygon(
-    _data: wufi_xml.Polygon, _vertix_dict: Dict[int, PhxVertix] = {}
-) -> PhxPolygon:
+def _PhxPolygon(_data: wufi_xml.Polygon, _vertix_dict: Dict[int, PhxVertix] = {}) -> PhxPolygon:
     surface_normal = PhxVector(
         float(_data.NormalVectorX),
         float(_data.NormalVectorY),
@@ -956,9 +915,7 @@ def _PhxComponentAperture(
         phx_obj.window_type.id_num_shade = _data.IdentNrSolarProtection
 
     phx_obj.install_depth = _data.DepthWindowReveal
-    phx_obj.default_monthly_shading_correction_factor = (
-        _data.DefaultCorrectionShadingMonth
-    )
+    phx_obj.default_monthly_shading_correction_factor = _data.DefaultCorrectionShadingMonth
 
     for i, poly_id in enumerate(_data.IdentNrPolygons):
         polygon = _polygons[poly_id.IdentNr]
@@ -1134,19 +1091,11 @@ def _PhxPhiusCertification(_data: wufi_xml.PassivehouseData) -> PhxPhiusCertific
     # ----------------------------------------------------------------------
     # --- Certification Settings
     settings = phx_obj.phius_certification_settings
-    settings.phius_building_certification_program = PhiusCertificationProgram(
-        _data.PH_CertificateCriteria
-    )
-    settings.phius_building_category_type = PhiusCertificationBuildingCategoryType(
-        bldg_data.BuildingCategory
-    )
+    settings.phius_building_certification_program = PhiusCertificationProgram(_data.PH_CertificateCriteria)
+    settings.phius_building_category_type = PhiusCertificationBuildingCategoryType(bldg_data.BuildingCategory)
     if bldg_data.OccupancyTypeResidential:
-        settings.phius_building_use_type = PhiusCertificationBuildingUseType(
-            bldg_data.OccupancyTypeResidential
-        )
-    settings.phius_building_status = PhiusCertificationBuildingStatus(
-        bldg_data.BuildingStatus
-    )
+        settings.phius_building_use_type = PhiusCertificationBuildingUseType(bldg_data.OccupancyTypeResidential)
+    settings.phius_building_status = PhiusCertificationBuildingStatus(bldg_data.BuildingStatus)
     settings.phius_building_type = PhiusCertificationBuildingType(bldg_data.BuildingType)
 
     return phx_obj
@@ -1163,9 +1112,7 @@ def _PhxPhBuildingData(_data: wufi_xml.PH_Building) -> PhxPhBuildingData:
     phx_obj.setpoints.summer = _data.OverheatingTemperatureThreshold
     phx_obj.mech_room_temp = _data.MechanicalRoomTemperature
     phx_obj.non_combustible_materials = _data.NonCombustibleMaterials
-    phx_obj.summer_hrv_bypass_mode = hvac_enums.PhxSummerBypassMode(
-        _data.SummerHRVHumidityRecovery
-    )
+    phx_obj.summer_hrv_bypass_mode = hvac_enums.PhxSummerBypassMode(_data.SummerHRVHumidityRecovery)
 
     for foundation_data in _data.FoundationInterfaces or []:
         phx_obj.add_foundation(as_phx_obj(foundation_data, "PhxFoundation"))
@@ -1281,9 +1228,7 @@ def _PhxSiteEnergyFactors(_data: wufi_xml.PH_ClimateLocation) -> PhxSiteEnergyFa
     )
 
     phx_obj = PhxSiteEnergyFactors()
-    phx_obj.selection_pe_co2_factor = SiteEnergyFactorSelection(
-        _data.SelectionPECO2Factor
-    )
+    phx_obj.selection_pe_co2_factor = SiteEnergyFactorSelection(_data.SelectionPECO2Factor)
 
     for name, factor in zip(_wufi_order, _data.PEFactorsUserDef):
         phx_obj.pe_factors[name] = PhxPEFactor(factor.__root__, "kWh/kWh", name)
@@ -1311,9 +1256,7 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
 
     phx_obj.zone_type = ZoneType(_data.KindZone)
     phx_obj.attached_zone_type = AttachedZoneType(_data.KindAttachedZone or 0)
-    phx_obj.attached_zone_reduction_factor = (
-        _data.TemperatureReductionFactorUserDefined or 1.0
-    )
+    phx_obj.attached_zone_reduction_factor = _data.TemperatureReductionFactorUserDefined or 1.0
     phx_obj.id_num = _data.IdentNr
     phx_obj.display_name = _data.Name
     phx_obj.volume_gross = _data.GrossVolume or 0.0
@@ -1322,9 +1265,7 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
     phx_obj.clearance_height = _data.ClearanceHeight or 0.0
     phx_obj.res_occupant_quantity = _data.OccupantQuantityUserDef
     phx_obj.res_number_bedrooms = _data.NumberBedrooms or 0
-    phx_obj.specific_heat_capacity = SpecificHeatCapacity(
-        _spec_cap_WH_m2k(_data.SpecificHeatCapacity)
-    )
+    phx_obj.specific_heat_capacity = SpecificHeatCapacity(_spec_cap_WH_m2k(_data.SpecificHeatCapacity))
 
     # ----------------------------------------------------------------------
     # -- Create all the spaces from the XML "RoomsVentilation" data
@@ -1345,23 +1286,17 @@ def _PhxZone(_data: wufi_xml.Zone, _phx_project_host: PhxProject) -> PhxZone:
         space = _add_occupancy_data_to_space(
             space, _phx_project_host, occupancy_load_data.get(space.display_name, None)
         )
-        space = _add_lighting_data_to_space(
-            space, _phx_project_host, lighting_load_data.get(space.display_name, None)
-        )
+        space = _add_lighting_data_to_space(space, _phx_project_host, lighting_load_data.get(space.display_name, None))
 
     # ----------------------------------------------------------------------
     # -- Add in any devices and thermal bridges as well.
     for vent_dict_data in _data.ExhaustVents or []:
         new_phx_exhaust = as_phx_obj(vent_dict_data, "PhxExhaustVent")
-        phx_obj.exhaust_ventilator_collection.add_new_ventilator(
-            new_phx_exhaust.identifier, new_phx_exhaust
-        )
+        phx_obj.exhaust_ventilator_collection.add_new_ventilator(new_phx_exhaust.identifier, new_phx_exhaust)
 
     for device_dict_data in _data.HomeDevice or []:
         new_phx_home_device = as_phx_obj(device_dict_data, "PhxHomeDevice")
-        phx_obj.elec_equipment_collection.add_new_device(
-            new_phx_home_device.identifier, new_phx_home_device
-        )
+        phx_obj.elec_equipment_collection.add_new_device(new_phx_home_device.identifier, new_phx_home_device)
 
     for i, bridge_dict_data in enumerate(_data.ThermalBridges or []):
         new_phx_tb = as_phx_obj(bridge_dict_data, "PhxComponentThermalBridge")
@@ -1418,9 +1353,7 @@ def _add_lighting_data_to_space(
     # -- Ensure that the lighting pattern is in the project collection. If
     # -- not, create a new one based on the full-load lighting hours.
     if not project_util_pat_lighting.key_is_in_collection(lighting_pattern_id):
-        new_schedule = PhxScheduleLighting.from_annual_operating_hours(
-            _lighting_data.LightingFullLoadHours
-        )
+        new_schedule = PhxScheduleLighting.from_annual_operating_hours(_lighting_data.LightingFullLoadHours)
         new_schedule.display_name = _lighting_data.Name
         new_schedule.id_num = int(lighting_pattern_id)
         new_schedule.identifier = str(lighting_pattern_id)
@@ -1515,15 +1448,11 @@ def _PhxDevice_Ventilation(_data: wufi_xml.Device) -> PhxDeviceVentilator:
     phx_obj.params.latent_heat_recovery = _data.MoistureRecovery
 
     if _data.PH_Parameters:
-        phx_obj.params.in_conditioned_space = (
-            _data.PH_Parameters.InConditionedSpace or False
-        )
+        phx_obj.params.in_conditioned_space = _data.PH_Parameters.InConditionedSpace or False
         phx_obj.params.quantity = _data.PH_Parameters.Quantity or 0
         phx_obj.params.electric_efficiency = _data.PH_Parameters.ElectricEfficiency or 0.0
         phx_obj.params.frost_protection_reqd = _data.PH_Parameters.FrostProtection
-        phx_obj.params.temperature_below_defrost_used = (
-            _data.PH_Parameters.TemperatureBelowDefrostUsed or 0.0
-        )
+        phx_obj.params.temperature_below_defrost_used = _data.PH_Parameters.TemperatureBelowDefrostUsed or 0.0
 
     return phx_obj
 
@@ -1559,21 +1488,11 @@ def _PhxHeaterBoilerFossil(_data: wufi_xml.Device) -> PhxHeaterBoilerFossil:
     phx_obj.params.condensing = _data.PH_Parameters.CondensingBoiler
     phx_obj.params.in_conditioned_space = _data.PH_Parameters.InConditionedSpace
     phx_obj.params.effic_at_30_percent_load = _data.PH_Parameters.BoilerEfficiency30
-    phx_obj.params.effic_at_nominal_load = (
-        _data.PH_Parameters.BoilerEfficiencyNominalOutput
-    )
-    phx_obj.params.avg_rtrn_temp_at_30_percent_load = (
-        _data.PH_Parameters.AverageReturnTemperatureMeasured30Load
-    )
-    phx_obj.params.avg_temp_at_70C_55C = (
-        _data.PH_Parameters.AverageBoilerTemperatureDesign70_55
-    )
-    phx_obj.params.avg_temp_at_55C_45C = (
-        _data.PH_Parameters.AverageBoilerTemperatureDesign55_45
-    )
-    phx_obj.params.avg_temp_at_32C_28C = (
-        _data.PH_Parameters.AverageBoilerTemperatureDesign35_28
-    )
+    phx_obj.params.effic_at_nominal_load = _data.PH_Parameters.BoilerEfficiencyNominalOutput
+    phx_obj.params.avg_rtrn_temp_at_30_percent_load = _data.PH_Parameters.AverageReturnTemperatureMeasured30Load
+    phx_obj.params.avg_temp_at_70C_55C = _data.PH_Parameters.AverageBoilerTemperatureDesign70_55
+    phx_obj.params.avg_temp_at_55C_45C = _data.PH_Parameters.AverageBoilerTemperatureDesign55_45
+    phx_obj.params.avg_temp_at_32C_28C = _data.PH_Parameters.AverageBoilerTemperatureDesign35_28
     phx_obj.params.standby_loss_at_70C = _data.PH_Parameters.StandbyHeatLossBoiler70
     phx_obj.params.rated_capacity = _data.PH_Parameters.MaximalBoilerPower
     return phx_obj
@@ -1630,9 +1549,7 @@ def _PhxDevice_HeatPump_Annual(_data: wufi_xml.Device) -> PhxHeatPumpAnnual:
 
     phx_obj.display_name = _data.Name or "unnamed_annual_heat_pump"
     phx_obj.params.annual_COP = _data.PH_Parameters.AnnualCOP
-    phx_obj.params.total_system_perf_ratio = (
-        _data.PH_Parameters.TotalSystemPerformanceRatioHeatGenerator
-    )
+    phx_obj.params.total_system_perf_ratio = _data.PH_Parameters.TotalSystemPerformanceRatioHeatGenerator
     return phx_obj
 
 
@@ -1659,9 +1576,7 @@ def _PhxDevice_HeatPump_HotWater(_data: wufi_xml.Device) -> PhxHeatPumpHotWater:
 
     phx_obj.display_name = _data.Name or "unnamed_hot_water_heat_pump"
     phx_obj.params.annual_COP = _data.PH_Parameters.AnnualCOP
-    phx_obj.params.annual_system_perf_ratio = (
-        _data.PH_Parameters.TotalSystemPerformanceRatioHeatGenerator
-    )
+    phx_obj.params.annual_system_perf_ratio = _data.PH_Parameters.TotalSystemPerformanceRatioHeatGenerator
     phx_obj.params.annual_energy_factor = _data.PH_Parameters.HPWH_EF
     return phx_obj
 
@@ -1674,9 +1589,7 @@ def _PhxDevice_WaterStorage(_data: wufi_xml.Device) -> PhxHotWaterTank:
     phx_obj.display_name = _data.Name or "unnamed_hot_water_tank"
     phx_obj.quantity = _data.PH_Parameters.QauntityWS
     phx_obj.params.display_name = _data.Name or "unnamed_hot_water_tank"
-    phx_obj.params.input_option = hvac_enums.PhxHotWaterInputOptions(
-        _data.PH_Parameters.InputOption
-    )
+    phx_obj.params.input_option = hvac_enums.PhxHotWaterInputOptions(_data.PH_Parameters.InputOption)
     phx_obj.params.in_conditioned_space = _data.PH_Parameters.InConditionedSpace
     phx_obj.params.storage_loss_rate = _data.PH_Parameters.AverageHeatReleaseStorage
 
@@ -1695,15 +1608,11 @@ def _PhxDevice_Photovoltaic(_data: wufi_xml.Device) -> PhxDevicePhotovoltaic:
 
     phx_obj.display_name = _data.Name or "unnamed_photovoltaic"
     phx_obj.params.location_type = _data.PH_Parameters.SelectionLocation
-    phx_obj.params.onsite_utilization_type = (
-        _data.PH_Parameters.SelectionOnSiteUtilization
-    )
+    phx_obj.params.onsite_utilization_type = _data.PH_Parameters.SelectionOnSiteUtilization
 
     phx_obj.params.utilization_type = _data.PH_Parameters.SelectionUtilization
     phx_obj.params.array_size = _data.PH_Parameters.ArraySizePV
-    phx_obj.params.photovoltaic_renewable_energy = (
-        _data.PH_Parameters.PhotovoltaicRenewableEnergy
-    )
+    phx_obj.params.photovoltaic_renewable_energy = _data.PH_Parameters.PhotovoltaicRenewableEnergy
 
     phx_obj.params.onsite_utilization_factor = _data.PH_Parameters.OnsiteUtilization
     phx_obj.params.auxiliary_energy = _data.PH_Parameters.AuxiliaryEnergy
@@ -1717,24 +1626,16 @@ def _PhxUsageProfile(_data: wufi_xml.Device) -> PhxUsageProfile:
     new_phx_profile = PhxUsageProfile()
 
     if _data.Heating_Parameters:
-        new_phx_profile.space_heating_percent = (
-            _data.Heating_Parameters.CoverageWithinSystem or 0.0
-        )
+        new_phx_profile.space_heating_percent = _data.Heating_Parameters.CoverageWithinSystem or 0.0
 
     if _data.Cooling_Parameters:
-        new_phx_profile.cooling_percent = (
-            _data.Cooling_Parameters.CoverageWithinSystem or 0.0
-        )
+        new_phx_profile.cooling_percent = _data.Cooling_Parameters.CoverageWithinSystem or 0.0
 
     if _data.DHW_Parameters:
-        new_phx_profile.dhw_heating_percent = (
-            _data.DHW_Parameters.CoverageWithinSystem or 0.0
-        )
+        new_phx_profile.dhw_heating_percent = _data.DHW_Parameters.CoverageWithinSystem or 0.0
 
     if _data.Ventilation_Parameters:
-        new_phx_profile.ventilation_percent = (
-            _data.Ventilation_Parameters.CoverageWithinSystem or 0.0
-        )
+        new_phx_profile.ventilation_percent = _data.Ventilation_Parameters.CoverageWithinSystem or 0.0
 
     # new_phx_profile.humidification_percent =_data.UsedFor_Humidification
 

@@ -99,18 +99,12 @@ class PhxUsageProfile:
 
     def __add__(self, other: PhxUsageProfile) -> PhxUsageProfile:
         obj = self.__class__()
-        obj.space_heating_percent = (
-            self.space_heating_percent + other.space_heating_percent
-        )
+        obj.space_heating_percent = self.space_heating_percent + other.space_heating_percent
         obj.dhw_heating_percent = self.dhw_heating_percent + other.dhw_heating_percent
         obj.cooling_percent = self.cooling_percent + other.cooling_percent
         obj.ventilation_percent = self.ventilation_percent + other.ventilation_percent
-        obj.humidification_percent = (
-            self.humidification_percent + other.humidification_percent
-        )
-        obj.dehumidification_percent = (
-            self.dehumidification_percent + other.dehumidification_percent
-        )
+        obj.humidification_percent = self.humidification_percent + other.humidification_percent
+        obj.dehumidification_percent = self.dehumidification_percent + other.dehumidification_percent
         return obj
 
 
@@ -137,15 +131,9 @@ class PhxMechanicalDeviceParams:
     def __add__(self, other: PhxMechanicalDeviceParams) -> PhxMechanicalDeviceParams:
         new_obj = self.__class__()
         new_obj.aux_energy = new_obj.safe_add(self.aux_energy, other.aux_energy)
-        new_obj.aux_energy_dhw = new_obj.safe_add(
-            self.aux_energy_dhw, other.aux_energy_dhw
-        )
-        new_obj.solar_fraction = new_obj.safe_add(
-            self.solar_fraction, other.solar_fraction
-        )
-        new_obj.in_conditioned_space = any(
-            [self.in_conditioned_space, other.in_conditioned_space]
-        )
+        new_obj.aux_energy_dhw = new_obj.safe_add(self.aux_energy_dhw, other.aux_energy_dhw)
+        new_obj.solar_fraction = new_obj.safe_add(self.solar_fraction, other.solar_fraction)
+        new_obj.in_conditioned_space = any([self.in_conditioned_space, other.in_conditioned_space])
         return new_obj
 
     def __radd__(self, other):

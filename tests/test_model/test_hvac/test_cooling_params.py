@@ -143,12 +143,8 @@ def test_default_PhxCoolingDehumidificationParams(reset_class_counters):
 
 
 def test_add_PhxCoolingDehumidificationParams(reset_class_counters):
-    p1 = cooling_params.PhxCoolingDehumidificationParams(
-        annual_COP=6, useful_heat_loss=False
-    )
-    p2 = cooling_params.PhxCoolingDehumidificationParams(
-        annual_COP=4, useful_heat_loss=True
-    )
+    p1 = cooling_params.PhxCoolingDehumidificationParams(annual_COP=6, useful_heat_loss=False)
+    p2 = cooling_params.PhxCoolingDehumidificationParams(annual_COP=4, useful_heat_loss=True)
 
     p3 = p1 + p2
     assert p3 != p2 != p1

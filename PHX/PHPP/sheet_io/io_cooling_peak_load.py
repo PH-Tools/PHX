@@ -23,22 +23,12 @@ class CoolingPeakLoad:
         """Return a Dict of all the Peak Heating Load data from the specified column."""
         shp = self.shape
 
-        pT = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_losses_transmission}"
-        )
-        pV = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_losses_ventilation}"
-        )
+        pT = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses_transmission}")
+        pV = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses_ventilation}")
         pS = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_solar}")
-        pI = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_gains_internal}"
-        )
-        pC = self.xl.get_single_data_item(
-            shp.name, f"{_col}{self.shape.row_total_sensible_load}"
-        )
-        pD = self.xl.get_single_data_item(
-            shp.name, f"{_col}{self.shape.row_total_latent_load}"
-        )
+        pI = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_internal}")
+        pC = self.xl.get_single_data_item(shp.name, f"{_col}{self.shape.row_total_sensible_load}")
+        pD = self.xl.get_single_data_item(shp.name, f"{_col}{self.shape.row_total_latent_load}")
         return {
             "losses_transmission": Unit(float(pT or 0.0), str(shp.unit)),
             "losses_ventilation": Unit(float(pV or 0.0), str(shp.unit)),

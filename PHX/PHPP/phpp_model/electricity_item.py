@@ -82,9 +82,7 @@ class ElectricityItemXLWriter:
             ),
             (
                 f"{_shape.input_columns.selection}{_shape.input_rows.clothes_washing.selection}",
-                _shape.input_rows.clothes_washing.selection_options[
-                    str(equip.water_connection)
-                ],
+                _shape.input_rows.clothes_washing.selection_options[str(equip.water_connection)],
             ),
         ]
         return [xl_data.XlItem(_shape.name, *item) for item in items]
@@ -234,9 +232,7 @@ class ElectricityItemXLReader:
         self.cols = self.shape.input_columns
         self.rows = self.shape.input_rows
 
-    def _get_addresses(
-        self, _rows: shape_model.ElectricityInputRow
-    ) -> ReaderAddressesGroup:
+    def _get_addresses(self, _rows: shape_model.ElectricityInputRow) -> ReaderAddressesGroup:
         """Return a group of addresses for a single PHPP Device."""
         return ReaderAddressesGroup(
             f"{self.cols.used}{_rows.data}",

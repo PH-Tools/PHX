@@ -21,29 +21,17 @@ class CoolingDemand:
 
     def _get_annual_demand(self, _col: str) -> Dict[str, Unit]:
         shp = self.shape
-        qT = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_losses_transmission}"
-        )
-        qV = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_losses_ventilation}"
-        )
+        qT = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses_transmission}")
+        qV = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses_ventilation}")
         qL = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_losses}")
-        util = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_utilization_factor}"
-        )
+        util = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_utilization_factor}")
         qVn = f"{self.shape.col_kWh_year}{self.shape.row_useful_losses}"
 
         qS = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_solar}")
-        qI = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_total_gains_internal}"
-        )
+        qI = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains_internal}")
         qF = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_total_gains}")
-        qK = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.row_annual_sensible_demand}"
-        )
-        qDr = self.xl.get_single_data_item(
-            shp.name, f"{_col}{shp.address_specific_latent_cooling_demand}"
-        )
+        qK = self.xl.get_single_data_item(shp.name, f"{_col}{shp.row_annual_sensible_demand}")
+        qDr = self.xl.get_single_data_item(shp.name, f"{_col}{shp.address_specific_latent_cooling_demand}")
 
         return {
             "sensible_cooling_demand": Unit(float(qK or 0.0), str(shp.unit)),

@@ -47,9 +47,7 @@ class ConstructorBlock:
         # -- Build the basic assembly attributes
         xl_items_list: List[xl_data.XlItem] = [
             XLItemUValues(
-                create_range(
-                    "display_name", self.shape.constructor.inputs.name_row_offset
-                ),
+                create_range("display_name", self.shape.constructor.inputs.name_row_offset),
                 f"'{self.phx_construction.display_name}",
             ),
             XLItemUValues(
@@ -103,9 +101,7 @@ class ConstructorBlock:
                         XLItemUValues(
                             create_range(
                                 f"sec_{j}_percentage",
-                                getattr(
-                                    self.shape.constructor.inputs, f"sec_{j}_percentage"
-                                ).row,
+                                getattr(self.shape.constructor.inputs, f"sec_{j}_percentage").row,
                             ),
                             material.percentage_of_assembly,
                         )

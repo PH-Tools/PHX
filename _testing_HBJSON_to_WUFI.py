@@ -55,9 +55,7 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
 
     # --- Generate the PhxProject file.
     # -------------------------------------------------------------------------
-    phx_project = create_project.convert_hb_model_to_PhxProject(
-        hb_model, _group_components=True, _merge_faces=True
-    )
+    phx_project = create_project.convert_hb_model_to_PhxProject(hb_model, _group_components=True, _merge_faces=True)
 
     # --- Output the WUFI Project as an XML Text File
     # -------------------------------------------------------------------------
