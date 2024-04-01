@@ -4,14 +4,15 @@
 """Controller Class for the PHPP Windows worksheet."""
 
 from __future__ import annotations
-from typing import List, Optional, Generator
+
+from typing import Generator, List, Optional
 
 from ph_units.unit_type import Unit
 
-from PHX.xl import xl_app
-from PHX.xl.xl_data import col_offset, XlItem
-from PHX.PHPP.phpp_model.windows_rows import WindowRow, get_name_from_glazing_id
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.PHPP.phpp_model.windows_rows import WindowRow, get_name_from_glazing_id
+from PHX.xl import xl_app
+from PHX.xl.xl_data import XlItem, col_offset
 
 
 class Windows:

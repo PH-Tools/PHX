@@ -5,8 +5,9 @@
 
 
 from __future__ import annotations
-from typing import Dict, List, Optional, ClassVar
+
 from dataclasses import dataclass, field
+from typing import ClassVar, Dict, List, Optional
 
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
 

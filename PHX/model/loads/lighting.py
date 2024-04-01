@@ -4,8 +4,9 @@
 """PHX Lighting Load."""
 
 from __future__ import annotations
-from typing import ClassVar, Any
+
 from dataclasses import dataclass, field
+from typing import Any, ClassVar
 
 
 @dataclass

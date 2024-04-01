@@ -9,7 +9,7 @@ import sys
 import xlwings as xw
 from rich import print
 
-from PHX.from_HBJSON import read_HBJSON_file, create_project
+from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.PHPP import phpp_app
 from PHX.xl import xl_app
 

@@ -5,22 +5,19 @@
 
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
-
+from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
+from honeybee_energy_ph.properties.ruleset import ScheduleRulesetPhProperties
 from honeybee_ph import space
 from honeybee_ph.properties.room import RoomPhProperties
 from honeybee_ph.properties.space import SpacePhProperties
-
-from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
-from honeybee_energy_ph.properties.ruleset import ScheduleRulesetPhProperties
-
 from honeybee_ph_utils.occupancy import hb_room_ppl_per_area
 from honeybee_ph_utils.ventilation import hb_room_vent_flowrates
 
 from PHX.model import spaces
 from PHX.model.utilization_patterns import (
-    UtilizationPatternCollection_Ventilation,
-    UtilizationPatternCollection_Occupancy,
     UtilizationPatternCollection_Lighting,
+    UtilizationPatternCollection_Occupancy,
+    UtilizationPatternCollection_Ventilation,
 )
 
 

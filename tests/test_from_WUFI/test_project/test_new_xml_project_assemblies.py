@@ -1,6 +1,7 @@
 from typing import List, ValuesView
-from PHX.model.project import PhxProject
+
 from PHX.model.constructions import PhxConstructionOpaque
+from PHX.model.project import PhxProject
 
 
 def test_assembly_types_match(

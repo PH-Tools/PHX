@@ -4,6 +4,7 @@
 """PHX Program Class for organizing Occupancy Data (People)"""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 
 from PHX.model.loads.occupancy import PhxLoadOccupancy

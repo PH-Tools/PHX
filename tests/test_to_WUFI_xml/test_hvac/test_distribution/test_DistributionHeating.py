@@ -1,5 +1,6 @@
-from PHX.to_WUFI_XML import xml_schemas
 import pytest
+
+from PHX.to_WUFI_XML import xml_schemas
 
 
 def test_DistributionHeating_Class(reset_class_counters):

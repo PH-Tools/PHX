@@ -1,6 +1,7 @@
 import pytest
-from PHX.to_WUFI_XML import xml_converter, xml_schemas
+
 from PHX.model import project
+from PHX.to_WUFI_XML import xml_converter, xml_schemas
 
 
 def test_get_PHX_object_conversion_schema_with_valid_PHX():

@@ -4,9 +4,10 @@
 """PHX Geometry Classes"""
 
 from __future__ import annotations
-from dataclasses import dataclass, field
+
 import math
-from typing import ClassVar, Collection, List, Union, Optional
+from dataclasses import dataclass, field
+from typing import ClassVar, Collection, List, Optional, Union
 
 
 class PolygonEdgeError(Exception):

@@ -1,13 +1,12 @@
 from pathlib import Path
+
 import pytest
 
-from PHX.from_HBJSON import read_HBJSON_file, create_project
-from PHX.from_WUFI_XML.read_WUFI_XML_file import get_WUFI_XML_file_as_dict
+from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.from_WUFI_XML.phx_converter import convert_WUFI_XML_to_PHX_project
+from PHX.from_WUFI_XML.read_WUFI_XML_file import get_WUFI_XML_file_as_dict
 from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
-
 from PHX.model.project import PhxProject
-
 from tests.conftest import _reset_phx_class_counters
 
 
@@ -71,6 +70,19 @@ def phx_project_from_wufi_xml_ARVERNE_D_NO_WIN() -> PhxProject:
 
     _reset_phx_class_counters()
     SOURCE_XML_FILE = Path("tests", "_reference_xml", "_arverne_d_no_win.xml")
+    wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
+    wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
+    phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
+
+    return phx_project
+
+
+@pytest.fixture(scope="session")
+def phx_project_from_wufi_xml_SCHOOL() -> PhxProject:
+    """A PhxProject created from WUFI-XML [School.xml]"""
+
+    _reset_phx_class_counters()
+    SOURCE_XML_FILE = Path("tests", "_reference_xml", "School.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
     wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)

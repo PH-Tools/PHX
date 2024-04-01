@@ -4,17 +4,18 @@
 """Controller Class for the PHPP 'Components' worksheet."""
 
 from __future__ import annotations
+
 from dataclasses import dataclass
-from typing import List, Optional, Set, Dict
+from typing import Dict, List, Optional, Set
 
 from ph_units.unit_type import Unit
 
+from PHX.PHPP.phpp_localization import shape_model
+from PHX.PHPP.phpp_model.component_frame import FrameRow
+from PHX.PHPP.phpp_model.component_glazing import GlazingRow
+from PHX.PHPP.phpp_model.component_vent import VentilatorRow
 from PHX.xl import xl_app
 from PHX.xl.xl_data import col_offset
-from PHX.PHPP.phpp_model.component_vent import VentilatorRow
-from PHX.PHPP.phpp_model.component_glazing import GlazingRow
-from PHX.PHPP.phpp_model.component_frame import FrameRow
-from PHX.PHPP.phpp_localization import shape_model
 
 
 @dataclass

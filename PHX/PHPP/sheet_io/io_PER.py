@@ -4,18 +4,15 @@
 """Controller Class for the PHPP PER Worksheet."""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Optional, List, Dict, Any, Union, Tuple, Collection, Sequence
+from typing import Any, Collection, Dict, List, Optional, Sequence, Tuple, Union
 
 from ph_units.unit_type import Unit
 
-from PHX.xl.xl_app import XLConnection
 from PHX.PHPP.phpp_localization import shape_model as shp
-from PHX.PHPP.sheet_io.io_exceptions import (
-    FindSectionMarkerException,
-    PerReferenceAreaException,
-)
-
+from PHX.PHPP.sheet_io.io_exceptions import FindSectionMarkerException, PerReferenceAreaException
+from PHX.xl.xl_app import XLConnection
 
 # -----------------------------------------------------------------------------
 

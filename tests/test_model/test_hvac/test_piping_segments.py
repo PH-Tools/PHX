@@ -1,12 +1,8 @@
 import pytest
-
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
-from PHX.model.hvac.piping import (
-    PhxPipeSegment,
-    PhxHotWaterPipingMaterial,
-    PhxHotWaterPipingDiameter,
-)
+
+from PHX.model.hvac.piping import PhxHotWaterPipingDiameter, PhxHotWaterPipingMaterial, PhxPipeSegment
 
 
 def test_PhxPipeSegment_heat_loss_coefficient_1():

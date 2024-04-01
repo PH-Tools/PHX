@@ -4,13 +4,12 @@
 """Model class for a PHPP Windows/Window-Entry row"""
 
 from dataclasses import dataclass
-from typing import List, Tuple, Optional
 from functools import partial
+from typing import List, Optional, Tuple
 
 from PHX.model import constructions, geometry
-
-from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 def get_name_from_glazing_id(

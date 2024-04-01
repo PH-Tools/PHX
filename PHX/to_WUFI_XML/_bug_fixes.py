@@ -3,9 +3,10 @@
 
 """Apply bug-fixes to the WUFI-XML."""
 
-from PHX.model.project import PhxProject
 from PHX.model.hvac.collection import PhxMechanicalSystemCollection
 from PHX.model.hvac.heat_pumps import PhxHeatPumpAnnual
+from PHX.model.project import PhxProject
+
 
 def split_cooling_into_multiple_systems(_phx_project: PhxProject):
     """Split the PhxProject's cooling capacity across multiple systems.
@@ -29,7 +30,7 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
                 # -- If the device doesn't have a cooling system, skip it
                 if hp_device.usage_profile.cooling is False:
                     continue
-                
+
                 # -- If the device has a cooling system, add it to the totals
                 total_number_of_cooling_devices += 1
                 variant_total_cooling_capacity += hp_device.params_cooling.recirculation.capacity
@@ -56,12 +57,11 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
         target_cooling_system_airflow_rate = variant_total_airflow_rate / target_number_of_cooling_systems
         target_cooling_system_coverage_percentage = 1.0 / target_number_of_cooling_devices
         target_recirc_cop = total_recirc_cop / total_number_of_cooling_devices
-        target_dehumid_cop = total_dehumid_cop / total_number_of_cooling_devices  
+        target_dehumid_cop = total_dehumid_cop / total_number_of_cooling_devices
         print(
             f"Splitting {variant_total_cooling_capacity :.1f} KW into "
             f" {target_number_of_cooling_systems} equal-size systems of {target_cooling_system_size} KW."
         )
-
 
         # ---------------------------------------------------------------------
         # -- Reset the existing cooling systems
@@ -82,7 +82,7 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
         # -- Add each of the new cooling systems needed
         for i in range(number_of_new_cooling_systems):
             new_collection = PhxMechanicalSystemCollection()
-            
+
             new_collection.display_name = "Cooling System [{}]".format(i + 2)
 
             # -- Build the new Heat Pump for cooling only
@@ -100,6 +100,5 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
             # -- Add the new heat-pump to the mech-collection and to the variant
             new_collection.add_new_mech_device(new_cooling_heat_pump.identifier, new_cooling_heat_pump)
             phx_variant.add_mechanical_collection(new_collection)
-
 
     return _phx_project

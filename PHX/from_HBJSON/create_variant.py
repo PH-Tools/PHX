@@ -7,46 +7,31 @@ from typing import Dict, Set
 
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
-
-from honeybee_ph import site, phi, phius, space
+from honeybee_energy_ph.hvac.heat_pumps import PhHeatPumpSystem
+from honeybee_energy_ph.hvac.heating import PhHeatingSystem
+from honeybee_energy_ph.hvac.renewable_devices import PhRenewableEnergyDevice
+from honeybee_energy_ph.hvac.supportive_device import PhSupportiveDevice
+from honeybee_energy_ph.hvac.ventilation import PhVentilationSystem, _ExhaustVentilatorBase
+from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
+from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
+from honeybee_energy_ph.properties.load import equipment, people
+from honeybee_ph import phi, phius, site, space
 from honeybee_ph.bldg_segment import BldgSegment
 from honeybee_ph.properties.room import RoomPhProperties
 
-from honeybee_energy_ph.properties.load import equipment, people
-from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
-from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
-from honeybee_energy_ph.hvac.heating import PhHeatingSystem
-from honeybee_energy_ph.hvac.heat_pumps import PhHeatPumpSystem
-from honeybee_energy_ph.hvac.ventilation import (
-    PhVentilationSystem,
-    _ExhaustVentilatorBase,
-)
-from honeybee_energy_ph.hvac.supportive_device import PhSupportiveDevice
-from honeybee_energy_ph.hvac.renewable_devices import PhRenewableEnergyDevice
-
-from PHX.model import phx_site, project, constructions, certification
-from PHX.model.utilization_patterns import (
-    UtilizationPatternCollection_Ventilation,
-    UtilizationPatternCollection_Occupancy,
-    UtilizationPatternCollection_Lighting,
-)
-from PHX.model.enums import (
-    phi_certification_phpp_9,
-    phi_certification_phpp_10,
-    phius_certification,
-    hvac,
-)
-from PHX.from_HBJSON import (
-    create_building,
-    create_hvac,
-    create_elec_equip,
-    create_foundations,
-)
+from PHX.from_HBJSON import create_building, create_elec_equip, create_foundations, create_hvac
 from PHX.from_HBJSON.create_shw import (
-    build_phx_pipe_element,
-    build_phx_trunk_pipe,
     build_phx_hw_heater,
     build_phx_hw_storage,
+    build_phx_pipe_element,
+    build_phx_trunk_pipe,
+)
+from PHX.model import certification, constructions, phx_site, project
+from PHX.model.enums import hvac, phi_certification_phpp_9, phi_certification_phpp_10, phius_certification
+from PHX.model.utilization_patterns import (
+    UtilizationPatternCollection_Lighting,
+    UtilizationPatternCollection_Occupancy,
+    UtilizationPatternCollection_Ventilation,
 )
 
 

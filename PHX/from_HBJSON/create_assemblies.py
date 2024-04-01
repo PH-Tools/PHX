@@ -3,21 +3,18 @@
 
 """Functions used to create Project elements from the Honeybee-Model"""
 
-from typing import Union, Optional, Any, Tuple, List
+from typing import Any, List, Optional, Tuple, Union
 
 from honeybee import model
 from honeybee.aperture import Aperture
-from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
 from honeybee_energy.construction import window, windowshade
-
 from honeybee_energy.construction.window import WindowConstruction
 from honeybee_energy.construction.windowshade import WindowConstructionShade
-from honeybee_energy_ph.properties.construction.window import (
-    WindowConstructionPhProperties,
-)
-from honeybee_energy_ph.construction.window import PhWindowGlazing, PhWindowFrame
+from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
+from honeybee_energy_ph.construction.window import PhWindowFrame, PhWindowGlazing
+from honeybee_energy_ph.properties.construction.window import WindowConstructionPhProperties
 from honeybee_energy_ph.properties.materials.opaque import EnergyMaterialPhProperties
-from honeybee_ph_utils import iso_10077_1, color
+from honeybee_ph_utils import color, iso_10077_1
 
 from PHX.model import constructions, project, shades
 

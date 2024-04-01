@@ -4,11 +4,12 @@
 """Controller Class for the PHPP Shading worksheet."""
 
 from __future__ import annotations
-from typing import Optional, List
 
-from PHX.xl import xl_app
-from PHX.PHPP.phpp_model import shading_rows
+from typing import List, Optional
+
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.PHPP.phpp_model import shading_rows
+from PHX.xl import xl_app
 
 
 class Shading:

@@ -3,9 +3,9 @@
 
 """Functions for writing XML Text out to a file on disk."""
 
-from datetime import datetime
 import os
 import shutil
+from datetime import datetime
 from pathlib import Path
 
 

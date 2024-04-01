@@ -1,13 +1,8 @@
 import pytest
-
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
-from PHX.model.hvac.piping import (
-    PhxPipeElement,
-    PhxPipeSegment,
-    PhxHotWaterPipingMaterial,
-    PhxHotWaterPipingDiameter,
-)
+
+from PHX.model.hvac.piping import PhxHotWaterPipingDiameter, PhxHotWaterPipingMaterial, PhxPipeElement, PhxPipeSegment
 
 
 def test_empty_PhxPipeElement():

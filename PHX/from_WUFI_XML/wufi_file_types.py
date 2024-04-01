@@ -4,9 +4,10 @@
 """Pydantic Model Unit-Types for WUFI-XML file format."""
 
 from __future__ import annotations
-from typing import Dict, Union, Any, Optional
-from ph_units.converter import convert
 
+from typing import Any, Dict, Optional, Union
+
+from ph_units.converter import convert
 
 # ------------------------------------------------------------------------------
 # -- Base Unit Type Converters

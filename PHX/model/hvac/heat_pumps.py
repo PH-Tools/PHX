@@ -4,13 +4,13 @@
 """PHX Mechanical Heat-Pump (Heating + Cooling) Devices."""
 
 from __future__ import annotations
-from typing import Optional, Union
+
 from dataclasses import dataclass, field
+from typing import Optional, Union
 
 from PHX.model.enums.hvac import DeviceType, HeatPumpType, SystemType
 from PHX.model.hvac import _base
 from PHX.model.hvac.cooling_params import PhxCoolingParams
-
 
 # -----------------------------------------------------------------------------
 # Base

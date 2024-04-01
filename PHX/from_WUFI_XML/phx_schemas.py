@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
 # -*- Python Version: 3.7 -*-
 
+import sys
 from dataclasses import asdict
 from functools import partial
-from rich import print
-import sys
 from typing import Any, Dict, List, Optional, Tuple
 
+from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
-from ladybug_geometry.geometry3d.pointvector import Vector3D, Point3D
-
 from ph_units.unit_type import Unit
+from rich import print
 
 from PHX.from_WUFI_XML import wufi_file_schema as wufi_xml
-
 from PHX.model.building import PhxBuilding, PhxZone
-from PHX.model.certification import PhxPhiusCertification, PhxPhBuildingData
+from PHX.model.certification import PhxPhBuildingData, PhxPhiusCertification
+from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
 from PHX.model.constructions import (
     PhxConstructionOpaque,
     PhxConstructionWindow,
@@ -23,150 +22,101 @@ from PHX.model.constructions import (
     PhxMaterial,
     PhxWindowFrameElement,
 )
-from PHX.model.components import (
-    PhxComponentAperture,
-    PhxComponentOpaque,
-    PhxComponentThermalBridge,
-    PhxApertureElement,
-)
-from PHX.model.enums.building import (
-    ComponentFaceType,
-    ComponentExposureExterior,
-    ComponentFaceOpacity,
-    ComponentColor,
-    ThermalBridgeType,
-    SpecificHeatCapacity,
-    ZoneType,
-    AttachedZoneType,
+from PHX.model.elec_equip import (
+    PhxDeviceClothesDryer,
+    PhxDeviceClothesWasher,
+    PhxDeviceCooktop,
+    PhxDeviceCustomElec,
+    PhxDeviceCustomLighting,
+    PhxDeviceCustomMEL,
+    PhxDeviceDishwasher,
+    PhxDeviceFreezer,
+    PhxDeviceFridgeFreezer,
+    PhxDeviceLightingExterior,
+    PhxDeviceLightingGarage,
+    PhxDeviceLightingInterior,
+    PhxDeviceMEL,
+    PhxDeviceRefrigerator,
+    PhxElectricalDevice,
 )
 from PHX.model.enums import hvac as hvac_enums
+from PHX.model.enums.building import (
+    AttachedZoneType,
+    ComponentColor,
+    ComponentExposureExterior,
+    ComponentFaceOpacity,
+    ComponentFaceType,
+    SpecificHeatCapacity,
+    ThermalBridgeType,
+    ZoneType,
+)
+from PHX.model.enums.elec_equip import ElectricEquipmentType
+from PHX.model.enums.foundations import CalculationSetting, FoundationType, PerimeterInsulationPosition
 from PHX.model.enums.phius_certification import (
-    PhiusCertificationProgram,
     PhiusCertificationBuildingCategoryType,
-    PhiusCertificationBuildingUseType,
     PhiusCertificationBuildingStatus,
     PhiusCertificationBuildingType,
+    PhiusCertificationBuildingUseType,
+    PhiusCertificationProgram,
 )
-from PHX.model.enums.phx_site import (
-    SiteSelection,
-    SiteClimateSelection,
-    SiteEnergyFactorSelection,
-)
-from PHX.model.geometry import PhxVertix, PhxPolygon, PhxVector, PhxPlane
-from PHX.model.enums.foundations import (
-    FoundationType,
-    CalculationSetting,
-    PerimeterInsulationPosition,
-)
-from PHX.model.ground import (
-    PhxFoundation,
-    PhxHeatedBasement,
-    PhxUnHeatedBasement,
-    PhxSlabOnGrade,
-    PhxVentedCrawlspace,
-)
-from PHX.model.spaces import PhxSpace
-from PHX.model.shades import PhxWindowShade
-from PHX.model.schedules.ventilation import (
-    PhxScheduleVentilation,
-    Vent_UtilPeriods,
-    Vent_OperatingPeriod,
-)
-from PHX.model.schedules.occupancy import PhxScheduleOccupancy
-from PHX.model.schedules.lighting import PhxScheduleLighting
-from PHX.model.phx_site import (
-    PhxSite,
-    PhxClimate,
-    PhxGround,
-    PhxSiteEnergyFactors,
-    PhxPEFactor,
-    PhxCO2Factor,
-)
-from PHX.model.project import (
-    PhxProject,
-    PhxProjectData,
-    ProjectData_Agent,
-    PhxVariant,
-    WufiPlugin,
-)
-from PHX.model.hvac._base import PhxUsageProfile
-from PHX.model.hvac.collection import (
-    PhxZoneCoverage,
-    AnyMechDevice,
-    PhxRecirculationParameters,
-)
-from PHX.model.programs.occupancy import PhxProgramOccupancy
-from PHX.model.programs.ventilation import PhxProgramVentilation
-from PHX.model.hvac.collection import PhxMechanicalSystemCollection
-from PHX.model.hvac.ventilation import (
-    PhxDeviceVentilator,
-    AnyPhxExhaustVent,
-    PhxExhaustVentilatorRangeHood,
-    PhxExhaustVentilatorDryer,
-    PhxExhaustVentilatorUserDefined,
-)
+from PHX.model.enums.phx_site import SiteClimateSelection, SiteEnergyFactorSelection, SiteSelection
+from PHX.model.geometry import PhxPlane, PhxPolygon, PhxVector, PhxVertix
+from PHX.model.ground import PhxFoundation, PhxHeatedBasement, PhxSlabOnGrade, PhxUnHeatedBasement, PhxVentedCrawlspace
 from PHX.model.hvac import (
+    AnyPhxHeaterBoiler,
     PhxHeaterBoilerFossil,
     PhxHeaterBoilerWood,
     PhxHeaterDistrictHeat,
     PhxHeaterElectric,
     PhxHeatPumpAnnual,
     PhxHeatPumpCombined,
-    PhxHeatPumpMonthly,
-    PhxHeatPumpHotWater,
     PhxHeatPumpDevice,
-    AnyPhxHeaterBoiler,
+    PhxHeatPumpHotWater,
+    PhxHeatPumpMonthly,
 )
-
+from PHX.model.hvac._base import PhxUsageProfile
+from PHX.model.hvac.collection import (
+    AnyMechDevice,
+    PhxMechanicalSystemCollection,
+    PhxRecirculationParameters,
+    PhxZoneCoverage,
+)
 from PHX.model.hvac.cooling_params import (
-    PhxCoolingVentilationParams,
-    PhxCoolingRecirculationParams,
     PhxCoolingDehumidificationParams,
     PhxCoolingPanelParams,
+    PhxCoolingRecirculationParams,
+    PhxCoolingVentilationParams,
 )
-from PHX.model.hvac.water import PhxHotWaterTank
-from PHX.model.hvac.renewable_devices import PhxDevicePhotovoltaic
-from PHX.model.enums.elec_equip import ElectricEquipmentType
-from PHX.model.elec_equip import (
-    PhxElectricalDevice,
-    PhxDeviceDishwasher,
-    PhxDeviceCooktop,
-    PhxDeviceClothesWasher,
-    PhxDeviceClothesDryer,
-    PhxDeviceRefrigerator,
-    PhxDeviceFreezer,
-    PhxDeviceFridgeFreezer,
-    PhxDeviceCooktop,
-    PhxDeviceCustomElec,
-    PhxDeviceMEL,
-    PhxDeviceLightingInterior,
-    PhxDeviceLightingExterior,
-    PhxDeviceLightingGarage,
-    PhxDeviceCustomLighting,
-    PhxDeviceCustomMEL,
-)
+from PHX.model.hvac.ducting import PhxDuctElement, PhxDuctSegment, PhxVentDuctType
 from PHX.model.hvac.piping import (
-    PhxPipeSegment,
-    PhxPipeTrunk,
-    PhxPipeBranch,
-    PhxPipeElement,
-    PhxHotWaterPipingMaterial,
-    PhxHotWaterPipingDiameter,
     PhxHotWaterPipingCalcMethod,
+    PhxHotWaterPipingDiameter,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
+    PhxPipeBranch,
+    PhxPipeElement,
+    PhxPipeSegment,
+    PhxPipeTrunk,
 )
-from PHX.model.hvac.ducting import (
-    PhxDuctElement,
-    PhxDuctSegment,
-    PhxVentDuctType,
+from PHX.model.hvac.renewable_devices import PhxDevicePhotovoltaic
+from PHX.model.hvac.supportive_devices import PhxSupportiveDevice, PhxSupportiveDeviceParams, PhxSupportiveDeviceType
+from PHX.model.hvac.ventilation import (
+    AnyPhxExhaustVent,
+    PhxDeviceVentilator,
+    PhxExhaustVentilatorDryer,
+    PhxExhaustVentilatorRangeHood,
+    PhxExhaustVentilatorUserDefined,
 )
-from PHX.model.hvac.supportive_devices import (
-    PhxSupportiveDevice,
-    PhxSupportiveDeviceParams,
-    PhxSupportiveDeviceType,
-)
-
+from PHX.model.hvac.water import PhxHotWaterTank
+from PHX.model.phx_site import PhxClimate, PhxCO2Factor, PhxGround, PhxPEFactor, PhxSite, PhxSiteEnergyFactors
+from PHX.model.programs.occupancy import PhxProgramOccupancy
+from PHX.model.programs.ventilation import PhxProgramVentilation
+from PHX.model.project import PhxProject, PhxProjectData, PhxVariant, ProjectData_Agent, WufiPlugin
+from PHX.model.schedules.lighting import PhxScheduleLighting
+from PHX.model.schedules.occupancy import PhxScheduleOccupancy
+from PHX.model.schedules.ventilation import PhxScheduleVentilation, Vent_OperatingPeriod, Vent_UtilPeriods
+from PHX.model.shades import PhxWindowShade
+from PHX.model.spaces import PhxSpace
 
 # -----------------------------------------------------------------------------
 # -- Conversion Function
@@ -243,8 +193,8 @@ def _PhxProject(_model: wufi_xml.WUFIplusProject) -> PhxProject:
 def _PhxProjectData(_model: wufi_xml.ProjectData) -> PhxProjectData:
     phx_obj = PhxProjectData()
     # phx_obj.project_date = _model.Date_Project
-    phx_obj.owner_is_client = _model.OwnerIsClient
-    phx_obj.year_constructed = int(_model.Year_Construction)
+    phx_obj.owner_is_client = _model.OwnerIsClient or False
+    phx_obj.year_constructed = int(_model.Year_Construction or 0)
     phx_obj.image = _model.WhiteBackgroundPictureBuilding
 
     phx_obj.customer = ProjectData_Agent(
@@ -1226,14 +1176,18 @@ def _PhxSiteEnergyFactors(_data: wufi_xml.PH_ClimateLocation) -> PhxSiteEnergyFa
         "OIL_CGS_35_CHP",
         "OIL_CGS_0_CHP",
     )
-
     phx_obj = PhxSiteEnergyFactors()
     phx_obj.selection_pe_co2_factor = SiteEnergyFactorSelection(_data.SelectionPECO2Factor)
 
-    for name, factor in zip(_wufi_order, _data.PEFactorsUserDef):
+    # If any of the 'Standard' set are used, their data will NOT be included in
+    # in the WUFI XML file. So set them based on the Phius Cert Program being used.
+    #
+    # If User-defined factors are used, they will be included in the XML file.
+    # So in that case, use those values for the PE and CO2 factors.
+    for name, factor in zip(_wufi_order, _data.PEFactorsUserDef or []):
         phx_obj.pe_factors[name] = PhxPEFactor(factor.__root__, "kWh/kWh", name)
 
-    for name, factor in zip(_wufi_order, _data.CO2FactorsUserDef):
+    for name, factor in zip(_wufi_order, _data.CO2FactorsUserDef or []):
         phx_obj.co2_factors[name] = PhxCO2Factor(factor.__root__, "g/kWh", name)
 
     return phx_obj

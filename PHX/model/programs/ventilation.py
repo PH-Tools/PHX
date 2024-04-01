@@ -4,6 +4,7 @@
 """PHX Program Class for organizing Fresh-Air Ventilation Data."""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 
 from PHX.model.loads import ventilation as vent_loads

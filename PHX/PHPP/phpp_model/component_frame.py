@@ -4,11 +4,10 @@
 """Model class for a PHPP Components/Window-Frame row."""
 
 from dataclasses import dataclass
-from typing import List
 from functools import partial
+from typing import List
 
 from PHX.model import constructions
-
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
 

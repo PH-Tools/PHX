@@ -1,5 +1,6 @@
-from PHX.xl import xl_data
 import pytest
+
+from PHX.xl import xl_data
 
 
 def test_XlItem():

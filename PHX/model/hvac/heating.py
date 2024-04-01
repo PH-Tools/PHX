@@ -4,8 +4,9 @@
 """PHX Mechanical Heating Devices."""
 
 from __future__ import annotations
-from typing import Optional, Union
+
 from dataclasses import dataclass, field
+from typing import Optional, Union
 
 from PHX.model.enums.hvac import DeviceType, PhxFuelType, SystemType
 from PHX.model.hvac import _base

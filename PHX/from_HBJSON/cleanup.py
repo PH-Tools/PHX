@@ -3,51 +3,51 @@
 
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
-from functools import reduce
 import logging
-from typing import List, Dict
+from functools import reduce
+from typing import Dict, List
 
 try:
     from ladybug_geometry.geometry2d.pointvector import Vector2D
     from ladybug_geometry.geometry2d.polygon import Polygon2D
-    from ladybug_geometry.geometry3d.plane import Plane
     from ladybug_geometry.geometry3d.face import Face3D
+    from ladybug_geometry.geometry3d.plane import Plane
 except ImportError as e:
     raise ImportError("\nFailed to import ladybug_geometry:\n\t{}".format(e))
 
 try:  # import the core honeybee dependencies
+    from honeybee import face, room
     from honeybee.aperture import Aperture
-    from honeybee.typing import clean_ep_string
-    from honeybee import room, face
+    from honeybee.boundarycondition import Ground, Outdoors, Surface
     from honeybee.properties import FaceProperties
+    from honeybee.typing import clean_ep_string
     from honeybee_energy import shw
-    from honeybee.boundarycondition import Outdoors, Ground, Surface
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
 
 try:
-    from honeybee_energy.load import people, equipment, infiltration
+    from honeybee_energy.load import equipment, infiltration, people
     from honeybee_energy.load.infiltration import Infiltration
     from honeybee_energy.properties.room import RoomEnergyProperties
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy:\n\t{}".format(e))
 
 try:
-    from honeybee_ph.properties.room import RoomPhProperties
     from honeybee_ph.foundations import PhFoundation
+    from honeybee_ph.properties.room import RoomPhProperties
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_ph:\n\t{}".format(e))
 
 try:
-    from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
+    from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy_ph:\n\t{}".format(e))
 
 try:
-    from PHX.model import project
     from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_faces
+    from PHX.model import project
 except ImportError as e:
     raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
 

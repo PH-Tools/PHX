@@ -6,14 +6,14 @@
 import pathlib
 
 from rich import print
-from PHX.from_WUFI_XML.read_WUFI_XML_file import get_WUFI_XML_file_as_dict
+
 from PHX.from_WUFI_XML.phx_converter import convert_WUFI_XML_to_PHX_project
+from PHX.from_WUFI_XML.read_WUFI_XML_file import get_WUFI_XML_file_as_dict
+from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 
-from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
-
 SOURCE_DIR = pathlib.Path("tests", "_reference_xml")
-SOURCE_FILE_NAMES = ["_la_mora.xml"]
+SOURCE_FILE_NAMES = ["School.xml"]
 TARGET_DIR = pathlib.Path("tests", "_regenerated_xml")
 
 print(" -" * 50)

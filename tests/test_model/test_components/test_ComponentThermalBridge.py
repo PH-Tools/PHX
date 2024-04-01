@@ -1,5 +1,6 @@
-from functools import reduce
 import operator
+from functools import reduce
+
 from PHX.model.components import PhxComponentThermalBridge
 from PHX.model.enums.building import ThermalBridgeType
 

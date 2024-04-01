@@ -1,15 +1,9 @@
-import pytest
 from copy import copy
 
-from PHX.model.hvac import (
-    collection,
-    cooling_params,
-    heating,
-    water,
-    ventilation,
-    supportive_devices,
-)
+import pytest
+
 from PHX.model.enums.hvac import PhxSupportiveDeviceType
+from PHX.model.hvac import collection, cooling_params, heating, supportive_devices, ventilation, water
 
 
 def test_default_PhxMechanicalEquipmentCollection(reset_class_counters):

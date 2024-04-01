@@ -1,6 +1,7 @@
 import pytest
-from PHX.model.hvac import PhxDevicePhotovoltaic, PhxDevicePhotovoltaicParams
+
 from PHX.model.enums.hvac import DeviceType, SystemType
+from PHX.model.hvac import PhxDevicePhotovoltaic, PhxDevicePhotovoltaicParams
 
 
 def test_add_default_PhxDevicePhotovoltaicParams(reset_class_counters):

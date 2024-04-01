@@ -4,10 +4,11 @@
 """PHX Mechanical Ventilation Devices"""
 
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import Union, ClassVar, Optional
 
-from PHX.model.enums.hvac import DeviceType, SystemType, PhxExhaustVentType
+from dataclasses import dataclass, field
+from typing import ClassVar, Optional, Union
+
+from PHX.model.enums.hvac import DeviceType, PhxExhaustVentType, SystemType
 from PHX.model.hvac import _base
 
 

@@ -4,12 +4,13 @@
 """PHX Space (Room) Class"""
 
 from __future__ import annotations
-from typing import ClassVar
+
 from dataclasses import dataclass, field
+from typing import ClassVar
 
 from PHX.model.programs import occupancy as occupancy_prog
-from PHX.model.programs.ventilation import PhxProgramVentilation
 from PHX.model.programs.lighting import PhxProgramLighting
+from PHX.model.programs.ventilation import PhxProgramVentilation
 
 
 @dataclass

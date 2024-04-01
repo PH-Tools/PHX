@@ -4,19 +4,20 @@
 """PHX Water Piping Distribution Objects."""
 
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import Dict, List, Any, Optional, ClassVar, Union
+
 import math
+from dataclasses import dataclass, field
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from uuid import uuid4
 
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
+from ladybug_geometry.geometry3d.polyline import LineSegment3D
 from ph_units.converter import convert
 from ph_units.unit_type import Unit
 
 from PHX.model.enums.hvac import (
-    PhxHotWaterPipingDiameter,
     PhxHotWaterPipingCalcMethod,
+    PhxHotWaterPipingDiameter,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
 )

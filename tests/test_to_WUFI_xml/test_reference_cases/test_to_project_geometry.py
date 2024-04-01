@@ -1,5 +1,6 @@
-from PHX.from_HBJSON import read_HBJSON_file, create_project
 import pytest
+
+from PHX.from_HBJSON import create_project, read_HBJSON_file
 
 
 def test_all_aperture_areas_are_equivalent_after_conversion(to_xml_reference_cases):

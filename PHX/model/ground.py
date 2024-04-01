@@ -3,13 +3,10 @@
 
 """PHX Foundation Class"""
 
-from typing import Union, Type, Optional
 from dataclasses import dataclass
-from PHX.model.enums.foundations import (
-    FoundationType,
-    CalculationSetting,
-    PerimeterInsulationPosition,
-)
+from typing import Optional, Type, Union
+
+from PHX.model.enums.foundations import CalculationSetting, FoundationType, PerimeterInsulationPosition
 
 
 @dataclass

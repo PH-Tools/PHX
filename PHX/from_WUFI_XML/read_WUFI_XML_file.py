@@ -3,11 +3,11 @@
 
 """Functions for importing WUFI XML file data."""
 
-from typing import Dict, Any, Union, List, Optional
 import pathlib
-from lxml import etree
-from typing import Dict
 from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Union
+
+from lxml import etree
 
 
 @dataclass

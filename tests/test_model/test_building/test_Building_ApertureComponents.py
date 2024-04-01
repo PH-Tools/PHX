@@ -1,5 +1,4 @@
 from PHX.model import building, components
-from PHX.model import components
 
 
 def test_building_with_no_apertures(reset_class_counters) -> None:

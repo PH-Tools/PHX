@@ -3,10 +3,11 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+import pathlib
+
 # -- Project information -----------------------------------------------------
 # Add the root folder (up two from conf.py) to avoid Import Errors.
 import sys
-import pathlib
 
 sys.path.insert(0, str(pathlib.Path(__file__).parents[3]))
 

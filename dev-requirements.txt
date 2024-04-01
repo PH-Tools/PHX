@@ -1,5 +1,6 @@
 black==23.1.0
 coverage
+isort
 pytest
 pytest-cov
 rich

@@ -10,21 +10,21 @@
 # -----------------------------------------------------------------------------
 # -- Dev Note: Do not remove v ------------------------------------------------
 
+import json
+import logging
+import os
+import pathlib
+from typing import Dict
+
 import honeybee
-import honeybee_ph
 import honeybee_energy
 import honeybee_energy_ph
+import honeybee_ph
+from honeybee import model
 
 # -- Dev Note: Do not remove ^ ------------------------------------------------
 # -----------------------------------------------------------------------------
 
-import os
-import json
-import logging
-import pathlib
-from typing import Dict
-
-from honeybee import model
 
 logger = logging.getLogger()
 

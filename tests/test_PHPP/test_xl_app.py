@@ -1,9 +1,6 @@
 import pytest
 
-from PHX.xl import xl_app
-from PHX.xl import xl_data
-from PHX.xl import xl_typing
-
+from PHX.xl import xl_app, xl_data, xl_typing
 
 # -- Mock XL Framework --------------------------------------------------------
 

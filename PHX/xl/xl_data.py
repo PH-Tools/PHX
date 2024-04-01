@@ -3,8 +3,8 @@
 
 """Basic datatypes and data-structures relevant for Excel read/write."""
 
-from typing import Union, Optional, List, Dict, Tuple
 import string
+from typing import Dict, List, Optional, Tuple, Union
 
 from ph_units import converter
 

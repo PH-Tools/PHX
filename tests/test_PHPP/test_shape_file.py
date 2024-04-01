@@ -1,7 +1,9 @@
-import pytest
 from pathlib import Path
-from PHX.PHPP.phpp_localization.shape_model import PhppShape
+
+import pytest
+
 from PHX.PHPP.phpp_localization.load import get_shape_filepath
+from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.PHPP.phpp_model.version import PHPPVersion
 
 

@@ -4,14 +4,15 @@
 """Controller Class for the PHPP "Areas" worksheet."""
 
 from __future__ import annotations
-from typing import List, Optional, Dict, Generator, Tuple
+
+from typing import Dict, Generator, List, Optional, Tuple
 
 from ph_units.unit_type import Unit
 
+from PHX.PHPP.phpp_localization import shape_model
+from PHX.PHPP.phpp_model import areas_data, areas_surface, areas_thermal_bridges
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset
-from PHX.PHPP.phpp_model import areas_surface, areas_data, areas_thermal_bridges
-from PHX.PHPP.phpp_localization import shape_model
 
 
 class AreasInputLocation:

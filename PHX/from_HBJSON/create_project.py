@@ -3,21 +3,17 @@
 
 """Functions used to convert a standard HBJSON Model over to WUFI Objects"""
 
-from collections import defaultdict
-from typing import Tuple, List, Union
-
 import logging
+from collections import defaultdict
+from typing import List, Tuple, Union
 
-from honeybee import model
-from honeybee import room
+from honeybee import model, room
 from honeybee.aperture import Aperture
-
 from honeybee_ph.properties.room import RoomPhProperties
 from honeybee_ph.team import ProjectTeam, ProjectTeamMember
 
+from PHX.from_HBJSON import cleanup, create_assemblies, create_schedules, create_shades, create_variant
 from PHX.model.project import PhxProject, PhxProjectData, ProjectData_Agent
-from PHX.from_HBJSON import cleanup, create_assemblies, create_variant, create_shades
-from PHX.from_HBJSON import create_schedules
 
 logger = logging.getLogger()
 

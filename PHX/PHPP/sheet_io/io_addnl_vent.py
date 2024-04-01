@@ -4,16 +4,16 @@
 """Controller Class for the PHPP "Additional Vent" worksheet."""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import List, Optional, Any, Sequence, Collection, Tuple
+from typing import Any, Collection, List, Optional, Sequence, Tuple
 
 from ph_units.unit_type import Unit
 
-from PHX.xl import xl_data
-from PHX.xl.xl_data import col_offset, xl_writable
-from PHX.PHPP.phpp_model import vent_space, vent_units, vent_ducts
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.xl import xl_app
+from PHX.PHPP.phpp_model import vent_ducts, vent_space, vent_units
+from PHX.xl import xl_app, xl_data
+from PHX.xl.xl_data import col_offset, xl_writable
 
 
 class Spaces:

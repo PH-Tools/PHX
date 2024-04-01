@@ -3,16 +3,15 @@
 
 """Model class for a PHPP Areas / Surface-Entry row"""
 
+import re
 from dataclasses import dataclass
 from functools import partial
-import re
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
 
 from PHX.model import components, geometry
 from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType
-
-from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 @dataclass

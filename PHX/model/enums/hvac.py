@@ -4,6 +4,7 @@
 """Valid 'types' for Mech Equipment Options."""
 
 from enum import Enum
+
 from honeybee_energy_ph.hvac.hot_water import PhSHWTankType
 
 

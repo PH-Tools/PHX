@@ -4,13 +4,13 @@
 """Controller Class for the PHPP "Use non-res" worksheet."""
 
 from __future__ import annotations
+
 from typing import List, Optional
 
-from PHX.xl import xl_data
-from PHX.xl.xl_data import col_offset
-from PHX.PHPP.phpp_model import uvalues_constructor
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.xl import xl_app
+from PHX.PHPP.phpp_model import uvalues_constructor
+from PHX.xl import xl_app, xl_data
+from PHX.xl.xl_data import col_offset
 
 
 class UseNonRes:

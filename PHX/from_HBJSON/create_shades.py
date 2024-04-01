@@ -3,9 +3,9 @@
 
 """Functions to create new Shade PhxComponents from HB-Model Orphaned-Shade Objects."""
 
+import operator
 from collections import defaultdict
 from functools import reduce
-import operator
 from typing import List
 
 try:
@@ -15,15 +15,11 @@ except ImportError as e:
     raise ImportError("\nFailed to import Honeybee:\n\t{}".format(e))
 
 try:
+    from PHX.from_HBJSON import create_geometry
+    from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_shades
     from PHX.model import project
     from PHX.model.components import PhxComponentOpaque
-    from PHX.model.enums.building import (
-        ComponentExposureExterior,
-        ComponentFaceOpacity,
-        ComponentColor,
-    )
-    from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_shades
-    from PHX.from_HBJSON import create_geometry
+    from PHX.model.enums.building import ComponentColor, ComponentExposureExterior, ComponentFaceOpacity
 except ImportError as e:
     raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
 

@@ -1,6 +1,7 @@
 import pytest
-from PHX.model.hvac import ventilation
+
 from PHX.model.enums.hvac import PhxExhaustVentType
+from PHX.model.hvac import ventilation
 
 
 def test_add_default_PhxVentilatorParams(reset_class_counters):

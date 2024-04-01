@@ -3,16 +3,16 @@
 
 """Run script to convert an HBJSON file over to WUFI XML format."""
 
-from datetime import datetime
-import logging
 import glob
+import logging
 import os
 import pathlib
 import sys
-from typing import Tuple, List, Union
+from datetime import datetime
+from typing import List, Tuple, Union
 
-from PHX.from_HBJSON import read_HBJSON_file, create_project
-from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file, _bug_fixes
+from PHX.from_HBJSON import create_project, read_HBJSON_file
+from PHX.to_WUFI_XML import _bug_fixes, xml_builder, xml_txt_to_file
 
 
 class InputFileError(Exception):

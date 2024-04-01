@@ -3,21 +3,21 @@
 
 """Class for managing the Excel Application Connection and common read/write operations."""
 
-from typing import Optional, List, Set, Callable, Any, Union, Dict
-from contextlib import contextmanager
 import os
 import pathlib
+from contextlib import contextmanager
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 from PHX.xl import xl_data
 from PHX.xl.xl_typing import (
-    xl_Framework_Protocol,
-    xl_Book_Protocol,
-    xl_Books_Protocol,
-    xl_Sheets_Protocol,
-    xl_Sheet_Protocol,
-    xl_Range_Protocol,
     xl_app_Protocol,
     xl_apps_Protocol,
+    xl_Book_Protocol,
+    xl_Books_Protocol,
+    xl_Framework_Protocol,
+    xl_Range_Protocol,
+    xl_Sheet_Protocol,
+    xl_Sheets_Protocol,
 )
 
 # -----------------------------------------------------------------------------

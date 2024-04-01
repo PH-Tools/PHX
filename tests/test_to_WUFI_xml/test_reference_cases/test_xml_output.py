@@ -1,7 +1,6 @@
-from PHX.from_HBJSON import read_HBJSON_file, create_project
+from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.from_WUFI_XML import read_WUFI_XML_file
 from PHX.to_WUFI_XML import xml_builder
-
 from tests.conftest import _reload_phx_classes, _reset_phx_class_counters
 
 

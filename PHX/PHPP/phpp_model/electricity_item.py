@@ -4,13 +4,12 @@
 """Model class for a PHPP Electricity / Equipment row input."""
 
 from dataclasses import dataclass
-from typing import List, Tuple, Any, Dict, NamedTuple
+from typing import Any, Dict, List, NamedTuple, Tuple
 
 from PHX.model import elec_equip
 from PHX.model.enums.elec_equip import ElectricEquipmentType
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
-
 
 # -----------------------------------------------------------------------------
 # -- Worksheet Writer

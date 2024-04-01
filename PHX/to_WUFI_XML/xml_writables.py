@@ -3,7 +3,7 @@
 
 """Classes used to build XML Node Objects which are used during XML Output"""
 
-from typing import Union, Collection, Any, Optional
+from typing import Any, Collection, Optional, Union
 
 # Type Alias
 xml_valid = Union[str, float, int, bool, None]

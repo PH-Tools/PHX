@@ -2,7 +2,7 @@
 # -*- Python Version: 3.7 -*-
 
 """"""
-from typing import Optional, Callable, List, Any
+from typing import Any, Callable, List, Optional
 
 from PHX.to_WUFI_XML import xml_schemas
 from PHX.to_WUFI_XML.xml_writables import xml_writable

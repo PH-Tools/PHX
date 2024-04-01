@@ -1,7 +1,8 @@
-import pytest
 from typing import Dict
-from PHX.model import geometry
 
+import pytest
+
+from PHX.model import geometry
 
 # --- Cube, on regular axis ---------------------------------------------------
 

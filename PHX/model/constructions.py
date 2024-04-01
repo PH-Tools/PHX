@@ -4,9 +4,10 @@
 """PHX Construction, Materials Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Union, List, Optional, Generator
-from dataclasses import dataclass, field
+
 import uuid
+from dataclasses import dataclass, field
+from typing import ClassVar, Generator, List, Optional, Union
 
 
 @dataclass

@@ -4,11 +4,12 @@
 """Controller Class for the PHPP "Electricity non-res" worksheet."""
 
 from __future__ import annotations
-from typing import List, Optional, Generator, Tuple
 
-from PHX.xl import xl_app, xl_data
+from typing import Generator, List, Optional, Tuple
+
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model.elec_non_res import ExistingLightingRow
+from PHX.xl import xl_app, xl_data
 
 
 class Lighting:

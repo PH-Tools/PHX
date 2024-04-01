@@ -1,5 +1,5 @@
-from PHX.model.schedules import ventilation
 from PHX.model import utilization_patterns
+from PHX.model.schedules import ventilation
 
 
 def test_empty_util_collection(reset_class_counters):

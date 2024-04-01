@@ -1,33 +1,34 @@
 import importlib
 from pathlib import Path
+
 import pytest
 
 from PHX.model import (
     building,
-    project,
-    geometry,
-    schedules,
     certification,
+    components,
     constructions,
     elec_equip,
-    components,
-    spaces,
+    geometry,
+    project,
+    schedules,
     shades,
+    spaces,
 )
 from PHX.model.hvac import (
     _base,
     collection,
-    renewable_devices,
-    water,
-    ventilation,
-    heating,
     ducting,
-    piping,
     heat_pumps,
+    heating,
+    piping,
+    renewable_devices,
+    ventilation,
+    water,
 )
+from PHX.model.schedules import occupancy as sched_occupancy
 from PHX.model.schedules import ventilation as sched_ventilation
 from PHX.model.schedules.ventilation import PhxScheduleVentilation
-from PHX.model.schedules import occupancy as sched_occupancy
 
 
 @pytest.fixture

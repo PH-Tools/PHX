@@ -4,14 +4,15 @@
 """Controller Class for the PHPP "SolarPV" worksheet."""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from functools import partial
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 from ph_units.unit_type import Unit
 
-from PHX.xl import xl_app
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_app
 
 
 @dataclass

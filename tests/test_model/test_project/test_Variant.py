@@ -1,4 +1,4 @@
-from PHX.model import project, building
+from PHX.model import building, project
 
 
 def test_blank_variant(reset_class_counters):

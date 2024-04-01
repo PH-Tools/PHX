@@ -1,5 +1,5 @@
-from PHX.to_WUFI_XML import xml_builder
 from PHX.model import geometry
+from PHX.to_WUFI_XML import xml_builder
 
 
 def test_generate_WUFI_XML_from_object(reset_class_counters):

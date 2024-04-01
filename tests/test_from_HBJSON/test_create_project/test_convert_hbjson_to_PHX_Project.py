@@ -1,6 +1,8 @@
 from pathlib import Path
+
 import pytest
-from PHX.from_HBJSON import read_HBJSON_file, create_project
+
+from PHX.from_HBJSON import create_project, read_HBJSON_file
 
 
 @pytest.mark.parametrize(

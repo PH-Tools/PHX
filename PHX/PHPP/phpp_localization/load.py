@@ -4,8 +4,8 @@
 """Functions for finding / loading the right PHPP-ShapeFile."""
 
 
-import pathlib
 import os
+import pathlib
 
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.PHPP.phpp_model import version

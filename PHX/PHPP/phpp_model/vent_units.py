@@ -4,12 +4,12 @@
 """Model class for a single PHPP Addition Vent / Unit-Entry row."""
 
 from dataclasses import dataclass
-from typing import List
 from functools import partial
+from typing import List
 
 from PHX.model import hvac
-from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 @dataclass

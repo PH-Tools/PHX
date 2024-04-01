@@ -4,15 +4,11 @@
 """PHX Site (Location and Climate) Dataclasses"""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Union, Optional, List, Tuple, Generator, Any
+from typing import Any, Generator, List, Optional, Tuple, Union
 
-
-from PHX.model.enums.phx_site import (
-    SiteSelection,
-    SiteClimateSelection,
-    SiteEnergyFactorSelection,
-)
+from PHX.model.enums.phx_site import SiteClimateSelection, SiteEnergyFactorSelection, SiteSelection
 
 
 @dataclass

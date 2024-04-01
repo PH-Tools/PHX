@@ -4,13 +4,13 @@
 """Controller Class for the PHPP "Variants" worksheet."""
 
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import List, Optional, Dict
 
-from PHX.xl import xl_data
-from PHX.xl.xl_data import col_offset
+from dataclasses import dataclass
+from typing import Dict, List, Optional
+
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.xl import xl_app
+from PHX.xl import xl_app, xl_data
+from PHX.xl.xl_data import col_offset
 
 
 @dataclass

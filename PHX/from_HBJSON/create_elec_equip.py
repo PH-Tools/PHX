@@ -4,6 +4,7 @@
 """Function to create new PhxElectricalDevices from Honeybee-PH-PhEquipment"""
 
 from honeybee_energy_ph.load import ph_equipment
+
 from PHX.model import elec_equip
 
 

@@ -4,13 +4,14 @@
 """Controller Class for the PHPP 'Electricity' worksheet."""
 
 from __future__ import annotations
+
 from typing import List, Type
 
 from PHX.model import elec_equip
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model import electricity_item
 from PHX.PHPP.phpp_model.electricity_item import PHPPReadAddress
-from PHX.xl import xl_data, xl_app
+from PHX.xl import xl_app, xl_data
 
 
 class Electricity:

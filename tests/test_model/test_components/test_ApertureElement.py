@@ -1,4 +1,4 @@
-from PHX.model import components, geometry, constructions
+from PHX.model import components, constructions, geometry
 
 
 def test_default_aperture_element() -> None:

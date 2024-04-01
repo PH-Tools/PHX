@@ -3,12 +3,12 @@
 
 """The data from an existing PHPP Non-Res Lighting Entry row."""
 
-from dataclasses import dataclass
 import re
-from typing import List, Optional, Dict
+from dataclasses import dataclass
+from typing import Dict, List, Optional
 
-from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 @dataclass

@@ -1,7 +1,4 @@
-from PHX.model.hvac.supportive_devices import (
-    PhxSupportiveDevice,
-    PhxSupportiveDeviceParams,
-)
+from PHX.model.hvac.supportive_devices import PhxSupportiveDevice, PhxSupportiveDeviceParams
 
 
 def test_add_PhxSupportiveDeviceParams(reset_class_counters):

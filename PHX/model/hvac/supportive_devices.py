@@ -4,8 +4,10 @@
 """PHX Aux-Energy . Supportive Extra Devices."""
 
 from __future__ import annotations
-from typing import ClassVar
+
 from dataclasses import dataclass, field
+from typing import ClassVar
+
 from PHX.model.enums.hvac import PhxSupportiveDeviceType
 from PHX.model.hvac import _base
 

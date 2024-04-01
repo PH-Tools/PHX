@@ -4,12 +4,12 @@
 """Model class for a PHPP Shading/Shading-Entry row"""
 
 from dataclasses import dataclass
-from typing import List, Tuple
 from functools import partial
-from PHX.model import components
+from typing import List, Tuple
 
-from PHX.xl import xl_data
+from PHX.model import components
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 @dataclass

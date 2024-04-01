@@ -4,12 +4,13 @@
 """Model class for the Ventilation worksheet various input items."""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Optional
 
+from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
 from PHX.xl.xl_data import xl_writable
-from PHX.PHPP.phpp_localization import shape_model
 
 
 @dataclass

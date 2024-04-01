@@ -4,12 +4,12 @@
 """Data-entry constructor for the Climate Worksheet."""
 
 from dataclasses import dataclass
-from typing import Dict, List, Tuple, ClassVar
 from functools import partial
+from typing import ClassVar, Dict, List, Tuple
 
-from PHX.xl import xl_data
 from PHX.model import phx_site
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 @dataclass

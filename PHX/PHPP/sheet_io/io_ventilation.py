@@ -5,9 +5,9 @@
 
 from __future__ import annotations
 
-from PHX.xl import xl_app
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model import ventilation_data
+from PHX.xl import xl_app
 
 
 class VentilationInputLocation:

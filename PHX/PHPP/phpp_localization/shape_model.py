@@ -4,8 +4,8 @@
 """Data model of the PHPP 'Shape' (worksheet names and input column names)."""
 
 from typing import Dict, Optional
-from pydantic import BaseModel
 
+from pydantic import BaseModel
 
 # -----------------------------------------------------------------------------
 

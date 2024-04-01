@@ -4,34 +4,22 @@
 """PHX Building Classes"""
 
 from __future__ import annotations
-from typing import (
-    ClassVar,
-    List,
-    Sequence,
-    Union,
-    Set,
-    Dict,
-    ValuesView,
-    Any,
-    Optional,
-    Generator,
-    NamedTuple,
-)
-from dataclasses import dataclass, field
-from collections import defaultdict
-from functools import reduce
+
 import operator
+from collections import defaultdict
+from dataclasses import dataclass, field
+from functools import reduce
+from typing import (Any, ClassVar, Dict, Generator, List, NamedTuple, Optional,
+                    Sequence, Set, Union, ValuesView)
 
 from PHX.model import elec_equip, geometry, spaces
-from PHX.model.components import (
-    PhxComponentAperture,
-    PhxComponentOpaque,
-    PhxComponentThermalBridge,
-    PhxApertureElement,
-)
+from PHX.model.components import (PhxApertureElement, PhxComponentAperture,
+                                  PhxComponentOpaque,
+                                  PhxComponentThermalBridge)
+from PHX.model.enums.building import (AttachedZoneType, SpecificHeatCapacity,
+                                      ZoneType)
 from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
-from PHX.model.enums.building import SpecificHeatCapacity, ZoneType, AttachedZoneType
 
 
 @dataclass

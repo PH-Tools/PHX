@@ -4,12 +4,13 @@
 """Controller Classes for the PHPP 'Heating Load' (Peak Heating Load) Worksheet."""
 
 from __future__ import annotations
-from typing import Dict, Any
+
+from typing import Any, Dict
 
 from ph_units.unit_type import Unit
 
-from PHX.xl import xl_app
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_app
 
 
 class HeatingPeakLoad:

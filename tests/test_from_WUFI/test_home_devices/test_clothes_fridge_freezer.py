@@ -1,7 +1,7 @@
+from PHX.from_WUFI_XML.phx_schemas import _PhxDeviceFridgeFreezer, _PhxHomeDevice
 from PHX.from_WUFI_XML.read_WUFI_XML_file import string_to_xml_dict
 from PHX.from_WUFI_XML.wufi_file_schema import HomeDevice
 from PHX.model.elec_equip import *
-from PHX.from_WUFI_XML.phx_schemas import _PhxHomeDevice, _PhxDeviceFridgeFreezer
 
 XML_STRING = """
 <Device index="2">

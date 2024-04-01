@@ -4,22 +4,23 @@
 """PHX Project Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, List, Dict, Optional, Any, Set, Tuple
+
 from dataclasses import dataclass, field
+from typing import Any, ClassVar, Dict, List, Optional, Set, Tuple
 
 from PHX.model.building import PhxBuilding, PhxZone
-from PHX.model.certification import PhxPhiusCertification, PhxPhiCertification
+from PHX.model.certification import PhxPhiCertification, PhxPhiusCertification
 from PHX.model.constructions import PhxConstructionOpaque, PhxConstructionWindow
 from PHX.model.geometry import PhxGraphics3D
-from PHX.model.hvac.collection import PhxMechanicalSystemCollection, NoDeviceFoundError
 from PHX.model.hvac import PhxMechanicalDevice
+from PHX.model.hvac.collection import NoDeviceFoundError, PhxMechanicalSystemCollection
 from PHX.model.phx_site import PhxSite
-from PHX.model.schedules import ventilation, occupancy, lighting
+from PHX.model.schedules import lighting, occupancy, ventilation
 from PHX.model.shades import PhxWindowShade
 from PHX.model.utilization_patterns import (
+    UtilizationPatternCollection_Lighting,
     UtilizationPatternCollection_Occupancy,
     UtilizationPatternCollection_Ventilation,
-    UtilizationPatternCollection_Lighting,
 )
 
 

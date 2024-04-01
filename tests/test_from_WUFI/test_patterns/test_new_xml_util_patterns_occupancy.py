@@ -1,6 +1,7 @@
+from typing import ValuesView
+
 from pytest import approx
 
-from typing import ValuesView
 from PHX.model.project import PhxProject
 from PHX.model.schedules.occupancy import PhxScheduleOccupancy
 

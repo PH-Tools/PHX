@@ -3,9 +3,10 @@
 
 """Functions used to build up an XML file from a Honeybee Object"""
 
-from typing import Union, Any, Optional
+from typing import Any, Optional, Union
 from xml.dom.minidom import Document, Element
-from PHX.to_WUFI_XML import xml_writables, xml_converter
+
+from PHX.to_WUFI_XML import xml_converter, xml_writables
 
 
 def _xml_str(_: Union[str, bool, float]) -> str:

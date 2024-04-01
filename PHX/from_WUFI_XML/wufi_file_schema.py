@@ -4,11 +4,16 @@
 """Pydantic Model for WUFI-XML file format."""
 
 from __future__ import annotations
-from typing import Optional, List, Dict, Union, Any
-from pydantic import BaseModel, validator
-from PHX.from_WUFI_XML.read_WUFI_XML_file import Tag
+
+from typing import Any, Dict, List, Optional, Union
+
+from honeybee_ph_standards.sourcefactors import factors, phius_CO2_factors, phius_source_energy_factors
 from ph_units.converter import convert
+from pydantic import BaseModel, validator
+
 from PHX.from_WUFI_XML import wufi_file_types as unit
+from PHX.from_WUFI_XML.read_WUFI_XML_file import Tag
+from PHX.model.enums.phius_certification import PhiusCertificationProgram
 
 # ------------------------------------------------------------------------------
 # -- Unit Types
@@ -143,10 +148,59 @@ class PH_ClimateLocation(BaseModel):
     GlobalSolarRadiationCooling2: Optional[unit.Watts_per_M2]
 
     SelectionPECO2Factor: int
-    PEFactorsUserDef: List[PEFactorsUserDef]
-    CO2FactorsUserDef: List[CO2FactorsUserDef]
+    PEFactorsUserDef: Optional[List[PEFactorsUserDef]]
+    CO2FactorsUserDef: Optional[List[CO2FactorsUserDef]]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+    def set_standard_pe_factors(self, PH_CertificateCriteriaNum: int) -> None:
+        """Set the PE-Factors from the Standards-Library based on the PH_CertificateCriteria."""
+        self.PEFactorsUserDef = []
+
+        # -- Load in the Factor values from the Standards library
+        factor_mapping = {
+            PhiusCertificationProgram.DEFAULT: phius_source_energy_factors.factors_2021,
+            PhiusCertificationProgram.PHIUS_2015: phius_source_energy_factors.factors_2018,
+            PhiusCertificationProgram.PHIUS_2018: phius_source_energy_factors.factors_2018,
+            PhiusCertificationProgram.ITALIAN: phius_source_energy_factors.factors_2021,
+            PhiusCertificationProgram.PHIUS_2018_CORE: phius_source_energy_factors.factors_2018,
+            PhiusCertificationProgram.PHIUS_2018_ZERO: phius_source_energy_factors.factors_2018,
+            PhiusCertificationProgram.PHIUS_2021_CORE: phius_source_energy_factors.factors_2021,
+            PhiusCertificationProgram.PHIUS_2021_ZERO: phius_source_energy_factors.factors_2021,
+        }
+        factor_dict = factor_mapping[PhiusCertificationProgram(PH_CertificateCriteriaNum)]
+        factor_objects = factors.build_factors_from_library(factor_dict)
+
+        # -- Mimic the XML structure normal data would come in as
+        # -- and build up all the PEFactorsUserDef objects
+        for i, obj in enumerate(factor_objects):
+            obj.unit
+            x = {f"PEF{i}": Tag(text=str(obj.value), tag=f"PEF{0}", attrib={"unit": obj.unit})}
+            self.PEFactorsUserDef.append(PEFactorsUserDef.parse_obj(x))
+
+    def set_standard_co2_factors(self, PH_CertificateCriteriaNum: int) -> None:
+        """Set the CO2-Factors from the Standards-Library based on the PH_CertificateCriteria."""
+        self.CO2FactorsUserDef = []
+
+        # -- Load in the Factor values from the Standards library
+        factor_mapping = {
+            PhiusCertificationProgram.DEFAULT: phius_CO2_factors.factors_2021,
+            PhiusCertificationProgram.PHIUS_2015: phius_CO2_factors.factors_2018,
+            PhiusCertificationProgram.PHIUS_2018: phius_CO2_factors.factors_2018,
+            PhiusCertificationProgram.ITALIAN: phius_CO2_factors.factors_2021,
+            PhiusCertificationProgram.PHIUS_2018_CORE: phius_CO2_factors.factors_2018,
+            PhiusCertificationProgram.PHIUS_2018_ZERO: phius_CO2_factors.factors_2018,
+            PhiusCertificationProgram.PHIUS_2021_CORE: phius_CO2_factors.factors_2021,
+            PhiusCertificationProgram.PHIUS_2021_ZERO: phius_CO2_factors.factors_2021,
+        }
+        factor_dict = factor_mapping[PhiusCertificationProgram(PH_CertificateCriteriaNum)]
+        factor_objects = factors.build_factors_from_library(factor_dict)
+
+        # -- Mimic the XML structure normal data would come in as
+        # -- and build up all the PEFactorsUserDef objects
+        for i, obj in enumerate(factor_objects):
+            x = {f"CO2F{i}": Tag(text=str(obj.value), tag=f"CO2F{0}", attrib={"unit": obj.unit})}
+            self.CO2FactorsUserDef.append(CO2FactorsUserDef.parse_obj(x))
 
 
 class ClimateLocation(BaseModel):
@@ -760,15 +814,35 @@ class Variant(BaseModel):
     PlugIn: Optional[Plugin]
     Graphics_3D: Graphics_3D
     Building: Building
-    ClimateLocation: ClimateLocation
     PassivehouseData: PassivehouseData
     HVAC: Systems
+    ClimateLocation: ClimateLocation  # Be sure this comes AFTER PassiveHouseData to validate...
 
     @validator("HVAC", pre=True)
     def unpack_hvac(cls, v):
         return v
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+    @validator("ClimateLocation", pre=False)
+    def check_source_energy_factors(cls, v: ClimateLocation, values: Dict[str, Any]):
+        """Ensure the ClimateLocation's Energy and CO2 conversion factor lists are populated properly.
+
+        If the XML file is set to one of the 'standard' factor sets (USA, Germany, etc..),
+        in that case the XML file not have any values, so load those from the Standards-Library.
+        """
+        if not v.PH_ClimateLocation:
+            return v
+
+        passivehouse_data: PassivehouseData = values["PassivehouseData"]
+
+        if not v.PH_ClimateLocation.CO2FactorsUserDef:
+            v.PH_ClimateLocation.set_standard_pe_factors(passivehouse_data.PH_CertificateCriteria)
+
+        if not v.PH_ClimateLocation.PEFactorsUserDef:
+            v.PH_ClimateLocation.set_standard_co2_factors(passivehouse_data.PH_CertificateCriteria)
+
+        return v
 
 
 # ------------------------------------------------------------------------------
@@ -900,8 +974,8 @@ class Date_Project(BaseModel):
 
 
 class ProjectData(BaseModel):
-    Year_Construction: int
-    OwnerIsClient: bool
+    Year_Construction: Optional[int]
+    OwnerIsClient: Optional[bool]
     WhiteBackgroundPictureBuilding: Optional[bool]
     Customer_Name: Optional[str]
     Customer_Street: Optional[str]

@@ -6,8 +6,9 @@
 from typing import Union
 
 from honeybee import aperture, face, shade
-from ladybug_geometry.geometry3d.pointvector import Vector3D, Point3D
 from ladybug_geometry.geometry3d.plane import Plane
+from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
+
 from PHX.model import geometry
 
 

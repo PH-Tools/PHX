@@ -4,9 +4,10 @@
 """PHX Passive House Certification Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Optional
+
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import ClassVar, Optional
 
 from PHX.model import ground
 from PHX.model.enums import phi_certification_phpp_9, phius_certification

@@ -13,7 +13,7 @@ import os
 import subprocess
 
 try:
-    from typing import List, Tuple, Any, Dict, Union
+    from typing import Any, Dict, List, Tuple, Union
 except ImportError:
     pass  # Python 2.7
 

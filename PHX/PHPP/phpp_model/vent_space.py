@@ -4,14 +4,14 @@
 """Model class for a single PHPP Addition Vent / Space(room)-Entry row."""
 
 from dataclasses import dataclass
-from typing import List, Tuple
 from functools import partial
+from typing import List, Tuple
 
 from PHX.model import spaces
 from PHX.model.schedules import ventilation as phx_vent_sched
+from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
 from PHX.xl.xl_data import xl_writable
-from PHX.PHPP.phpp_localization import shape_model
 
 
 @dataclass

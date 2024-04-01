@@ -4,13 +4,12 @@
 """Data-entry constructor for the U-Values Worksheet."""
 
 from dataclasses import dataclass
-from typing import List
 from functools import partial
+from typing import List
 
 from PHX.model.constructions import PhxConstructionOpaque, PhxLayer
-
-from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 @dataclass

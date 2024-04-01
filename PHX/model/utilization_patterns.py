@@ -4,11 +4,12 @@
 """PHX Collection class for Organizing Space Schedules as Utilization Patterns."""
 
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import Union, Dict, Optional, Generator, Any, KeysView, ValuesView, ItemsView
-import uuid
 
-from PHX.model.schedules import ventilation, occupancy, lighting
+import uuid
+from dataclasses import dataclass, field
+from typing import Any, Dict, Generator, ItemsView, KeysView, Optional, Union, ValuesView
+
+from PHX.model.schedules import lighting, occupancy, ventilation
 
 
 @dataclass

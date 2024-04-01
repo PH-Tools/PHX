@@ -4,9 +4,10 @@
 """PHX Window Shades."""
 
 from __future__ import annotations
-from typing import ClassVar, Union
-from dataclasses import dataclass, field
+
 import uuid
+from dataclasses import dataclass, field
+from typing import ClassVar, Union
 
 
 @dataclass

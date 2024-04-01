@@ -4,14 +4,15 @@
 """PHX Component (Face, Aperture) Classes"""
 
 from __future__ import annotations
-from typing import ClassVar, Collection, List, Set, Union, Optional, Tuple
 
-from PHX.model import geometry, constructions
+from typing import ClassVar, Collection, List, Optional, Set, Tuple, Union
+
+from PHX.model import constructions, geometry
 from PHX.model.enums.building import (
-    ComponentExposureExterior,
-    ComponentFaceType,
-    ComponentFaceOpacity,
     ComponentColor,
+    ComponentExposureExterior,
+    ComponentFaceOpacity,
+    ComponentFaceType,
     ThermalBridgeType,
 )
 

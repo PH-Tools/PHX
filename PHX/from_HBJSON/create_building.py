@@ -3,42 +3,36 @@
 
 """Functions to create a new PhxBuilding from Honeybee-Rooms"""
 
-from typing import List, Union, Dict
 from functools import partial
+from typing import Dict, List, Union
 
-from honeybee import room, aperture, face
-
-from honeybee_energy.construction import windowshade, window
-from honeybee_energy.properties.room import RoomEnergyProperties
+from honeybee import aperture, face, room
+from honeybee_energy.construction import window, windowshade
 from honeybee_energy.properties.aperture import ApertureEnergyProperties
 from honeybee_energy.properties.face import FaceEnergyProperties
-
+from honeybee_energy.properties.room import RoomEnergyProperties
+from honeybee_energy_ph.properties.construction.opaque import OpaqueConstructionPhProperties
+from honeybee_energy_ph.properties.construction.window import WindowConstructionPhProperties
+from honeybee_energy_ph.properties.load.people import PeoplePhProperties
 from honeybee_ph import space
 from honeybee_ph.properties.aperture import AperturePhProperties
 from honeybee_ph.properties.room import RoomPhProperties
-from honeybee_energy_ph.properties.load.people import PeoplePhProperties
-from honeybee_energy_ph.properties.construction.window import (
-    WindowConstructionPhProperties,
-)
-from honeybee_energy_ph.properties.construction.opaque import (
-    OpaqueConstructionPhProperties,
-)
 
 from PHX.from_HBJSON import create_geometry
 from PHX.from_HBJSON.create_rooms import create_room_from_space
-from PHX.model import building, constructions, components
-from PHX.model.utilization_patterns import (
-    UtilizationPatternCollection_Ventilation,
-    UtilizationPatternCollection_Occupancy,
-    UtilizationPatternCollection_Lighting,
-)
+from PHX.model import building, components, constructions
 from PHX.model.enums.building import (
+    ComponentColor,
     ComponentExposureExterior,
     ComponentFaceOpacity,
-    ComponentColor,
     ComponentFaceType,
-    ThermalBridgeType,
     SpecificHeatCapacity,
+    ThermalBridgeType,
+)
+from PHX.model.utilization_patterns import (
+    UtilizationPatternCollection_Lighting,
+    UtilizationPatternCollection_Occupancy,
+    UtilizationPatternCollection_Ventilation,
 )
 
 

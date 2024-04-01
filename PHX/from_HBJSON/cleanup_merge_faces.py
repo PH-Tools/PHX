@@ -4,12 +4,12 @@
 """Functions to allow the merging of HB-Faces which are used to simplify HB-Models."""
 
 import logging
-from typing import List, Tuple, TypeVar, Sequence
+from typing import List, Sequence, Tuple, TypeVar
 
 try:
+    from honeybee.aperture import Aperture
     from honeybee.face import Face
     from honeybee.shade import Shade
-    from honeybee.aperture import Aperture
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
 

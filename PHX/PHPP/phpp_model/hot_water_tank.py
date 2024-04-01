@@ -4,13 +4,12 @@
 """Model class for a PHPP DHW Tank"""
 
 from dataclasses import dataclass
-from typing import List
 from functools import partial
+from typing import List
 
 from PHX.model.hvac import water
-
-from PHX.xl import xl_data
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.xl import xl_data
 
 
 @dataclass

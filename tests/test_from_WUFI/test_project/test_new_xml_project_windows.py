@@ -1,6 +1,7 @@
 from typing import ValuesView
-from PHX.model.project import PhxProject
+
 from PHX.model.constructions import PhxConstructionWindow
+from PHX.model.project import PhxProject
 
 
 def test_project_data(

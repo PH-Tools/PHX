@@ -4,8 +4,8 @@
 """Model class for a PHPP DHW Piping Elements."""
 
 from dataclasses import dataclass
-from typing import List
 from functools import partial
+from typing import List
 
 from PHX.model.hvac import piping
 from PHX.PHPP.phpp_localization import shape_model

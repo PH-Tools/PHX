@@ -1,7 +1,8 @@
 from typing import Any, Dict
-from PHX.model import project
+
 from PHX.from_WUFI_XML.phx_schemas import _PhxProject
 from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
+from PHX.model import project
 
 
 def convert_WUFI_XML_to_PHX_project(

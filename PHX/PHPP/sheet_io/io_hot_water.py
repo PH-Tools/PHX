@@ -4,14 +4,15 @@
 """Controller Class for the PHPP "DHW+Distribution" worksheet."""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict, Any
+from typing import Any, Dict, List, Optional
 
 from ph_units.unit_type import Unit
 
-from PHX.xl import xl_app
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.PHPP.phpp_model import hot_water_tank, hot_water_piping
+from PHX.PHPP.phpp_model import hot_water_piping, hot_water_tank
+from PHX.xl import xl_app
 
 
 class RecircPiping:

@@ -7,9 +7,9 @@ from __future__ import annotations
 
 from ph_units.unit_type import Unit
 
-from PHX.xl.xl_app import XLConnection
 from PHX.PHPP.phpp_localization import shape_model as shp
 from PHX.PHPP.sheet_io.io_exceptions import PHPPDataMissingException
+from PHX.xl.xl_app import XLConnection
 
 
 class OverviewBasicData:

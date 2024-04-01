@@ -1,19 +1,18 @@
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
 from ladybug_geometry.geometry3d.pointvector import Point3D
+from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
-from PHX.to_WUFI_XML import xml_schemas
+from PHX.model.hvac.collection import PhxMechanicalSystemCollection
 from PHX.model.hvac.piping import (
+    PhxHotWaterPipingDiameter,
+    PhxHotWaterPipingMaterial,
+    PhxPipeBranch,
     PhxPipeElement,
     PhxPipeSegment,
     PhxPipeTrunk,
-    PhxPipeBranch,
-    PhxHotWaterPipingMaterial,
-    PhxHotWaterPipingDiameter,
 )
-from PHX.model.hvac.collection import PhxMechanicalSystemCollection
-
-from tests.test_to_WUFI_xml._utils import xml_string_to_list
+from PHX.to_WUFI_XML import xml_schemas
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
+from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
 def test_add_Trunk_to_HW_System(reset_class_counters):

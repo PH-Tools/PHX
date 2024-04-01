@@ -4,11 +4,12 @@
 """PHX Passive House Mechanical Equipment Classes"""
 
 from __future__ import annotations
-from inspect import signature
-from dataclasses import dataclass, field
+
 import math
-from typing import Optional, ClassVar, Union, Any
 import uuid
+from dataclasses import dataclass, field
+from inspect import signature
+from typing import Any, ClassVar, Optional, Union
 
 from PHX.model.enums.hvac import DeviceType, SystemType
 

@@ -7,18 +7,9 @@ import pathlib
 
 from rich import print
 
-from PHX.from_HBJSON import read_HBJSON_file, create_project
+from PHX.from_HBJSON import create_project, read_HBJSON_file
+from PHX.model import building, certification, components, constructions, elec_equip, geometry, project, schedules
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
-from PHX.model import (
-    building,
-    project,
-    geometry,
-    schedules,
-    certification,
-    constructions,
-    elec_equip,
-    components,
-)
 from tests.conftest import _reload_phx_classes, _reset_phx_class_counters
 
 # -- For PyTest files

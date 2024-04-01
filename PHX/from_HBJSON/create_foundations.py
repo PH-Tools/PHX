@@ -4,10 +4,11 @@
 """Functions to build PHX-Foundations from HBPH source objects."""
 
 from typing import Dict
+
 from honeybee_ph.foundations import PhFoundation
 
-from PHX.model.enums.foundations import FoundationType
 from PHX.model import ground
+from PHX.model.enums.foundations import FoundationType
 
 
 def create_phx_foundation_from_hbph(

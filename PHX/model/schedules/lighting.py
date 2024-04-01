@@ -4,9 +4,10 @@
 """PHX Lighting Utilization Schedule."""
 
 from __future__ import annotations
-from typing import ClassVar, Any, Union
-from dataclasses import dataclass, field
+
 import uuid
+from dataclasses import dataclass, field
+from typing import Any, ClassVar, Union
 
 
 @dataclass

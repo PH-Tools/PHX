@@ -3,16 +3,15 @@
 
 """Export an HBJSON file to a PHPP excel document."""
 
-import sys
 import pathlib
+import sys
 
 import xlwings as xw
 
-from PHX.from_HBJSON import read_HBJSON_file, create_project
+from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.PHPP import phpp_app
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.xl import xl_app
-
 
 if __name__ == "__main__":
     # --- Command line arguments

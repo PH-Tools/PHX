@@ -1,4 +1,4 @@
-from PHX.model import project, constructions
+from PHX.model import constructions, project
 
 
 def test_blank_project(reset_class_counters):

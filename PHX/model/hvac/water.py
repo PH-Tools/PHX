@@ -4,12 +4,12 @@
 """PHX Water Devices"""
 
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Optional
 
-from PHX.model.enums.hvac import DeviceType, PhxHotWaterInputOptions, SystemType
+from PHX.model.enums.hvac import DeviceType, PhxHotWaterInputOptions, PhxHotWaterTankType, SystemType
 from PHX.model.hvac import _base
-from PHX.model.enums.hvac import PhxHotWaterTankType
 
 
 @dataclass
