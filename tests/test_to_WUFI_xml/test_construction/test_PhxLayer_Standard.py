@@ -23,4 +23,7 @@ def test_default_PhxLayer(reset_class_counters):
         "<Blue>255</Blue>",
         "</Color>",
         "</Material>",
+        '<ExchangeDivisionHorizontal count="0"/>',
+        '<ExchangeDivisionVertical count="0"/>',
+        '<ExchangeMaterialIdentNrs count="0"/>',
     ]
