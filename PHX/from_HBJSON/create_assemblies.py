@@ -3,17 +3,18 @@
 
 """Functions used to create Project elements from the Honeybee-Model"""
 
-from typing import Any, List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 from honeybee import model
 from honeybee.aperture import Aperture
 from honeybee_energy.construction import window, windowshade
+from honeybee_energy.construction.opaque import OpaqueConstruction
 from honeybee_energy.construction.window import WindowConstruction
 from honeybee_energy.construction.windowshade import WindowConstructionShade
 from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
 from honeybee_energy_ph.construction.window import PhWindowFrame, PhWindowGlazing
 from honeybee_energy_ph.properties.construction.window import WindowConstructionPhProperties
-from honeybee_energy_ph.properties.materials.opaque import EnergyMaterialPhProperties
+from honeybee_energy_ph.properties.materials.opaque import EnergyMaterialPhProperties, PhDivisionGrid
 from honeybee_ph_utils import color, iso_10077_1
 
 from PHX.model import constructions, project, shades
@@ -79,7 +80,6 @@ def build_phx_material_from_hb_EnergyMaterial(
     new_mat.heat_capacity = _hb_material.specific_heat
 
     _prop_ph = _hb_material.properties.ph  # type: EnergyMaterialPhProperties # type: ignore
-    new_mat.percentage_of_assembly = _prop_ph.percentage_of_assembly
 
     try:
         hbph_color = _prop_ph.ph_color
@@ -132,6 +132,44 @@ def build_phx_material_from_hb_EnergyMaterialNoMass(
     return new_mat
 
 
+def build_phx_division_grid_from_hb_division_grid(_hb_div_grid: PhDivisionGrid) -> constructions.PhxLayerDivisionGrid:
+    """Create a new PHX-DivisionGrid with attributes based on a Honeybee-PH-Utils PhDivisionGrid.
+
+    Arguments:
+    ----------
+        * _hb_div_grid (PhDivisionGrid): The Honeybee-PH-Utils PhDivisionGrid to use as the source.
+
+    Returns:
+    --------
+        * (constructions.PhxLayerDivisionGrid): The new PHX-DivisionGrid object.
+    """
+
+    new_div_grid = constructions.PhxLayerDivisionGrid()
+
+    if _hb_div_grid.cell_count == 0:
+        return new_div_grid
+    
+    # -- Setup the grid
+    new_div_grid.set_column_widths(_hb_div_grid.column_widths)
+    new_div_grid.set_row_heights(_hb_div_grid.row_heights)
+
+    # -- Collect all the Materials first, otherwise they get duplicated for each cell
+    materials : dict[str, constructions.PhxMaterial] = {}
+    for cell in _hb_div_grid.cells:
+        new_phx_material = build_phx_material_from_hb_EnergyMaterial(cell.material)
+        key = "{}-{}".format(new_phx_material.display_name, new_phx_material.conductivity)
+        materials[key] = new_phx_material
+
+    # -- Set all the cell materials
+    for cell in _hb_div_grid.cells:
+        new_phx_material = build_phx_material_from_hb_EnergyMaterial(cell.material)
+        key = "{}-{}".format(new_phx_material.display_name, new_phx_material.conductivity)
+        new_phx_material = materials[key]
+        new_div_grid.set_cell_material(cell.column, cell.row, new_phx_material)
+
+    return new_div_grid
+
+
 def build_layer_from_hb_material(_hb_material: Union[EnergyMaterial, EnergyMaterialNoMass]) -> constructions.PhxLayer:
     """Returns a new PHX-Layer with attributes based on a Honeybee-Material.
 
@@ -147,22 +185,19 @@ def build_layer_from_hb_material(_hb_material: Union[EnergyMaterial, EnergyMater
 
     if isinstance(_hb_material, EnergyMaterial):
         new_layer.thickness_m = _hb_material.thickness
+        new_phx_material = build_phx_material_from_hb_EnergyMaterial(_hb_material)
+        new_layer.set_material(new_phx_material)
 
-        if _hb_material.properties.ph.base_materials:  # type: ignore
-            ## -- Layer is a heterogeneous material layer (ie: stud + insulation)
-            for hb_sub_material in _hb_material.properties.ph.base_materials:  # type: ignore
-                new_layer.add_material(build_phx_material_from_hb_EnergyMaterial(hb_sub_material))
-        else:
-            # -- Layer is homogeneous, use the base HB Material
-            new_layer.add_material(build_phx_material_from_hb_EnergyMaterial(_hb_material))
+        # --- Add in any 'mixed' material elements
+        div_grid = build_phx_division_grid_from_hb_division_grid(_hb_material.properties.ph.divisions)  # type: ignore
+        new_layer.divisions = div_grid
 
     elif isinstance(_hb_material, EnergyMaterialNoMass):
-        # -- NoMass layers cannot be heterogeneous (yet....)
         new_layer.thickness_m = 0.1  # 0.1m = 4". Use as default since No-Mass has no thickness
-        new_layer.add_material(build_phx_material_from_hb_EnergyMaterialNoMass(_hb_material, new_layer.thickness_m))
+        new_layer.set_material(build_phx_material_from_hb_EnergyMaterialNoMass(_hb_material, new_layer.thickness_m))
 
     else:
-        raise TypeError(f"Error: Unsupported Material type: '{type(_hb_material)}'.")
+        raise TypeError(f"Error: PHX does not support the Material type: '{type(_hb_material)}'.")
 
     return new_layer
 
@@ -183,7 +218,7 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
 
     for room in _hb_model.rooms:
         for face in room.faces:
-            hb_const = face.properties.energy.construction
+            hb_const = face.properties.energy.construction # type: OpaqueConstruction
 
             if not hb_const.identifier in _project.assembly_types:
                 # -- Create a new Assembly with Layers from the Honeybee-Construction
@@ -197,7 +232,7 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
 
             # -- Keep the ID numbers in sync
             _phx_assembly = _project.assembly_types[hb_const.identifier]
-            hb_const.properties.ph.id_num = _phx_assembly.id_num
+            hb_const.properties.ph.id_num = _phx_assembly.id_num # type: ignore
 
     return None
 

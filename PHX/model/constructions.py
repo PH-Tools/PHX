@@ -7,11 +7,10 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass, field
-from typing import ClassVar, Generator, List, Optional, Union, Iterable
-
+from typing import ClassVar, Generator, Iterable, List, Optional, Union
 
 # -----------------------------------------------------------------------------
-# Material Layers
+# Materials
 
 
 @dataclass
@@ -27,7 +26,7 @@ class PhxColor:
 class PhxMaterial:
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
-    
+
     display_name: str = ""
     conductivity: float = 0.0
     density: float = 0.0
@@ -37,25 +36,25 @@ class PhxMaterial:
     reference_water: float = 0.0
     percentage_of_assembly: float = 1.0
     argb_color: PhxColor = field(default_factory=PhxColor)
-    
+
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
     def __eq__(self, other: PhxMaterial) -> bool:
         return self.id_num == other.id_num
-        
+
     def __hash__(self) -> int:
         return hash(self.id_num)
 
 
 # -----------------------------------------------------------------------------
-# Mixed Material Layers
+# Layers (and Mixed Materials)
 
 
 @dataclass
 class PhxLayerDivisionCell:
-    """A single cell in a PhxLayerDivisionGrid."""
+    """A single cell aty a column/row in a PhxLayerDivisionGrid, with a specific material."""
 
     row: int
     column: int
@@ -65,16 +64,25 @@ class PhxLayerDivisionCell:
 
 @dataclass
 class PhxLayerDivisionGrid:
-    """A grid of PhxLayerDivisionCells."""
+    """A grid of PhxLayerDivisionCells to support 'mixed' materials.
+
+    The Cell grid is ordered from top-left to bottom-right:
+
+    |    | C0  | C1  | C2  | ...
+    |:---|:---:|:---:|:---:|:---:
+    | R0 | 0,0 | 1,0 | 2,0 | ...
+    | R1 | 0,1 | 1,1 | 2,1 | ...
+    | R2 | 0,2 | 1,2 | 2,2 | ...
+    """
 
     _row_heights: List[float] = field(default_factory=list)
     _column_widths: List[float] = field(default_factory=list)
     _cells: List[PhxLayerDivisionCell] = field(default_factory=list)
-    
+
     @property
     def column_widths(self) -> List[float]:
         """Return the list of column widths."""
-        return self._column_widths 
+        return self._column_widths
 
     @property
     def column_count(self) -> int:
@@ -90,12 +98,12 @@ class PhxLayerDivisionGrid:
     def row_count(self) -> int:
         """Return the number of rows in the grid."""
         return len(self._row_heights)
-    
+
     @property
     def cell_count(self) -> int:
         """Return the total number of cells in the grid."""
         return self.row_count * self.column_count
-    
+
     def set_column_widths(self, _column_widths: Iterable[float]) -> None:
         """Set the column widths of the grid."""
         self._column_widths = []
@@ -105,10 +113,6 @@ class PhxLayerDivisionGrid:
     def add_new_column(self, _column_width: float) -> None:
         """Add a new COLUMN to the grid with the given width."""
         self._column_widths.append(float(_column_width))
-        
-        # -- Add a default Row
-        if len(self._row_heights) == 0:
-            self._row_heights.append(1.0)
 
     def set_row_heights(self, _row_heights: Iterable[float]) -> None:
         """Set the row heights of the grid."""
@@ -117,12 +121,8 @@ class PhxLayerDivisionGrid:
             self.add_new_row(height)
 
     def add_new_row(self, _row_height: float) -> None:
-        """Add a new ROW to the grid with the given height."""
+        """Add a new ROW to the grid with the given height. Will add a default column if none are set."""
         self._row_heights.append(float(_row_height))
-
-        # -- Add a default Column
-        if len(self._column_widths) == 0:
-            self._column_widths.append(1.0)
 
     def get_cell(self, _column: int, _row: int) -> Optional[PhxLayerDivisionCell]:
         """Get the PhxLayerDivisionCell at the given column and row position."""
@@ -134,13 +134,13 @@ class PhxLayerDivisionGrid:
     def set_cell_material(self, _column_num: int, _row_num: int, _phx_material: PhxMaterial) -> None:
         """Set the PhxMaterial for a specific cell in the grid by its column/row position.
 
-        Cells are indexed by their column and row position stating from top-left:  
-        
+        Cells are indexed by their column and row position stating from top-left:
+
         |   | C0   | C1  | C2  | ...
         |---|------|-----|-----|----
         |R0 | 0,0  | 1,0 | 2,0 | ...
         |R1 | 0,1  | 1,1 | 2,1 | ...
-        |R2 | 0,2  | 1,2 | 2,2 | ...        
+        |R2 | 0,2  | 1,2 | 2,2 | ...
         """
         if _column_num >= self.column_count:
             raise IndexError(
@@ -150,24 +150,19 @@ class PhxLayerDivisionGrid:
 
         if _row_num >= self.row_count:
             raise IndexError(
-                f"Row number '{_row_num}' is out of range."
-                "Please set the rows before assigning division materials."
+                f"Row number '{_row_num}' is out of range." "Please set the rows before assigning division materials."
             )
-        
+
         # -- See if the cell already exists, if so reset its material
         # -- if not, create a new cell.
         cell = self.get_cell(_column_num, _row_num)
-        if cell: 
+        if cell:
             cell.material = _phx_material
         else:
-            cell = PhxLayerDivisionCell(
-                row=_row_num,
-                column=_column_num,
-                material=_phx_material
-            )
+            cell = PhxLayerDivisionCell(row=_row_num, column=_column_num, material=_phx_material)
 
         self._cells.append(cell)
-    
+
     def get_cell_material(self, _column_num: int, _row_num: int) -> Optional[PhxMaterial]:
         """Get the PhxMaterial for a specific cell in the grid by its column/row position."""
         for cell in self._cells:
@@ -179,17 +174,19 @@ class PhxLayerDivisionGrid:
 @dataclass
 class PhxLayer:
     """A single layer in a PhxConstructionOpaque.
-    
+
     This layer may be a single material or a grid of multiple materials.
     """
-    
+
     thickness_m: float = 0.0
-    materials: List[PhxMaterial] = field(default_factory=list) # TODO: Why is 'materials' a list?
+    # TODO: deprecated 'materials' - not longer needs to be a list...
+    # TODO: this will break a lot of PHPP write items...fix those.
+    materials: List[PhxMaterial] = field(default_factory=list)  # TODO: Why is 'materials' a list?
     divisions: PhxLayerDivisionGrid = field(default_factory=PhxLayerDivisionGrid)
 
     @property
     def material(self) -> PhxMaterial:
-        """Return the first PhxMaterial from the self.materials collection."""     
+        """Return the first PhxMaterial from the self.materials collection."""
         if not self.materials:
             # -- Return a default PhxMaterial if no materials are set.
             return PhxMaterial()
@@ -232,7 +229,7 @@ class PhxLayer:
             return (1 / self.material.conductivity) * self.thickness_m
         except ZeroDivisionError:
             return 0.0
-    
+
     @property
     def layer_conductance(self) -> float:
         """Returns the thermal-conductance of the layer in W/m2K"""
@@ -244,23 +241,23 @@ class PhxLayer:
     @property
     def division_materials(self) -> list[PhxMaterial]:
         """Returns a list of all the PhxLayerDivisionCell PhxMaterials ordered by column and then row:
-        
+
         |    | C0  | C1  | C2  | ...
         |:---|:---:|:---:|:---:|:---:
-        | R0 | 0   | 4   | 8   | ...  
-        | R1 | 1   | 5   | 9   | ...  
-        | R2 | 2   | 6   | 10  | ...  
-        | R3 | 3   | 7   | 11  | ...  
+        | R0 | 0   | 4   | 8   | ...
+        | R1 | 1   | 5   | 9   | ...
+        | R2 | 2   | 6   | 10  | ...
+        | R3 | 3   | 7   | 11  | ...
         """
         if self.divisions.row_count == 0 and self.divisions.column_count == 0:
             return []
-        
+
         return [
-                self.divisions.get_cell_material(column, row) or self.material
-                for column in range(self.divisions.column_count or 1)
-                for row in range(self.divisions.row_count or 1)
+            self.divisions.get_cell_material(column, row) or self.material
+            for column in range(self.divisions.column_count or 1)
+            for row in range(self.divisions.row_count or 1)
         ]
-    
+
     @property
     def exchange_materials(self) -> List[PhxMaterial]:
         """Returns a list of all the 'Exchange' materials (for mixed layers) in all the Division Cells."""
@@ -269,7 +266,7 @@ class PhxLayer:
     @property
     def division_material_id_numbers(self) -> List[int]:
         """Returns a list of all the 'Exchange' material id-numbers in all the Division Cells.
-        
+
         Will return -1 if the cell has the Layer's Material.
         """
         id_numbers_ = []
