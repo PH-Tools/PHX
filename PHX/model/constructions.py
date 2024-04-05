@@ -8,6 +8,7 @@ from __future__ import annotations
 import uuid
 from dataclasses import dataclass, field
 from typing import ClassVar, Generator, Iterable, List, Optional, Union
+import warnings
 
 # -----------------------------------------------------------------------------
 # Materials
@@ -170,6 +171,12 @@ class PhxLayerDivisionGrid:
                 return cell.material
         return None
 
+    def get_cell_area(self, _column_num: int, _row_num) -> float:
+        """Get the area of the cell (row-height * column-width)."""
+        col_width = self.column_widths[_column_num]
+        row_height = self.row_heights[_row_num]
+        return col_width * row_height
+
 
 @dataclass
 class PhxLayer:
@@ -179,28 +186,66 @@ class PhxLayer:
     """
 
     thickness_m: float = 0.0
-    # TODO: deprecated 'materials' - not longer needs to be a list...
-    # TODO: this will break a lot of PHPP write items...fix those.
-    materials: List[PhxMaterial] = field(default_factory=list)  # TODO: Why is 'materials' a list?
     divisions: PhxLayerDivisionGrid = field(default_factory=PhxLayerDivisionGrid)
+    _material: PhxMaterial = field(default_factory=PhxMaterial)
+
+    def _update_material_percentages(self) -> None:
+        """Update the percentage of the assembly for each material in the layer."""
+        if self.divisions.cell_count == 0:
+            return None
+
+        material_areas = {}
+        for row in range(self.divisions.row_count or 1):
+            for column in range(self.divisions.column_count or 1):
+                # -- Find the cell's area and material
+                cell_area = self.divisions.get_cell_area(column, row)
+                cell_material = self.divisions.get_cell_material(column, row) or self.material
+
+                # -- Update the material area record
+                if id(cell_material) not in material_areas:
+                    record = {"material": cell_material, "area": cell_area}
+                    material_areas[id(cell_material)] = record
+                else:
+                    material_areas[id(cell_material)]["area"] += cell_area
+
+        # -- Re-set the percentage of the assembly for each material
+        total_area = sum([record["area"] for record in material_areas.values()])
+        for record in material_areas.values():
+            record["material"].percentage_of_assembly = record["area"] / total_area
+
+        return None
+
+    @property
+    def materials(self) -> List[PhxMaterial]:
+        """Return a list of all the PhxMaterials in the Layer."""
+        self._update_material_percentages()
+        return [self.material] + self.exchange_materials
+
+    @materials.setter
+    def materials(self, _: PhxMaterial) -> None:
+        msg = (
+            "The 'materials' property is deprecated. Please use the 'set_material()' method or "
+            "the 'divisions' attribute to setup mixed materials."
+        )
+        raise DeprecationWarning(msg)
 
     @property
     def material(self) -> PhxMaterial:
-        """Return the first PhxMaterial from the self.materials collection."""
-        if not self.materials:
-            # -- Return a default PhxMaterial if no materials are set.
-            return PhxMaterial()
-        else:
-            # -- Otherwise return the first material in the collection.
-            return self.materials[0]
+        """Return the base PhxMaterial of the Layer."""
+        return self._material
 
     def add_material(self, _material: PhxMaterial) -> None:
         """Add a PhxMaterial to the self.materials collection."""
-        self.materials.append(_material)
+        self._material = _material
+        msg = (
+            "The 'add_material' method is deprecated. Please use the 'set_material()' method or "
+            "the 'divisions' attribute for mixed materials."
+        )
+        warnings.warn(msg, DeprecationWarning)
 
     def set_material(self, _material: PhxMaterial) -> None:
         """Set the PhxMaterial for the layer."""
-        self.materials = [_material]
+        self._material = _material
 
     @property
     def thickness_mm(self) -> float:
@@ -218,7 +263,7 @@ class PhxLayer:
         new_mat = PhxMaterial()
         new_mat.conductivity = obj.thickness_m * _total_u_value
         new_mat.display_name = "Material"
-        obj.materials.append(new_mat)
+        obj.set_material(new_mat)
 
         return obj
 

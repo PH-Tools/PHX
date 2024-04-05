@@ -304,7 +304,7 @@ def _PhxLayer(_data: wufi_xml.Layer) -> PhxLayer:
     phx_obj = PhxLayer()
     phx_obj.thickness_m = _data.Thickness
     new_mat = as_phx_obj(_data.Material, "PhxMaterial")
-    phx_obj.add_material(new_mat)
+    phx_obj.set_material(new_mat)
 
     return phx_obj
 

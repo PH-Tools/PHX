@@ -34,7 +34,7 @@ def test_add_simple_layer_no_divisions(reset_class_counters) -> None:
     mat_1 = constructions.PhxMaterial(display_name="mat_1")
     layer_1 = constructions.PhxLayer()
     layer_1.set_material(mat_1)
-    
+
     a1 = constructions.PhxConstructionOpaque()
     a1.layers.append(layer_1)
     assert len(a1.layers) == 1
@@ -46,7 +46,8 @@ def test_add_layer_with_multiple_columns(reset_class_counters) -> None:
     mat_2 = constructions.PhxMaterial(display_name="mat_2")
     layer_1 = constructions.PhxLayer()
     layer_1.set_material(mat_1)
-    layer_1.divisions.set_column_widths([1,1])
+    layer_1.divisions.set_column_widths([1, 1])
+    layer_1.divisions.add_new_row(1)
     layer_1.divisions.set_cell_material(1, 0, mat_2)
 
     # -- Construction
@@ -71,7 +72,8 @@ def test_multiple_layers_multiple_columns(reset_class_counters) -> None:
     mat_2 = constructions.PhxMaterial(display_name="mat_2")
     layer_1 = constructions.PhxLayer()
     layer_1.set_material(mat_1)
-    layer_1.divisions.set_column_widths([1,1])
+    layer_1.divisions.set_column_widths([1, 1])
+    layer_1.divisions.add_new_row(1)
     layer_1.divisions.set_cell_material(1, 0, mat_2)
 
     # -- Multiple Rows
@@ -79,7 +81,8 @@ def test_multiple_layers_multiple_columns(reset_class_counters) -> None:
     mat_4 = constructions.PhxMaterial(display_name="mat_4")
     layer_2 = constructions.PhxLayer()
     layer_2.set_material(mat_3)
-    layer_2.divisions.set_row_heights([1,1])
+    layer_2.divisions.set_row_heights([1, 1])
+    layer_2.divisions.add_new_column(1)
     layer_2.divisions.set_cell_material(0, 1, mat_4)
 
     # -- Construction
