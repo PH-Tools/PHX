@@ -748,25 +748,31 @@ def _PhxLayer(_l: constructions.PhxLayer) -> List[xml_writable]:
         column_widths = []
     else:
         column_widths = _l.divisions.column_widths
-    
+
     return [
         XML_Node("Thickness", _l.thickness_m),
         XML_Object("Material", _l.material),
-        XML_List("ExchangeDivisionHorizontal",
+        XML_List(
+            "ExchangeDivisionHorizontal",
             [
                 XML_Object("DivisionH", n, "index", i, _schema_name="_PhxLayerDivision")
                 for i, n in enumerate(column_widths)
-            ]),
-        XML_List("ExchangeDivisionVertical",
+            ],
+        ),
+        XML_List(
+            "ExchangeDivisionVertical",
             [
                 XML_Object("DivisionV", n, "index", i, _schema_name="_PhxLayerDivision")
                 for i, n in enumerate(row_heights)
-            ]),
-        XML_List("ExchangeMaterialIdentNrs",
+            ],
+        ),
+        XML_List(
+            "ExchangeMaterialIdentNrs",
             [
                 XML_Object("MaterialIDNr", m, "index", i, _schema_name="_MaterialIDNr")
                 for i, m in enumerate(_l.division_material_id_numbers)
-            ]),
+            ],
+        ),
     ]
 
 
@@ -780,7 +786,7 @@ def _PhxLayerDivision(_d: float) -> List[xml_writable]:
 def _MaterialIDNr(_id_num: int) -> List[xml_writable]:
     return [
         XML_Node("Type", 1),
-        XML_Node("IdentNr_Object", _id_num), 
+        XML_Node("IdentNr_Object", _id_num),
     ]
 
 

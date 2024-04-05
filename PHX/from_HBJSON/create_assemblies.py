@@ -148,13 +148,13 @@ def build_phx_division_grid_from_hb_division_grid(_hb_div_grid: PhDivisionGrid) 
 
     if _hb_div_grid.cell_count == 0:
         return new_div_grid
-    
+
     # -- Setup the grid
     new_div_grid.set_column_widths(_hb_div_grid.column_widths)
     new_div_grid.set_row_heights(_hb_div_grid.row_heights)
 
     # -- Collect all the Materials first, otherwise they get duplicated for each cell
-    materials : dict[str, constructions.PhxMaterial] = {}
+    materials: dict[str, constructions.PhxMaterial] = {}
     for cell in _hb_div_grid.cells:
         new_phx_material = build_phx_material_from_hb_EnergyMaterial(cell.material)
         key = "{}-{}".format(new_phx_material.display_name, new_phx_material.conductivity)
@@ -218,7 +218,7 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
 
     for room in _hb_model.rooms:
         for face in room.faces:
-            hb_const = face.properties.energy.construction # type: OpaqueConstruction
+            hb_const = face.properties.energy.construction  # type: OpaqueConstruction
 
             if not hb_const.identifier in _project.assembly_types:
                 # -- Create a new Assembly with Layers from the Honeybee-Construction
@@ -232,7 +232,7 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
 
             # -- Keep the ID numbers in sync
             _phx_assembly = _project.assembly_types[hb_const.identifier]
-            hb_const.properties.ph.id_num = _phx_assembly.id_num # type: ignore
+            hb_const.properties.ph.id_num = _phx_assembly.id_num  # type: ignore
 
     return None
 

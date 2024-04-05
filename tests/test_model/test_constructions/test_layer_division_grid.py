@@ -1,6 +1,6 @@
 import pytest
-from PHX.model.constructions import PhxLayer, PhxMaterial, PhxLayerDivisionGrid
 
+from PHX.model.constructions import PhxLayer, PhxLayerDivisionGrid, PhxMaterial
 
 # ---- DivisionGrid Columns and Rows ----------------------------
 

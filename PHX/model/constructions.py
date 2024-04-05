@@ -6,9 +6,9 @@
 from __future__ import annotations
 
 import uuid
+import warnings
 from dataclasses import dataclass, field
 from typing import ClassVar, Generator, Iterable, List, Optional, Union
-import warnings
 
 # -----------------------------------------------------------------------------
 # Materials
