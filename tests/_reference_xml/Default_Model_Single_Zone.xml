@@ -202,7 +202,7 @@
 				<Components count="3">
 					<Component index="0">
 						<IdentNr>5</IdentNr>
-						<Name>Room_1_fa42066c..Face4</Name>
+						<Name>Room_5_b40a5c66..Face4</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>12</IdentNrColorI>
@@ -218,7 +218,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
-						<Name>Room_1_fa42066c..Face5</Name>
+						<Name>Room_5_b40a5c66..Face5</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>7</IdentNrColorI>
@@ -593,6 +593,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.1</Thickness>
@@ -611,6 +614,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.05</Thickness>
@@ -629,6 +635,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="3">
 					<Thickness>0.1</Thickness>
@@ -647,6 +656,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="4">
 					<Thickness>0.0127</Thickness>
@@ -665,8 +677,12 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="1">
 			<IdentNr>2</IdentNr>
@@ -691,6 +707,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.2</Thickness>
@@ -709,8 +728,12 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="2">
 			<IdentNr>3</IdentNr>
@@ -735,6 +758,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.05</Thickness>
@@ -753,6 +779,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.1</Thickness>
@@ -771,6 +800,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="3">
 					<Thickness>0.1</Thickness>
@@ -789,6 +821,9 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="4">
 					<Thickness>0.02</Thickness>
@@ -807,8 +842,12 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 	</Assemblies>
 	<WindowTypes count="0"/>
