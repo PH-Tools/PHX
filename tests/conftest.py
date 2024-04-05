@@ -79,6 +79,7 @@ def _reset_phx_class_counters():
     geometry.PhxVertix._count = 0
     constructions.PhxConstructionOpaque._count = 0
     constructions.PhxConstructionWindow._count = 0
+    constructions.PhxMaterial._count = 0
     building.PhxZone._count = 0
     certification.PhxPhBuildingData._count = 0
 

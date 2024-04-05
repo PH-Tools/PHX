@@ -726,13 +726,67 @@ def _PhxConstructionOpaque(_a: constructions.PhxConstructionOpaque) -> List[xml_
             "Layers",
             [XML_Object("Layer", n, "index", i) for i, n in enumerate(_a.layers)],
         ),
+        XML_List(
+            "ExchangeMaterials",
+            [
+                XML_Object("ExchangeMaterial", n, "index", i, _schema_name="_PhxExchangeMaterial")
+                for i, n in enumerate(_a.exchange_materials)
+            ],
+        ),
     ]
 
 
 def _PhxLayer(_l: constructions.PhxLayer) -> List[xml_writable]:
+    # If there is only one row, ignore it
+    if len(_l.divisions.row_heights) == 1:
+        row_heights = []
+    else:
+        row_heights = _l.divisions.row_heights
+
+    # if there is only one column, ignore it
+    if len(_l.divisions.column_widths) == 1:
+        column_widths = []
+    else:
+        column_widths = _l.divisions.column_widths
+
     return [
         XML_Node("Thickness", _l.thickness_m),
         XML_Object("Material", _l.material),
+        XML_List(
+            "ExchangeDivisionHorizontal",
+            [
+                XML_Object("DivisionH", n, "index", i, _schema_name="_PhxLayerDivision")
+                for i, n in enumerate(column_widths)
+            ],
+        ),
+        XML_List(
+            "ExchangeDivisionVertical",
+            [
+                XML_Object("DivisionV", n, "index", i, _schema_name="_PhxLayerDivision")
+                for i, n in enumerate(row_heights)
+            ],
+        ),
+        XML_List(
+            "ExchangeMaterialIdentNrs",
+            [
+                XML_Object("MaterialIDNr", m, "index", i, _schema_name="_MaterialIDNr")
+                for i, m in enumerate(_l.division_material_id_numbers)
+            ],
+        ),
+    ]
+
+
+def _PhxLayerDivision(_d: float) -> List[xml_writable]:
+    return [
+        XML_Node("Distance", _d),
+        XML_Node("ExpandingContracting", 2),
+    ]
+
+
+def _MaterialIDNr(_id_num: int) -> List[xml_writable]:
+    return [
+        XML_Node("Type", 1),
+        XML_Node("IdentNr_Object", _id_num),
     ]
 
 
@@ -755,6 +809,17 @@ def _PhxColor(_c: constructions.PhxColor) -> List[xml_writable]:
         XML_Node("Red", _c.red),
         XML_Node("Green", _c.green),
         XML_Node("Blue", _c.blue),
+    ]
+
+
+def _PhxExchangeMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
+    return [
+        XML_Node("IdentNr", _m.id_num),
+        XML_Node("Name", _m.display_name),
+        XML_Node("ThermalConductivity", _m.conductivity),
+        XML_Node("BulkDensity", _m.density),
+        XML_Node("HeatCapacity", _m.heat_capacity),
+        XML_Object("Color", _m.argb_color, _schema_name="_PhxColor"),
     ]
 
 

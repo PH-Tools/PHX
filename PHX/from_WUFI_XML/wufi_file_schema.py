@@ -861,9 +861,43 @@ class Material(BaseModel):
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
+class DivisionV(BaseModel):
+    Distance: unit.M
+    ExpandingContracting: int
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class DivisionH(BaseModel):
+    Distance: unit.M
+    ExpandingContracting: int
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class MaterialIDNr(BaseModel):
+    Type: int
+    IdentNr_Object: int
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
 class Layer(BaseModel):
     Thickness: unit.M
     Material: Material
+    ExchangeDivisionHorizontal: Optional[List[DivisionH]]
+    ExchangeDivisionVertical: Optional[List[DivisionV]]
+    ExchangeMaterialIdentNrs: Optional[List[MaterialIDNr]]
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
+class ExchangeMaterial(BaseModel):
+    IdentNr: int
+    Name: str
+    ThermalConductivity: unit.Watts_per_MK
+    BulkDensity: unit.KG_per_M3
+    HeatCapacity: unit.Joule_per_KGK
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
@@ -874,6 +908,7 @@ class Assembly(BaseModel):
     Order_Layers: int
     Grid_Kind: int
     Layers: List[Layer]
+    ExchangeMaterials: Optional[List[ExchangeMaterial]]
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
