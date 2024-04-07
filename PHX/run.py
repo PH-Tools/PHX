@@ -93,10 +93,18 @@ def _run_subprocess_from_shell(commands):
 
     # -- Make sure the files are executable
     shell_file = commands[0]
-    subprocess.check_call(["chmod", "u+x", shell_file])
+    try:
+        subprocess.check_call(["chmod", "u+x", shell_file])
+    except Exception as e:
+        print("Failed to make the shell file executable: {}".format(e))
+        raise e
 
     python_script_path = commands[3]
-    subprocess.check_call(["chmod", "u+x", python_script_path])
+    try:
+        subprocess.check_call(["chmod", "u+x", python_script_path])
+    except Exception as e:
+        print("Failed to make the python script executable: {}".format(e))
+        raise e
 
     process = subprocess.Popen(
         commands,
@@ -234,18 +242,19 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate
         # -- This is a workaround for the permissions issue on MacOS.
         # -- See:
         # -- https://discourse.mcneel.com/t/python-subprocess-permissions-error-on-mac-os-1743/142830/6
-        # -- Find the files to run
+        # -- Find the file paths to run
         shell_file = os.path.join(_lbt_python_site_packages_path, "PHX", "_hbjson_to_phpp.sh")
         execution_root = os.path.join(_lbt_python_site_packages_path, "PHX")
+        python_path = hb_folders.python_exe_path
         python_script_path = os.path.join(_lbt_python_site_packages_path, "PHX", "hbjson_to_phpp.py")
-
+        hbjson_file = _hbjson_file
         # -- Build up the commands to run
         commands = [
             shell_file,
             execution_root,
-            hb_folders.python_exe_path,
+            python_path,
             python_script_path,
-            _hbjson_file,
+            hbjson_file,
             _activate_variants,
         ]
         stdout, stderr = _run_subprocess_from_shell(commands)

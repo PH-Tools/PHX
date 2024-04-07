@@ -10,8 +10,13 @@ activate_variants=$5
 
 PYTHONHOME=""
 export PYTHONHOME
-echo Running ${python_script_path}
+echo Using:
+echo - Path: ${exe_path}
+echo - Python: ${python_exe_path}
+echo - Script: ${python_script_path}
+echo - HBJSON: ${hbjson_file_path}
+echo - Variants: ${activate_variants}
 cd "$exe_path"
 osascript -e "tell app \"Terminal\"
-    do script \"${python_exe_path} ${python_script_path} ${hbjson_file_path} ${activate_variants}\"
+    do script \"\\\"${python_exe_path}\\\" \\\"${python_script_path}\\\" \\\"${hbjson_file_path}\\\" ${activate_variants}\"
 end tell"
