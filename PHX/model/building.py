@@ -34,7 +34,7 @@ class PhxZone:
     res_number_bedrooms: int = 0
     res_number_dwellings: int = 0
     specific_heat_capacity: SpecificHeatCapacity = SpecificHeatCapacity.LIGHTWEIGHT
-    
+
     # -- Neeed for WUFI's Attached Zones
     zone_type: ZoneType = ZoneType.SIMULATED
     attached_zone_type = AttachedZoneType.NONE
@@ -67,9 +67,7 @@ class PhxZone:
 
     def add_thermal_bridges(
         self,
-        _thermal_bridges: Union[
-            PhxComponentThermalBridge, Sequence[PhxComponentThermalBridge]
-        ],
+        _thermal_bridges: Union[PhxComponentThermalBridge, Sequence[PhxComponentThermalBridge]],
     ) -> None:
         """Add a new PhxComponentThermalBridge (or list of Bridges) to the PhxZone."""
         if not isinstance(_thermal_bridges, Sequence):
@@ -100,7 +98,7 @@ class PhxZone:
         unique_tbs: defaultdict[str, List[PhxComponentThermalBridge]] = defaultdict(list)
         for tb in self.thermal_bridges:
             unique_tbs[tb.unique_key].append(tb)
-        
+
         # -- Create a new merged TB from each of the groups
         merged_tb_components: List[PhxComponentThermalBridge] = []
         for tb_group in unique_tbs.values():
@@ -131,9 +129,7 @@ class PhxBuilding:
         """Returns the total net-volume of all the zones in the PhxBuilding."""
         return sum(z.volume_net for z in self.zones)
 
-    def add_components(
-        self, _components: Union[PhxComponentOpaque, Sequence[PhxComponentOpaque]]
-    ) -> None:
+    def add_components(self, _components: Union[PhxComponentOpaque, Sequence[PhxComponentOpaque]]) -> None:
         """Add new PHX Components to the PhxBuilding."""
         if not isinstance(_components, Sequence):
             _components = (_components,)
@@ -169,6 +165,12 @@ class PhxBuilding:
         for component_group in new_component_groups.values():
             grouped_opaque_components.append(reduce(operator.add, component_group))
 
+        # -- Re-Set the names of all the new components
+        # -- This is already done for components that __add__, but single surfaces that skipped
+        # -- the __add__ method also need to have their names reset.
+        for component in grouped_opaque_components:
+            component.display_name = f"{component.face_type.name} [{component.assembly.display_name}]"
+
         # -- Reset the Building's Components
         self._components = grouped_opaque_components
 
@@ -182,7 +184,7 @@ class PhxBuilding:
                 new_component_groups[a.unique_key].append(a)
 
             # -- Create new components from the groups
-            grouped_aperture_components = []
+            grouped_aperture_components: List[PhxComponentAperture] = []
             for component_group in new_component_groups.values():
                 grouped_aperture_components.append(reduce(operator.add, component_group))
 
@@ -238,11 +240,7 @@ class PhxBuilding:
             * (List[PhxApertureElement]) A sorted list of all the aperture components.
         """
         return sorted(
-            [
-                el
-                for ap in self.aperture_components
-                for el in ap.elements
-            ],
+            [el for ap in self.aperture_components for el in ap.elements],
             key=lambda el: el.display_name,
         )
 
@@ -263,10 +261,7 @@ class PhxBuilding:
             if not el.polygon:
                 continue
 
-            if (
-                el.polygon.angle_from_horizontal <= 45
-                or el.polygon.angle_from_horizontal >= 135
-            ):
+            if el.polygon.angle_from_horizontal <= 45 or el.polygon.angle_from_horizontal >= 135:
                 aperture_elements_by_orientation.horizontal.append(el)
             elif el.polygon.cardinal_orientation_angle < 45:
                 aperture_elements_by_orientation.north.append(el)
@@ -315,7 +310,7 @@ class PhxBuilding:
             for ap in c.apertures:
                 unique_apertures[id(ap)] = ap
 
-        return sorted((ap for ap in unique_apertures.values()), key=lambda ap: ap.display_name)        
+        return sorted((ap for ap in unique_apertures.values()), key=lambda ap: ap.display_name)
 
     @property
     def opaque_components(self) -> List[PhxComponentOpaque]:
@@ -325,9 +320,7 @@ class PhxBuilding:
         --------
             * (List[PhxComponentOpaque]) A sorted list of all the opaque components.
         """
-        return sorted(
-            [c for c in self._components if not c.is_shade], key=lambda _: _.display_name
-        )
+        return sorted([c for c in self._components if not c.is_shade], key=lambda _: _.display_name)
 
     @property
     def roof_components(self) -> List[PhxComponentOpaque]:
@@ -337,9 +330,7 @@ class PhxBuilding:
         --------
             * (List[PhxComponentOpaque]) A sorted list of all the roof components.
         """
-        return sorted(
-            [c for c in self._components if c.is_roof], key=lambda _: _.display_name
-        )
+        return sorted([c for c in self._components if c.is_roof], key=lambda _: _.display_name)
 
     @property
     def above_grade_wall_components(self) -> List[PhxComponentOpaque]:
@@ -362,9 +353,7 @@ class PhxBuilding:
         --------
             * (List[PhxComponentOpaque]) A sorted list of all the shading components.
         """
-        return sorted(
-            [c for c in self._components if c.is_shade], key=lambda _: _.display_name
-        )
+        return sorted([c for c in self._components if c.is_shade], key=lambda _: _.display_name)
 
     @property
     def polygon_ids(self) -> Set[int]:
@@ -384,15 +373,11 @@ class PhxBuilding:
 
     def get_total_gross_wall_area(self) -> float:
         """Returns the total wall area of all the opaque components in the building."""
-        return sum(
-            c.get_total_gross_component_area() for c in self.above_grade_wall_components
-        )
+        return sum(c.get_total_gross_component_area() for c in self.above_grade_wall_components)
 
     def get_total_net_wall_area(self) -> float:
         """Returns the total net wall area of all the opaque components in the building."""
-        return sum(
-            c.get_total_net_component_area() for c in self.above_grade_wall_components
-        )
+        return sum(c.get_total_net_component_area() for c in self.above_grade_wall_components)
 
     def get_total_gross_roof_area(self) -> float:
         """Returns the total roof area of all the opaque components in the building."""

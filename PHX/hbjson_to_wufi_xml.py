@@ -204,6 +204,8 @@ if __name__ == "__main__":
     ## -- Setup the logging
     logger = startup_logging(LOG_LEVEL)
     logger.info(f"Logging with log-level: {LOG_LEVEL}")
+    logger.info(f"Group Components: {GROUP_COMPONENTS}")
+    logger.info(f"Merging Faces: {MERGE_FACES}")
 
     # --- Read in the existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
