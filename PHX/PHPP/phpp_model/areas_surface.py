@@ -11,6 +11,7 @@ from typing import Dict, List, Optional
 from PHX.model import components, geometry
 from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType
 from PHX.PHPP.phpp_localization import shape_model
+from PHX.PHPP.phpp_model import version
 from PHX.xl import xl_data
 
 
@@ -18,29 +19,38 @@ from PHX.xl import xl_data
 class SurfaceRow:
     """A single Areas/Surface entry row."""
 
-    __slots__ = ("shape", "phx_polygon", "phx_component", "phpp_assembly_id_name")
+    __slots__ = ("shape", "phx_polygon", "phx_component", "phpp_assembly_id_name", "phpp_version")
     shape: shape_model.Areas
     phx_polygon: geometry.PhxPolygon
     phx_component: components.PhxComponentOpaque
     phpp_assembly_id_name: Optional[str]
+    phpp_version: version.PHPPVersion
 
     @property
-    def phpp_group_number(self) -> int:
+    def phpp_group_number_format(self) -> str:
+        """Return the correct PHPP 'Group Format' depending on the PHPP version."""
+        if self.phpp_version.number_major == "9":
+            return "{}"
+        else:
+            return "{}-"
+
+    @property
+    def phpp_group_number(self) -> str:
         """Return the correct PHPP 'Group Number' depending on the exposure and type."""
 
         if self.phx_component.exposure_exterior == ComponentExposureExterior.SURFACE:
-            return 18
+            return self.phpp_group_number_format.format(18)
         elif self.phx_component.face_type == ComponentFaceType.WALL:
             if self.phx_component.exposure_exterior == ComponentExposureExterior.EXTERIOR:
-                return 8
+                return self.phpp_group_number_format.format(8)
             else:
-                return 9
+                return self.phpp_group_number_format.format(9)
         elif self.phx_component.face_type == ComponentFaceType.FLOOR:
-            return 11
+            return self.phpp_group_number_format.format(11)
         elif self.phx_component.face_type == ComponentFaceType.ROOF_CEILING:
-            return 10
+            return self.phpp_group_number_format.format(10)
         else:
-            return 12
+            return self.phpp_group_number_format.format(12)
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -67,7 +77,7 @@ class SurfaceRow:
             XLItemAreas(create_range("description"), f"'{self.phx_polygon.display_name}"),
             # -- Note, Add a "-" to the group number so that it is 'text' otherwise the
             # -- IP PHPP won't recognize it properly.
-            XLItemAreas(create_range("group_number"), f"{self.phpp_group_number}-"),
+            XLItemAreas(create_range("group_number"), self.phpp_group_number),
             XLItemAreas(create_range("quantity"), 1),
             XLItemAreas(
                 create_range("area"),

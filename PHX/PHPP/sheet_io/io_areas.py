@@ -10,7 +10,7 @@ from typing import Dict, Generator, List, Optional, Tuple
 from ph_units.unit_type import Unit
 
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.PHPP.phpp_model import areas_data, areas_surface, areas_thermal_bridges
+from PHX.PHPP.phpp_model import areas_data, areas_surface, areas_thermal_bridges, version
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset
 

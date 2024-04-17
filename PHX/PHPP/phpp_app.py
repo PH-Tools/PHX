@@ -9,14 +9,27 @@ from PHX.model import building, certification, components, project
 from PHX.model.hvac.collection import NoDeviceFoundError
 from PHX.PHPP import phpp_localization, sheet_io
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
-from PHX.PHPP.phpp_model import (areas_data, areas_surface,
-                                 areas_thermal_bridges, climate_entry,
-                                 component_frame, component_glazing,
-                                 component_vent, electricity_item,
-                                 hot_water_piping, hot_water_tank,
-                                 shading_rows, uvalues_constructor, vent_ducts,
-                                 vent_space, vent_units, ventilation_data,
-                                 verification_data, version, windows_rows)
+from PHX.PHPP.phpp_model import (
+    areas_data,
+    areas_surface,
+    areas_thermal_bridges,
+    climate_entry,
+    component_frame,
+    component_glazing,
+    component_vent,
+    electricity_item,
+    hot_water_piping,
+    hot_water_tank,
+    shading_rows,
+    uvalues_constructor,
+    vent_ducts,
+    vent_space,
+    vent_units,
+    ventilation_data,
+    verification_data,
+    version,
+    windows_rows,
+)
 from PHX.xl import xl_app
 from PHX.xl.xl_typing import xl_Sheet_Protocol
 
@@ -42,13 +55,9 @@ class PHPPConnection:
         self.shading = sheet_io.Shading(self.xl, self.shape.SHADING)
         self.addnl_vent = sheet_io.AddnlVent(self.xl, self.shape.ADDNL_VENT)
         self.heating = sheet_io.HeatingDemand(self.xl, self.shape.HEATING_DEMAND)
-        self.heating_load = sheet_io.HeatingPeakLoad(
-            self.xl, self.shape.HEATING_PEAK_LOAD
-        )
+        self.heating_load = sheet_io.HeatingPeakLoad(self.xl, self.shape.HEATING_PEAK_LOAD)
         self.cooling = sheet_io.CoolingDemand(self.xl, self.shape.COOLING_DEMAND)
-        self.cooling_load = sheet_io.CoolingPeakLoad(
-            self.xl, self.shape.COOLING_PEAK_LOAD
-        )
+        self.cooling_load = sheet_io.CoolingPeakLoad(self.xl, self.shape.COOLING_PEAK_LOAD)
         self.ventilation = sheet_io.Ventilation(self.xl, self.shape.VENTILATION)
         self.hot_water = sheet_io.HotWater(self.xl, self.shape.DHW)
         self.electricity = sheet_io.Electricity(self.xl, self.shape.ELECTRICITY)
@@ -124,9 +133,7 @@ class PHPPConnection:
 
         # ---------------------------------------------------------------------
         # -- Find the right Version number
-        raw_version_id: str = str(
-            data[1]
-        )  # Use the second value in the row - data (will this always work?)
+        raw_version_id: str = str(data[1])  # Use the second value in the row - data (will this always work?)
         ver_major, ver_minor = raw_version_id.split(".")
 
         # ---------------------------------------------------------------------
@@ -153,13 +160,9 @@ class PHPPConnection:
         # -- Build the new PHPPVersion object
         return version.PHPPVersion(ver_major, ver_minor, language)
 
-    def phpp_version_equals_phx_phi_cert_version(
-        self, _phx_variant: project.PhxVariant
-    ) -> bool:
+    def phpp_version_equals_phx_phi_cert_version(self, _phx_variant: project.PhxVariant) -> bool:
         """Return True if the PHX PHI Certification Version and the PHPP Version match."""
-        if not int(_phx_variant.phi_certification_major_version) == int(
-            self.version.number_major
-        ):
+        if not int(_phx_variant.phi_certification_major_version) == int(self.version.number_major):
             return False
         return True
 
@@ -281,15 +284,11 @@ class PHPPConnection:
 
         for phx_variant in phx_project.variants:
             # -- Write the actual weather station data
-            weather_station_data = climate_entry.ClimateDataBlock(
-                shape=self.shape.CLIMATE, phx_site=phx_variant.site
-            )
+            weather_station_data = climate_entry.ClimateDataBlock(shape=self.shape.CLIMATE, phx_site=phx_variant.site)
             self.climate.write_climate_block(weather_station_data)
 
             # -- Set the active weather station
-            active_climate_data = climate_entry.ClimateSettings(
-                shape=self.shape.CLIMATE, phx_site=phx_variant.site
-            )
+            active_climate_data = climate_entry.ClimateSettings(shape=self.shape.CLIMATE, phx_site=phx_variant.site)
             self.climate.write_active_climate(active_climate_data)
         return None
 
@@ -299,9 +298,7 @@ class PHPPConnection:
         construction_blocks: List[uvalues_constructor.ConstructorBlock] = []
         for phx_construction in phx_project.assembly_types.values():
             construction_blocks.append(
-                uvalues_constructor.ConstructorBlock(
-                    shape=self.shape.UVALUES, phx_construction=phx_construction
-                )
+                uvalues_constructor.ConstructorBlock(shape=self.shape.UVALUES, phx_construction=phx_construction)
             )
 
         self.u_values.write_constructor_blocks(construction_blocks)
@@ -314,22 +311,16 @@ class PHPPConnection:
         frame_component_rows: List[component_frame.FrameRow] = []
         for phx_construction in phx_project.window_types.values():
             glazing_component_rows.append(
-                component_glazing.GlazingRow(
-                    shape=self.shape.COMPONENTS, phx_construction=phx_construction
-                )
+                component_glazing.GlazingRow(shape=self.shape.COMPONENTS, phx_construction=phx_construction)
             )
             frame_component_rows.append(
-                component_frame.FrameRow(
-                    shape=self.shape.COMPONENTS, phx_construction=phx_construction
-                )
+                component_frame.FrameRow(shape=self.shape.COMPONENTS, phx_construction=phx_construction)
             )
         self.components.write_glazings(glazing_component_rows)
         self.components.write_frames(frame_component_rows)
         return None
 
-    def write_project_ventilation_components(
-        self, phx_project: project.PhxProject
-    ) -> None:
+    def write_project_ventilation_components(self, phx_project: project.PhxProject) -> None:
         """Write all of the ventilators from a PhxProject to the PHPP 'Components' worksheet."""
 
         phpp_ventilator_rows: List[component_vent.VentilatorRow] = []
@@ -372,6 +363,7 @@ class PHPPConnection:
                             self.u_values.get_constructor_phpp_id_by_name(
                                 opaque_component.assembly.display_name, _use_cache=True
                             ),
+                            self.version,
                         )
                     )
 
@@ -392,9 +384,7 @@ class PHPPConnection:
         for variant in phx_project.variants:
             for zone in variant.zones:
                 for phx_tb in zone.thermal_bridges:
-                    thermal_bridges.append(
-                        areas_thermal_bridges.ThermalBridgeRow(self.shape.AREAS, phx_tb)
-                    )
+                    thermal_bridges.append(areas_thermal_bridges.ThermalBridgeRow(self.shape.AREAS, phx_tb))
 
         if len(thermal_bridges) >= 100:
             print(
@@ -428,23 +418,17 @@ class PHPPConnection:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
                     for ap_polygon in phx_aperture.polygons:
-                        host_polygon = phx_component.get_host_polygon_by_child_id_num(
-                            ap_polygon.id_num
-                        )
-                        phpp_host_surface_id_name = (
-                            self.areas.surfaces.get_surface_phpp_id_by_name(
-                                host_polygon.display_name, _use_cache=True
-                            )
+                        host_polygon = phx_component.get_host_polygon_by_child_id_num(ap_polygon.id_num)
+                        phpp_host_surface_id_name = self.areas.surfaces.get_surface_phpp_id_by_name(
+                            host_polygon.display_name, _use_cache=True
                         )
                         phpp_id_frame = self.components.frames.get_frame_phpp_id_by_name(
                             phx_aperture.window_type.frame_type_display_name,
                             _use_cache=True,
                         )
-                        phpp_id_glazing = (
-                            self.components.glazings.get_glazing_phpp_id_by_name(
-                                phx_aperture.window_type.glazing_type_display_name,
-                                _use_cache=True,
-                            )
+                        phpp_id_glazing = self.components.glazings.get_glazing_phpp_id_by_name(
+                            phx_aperture.window_type.glazing_type_display_name,
+                            _use_cache=True,
                         )
 
                         phpp_windows.append(
@@ -455,9 +439,7 @@ class PHPPConnection:
                                 phpp_host_surface_id_name=phpp_host_surface_id_name,
                                 phpp_id_frame=phpp_id_frame,
                                 phpp_id_glazing=phpp_id_glazing,
-                                phpp_id_variant_type=window_type_phpp_ids[
-                                    phx_aperture.variant_type_name
-                                ].phpp_id,
+                                phpp_id_variant_type=window_type_phpp_ids[phx_aperture.variant_type_name].phpp_id,
                             )
                         )
 
@@ -509,8 +491,7 @@ class PHPPConnection:
 
         # Sort the phx apertures to match the window_names order
         phx_aperture_elements_in_order = (
-            _get_ap_element_from_dict(window_name, phx_aperture_dict)
-            for window_name in window_names
+            _get_ap_element_from_dict(window_name, phx_aperture_dict) for window_name in window_names
         )
 
         # Write out all the data to the Shading Worksheet
@@ -537,10 +518,8 @@ class PHPPConnection:
         for phx_variant in phx_project.variants:
             for mech_collection in phx_variant.mech_collections:
                 for phx_ventilator in mech_collection.ventilation_devices:
-                    phpp_id_ventilator = (
-                        self.components.ventilators.get_ventilator_phpp_id_by_name(
-                            phx_ventilator.display_name
-                        )
+                    phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
+                        phx_ventilator.display_name
                     )
                     new_vent_row = vent_units.VentUnitRow(
                         shape=self.shape.ADDNL_VENT,
@@ -561,16 +540,12 @@ class PHPPConnection:
                 for room in zone.spaces:
                     # -- Find the right Ventilator assigned to the Space.
                     try:
-                        phx_mech_ventilator = (phx_variant.get_mech_device_by_id(room.vent_unit_id_num))
-                        phpp_id_ventilator = (
-                            self.components.ventilators.get_ventilator_phpp_id_by_name(
-                                phx_mech_ventilator.display_name
-                            )
+                        phx_mech_ventilator = phx_variant.get_mech_device_by_id(room.vent_unit_id_num)
+                        phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
+                            phx_mech_ventilator.display_name
                         )
-                        phpp_row_ventilator = (
-                            self.addnl_vent.vent_units.get_vent_unit_num_by_phpp_id(
-                                phpp_id_ventilator
-                            )
+                        phpp_row_ventilator = self.addnl_vent.vent_units.get_vent_unit_num_by_phpp_id(
+                            phpp_id_ventilator
                         )
                     except NoDeviceFoundError:
                         # If no ventilation system / unit has not been applied yet
@@ -610,9 +585,7 @@ class PHPPConnection:
                 )
             )
             self.ventilation.write_multi_vent_worksheet_on(
-                ventilation_data.VentilationInputItem.multi_unit_on(
-                    self.shape.VENTILATION, "x"
-                )
+                ventilation_data.VentilationInputItem.multi_unit_on(self.shape.VENTILATION, "x")
             )
         return None
 
@@ -626,9 +599,7 @@ class PHPPConnection:
             bldg: building.PhxBuilding = variant.building
 
             self.ventilation.write_Vn50_volume(
-                ventilation_data.VentilationInputItem.airtightness_Vn50(
-                    self.shape.VENTILATION, bldg.net_volume
-                )
+                ventilation_data.VentilationInputItem.airtightness_Vn50(self.shape.VENTILATION, bldg.net_volume)
             )
 
     def write_project_airtightness(self, phx_project: project.PhxProject) -> None:
@@ -643,19 +614,13 @@ class PHPPConnection:
 
             # TODO: Get the actual values from the Model somehow
             self.ventilation.write_wind_coeff_e(
-                ventilation_data.VentilationInputItem.wind_coeff_e(
-                    self.shape.VENTILATION, ph_bldg.wind_coefficient_e
-                )
+                ventilation_data.VentilationInputItem.wind_coeff_e(self.shape.VENTILATION, ph_bldg.wind_coefficient_e)
             )
             self.ventilation.write_wind_coeff_f(
-                ventilation_data.VentilationInputItem.wind_coeff_f(
-                    self.shape.VENTILATION, ph_bldg.wind_coefficient_f
-                )
+                ventilation_data.VentilationInputItem.wind_coeff_f(self.shape.VENTILATION, ph_bldg.wind_coefficient_f)
             )
             self.ventilation.write_airtightness_n50(
-                ventilation_data.VentilationInputItem.airtightness_n50(
-                    self.shape.VENTILATION, ph_bldg.airtightness_n50
-                )
+                ventilation_data.VentilationInputItem.airtightness_n50(self.shape.VENTILATION, ph_bldg.airtightness_n50)
             )
         return None
 
@@ -663,7 +628,7 @@ class PHPPConnection:
         """Write the Hot Water data to the PHPP 'DHW+Distribution' worksheet."""
         for variant in phx_project.variants:
             mech_collection = variant.default_mech_collection
-            
+
             # -- Tanks
             # Use only the first 2 tanks for PHPP
             if len(mech_collection.dhw_tank_devices) > 2:
@@ -674,9 +639,7 @@ class PHPPConnection:
                 )
 
             tank_inputs = []
-            for i, phx_dhw_tank in enumerate(
-                mech_collection.dhw_tank_devices[:2], start=1
-            ):
+            for i, phx_dhw_tank in enumerate(mech_collection.dhw_tank_devices[:2], start=1):
                 tank_inputs.append(
                     hot_water_tank.TankInput(
                         self.shape.DHW,
@@ -688,9 +651,7 @@ class PHPPConnection:
 
             # -- Branch Piping
             branch_piping_inputs = []
-            branch_pipe_groups = (
-                mech_collection.dhw_distribution_piping_segments_by_diam
-            )
+            branch_pipe_groups = mech_collection.dhw_distribution_piping_segments_by_diam
             if len(branch_pipe_groups) > 5:
                 print(
                     "Warning: PHPP only allows 5 groups of DHW branch piping. "
@@ -739,9 +700,7 @@ class PHPPConnection:
         for phx_variant in phx_project.variants:
             for zone in phx_variant.building.zones:
                 for phx_equip in zone.elec_equipment_collection:
-                    equipment_inputs.append(
-                        electricity_item.ElectricityItemXLWriter(phx_equip)
-                    )
+                    equipment_inputs.append(electricity_item.ElectricityItemXLWriter(phx_equip))
             self.electricity.write_equipment(equipment_inputs)
 
         return None
@@ -765,9 +724,7 @@ class PHPPConnection:
 
         # -- Collect all the assemblies from the U-Values page
         # -- and add each one to the Variants assembly-layers section
-        for i, assembly_name in enumerate(
-            self.u_values.get_used_constructor_names(), start=0
-        ):
+        for i, assembly_name in enumerate(self.u_values.get_used_constructor_names(), start=0):
             if i > 25:
                 print(
                     "WARNING: The Variants worksheet can only handle 26 different assemblies."
@@ -803,9 +760,7 @@ class PHPPConnection:
 
         # -- Find the locations of the Ventilation input items
         input_item_rows = self.variants.get_ventilation_input_item_rows()
-        vent_unit_row = input_item_rows[
-            self.shape.VARIANTS.ventilation.input_item_names.ventilator_unit
-        ]
+        vent_unit_row = input_item_rows[self.shape.VARIANTS.ventilation.input_item_names.ventilator_unit]
 
         self.addnl_vent.activate_variants(
             variants_worksheet_name=self.shape.VARIANTS.name,
