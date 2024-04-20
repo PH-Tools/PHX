@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """PHX Building Classes"""
 
@@ -9,15 +9,11 @@ import operator
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import reduce
-from typing import (Any, ClassVar, Dict, Generator, List, NamedTuple, Optional,
-                    Sequence, Set, Union, ValuesView)
+from typing import Any, ClassVar, Dict, Generator, List, NamedTuple, Optional, Sequence, Set, Union, ValuesView
 
 from PHX.model import elec_equip, geometry, spaces
-from PHX.model.components import (PhxApertureElement, PhxComponentAperture,
-                                  PhxComponentOpaque,
-                                  PhxComponentThermalBridge)
-from PHX.model.enums.building import (AttachedZoneType, SpecificHeatCapacity,
-                                      ZoneType)
+from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
+from PHX.model.enums.building import AttachedZoneType, SpecificHeatCapacity, ZoneType
 from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Functions to build PHX-Variant from Honeybee Rooms"""
 
@@ -10,7 +10,7 @@ logger = logging.getLogger()
 
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
-from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties  # TODO: Change....
+from honeybee_energy.load.equipment import ElectricEquipment
 from honeybee_energy_ph.properties.load import equipment, people
 from honeybee_ph import phi, phius, site
 from honeybee_ph.bldg_segment import BldgSegment
@@ -22,10 +22,11 @@ from honeybee_phhvac.properties.room import (
     get_renewable_devices_from_space,
     get_supportive_devices_from_space,
     get_ventilation_system_from_space,
+    get_ph_hvac_from_space,
 )
 
 from PHX.from_HBJSON import create_building, create_elec_equip, create_foundations, create_hvac
-from PHX.from_HBJSON.create_shw import (
+from PHX.from_HBJSON.create_shw_devices import (
     build_phx_hw_heater,
     build_phx_hw_storage,
     build_phx_pipe_element,
@@ -104,9 +105,10 @@ def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room:
     """
 
     # -- alias cus' all this shit is deep in there...
-    hbph_phius_cert: phius.PhiusCertification = _hb_room.properties.ph.ph_bldg_segment.phius_certification  # type: ignore # alias
-    phx_phius_cert_criteria = _variant.phius_cert.phius_certification_criteria  # alias
-    phx_phius_cert_settings = _variant.phius_cert.phius_certification_settings  # alias
+    room_ph_prop: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    hbph_phius_cert: phius.PhiusCertification = room_ph_prop.ph_bldg_segment.phius_certification
+    phx_phius_cert_criteria = _variant.phius_cert.phius_certification_criteria
+    phx_phius_cert_settings = _variant.phius_cert.phius_certification_settings
 
     # -- some random bullshit
     phx_phius_cert_criteria.ph_selection_target_data = hbph_phius_cert.localization_selection_type
@@ -212,10 +214,11 @@ def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     --------
         * None
     """
-    # alias cus' all this shit is deep in there...
-    hbph_settings: phi.PhiCertification = _hb_room.properties.ph.ph_bldg_segment.phi_certification  # type: ignore
+    # alias
+    room_ph_prop: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    hbph_settings: phi.PhiCertification = room_ph_prop.ph_bldg_segment.phi_certification
     phx_phi_cert = _variant.phi_cert
-    phx_settings = _variant.phi_cert.phi_certification_settings  # type: ignore
+    phx_settings = _variant.phi_cert.phi_certification_settings
 
     if isinstance(hbph_settings.attributes, phi.PHPPSettings10):
         phx_phi_cert.version = 10
@@ -247,15 +250,15 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
 
     # -- Type Aliases
     ph_bldg = _variant.phius_cert.ph_building_data  # alias
-    hb_prop_energy: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-    hb_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    hb_prop_energy: RoomEnergyProperties = getattr(_hb_room.properties, "energy")
+    hb_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     hbph_bldg_seg: BldgSegment = hb_prop_ph.ph_bldg_segment
 
     # -- Set the occupancy
     if hb_prop_energy.people:
-        hb_ppl_prop_ph: people.PeoplePhProperties = hb_prop_energy.people.properties.ph  # type: ignore
+        hb_ppl_prop_ph: people.PeoplePhProperties = getattr(hb_prop_energy.people.properties, "ph")
         ph_bldg.num_of_units = hb_ppl_prop_ph.number_dwelling_units
-    ph_bldg.num_of_floors = hbph_bldg_seg.num_floor_levels  # type: ignore
+    ph_bldg.num_of_floors = hbph_bldg_seg.num_floor_levels
 
     # -- Add Foundations
     for hbph_foundation in hb_prop_ph.ph_foundations:
@@ -292,9 +295,10 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     """
 
     # -- aliases
-    phx_climate = _variant.site.climate
-    ud_site: site.Site = _hb_room.properties.ph.ph_bldg_segment.site  # type: ignore
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    ud_site: site.Site = room_prop_ph.ph_bldg_segment.site
     ud_ground = ud_site.climate.ground
+    phx_climate = _variant.site.climate
 
     # -- Location
     _variant.site.location.latitude = ud_site.location.latitude
@@ -375,7 +379,9 @@ def add_local_pe_conversion_factors(_variant: project.PhxVariant, _hb_room: room
     --------
         * None
     """
-    for factor in _hb_room.properties.ph.ph_bldg_segment.source_energy_factors:  # type: ignore
+
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    for factor in room_prop_ph.ph_bldg_segment.source_energy_factors:
         new_phx_factor = phx_site.PhxPEFactor()
         new_phx_factor.fuel_name = factor.fuel_name
         new_phx_factor.value = factor.value
@@ -397,13 +403,17 @@ def add_local_co2_conversion_factors(_variant: project.PhxVariant, _hb_room: roo
         * None
     """
 
-    for factor in _hb_room.properties.ph.ph_bldg_segment.co2e_factors:  # type: ignore
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    for factor in room_prop_ph.ph_bldg_segment.co2e_factors:
         new_phx_factor = phx_site.PhxCO2Factor()
         new_phx_factor.fuel_name = factor.fuel_name
         new_phx_factor.value = factor.value
         new_phx_factor.unit = factor.unit
         _variant.site.energy_factors.co2_factors[new_phx_factor.fuel_name] = new_phx_factor
     return
+
+
+# -- HVAC Systems -------------------------------------------------------------
 
 
 def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
@@ -472,7 +482,8 @@ def add_exhaust_vent_devices_from_hb_rooms(
     --------
         * None
     """
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     for hbph_space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
@@ -514,7 +525,7 @@ def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
         * None
     """
 
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     for space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
@@ -549,7 +560,7 @@ def add_heat_pump_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: 
         * None
     """
 
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     for space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
@@ -571,7 +582,10 @@ def add_heat_pump_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: 
     return None
 
 
-def add_dhw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+# --- Hot Water ---------------------------------------------------------------
+
+
+def add_shw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Add new Service Hot Water Equipment to the Variant based on the HB-Rooms.
 
     Arguments:
@@ -584,31 +598,32 @@ def add_dhw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
         * None
     """
 
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     for space in room_prop_ph.spaces:
-        host_prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
+        if not space.host:
+            continue
 
-        if not host_prop_energy.shw or not host_prop_energy.service_hot_water:
+        host_room_prop_ph_hvac = get_ph_hvac_from_space(space)
+        if not host_room_prop_ph_hvac or not host_room_prop_ph_hvac.hot_water_system:
             continue
 
         # -- Build the HW-Tank
-        shw_prop_ph: SHWSystemPhProperties = host_prop_energy.shw.properties.ph  # type: ignore
-        for hw_tank in shw_prop_ph.tanks:
-            if not hw_tank:
+        for ph_hvac_hw_tank in host_room_prop_ph_hvac.hot_water_system.tanks:
+            if not ph_hvac_hw_tank:
                 continue
 
             # -- If the tank already exists, move on
-            if _variant.device_in_collections(hw_tank.key):
+            if _variant.device_in_collections(ph_hvac_hw_tank.key):
                 continue
 
-            # -- Build a new PHS-HW-Tank from the HB-hvac
-            phx_dhw_tank = build_phx_hw_storage(hw_tank)
-            _variant.default_mech_collection.add_new_mech_device(hw_tank.key, phx_dhw_tank)
+            # -- Build a new PHX-HW-Tank from the PH-HVAC Tank
+            phx_dhw_tank = build_phx_hw_storage(ph_hvac_hw_tank)
+            _variant.default_mech_collection.add_new_mech_device(ph_hvac_hw_tank.key, phx_dhw_tank)
 
     return None
 
 
-def add_dhw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+def add_shw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """
 
     Arguments:
@@ -621,14 +636,16 @@ def add_dhw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
         * None
     """
 
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     for space in room_prop_ph.spaces:
-        host_prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
-        if not host_prop_energy.shw:
+        if not space.host:
             continue
 
-        shw_prop_ph: SHWSystemPhProperties = host_prop_energy.shw.properties.ph  # type: ignore
-        for heater in shw_prop_ph.heaters:
+        host_room_prop_ph_hvac = get_ph_hvac_from_space(space)
+        if not host_room_prop_ph_hvac or not host_room_prop_ph_hvac.hot_water_system:
+            continue
+
+        for heater in host_room_prop_ph_hvac.hot_water_system.heaters:
             # -- If the heater already exists, move on
             if _variant.device_in_collections(heater.identifier):
                 continue
@@ -638,7 +655,7 @@ def add_dhw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
             _variant.default_mech_collection.add_new_mech_device(heater.identifier, phx_hw_heater)
 
 
-def dhw_recirc_temp(_recirc_temps: Set[float]):
+def shw_recirc_temp(_recirc_temps: Set[float]):
     """Get the DHW recirculation temperature."""
     if len(_recirc_temps) == 0:
         return 60.0
@@ -649,7 +666,7 @@ def dhw_recirc_temp(_recirc_temps: Set[float]):
         return 60.0
 
 
-def dhw_recirc_hours(_recirc_temps: Set[int]) -> int:
+def shw_recirc_hours(_recirc_temps: Set[int]) -> int:
     """Get the number of hours that the DHW recirculation is active."""
     if len(_recirc_temps) == 0:
         return 24
@@ -660,40 +677,44 @@ def dhw_recirc_hours(_recirc_temps: Set[int]) -> int:
         return 24
 
 
-def add_dhw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
-    ph_prop: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+def add_shw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     phx_mech_sys = _variant.default_mech_collection
-    recirc_temps: Set[float] = set()
-    recirc_hours: Set[int] = set()
+    phx_recirc_temps: Set[float] = set()
+    phx_recirc_hours: Set[int] = set()
 
-    for space in ph_prop.spaces:
-        # -- Get the HB SHW system from the space's host room
-        prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
-        if not prop_energy.shw:
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    for hbph_space in room_prop_ph.spaces:
+        if not hbph_space.host:
             continue
-        hb_shw_prop_ph: SHWSystemPhProperties = prop_energy.shw.properties.ph  # type: ignore
+
+        host_room_prop_ph_hvac = get_ph_hvac_from_space(hbph_space)
+        if not host_room_prop_ph_hvac or not host_room_prop_ph_hvac.hot_water_system:
+            continue
 
         # -- Add the DHW Distribution Piping
-        for distribution_piping_element in hb_shw_prop_ph.distribution_piping:
+        for distribution_piping_element in host_room_prop_ph_hvac.hot_water_system.distribution_piping:
             phx_mech_sys.add_distribution_piping(build_phx_trunk_pipe(distribution_piping_element))
 
         # -- Set the tap points
-        phx_mech_sys._distribution_num_hw_tap_points = hb_shw_prop_ph.number_tap_points
+        phx_mech_sys._distribution_num_hw_tap_points = host_room_prop_ph_hvac.hot_water_system.number_tap_points
 
         # -- Add the DHW Recirculation Piping
-        for recirc_piping_element in hb_shw_prop_ph.recirc_piping:
+        for recirc_piping_element in host_room_prop_ph_hvac.hot_water_system.recirc_piping:
             phx_mech_sys.add_recirc_piping(build_phx_pipe_element(recirc_piping_element))
 
         # -- Get the DHW recirculation parameters
-        recirc_temps.add(hb_shw_prop_ph.recirc_temp)
-        recirc_hours.add(hb_shw_prop_ph.recirc_hours)
+        phx_recirc_temps.add(host_room_prop_ph_hvac.hot_water_system.recirc_temp)
+        phx_recirc_hours.add(host_room_prop_ph_hvac.hot_water_system.recirc_hours)
 
     # -- Set the Recirc parameters
-    params = phx_mech_sys._distribution_hw_recirculation_params
-    params.water_temp = dhw_recirc_temp(recirc_temps)
-    params.daily_recirc_hours = dhw_recirc_hours(recirc_hours)
+    phx_params = phx_mech_sys._distribution_hw_recirculation_params
+    phx_params.water_temp = shw_recirc_temp(phx_recirc_temps)
+    phx_params.daily_recirc_hours = shw_recirc_hours(phx_recirc_hours)
 
     return None
+
+
+# --- Equipment ---------------------------------------------------------------
 
 
 def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
@@ -709,7 +730,12 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
         * None
     """
 
-    ee_properties_ph: equipment.ElectricEquipmentPhProperties = _hb_room.properties.energy.electric_equipment.properties.ph  # type: ignore
+    room_prop_hb_energy: RoomEnergyProperties = getattr(_hb_room.properties, "energy")
+    room_hb_energy_elec_equip: ElectricEquipment = room_prop_hb_energy.electric_equipment
+    if not room_hb_energy_elec_equip:
+        return
+
+    ee_properties_ph: equipment.ElectricEquipmentPhProperties = getattr(room_hb_energy_elec_equip.properties, "ph")
     for equip_key, device in ee_properties_ph.equipment_collection.items():
         phx_elec_device = create_elec_equip.build_phx_elec_device(device)
         for zone in _variant.building.zones:
@@ -723,7 +749,7 @@ def add_supportive_devices_from_hb_room(
     _hb_room: room.Room,
     _merge_devices: bool = True,
 ) -> None:
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     for hbph_space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices.
@@ -750,7 +776,7 @@ def add_renewable_devices_from_hb_room(
     _hb_room: room.Room,
     _merge_devices: bool = True,
 ) -> None:
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     for hbph_space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
@@ -800,17 +826,18 @@ def from_hb_room(
     new_variant = project.PhxVariant()
 
     # -- Keep all the ID numbers aligned
+    room_ph_prop: RoomPhProperties = getattr(_hb_room.properties, "ph")
     new_variant.id_num = project.PhxVariant._count
-    _hb_room.properties.ph.id_num = new_variant.id_num  # type: ignore
+    room_ph_prop.id_num = new_variant.id_num
     new_variant.name = _hb_room.display_name
 
     # -- Build the Variant Elements (Dev. note: order matters!!)
     add_ventilation_systems_from_hb_rooms(new_variant, _hb_room)
     add_heating_systems_from_hb_rooms(new_variant, _hb_room)
     add_heat_pump_systems_from_hb_rooms(new_variant, _hb_room)
-    add_dhw_heaters_from_hb_rooms(new_variant, _hb_room)
-    add_dhw_piping_from_hb_rooms(new_variant, _hb_room)
-    add_dhw_storage_from_hb_rooms(new_variant, _hb_room)
+    add_shw_heaters_from_hb_rooms(new_variant, _hb_room)
+    add_shw_piping_from_hb_rooms(new_variant, _hb_room)
+    add_shw_storage_from_hb_rooms(new_variant, _hb_room)
     add_building_from_hb_room(
         _variant=new_variant,
         _hb_room=_hb_room,
@@ -822,7 +849,7 @@ def from_hb_room(
         group_components=group_components,
         _tolerance=_tolerance,
     )
-    # -- Vent. Exhaust Equip must come after zones are instantiated, since these
+    # -- Ventilation-Exhaust Equip must come AFTER zones are instantiated, since these
     # -- devices are down at the zone level instead of up at the Variant level.
     add_exhaust_vent_devices_from_hb_rooms(new_variant, _hb_room)
     add_supportive_devices_from_hb_room(new_variant, _hb_room)

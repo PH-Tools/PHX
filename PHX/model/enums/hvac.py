@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Valid 'types' for Mech Equipment Options."""
 
 from enum import Enum
 
-from honeybee_phhvac.hot_water import PhSHWTankType
+from honeybee_phhvac.hot_water_devices import PhHvacHotWaterTankType
 
 
 class PhxFuelType(Enum):

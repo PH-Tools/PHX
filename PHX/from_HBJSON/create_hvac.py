@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Functions to create PHX-HVAC objects from Honeybee-Energy-PH HVAC"""
 
@@ -410,8 +410,6 @@ def build_phx_heat_pump_sys(
     """Build a new PHX-Heat-Pump-Device Device from a Honeybee-PH Heat-Pump System."""
 
     phx_htg_device = build_phx_heat_pump_device(_hbph_heat_pump)
-
-    # TODO: Distribution...
 
     return phx_htg_device
 

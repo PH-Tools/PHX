@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Controller Classes for the PHPP 'Heating Load' (Peak Heating Load) Worksheet."""
 

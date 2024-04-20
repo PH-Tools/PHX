@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Controller for managing the PHPP Connection."""
 
@@ -9,14 +9,27 @@ from PHX.model import building, certification, components, project
 from PHX.model.hvac.collection import NoDeviceFoundError
 from PHX.PHPP import phpp_localization, sheet_io
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
-from PHX.PHPP.phpp_model import (areas_data, areas_surface,
-                                 areas_thermal_bridges, climate_entry,
-                                 component_frame, component_glazing,
-                                 component_vent, electricity_item,
-                                 hot_water_piping, hot_water_tank,
-                                 shading_rows, uvalues_constructor, vent_ducts,
-                                 vent_space, vent_units, ventilation_data,
-                                 verification_data, version, windows_rows)
+from PHX.PHPP.phpp_model import (
+    areas_data,
+    areas_surface,
+    areas_thermal_bridges,
+    climate_entry,
+    component_frame,
+    component_glazing,
+    component_vent,
+    electricity_item,
+    hot_water_piping,
+    hot_water_tank,
+    shading_rows,
+    uvalues_constructor,
+    vent_ducts,
+    vent_space,
+    vent_units,
+    ventilation_data,
+    verification_data,
+    version,
+    windows_rows,
+)
 from PHX.xl import xl_app
 from PHX.xl.xl_typing import xl_Sheet_Protocol
 

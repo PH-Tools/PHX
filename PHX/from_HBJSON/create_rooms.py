@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Functions to build PHX 'RoomVentilation' entities from Honeybee-PH Spaces"""
 
+from typing import Optional
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
+
 from honeybee_ph import space
-from honeybee_ph.properties.room import RoomPhProperties
+from honeybee_ph.properties.room import get_ph_prop_from_room
 from honeybee_ph.properties.space import get_ph_prop_from_space
 from honeybee_ph_utils.occupancy import hb_room_ppl_per_area
 from honeybee_ph_utils.ventilation import hb_room_vent_flowrates
@@ -35,20 +37,22 @@ def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
         * (float)
     """
     # Type Aliases
-    host_room: room.Room = _space.host  # type: ignore
-    host_room_prop_ph: RoomPhProperties = host_room.properties.ph  # type: ignore
+    host: Optional[room.Room] = _space.host
+    if not host:
+        raise ValueError(f"The Honeybee-PH Space {_space.display_name} is missing a host-HB-Room.")
 
+    host_room_prop_ph = get_ph_prop_from_room(host)
     (
         flow_per_person,
         flow_per_area,
         air_changes_per_hour,
         flow_per_zone,
-    ) = hb_room_vent_flowrates(host_room)
+    ) = hb_room_vent_flowrates(host)
     # TODO: Unweighted or weighted? Which is right?
     ref_flr_area = _space.floor_area
 
     # -- Basic flow rates
-    m3s_by_occupancy = ref_flr_area * hb_room_ppl_per_area(host_room) * flow_per_person
+    m3s_by_occupancy = ref_flr_area * hb_room_ppl_per_area(host) * flow_per_person
     m3s_by_area = ref_flr_area * flow_per_area
 
     # -- Figure out % of the HB-Room that the Space represents
