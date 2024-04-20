@@ -4,20 +4,25 @@
 """Functions to build PHX-Variant from Honeybee Rooms"""
 
 from typing import Dict, Set
+import logging
+
+logger = logging.getLogger()
 
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
-from honeybee_energy_ph.hvac.heat_pumps import PhHeatPumpSystem
-from honeybee_energy_ph.hvac.heating import PhHeatingSystem
-from honeybee_energy_ph.hvac.renewable_devices import PhRenewableEnergyDevice
-from honeybee_energy_ph.hvac.supportive_device import PhSupportiveDevice
-from honeybee_energy_ph.hvac.ventilation import PhVentilationSystem, _ExhaustVentilatorBase
-from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties
-from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
+from honeybee_energy_ph.properties.hot_water.hw_system import SHWSystemPhProperties  # TODO: Change....
 from honeybee_energy_ph.properties.load import equipment, people
-from honeybee_ph import phi, phius, site, space
+from honeybee_ph import phi, phius, site
 from honeybee_ph.bldg_segment import BldgSegment
-from honeybee_ph.properties.room import RoomPhProperties
+from honeybee_ph.properties.room import RoomPhProperties, get_ph_prop_from_room
+from honeybee_phhvac.properties.room import (
+    get_exhaust_vent_devices_from_space,
+    get_heat_pump_systems_from_space,
+    get_heating_systems_from_space,
+    get_renewable_devices_from_space,
+    get_supportive_devices_from_space,
+    get_ventilation_system_from_space,
+)
 
 from PHX.from_HBJSON import create_building, create_elec_equip, create_foundations, create_hvac
 from PHX.from_HBJSON.create_shw import (
@@ -414,16 +419,11 @@ def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room
         * None
     """
 
-    ph_prop: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    ph_prop = get_ph_prop_from_room(_hb_room)
     for hbph_space in ph_prop.spaces:
-        # ---------------------------------------------------------------------
-        # -- Get the Honeybee-PH Ventilation system from the space's host room
-        # -- Note: in the case of a merged room, the space host may not be the same
-        # -- as _hb_room, so always refer back to the space.host to be sure.
-        hbph_host_room = hbph_space.host
-        prop_e: RoomEnergyProperties = hbph_host_room.properties.energy  # type: ignore
-        hbph_vent_sys: PhVentilationSystem = prop_e.hvac.properties.ph.ventilation_system  # type: ignore
-
+        # -- Note: in the case of a merged room, the space's host may NOT be the same
+        # -- as '_hb_room', so always refer back to the space to get the mechanical devices
+        hbph_vent_sys = get_ventilation_system_from_space(hbph_space)
         if not hbph_vent_sys:
             continue
 
@@ -472,21 +472,11 @@ def add_exhaust_vent_devices_from_hb_rooms(
     --------
         * None
     """
-
-    def _get_space_exhaust_vent_devices(
-        _hph_space: space.Space,
-    ) -> Set[_ExhaustVentilatorBase]:
-        """Return a set of all the ExhaustVentilators found on a space's host HB Room."""
-        # -- Get the Honeybee-PH Exhaust Vent Devices from the space's host room
-        # -- Note: in the case of a merged room, the space host may not be the same
-        # -- as _hb_room, so always refer back to the space.host to be sure.
-        host_rm_prop_energy: RoomEnergyProperties = _hph_space.host.properties.energy  # type: ignore
-        hvac_prop_ph: IdealAirSystemPhProperties = host_rm_prop_energy.hvac.properties.ph  # type: ignore
-        return hvac_prop_ph.exhaust_vent_devices
-
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     for hbph_space in room_prop_ph.spaces:
-        for hbph_device in _get_space_exhaust_vent_devices(hbph_space):
+        # -- Note: in the case of a merged room, the space's host may NOT be the same
+        # -- as '_hb_room', so always refer back to the space to get the mechanical devices
+        for hbph_device in get_exhaust_vent_devices_from_space(hbph_space):
             key = hbph_device.key
 
             # -- Get or Build the PHX Exhaust Ventilation Device
@@ -526,12 +516,9 @@ def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
 
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     for space in room_prop_ph.spaces:
-        # -- Get the Honeybee-PH Heating Systems from the space's host room
-        # -- Note: in the case of a merged room, the space host may not be the same
-        # -- as _hb_room, so always refer back to the space.host to be sure.
-        host_prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
-        hvac_prop_ph: IdealAirSystemPhProperties = host_prop_energy.hvac.properties.ph  # type: ignore
-        heating_systems: Set[PhHeatingSystem] = hvac_prop_ph.heating_systems
+        # -- Note: in the case of a merged room, the space's host may NOT be the same
+        # -- as '_hb_room', so always refer back to the space to get the mechanical devices
+        heating_systems = get_heating_systems_from_space(space)
 
         # -- Get or Build the PHX Heating systems
         for hbph_sys in heating_systems:
@@ -564,12 +551,9 @@ def add_heat_pump_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: 
 
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     for space in room_prop_ph.spaces:
-        # -- Get the Honeybee-PH Cooling-Systems from the space's host room
-        # -- Note: in the case of a merged room, the space host may not be the same
-        # -- as _hb_room, so always refer back to the space.host to be sure.
-        room_prop_energy: RoomEnergyProperties = space.host.properties.energy  # type: ignore
-        hvac_prop_ph: IdealAirSystemPhProperties = room_prop_energy.hvac.properties.ph  # type: ignore
-        heat_pump_systems: Set[PhHeatPumpSystem] = hvac_prop_ph.heat_pump_systems
+        # -- Note: in the case of a merged room, the space's host may NOT be the same
+        # -- as '_hb_room', so always refer back to the space to get the mechanical devices
+        heat_pump_systems = get_heat_pump_systems_from_space(space)
 
         # -- Get or Build the PHX-Cooling systems
         for hbph_sys in heat_pump_systems:
@@ -739,20 +723,11 @@ def add_supportive_devices_from_hb_room(
     _hb_room: room.Room,
     _merge_devices: bool = True,
 ) -> None:
-    def _get_space_supportive_devices(
-        _hph_space: space.Space,
-    ) -> Set[PhSupportiveDevice]:
-        """Return a set of all the SupportiveDevices found on a space's host HB Room."""
-        # -- Get the Honeybee-PH Devices from the space's host room
-        # -- Note: in the case of a merged room, the space host may not be the same
-        # -- as _hb_room, so always refer back to the space.host to be sure.
-        host_rm_prop_energy: RoomEnergyProperties = _hph_space.host.properties.energy  # type: ignore
-        hvac_prop_ph: IdealAirSystemPhProperties = host_rm_prop_energy.hvac.properties.ph  # type: ignore
-        return hvac_prop_ph.supportive_devices  # type: ignore
-
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     for hbph_space in room_prop_ph.spaces:
-        for hbph_device in _get_space_supportive_devices(hbph_space):
+        # -- Note: in the case of a merged room, the space's host may NOT be the same
+        # -- as '_hb_room', so always refer back to the space to get the mechanical devices.
+        for hbph_device in get_supportive_devices_from_space(hbph_space):
             # -- Get or Build the PHX Supportive Device
             # -- If the Device already exists, just use that one.
             # -- If the device is already in one of the Mech System's collection, move on.
@@ -775,21 +750,11 @@ def add_renewable_devices_from_hb_room(
     _hb_room: room.Room,
     _merge_devices: bool = True,
 ) -> None:
-    def _get_space_renewable_devices(
-        _hph_space: space.Space,
-    ) -> Set[PhRenewableEnergyDevice]:
-        """Return a set of all the Renewable Energy Devices found on a space's host HB Room.
-
-        Note: in the case of a merged room, the space host may not be the same
-        as _hb_room, so always refer back to the space.host to be sure.
-        """
-        host_rm_prop_energy: RoomEnergyProperties = _hph_space.host.properties.energy  # type: ignore
-        hvac_prop_ph: IdealAirSystemPhProperties = host_rm_prop_energy.hvac.properties.ph  # type: ignore
-        return hvac_prop_ph.renewable_devices  # type: ignore
-
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
     for hbph_space in room_prop_ph.spaces:
-        for hbph_device in _get_space_renewable_devices(hbph_space):
+        # -- Note: in the case of a merged room, the space's host may NOT be the same
+        # -- as '_hb_room', so always refer back to the space to get the mechanical devices
+        for hbph_device in get_renewable_devices_from_space(hbph_space):
             # -- Get or Build the PHX Renewable Device
             # -- If the Device already exists, just use that one.
             # -- If the device is already in the Mech System's collection, move on.

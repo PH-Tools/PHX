@@ -5,7 +5,7 @@
 
 from enum import Enum
 
-from honeybee_energy_ph.hvac.hot_water import PhSHWTankType
+from honeybee_phhvac.hot_water import PhSHWTankType
 
 
 class PhxFuelType(Enum):

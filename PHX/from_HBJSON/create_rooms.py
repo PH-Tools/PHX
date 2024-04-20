@@ -5,13 +5,12 @@
 
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
-from honeybee_energy_ph.properties.hvac.idealair import IdealAirSystemPhProperties
-from honeybee_energy_ph.properties.ruleset import ScheduleRulesetPhProperties
 from honeybee_ph import space
 from honeybee_ph.properties.room import RoomPhProperties
-from honeybee_ph.properties.space import SpacePhProperties
+from honeybee_ph.properties.space import get_ph_prop_from_space
 from honeybee_ph_utils.occupancy import hb_room_ppl_per_area
 from honeybee_ph_utils.ventilation import hb_room_vent_flowrates
+from honeybee_phhvac.properties.room import get_ph_hvac_from_space
 
 from PHX.model import spaces
 from PHX.model.utilization_patterns import (
@@ -64,6 +63,13 @@ def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
     return (m3s_by_occupancy + m3s_by_area + m3s_by_zone + m3s_by_ach) * 3_600
 
 
+def _get_energy_properties_from_space(_space: space.Space) -> RoomEnergyProperties:
+    """Return the "energy" Properties of a Honeybee-PH Space's host Room."""
+    if not _space.host:
+        raise ValueError(f"The Honeybee-PH Space {_space.display_name} is missing a host-HB-Room.")
+    return getattr(_space.host.properties, "energy")
+
+
 def create_room_from_space(
     _space: space.Space,
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
@@ -85,15 +91,13 @@ def create_room_from_space(
         * (ventilation.RoomVentilation): The new PHX-Room with attributes based on the Honeybee Space.
     """
     # -- Type Aliases
-    host_room_prop_energy: RoomEnergyProperties = _space.host.properties.energy  # type: ignore
+    host_room_prop_energy = _get_energy_properties_from_space(_space)
     hbe_vent = host_room_prop_energy.ventilation
     hbe_vent_sched = hbe_vent.schedule
-    hbe_vent_sched_prop_ph: ScheduleRulesetPhProperties = hbe_vent_sched.properties.ph  # type: ignore
     hbe_occ = host_room_prop_energy.people
     hbe_lighting = host_room_prop_energy.lighting
-    space_prop_ph: SpacePhProperties = _space.properties.ph  # type: ignore
-    hbe_hvac = host_room_prop_energy.hvac
-    hbe_hvac_prop_ph: IdealAirSystemPhProperties = hbe_hvac.properties.ph  # type: ignore
+    space_ph_hvac = get_ph_hvac_from_space(_space)
+    space_prop_ph = get_ph_prop_from_space(_space)
 
     # -- Build the new PHX Space
     new_room = spaces.PhxSpace()
@@ -113,18 +117,18 @@ def create_room_from_space(
     new_room.ventilation.load.flow_extract = space_peak_flow_rate
 
     # -- TODO: FIX THIS TO A BETTER TECHNIQUE SOMEDAY, OVERRIDE WITH LOCAL INFO, IF ANY
-    if space_prop_ph._v_sup is not None:
+    if space_prop_ph and space_prop_ph._v_sup is not None:
         new_room.ventilation.load.flow_supply = space_prop_ph._v_sup * 3_600
 
-    if space_prop_ph._v_eta is not None:
+    if space_prop_ph and space_prop_ph._v_eta is not None:
         new_room.ventilation.load.flow_extract = space_prop_ph._v_eta * 3_600
 
-    if space_prop_ph._v_tran is not None:
+    if space_prop_ph and space_prop_ph._v_tran is not None:
         new_room.ventilation.load.flow_transfer = space_prop_ph._v_tran * 3_600
 
     # -- Keep the Ventilation Equipment ID-Numbers aligned
-    if hbe_hvac_prop_ph.ventilation_system:
-        new_room.vent_unit_id_num = hbe_hvac_prop_ph.ventilation_system.id_num
+    if space_ph_hvac and space_ph_hvac.ventilation_system:
+        new_room.vent_unit_id_num = space_ph_hvac.ventilation_system.id_num
 
     # -- Keep the new room's Occupancy reference aligned with the HB-Room's
     if hbe_occ:

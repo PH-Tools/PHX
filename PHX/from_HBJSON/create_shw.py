@@ -3,7 +3,7 @@
 
 """Functions to create PHX-Service Hot Water objects from Honeybee-Energy-PH SHW"""
 
-from honeybee_energy_ph.hvac import hot_water
+from honeybee_phhvac import hot_water
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import PhxHotWaterPipingDiameter, PhxHotWaterPipingMaterial, PhxHotWaterTankType
