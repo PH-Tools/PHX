@@ -312,7 +312,8 @@ class Areas(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColGround(BaseModel): ...
+class ColGround(BaseModel):
+    ...
 
 
 class Ground(BaseModel):
@@ -676,7 +677,8 @@ class CoolingPeakLoad(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColSummVent(BaseModel): ...
+class ColSummVent(BaseModel):
+    ...
 
 
 class SummVent(BaseModel):
@@ -884,7 +886,8 @@ class Electricity(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColUseNonRes(BaseModel): ...
+class ColUseNonRes(BaseModel):
+    ...
 
 
 class UseNonRes(BaseModel):
@@ -938,7 +941,8 @@ class ElecNonRes(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColIhgNonRes(BaseModel): ...
+class ColIhgNonRes(BaseModel):
+    ...
 
 
 class IhgNonRes(BaseModel):
@@ -949,7 +953,8 @@ class IhgNonRes(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColAuxElec(BaseModel): ...
+class ColAuxElec(BaseModel):
+    ...
 
 
 class AuxElec(BaseModel):
@@ -1009,7 +1014,8 @@ class Per(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColHp(BaseModel): ...
+class ColHp(BaseModel):
+    ...
 
 
 class Hp(BaseModel):
@@ -1017,7 +1023,8 @@ class Hp(BaseModel):
     columns: ColHp
 
 
-class ColBoiler(BaseModel): ...
+class ColBoiler(BaseModel):
+    ...
 
 
 class Boiler(BaseModel):

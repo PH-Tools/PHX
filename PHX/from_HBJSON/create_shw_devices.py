@@ -9,7 +9,6 @@ from PHX.model import hvac
 from PHX.model.enums.hvac import PhxHotWaterPipingDiameter, PhxHotWaterPipingMaterial, PhxHotWaterTankType
 from PHX.model.hvac import piping
 
-
 # -- Storage ------------------------------------------------------------------
 
 

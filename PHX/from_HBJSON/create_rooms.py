@@ -4,9 +4,9 @@
 """Functions to build PHX 'RoomVentilation' entities from Honeybee-PH Spaces"""
 
 from typing import Optional
+
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
-
 from honeybee_ph import space
 from honeybee_ph.properties.room import get_ph_prop_from_room
 from honeybee_ph.properties.space import get_ph_prop_from_space

@@ -4,7 +4,7 @@
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
 import logging
-from typing import Dict, List, Set, Optional
+from typing import Dict, List, Optional, Set
 
 try:  # import the core honeybee dependencies
     from honeybee import face, room

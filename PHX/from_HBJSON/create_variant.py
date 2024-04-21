@@ -3,14 +3,14 @@
 
 """Functions to build PHX-Variant from Honeybee Rooms"""
 
-from typing import Dict, Set
 import logging
+from typing import Dict, Set
 
 logger = logging.getLogger()
 
 from honeybee import room
-from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_energy.load.equipment import ElectricEquipment
+from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_energy_ph.properties.load import equipment, people
 from honeybee_ph import phi, phius, site
 from honeybee_ph.bldg_segment import BldgSegment
@@ -19,10 +19,10 @@ from honeybee_phhvac.properties.room import (
     get_exhaust_vent_devices_from_space,
     get_heat_pump_systems_from_space,
     get_heating_systems_from_space,
+    get_ph_hvac_from_space,
     get_renewable_devices_from_space,
     get_supportive_devices_from_space,
     get_ventilation_system_from_space,
-    get_ph_hvac_from_space,
 )
 
 from PHX.from_HBJSON import create_building, create_elec_equip, create_foundations, create_hvac
