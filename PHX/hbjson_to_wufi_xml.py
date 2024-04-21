@@ -213,11 +213,6 @@ if __name__ == "__main__":
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(SOURCE_FILE)
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
 
-    for room in hb_model.rooms:
-        logger.info("-" * 25)
-        logger.info(f"Room: {room.display_name}")
-        logger.info(room.properties.ph_hvac.hot_water_system)
-
     # --- Generate the WUFI Project file.
     logger.info(f'> Generating the PHX-Project from the Honeybee-Model: "{hb_model}"')
     phx_Project = create_project.convert_hb_model_to_PhxProject(
