@@ -1261,7 +1261,7 @@
 						<Devices count="6">
 							<Device index="0">
 								<Name>3ae65bb1-2f18-475d-8cf0-fdf2cc2a8b34</Name>
-								<IdentNr>1</IdentNr>
+								<IdentNr>2</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>true</UsedFor_Heating>
@@ -1298,7 +1298,7 @@
 							</Device>
 							<Device index="1">
 								<Name>636731c9-7155-4b75-9a61-eb25a6ad6cba</Name>
-								<IdentNr>2</IdentNr>
+								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>true</UsedFor_Heating>

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Function to create new PhxElectricalDevices from Honeybee-PH-PhEquipment"""
 

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Functions to create PHX-HVAC objects from Honeybee-Energy-PH HVAC"""
 
-from typing import Any, Callable, Dict, TypeVar, Union
+from typing import Callable, Dict, TypeVar, Union
 
-from honeybee_energy_ph.hvac import _base, ducting, heat_pumps, heating, supportive_device, ventilation
-from honeybee_energy_ph.hvac.renewable_devices import PhPhotovoltaicDevice, PhRenewableEnergyDevice
+from honeybee_phhvac import _base, ducting, heat_pumps, heating, supportive_device, ventilation
+from honeybee_phhvac.renewable_devices import PhPhotovoltaicDevice, PhRenewableEnergyDevice
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import PhxSupportiveDeviceType, PhxVentDuctType
@@ -410,8 +410,6 @@ def build_phx_heat_pump_sys(
     """Build a new PHX-Heat-Pump-Device Device from a Honeybee-PH Heat-Pump System."""
 
     phx_htg_device = build_phx_heat_pump_device(_hbph_heat_pump)
-
-    # TODO: Distribution...
 
     return phx_htg_device
 

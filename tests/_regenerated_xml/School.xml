@@ -6334,6 +6334,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.2794</Thickness>
@@ -6352,6 +6355,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.0125</Thickness>
@@ -6370,8 +6376,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="1">
 			<IdentNr>3</IdentNr>
@@ -6396,6 +6406,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.1524</Thickness>
@@ -6414,8 +6427,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="2">
 			<IdentNr>4</IdentNr>
@@ -6440,6 +6457,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.4064</Thickness>
@@ -6458,6 +6478,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.0125</Thickness>
@@ -6476,8 +6499,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="3">
 			<IdentNr>2</IdentNr>
@@ -6502,8 +6529,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="4">
 			<IdentNr>5</IdentNr>
@@ -6528,6 +6559,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.1524</Thickness>
@@ -6546,8 +6580,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="5">
 			<IdentNr>6</IdentNr>
@@ -6572,6 +6610,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.0381</Thickness>
@@ -6590,6 +6631,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.2413</Thickness>
@@ -6608,6 +6652,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="3">
 					<Thickness>0.0125</Thickness>
@@ -6626,8 +6673,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="6">
 			<IdentNr>8</IdentNr>
@@ -6652,6 +6703,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.4064</Thickness>
@@ -6670,8 +6724,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="7">
 			<IdentNr>7</IdentNr>
@@ -6696,6 +6754,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.2413</Thickness>
@@ -6714,6 +6775,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.0125</Thickness>
@@ -6732,8 +6796,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="8">
 			<IdentNr>9</IdentNr>
@@ -6758,6 +6826,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.235</Thickness>
@@ -6776,6 +6847,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.0125</Thickness>
@@ -6794,8 +6868,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="9">
 			<IdentNr>10</IdentNr>
@@ -6820,8 +6898,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 		<Assembly index="10">
 			<IdentNr>11</IdentNr>
@@ -6846,6 +6928,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.0508</Thickness>
@@ -6864,6 +6949,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.235</Thickness>
@@ -6882,6 +6970,9 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 				<Layer index="3">
 					<Thickness>0.0125</Thickness>
@@ -6900,8 +6991,12 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
+					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionVertical count="0"/>
+					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
+			<ExchangeMaterials count="0"/>
 		</Assembly>
 	</Assemblies>
 	<WindowTypes count="7">

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """DEV SANDBOX: export a specified HBJSON file to a PHPP XL file."""
 

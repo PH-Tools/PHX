@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """DEV SANDBOX: convert an HBJSON file over to WUFI XML format."""
 
@@ -22,12 +22,12 @@ SOURCE_FILES = [SOURCE_DIR / file for file in SOURCE_FILE_NAMES]
 TARGET_DIR = pathlib.Path("tests", "_reference_xml")
 
 # -- Temp
-# SOURCE_FILES = [
-#     pathlib.Path(
-#         "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/tests/_source_hbjson/Arverne_D_231101_Proposed.hbjson"
-#     )
-# ]
+# SOURCE_FILES = [pathlib.Path("/Users/em/Desktop/hvac_equipment_ph_test.hbjson")]
 # TARGET_DIR = pathlib.Path("sample")
+
+import logging
+
+logger = logging.getLogger()
 
 
 def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# -*- Python Version: 3.7 -*-
+# -*- Python Version: 3.10 -*-
 
 """Valid 'types' for Building Elements."""
 
@@ -72,6 +72,7 @@ class SpecificHeatCapacity(Enum):
 class ZoneType(Enum):
     SIMULATED = 1
     ATTACHED = 2
+
 
 class AttachedZoneType(Enum):
     NONE = 0
