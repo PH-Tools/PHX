@@ -145,9 +145,9 @@ def create_component_from_hb_aperture(
     """
 
     # -- Type Aliases
-    hb_ap_prop_energy: ApertureEnergyProperties = _hb_aperture.properties.energy  # type: ignore
-    hb_ap_prop_ph: AperturePhProperties = _hb_aperture.properties.ph  # type: ignore
-    hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    hb_ap_prop_energy: ApertureEnergyProperties = getattr(_hb_aperture.properties, "energy")
+    hb_ap_prop_ph: AperturePhProperties = getattr(_hb_aperture.properties, "ph")
+    hb_room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     hb_ap_const = _get_hb_aperture_construction(hb_ap_prop_energy)
 
     # -- Create new Aperture
@@ -204,12 +204,13 @@ def create_components_from_hb_face(
     """
 
     # Type Aliases
-    hb_face_prop_energy: FaceEnergyProperties = _hb_face.properties.energy  # type: ignore
+    hb_face_prop_energy: FaceEnergyProperties = getattr(_hb_face.properties, "energy")
     hb_face_const = hb_face_prop_energy.construction
     if not hasattr(hb_face_const, "properties"):
-        msg = f"Error: Face Construction {hb_face_const.display_name} is missing .properties?"
-    hb_face_const_prop_ph: OpaqueConstructionPhProperties = hb_face_const.properties.ph  # type: ignore
-    hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+        msg = f"Error: Face Construction: '{hb_face_const.display_name}' of type: '{type(hb_face_const)}' is missing a .properties attribute?"
+        raise ValueError(msg)
+    hb_face_const_prop_ph: OpaqueConstructionPhProperties = getattr(hb_face_const.properties, "ph")  # type: ignore
+    hb_room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
 
     # -- Build the new PHX Opaque Component
     opaque_compo = components.PhxComponentOpaque()
@@ -267,8 +268,8 @@ def create_components_from_hb_room(
 def set_zone_occupancy(_hb_room: room.Room, zone: building.PhxZone) -> building.PhxZone:
     """Set the Zone's Residential Occupancy values."""
     # -- Type Aliases
-    room_energy_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-    hbph_people_prop: PeoplePhProperties = room_energy_prop.people.properties.ph  # type: ignore
+    hb_room_energy_prop: RoomEnergyProperties = getattr(_hb_room.properties, "energy")
+    hbph_people_prop: PeoplePhProperties = getattr(hb_room_energy_prop.people.properties, "ph")
 
     zone.res_occupant_quantity = hbph_people_prop.number_people
     zone.res_number_bedrooms = hbph_people_prop.number_bedrooms
@@ -301,8 +302,8 @@ def create_zones_from_hb_room(
     new_zone.display_name = _hb_room.display_name
 
     # -- Sort the HB-Room's Spaces by their full_name
-    rm_prop_ph = _hb_room.properties.ph  # type: RoomPhProperties # type: ignore
-    sorted_spaces = sorted(rm_prop_ph.spaces, key=lambda space: space.full_name)
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    sorted_spaces = sorted(room_prop_ph.spaces, key=lambda space: space.full_name)
 
     # -- Create a new WUFI-Space (Room) for each HBPH-Space
     _create_space = partial(
@@ -317,7 +318,7 @@ def create_zones_from_hb_room(
     new_zone.volume_gross = _hb_room.volume
     new_zone.weighted_net_floor_area = sum((rm.weighted_floor_area for rm in new_zone.spaces))
     new_zone.volume_net = sum((rm.net_volume for rm in new_zone.spaces))
-    new_zone.specific_heat_capacity = SpecificHeatCapacity(rm_prop_ph.specific_heat_capacity.number)
+    new_zone.specific_heat_capacity = SpecificHeatCapacity(room_prop_ph.specific_heat_capacity.number)
 
     # -- Set the Zone's Occupancy based on the merged HB room
     new_zone = set_zone_occupancy(_hb_room, new_zone)
@@ -325,6 +326,11 @@ def create_zones_from_hb_room(
     # -- Set the Zones' thermal bridges
     for phx_thermal_bridge in create_thermal_bridges_from_hb_room(_hb_room):
         new_zone.add_thermal_bridges(phx_thermal_bridge)
+
+    # --  Set the ICFA / TFA Override Values
+    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    new_zone.icfa_override = room_prop_ph.ph_bldg_segment.phius_certification.icfa_override
+    new_zone.tfa_override = room_prop_ph.ph_bldg_segment.phi_certification.attributes.tfa_override
 
     return new_zone
 
@@ -344,7 +350,7 @@ def create_thermal_bridges_from_hb_room(
     """
 
     # -- Type Aliases
-    hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph  # type: ignore
+    hb_room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
 
     # -- Create all the new Thermal Bridges
     phx_thermal_bridges = []

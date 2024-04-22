@@ -214,7 +214,7 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         XML_Node("NetVolume_Selection", 6),
         XML_Node("NetVolume", _z.volume_net),
         XML_Node("FloorArea_Selection", 6),
-        XML_Node("FloorArea", _z.weighted_net_floor_area),
+        XML_Node("FloorArea", _z.icfa_override or _z.weighted_net_floor_area),
         XML_Node("ClearanceHeight_Selection", 1),
         XML_Node("ClearanceHeight", _z.clearance_height),
         XML_Node("SpecificHeatCapacity_Selection", _z.specific_heat_capacity.value),

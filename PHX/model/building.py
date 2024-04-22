@@ -57,6 +57,11 @@ class PhxZone:
         default_factory=collection.PhxExhaustVentilatorCollection
     )
 
+    # ---------------------------------------------------------
+    # -- Allow user-overrides of the weighted floor area
+    tfa_override: Optional[float] = None
+    icfa_override: Optional[float] = None
+
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
@@ -123,6 +128,13 @@ class PhxBuilding:
     def weighted_net_floor_area(self) -> float:
         """Returns the total weighted net floor area of all zones in the PhxBuilding."""
         return sum(z.weighted_net_floor_area for z in self.zones)
+
+    @property
+    def tfa_override(self) -> Optional[float]:
+        """Return the total floor area override of the PhxBuilding."""
+        if all(z.tfa_override is None for z in self.zones):
+            return None
+        return sum(z.tfa_override for z in self.zones if z.tfa_override is not None)
 
     @property
     def net_volume(self) -> float:

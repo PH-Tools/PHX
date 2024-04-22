@@ -328,7 +328,7 @@ class PHPPConnection:
                 areas_data.AreasInput(
                     shape=self.shape.AREAS,
                     input_type="tfa_input",
-                    input_data=phx_variant.building.weighted_net_floor_area,
+                    input_data=phx_variant.building.tfa_override or phx_variant.building.weighted_net_floor_area,
                     input_unit="M2",
                     target_unit=self.shape.AREAS.tfa_input.unit,
                 )
