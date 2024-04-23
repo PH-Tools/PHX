@@ -30691,10 +30691,10 @@
 									<Name>ERU-1 SA 20x20</Name>
 									<IdentNr>3</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">508.0</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">508000.0</DuctShapeWidth>
 									<DuctLength unit="m">7.498080000000001</DuctLength>
-									<InsulationThickness unit="mm">50.8</InsulationThickness>
+									<InsulationThickness unit="mm">50800.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.04120879815948</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -30708,10 +30708,10 @@
 									<Name>ERU-1 EA 24x20</Name>
 									<IdentNr>4</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">609.5999999999999</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">609599.9999999999</DuctShapeWidth>
 									<DuctLength unit="m">14.41704</DuctLength>
-									<InsulationThickness unit="mm">50.8</InsulationThickness>
+									<InsulationThickness unit="mm">50800.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.04120879815948</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -30725,10 +30725,10 @@
 									<Name>ERU-2 SA 20x20</Name>
 									<IdentNr>5</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.00000000000006</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">508.00000000000006</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">508000.0</DuctShapeWidth>
 									<DuctLength unit="m">2.8346400000000003</DuctLength>
-									<InsulationThickness unit="mm">76.19999999999999</InsulationThickness>
+									<InsulationThickness unit="mm">76199.99999999999</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.04120879815948</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -30742,10 +30742,10 @@
 									<Name>ERU-2 EA 22x20</Name>
 									<IdentNr>6</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">558.8</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">558800.0</DuctShapeWidth>
 									<DuctLength unit="m">14.41704</DuctLength>
-									<InsulationThickness unit="mm">50.8</InsulationThickness>
+									<InsulationThickness unit="mm">50800.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.04120879815948</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -61628,10 +61628,10 @@
 									<Name>ERU-1 SA 20x20</Name>
 									<IdentNr>7</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">508.0</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">508000.0</DuctShapeWidth>
 									<DuctLength unit="m">7.498080000000001</DuctLength>
-									<InsulationThickness unit="mm">50.8</InsulationThickness>
+									<InsulationThickness unit="mm">50800.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.04120879815948</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -61645,10 +61645,10 @@
 									<Name>ERU-1 EA 24x20</Name>
 									<IdentNr>8</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">609.5999999999999</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">609599.9999999999</DuctShapeWidth>
 									<DuctLength unit="m">14.41704</DuctLength>
-									<InsulationThickness unit="mm">50.8</InsulationThickness>
+									<InsulationThickness unit="mm">50800.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.04120879815948</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -61662,10 +61662,10 @@
 									<Name>ERU-2 SA 20x20</Name>
 									<IdentNr>9</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.00000000000006</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">508.00000000000006</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">508000.0</DuctShapeWidth>
 									<DuctLength unit="m">2.8346400000000003</DuctLength>
-									<InsulationThickness unit="mm">76.19999999999999</InsulationThickness>
+									<InsulationThickness unit="mm">76199.99999999999</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.04120879815948</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -61679,10 +61679,10 @@
 									<Name>ERU-2 EA 22x20</Name>
 									<IdentNr>10</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">558.8</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">558800.0</DuctShapeWidth>
 									<DuctLength unit="m">14.41704</DuctLength>
-									<InsulationThickness unit="mm">50.8</InsulationThickness>
+									<InsulationThickness unit="mm">50800.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.04120879815948</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>

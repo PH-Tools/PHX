@@ -6269,11 +6269,11 @@ Instant DHW
 								<Duct index="0">
 									<Name></Name>
 									<IdentNr>1</IdentNr>
-									<DuctDiameter unit="mm">254.0</DuctDiameter>
+									<DuctDiameter unit="mm">254000.0</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
 									<DuctShapeWidth unit="mm">0.0</DuctShapeWidth>
 									<DuctLength unit="m">3.048</DuctLength>
-									<InsulationThickness unit="mm">50.800000000000004</InsulationThickness>
+									<InsulationThickness unit="mm">50800.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.0481</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -6286,11 +6286,11 @@ Instant DHW
 								<Duct index="1">
 									<Name></Name>
 									<IdentNr>2</IdentNr>
-									<DuctDiameter unit="mm">254.0</DuctDiameter>
+									<DuctDiameter unit="mm">254000.0</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
 									<DuctShapeWidth unit="mm">0.0</DuctShapeWidth>
 									<DuctLength unit="m">3.048</DuctLength>
-									<InsulationThickness unit="mm">50.800000000000004</InsulationThickness>
+									<InsulationThickness unit="mm">50800.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.0481</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>

@@ -51370,11 +51370,11 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<Duct index="0">
 									<Name>ERV-O_supply</Name>
 									<IdentNr>11</IdentNr>
-									<DuctDiameter unit="mm">159.99967999999998</DuctDiameter>
+									<DuctDiameter unit="mm">159999.68</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
 									<DuctShapeWidth unit="mm">0.0</DuctShapeWidth>
 									<DuctLength unit="m">0.9999878400000001</DuctLength>
-									<InsulationThickness unit="mm">25.4</InsulationThickness>
+									<InsulationThickness unit="mm">25400.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.0399799763748</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -51387,11 +51387,11 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<Duct index="1">
 									<Name>ERV-O_exhaust</Name>
 									<IdentNr>12</IdentNr>
-									<DuctDiameter unit="mm">159.99967999999998</DuctDiameter>
+									<DuctDiameter unit="mm">159999.68</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
 									<DuctShapeWidth unit="mm">0.0</DuctShapeWidth>
 									<DuctLength unit="m">0.9999878400000001</DuctLength>
-									<InsulationThickness unit="mm">25.4</InsulationThickness>
+									<InsulationThickness unit="mm">25400.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.0399799763748</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51405,10 +51405,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV1_a</Name>
 									<IdentNr>13</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">254.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">355.59999999999997</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">254000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">355599.99999999994</DuctShapeWidth>
 									<DuctLength unit="m">3.6974983200000002</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.034545468763680004</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -51422,10 +51422,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV2_a</Name>
 									<IdentNr>14</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">406.4</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">457.2</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">406400.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">457200.0</DuctShapeWidth>
 									<DuctLength unit="m">16.21898712</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -51439,10 +51439,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV3_a</Name>
 									<IdentNr>15</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">457.2</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">457200.0</DuctShapeWidth>
 									<DuctLength unit="m">4.3626024</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -51456,10 +51456,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV4_a</Name>
 									<IdentNr>16</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">304.79999999999995</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">304799.99999999994</DuctShapeWidth>
 									<DuctLength unit="m">12.87746472</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -51473,10 +51473,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV5_a</Name>
 									<IdentNr>17</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">355.59999999999997</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">304.79999999999995</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">355599.99999999994</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">304799.99999999994</DuctShapeWidth>
 									<DuctLength unit="m">4.14320736</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -51490,10 +51490,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV1_a</Name>
 									<IdentNr>18</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">254.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">355.59999999999997</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">253999.99999999997</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">355599.99999999994</DuctShapeWidth>
 									<DuctLength unit="m">4.35571392</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51507,10 +51507,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV2_a</Name>
 									<IdentNr>19</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">406.4</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">457.2</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">406400.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">457200.0</DuctShapeWidth>
 									<DuctLength unit="m">15.593415600000002</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51524,10 +51524,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV3_a</Name>
 									<IdentNr>20</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">711.1999999999999</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">355.59999999999997</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">711199.9999999999</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">355599.99999999994</DuctShapeWidth>
 									<DuctLength unit="m">5.091226799999999</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51541,10 +51541,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV4_a</Name>
 									<IdentNr>21</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">203.2</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">254.0</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">203200.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">254000.0</DuctShapeWidth>
 									<DuctLength unit="m">4.913741760000001</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51558,10 +51558,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV4_b</Name>
 									<IdentNr>22</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">203.2</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">203.2</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">203200.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">203200.0</DuctShapeWidth>
 									<DuctLength unit="m">2.4137112</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51575,10 +51575,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV4_c</Name>
 									<IdentNr>23</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">508.0</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">304.79999999999995</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">508000.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">304799.99999999994</DuctShapeWidth>
 									<DuctLength unit="m">20.268742800000002</DuctLength>
-									<InsulationThickness unit="mm">101.60000000000001</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51592,10 +51592,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV4_d</Name>
 									<IdentNr>24</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">203.2</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">254.0</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">203200.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">254000.0</DuctShapeWidth>
 									<DuctLength unit="m">4.913741760000001</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51609,10 +51609,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV5_a</Name>
 									<IdentNr>25</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">203.20000000000002</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">254.0</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">203200.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">254000.00000000003</DuctShapeWidth>
 									<DuctLength unit="m">10.725881520000002</DuctLength>
-									<InsulationThickness unit="mm">101.60000000000001</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51626,10 +51626,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV5_b</Name>
 									<IdentNr>26</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">304.79999999999995</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">304.79999999999995</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">304799.99999999994</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">304799.99999999994</DuctShapeWidth>
 									<DuctLength unit="m">5.2573123200000005</DuctLength>
-									<InsulationThickness unit="mm">101.60000000000001</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51643,10 +51643,10 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<Name>ERV5_c</Name>
 									<IdentNr>27</IdentNr>
 									<DuctDiameter unit="mm">0.0</DuctDiameter>
-									<DuctShapeHeight unit="mm">203.2</DuctShapeHeight>
-									<DuctShapeWidth unit="mm">254.0</DuctShapeWidth>
+									<DuctShapeHeight unit="mm">203200.0</DuctShapeHeight>
+									<DuctShapeWidth unit="mm">254000.0</DuctShapeWidth>
 									<DuctLength unit="m">2.1328684800000004</DuctLength>
-									<InsulationThickness unit="mm">101.6</InsulationThickness>
+									<InsulationThickness unit="mm">101600.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.03454546876368</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
@@ -51659,11 +51659,11 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<Duct index="17">
 									<Name>ERV-C_supply</Name>
 									<IdentNr>28</IdentNr>
-									<DuctDiameter unit="mm">159.99967999999998</DuctDiameter>
+									<DuctDiameter unit="mm">159999.68</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
 									<DuctShapeWidth unit="mm">0.0</DuctShapeWidth>
 									<DuctLength unit="m">0.9999878400000001</DuctLength>
-									<InsulationThickness unit="mm">25.4</InsulationThickness>
+									<InsulationThickness unit="mm">25400.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.0399799763748</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>1</DuctType>
@@ -51676,11 +51676,11 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<Duct index="18">
 									<Name>ERV-C_exhaust</Name>
 									<IdentNr>29</IdentNr>
-									<DuctDiameter unit="mm">159.99967999999998</DuctDiameter>
+									<DuctDiameter unit="mm">159999.68</DuctDiameter>
 									<DuctShapeHeight unit="mm">0.0</DuctShapeHeight>
 									<DuctShapeWidth unit="mm">0.0</DuctShapeWidth>
 									<DuctLength unit="m">0.9999878400000001</DuctLength>
-									<InsulationThickness unit="mm">25.4</InsulationThickness>
+									<InsulationThickness unit="mm">25400.0</InsulationThickness>
 									<ThermalConductivity unit="W/mK">0.0399799763748</ThermalConductivity>
 									<Quantity unit="-">1</Quantity>
 									<DuctType>2</DuctType>
