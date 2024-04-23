@@ -16,11 +16,11 @@ def test_Duct_Schema(reset_class_counters):
         identifier="test_identifier",
         display_name="test_display_name",
         geometry=geom,
-        diameter=25.4,
-        width=None,
-        height=None,
-        insulation_thickness=25.4,
-        insulation_conductivity=0.04,
+        diameter_m=0.0254,
+        width_m=None,
+        height_m=None,
+        insulation_thickness_m=0.0254,
+        insulation_conductivity_wmk=0.04,
         insulation_reflective=True,
     )
 

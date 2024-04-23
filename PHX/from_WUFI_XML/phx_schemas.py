@@ -521,11 +521,11 @@ def _PhxDuctSegment(
         identifier=str(_data.IdentNr),
         display_name=_data.Name or "",
         geometry=fake_duct_geometry,
-        diameter=_data.DuctDiameter or 0.0,
-        height=_data.DuctShapeHeight or None,
-        width=_data.DuctShapeWidth or None,
-        insulation_thickness=_data.InsulationThickness or 0.0,
-        insulation_conductivity=_data.ThermalConductivity or 0.0,
+        diameter_m=_data.DuctDiameter or 0.0,
+        height_m=_data.DuctShapeHeight or None,
+        width_m=_data.DuctShapeWidth or None,
+        insulation_thickness_m=_data.InsulationThickness or 0.0,
+        insulation_conductivity_wmk=_data.ThermalConductivity or 0.0,
         insulation_reflective=_data.IsReflective,
     )
 
@@ -1364,7 +1364,7 @@ def _PhxZoneCoverage(_data: wufi_xml.ZoneCoverage) -> PhxZoneCoverage:
 
 
 def _PhxMechanicalDevice(_data: wufi_xml.Device) -> Any:
-    device_builder_classnames = {
+    device_builder_class_names = {
         hvac_enums.SystemType.VENTILATION: "PhxDevice_Ventilation",
         hvac_enums.SystemType.ELECTRIC: "PhxDevice_Electric",
         hvac_enums.SystemType.BOILER: "PhxDevice_Boiler",
@@ -1380,7 +1380,7 @@ def _PhxMechanicalDevice(_data: wufi_xml.Device) -> Any:
     except:
         print(f"Error: I do not understand the mech device type: '{_data.SystemType}'?")
         return None
-    builder_class_name = device_builder_classnames[system_type]
+    builder_class_name = device_builder_class_names[system_type]
 
     # -- Pass the data off using the correct device-builder-classname
     new_mech_device = as_phx_obj(_data, builder_class_name)

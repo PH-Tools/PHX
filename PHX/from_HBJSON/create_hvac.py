@@ -516,5 +516,5 @@ def build_phx_renewable_device(_device: PhRenewableEnergyDevice) -> AnyRenewable
     }
 
     # -- Get and build the right heater equipment type
-    phx_device = phx_renewable_classes[_device.device_typename](_device)
+    phx_device = phx_renewable_classes[_device.device_typename](_device)  # type: ignore
     return phx_device

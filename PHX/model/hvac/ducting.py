@@ -21,16 +21,42 @@ class PhxDuctSegment:
     identifier: str
     display_name: str
     geometry: LineSegment3D
-    diameter: float
-    height: Optional[float]
-    width: Optional[float]
-    insulation_thickness: float
-    insulation_conductivity: float
+    diameter_m: float
+    height_m: Optional[float]
+    width_m: Optional[float]
+    insulation_thickness_m: float
+    insulation_conductivity_wmk: float
     insulation_reflective: bool
 
     @property
     def length(self) -> float:
         return self.geometry.length
+
+    @property
+    def diameter_mm(self) -> float:
+        """Return the diameter in MM."""
+        return self.diameter_m * 1000.0
+
+    @property
+    def height_mm(self) -> Optional[float]:
+        """Return the height in MM."""
+        if self.height_m:
+            return self.height_m * 1000.0
+        else:
+            return None
+
+    @property
+    def width_mm(self) -> Optional[float]:
+        """Return the width in MM."""
+        if self.width_m:
+            return self.width_m * 1000.0
+        else:
+            return None
+
+    @property
+    def insulation_thickness_mm(self) -> float:
+        """Return the insulation-thickness in MM."""
+        return self.insulation_thickness_m * 1000.0
 
 
 @dataclass
@@ -59,67 +85,67 @@ class PhxDuctElement:
         return list(self._segments.values())
 
     @property
-    def length(self) -> float:
+    def length_m(self) -> float:
         return sum(_.length for _ in self.segments)
 
     @property
-    def diameter(self) -> float:
+    def diameter_mm(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
-            weighted_total += seg.length * seg.diameter
+            weighted_total += seg.length * seg.diameter_mm
 
         try:
-            return weighted_total / self.length
+            return weighted_total / self.length_m
         except ZeroDivisionError:
             return 0.0
 
     @property
-    def height(self) -> float:
+    def height_mm(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
-            weighted_total += seg.length * (seg.height or 0.0)
+            weighted_total += seg.length * (seg.height_mm or 0.0)
 
         try:
-            return weighted_total / self.length
+            return weighted_total / self.length_m
         except ZeroDivisionError:
             return 0.0
 
     @property
-    def width(self) -> float:
+    def width_mm(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
-            weighted_total += seg.length * (seg.width or 0.0)
+            weighted_total += seg.length * (seg.width_mm or 0.0)
 
         try:
-            return weighted_total / self.length
+            return weighted_total / self.length_m
         except ZeroDivisionError:
             return 0.0
 
     @property
-    def insulation_thickness(self) -> float:
+    def insulation_thickness_mm(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
-            weighted_total += seg.length * seg.insulation_thickness
+            weighted_total += seg.length * seg.insulation_thickness_mm
 
         try:
-            return weighted_total / self.length
+            return weighted_total / self.length_m
         except ZeroDivisionError:
             return 0.0
 
     @property
-    def insulation_conductivity(self) -> float:
+    def insulation_conductivity_wmk(self) -> float:
         weighted_total = 0.0
         for seg in self.segments:
-            weighted_total += seg.length * seg.insulation_conductivity
+            weighted_total += seg.length * seg.insulation_conductivity_wmk
 
         try:
-            return weighted_total / self.length
+            return weighted_total / self.length_m
         except ZeroDivisionError:
             return 0.0
 
     @property
     def duct_shape(self) -> int:
-        if self.height and self.width:
+        if self.height_mm and self.width_mm:
             return 2  # Rectangular Duct
         else:
             return 1  # Round Duct
