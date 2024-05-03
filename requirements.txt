@@ -5,3 +5,4 @@ pydantic==1.10.13
 PH-units>=1.5.7
 rich
 xlwings
+lxml
