@@ -497,8 +497,8 @@
     "COMPONENTS": {
         "name": "Components",
         "glazings": {
-            "entry_column":"IH",
-            "entry_start_row":13,
+            "entry_column": "IH",
+            "entry_start_row": 13,
             "header_start_row": 8,
             "inputs": {
                 "id": {
@@ -586,7 +586,7 @@
                     "unit": "W/MK"
                 },
                 "psi_i_right": {
-                    "column": "KA",
+                    "column": "JZ",
                     "unit": "W/MK"
                 },
                 "psi_i_bottom": {
@@ -594,7 +594,7 @@
                     "unit": "W/MK"
                 },
                 "psi_i_top": {
-                    "column": "KC",
+                    "column": "KA",
                     "unit": "W/MK"
                 }
             }
@@ -721,11 +721,11 @@
                     "unit": "W/MK"
                 },
                 "psi_i_bottom": {
-                    "column": "AP",
+                    "column": "AQ",
                     "unit": "W/MK"
                 },
                 "psi_i_top": {
-                    "column": "AQ",
+                    "column": "AP",
                     "unit": "W/MK"
                 },
                 "window_area": {
