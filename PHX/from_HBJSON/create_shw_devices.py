@@ -6,7 +6,7 @@
 from honeybee_phhvac import hot_water_devices, hot_water_piping
 
 from PHX.model import hvac
-from PHX.model.enums.hvac import PhxHotWaterPipingDiameter, PhxHotWaterPipingMaterial, PhxHotWaterTankType
+from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType, PhxHotWaterPipingMaterial, PhxHotWaterTankType
 from PHX.model.hvac import piping
 
 # -- Storage ------------------------------------------------------------------
@@ -140,12 +140,13 @@ def build_phx_pipe_element(_ph_hvac_pipe: hot_water_piping.PhHvacPipeElement) ->
                 segment.display_name,
                 segment.geometry,
                 PhxHotWaterPipingMaterial(segment.material.number),
-                PhxHotWaterPipingDiameter(segment.diameter.number),
-                segment.insulation_thickness,
+                segment.diameter_m,
+                segment.insulation_thickness_m,
                 segment.insulation_conductivity,
                 segment.insulation_reflective,
                 segment.insulation_quality,
                 segment.daily_period,
+                segment.water_temp_c,
             )
         )
 
@@ -172,12 +173,13 @@ def build_phx_branch_pipe(_ph_hvac_branch: hot_water_piping.PhHvacPipeBranch) ->
                 segment.display_name,
                 segment.geometry,
                 PhxHotWaterPipingMaterial(segment.material.number),
-                PhxHotWaterPipingDiameter(segment.diameter.number),
-                segment.insulation_thickness,
+                segment.diameter_m,
+                segment.insulation_thickness_m,
                 segment.insulation_conductivity,
                 segment.insulation_reflective,
                 segment.insulation_quality,
                 segment.daily_period,
+                segment.water_temp_c,
             )
         )
 
@@ -209,12 +211,13 @@ def build_phx_trunk_pipe(_ph_hvac_trunk: hot_water_piping.PhHvacPipeTrunk) -> hv
                 segment.display_name,
                 segment.geometry,
                 PhxHotWaterPipingMaterial(segment.material.number),
-                PhxHotWaterPipingDiameter(segment.diameter.number),
-                segment.insulation_thickness,
+                segment.diameter_m,
+                segment.insulation_thickness_m,
                 segment.insulation_conductivity,
                 segment.insulation_reflective,
                 segment.insulation_quality,
                 segment.daily_period,
+                segment.water_temp_c,
             )
         )
 

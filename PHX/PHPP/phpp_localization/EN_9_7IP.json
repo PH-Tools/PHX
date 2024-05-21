@@ -492,7 +492,7 @@
     "COMPONENTS": {
         "name": "Components",
         "glazings": {
-            "entry_column":"ID",
+            "entry_column": "ID",
             "entry_start_row": 15,
             "header_start_row": 10,
             "inputs": {
@@ -1184,6 +1184,14 @@
                 "insul_conductivity": {
                     "row": 5,
                     "unit": "HR-FT2-F/BTU-IN"
+                },
+                "daily_period": {
+                    "row": 11,
+                    "unit": ""
+                },
+                "water_temp": {
+                    "row": -2,
+                    "unit": "F"
                 }
             },
             "input_col_start": "J"
@@ -1194,6 +1202,10 @@
             "locator_col_entry": "E",
             "locator_string_entry": "DHW individual pipes",
             "input_rows_offset": {
+                "water_temp": {
+                    "row": -20,
+                    "unit": "F"
+                },
                 "diameter": {
                     "row": 1,
                     "unit": "IN"

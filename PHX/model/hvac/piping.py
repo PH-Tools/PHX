@@ -13,11 +13,10 @@ from uuid import uuid4
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
 from ph_units.converter import convert
-from ph_units.unit_type import Unit
 
 from PHX.model.enums.hvac import (
     PhxHotWaterPipingCalcMethod,
-    PhxHotWaterPipingDiameter,
+    PhxHotWaterPipingInchDiameterType,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
 )
@@ -48,20 +47,14 @@ class PhxPipeSegment:
     display_name: str
     geometry: LineSegment3D
     pipe_material: PhxHotWaterPipingMaterial
-    pipe_diameter: PhxHotWaterPipingDiameter
+    diameter_m: float
     insulation_thickness_m: float
     insulation_conductivity: float  # W/mk
     insulation_reflective: bool
     insulation_quality: Any
     daily_period: float
+    water_temp_c: float = 60.0
     pipe_wall_thickness_m: float = 0.00225
-
-    @property
-    def diameter_m(self) -> float:
-        diam_m = convert(self.pipe_diameter.name_as_float, "IN", "M")
-        if not diam_m:
-            raise ValueError(f"Could not convert {self.pipe_diameter.name} to meters?")
-        return diam_m
 
     @property
     def diameter_mm(self) -> float:
@@ -205,18 +198,19 @@ class PhxPipeSegment:
     def from_length(
         cls,
         display_name: str,
-        length: float,
+        length_m: float,
         pipe_material: PhxHotWaterPipingMaterial,
-        pipe_diameter: PhxHotWaterPipingDiameter,
+        pipe_diameter_m: float,
     ) -> "PhxPipeSegment":
         """Create a Pipe Segment from a length value (m)."""
+        _l: int = length_m  # type: ignore # untyped LBT
 
         return cls(
             identifier=str(uuid4()),
             display_name=display_name,
-            geometry=LineSegment3D(Point3D(0, 0, 0), Vector3D(length, 0, 0)),
+            geometry=LineSegment3D(Point3D(0, 0, 0), Vector3D(_l, 0, 0)),
             pipe_material=pipe_material,
-            pipe_diameter=pipe_diameter,
+            diameter_m=pipe_diameter_m,
             insulation_thickness_m=0.0,
             insulation_conductivity=0.0,
             insulation_reflective=False,
@@ -283,20 +277,6 @@ class PhxPipeElement:
             )
         else:
             return materials[0]
-
-    @property
-    def diameter(self) -> PhxHotWaterPipingDiameter:
-        if not self.segments:
-            return PhxHotWaterPipingDiameter._0_3_8_IN
-
-        diameters = list({s.pipe_diameter for s in self.segments})
-        if len(diameters) != 1:
-            raise ValueError(
-                "Error: Pipe Element '{}' has multiple diameters: '{}'."
-                "Please rebuild the pipe with a single diameter.".format(self.display_name, diameters)
-            )
-        else:
-            return diameters[0]
 
     @property
     def demand_recirculation(self) -> bool:

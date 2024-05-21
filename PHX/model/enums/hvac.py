@@ -79,7 +79,7 @@ class PhxHotWaterPipingMaterial(Enum):
     PEX_CTS_SDR = 8
 
 
-class PhxHotWaterPipingDiameter(Enum):
+class PhxHotWaterPipingInchDiameterType(Enum):
     _0_3_8_IN = 1
     _0_1_2_IN = 2
     _0_5_8_IN = 3
@@ -107,6 +107,11 @@ class PhxHotWaterPipingDiameter(Enum):
 
         # -- Return the whole
         return float(parts[0]) + float(fraction)
+
+    @classmethod
+    def nearest_key(cls, value: float) -> "PhxHotWaterPipingInchDiameterType":
+        """Return a new Enum object which most closely matches the supplied value."""
+        return min(PhxHotWaterPipingInchDiameterType, key=lambda d: abs(d.name_as_float - value))
 
 
 class PhxHotWaterInputOptions(Enum):

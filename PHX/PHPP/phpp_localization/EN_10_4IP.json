@@ -497,8 +497,8 @@
     "COMPONENTS": {
         "name": "Components",
         "glazings": {
-            "entry_column":"IH",
-            "entry_start_row":13,
+            "entry_column": "IH",
+            "entry_start_row": 13,
             "header_start_row": 8,
             "inputs": {
                 "id": {
@@ -586,15 +586,15 @@
                     "unit": "BTU/HR-FT-F"
                 },
                 "psi_i_right": {
-                    "column": "KA",
+                    "column": "JZ",
                     "unit": "BTU/HR-FT-F"
                 },
                 "psi_i_bottom": {
-                    "column": "KB",
+                    "column": "KA",
                     "unit": "BTU/HR-FT-F"
                 },
                 "psi_i_top": {
-                    "column": "KC",
+                    "column": "KB",
                     "unit": "BTU/HR-FT-F"
                 }
             }
@@ -1189,6 +1189,14 @@
                 "insul_conductivity": {
                     "row": 6,
                     "unit": "HR-FT2-F/BTU-IN"
+                },
+                "daily_period": {
+                    "row": 12,
+                    "unit": ""
+                },
+                "water_temp": {
+                    "row": 13,
+                    "unit": "F"
                 }
             },
             "input_col_start": "J"
@@ -1199,6 +1207,10 @@
             "locator_col_entry": "E",
             "locator_string_entry": "DHW stub pipes / individual pipes",
             "input_rows_offset": {
+                "water_temp": {
+                    "row": 1,
+                    "unit": "F"
+                },
                 "diameter": {
                     "row": 2,
                     "unit": "IN"

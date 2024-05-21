@@ -7,6 +7,8 @@ import sys
 from functools import reduce
 from typing import Any, Dict, List, Optional, TypeVar
 
+from ph_units.converter import convert
+
 from PHX.model import (
     building,
     certification,
@@ -22,6 +24,7 @@ from PHX.model import (
     spaces,
 )
 from PHX.model.enums.foundations import FoundationType
+from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType
 from PHX.model.hvac import _base, renewable_devices
 from PHX.model.schedules import occupancy, ventilation
 from PHX.to_WUFI_XML.xml_writables import XML_List, XML_Node, XML_Object, xml_writable
@@ -1307,22 +1310,26 @@ def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
 
 
 def _DistributionDHWTwig(_twg: hvac.PhxPipeElement) -> List[xml_writable]:
+    diameter_inches = convert(_twg.weighted_diameter_mm, "MM", "IN") or 0.0
+    diameter_type = PhxHotWaterPipingInchDiameterType.nearest_key(diameter_inches)
     return [
         XML_Node("Name", _twg.display_name),
         XML_Node("IdentNr", _twg.id_num),
         XML_Node("PipingLength", _twg.length_m),
         XML_Node("PipeMaterial", _twg.material.value),
-        XML_Node("PipingDiameter", _twg.diameter.value),
+        XML_Node("PipingDiameter", diameter_type.value),
     ]
 
 
 def _DistributionDHWBranch(_br: hvac.PhxPipeBranch) -> List[xml_writable]:
+    diameter_inches = convert(_br.pipe_element.weighted_diameter_mm, "MM", "IN") or 0.0
+    diameter_type = PhxHotWaterPipingInchDiameterType.nearest_key(diameter_inches)
     return [
         XML_Node("Name", _br.display_name),
         XML_Node("IdentNr", _br.id_num),
         XML_Node("PipingLength", _br.pipe_element.length_m),
         XML_Node("PipeMaterial", _br.pipe_element.material.value),
-        XML_Node("PipingDiameter", _br.pipe_element.diameter.value),
+        XML_Node("PipingDiameter", diameter_type.value),
         XML_List(
             "Twigs",
             [
@@ -1334,12 +1341,14 @@ def _DistributionDHWBranch(_br: hvac.PhxPipeBranch) -> List[xml_writable]:
 
 
 def _DistributionDHWTrunc(_t: hvac.PhxPipeTrunk) -> List[xml_writable]:
+    diameter_inches = convert(_t.pipe_element.weighted_diameter_mm, "MM", "IN") or 0.0
+    diameter_type = PhxHotWaterPipingInchDiameterType.nearest_key(diameter_inches)
     return [
         XML_Node("Name", _t.display_name),
         XML_Node("IdentNr", _t.id_num),
         XML_Node("PipingLength", _t.pipe_element.length_m),
         XML_Node("PipeMaterial", _t.pipe_element.material.value),
-        XML_Node("PipingDiameter", _t.pipe_element.diameter.value),
+        XML_Node("PipingDiameter", diameter_type.value),
         XML_Node("CountUnitsOrFloors", _t.multiplier),
         XML_Node("DemandRecirculation", _t.pipe_element.demand_recirculation),
         XML_List(

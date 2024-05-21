@@ -733,6 +733,8 @@ class DhwRecircPipingInputRows(BaseModel):
     insul_thickness: InputItem
     insul_reflective: InputItem
     insul_conductivity: InputItem
+    daily_period: InputItem
+    water_temp: InputItem
 
 
 class DhwRecircPiping(BaseModel):
@@ -745,6 +747,7 @@ class DhwRecircPiping(BaseModel):
 
 
 class DhwBranchPipingInputRows(BaseModel):
+    water_temp: InputItem
     diameter: InputItem
     total_length: InputItem
     num_taps: int

@@ -3,7 +3,7 @@ from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
 from PHX.model.hvac.collection import PhxMechanicalSystemCollection
 from PHX.model.hvac.piping import (
-    PhxHotWaterPipingDiameter,
+    PhxHotWaterPipingInchDiameterType,
     PhxHotWaterPipingMaterial,
     PhxPipeBranch,
     PhxPipeElement,
@@ -22,7 +22,7 @@ def test_add_Trunk_to_HW_System(reset_class_counters):
         display_name="test-display-name",
         geometry=LineSegment3D(p1, p2),
         pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
-        pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
+        diameter_m=0.0254,
         insulation_thickness_m=25.4,
         insulation_conductivity=0.04,
         insulation_reflective=True,

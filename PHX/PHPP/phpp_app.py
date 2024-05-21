@@ -361,7 +361,8 @@ class PHPPConnection:
                 "By default the PHPP can only have 100 surfaces input."
             )
 
-        self.areas.write_surfaces(surfaces)
+        phpp_surfaces_rows_sorted = sorted(surfaces, key=lambda x: x.phx_polygon.display_name.lower())
+        self.areas.write_surfaces(phpp_surfaces_rows_sorted)
         return None
 
     def write_project_thermal_bridges(self, phx_project: project.PhxProject) -> None:
@@ -437,7 +438,8 @@ class PHPPConnection:
                 "By default the PHPP can only have 150 windows input."
             )
 
-        self.windows.write_windows(phpp_windows)
+        phpp_windows_rows_sorted = sorted(phpp_windows, key=lambda x: x.phx_polygon.display_name.lower())
+        self.windows.write_windows(phpp_windows_rows_sorted)
         return None
 
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
@@ -492,6 +494,7 @@ class PHPPConnection:
                     phx_aperture_element.summer_shading_factor,
                 )
             )
+
         self.shading.write_shading(phpp_shading_rows)
 
         # TODO: option to clear all the dimensional info?

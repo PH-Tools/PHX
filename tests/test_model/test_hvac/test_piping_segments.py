@@ -1,8 +1,30 @@
 import pytest
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
+from ph_units.converter import convert
 
-from PHX.model.hvac.piping import PhxHotWaterPipingDiameter, PhxHotWaterPipingMaterial, PhxPipeSegment
+from PHX.model.hvac.piping import PhxHotWaterPipingInchDiameterType, PhxHotWaterPipingMaterial, PhxPipeSegment
+
+
+def test_PhxPipeSegment_to_wufi_diameter_type():
+    p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
+    geom = LineSegment3D(p1, p2)
+
+    seg = PhxPipeSegment(
+        identifier="test",
+        display_name="test",
+        geometry=geom,
+        pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
+        diameter_m=0.0254,
+        insulation_thickness_m=0.0254,
+        insulation_conductivity=0.04,
+        insulation_reflective=True,
+        insulation_quality=None,
+        daily_period=24,
+    )
+
+    diameter_inches = convert(seg.diameter_mm, "MM", "IN") or 0.0
+    assert PhxHotWaterPipingInchDiameterType.nearest_key(diameter_inches) == PhxHotWaterPipingInchDiameterType._1_0_0_IN
 
 
 def test_PhxPipeSegment_heat_loss_coefficient_1():
@@ -14,7 +36,7 @@ def test_PhxPipeSegment_heat_loss_coefficient_1():
         display_name="test",
         geometry=geom,
         pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
-        pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
+        diameter_m=0.0254,
         insulation_thickness_m=0.0254,
         insulation_conductivity=0.04,
         insulation_reflective=True,
@@ -35,7 +57,7 @@ def test_PhxPipeSegment_heat_loss_coefficient_2():
         display_name="test",
         geometry=geom,
         pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
-        pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
+        diameter_m=0.0254,
         insulation_thickness_m=0.0254,
         insulation_conductivity=0.04,
         insulation_reflective=False,

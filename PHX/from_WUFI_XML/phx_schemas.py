@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
-from ph_units.unit_type import Unit
+from ph_units.converter import convert
 from rich import print
 
 from PHX.from_WUFI_XML import wufi_file_schema as wufi_xml
@@ -90,7 +90,7 @@ from PHX.model.hvac.cooling_params import (
 from PHX.model.hvac.ducting import PhxDuctElement, PhxDuctSegment, PhxVentDuctType
 from PHX.model.hvac.piping import (
     PhxHotWaterPipingCalcMethod,
-    PhxHotWaterPipingDiameter,
+    PhxHotWaterPipingInchDiameterType,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
     PhxPipeBranch,
@@ -628,11 +628,12 @@ def _PhxRecirculationParameters(
 
 def _RecirculationTrunk(_data: wufi_xml.DistributionDHW) -> PhxPipeElement:
     new_recirc_pipe = PhxPipeElement()
+
     new_segment = PhxPipeSegment.from_length(
         "Recirculation Pipe",
         _data.LengthCirculationPipes_WR or 0.0,
         PhxHotWaterPipingMaterial.COPPER_K,
-        PhxHotWaterPipingDiameter._1_0_0_IN,
+        0.0254,
     )
     new_segment.insulation_thickness_m = 25.4 / 1_000
     new_segment.insulation_conductivity = 0.04
@@ -661,12 +662,14 @@ def _Trunc(_data: wufi_xml.Trunc) -> PhxPipeTrunk:
 
     # -- Since we lose the actual geometry in WUFI,
     # -- we'll just make a new Pipe Element with the right length
+    existing_type = PhxHotWaterPipingInchDiameterType(_data.PipingDiameter)
+    existing_type_as_m_value: float = convert(existing_type.name_as_float, "IN", "M") or 0.0254
     new_trunc.pipe_element.add_segment(
         PhxPipeSegment.from_length(
             _data.Name or "",
             _data.PipingLength or 0.0,
             PhxHotWaterPipingMaterial(_data.PipeMaterial),
-            PhxHotWaterPipingDiameter(_data.PipingDiameter),
+            existing_type_as_m_value,
         )
     )
 
@@ -683,12 +686,14 @@ def _Branch(_data: wufi_xml.Branch) -> PhxPipeBranch:
 
     # -- Since we lose the actual geometry in WUFI,
     # -- we'll just make a new Pipe Element with the right length
+    existing_type = PhxHotWaterPipingInchDiameterType(_data.PipingDiameter)
+    existing_type_as_m_value: float = convert(existing_type.name_as_float, "IN", "M") or 0.0254
     new_branch.pipe_element.add_segment(
         PhxPipeSegment.from_length(
             _data.Name or "",
             _data.PipingLength or 0.0,
             PhxHotWaterPipingMaterial(_data.PipeMaterial),
-            PhxHotWaterPipingDiameter(_data.PipingDiameter),
+            existing_type_as_m_value,
         )
     )
 
@@ -704,12 +709,14 @@ def _Fixture(_data: wufi_xml.Twig) -> PhxPipeElement:
 
     # -- Since we lose the actual geometry in WUFI,
     # -- we'll just make a new Pipe Element with the right length
+    existing_type = PhxHotWaterPipingInchDiameterType(_data.PipingDiameter)
+    existing_type_as_m_value: float = convert(existing_type.name_as_float, "IN", "M") or 0.0254
     new_element.add_segment(
         PhxPipeSegment.from_length(
             _data.Name or "",
             _data.PipingLength or 0.0,
             PhxHotWaterPipingMaterial(_data.PipeMaterial),
-            PhxHotWaterPipingDiameter(_data.PipingDiameter),
+            existing_type_as_m_value,
         )
     )
 

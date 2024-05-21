@@ -2,7 +2,12 @@ import pytest
 from ladybug_geometry.geometry3d.pointvector import Point3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
-from PHX.model.hvac.piping import PhxHotWaterPipingDiameter, PhxHotWaterPipingMaterial, PhxPipeElement, PhxPipeSegment
+from PHX.model.hvac.piping import (
+    PhxHotWaterPipingInchDiameterType,
+    PhxHotWaterPipingMaterial,
+    PhxPipeElement,
+    PhxPipeSegment,
+)
 
 
 def test_empty_PhxPipeElement():
@@ -24,7 +29,7 @@ def test_add_single_segment_to_PhxPipeElement():
         display_name="test-segment",
         geometry=geom,
         pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
-        pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
+        diameter_m=0.0254,
         insulation_thickness_m=0.0254,
         insulation_conductivity=0.04,
         insulation_reflective=True,
@@ -53,7 +58,7 @@ def test_add_multiple_segment_to_PhxPipeElement():
         display_name="test1",
         geometry=geom1,
         pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
-        pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
+        diameter_m=0.0254,
         insulation_thickness_m=0.0100,
         insulation_conductivity=0.04,
         insulation_reflective=True,
@@ -65,7 +70,7 @@ def test_add_multiple_segment_to_PhxPipeElement():
         display_name="test2",
         geometry=geom1,
         pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
-        pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
+        diameter_m=0.0254,
         insulation_thickness_m=0.0200,
         insulation_conductivity=0.04,
         insulation_reflective=True,
@@ -77,7 +82,7 @@ def test_add_multiple_segment_to_PhxPipeElement():
         display_name="test3",
         geometry=geom1,
         pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
-        pipe_diameter=PhxHotWaterPipingDiameter._1_0_0_IN,
+        diameter_m=0.0254,
         insulation_thickness_m=0.0400,
         insulation_conductivity=0.04,
         insulation_reflective=True,

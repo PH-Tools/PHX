@@ -74,9 +74,21 @@ class RecircPipingInput:
             ),
             XLItemDHW(
                 create_range("insul_conductivity"),
-                sum(s.insulation_thickness_m * s.length_m for s in self.phx_pipe) / total_length,
+                sum(s.insulation_conductivity * s.length_m for s in self.phx_pipe) / total_length,
                 "W/MK",
                 self._get_target_unit("insul_conductivity"),
+            ),
+            XLItemDHW(
+                create_range("daily_period"),
+                sum(s.daily_period * s.length_m for s in self.phx_pipe) / total_length,
+                "",
+                self._get_target_unit("daily_period"),
+            ),
+            XLItemDHW(
+                create_range("water_temp"),
+                sum(s.water_temp_c * s.length_m for s in self.phx_pipe) / total_length,
+                "C",
+                self._get_target_unit("water_temp"),
             ),
         ]
 
@@ -108,17 +120,26 @@ class BranchPipingInput:
         """Returns a list of Branch Piping Xl-Write items."""
 
         XLItemDHW = partial(xl_data.XlItem, _sheet_name)
+        total_length = sum(s.length_m for s in self.phx_pipe)
+        if total_length == 0:
+            return []
         return [
             # -- Branch Piping
             XLItemDHW(
+                self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.water_temp.row),  # type: ignore
+                sum(s.water_temp_c * s.length_m for s in self.phx_pipe) / total_length,
+                "C",
+                self._get_target_unit("water_temp"),
+            ),
+            XLItemDHW(
                 self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.diameter.row),  # type: ignore
-                sum(s.diameter_m * s.length_m for s in self.phx_pipe) / sum(s.length_m for s in self.phx_pipe),
+                sum(s.diameter_m * s.length_m for s in self.phx_pipe) / total_length,
                 "M",
                 self._get_target_unit("diameter"),
             ),
             XLItemDHW(
                 self.create_range(_row_num + self.shape.branch_piping.input_rows_offset.total_length.row),  # type: ignore
-                sum(s.length_m for s in self.phx_pipe),
+                total_length,
                 "M",
                 self._get_target_unit("total_length"),
             ),
