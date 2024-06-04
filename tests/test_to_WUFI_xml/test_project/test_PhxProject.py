@@ -5,6 +5,11 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 def test_default_PhxProject(reset_class_counters):
     p1 = project.PhxProject()
+    p1.project_data.project_date.year = 0
+    p1.project_data.project_date.month = 0
+    p1.project_data.project_date.day = 0
+    p1.project_data.project_date.hour = 0
+    p1.project_data.project_date.minutes = 0
     result = generate_WUFI_XML_from_object(p1, _header="")
     assert xml_string_to_list(result) == [
         "<DataVersion>48</DataVersion>",
@@ -15,7 +20,13 @@ def test_default_PhxProject(reset_class_counters):
         "<ProjectData>",
         "<Year_Construction>0</Year_Construction>",
         "<OwnerIsClient>false</OwnerIsClient>",
-        "<Date_Project></Date_Project>",
+        "<Date_Project>",
+        "<Year>0</Year>",
+        "<Month>0</Month>",
+        "<Day>0</Day>",
+        "<Hour>0</Hour>",
+        "<Minutes>0</Minutes>",
+        "</Date_Project>",
         "<WhiteBackgroundPictureBuilding/>",
         "<Customer_Name/>",
         "<Customer_Street/>",

@@ -138,11 +138,21 @@ def _Systems(
     ]
 
 
+def _PhxDateProject(_project_data: project.PhxProjectDate) -> List[xml_writable]:
+    return [
+        XML_Node("Year", _project_data.year),
+        XML_Node("Month", _project_data.month),
+        XML_Node("Day", _project_data.day),
+        XML_Node("Hour", _project_data.hour),
+        XML_Node("Minutes", _project_data.minutes),
+    ]
+
+
 def _PhxProjectData(_project_data: project.PhxProjectData) -> List[xml_writable]:
     return [
         XML_Node("Year_Construction", _project_data.year_constructed),
         XML_Node("OwnerIsClient", _project_data.owner_is_client),
-        XML_Node("Date_Project", _project_data.project_date),
+        XML_Object("Date_Project", _project_data.project_date, _schema_name="_PhxDateProject"),
         XML_Node("WhiteBackgroundPictureBuilding", _project_data.image),
         XML_Node("Customer_Name", _project_data.customer.name),
         XML_Node("Customer_Street", _project_data.customer.street),

@@ -8,7 +8,13 @@
 	<ProjectData>
 		<Year_Construction>0</Year_Construction>
 		<OwnerIsClient>false</OwnerIsClient>
-		<Date_Project></Date_Project>
+		<Date_Project>
+			<Year>2020</Year>
+			<Month>9</Month>
+			<Day>9</Day>
+			<Hour>0</Hour>
+			<Minutes>0</Minutes>
+		</Date_Project>
 		<WhiteBackgroundPictureBuilding>true</WhiteBackgroundPictureBuilding>
 		<Customer_Name/>
 		<Customer_Street/>

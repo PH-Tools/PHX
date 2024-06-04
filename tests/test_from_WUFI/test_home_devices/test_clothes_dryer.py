@@ -1,6 +1,6 @@
 from PHX.from_WUFI_XML.phx_schemas import _PhxDeviceClothesDryer, _PhxHomeDevice
 from PHX.from_WUFI_XML.read_WUFI_XML_file import string_to_xml_dict
-from PHX.from_WUFI_XML.wufi_file_schema import HomeDevice
+from PHX.from_WUFI_XML.wufi_file_schema import WufiHomeDevice
 from PHX.model.elec_equip import *
 
 XML_STRING = """
@@ -25,7 +25,7 @@ XML_STRING = """
 
 def test_create_xml_object_from_string() -> None:
     xml_dict = string_to_xml_dict(XML_STRING)
-    new_wufi_xml_obj = HomeDevice(**xml_dict)
+    new_wufi_xml_obj = WufiHomeDevice(**xml_dict)
 
     assert new_wufi_xml_obj.Comment == "default"
     assert new_wufi_xml_obj.ReferenceQuantity == 1
@@ -46,7 +46,7 @@ def test_create_xml_object_from_string() -> None:
 
 def test_create_phx_object_from_xml_string() -> None:
     xml_dict = string_to_xml_dict(XML_STRING)
-    new_wufi_xml_obj = HomeDevice(**xml_dict)
+    new_wufi_xml_obj = WufiHomeDevice(**xml_dict)
 
     # -- Test using the device factory which transfers *all* attributes
     new_phx_obj: PhxDeviceClothesDryer = _PhxHomeDevice(new_wufi_xml_obj)  # type: ignore

@@ -5,15 +5,15 @@
 
 from typing import Dict, Optional
 
-from pydantic import BaseModel
+from pydantic.main import BaseModel
 
 # -----------------------------------------------------------------------------
 
 
 class InputItem(BaseModel):
-    column: Optional[str]
-    row: Optional[int]
-    unit: Optional[str]
+    column: Optional[str] = None
+    row: Optional[int] = None
+    unit: Optional[str] = None
 
     @property
     def xl_range(self) -> str:
@@ -28,8 +28,8 @@ class VerificationInputItem(BaseModel):
     locator_string: str
     input_column: str
     input_row_offset: int
-    options: Optional[Dict]
-    unit: Optional[str]
+    options: Optional[Dict] = None
+    unit: Optional[str] = None
 
 
 class Verification(BaseModel):
@@ -182,8 +182,8 @@ class Climate(BaseModel):
     name: str
     active_dataset: ClimateActiveDataset
     ud_block: ClimateUDBlock
-    named_ranges: Optional[ClimateNamedRanges]
-    defined_ranges: Optional[ClimateDefinedRanges]
+    named_ranges: Optional[ClimateNamedRanges] = None
+    defined_ranges: Optional[ClimateDefinedRanges] = None
 
 
 # -----------------------------------------------------------------------------
@@ -502,7 +502,7 @@ class VentilationInputItem(BaseModel):
     locator_col: str
     locator_string: str
     input_column: str
-    unit: Optional[str]
+    unit: Optional[str] = None
 
 
 class Ventilation(BaseModel):
@@ -985,7 +985,7 @@ class PerAddresses(BaseModel):
 class PerDataBlock(BaseModel):
     locator_string_heading: str
     locator_string_start: str
-    locator_string_end: Optional[str]
+    locator_string_end: Optional[str] = None
 
 
 class PerNamedRanges(BaseModel):

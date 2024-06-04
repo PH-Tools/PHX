@@ -8,7 +8,13 @@
 	<ProjectData>
 		<Year_Construction>2021</Year_Construction>
 		<OwnerIsClient>true</OwnerIsClient>
-		<Date_Project></Date_Project>
+		<Date_Project>
+			<Year>2021</Year>
+			<Month>1</Month>
+			<Day>7</Day>
+			<Hour>6</Hour>
+			<Minutes>0</Minutes>
+		</Date_Project>
 		<WhiteBackgroundPictureBuilding>true</WhiteBackgroundPictureBuilding>
 		<Customer_Name>Municipal Housing Authority of Yonkers</Customer_Name>
 		<Customer_Street>1511 Central Park Ave</Customer_Street>
@@ -30451,7 +30457,7 @@
 												<IdentNr>2</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="1">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -30478,7 +30484,7 @@
 												<IdentNr>3</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>4</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -30519,7 +30525,7 @@
 												<IdentNr>4</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -30560,7 +30566,7 @@
 												<IdentNr>5</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -30601,7 +30607,7 @@
 												<IdentNr>6</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -30642,7 +30648,7 @@
 												<IdentNr>7</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -61388,7 +61394,7 @@
 												<IdentNr>9</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="1">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -61415,7 +61421,7 @@
 												<IdentNr>10</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>4</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -61456,7 +61462,7 @@
 												<IdentNr>11</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -61497,7 +61503,7 @@
 												<IdentNr>12</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -61538,7 +61544,7 @@
 												<IdentNr>13</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>
@@ -61579,7 +61585,7 @@
 												<IdentNr>14</IdentNr>
 												<PipingLength>0.0</PipingLength>
 												<PipeMaterial>6</PipeMaterial>
-												<PipingDiameter>2</PipingDiameter>
+												<PipingDiameter>1</PipingDiameter>
 												<Twigs count="3">
 													<Twig index="0">
 														<Name>_unnamed_pipe_element_</Name>

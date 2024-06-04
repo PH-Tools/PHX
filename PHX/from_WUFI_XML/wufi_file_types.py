@@ -19,37 +19,49 @@ class BaseConverter:
     __unit_type__ = ""
     __value_type__ = int
 
+    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
+
     @classmethod
-    def __get_validators__(cls):
+    def __get_validators__(cls, *args, **kwargs):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]):
+    def validate(cls, _input: Union[str, Dict[str, Any]], *args, **kwargs):
         """
         Since WUFI XMl files come in several shapes and the XML tag may, or
-        may not, include a "unit=__" attribute, we don't know what sort of input
-        we're getting. So if it is a dict input, that means it should have a
+        may not, include a "unit=..." attribute, we don't know what sort of input
+        we're getting. So: if it is a dict input, that means it should have a
         "unit" type. But it if it is a bare int or float, then we assume it is
         the correct unit already (SI) and just return it.
+
+        _input: Dict[str, Any] | str
+            * {value: 7.5, unit_type: "hr"}
+            * '7.5'
         """
 
-        # -- If it is not a dict or None, just return the value
-        if not isinstance(v, dict):
-            return cls.__value_type__(v)
+        # If _input is NOT a dictionary, just cast it to the correct type and return it
+        if not isinstance(_input, dict):
+            return cls.__value_type__(_input)
 
-        # -- If its None, Return None
-        if not v["value"]:
+        # If _input IS a dictionary but does NOT contain a 'value', return None
+        if not _input.get("value", None):
             return None
 
         # -- Otherwise, pull the value out of the dict and convert the value to the right unit
         try:
-            result = convert(v["value"], v["unit_type"], cls.__unit_type__)
+            result = convert(_input["value"], _input["unit_type"], cls.__unit_type__)
         except Exception:
-            msg = f"Error converting input for '{cls.__name__}' using inputs: {v}"
+            msg = f"Error converting input for '{cls.__name__}' using inputs: {_input}"
             raise Exception(msg)
+
+        # -- If the conversion was unsuccessful, raise an exception
         if result is None:
-            msg = f"Error, could not convert:\n" f"\t{v['value']} from {v['unit_type']} to {cls.__unit_type__}"
+            msg = (
+                f"Error, could not convert:\n" f"\t{_input['value']} from {_input['unit_type']} to {cls.__unit_type__}"
+            )
             raise Exception(msg)
+
+        # -- If the conversion was successful, cast the result to the correct type and return it
         return cls.__value_type__(result)
 
 
@@ -59,20 +71,32 @@ class BaseCaster:
     __unit_type__ = ""
     __value_type__ = int
 
+    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
+
     @classmethod
-    def __get_validators__(cls):
+    def __get_validators__(cls, *args, **kwargs):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v):
-        if isinstance(v, dict):
-            if v["value"] is None:
-                return None
-            return cls.__value_type__(v["value"])
-        elif v is None:
+    def validate(cls, _input: Union[Dict[str, Union[float, int]], None, float], *args, **kwargs):
+        """
+        _input: Dict[str, Any] | None | float
+            * {value: 7.5, unit_type: "hr"}
+            * None
+            * '7.5'
+        """
+
+        # If _input is a dictionary, get the 'value' key.
+        # If 'value' key is not present, default to None.
+        # If _input is not a dictionary, use it as is.
+        value = _input.get("value", None) if isinstance(_input, dict) else _input
+
+        # If value is None or the string "NONE", return None.
+        if value is None or str(value).upper() == "NONE":
             return None
-        else:
-            return cls.__value_type__(v)
+
+        # Cast the value to the correct type and return it.
+        return cls.__value_type__(value)
 
 
 # ------------------------------------------------------------------------------
@@ -151,24 +175,34 @@ class kWh_per_kWh(float):
     __unit_type__ = "WUFI_MEW"
     __value_type__ = float
 
+    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
+
     @classmethod
-    def __get_validators__(cls):
+    def __get_validators__(cls, *arg, **kwargs):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]) -> Optional[float]:
+    def validate(cls, v: Union[str, Dict[str, Any]], *arg, **kwargs) -> Optional[float]:
+        # If v is not a dictionary, cast it to the correct type and return it
         if not isinstance(v, dict):
             return cls.__value_type__(v)
 
-        if not v["value"]:
-            return None
+        # Extract value and unit_type from the dictionary
+        value = v.get("value", None)
+        unit_type = v.get("unit_type", None)
 
-        if v["unit_type"] == "-":
-            return cls.__value_type__(v["value"])
+        # If value is not present or unit_type is "-", cast value to the correct type and return it
+        if not value or (unit_type == "-"):
+            return cls.__value_type__(value)
 
-        result = convert(v["value"], v["unit_type"], cls.__unit_type__)
+        # Try to convert the value
+        result = convert(value, unit_type, cls.__unit_type__)
+
+        # If the conversion was unsuccessful, raise an exception
         if result is None:
             raise Exception(f"Could not convert: {v['value']} from {v['unit_type']} to {cls.__unit_type__}")
+
+        # If the conversion was successful, cast the result to the correct type and return it
         return cls.__value_type__(result)
 
 
@@ -210,12 +244,14 @@ class Liter(float):
     __unit_type__ = "L"
     __value_type__ = float
 
+    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
+
     @classmethod
-    def __get_validators__(cls):
+    def __get_validators__(cls, *arg, **kwargs):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]) -> Optional[float]:
+    def validate(cls, v: Union[str, Dict[str, Any]], *arg, **kwargs) -> Optional[float]:
         if not isinstance(v, dict):
             return cls.__value_type__(v)
 
@@ -241,12 +277,14 @@ class DegreeC(float, BaseConverter):
 
 
 class DegreeDeltaK(float):
+    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
+
     @classmethod
-    def __get_validators__(cls):
+    def __get_validators__(cls, *arg, **kwargs):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]):
+    def validate(cls, v: Union[str, Dict[str, Any]], *arg, **kwargs):
         if not isinstance(v, dict):
             return float(v)
 
@@ -376,12 +414,14 @@ class WUFI_Vapor_Resistance_Factor(float):
     __unit_type__ = "WUFI_MEW"
     __value_type__ = float
 
+    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
+
     @classmethod
-    def __get_validators__(cls):
+    def __get_validators__(cls, *arg, **kwargs):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]) -> Optional[float]:
+    def validate(cls, v: Union[str, Dict[str, Any]], *args, **kwargs) -> Optional[float]:
         if not isinstance(v, dict):
             return cls.__value_type__(v)
 

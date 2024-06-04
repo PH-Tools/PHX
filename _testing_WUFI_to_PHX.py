@@ -24,19 +24,19 @@ for i, xm_source_file_name in enumerate(SOURCE_FILE_NAMES):
     # -- 1) Read in the WUFI-XML File as a new Pydantic Model
     print(f"[green bold]> Reading in data from XML-File: {xm_source_file}[/green bold]")
     wufi_xml_data = get_WUFI_XML_file_as_dict(xm_source_file)
-    wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
+    wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
 
     # ----------------------------------------------------------------
-    # -- 2) Convert the Pydantic WUFI model over to a PHX model
+    # # -- 2) Convert the Pydantic WUFI model over to a PHX model
     print(f"[green bold]> Converting XML-data to a PHX-Model[/green bold]")
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
-    # ----------------------------------------------------------------
-    # -- 3) Output the PHX model back to a WUFI-XML
+    # # ----------------------------------------------------------------
+    # # -- 3) Output the PHX model back to a WUFI-XML
     target_file = TARGET_DIR / xm_source_file_name
     xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
 
-    # ----------------------------------------------------------------
-    # -- 4) Save the XML file
+    # # ----------------------------------------------------------------
+    # # -- 4) Save the XML file
     print(f"[bold]> Saving the XML file to: ./{target_file}[/bold]")
     xml_txt_to_file.write_XML_text_file(target_file, xml_txt, False)

@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set, Tuple
 
 from PHX.model.building import PhxBuilding, PhxZone
@@ -187,13 +188,22 @@ class ProjectData_Agent:
 
 
 @dataclass
+class PhxProjectDate:
+    year: int = datetime.now().year
+    month: int = datetime.now().month
+    day: int = datetime.now().day
+    hour: int = datetime.now().hour
+    minutes: int = datetime.now().minute
+
+
+@dataclass
 class PhxProjectData:
     customer: ProjectData_Agent = field(default_factory=ProjectData_Agent)
     building: ProjectData_Agent = field(default_factory=ProjectData_Agent)
     owner: ProjectData_Agent = field(default_factory=ProjectData_Agent)
     designer: ProjectData_Agent = field(default_factory=ProjectData_Agent)
 
-    project_date: str = ""
+    project_date: PhxProjectDate = field(default_factory=PhxProjectDate)
     owner_is_client: bool = False
     year_constructed: int = 0
     image: Optional[bool] = None
