@@ -9,15 +9,11 @@ import operator
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import reduce
-from typing import (Any, ClassVar, Dict, Generator, List, NamedTuple, Optional,
-                    Sequence, Set, Union, ValuesView)
+from typing import Any, ClassVar, Dict, Generator, List, NamedTuple, Optional, Sequence, Set, Union, ValuesView
 
 from PHX.model import elec_equip, geometry, spaces
-from PHX.model.components import (PhxApertureElement, PhxComponentAperture,
-                                  PhxComponentOpaque,
-                                  PhxComponentThermalBridge)
-from PHX.model.enums.building import (AttachedZoneType, SpecificHeatCapacity,
-                                      ZoneType)
+from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
+from PHX.model.enums.building import AttachedZoneType, SpecificHeatCapacity, ZoneType
 from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
 
@@ -97,11 +93,16 @@ class PhxZone:
         return self._thermal_bridges.values()
 
     @property
-    def spaces_grouped_by_erv(self) -> list[list[spaces.PhxSpace]]:
+    def ventilated_spaces(self) -> List[spaces.PhxSpace]:
+        """Return a list of all the spaces in the PhxZone which have some amount of ventilation airflow."""
+        return [s for s in self.spaces if s.has_ventilation_airflow]
+
+    @property
+    def ventilated_spaces_grouped_by_erv(self) -> list[list[spaces.PhxSpace]]:
         """Return a dictionary of spaces grouped by their ERV ID."""
         # -- Get all the spaces, sorted by ERV-id-number
         grouped_spaces = defaultdict(list)
-        for s in self.spaces:
+        for s in self.ventilated_spaces:
             grouped_spaces[s.vent_unit_id_num].append(s)
 
         # -- Return the spaces as a list of lists, sorted by the ERV-id-number
@@ -109,20 +110,6 @@ class PhxZone:
         for k in sorted(grouped_spaces.keys()):
             spaces_.append(grouped_spaces[k])
         return spaces_
-
-    @property
-    def spaces_with_ventilation(self) -> List[spaces.PhxSpace]:
-        """Return a list of all the spaces in the PhxZone which hav ventilation airflow."""
-        spaces_with_ventilation = [s for s in self.spaces if s.has_ventilation_airflow]
-        if self.merge_spaces_by_erv == False:
-            # -- Return all the spaces in the zone with ventilation airflow
-            return spaces_with_ventilation
-        else:
-            # -- Merge the Spaces together by their ERV ID
-            merged_spaces_ = []
-            for space_group in self.spaces_grouped_by_erv:
-                merged_spaces_.append(reduce(lambda a, b: a + b, space_group))
-            return merged_spaces_
 
     def merge_thermal_bridges(self) -> None:
         """Merge together all the Thermal Bridges in the Zone if they have the same 'unique_key' attribute."""

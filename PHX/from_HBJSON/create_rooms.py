@@ -133,6 +133,7 @@ def create_room_from_space(
     # -- Keep the Ventilation Equipment ID-Numbers aligned
     if space_ph_hvac and space_ph_hvac.ventilation_system:
         new_room.vent_unit_id_num = space_ph_hvac.ventilation_system.id_num
+        new_room.vent_unit_display_name = space_ph_hvac.ventilation_system.display_name
 
     # -- Keep the new room's Occupancy reference aligned with the HB-Room's
     if hbe_occ:

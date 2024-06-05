@@ -95,7 +95,7 @@ def test_zones_with_ventilation(reset_class_counters) -> None:
     sp3.ventilation.load.flow_transfer = 1
     z.spaces.append(sp3)
 
-    assert len(z.spaces_with_ventilation) == 2
-    assert sp1 not in z.spaces_with_ventilation
-    assert sp2 in z.spaces_with_ventilation
-    assert sp3 in z.spaces_with_ventilation
+    assert len(z.ventilated_spaces) == 2
+    assert sp1 not in z.ventilated_spaces
+    assert sp2 in z.ventilated_spaces
+    assert sp3 in z.ventilated_spaces

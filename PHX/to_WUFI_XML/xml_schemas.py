@@ -3,6 +3,7 @@
 
 """Conversion Schemas for how to write PH/HB objects to WUFI XML"""
 
+import operator
 import sys
 from functools import reduce
 from typing import Any, Dict, List, Optional, TypeVar
@@ -198,6 +199,25 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         3: 204,
     }
 
+    def wufi_spaces(_z: building.PhxZone) -> List[spaces.PhxSpace]:
+        """Return a list of all the spaces in the PhxZone for reporting out to WUFI."""
+        if _z.merge_spaces_by_erv == False:
+            # -- Return all the spaces in the zone with ventilation airflow
+            return _z.ventilated_spaces
+        else:
+            # -- Merge the Spaces together by their ERV ID
+            merged_spaces_: list[spaces.PhxSpace] = []
+            for space_group in _z.ventilated_spaces_grouped_by_erv:
+                if len(space_group) > 1:
+                    new_space = reduce(operator.add, space_group)
+                else:
+                    # -- If there is only 1 space, won't go through the __add__
+                    # -- so be sure to set up the display_name manually here
+                    new_space = space_group[0]
+                    new_space.display_name = new_space.vent_unit_display_name
+                merged_spaces_.append(new_space)
+            return sorted(merged_spaces_, key=lambda x: x.vent_unit_display_name)
+
     return [
         XML_Node("Name", _z.display_name),
         XML_Node("KindZone", _z.zone_type.value),
@@ -208,7 +228,7 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
             "RoomsVentilation",
             [
                 XML_Object("Room", sp, "index", i, _schema_name="_PhxSpace")
-                for i, sp in enumerate(_z.spaces_with_ventilation)
+                for i, sp in enumerate(wufi_spaces(_z))
             ],
         ),
         XML_List(

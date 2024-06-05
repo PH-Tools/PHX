@@ -30,8 +30,6 @@ def spaces_are_not_addable(space_a: PhxSpace, space_v: PhxSpace) -> bool:
         (
             space_a.wufi_type != space_v.wufi_type,
             space_a.vent_unit_id_num != space_v.vent_unit_id_num,
-            space_a.occupancy != space_v.occupancy,
-            space_a.lighting != space_v.lighting,
         )
     )
 
@@ -51,6 +49,7 @@ class PhxSpace:
 
     # -- Ventilation Unit (ERV) number
     vent_unit_id_num: int = 0
+    vent_unit_display_name: str = ""
 
     # -- Programs
     ventilation: PhxProgramVentilation = field(default_factory=PhxProgramVentilation)
@@ -93,7 +92,7 @@ class PhxSpace:
             raise ValueError(f"Space {self.display_name} cannot be added to space {other.display_name}.")
 
         new_space = PhxSpace(
-            display_name=f"ERV: {self.vent_unit_id_num}",
+            display_name=self.vent_unit_display_name,
             wufi_type=self.wufi_type,
             quantity=1,
             floor_area=self.floor_area + other.floor_area,
@@ -101,6 +100,7 @@ class PhxSpace:
             net_volume=self.net_volume + other.net_volume,
             clear_height=area_weighted_clear_height(self, other),
             vent_unit_id_num=self.vent_unit_id_num,
+            vent_unit_display_name=self.vent_unit_display_name,
             ventilation=self.ventilation,
             occupancy=self.occupancy,
             lighting=self.lighting,

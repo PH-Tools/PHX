@@ -419,6 +419,7 @@ class PHPPConnection:
                             _use_cache=True,
                         )
 
+                        # TODO: Convert PhxPolygon to PhxPolygonRectangular
                         phpp_windows.append(
                             windows_rows.WindowRow(
                                 shape=self.shape.WINDOWS,
