@@ -62,6 +62,10 @@ class PhxZone:
     tfa_override: Optional[float] = None
     icfa_override: Optional[float] = None
 
+    # -- This flag gets stored here since we don't really have any other way to
+    # -- pass these kinds of 'settings' down to the XML writer.
+    merge_spaces_by_erv: bool = False
+
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
@@ -93,9 +97,32 @@ class PhxZone:
         return self._thermal_bridges.values()
 
     @property
+    def spaces_grouped_by_erv(self) -> list[list[spaces.PhxSpace]]:
+        """Return a dictionary of spaces grouped by their ERV ID."""
+        # -- Get all the spaces, sorted by ERV-id-number
+        grouped_spaces = defaultdict(list)
+        for s in self.spaces:
+            grouped_spaces[s.vent_unit_id_num].append(s)
+
+        # -- Return the spaces as a list of lists, sorted by the ERV-id-number
+        spaces_ = []
+        for k in sorted(grouped_spaces.keys()):
+            spaces_.append(grouped_spaces[k])
+        return spaces_
+
+    @property
     def spaces_with_ventilation(self) -> List[spaces.PhxSpace]:
         """Return a list of all the spaces in the PhxZone which hav ventilation airflow."""
-        return [s for s in self.spaces if s.has_ventilation_airflow]
+        spaces_with_ventilation = [s for s in self.spaces if s.has_ventilation_airflow]
+        if self.merge_spaces_by_erv == False:
+            # -- Return all the spaces in the zone with ventilation airflow
+            return spaces_with_ventilation
+        else:
+            # -- Merge the Spaces together by their ERV ID
+            merged_spaces_ = []
+            for space_group in self.spaces_grouped_by_erv:
+                merged_spaces_.append(reduce(lambda a, b: a + b, space_group))
+            return merged_spaces_
 
     def merge_thermal_bridges(self) -> None:
         """Merge together all the Thermal Bridges in the Zone if they have the same 'unique_key' attribute."""
@@ -379,6 +406,11 @@ class PhxBuilding:
     def polygons(self) -> List[geometry.PhxPolygon]:
         """Returns a list of all the Polygons of all the Components in the building."""
         return [poly for component in self.all_components for poly in component.polygons]
+
+    @property
+    def all_spaces(self) -> List[spaces.PhxSpace]:
+        """Return a list of all the Spaces in the Building."""
+        return [s for z in self.zones for s in z.spaces]
 
     def __bool__(self) -> bool:
         return bool(self.opaque_components) or bool(self.zones)

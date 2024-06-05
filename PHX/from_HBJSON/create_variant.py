@@ -49,7 +49,8 @@ def add_building_from_hb_room(
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     _lighting_sched_collection: UtilizationPatternCollection_Lighting,
-    group_components: bool = False,
+    _group_components: bool = False,
+    _merge_spaces_by_erv: bool = False,
     _tolerance: float = 0.001,
 ) -> None:
     """Create the  PHX-Building with all Components and Zones based on a Honeybee-Room.
@@ -82,10 +83,11 @@ def add_building_from_hb_room(
             _vent_sched_collection,
             _occ_sched_collection,
             _lighting_sched_collection,
+            _merge_spaces_by_erv,
         )
     )
 
-    if group_components:
+    if _group_components:
         _variant.building.merge_opaque_components_by_assembly()
         _variant.building.merge_aperture_components_by_assembly()
         _variant.building.merge_thermal_bridges()
@@ -805,7 +807,8 @@ def from_hb_room(
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     _lighting_sched_collection: UtilizationPatternCollection_Lighting,
-    group_components: bool = False,
+    _group_components: bool = False,
+    _merge_spaces_by_erv: bool = False,
     _tolerance: float = 0.001,
 ) -> project.PhxVariant:
     """Create a new PHX-Variant based on a single PH/Honeybee Room.
@@ -815,8 +818,11 @@ def from_hb_room(
         * _hb_room (honeybee.room.Room): The honeybee room to base the Variant on.
         * _assembly_dict (Dict[str, constructions.PhxConstructionOpaque]): The Assembly Type dict.
         * _window_type_dict (Dict[str, constructions.PhxConstructionWindow]): The Window Type dict.
-        * group_components (bool): default=False. Set to true to have the converter
+        * _group_components (bool): default=False. Set to true to have the converter
             group the components by assembly-type.
+        * _merge_spaces_by_erv (bool): default=False. Set to true to merge spaces that
+            have the same ERV system.
+        * _tolerance (float): The tolerance to use when merging spaces.
 
     Returns:
     --------
@@ -846,7 +852,8 @@ def from_hb_room(
         _vent_sched_collection=_vent_sched_collection,
         _occ_sched_collection=_occ_sched_collection,
         _lighting_sched_collection=_lighting_sched_collection,
-        group_components=group_components,
+        _group_components=_group_components,
+        _merge_spaces_by_erv=_merge_spaces_by_erv,
         _tolerance=_tolerance,
     )
     # -- Ventilation-Exhaust Equip must come AFTER zones are instantiated, since these

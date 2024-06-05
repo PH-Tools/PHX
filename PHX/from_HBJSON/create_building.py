@@ -283,6 +283,7 @@ def create_zones_from_hb_room(
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     _lighting_sched_collection: UtilizationPatternCollection_Lighting,
+    _merge_spaces_by_erv: bool = False,
 ) -> building.PhxZone:
     """Create a new PHX-Zone based on a honeybee-Room.
 
@@ -319,6 +320,7 @@ def create_zones_from_hb_room(
     new_zone.weighted_net_floor_area = sum((rm.weighted_floor_area for rm in new_zone.spaces))
     new_zone.volume_net = sum((rm.net_volume for rm in new_zone.spaces))
     new_zone.specific_heat_capacity = SpecificHeatCapacity(room_prop_ph.specific_heat_capacity.number)
+    new_zone.merge_spaces_by_erv = _merge_spaces_by_erv
 
     # -- Set the Zone's Occupancy based on the merged HB room
     new_zone = set_zone_occupancy(_hb_room, new_zone)

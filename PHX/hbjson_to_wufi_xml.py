@@ -53,7 +53,7 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
 
 
 def group_components(_args: List[str]) -> bool:
-    """Return the group_components boolean from the sys.args Tuple.
+    """Return the 'group_components' boolean from the sys.args Tuple.
 
     Arguments:
     ----------
@@ -68,7 +68,7 @@ def group_components(_args: List[str]) -> bool:
 
 
 def merge_faces(_args: List[str]) -> Union[bool, float]:
-    """Return the merge_faces as bool | float from the sys.args Tuple.
+    """Return the 'merge_faces' as bool | float from the sys.args Tuple.
 
     Arguments:
     ----------
@@ -87,6 +87,21 @@ def merge_faces(_args: List[str]) -> Union[bool, float]:
         return float(_args[5])
 
 
+def merge_spaces_by_erv(_args: List[str]) -> bool:
+    """Return the 'merge_spaces_by_erv' boolean from the sys.args Tuple.
+
+    Arguments:
+    ----------
+        * _args (Tuple): sys.args Tuple of inputs.
+            - [6] (str): "True" or "False" string.
+
+    Returns:
+    --------
+        * bool: True if the user wants to group components.
+    """
+    return _args[6].lower() == "true"
+
+
 def log_level(_args: List[str]) -> int:
     """Return the log_level from the sys.args Tuple.
 
@@ -100,7 +115,7 @@ def log_level(_args: List[str]) -> int:
         * int: The logging level.
     """
     try:
-        return int(_args[6])
+        return int(_args[7])
     except Exception:
         return 0
 
@@ -199,6 +214,7 @@ if __name__ == "__main__":
     SOURCE_FILE, TARGET_FILE_XML = resolve_paths(sys.argv)
     GROUP_COMPONENTS = group_components(sys.argv)
     MERGE_FACES = merge_faces(sys.argv)
+    MERGE_SPACES_BY_ERV = merge_spaces_by_erv(sys.argv)
     LOG_LEVEL = log_level(sys.argv)
 
     ## -- Setup the logging
@@ -206,6 +222,7 @@ if __name__ == "__main__":
     logger.info(f"Logging with log-level: {LOG_LEVEL}")
     logger.info(f"Group Components: {GROUP_COMPONENTS}")
     logger.info(f"Merging Faces: {MERGE_FACES}")
+    logger.info(f"Merging Spaces by ERV: {MERGE_SPACES_BY_ERV}")
 
     # --- Read in the existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -219,6 +236,7 @@ if __name__ == "__main__":
         hb_model,
         _group_components=GROUP_COMPONENTS,
         _merge_faces=MERGE_FACES,
+        _merge_spaces_by_erv=MERGE_SPACES_BY_ERV,
     )
 
     # --- Apply the WUFI-Passive Cooling Bug fix (200 KW limit)

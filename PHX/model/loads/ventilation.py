@@ -21,3 +21,11 @@ class PhxLoadVentilation:
     def total_airflow(self) -> float:
         """Returns the total airflow for the ventilation load."""
         return self.flow_supply + self.flow_extract + self.flow_transfer
+
+    def __add__(self, other: PhxLoadVentilation) -> PhxLoadVentilation:
+        """Combine two PhxLoadVentilation objects."""
+        new_load = PhxLoadVentilation()
+        new_load.flow_supply = self.flow_supply + other.flow_supply
+        new_load.flow_extract = self.flow_extract + other.flow_extract
+        new_load.flow_transfer = self.flow_transfer + other.flow_transfer
+        return new_load

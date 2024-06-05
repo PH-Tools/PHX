@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass, field
-from typing import Any, ClassVar, Union
+from typing import ClassVar, Union
 
 
 @dataclass
@@ -22,6 +22,12 @@ class Vent_OperatingPeriod:
             return False
         else:
             return True
+
+    def __add__(self, other: Vent_OperatingPeriod) -> Vent_OperatingPeriod:
+        new_period = Vent_OperatingPeriod()
+        new_period.period_operating_hours = (self.period_operating_hours + other.period_operating_hours) / 2
+        new_period.period_operation_speed = (self.period_operation_speed + other.period_operation_speed) / 2
+        return new_period
 
 
 @dataclass
@@ -42,6 +48,14 @@ class Vent_UtilPeriods:
             return False
         else:
             return True
+
+    def __add__(self, other: Vent_UtilPeriods) -> Vent_UtilPeriods:
+        new_periods = Vent_UtilPeriods()
+        new_periods.high = self.high + other.high
+        new_periods.standard = self.standard + other.standard
+        new_periods.basic = self.basic + other.basic
+        new_periods.minimum = self.minimum + other.minimum
+        return new_periods
 
 
 @dataclass

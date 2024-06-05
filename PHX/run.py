@@ -134,11 +134,12 @@ def convert_hbjson_to_WUFI_XML(
     _save_folder,
     _group_components=True,
     _merge_faces=False,
+    _merge_spaces_by_erv=False,
     _log_level=0,
     *args,
     **kwargs
 ):
-    # type: (str, str, str, bool, Union[bool, float], int, List, Dict) -> tuple[str, str, str, str]
+    # type: (str, str, str, bool, Union[bool, float], bool, int, List, Dict) -> tuple[str, str, str, str]
     """Read in an hbjson file and output a new WUFI XML file in the designated location.
 
     Arguments:
@@ -149,6 +150,7 @@ def convert_hbjson_to_WUFI_XML(
         * _group_components (bool): Group components by construction? Default=True
         * _merge_faces (bool | float): Merge together faces of the same type and touching? If
             a number is provided, it will be used as the tolerance when merging faces. Default=False
+        * _merge_spaces_by_erv (bool): Merge spaces that are connected by ERVs? Default=False
         * _log_level (int): Set the logging level for the subprocess. Default=0
         * args (List): Additional arguments to pass to the subprocess.
         * kwargs (Dict): Additional keyword arguments to pass to the subprocess.
@@ -181,6 +183,7 @@ def convert_hbjson_to_WUFI_XML(
         _save_folder,
         str(_group_components),
         str(_merge_faces),
+        str(_merge_spaces_by_erv),
         str(_log_level),
     ]
     stdout, stderr = _run_subprocess(commands)

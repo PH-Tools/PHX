@@ -80,6 +80,7 @@ def convert_hb_model_to_PhxProject(
     _hb_model: model.Model,
     _group_components: bool = True,
     _merge_faces: Union[bool, float] = False,
+    _merge_spaces_by_erv: bool = False,
 ) -> PhxProject:
     """Return a complete WUFI Project object with values based on the HB Model
 
@@ -93,6 +94,10 @@ def convert_hb_model_to_PhxProject(
         * _merge_faces (bool | float): default=False. Set to true to have the converter try and
             group together co-planar faces in the output room using the HB model tolerance.
             If a number is given, it will be used as the tolerance for merging faces.
+
+        * _merge_spaces_by_erv (bool): default=False. Set to true to have the converter
+            merge all the spaces by ERV zones. This is sometimes required by Phius for
+            large buildings with multiple ERV zones.
 
     Returns:
     --------
@@ -128,7 +133,8 @@ def convert_hb_model_to_PhxProject(
             _vent_sched_collection=phx_project.utilization_patterns_ventilation,
             _occ_sched_collection=phx_project.utilization_patterns_occupancy,
             _lighting_sched_collection=phx_project.utilization_patterns_lighting,
-            group_components=_group_components,
+            _group_components=_group_components,
+            _merge_spaces_by_erv=_merge_spaces_by_erv,
             _tolerance=_hb_model.tolerance,
         )
 
@@ -137,7 +143,7 @@ def convert_hb_model_to_PhxProject(
         create_shades.add_hb_model_shades_to_variant(
             new_variant,
             _hb_model,
-            _merge_faces=_merge_faces,
+            _merge_faces=merge_faces,
             _tolerance=_hb_model.tolerance,
             _angle_tolerance_degrees=_hb_model.angle_tolerance,
         )
