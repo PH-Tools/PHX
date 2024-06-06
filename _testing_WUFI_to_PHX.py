@@ -12,7 +12,7 @@ from PHX.from_WUFI_XML.read_WUFI_XML_file import get_WUFI_XML_file_as_dict
 from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 
-SOURCE_DIR = pathlib.Path("tests", "_reference_xml")
+SOURCE_DIR = pathlib.Path("tests", "_test_reference_files_xml")
 SOURCE_FILE_NAMES = ["School.xml", "_la_mora.xml", "_ridgeway.xml"]
 TARGET_DIR = pathlib.Path("tests", "_regenerated_xml")
 

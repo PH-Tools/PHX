@@ -49,6 +49,7 @@ from PHX.model.enums.building import (
     ComponentFaceType,
     SpecificHeatCapacity,
     ThermalBridgeType,
+    WindExposureType,
     ZoneType,
 )
 from PHX.model.enums.elec_equip import ElectricEquipmentType
@@ -1079,6 +1080,7 @@ def _PhxPhBuildingData(_data: wufi_xml.WufiPH_Building) -> PhxPhBuildingData:
     phx_obj.setpoints.summer = _data.OverheatingTemperatureThreshold
     phx_obj.mech_room_temp = _data.MechanicalRoomTemperature
     phx_obj.non_combustible_materials = _data.NonCombustibleMaterials
+    phx_obj.building_exposure_type = WindExposureType(_data.BuildingWindExposure)
     phx_obj.summer_hrv_bypass_mode = hvac_enums.PhxSummerBypassMode(_data.SummerHRVHumidityRecovery)
 
     for foundation_data in _data.FoundationInterfaces or []:

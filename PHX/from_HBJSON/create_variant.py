@@ -277,8 +277,12 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     ph_bldg.non_combustible_materials = hbph_bldg_seg.non_combustible_materials
 
     # -- Summer HRV Bypass mode
-    _ = hbph_bldg_seg.summer_hrv_bypass_mode.number
-    ph_bldg.summer_hrv_bypass_mode = hvac.PhxSummerBypassMode(_)
+    bm = hbph_bldg_seg.summer_hrv_bypass_mode.number
+    ph_bldg.summer_hrv_bypass_mode = hvac.PhxSummerBypassMode(bm)
+
+    # -- Wind Exposure
+    wt = hbph_bldg_seg.wind_exposure_type.number
+    ph_bldg.building_exposure_type = certification.WindExposureType(wt)
 
     return None
 

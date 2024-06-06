@@ -13,13 +13,13 @@ from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 from tests.conftest import _reload_phx_classes, _reset_phx_class_counters
 
 # -- For PyTest files
-SOURCE_DIR = pathlib.Path("tests", "_source_hbjson")
+SOURCE_DIR = pathlib.Path("tests", "_test_reference_files_hbjson")
 SOURCE_FILE_NAMES = [
     "Default_Model_Single_Zone.hbjson",
     "Multi_Room_Complete.hbjson",
 ]
 SOURCE_FILES = [SOURCE_DIR / file for file in SOURCE_FILE_NAMES]
-TARGET_DIR = pathlib.Path("tests", "_reference_xml")
+TARGET_DIR = pathlib.Path("tests", "_test_reference_files_xml")
 
 # -- Temp
 # SOURCE_FILES = [pathlib.Path("/Users/em/Desktop/hvac_equipment_ph_test.hbjson")]

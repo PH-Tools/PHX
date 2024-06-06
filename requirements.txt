@@ -1,6 +1,6 @@
 honeybee-core>=1.58.14
 honeybee-energy>=1.105.64
-honeybee-ph>=1.28.4
+honeybee-ph>=1.28.6
 pydantic>=2.0
 PH-units>=1.5.8
 rich

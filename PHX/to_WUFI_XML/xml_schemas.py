@@ -226,10 +226,7 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         XML_Node("IdentNr", _z.id_num),
         XML_List(
             "RoomsVentilation",
-            [
-                XML_Object("Room", sp, "index", i, _schema_name="_PhxSpace")
-                for i, sp in enumerate(wufi_spaces(_z))
-            ],
+            [XML_Object("Room", sp, "index", i, _schema_name="_PhxSpace") for i, sp in enumerate(wufi_spaces(_z))],
         ),
         XML_List(
             "LoadsPersonsPH",
@@ -360,6 +357,7 @@ def _PhxPhBuildingData(
         XML_Node("CountStories", bd.num_of_floors),
         XML_Node("EnvelopeAirtightnessCoefficient", bd.airtightness_q50),
         XML_Node("SummerHRVHumidityRecovery", bd.summer_hrv_bypass_mode.value),
+        XML_Node("BuildingWindExposure", bd.building_exposure_type.value),
         XML_List(
             "FoundationInterfaces",
             [

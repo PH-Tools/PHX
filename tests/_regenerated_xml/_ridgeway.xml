@@ -50378,6 +50378,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 						<CountStories>9</CountStories>
 						<EnvelopeAirtightnessCoefficient>1.4630400000000001</EnvelopeAirtightnessCoefficient>
 						<SummerHRVHumidityRecovery>2</SummerHRVHumidityRecovery>
+						<BuildingWindExposure>2</BuildingWindExposure>
 						<FoundationInterfaces count="1">
 							<FoundationInterface index="0">
 								<Name>Whole-Building</Name>

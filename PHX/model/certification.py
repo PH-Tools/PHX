@@ -11,6 +11,7 @@ from typing import ClassVar, Optional
 
 from PHX.model import ground
 from PHX.model.enums import phi_certification_phpp_9, phius_certification
+from PHX.model.enums.building import WindExposureType
 from PHX.model.enums.hvac import PhxSummerBypassMode
 
 
@@ -44,6 +45,7 @@ class PhxPhBuildingData:
     mech_room_temp: float = 20.0
     non_combustible_materials: bool = False
     foundations: list[ground.PhxFoundation] = field(default_factory=list)
+    building_exposure_type: WindExposureType = WindExposureType.SEVERAL_SIDES_EXPOSED_NO_SCREENING
     summer_hrv_bypass_mode: PhxSummerBypassMode = PhxSummerBypassMode.ALWAYS
 
     def __post_init__(self) -> None:

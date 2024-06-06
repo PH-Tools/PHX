@@ -797,8 +797,15 @@ class WufiPH_Building(BaseModel):
     IndoorTemperature: wufi_unit.DegreeC
     OverheatingTemperatureThreshold: wufi_unit.DegreeC
     NonCombustibleMaterials: bool
+    BuildingWindExposure: int = 1
 
     _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+
+    @field_validator("BuildingWindExposure", mode="before")
+    def validate_wind_exposure(cls, v: int | None):
+        if v == None:
+            return 1
+        return v
 
 
 class WufiPassivehouseData(BaseModel):

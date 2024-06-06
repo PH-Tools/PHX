@@ -11,9 +11,9 @@
 		<Date_Project>
 			<Year>2024</Year>
 			<Month>6</Month>
-			<Day>4</Day>
-			<Hour>15</Hour>
-			<Minutes>57</Minutes>
+			<Day>6</Day>
+			<Hour>18</Hour>
+			<Minutes>1</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -511,6 +511,7 @@
 						<CountStories>1</CountStories>
 						<EnvelopeAirtightnessCoefficient>0.81576</EnvelopeAirtightnessCoefficient>
 						<SummerHRVHumidityRecovery>4</SummerHRVHumidityRecovery>
+						<BuildingWindExposure>1</BuildingWindExposure>
 						<FoundationInterfaces count="0"/>
 						<InternalGainsAdditionalData>
 							<EvaporationHeatPerPerson unit="W">15</EvaporationHeatPerPerson>

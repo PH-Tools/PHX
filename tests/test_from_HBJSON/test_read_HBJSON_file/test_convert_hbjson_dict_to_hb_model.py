@@ -65,7 +65,7 @@ def hb_rooms_are_equal(hb_room_1, hb_room_2):
     ],
 )
 def test_read_default_single_zone_model_no_conversion(filename, results):
-    file_path = Path("tests", "_source_hbjson", filename)
+    file_path = Path("tests", "_test_reference_files_hbjson", filename)
 
     d1 = read_HBJSON_file.read_hb_json_from_file(file_path)
     m1 = read_HBJSON_file.convert_hbjson_dict_to_hb_model(d1)

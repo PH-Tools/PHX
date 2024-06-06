@@ -22,9 +22,9 @@ def _find_matching_window(
     for xml_type in xml_types:
         if hbjson_type.display_name == xml_type.display_name:
             return xml_type
-    raise Exception(
-        f"Window Type {hbjson_type.display_name} not found in XML set?"
-        f"XML window display-name include only: '{[_.display_name for _ in xml_types]}'"
+    raise ValueError(
+        f"HBJson-window-type '{hbjson_type.display_name}' not found in "
+        f"XML-window-types: '{[_.display_name for _ in xml_types]}'"
     )
 
 
@@ -59,7 +59,11 @@ def test_window_FrameElement_attributes_match(
     xml_windows = phx_project_from_wufi_xml.window_types
 
     for hbjson_type in hbjson_windows.values():
-        xml_type = _find_matching_window(hbjson_type, xml_windows.values())
+        try:
+            xml_type = _find_matching_window(hbjson_type, xml_windows.values())
+        except ValueError as e:
+            msg = f"Error finding windows for HBJSON: '{phx_project_from_hbjson.name}' and XML: '{phx_project_from_wufi_xml.name}'"
+            raise ValueError(msg, e)
 
         assert hbjson_type.frame_top.width == xml_type.frame_top.width
         assert hbjson_type.frame_top.u_value == xml_type.frame_top.u_value

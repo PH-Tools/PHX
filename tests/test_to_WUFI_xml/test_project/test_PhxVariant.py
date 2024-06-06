@@ -137,6 +137,7 @@ def test_default_PhxProject(reset_class_counters):
         "<CountStories>1</CountStories>",
         "<EnvelopeAirtightnessCoefficient>1.0</EnvelopeAirtightnessCoefficient>",
         "<SummerHRVHumidityRecovery>4</SummerHRVHumidityRecovery>",
+        "<BuildingWindExposure>1</BuildingWindExposure>",
         '<FoundationInterfaces count="0"/>',
         "<InternalGainsAdditionalData>",
         '<EvaporationHeatPerPerson unit="W">15</EvaporationHeatPerPerson>',

@@ -13,7 +13,7 @@ from PHX.from_HBJSON import create_project, read_HBJSON_file
     ],
 )
 def test_convert_model_PhxProject(filename, results):
-    file_path = Path("tests", "_source_hbjson", filename)
+    file_path = Path("tests", "_test_reference_files_hbjson", filename)
 
     # -- Build the HB-Model, convert to a PhxProject
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(file_path)

@@ -30083,6 +30083,7 @@
 						<CountStories>5</CountStories>
 						<EnvelopeAirtightnessCoefficient>1.09728</EnvelopeAirtightnessCoefficient>
 						<SummerHRVHumidityRecovery>2</SummerHRVHumidityRecovery>
+						<BuildingWindExposure>2</BuildingWindExposure>
 						<FoundationInterfaces count="1">
 							<FoundationInterface index="0">
 								<Name>Slab on grade </Name>
@@ -61020,6 +61021,7 @@
 						<CountStories>5</CountStories>
 						<EnvelopeAirtightnessCoefficient>1.09728</EnvelopeAirtightnessCoefficient>
 						<SummerHRVHumidityRecovery>2</SummerHRVHumidityRecovery>
+						<BuildingWindExposure>2</BuildingWindExposure>
 						<FoundationInterfaces count="1">
 							<FoundationInterface index="0">
 								<Name>Slab on grade </Name>
