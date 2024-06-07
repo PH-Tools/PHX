@@ -118,7 +118,7 @@ class XLConnection:
 
     @property
     def worksheet_names(self) -> Set[str]:
-        return self.get_worksheet_names()
+        return self.get_upper_case_worksheet_names()
 
     def activate_new_workbook(self) -> xl_Book_Protocol:
         """Create a new blank workbook and set as the 'Active' book. Returns the new book."""
@@ -279,8 +279,8 @@ class XLConnection:
                 return row
         return None
 
-    def get_worksheet_names(self) -> Set[str]:
-        """Return a set of all the worksheet names in the workbook.
+    def get_upper_case_worksheet_names(self) -> Set[str]:
+        """Return a set of all the worksheet names in the workbook, upper-cased.
 
         Returns:
         --------

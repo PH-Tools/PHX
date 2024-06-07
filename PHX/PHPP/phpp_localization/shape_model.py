@@ -1075,6 +1075,10 @@ class Overview(BaseModel):
     ventilation: OverviewVentilation
 
 
+class EasyPh(BaseModel):
+    name: str
+
+
 # -----------------------------------------------------------------------------
 
 
@@ -1109,3 +1113,4 @@ class PhppShape(BaseModel):
     BOILER: Boiler
     DATA: Data
     OVERVIEW: Overview
+    EASY_PH: EasyPh

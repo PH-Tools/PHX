@@ -31,6 +31,7 @@ class PHPPConnection:
         # -- Get the localized (units, language) PHPP Shape with worksheet names and column locations
         self.version = self.get_phpp_version()
         self.shape: PhppShape = phpp_localization.get_phpp_shape(self.xl, self.version)
+        self.easyPh = self.is_easyPh()
 
         # -- Setup all the individual worksheet Classes.
         self.verification = sheet_io.Verification(self.xl, self.shape.VERIFICATION)
@@ -61,7 +62,7 @@ class PHPPConnection:
     def get_data_worksheet(self) -> xl_Sheet_Protocol:
         """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""
         valid_data_worksheet_names = ["DATA", "DATEN", "DATOS"]
-        worksheet_names = self.xl.get_worksheet_names()
+        worksheet_names = self.xl.get_upper_case_worksheet_names()
         for worksheet_name in valid_data_worksheet_names:
             if worksheet_name in worksheet_names:
                 return self.xl.get_sheet_by_name(worksheet_name)
@@ -147,6 +148,15 @@ class PHPPConnection:
         # -- Build the new PHPPVersion object
         return version.PHPPVersion(ver_major, ver_minor, language)
 
+    def is_easyPh(self) -> bool:
+        """Return True if the active PHPP file is an 'easyPH' file."""
+        name = self.shape.EASY_PH.name.upper()
+        if name in self.xl.get_upper_case_worksheet_names():
+            print("PHPP is easyPH")
+            return True
+        else:
+            return False
+
     def phpp_version_equals_phx_phi_cert_version(self, _phx_variant: project.PhxVariant) -> bool:
         """Return True if the PHX PHI Certification Version and the PHPP Version match."""
         if not int(_phx_variant.phi_certification_major_version) == int(self.version.number_major):
@@ -154,6 +164,9 @@ class PHPPConnection:
         return True
 
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
+        if self.easyPh:
+            return None
+
         for phx_variant in phx_project.variants:
             # TODO: how to handle multiple variants?
 
@@ -268,6 +281,8 @@ class PHPPConnection:
 
     def write_climate_data(self, phx_project: project.PhxProject) -> None:
         """Write the variant's weather-station data to the PHPP 'Climate' worksheet."""
+        if self.easyPh:
+            return None
 
         for phx_variant in phx_project.variants:
             # -- Write the actual weather station data
@@ -504,6 +519,8 @@ class PHPPConnection:
 
     def write_project_ventilators(self, phx_project: project.PhxProject) -> None:
         """Write all of the used Ventilator Units from a PhxProject to the PHPP 'Additional Vent' worksheet."""
+        if self.easyPh:
+            return None
 
         phpp_vent_unit_rows: List[vent_units.VentUnitRow] = []
         for phx_variant in phx_project.variants:
@@ -524,6 +541,8 @@ class PHPPConnection:
 
     def write_project_spaces(self, phx_project: project.PhxProject) -> None:
         """Write all of the PH-Spaces from a PhxProject to the PHPP 'Additional Vent' worksheet."""
+        if self.easyPh:
+            return None
 
         phpp_vent_rooms: List[vent_space.VentSpaceRow] = []
         for phx_variant in phx_project.variants:
@@ -566,6 +585,8 @@ class PHPPConnection:
 
     def write_project_ventilation_type(self, phx_project: project.PhxProject) -> None:
         """Set the Ventilation-Type to the PHPP 'Ventilation' worksheet."""
+        if self.easyPh:
+            return None
 
         for variant in phx_project.variants:
             self.ventilation.write_ventilation_type(
@@ -582,6 +603,9 @@ class PHPPConnection:
 
     def write_project_volume(self, phx_project: project.PhxProject) -> None:
         """Write the Vn50 and Vv to the PHPP 'Ventilation Worksheet."""
+        if self.easyPh:
+            return None
+
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
 
@@ -595,6 +619,8 @@ class PHPPConnection:
 
     def write_project_airtightness(self, phx_project: project.PhxProject) -> None:
         """Write the Airtightness data to the PHPP 'Ventilation' worksheet."""
+        if self.easyPh:
+            return None
 
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
@@ -617,6 +643,9 @@ class PHPPConnection:
 
     def write_project_hot_water(self, phx_project: project.PhxProject) -> None:
         """Write the Hot Water data to the PHPP 'DHW+Distribution' worksheet."""
+        if self.easyPh:
+            return None
+
         for variant in phx_project.variants:
             mech_collection = variant.default_mech_collection
 
@@ -687,6 +716,9 @@ class PHPPConnection:
 
     def write_project_res_elec_appliances(self, phx_project: project.PhxProject) -> None:
         """Write out all of the detailed residential appliances to the "Electricity" Worksheet."""
+        if self.easyPh:
+            return None
+
         equipment_inputs = []
         for phx_variant in phx_project.variants:
             for zone in phx_variant.building.zones:
@@ -698,20 +730,31 @@ class PHPPConnection:
 
     def write_non_res_utilization_profiles(self, phx_project: project.PhxProject) -> None:
         """Write out all of the Utilization patterns to the "Use non-res" Worksheet."""
+        if self.easyPh:
+            return None
+
         # TODO: build this....
         # for pattern in phx_project.utilization_patterns_occupancy:
         #     print(pattern)
 
     def write_non_res_space_lighting(self, phx_project: project.PhxProject) -> None:
         """Write out all of the Space Lighting values to the "Electricity non-res" Worksheet."""
+        if self.easyPh:
+            return None
+
         return
 
     def write_non_res_IHG(self, phx_project: project.PhxProject) -> None:
         """Write out all of the Occupancy patterns to the "IHG non-res" Worksheet."""
+        if self.easyPh:
+            return None
+
         return
 
     def activate_variant_assemblies(self) -> None:
         """Remove all existing U-Value information and link assemblies to the Variants worksheet."""
+        if self.easyPh:
+            return None
 
         # -- Collect all the assemblies from the U-Values page
         # -- and add each one to the Variants assembly-layers section
@@ -734,6 +777,8 @@ class PHPPConnection:
 
     def activate_variant_windows(self) -> None:
         """Set the Frame and Glass Components to link to the Variants worksheet for all windows."""
+        if self.easyPh:
+            return None
 
         self.windows.activate_variants()
 
@@ -741,6 +786,8 @@ class PHPPConnection:
 
     def activate_variant_ventilation(self) -> None:
         """Set the ACH, Ventilation type to link to the Variants worksheet."""
+        if self.easyPh:
+            return None
 
         self.ventilation.activate_variants()
 
@@ -748,6 +795,8 @@ class PHPPConnection:
 
     def activate_variant_additional_vent(self) -> None:
         """Set the Ventilator, duct length and insulation to link to the Variants worksheet."""
+        if self.easyPh:
+            return None
 
         # -- Find the locations of the Ventilation input items
         input_item_rows = self.variants.get_ventilation_input_item_rows()
