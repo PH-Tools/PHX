@@ -104,7 +104,6 @@ def _get_thermal_envelope_faces(_hb_room: room.Room, _all_room_ids: List[str]) -
     --------
         * (List[face.Face]) A List of all the thermal boundary faces.
     """
-
     exposed_faces: List[face.Face] = []
     for original_face in _hb_room.faces:
         # -- If it is a Surface exposure, but the face's adjacent zone is NOT part of

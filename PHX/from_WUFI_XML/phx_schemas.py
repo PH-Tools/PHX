@@ -1204,10 +1204,10 @@ def _PhxSiteEnergyFactors(_data: wufi_xml.WufiPH_ClimateLocation) -> PhxSiteEner
     # If User-defined factors are used, they will be included in the XML file.
     # So in that case, use those values for the PE and CO2 factors.
     for name, factor in zip(_wufi_order, _data.PEFactorsUserDef or []):
-        phx_obj.pe_factors[name] = PhxPEFactor(factor.root, "kWh/kWh", name)
+        phx_obj.pe_factors[name] = PhxPEFactor(factor.__root__, "kWh/kWh", name)
 
     for name, factor in zip(_wufi_order, _data.CO2FactorsUserDef or []):
-        phx_obj.co2_factors[name] = PhxCO2Factor(factor.root, "g/kWh", name)
+        phx_obj.co2_factors[name] = PhxCO2Factor(factor.__root__, "g/kWh", name)
 
     return phx_obj
 

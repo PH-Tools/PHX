@@ -21,6 +21,5 @@ from PHX.PHPP.phpp_model.version import PHPPVersion
 def test_load_all_shape_files(version) -> None:
     shape_file_dir = Path("PHX", "PHPP", "phpp_localization")
     phpp_shape_filepath = get_shape_filepath(version, shape_file_dir)
-    with open(phpp_shape_filepath, "r") as f:
-        phpp_shape = PhppShape.model_validate_json(f.read())
+    phpp_shape = PhppShape.parse_file(phpp_shape_filepath)
     assert phpp_shape is not None

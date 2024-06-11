@@ -9,8 +9,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from honeybee_ph_standards.sourcefactors import factors, phius_CO2_factors, phius_source_energy_factors
 from ph_units.converter import convert
-from pydantic import Field, RootModel, ValidationInfo, field_validator
-from pydantic.main import BaseModel
+from pydantic import BaseModel, validator
 
 from PHX.from_WUFI_XML import wufi_file_types as wufi_unit
 from PHX.from_WUFI_XML.read_WUFI_XML_file import Tag
@@ -59,10 +58,10 @@ def unpack_xml_tag(_input: Union[TagList, TagDict, UnitDict, Tag]) -> Union[TagL
 # -- Climate
 
 
-class WufiCO2FactorsUserDef(RootModel):
-    root: Any = Field(...)
+class WufiCO2FactorsUserDef(BaseModel):
+    __root__: Any
 
-    @field_validator("root", mode="before")
+    @validator("__root__", pre=True)
     def unpack_xml_tag_name(cls, v):
         # -- Have to do it this way cus' the WUFI file structure is a mess
         # Input is a dict like: '{'PEF0': Tag(text='1.1', tag='PEF0', attrib={'unit': 'Btu/Btu'})}'
@@ -75,10 +74,10 @@ class WufiCO2FactorsUserDef(RootModel):
         return float(result)
 
 
-class WufiPEFactorsUserDef(RootModel):
-    root: Any = Field(...)
+class WufiPEFactorsUserDef(BaseModel):
+    __root__: Any
 
-    @field_validator("root", mode="before")
+    @validator("__root__", pre=True)
     def unpack_xml_tag_name(cls, v):
         # -- Have to do it this way cus' the WUFI file structure is a mess
         # Input is a dict like: '{'PEF0': Tag(text='1.1', tag='PEF0', attrib={'unit': 'Btu/Btu'})}'
@@ -94,13 +93,13 @@ class WufiPEFactorsUserDef(RootModel):
 class WufiMonthlyClimateTemp_Item(BaseModel):
     Item: Optional[wufi_unit.DegreeC] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiMonthlyClimateRadiation_Item(BaseModel):
     Item: Optional[wufi_unit.kWh_per_M2] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiPH_ClimateLocation(BaseModel):
@@ -166,7 +165,7 @@ class WufiPH_ClimateLocation(BaseModel):
     PEFactorsUserDef: Optional[List[WufiPEFactorsUserDef]] = None
     CO2FactorsUserDef: Optional[List[WufiCO2FactorsUserDef]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
     def set_standard_pe_factors(self, PH_CertificateCriteriaNum: int) -> None:
         """Set the PE-Factors from the Standards-Library based on the PH_CertificateCriteria."""
@@ -191,7 +190,7 @@ class WufiPH_ClimateLocation(BaseModel):
         for i, obj in enumerate(factor_objects):
             obj.unit
             x = {f"PEF{i}": Tag(text=str(obj.value), tag=f"PEF{0}", attrib={"unit": obj.unit})}
-            self.PEFactorsUserDef.append(WufiPEFactorsUserDef.model_validate(x))
+            self.PEFactorsUserDef.append(WufiPEFactorsUserDef.parse_obj(x))
 
     def set_standard_co2_factors(self, PH_CertificateCriteriaNum: int) -> None:
         """Set the CO2-Factors from the Standards-Library based on the PH_CertificateCriteria."""
@@ -215,7 +214,7 @@ class WufiPH_ClimateLocation(BaseModel):
         # -- and build up all the PEFactorsUserDef objects
         for i, obj in enumerate(factor_objects):
             x = {f"CO2F{i}": Tag(text=str(obj.value), tag=f"CO2F{0}", attrib={"unit": obj.unit})}
-            self.CO2FactorsUserDef.append(WufiCO2FactorsUserDef.model_validate(x))
+            self.CO2FactorsUserDef.append(WufiCO2FactorsUserDef.parse_obj(x))
 
 
 class WufiClimateLocation(BaseModel):
@@ -235,7 +234,7 @@ class WufiClimateLocation(BaseModel):
     Unit_CO2concentration: wufi_unit.PartsPerMillionByVolume
     PH_ClimateLocation: Optional[WufiPH_ClimateLocation] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 # ------------------------------------------------------------------------------
@@ -249,12 +248,12 @@ class WufiVertix(BaseModel):
     Y: float
     Z: float
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiIdentNr(BaseModel):
     IdentNr: int
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiPolygon(BaseModel):
@@ -265,14 +264,14 @@ class WufiPolygon(BaseModel):
     IdentNrPoints: List[WufiIdentNr]
     IdentNrPolygonsInside: Optional[List[WufiIdentNr]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiGraphics_3D(BaseModel):
     Vertices: List[WufiVertix]
     Polygons: List[WufiPolygon]
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 # ------------------------------------------------------------------------------
@@ -290,7 +289,7 @@ class WufiRoom(BaseModel):
     DesignVolumeFlowRateSupply: wufi_unit.M3_per_Hour
     DesignVolumeFlowRateExhaust: wufi_unit.M3_per_Hour
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiLoadPerson(BaseModel):
@@ -300,7 +299,7 @@ class WufiLoadPerson(BaseModel):
     NumberOccupants: wufi_unit._Float
     FloorAreaUtilizationZone: wufi_unit.M2
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiLoadsLighting(BaseModel):
@@ -321,7 +320,7 @@ class WufiLoadsLighting(BaseModel):
     InstalledLightingPower: wufi_unit.Watts_per_M2
     LightingFullLoadHours: wufi_unit.Hours_per_Year
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiExhaustVent(BaseModel):
@@ -330,7 +329,7 @@ class WufiExhaustVent(BaseModel):
     ExhaustVolumeFlowRate: Optional[wufi_unit.M3_per_Hour] = None
     RunTimePerYear: Optional[wufi_unit.Hours_per_Year] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiHomeDevice(BaseModel):
@@ -371,13 +370,13 @@ class WufiHomeDevice(BaseModel):
     DishwasherCapacityPreselection: Optional[int] = None
     DishwasherCapacityInPlace: Optional[wufi_unit._Float] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiIdentNrPolygons(BaseModel):
     IdentNr: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiComponent(BaseModel):
@@ -400,7 +399,7 @@ class WufiComponent(BaseModel):
     IdentNrOverhang: Optional[int] = None
     DefaultCorrectionShadingMonth: Optional[wufi_unit._Percentage] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiThermalBridge(BaseModel):
@@ -410,7 +409,7 @@ class WufiThermalBridge(BaseModel):
     PsiValue: Optional[wufi_unit.Watts_per_MK] = None
     IdentNrOptionalClimate: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiZone(BaseModel):
@@ -442,14 +441,14 @@ class WufiZone(BaseModel):
     ExhaustVents: Optional[List[WufiExhaustVent]] = None
     ThermalBridges: Optional[List[WufiThermalBridge]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiBuilding(BaseModel):
     Components: List[WufiComponent]
     Zones: List[WufiZone]
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 # ------------------------------------------------------------------------------
@@ -463,7 +462,7 @@ class WufiTwig(BaseModel):
     PipeMaterial: int
     PipingDiameter: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiBranch(BaseModel):
@@ -474,7 +473,7 @@ class WufiBranch(BaseModel):
     PipingDiameter: int
     Twigs: Optional[List[WufiTwig]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiTrunc(BaseModel):
@@ -487,7 +486,7 @@ class WufiTrunc(BaseModel):
     DemandRecirculation: bool
     Branches: Optional[List[WufiBranch]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiDistributionDHW(BaseModel):
@@ -508,7 +507,7 @@ class WufiDistributionDHW(BaseModel):
     ExteriorPipeDiameter_WR: Optional[wufi_unit.M] = None
     Truncs: Optional[List[WufiTrunc]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiDistributionCooling(BaseModel):
@@ -535,7 +534,7 @@ class WufiDistributionCooling(BaseModel):
     # -- Panel
     PanelCooling: Optional[bool] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiSupportiveDevice(BaseModel):
@@ -547,13 +546,13 @@ class WufiSupportiveDevice(BaseModel):
     Controlled: Optional[bool] = None
     PeriodOperation: Optional[wufi_unit.KiloHours_per_Year] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiAssignedVentUnit(BaseModel):
     IdentNrVentUnit: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiDuct(BaseModel):
@@ -571,7 +570,7 @@ class WufiDuct(BaseModel):
     IsReflective: bool
     AssignedVentUnits: Optional[List[WufiAssignedVentUnit]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiPHDistribution(BaseModel):
@@ -583,7 +582,7 @@ class WufiPHDistribution(BaseModel):
     DeviceInConditionedSpace: Optional[bool] = None
     SupportiveDevices: Optional[List[WufiSupportiveDevice]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiZoneCoverage(BaseModel):
@@ -594,7 +593,7 @@ class WufiZoneCoverage(BaseModel):
     CoverageHumidification: float
     CoverageDehumidification: float
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiPH_Parameters(BaseModel):
@@ -652,7 +651,7 @@ class WufiPH_Parameters(BaseModel):
     StandbyHeatLossBoiler70: Optional[float] = None
     MaximalBoilerPower: Optional[float] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiDHW_Parameters(BaseModel):
@@ -660,7 +659,7 @@ class WufiDHW_Parameters(BaseModel):
     Unit: float
     Selection: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiHeating_Parameters(BaseModel):
@@ -668,19 +667,19 @@ class WufiHeating_Parameters(BaseModel):
     Unit: float
     Selection: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiCooling_Parameters(BaseModel):
     CoverageWithinSystem: Optional[wufi_unit._Percentage] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiVentilation_Parameters(BaseModel):
     CoverageWithinSystem: Optional[wufi_unit._Percentage] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiDevice(BaseModel):
@@ -705,7 +704,7 @@ class WufiDevice(BaseModel):
     HeatRecovery: Optional[wufi_unit._Percentage] = None
     MoistureRecovery: Optional[wufi_unit._Percentage] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiSystem(BaseModel):
@@ -716,11 +715,11 @@ class WufiSystem(BaseModel):
     PHDistribution: WufiPHDistribution
     Devices: List[WufiDevice]
 
-    @field_validator("ZonesCoverage", mode="before")
+    @validator("ZonesCoverage", allow_reuse=True, pre=True)
     def unpack_zone_coverage(cls, v):
         return v
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiSystems(BaseModel):
@@ -761,7 +760,7 @@ class WufiFoundationInterface(BaseModel):
     U_ValueCrawlspaceFloor: Optional[wufi_unit.Watts_per_M2K] = None
     CrawlspaceVentOpenings: Optional[wufi_unit.M2] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 # ------------------------------------------------------------------------------
@@ -776,7 +775,7 @@ class WufiInternalGainsAdditionalData(BaseModel):
     UseDefaultValuesSchool: bool
     MarginalPerformanceRatioDHW: Optional[wufi_unit._Percentage] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiPH_Building(BaseModel):
@@ -799,9 +798,9 @@ class WufiPH_Building(BaseModel):
     NonCombustibleMaterials: bool
     BuildingWindExposure: int = 1
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
-    @field_validator("BuildingWindExposure", mode="before")
+    @validator("BuildingWindExposure", allow_reuse=True, pre=True)
     def validate_wind_exposure(cls, v: int | None):
         if v == None:
             return 1
@@ -818,7 +817,7 @@ class WufiPassivehouseData(BaseModel):
     PH_Buildings: List[WufiPH_Building]
     UseWUFIMeanMonthShading: bool
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiPlugin(BaseModel):
@@ -826,7 +825,7 @@ class WufiPlugin(BaseModel):
     Name_dll: Optional[Any] = None
     StatusPlugIn: Optional[Any] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiVariant(BaseModel):
@@ -840,12 +839,12 @@ class WufiVariant(BaseModel):
     HVAC: WufiSystems
     ClimateLocation: WufiClimateLocation  # Be sure this comes AFTER PassiveHouseData to validate...
 
-    @field_validator("HVAC", mode="before")
+    @validator("HVAC", allow_reuse=True, pre=True)
     def unpack_hvac(cls, v: WufiSystems):
         return v
 
-    @field_validator("ClimateLocation", mode="after")
-    def check_source_energy_factors(cls, v: WufiClimateLocation, info: ValidationInfo):
+    @validator("ClimateLocation", pre=False)
+    def check_source_energy_factors(cls, v: WufiClimateLocation, values: Dict[str, Any]):
         """Ensure the ClimateLocation's Energy and CO2 conversion factor lists are populated properly.
 
         If the XML file is set to one of the 'standard' factor sets (USA, Germany, etc..),
@@ -854,7 +853,7 @@ class WufiVariant(BaseModel):
         if not v.PH_ClimateLocation:
             return v
 
-        passivehouse_data: WufiPassivehouseData = info.data["PassivehouseData"]
+        passivehouse_data: WufiPassivehouseData = values["PassivehouseData"]
 
         if not v.PH_ClimateLocation.CO2FactorsUserDef:
             v.PH_ClimateLocation.set_standard_pe_factors(passivehouse_data.PH_CertificateCriteria)
@@ -864,7 +863,7 @@ class WufiVariant(BaseModel):
 
         return v
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 # ------------------------------------------------------------------------------
@@ -880,28 +879,28 @@ class WufiMaterial(BaseModel):
     WaterVaporResistance: wufi_unit.WUFI_Vapor_Resistance_Factor
     ReferenceWaterContent: wufi_unit.KG_per_M3
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiDivisionV(BaseModel):
     Distance: wufi_unit.M
     ExpandingContracting: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiDivisionH(BaseModel):
     Distance: wufi_unit.M
     ExpandingContracting: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiMaterialIDNr(BaseModel):
     Type: int
     IdentNr_Object: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiLayer(BaseModel):
@@ -911,7 +910,7 @@ class WufiLayer(BaseModel):
     ExchangeDivisionVertical: Optional[List[WufiDivisionV]] = None
     ExchangeMaterialIdentNrs: Optional[List[WufiMaterialIDNr]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiExchangeMaterial(BaseModel):
@@ -921,7 +920,7 @@ class WufiExchangeMaterial(BaseModel):
     BulkDensity: wufi_unit.KG_per_M3
     HeatCapacity: wufi_unit.Joule_per_KGK
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiAssembly(BaseModel):
@@ -932,7 +931,7 @@ class WufiAssembly(BaseModel):
     Layers: List[WufiLayer]
     ExchangeMaterials: Optional[List[WufiExchangeMaterial]] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiWindowType(BaseModel):
@@ -969,7 +968,7 @@ class WufiWindowType(BaseModel):
     Frame_U_Bottom: Optional[wufi_unit.Watts_per_M2K] = None
     Glazing_Psi_Bottom: Optional[wufi_unit.Watts_per_MK] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiSolarProtectionType(BaseModel):
@@ -978,7 +977,7 @@ class WufiSolarProtectionType(BaseModel):
     OperationMode: int
     MaxRedFactorRadiation: Optional[wufi_unit._Percentage] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 # ------------------------------------------------------------------------------
@@ -999,7 +998,7 @@ class WufiUtilizationPatternVent(BaseModel):
     Minimum_DOS: float
     Minimum_PDF: float
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiUtilizationPattern(BaseModel):
@@ -1013,7 +1012,7 @@ class WufiUtilizationPattern(BaseModel):
     RelativeAbsenteeism: wufi_unit._Percentage
     PartUseFactorPeriodForLighting: wufi_unit._Percentage
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 # ------------------------------------------------------------------------------
@@ -1027,7 +1026,7 @@ class WufiDateProject(BaseModel):
     Hour: int
     Minutes: int
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 class WufiProjectData(BaseModel):
@@ -1057,7 +1056,7 @@ class WufiProjectData(BaseModel):
     Responsible_Email: Optional[str] = None
     Date_Project: Optional[WufiDateProject] = None
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 
 
 # ------------------------------------------------------------------------------
@@ -1078,7 +1077,7 @@ class WUFIplusProject(BaseModel):
     Variants: Optional[List[WufiVariant]] = None
     SolarProtectionTypes: Optional[List[WufiSolarProtectionType]] = None
 
-    @field_validator("UnitSystem", mode="before")
+    @validator("UnitSystem", allow_reuse=True, pre=True)
     def unpack_unit_system(cls, v) -> int:
         """
         Since the model gets converted to SI units when it is read in,
@@ -1086,4 +1085,4 @@ class WUFIplusProject(BaseModel):
         """
         return 1
 
-    _unpack_xml_tag_name = field_validator("*", mode="before")(unpack_xml_tag)
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)

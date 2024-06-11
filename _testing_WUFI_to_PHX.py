@@ -24,7 +24,7 @@ for i, xm_source_file_name in enumerate(SOURCE_FILE_NAMES):
     # -- 1) Read in the WUFI-XML File as a new Pydantic Model
     print(f"[green bold]> Reading in data from XML-File: {xm_source_file}[/green bold]")
     wufi_xml_data = get_WUFI_XML_file_as_dict(xm_source_file)
-    wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
+    wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
 
     # ----------------------------------------------------------------
     # # -- 2) Convert the Pydantic WUFI model over to a PHX model

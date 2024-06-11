@@ -32,7 +32,7 @@ def phx_project_from_wufi_xml() -> PhxProject:
     _reset_phx_class_counters()
     SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "Multi_Room_Complete.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
-    wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
+    wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
     return phx_project
@@ -45,7 +45,7 @@ def phx_project_from_wufi_xml_LA_MORA() -> PhxProject:
     _reset_phx_class_counters()
     SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "_la_mora.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
-    wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
+    wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
     return phx_project
@@ -58,7 +58,7 @@ def phx_project_from_wufi_xml_RIDGEWAY() -> PhxProject:
     _reset_phx_class_counters()
     SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "_ridgeway.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
-    wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
+    wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
     return phx_project
@@ -71,7 +71,7 @@ def phx_project_from_wufi_xml_ARVERNE_D_NO_WIN() -> PhxProject:
     _reset_phx_class_counters()
     SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "_arverne_d_no_win.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
-    wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
+    wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
     return phx_project
@@ -84,7 +84,7 @@ def phx_project_from_wufi_xml_SCHOOL() -> PhxProject:
     _reset_phx_class_counters()
     SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "School.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
-    wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
+    wufi_xml_model = WUFIplusProject.parse_obj(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
     return phx_project

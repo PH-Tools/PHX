@@ -21,8 +21,7 @@ def test_get_PHX_object_conversion_schema_with_valid_PHX_schema_name_override():
 
 
 def test_get_PHX_object_conversion_schema_with_valid_PHX_error():
-    class NotPhx:
-        ...
+    class NotPhx: ...
 
     phx_obj = NotPhx()
     with pytest.raises(xml_converter.NoXMLSchemaFoundError):
