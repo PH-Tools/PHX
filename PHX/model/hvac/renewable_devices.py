@@ -17,7 +17,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
     """PV System Parameters"""
 
     _location_type: int = 1
-    _onsite_utilization_type: int = 1
+    _onsite_utilization_type: int = 2
     _utilization_type: int = 1
 
     _array_size: float = 0.0
