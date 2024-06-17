@@ -114,7 +114,7 @@ class PhxHeatPumpMonthlyParams(_base.PhxMechanicalDeviceParams):
 class PhxHeatPumpHotWaterParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.HOT_WATER)
     annual_COP: Optional[float] = None
-    annual_system_perf_ratio: Optional[float] = None
+    total_system_perf_ratio: Optional[float] = None
     annual_energy_factor: Optional[float] = None
 
 

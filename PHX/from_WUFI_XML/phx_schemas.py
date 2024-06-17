@@ -1549,7 +1549,7 @@ def _PhxDevice_HeatPump_HotWater(_data: wufi_xml.WufiDevice) -> PhxHeatPumpHotWa
 
     phx_obj.display_name = _data.Name or "unnamed_hot_water_heat_pump"
     phx_obj.params.annual_COP = _data.PH_Parameters.AnnualCOP
-    phx_obj.params.annual_system_perf_ratio = _data.PH_Parameters.TotalSystemPerformanceRatioHeatGenerator
+    phx_obj.params.total_system_perf_ratio = _data.PH_Parameters.TotalSystemPerformanceRatioHeatGenerator
     phx_obj.params.annual_energy_factor = _data.PH_Parameters.HPWH_EF
     return phx_obj
 

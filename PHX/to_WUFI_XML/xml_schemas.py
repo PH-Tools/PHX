@@ -1261,7 +1261,7 @@ def _DeviceHeaterHeatPumpPhParamsHotWater(
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
         XML_Node("InConditionedSpace", _p.in_conditioned_space),
         XML_Node("AnnualCOP", _p.annual_COP),
-        XML_Node("TotalSystemPerformanceRatioHeatGenerator", _p.annual_system_perf_ratio),
+        XML_Node("TotalSystemPerformanceRatioHeatGenerator", _p.total_system_perf_ratio),
         XML_Node("HPWH_EF", _p.annual_energy_factor),
         XML_Node("HPType", _p.hp_type.value),
     ]

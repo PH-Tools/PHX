@@ -1,8 +1,8 @@
 honeybee-core>=1.58.14
-honeybee-energy>=1.105.64
-honeybee-ph>=1.28.6
+honeybee-energy>=1.106.2
+honeybee-ph>=1.28.10
 pydantic<2.0
-PH-units>=1.5.8
+PH-units>=1.5.9
 rich
 xlwings
 lxml

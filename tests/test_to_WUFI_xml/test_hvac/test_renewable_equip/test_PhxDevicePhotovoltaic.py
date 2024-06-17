@@ -37,7 +37,7 @@ def test_default_PhxDevicePhotovoltaic(reset_class_counters):
         "<UsedFor_Dehumidification>false</UsedFor_Dehumidification>",
         "<PH_Parameters>",
         "<SelectionLocation>1</SelectionLocation>",
-        "<SelectionOnSiteUtilization>1</SelectionOnSiteUtilization>",
+        "<SelectionOnSiteUtilization>2</SelectionOnSiteUtilization>",
         "<SelectionUtilization>1</SelectionUtilization>",
         "<ArraySizePV>0.0</ArraySizePV>",
         "<PhotovoltaicRenewableEnergy>0.0</PhotovoltaicRenewableEnergy>",
