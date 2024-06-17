@@ -9,15 +9,18 @@ import operator
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import reduce
-from typing import (Any, ClassVar, Dict, Generator, List, NamedTuple, Optional,
-                    Sequence, Set, Union, ValuesView)
+from typing import Any, ClassVar, Dict, Generator, List, NamedTuple, Optional, Sequence, Set, Union, ValuesView
 
 from PHX.model import elec_equip, geometry, spaces
-from PHX.model.components import (PhxApertureElement, PhxComponentAperture,
-                                  PhxComponentOpaque,
-                                  PhxComponentThermalBridge)
-from PHX.model.enums.building import (AttachedZoneType, SpecificHeatCapacity,
-                                      ZoneType)
+from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
+from PHX.model.enums.building import (
+    AttachedZoneType,
+    SpecificHeatCapacity,
+    ZoneType,
+    WufiVolumeGrossMode,
+    WufiVolumeNetMode,
+    WufiWeightedFloorAreaMode,
+)
 from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
 
@@ -26,8 +29,11 @@ from PHX.model.programs import occupancy
 class PhxZone:
     _count: ClassVar[int] = 0
     display_name: str = ""
+    volume_gross_mode: WufiVolumeGrossMode = WufiVolumeGrossMode.FROM_VISUALIZED_COMPONENTS
     volume_gross: float = 0.0
+    volume_net_mode: WufiVolumeNetMode = WufiVolumeNetMode.USER_DEFINED
     volume_net: float = 0.0
+    weighted_floor_area_mode: WufiWeightedFloorAreaMode = WufiWeightedFloorAreaMode.USER_DEFINED
     weighted_net_floor_area: float = 0.0
     clearance_height: float = 2.5
     res_occupant_quantity: float = 0.0

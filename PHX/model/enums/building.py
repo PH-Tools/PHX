@@ -69,6 +69,24 @@ class SpecificHeatCapacity(Enum):
     MASSIVE = 3
 
 
+class WufiVolumeGrossMode(Enum):
+    USER_DEFINED = 6
+    FROM_VISUALIZED_COMPONENTS = 7
+
+
+class WufiVolumeNetMode(Enum):
+    ESTIMATED_FROM_GROSS = 4
+    FROM_GROSS_AND_COMPONETS = 5
+    USER_DEFINED = 6
+    FROM_VISUALIZED_COMPONENTS = 7
+
+
+class WufiWeightedFloorAreaMode(Enum):
+    FROM_VISUALIZED_GEOMETRY = 2
+    ESTIMATED_FROM_GROSS_VOLUME = 4
+    USER_DEFINED = 6
+
+
 class ZoneType(Enum):
     SIMULATED = 1
     ATTACHED = 2
