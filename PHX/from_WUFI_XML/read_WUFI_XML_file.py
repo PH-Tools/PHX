@@ -57,7 +57,7 @@ def xml_to_dict(element: etree._Element, _level: int = 0) -> Dict[Union[List, st
                 # It is finally an actual data item
                 d[child.tag] = Tag(child.text, child.tag, child.attrib)  # .text
         elif _is_list_element(child):
-            # -- Fucking WUFI... sometimes the unit data is up at the parent
+            # -- Oy... WUFI... sometimes the unit data is up at the parent
             if "unit" in getattr(child, "attrib", ""):
                 for _ in child:
                     _.attrib["unit"] = child.attrib.get("unit", "")
