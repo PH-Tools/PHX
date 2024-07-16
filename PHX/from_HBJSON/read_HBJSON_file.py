@@ -80,5 +80,6 @@ def convert_hbjson_dict_to_hb_model(_data: Dict) -> model.Model:
         model.Model: A Honeybee Model, rebuilt from the HBJSON file.
     """
     hb_model: model.Model = model.Model.from_dict(_data)
+    logger.info(f"Converting HB-Model from {hb_model.units} to Meters.")
     hb_model.convert_to_units("Meters")
     return hb_model

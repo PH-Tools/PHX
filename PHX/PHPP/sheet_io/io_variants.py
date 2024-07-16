@@ -48,24 +48,28 @@ class Variants:
         self.start_window_types: Optional[int] = None
         self.start_ventilation: Optional[int] = None
 
-    def get_user_input_section_start(self, _row_start=1, _rows=500) -> int:
+    def get_user_input_section_start(self, _start_row: int = 1, _read_length: int = 500) -> int:
         """Return the row number of the user-input section header."""
         # -- Get the data from Excel in one operation
+        end_row = _start_row + _read_length
         col_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.input_header.locator_col_header,
-            _row_start=_row_start,
-            _row_end=_row_start + _rows,
+            _row_start=_start_row,
+            _row_end=end_row,
         )
 
-        for i, column_val in enumerate(col_data, start=_row_start):
+        for i, column_val in enumerate(col_data, start=_start_row):
             if column_val == self.shape.input_header.locator_string_header:
                 return i
 
+        if end_row < 10_000:
+            return self.get_user_input_section_start(_start_row=end_row, _read_length=500)
+
         raise Exception(
             f'Error: Unable to locate the "{self.shape.input_header.locator_string_header}" '
-            f'section of the "{self.shape.name}" worksheet in column '
-            f'"{self.shape.input_header.locator_col_header}"?'
+            f'section of the "{self.shape.name}" worksheet in '
+            f"{self.shape.input_header.locator_col_header}{_start_row}:{self.shape.input_header.locator_col_header}{end_row}?"
         )
 
     def get_assembly_layers_start(self, _row_start: Optional[int] = None, _rows: int = 100) -> int:
