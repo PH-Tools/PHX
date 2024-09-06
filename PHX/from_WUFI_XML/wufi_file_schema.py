@@ -745,7 +745,7 @@ class WufiFoundationInterface(BaseModel):
 
     # -- Unheated Basement
     HeightBasementWallAboveGrade: Optional[wufi_unit.M] = None
-    FloorCeilingArea: Optional[wufi_unit.M] = None
+    FloorCeilingArea: Optional[wufi_unit.M2] = None
     U_ValueCeilingToUnheatedCellar: Optional[wufi_unit.Watts_per_M2K] = None
     U_ValueWallAboveGround: Optional[wufi_unit.Watts_per_M2K] = None
     BasementVolume: Optional[wufi_unit.M3] = None
