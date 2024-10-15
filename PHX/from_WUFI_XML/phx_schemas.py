@@ -414,6 +414,9 @@ def _PhxVariant(_xml_variant_data: wufi_xml.WufiVariant, _phx_project_host: PhxP
     # -- Build the HVAC Systems, Devices, and Distribution
     phx_obj.clear_mechanical_collections()
     for xml_system_data in _xml_variant_data.HVAC.Systems:
+        if len(xml_system_data.ZonesCoverage) == 0:
+            continue
+
         new_mechanical_collection = PhxMechanicalSystemCollection()
         new_mechanical_collection.display_name = xml_system_data.Name
         new_mechanical_collection.id_num = xml_system_data.IdentNr

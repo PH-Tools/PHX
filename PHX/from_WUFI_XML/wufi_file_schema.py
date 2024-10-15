@@ -113,8 +113,8 @@ class WufiPH_ClimateLocation(BaseModel):
     Longitude: wufi_unit.CardinalDegrees
     dUTC: int
 
-    HeightNNWeatherStation: wufi_unit.M
-    HeightNNBuilding: wufi_unit.M
+    HeightNNWeatherStation: Optional[wufi_unit.M] = wufi_unit.M(0)
+    HeightNNBuilding: Optional[wufi_unit.M] = wufi_unit.M(0)
 
     ClimateZone: int
     GroundThermalConductivity: wufi_unit.Watts_per_MK

@@ -49,9 +49,9 @@ class BaseConverter:
 
         # -- Otherwise, pull the value out of the dict and convert the value to the right unit
         try:
-            result = convert(v["value"], v["unit_type"], cls.__unit_type__)
-        except Exception:
-            msg = f"Error converting input for '{cls.__name__}' using inputs: {v}"
+            result = convert(v["value"].strip(), v["unit_type"], cls.__unit_type__)
+        except Exception as e:
+            msg = f"Error converting to '{cls.__name__}' using the input of: [ {v} ]\n{e}"
             raise Exception(msg)
 
         # -- If the conversion was unsuccessful, raise an exception
