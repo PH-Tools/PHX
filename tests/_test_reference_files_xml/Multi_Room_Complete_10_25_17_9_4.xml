@@ -1315,7 +1315,7 @@
 							</Device>
 							<Device index="1">
 								<Name>Example_Heat_Pump</Name>
-								<IdentNr>2</IdentNr>
+								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>true</UsedFor_Heating>
@@ -1352,7 +1352,7 @@
 							</Device>
 							<Device index="2">
 								<Name>None</Name>
-								<IdentNr>1</IdentNr>
+								<IdentNr>2</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>true</UsedFor_Heating>
