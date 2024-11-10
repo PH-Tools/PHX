@@ -86,6 +86,12 @@ def _hb_int_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
             "Adiabatic": ComponentColor.FLOOR,
         },
+        "AirBoundary": {
+            "Outdoors": ComponentColor.WINDOW,
+            "Surface": ComponentColor.WINDOW,
+            "Ground": ComponentColor.WINDOW,
+            "Adiabatic": ComponentColor.WINDOW,
+        },
     }
     return mapping[str(_hb_face.type)][str(_hb_face.boundary_condition)]
 
@@ -109,6 +115,12 @@ def _hb_ext_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
             "Surface": ComponentColor.FLOOR,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
             "Adiabatic": ComponentColor.FLOOR,
+        },
+        "AirBoundary": {
+            "Outdoors": ComponentColor.WINDOW,
+            "Surface": ComponentColor.WINDOW,
+            "Ground": ComponentColor.WINDOW,
+            "Adiabatic": ComponentColor.WINDOW,
         },
     }
     return mapping[str(_hb_face.type)][str(_hb_face.boundary_condition)]

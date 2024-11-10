@@ -7,8 +7,10 @@ from typing import List, Optional, Tuple, Union
 
 from honeybee import model
 from honeybee.aperture import Aperture
+from honeybee_energy.properties.face import FaceEnergyProperties
 from honeybee_energy.construction import window, windowshade
 from honeybee_energy.construction.opaque import OpaqueConstruction
+from honeybee_energy.construction.air import AirBoundaryConstruction
 from honeybee_energy.construction.window import WindowConstruction
 from honeybee_energy.construction.windowshade import WindowConstructionShade
 from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
@@ -215,17 +217,23 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
     --------
         * None
     """
+    DEFAULT_MATERIALS = [
+        EnergyMaterial(identifier="Air", thickness=0.1, conductivity=1.0, density=100, specific_heat=100)
+    ]
 
     for room in _hb_model.rooms:
         for face in room.faces:
-            hb_const = face.properties.energy.construction  # type: OpaqueConstruction
+            face_prop_energy = getattr(face.properties, "energy")  # type: FaceEnergyProperties
+            hb_const = face_prop_energy.construction  # type: OpaqueConstruction | AirBoundaryConstruction
 
+            # -- If is an AirBoundary, use the default material
+            materials = getattr(hb_const, "materials", DEFAULT_MATERIALS)
             if not hb_const.identifier in _project.assembly_types:
                 # -- Create a new Assembly with Layers from the Honeybee-Construction
                 new_assembly = constructions.PhxConstructionOpaque()
                 new_assembly.id_num = constructions.PhxConstructionOpaque._count
                 new_assembly.display_name = hb_const.display_name
-                new_assembly.layers = [build_layer_from_hb_material(layer) for layer in hb_const.materials]
+                new_assembly.layers = [build_layer_from_hb_material(layer) for layer in materials]
 
                 # -- Add the assembly to the Project
                 _project.add_assembly_type(new_assembly, hb_const.identifier)
