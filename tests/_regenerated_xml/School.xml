@@ -5823,7 +5823,7 @@ Instant DHW
 								<LightingFullLoadHours>0</LightingFullLoadHours>
 							</LoadsLighting>
 						</LoadsLightingsPH>
-						<GrossVolume_Selection>6</GrossVolume_Selection>
+						<GrossVolume_Selection>7</GrossVolume_Selection>
 						<GrossVolume>1781.2996</GrossVolume>
 						<NetVolume_Selection>6</NetVolume_Selection>
 						<NetVolume>1353.79</NetVolume>
@@ -6066,6 +6066,7 @@ Instant DHW
 						<CountStories>1</CountStories>
 						<EnvelopeAirtightnessCoefficient>2.193</EnvelopeAirtightnessCoefficient>
 						<SummerHRVHumidityRecovery>4</SummerHRVHumidityRecovery>
+						<BuildingWindExposure>2</BuildingWindExposure>
 						<FoundationInterfaces count="1">
 							<FoundationInterface index="0">
 								<Name>Slab</Name>
@@ -6658,9 +6659,44 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
-					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.3683</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.0381</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
+					<ExchangeDivisionVertical count="2">
+						<DivisionV index="0">
+							<Distance>2.4384</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="1">
+							<Distance>0.1524</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+					</ExchangeDivisionVertical>
+					<ExchangeMaterialIdentNrs count="4">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="2">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="3">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="3">
 					<Thickness>0.0125</Thickness>
@@ -6684,7 +6720,21 @@ Instant DHW
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Southern Yellow Pine</Name>
+					<ThermalConductivity>0.119</ThermalConductivity>
+					<BulkDensity>500.0</BulkDensity>
+					<HeatCapacity>1880.0</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="6">
 			<IdentNr>8</IdentNr>
@@ -6781,9 +6831,44 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
-					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.3683</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.0381</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
+					<ExchangeDivisionVertical count="2">
+						<DivisionV index="0">
+							<Distance>2.4384</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="1">
+							<Distance>0.1524</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+					</ExchangeDivisionVertical>
+					<ExchangeMaterialIdentNrs count="4">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="2">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="3">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.0125</Thickness>
@@ -6807,7 +6892,21 @@ Instant DHW
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Southern Yellow Pine</Name>
+					<ThermalConductivity>0.119</ThermalConductivity>
+					<BulkDensity>500.0</BulkDensity>
+					<HeatCapacity>1880.0</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="8">
 			<IdentNr>9</IdentNr>
@@ -6853,9 +6952,44 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
-					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.3683</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.0381</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
+					<ExchangeDivisionVertical count="2">
+						<DivisionV index="0">
+							<Distance>2.4384</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="1">
+							<Distance>0.1524</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+					</ExchangeDivisionVertical>
+					<ExchangeMaterialIdentNrs count="4">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="2">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="3">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.0125</Thickness>
@@ -6879,7 +7013,21 @@ Instant DHW
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Southern Yellow Pine</Name>
+					<ThermalConductivity>0.119</ThermalConductivity>
+					<BulkDensity>500.0</BulkDensity>
+					<HeatCapacity>1880.0</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="9">
 			<IdentNr>10</IdentNr>
@@ -6976,9 +7124,44 @@ Instant DHW
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
-					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.3683</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.0381</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
+					<ExchangeDivisionVertical count="2">
+						<DivisionV index="0">
+							<Distance>2.4384</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="1">
+							<Distance>0.1524</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+					</ExchangeDivisionVertical>
+					<ExchangeMaterialIdentNrs count="4">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="2">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="3">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="3">
 					<Thickness>0.0125</Thickness>
@@ -7002,7 +7185,21 @@ Instant DHW
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Southern Yellow Pine</Name>
+					<ThermalConductivity>0.119</ThermalConductivity>
+					<BulkDensity>500.0</BulkDensity>
+					<HeatCapacity>1880.0</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 	</Assemblies>
 	<WindowTypes count="7">

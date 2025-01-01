@@ -22,6 +22,8 @@ from PHX.model.constructions import (
     PhxLayer,
     PhxMaterial,
     PhxWindowFrameElement,
+    PhxLayerDivisionGrid,
+    PhxLayerDivisionCell,
 )
 from PHX.model.elec_equip import (
     PhxDeviceClothesDryer,
@@ -304,17 +306,48 @@ def _PhxConstructionOpaque(_data: wufi_xml.WufiAssembly) -> PhxConstructionOpaqu
     phx_obj.display_name = _data.Name
     phx_obj.layer_order = _data.Order_Layers
     phx_obj.grid_kind = _data.Grid_Kind
+
+    # -- First, create any exchange-materials
+    exchange_materials: dict[int, PhxMaterial] = {}
+    for exchange_mat in _data.ExchangeMaterials or []:
+        new_exchange_mat: PhxMaterial = as_phx_obj(exchange_mat, "PhxExchangeMaterial")
+        exchange_materials[exchange_mat.IdentNr] = new_exchange_mat
+
     for layer in _data.Layers:
-        new_layer = as_phx_obj(layer, "PhxLayer")
+        new_layer = as_phx_obj(layer, "PhxLayer", _exchange_materials=exchange_materials)
         phx_obj.layers.append(new_layer)
 
     return phx_obj
 
 
-def _PhxLayer(_data: wufi_xml.WufiLayer) -> PhxLayer:
+def _PhxLayer(_data: wufi_xml.WufiLayer, _exchange_materials: dict[int, PhxMaterial] = {}) -> PhxLayer:
     phx_obj = PhxLayer()
     phx_obj.thickness_m = _data.Thickness
-    new_mat = as_phx_obj(_data.Material, "PhxMaterial")
+    new_mat: PhxMaterial = as_phx_obj(_data.Material, "PhxMaterial")
+
+    # -- Build up any sub-divisions (mixed-material layers)
+    if _data.ExchangeMaterialIdentNrs:
+        div_grid = PhxLayerDivisionGrid()
+        div_grid.set_column_widths([div.Distance for div in _data.ExchangeDivisionHorizontal or []])
+        div_grid.set_row_heights([div.Distance for div in _data.ExchangeDivisionVertical or []])
+        div_grid.populate_defaults()
+
+        # -- I *think* the WUFI XML order just goes by column, top-to-bottom
+        # -- So split the list into groups , sized by column-count
+        if div_grid.column_count > 0:
+            ids_by_column = [
+                _data.ExchangeMaterialIdentNrs[i : i + div_grid.row_count]
+                for i in range(0, len(_data.ExchangeMaterialIdentNrs), div_grid.row_count)
+            ]
+            for col_num, wufi_mat_id_nums in enumerate(ids_by_column):
+                for row_num, wufi_mat_id_num in enumerate(wufi_mat_id_nums):
+                    div_grid.set_cell_material(
+                        _column_num=col_num,
+                        _row_num=row_num,
+                        _phx_material=_exchange_materials.get(wufi_mat_id_num.IdentNr_Object, new_mat),
+                    )
+        phx_obj.divisions = div_grid
+
     phx_obj.set_material(new_mat)
 
     return phx_obj
@@ -329,6 +362,16 @@ def _PhxMaterial(_data: wufi_xml.WufiMaterial) -> PhxMaterial:
     phx_obj.heat_capacity = _data.HeatCapacity
     phx_obj.water_vapor_resistance = _data.WaterVaporResistance
     phx_obj.reference_water = _data.ReferenceWaterContent
+    return phx_obj
+
+
+def _PhxExchangeMaterial(_data: wufi_xml.WufiExchangeMaterial) -> PhxMaterial:
+    phx_obj = PhxMaterial()
+    phx_obj.id_num = _data.IdentNr
+    phx_obj.display_name = _data.Name
+    phx_obj.conductivity = _data.ThermalConductivity
+    phx_obj.density = _data.BulkDensity
+    phx_obj.heat_capacity = _data.HeatCapacity
     return phx_obj
 
 

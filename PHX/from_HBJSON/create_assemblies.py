@@ -3,6 +3,7 @@
 
 """Functions used to create Project elements from the Honeybee-Model"""
 
+import logging
 from typing import List, Optional, Tuple, Union
 
 from honeybee import model
@@ -20,6 +21,8 @@ from honeybee_energy_ph.properties.materials.opaque import EnergyMaterialPhPrope
 from honeybee_ph_utils import color, iso_10077_1
 
 from PHX.model import constructions, project, shades
+
+logger = logging.getLogger(__name__)
 
 
 def _conductivity_from_r_value(_r_value: float, _thickness: float) -> float:
@@ -81,7 +84,7 @@ def build_phx_material_from_hb_EnergyMaterial(
     new_mat.density = _hb_material.density
     new_mat.heat_capacity = _hb_material.specific_heat
 
-    _prop_ph = _hb_material.properties.ph  # type: EnergyMaterialPhProperties # type: ignore
+    _prop_ph: EnergyMaterialPhProperties = getattr(_hb_material.properties, "ph")
 
     try:
         hbph_color = _prop_ph.ph_color
@@ -172,34 +175,51 @@ def build_phx_division_grid_from_hb_division_grid(_hb_div_grid: PhDivisionGrid) 
     return new_div_grid
 
 
-def build_layer_from_hb_material(_hb_material: Union[EnergyMaterial, EnergyMaterialNoMass]) -> constructions.PhxLayer:
+def build_layer_from_hb_material(
+    _hb_material: Union[EnergyMaterial, EnergyMaterialNoMass], _no_mass_thickness_m: float = 0.1
+) -> constructions.PhxLayer:
     """Returns a new PHX-Layer with attributes based on a Honeybee-Material.
 
     Arguments:
     ----------
-        *_hb_material (EnergyMaterial | EnergyMaterialNoMass): The Honeybee Material.
+        * _hb_material (EnergyMaterial | EnergyMaterialNoMass): The Honeybee Material.
+        * _no_mass_thickness_m (float): Default=0.1m (4in) The thickness to use for EnergyMaterialNoMass.
 
     Returns:
     --------
-        * constructions.Layer: The new PHX-Layer object.
+        * (PhxLayer): The new PHX-Layer object.
     """
+    logger.debug(
+        f"build_layer_from_hb_material(_hb_material={_hb_material.identifier}, _no_mass_thickness_m={_no_mass_thickness_m})"
+    )
     new_layer = constructions.PhxLayer()
 
-    if isinstance(_hb_material, EnergyMaterial):
-        new_layer.thickness_m = _hb_material.thickness
-        new_phx_material = build_phx_material_from_hb_EnergyMaterial(_hb_material)
-        new_layer.set_material(new_phx_material)
+    # -- Build the division grid first, so we can check for the 'base' material
+    hbph_props: EnergyMaterialPhProperties = getattr(_hb_material.properties, "ph")
+    div_grid = build_phx_division_grid_from_hb_division_grid(hbph_props.divisions)
+    if mat := div_grid.get_base_material():
+        source_material = mat
+    else:
+        source_material = _hb_material
 
-        # --- Add in any 'mixed' material elements
-        div_grid = build_phx_division_grid_from_hb_division_grid(_hb_material.properties.ph.divisions)  # type: ignore
+    # -- Set the new PhxLayer attributes
+    if isinstance(source_material, EnergyMaterial):
+        new_layer.thickness_m = source_material.thickness
+        new_phx_material = build_phx_material_from_hb_EnergyMaterial(source_material)
+        new_layer.set_material(new_phx_material)
         new_layer.divisions = div_grid
 
-    elif isinstance(_hb_material, EnergyMaterialNoMass):
-        new_layer.thickness_m = 0.1  # 0.1m = 4". Use as default since No-Mass has no thickness
-        new_layer.set_material(build_phx_material_from_hb_EnergyMaterialNoMass(_hb_material, new_layer.thickness_m))
+    elif isinstance(source_material, EnergyMaterialNoMass):
+        new_layer.thickness_m = _no_mass_thickness_m
+        new_layer.set_material(build_phx_material_from_hb_EnergyMaterialNoMass(source_material, new_layer.thickness_m))
+
+    elif isinstance(source_material, constructions.PhxMaterial):
+        new_layer.thickness_m = _hb_material.thickness
+        new_layer.set_material(source_material)
+        new_layer.divisions = div_grid
 
     else:
-        raise TypeError(f"Error: PHX does not support the Material type: '{type(_hb_material)}'.")
+        raise TypeError(f"Error: PHX does not support the Material type: '{type(source_material)}'.")
 
     return new_layer
 
@@ -223,17 +243,17 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
 
     for room in _hb_model.rooms:
         for face in room.faces:
-            face_prop_energy = getattr(face.properties, "energy")  # type: FaceEnergyProperties
-            hb_const = face_prop_energy.construction  # type: OpaqueConstruction | AirBoundaryConstruction
+            face_prop_energy: FaceEnergyProperties = getattr(face.properties, "energy")
+            hb_const: OpaqueConstruction | AirBoundaryConstruction = face_prop_energy.construction
 
             # -- If is an AirBoundary, use the default material
-            materials = getattr(hb_const, "materials", DEFAULT_MATERIALS)
+            materials: list[EnergyMaterial] = getattr(hb_const, "materials", DEFAULT_MATERIALS)
             if not hb_const.identifier in _project.assembly_types:
                 # -- Create a new Assembly with Layers from the Honeybee-Construction
                 new_assembly = constructions.PhxConstructionOpaque()
                 new_assembly.id_num = constructions.PhxConstructionOpaque._count
                 new_assembly.display_name = hb_const.display_name
-                new_assembly.layers = [build_layer_from_hb_material(layer) for layer in materials]
+                new_assembly.layers = [build_layer_from_hb_material(mat) for mat in materials]
 
                 # -- Add the assembly to the Project
                 _project.add_assembly_type(new_assembly, hb_const.identifier)

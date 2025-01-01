@@ -31,9 +31,9 @@ class PhxMaterial:
     display_name: str = ""
     conductivity: float = 0.0
     density: float = 0.0
-    porosity: float = 0.0
+    porosity: float = 0.95
     heat_capacity: float = 0.0
-    water_vapor_resistance: float = 0.0
+    water_vapor_resistance: float = 1.0
     reference_water: float = 0.0
     percentage_of_assembly: float = 1.0
     argb_color: PhxColor = field(default_factory=PhxColor)
@@ -44,6 +44,21 @@ class PhxMaterial:
 
     def __eq__(self, other: PhxMaterial) -> bool:
         return self.id_num == other.id_num
+
+    def equivalent(self, other: PhxMaterial) -> bool:
+        """Check if two materials are equivalent except for their ID-Number."""
+        return all(
+            [
+                self.display_name == other.display_name,
+                self.conductivity == other.conductivity,
+                self.density == other.density,
+                self.porosity == other.porosity,
+                self.heat_capacity == other.heat_capacity,
+                self.water_vapor_resistance == other.water_vapor_resistance,
+                self.reference_water == other.reference_water,
+                self.argb_color == other.argb_color,
+            ]
+        )
 
     def __hash__(self) -> int:
         return hash(self.id_num)
@@ -61,6 +76,16 @@ class PhxLayerDivisionCell:
     column: int
     material: PhxMaterial
     expanding_contracting: int = 2  # 2="Exp./Contr."
+
+    def __eq__(self, other: PhxLayerDivisionCell) -> bool:
+        return all(
+            [
+                self.row == other.row,
+                self.column == other.column,
+                self.material.equivalent(other.material),
+                self.expanding_contracting == other.expanding_contracting,
+            ]
+        )
 
 
 @dataclass
@@ -104,6 +129,11 @@ class PhxLayerDivisionGrid:
     def cell_count(self) -> int:
         """Return the total number of cells in the grid."""
         return self.row_count * self.column_count
+
+    @property
+    def cells(self) -> list[PhxLayerDivisionCell]:
+        """Return a list of all the PhxLayerDivisionCells in the grid, ordered by row then column"""
+        return sorted(self._cells, key=lambda x: (x.row, x.column))
 
     def set_column_widths(self, _column_widths: Iterable[float]) -> None:
         """Set the column widths of the grid."""
@@ -176,6 +206,38 @@ class PhxLayerDivisionGrid:
         col_width = self.column_widths[_column_num]
         row_height = self.row_heights[_row_num]
         return col_width * row_height
+
+    def get_base_material(self) -> PhxMaterial | None:
+        """Get the 'base' material of the grid (the most common material in the layer, by cell-area)."""
+        if not self._cells:
+            return None
+
+        material_areas = {}
+        for cell in self._cells:
+            cell_area = self.get_cell_area(cell.column, cell.row)
+            if id(cell.material) not in material_areas:
+                record = {"material": cell.material, "area": cell_area}
+                material_areas[id(cell.material)] = record
+            else:
+                material_areas[id(cell.material)]["area"] += cell_area
+
+        return max(material_areas.values(), key=lambda x: x["area"])["material"]
+
+    def populate_defaults(self) -> None:
+        """Populate the grid with default values. Ensure that there is at least one row or column."""
+        if self.column_count > 0 and self.row_count == 0:
+            self.add_new_row(1.0)
+        elif self.row_count > 0 and self.column_count == 0:
+            self.add_new_column(1.0)
+
+    def __eq__(self, other: PhxLayerDivisionGrid) -> bool:
+        return all(
+            [
+                self.row_heights == other.row_heights,
+                self.column_widths == other.column_widths,
+                self.cells == other.cells,
+            ]
+        )
 
 
 @dataclass
@@ -321,6 +383,16 @@ class PhxLayer:
             else:
                 id_numbers_.append(-1)
         return id_numbers_
+
+    def equivalent(self, other: PhxLayer) -> bool:
+        """Check if two layers are equivalent."""
+        return all(
+            [
+                self.thickness_m == other.thickness_m,
+                self.material.equivalent(other.material),
+                self.divisions == other.divisions,
+            ]
+        )
 
 
 # -----------------------------------------------------------------------------

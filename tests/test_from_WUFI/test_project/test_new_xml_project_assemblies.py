@@ -1,4 +1,4 @@
-from typing import List, ValuesView
+from typing import ValuesView
 
 from PHX.model.constructions import PhxConstructionOpaque
 from PHX.model.project import PhxProject
@@ -39,7 +39,8 @@ def test_assembly_type_layers_match(
 
     for hbjson_type in hbjson_assemblies.values():
         xml_type = _find_matching_assembly(hbjson_type, xml_assemblies.values())
-        assert hbjson_type.layers == xml_type.layers
+        for hbjson_layer, xml_layer in zip(hbjson_type.layers, xml_type.layers):
+            assert hbjson_layer.equivalent(xml_layer)
 
 
 def test_assembly_type_materials_match(
@@ -53,4 +54,4 @@ def test_assembly_type_materials_match(
     for hbjson_type in hbjson_assemblies.values():
         xml_type = _find_matching_assembly(hbjson_type, xml_assemblies.values())
         for i, hbjson_layer in enumerate(hbjson_type.layers):
-            assert hbjson_layer.material == xml_type.layers[i].material
+            assert hbjson_layer.material.equivalent(xml_type.layers[i].material)

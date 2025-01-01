@@ -62050,12 +62050,73 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
-					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.36829999999999996</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
+					<ExchangeDivisionVertical count="3">
+						<DivisionV index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="1">
+							<Distance>2.3622</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="2">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+					</ExchangeDivisionVertical>
+					<ExchangeMaterialIdentNrs count="6">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="2">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="3">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="4">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="5">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Fiberglass_True comfort (R4.18/in)</Name>
+					<ThermalConductivity>0.034441624669200005</ThermalConductivity>
+					<BulkDensity>29.999378255520003</BulkDensity>
+					<HeatCapacity>839.872197351</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="2">
 			<IdentNr>6</IdentNr>
@@ -62143,9 +62204,27 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.36829999999999996</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
 					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeMaterialIdentNrs count="2">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="4">
 					<Thickness>0.019049999999999997</Thickness>
@@ -62169,7 +62248,21 @@
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Sprayed Polyurethane Foam; closed cell</Name>
+					<ThermalConductivity>0.0249225826752</ThermalConductivity>
+					<BulkDensity>39.000152839980004</BulkDensity>
+					<HeatCapacity>1469.9856853935</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="3">
 			<IdentNr>8</IdentNr>
@@ -62194,9 +62287,27 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.36829999999999996</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
 					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeMaterialIdentNrs count="2">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>3</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.019049999999999997</Thickness>
@@ -62241,7 +62352,21 @@
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>3</IdentNr>
+					<Name>Mineral wool_Comfortbatt</Name>
+					<ThermalConductivity>0.0359992860864</ThermalConductivity>
+					<BulkDensity>60.00035835738</BulkDensity>
+					<HeatCapacity>849.9205187550001</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="4">
 			<IdentNr>9</IdentNr>
@@ -62401,9 +62526,56 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
-					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.36829999999999996</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
+					<ExchangeDivisionVertical count="3">
+						<DivisionV index="0">
+							<Distance>0.07619999999999999</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="1">
+							<Distance>2.54</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="2">
+							<Distance>0.0254</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+					</ExchangeDivisionVertical>
+					<ExchangeMaterialIdentNrs count="6">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="2">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="3">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="4">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="5">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="5">
 					<Thickness>0.0127</Thickness>
@@ -62427,7 +62599,21 @@
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Softwood</Name>
+					<ThermalConductivity>0.089998215216</ThermalConductivity>
+					<BulkDensity>400.00025325408</BulkDensity>
+					<HeatCapacity>1400.0661156239998</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="6">
 			<IdentNr>15</IdentNr>
@@ -62494,9 +62680,56 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
-					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.36829999999999996</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
+					<ExchangeDivisionVertical count="3">
+						<DivisionV index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="1">
+							<Distance>2.3622</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="2">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+					</ExchangeDivisionVertical>
+					<ExchangeMaterialIdentNrs count="6">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="2">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="3">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="4">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="5">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="3">
 					<Thickness>0.03175</Thickness>
@@ -62520,7 +62753,21 @@
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Fiberglass_True comfort (R4.18/in)</Name>
+					<ThermalConductivity>0.034441624669200005</ThermalConductivity>
+					<BulkDensity>29.999378255520003</BulkDensity>
+					<HeatCapacity>839.872197351</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="7">
 			<IdentNr>4</IdentNr>
@@ -62629,9 +62876,56 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
-					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.36829999999999996</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
+					<ExchangeDivisionVertical count="3">
+						<DivisionV index="0">
+							<Distance>0.07619999999999999</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="1">
+							<Distance>2.54</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+						<DivisionV index="2">
+							<Distance>0.0254</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionV>
+					</ExchangeDivisionVertical>
+					<ExchangeMaterialIdentNrs count="6">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="2">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="3">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="4">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="5">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="5">
 					<Thickness>0.0127</Thickness>
@@ -62655,7 +62949,21 @@
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="1">
+				<ExchangeMaterial index="0">
+					<IdentNr>1</IdentNr>
+					<Name>Softwood</Name>
+					<ThermalConductivity>0.089998215216</ThermalConductivity>
+					<BulkDensity>400.00025325408</BulkDensity>
+					<HeatCapacity>1400.0661156239998</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="8">
 			<IdentNr>1</IdentNr>
@@ -62740,9 +63048,27 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.36829999999999996</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
 					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeMaterialIdentNrs count="2">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>3</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="1">
 					<Thickness>0.1016</Thickness>
@@ -62761,9 +63087,27 @@
 							<Blue>255</Blue>
 						</Color>
 					</Material>
-					<ExchangeDivisionHorizontal count="0"/>
+					<ExchangeDivisionHorizontal count="2">
+						<DivisionH index="0">
+							<Distance>0.038099999999999995</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+						<DivisionH index="1">
+							<Distance>0.36829999999999996</Distance>
+							<ExpandingContracting>2</ExpandingContracting>
+						</DivisionH>
+					</ExchangeDivisionHorizontal>
 					<ExchangeDivisionVertical count="0"/>
-					<ExchangeMaterialIdentNrs count="0"/>
+					<ExchangeMaterialIdentNrs count="2">
+						<MaterialIDNr index="0">
+							<Type>1</Type>
+							<IdentNr_Object>-1</IdentNr_Object>
+						</MaterialIDNr>
+						<MaterialIDNr index="1">
+							<Type>1</Type>
+							<IdentNr_Object>1</IdentNr_Object>
+						</MaterialIDNr>
+					</ExchangeMaterialIdentNrs>
 				</Layer>
 				<Layer index="2">
 					<Thickness>0.019049999999999997</Thickness>
@@ -62808,7 +63152,34 @@
 					<ExchangeMaterialIdentNrs count="0"/>
 				</Layer>
 			</Layers>
-			<ExchangeMaterials count="0"/>
+			<ExchangeMaterials count="2">
+				<ExchangeMaterial index="0">
+					<IdentNr>3</IdentNr>
+					<Name>Mineral wool_Comfortbatt</Name>
+					<ThermalConductivity>0.0359992860864</ThermalConductivity>
+					<BulkDensity>60.00035835738</BulkDensity>
+					<HeatCapacity>849.9205187550001</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+				<ExchangeMaterial index="1">
+					<IdentNr>1</IdentNr>
+					<Name>Sprayed Polyurethane Foam; closed cell</Name>
+					<ThermalConductivity>0.0249225826752</ThermalConductivity>
+					<BulkDensity>39.000152839980004</BulkDensity>
+					<HeatCapacity>1469.9856853935</HeatCapacity>
+					<Color>
+						<Alpha>255</Alpha>
+						<Red>255</Red>
+						<Green>255</Green>
+						<Blue>255</Blue>
+					</Color>
+				</ExchangeMaterial>
+			</ExchangeMaterials>
 		</Assembly>
 		<Assembly index="11">
 			<IdentNr>10</IdentNr>
