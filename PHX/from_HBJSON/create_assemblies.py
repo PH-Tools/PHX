@@ -8,13 +8,13 @@ from typing import List, Optional, Tuple, Union
 
 from honeybee import model
 from honeybee.aperture import Aperture
-from honeybee_energy.properties.face import FaceEnergyProperties
 from honeybee_energy.construction import window, windowshade
-from honeybee_energy.construction.opaque import OpaqueConstruction
 from honeybee_energy.construction.air import AirBoundaryConstruction
+from honeybee_energy.construction.opaque import OpaqueConstruction
 from honeybee_energy.construction.window import WindowConstruction
 from honeybee_energy.construction.windowshade import WindowConstructionShade
 from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
+from honeybee_energy.properties.face import FaceEnergyProperties
 from honeybee_energy_ph.construction.window import PhWindowFrame, PhWindowGlazing
 from honeybee_energy_ph.properties.construction.window import WindowConstructionPhProperties
 from honeybee_energy_ph.properties.materials.opaque import EnergyMaterialPhProperties, PhDivisionGrid

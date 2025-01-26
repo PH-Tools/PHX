@@ -11,9 +11,9 @@
 		<Date_Project>
 			<Year>2025</Year>
 			<Month>1</Month>
-			<Day>1</Day>
-			<Hour>14</Hour>
-			<Minutes>29</Minutes>
+			<Day>26</Day>
+			<Hour>17</Hour>
+			<Minutes>30</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -126,8 +126,8 @@
 				<Polygons count="6">
 					<Polygon index="0">
 						<IdentNr>5</IdentNr>
-						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorX>-0.0</NormalVectorX>
+						<NormalVectorY>-0.0</NormalVectorY>
 						<NormalVectorZ>-1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">27</IdentNr>
@@ -140,7 +140,7 @@
 					<Polygon index="1">
 						<IdentNr>6</IdentNr>
 						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>-0.0</NormalVectorY>
+						<NormalVectorY>0.0</NormalVectorY>
 						<NormalVectorZ>1.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">33</IdentNr>
@@ -153,6 +153,32 @@
 					<Polygon index="2">
 						<IdentNr>1</IdentNr>
 						<NormalVectorX>0.0</NormalVectorX>
+						<NormalVectorY>1.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">36</IdentNr>
+							<IdentNr index="1">27</IdentNr>
+							<IdentNr index="2">30</IdentNr>
+							<IdentNr index="3">33</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="3">
+						<IdentNr>2</IdentNr>
+						<NormalVectorX>-1.0</NormalVectorX>
+						<NormalVectorY>0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
+						<IdentNrPoints count="4">
+							<IdentNr index="0">33</IdentNr>
+							<IdentNr index="1">30</IdentNr>
+							<IdentNr index="2">29</IdentNr>
+							<IdentNr index="3">34</IdentNr>
+						</IdentNrPoints>
+						<IdentNrPolygonsInside count="0"/>
+					</Polygon>
+					<Polygon index="4">
+						<IdentNr>3</IdentNr>
+						<NormalVectorX>0.0</NormalVectorX>
 						<NormalVectorY>-1.0</NormalVectorY>
 						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
@@ -163,42 +189,16 @@
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>
-					<Polygon index="3">
-						<IdentNr>2</IdentNr>
+					<Polygon index="5">
+						<IdentNr>4</IdentNr>
 						<NormalVectorX>1.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
-						<NormalVectorZ>-0.0</NormalVectorZ>
+						<NormalVectorY>-0.0</NormalVectorY>
+						<NormalVectorZ>0.0</NormalVectorZ>
 						<IdentNrPoints count="4">
 							<IdentNr index="0">35</IdentNr>
 							<IdentNr index="1">28</IdentNr>
 							<IdentNr index="2">27</IdentNr>
 							<IdentNr index="3">36</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="4">
-						<IdentNr>3</IdentNr>
-						<NormalVectorX>0.0</NormalVectorX>
-						<NormalVectorY>1.0</NormalVectorY>
-						<NormalVectorZ>-0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">36</IdentNr>
-							<IdentNr index="1">27</IdentNr>
-							<IdentNr index="2">30</IdentNr>
-							<IdentNr index="3">33</IdentNr>
-						</IdentNrPoints>
-						<IdentNrPolygonsInside count="0"/>
-					</Polygon>
-					<Polygon index="5">
-						<IdentNr>4</IdentNr>
-						<NormalVectorX>-1.0</NormalVectorX>
-						<NormalVectorY>0.0</NormalVectorY>
-						<NormalVectorZ>0.0</NormalVectorZ>
-						<IdentNrPoints count="4">
-							<IdentNr index="0">33</IdentNr>
-							<IdentNr index="1">30</IdentNr>
-							<IdentNr index="2">29</IdentNr>
-							<IdentNr index="3">34</IdentNr>
 						</IdentNrPoints>
 						<IdentNrPolygonsInside count="0"/>
 					</Polygon>

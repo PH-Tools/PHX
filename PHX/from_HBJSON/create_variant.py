@@ -10,8 +10,10 @@ logger = logging.getLogger()
 
 from honeybee import room
 from honeybee_energy.load.equipment import ElectricEquipment
+from honeybee_energy.load.process import Process
 from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_energy_ph.properties.load import equipment, people
+from honeybee_energy_ph.properties.load.process import ProcessPhProperties
 from honeybee_ph import phi, phius, site
 from honeybee_ph.bldg_segment import BldgSegment
 from honeybee_ph.properties.room import RoomPhProperties, get_ph_prop_from_room
@@ -545,7 +547,7 @@ def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
             # -- otherwise, build a new PHX-Heating-Sys from the HB-hvac
             if not phx_heating_device or not mech_collection:
                 phx_heating_device = create_hvac.build_phx_heating_sys(hbph_sys)
-                _variant.default_mech_collection.add_new_mech_device(hbph_sys.key, phx_heating_device)
+                _variant.default_mech_collection.add_new_mech_device(hbph_sys.key, phx_heating_device)  # type: ignore
 
             # -- Keep the ID-Numbers aligned
             setattr(hbph_sys, "id_num", phx_heating_device.id_num)
@@ -580,7 +582,7 @@ def add_heat_pump_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: 
             # -- otherwise, build a new PHX-Heat-Pump-System from the HB-hvac
             if not phx_heat_pump_device or not mech_collection:
                 phx_heat_pump_device = create_hvac.build_phx_heat_pump_sys(hbph_sys)
-                _variant.default_mech_collection.add_new_mech_device(hbph_sys.key, phx_heat_pump_device)
+                _variant.default_mech_collection.add_new_mech_device(hbph_sys.key, phx_heat_pump_device)  # type: ignore
 
             # -- Keep the ID-Numbers aligned
             setattr(hbph_sys, "id_num", phx_heat_pump_device.id_num)
@@ -736,18 +738,27 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
         * None
     """
 
+    # -- Get all the PhEquipment from the HBE-Electric-Equipment
     room_prop_hb_energy: RoomEnergyProperties = getattr(_hb_room.properties, "energy")
     room_hb_energy_elec_equip: ElectricEquipment = room_prop_hb_energy.electric_equipment
-    if not room_hb_energy_elec_equip:
-        return
+    if room_hb_energy_elec_equip:
+        ee_properties_ph: equipment.ElectricEquipmentPhProperties = getattr(room_hb_energy_elec_equip.properties, "ph")
+        for equip_key, device in ee_properties_ph.equipment_collection.items():
+            phx_elec_device = create_elec_equip.build_phx_elec_device(device)
+            for zone in _variant.building.zones:
+                zone.elec_equipment_collection.add_new_device(equip_key, phx_elec_device)
 
-    ee_properties_ph: equipment.ElectricEquipmentPhProperties = getattr(room_hb_energy_elec_equip.properties, "ph")
-    for equip_key, device in ee_properties_ph.equipment_collection.items():
-        phx_elec_device = create_elec_equip.build_phx_elec_device(device)
+    # -- Get all the PhEquipment from the HBE-Process-Loads
+    room_hb_energy_process_loads: tuple[Process] = room_prop_hb_energy.process_loads
+    for process_load in room_hb_energy_process_loads:
+        process_prop_ph: ProcessPhProperties = getattr(process_load.properties, "ph")
+        if not process_prop_ph.ph_equipment:
+            continue
+        phx_elec_device = create_elec_equip.build_phx_elec_device(process_prop_ph.ph_equipment)
         for zone in _variant.building.zones:
-            zone.elec_equipment_collection.add_new_device(equip_key, phx_elec_device)
+            zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
 
-    return
+    return None
 
 
 def add_supportive_devices_from_hb_room(

@@ -16,7 +16,7 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
 
 try:
-    from honeybee_energy.load import equipment, infiltration, people
+    from honeybee_energy.load import equipment, infiltration, people, process
     from honeybee_energy.load.infiltration import Infiltration
     from honeybee_energy.properties.room import RoomEnergyProperties
 except ImportError as e:
@@ -29,8 +29,10 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee_ph:\n\t{}".format(e))
 
 try:
+    from honeybee_energy_ph.load.ph_equipment import PhEquipment
     from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
+    from honeybee_energy_ph.properties.load.process import ProcessPhProperties
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy_ph:\n\t{}".format(e))
 
@@ -299,19 +301,21 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
         room_ee_prop = room_prop_energy.electric_equipment.properties
         room_ee_prop_ph: ElectricEquipmentPhProperties = getattr(room_ee_prop, "ph")
 
+        # TODO: Deprecate...
+        # -- Get the Equipment from the HB-Elec-Equip (old method < Jan 2025)
         for equip_key, equip in room_ee_prop_ph.equipment_collection.items():
             try:
                 ph_equipment[equip_key].quantity += 1
             except KeyError:
                 ph_equipment[equip_key] = equip
 
-    # -- Calculate the total Watts of elec-equipment, total floor-area
+    # -- Calculate the total Watts of all of the HBE-Elec-Equipment in the rooms
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
     total_watts = sum(
         (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area) for rm in _hb_rooms  # type: ignore
     )
 
-    # -- Build a new HB-Elec-Equip from the reference room, add all the PH-Equipment to it.
+    # -- Build a new HBE-Elec-Equip from the reference room, add all the PH-Equipment to it.
     reference_room = _hb_rooms[0]
     reference_room_prop_energy: RoomEnergyProperties = getattr(reference_room.properties, "energy")
     ref_room_ee: equipment.ElectricEquipment = reference_room_prop_energy.electric_equipment
@@ -325,6 +329,40 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
         new_hb_equip_prop_ph.equipment_collection.add_equipment(ph_item)
 
     return new_hb_equip
+
+
+def merge_process_loads(_hb_rooms: list[room.Room]) -> list[process.Process]:
+    """Returns a new HB-Process-Obj with it's values set from a list of input HB-Rooms.
+
+    Arguments:
+    ----------
+        * _hb_rooms (List[room.Room]): A list of the HB-Rooms to build the merged
+            HB-Process object from.
+
+    Returns:
+    --------
+        * (list[process.Process]): A list with new Honeybee Process objects with values merged from the HB-Rooms.
+    """
+    # -- Collect all the unique Process-Load/PH-Equipment in all the rooms.
+    # -- Increase the quantity for each duplicate piece of equipment found
+    ph_equipment: dict[str, process.Process] = {}
+    for room in _hb_rooms:
+        room_prop_energy: RoomEnergyProperties = getattr(room.properties, "energy")
+
+        # -- Get the Equipment from the HB-Process Load (new method > Jan 2025)
+        for process_load in room_prop_energy.process_loads:
+            process_prop_ph: ProcessPhProperties = getattr(process_load.properties, "ph")
+            if equip := getattr(process_prop_ph, "ph_equipment", None):  # type: PhEquipment | None
+                if equip.identifier in ph_equipment:
+                    process_prop_ph: ProcessPhProperties = getattr(ph_equipment[equip.identifier].properties, "ph")
+                    if process_prop_ph.ph_equipment:
+                        process_prop_ph.ph_equipment.quantity += 1
+                    else:
+                        ph_equipment[equip.identifier] = process_load
+                else:
+                    ph_equipment[equip.identifier] = process_load
+
+    return list(ph_equipment.values())
 
 
 def check_room_has_spaces(_hb_room: room.Room) -> None:
@@ -464,6 +502,8 @@ def merge_rooms(
     new_rm_prop_energy.people = merge_occupancies(_hb_rooms)
     new_rm_prop_energy.electric_equipment = merge_elec_equip(_hb_rooms)
     new_rm_prop_energy.shw = merge_shw_programs(_hb_rooms)
+    new_rm_prop_energy.remove_process_loads()
+    new_rm_prop_energy._process_loads = merge_process_loads(_hb_rooms)
 
     # -------------------------------------------------------------------------
     # -- TODO: Can I merge together the surfaces as well?

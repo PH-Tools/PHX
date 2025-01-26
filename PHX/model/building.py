@@ -9,18 +9,16 @@ import operator
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import reduce
-from typing import Any, ClassVar, Dict, Generator, List, NamedTuple, Optional, Sequence, Set, Union, ValuesView
+from typing import (Any, ClassVar, Dict, Generator, List, NamedTuple, Optional,
+                    Sequence, Set, Union, ValuesView)
 
 from PHX.model import elec_equip, geometry, spaces
-from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
-from PHX.model.enums.building import (
-    AttachedZoneType,
-    SpecificHeatCapacity,
-    ZoneType,
-    WufiVolumeGrossMode,
-    WufiVolumeNetMode,
-    WufiWeightedFloorAreaMode,
-)
+from PHX.model.components import (PhxApertureElement, PhxComponentAperture,
+                                  PhxComponentOpaque,
+                                  PhxComponentThermalBridge)
+from PHX.model.enums.building import (AttachedZoneType, SpecificHeatCapacity,
+                                      WufiVolumeGrossMode, WufiVolumeNetMode,
+                                      WufiWeightedFloorAreaMode, ZoneType)
 from PHX.model.hvac import collection
 from PHX.model.programs import occupancy
 

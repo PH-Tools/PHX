@@ -20,10 +20,10 @@ from PHX.model.constructions import (
     PhxConstructionOpaque,
     PhxConstructionWindow,
     PhxLayer,
+    PhxLayerDivisionCell,
+    PhxLayerDivisionGrid,
     PhxMaterial,
     PhxWindowFrameElement,
-    PhxLayerDivisionGrid,
-    PhxLayerDivisionCell,
 )
 from PHX.model.elec_equip import (
     PhxDeviceClothesDryer,
