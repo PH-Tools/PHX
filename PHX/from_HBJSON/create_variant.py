@@ -12,8 +12,7 @@ from honeybee import room
 from honeybee_energy.load.equipment import ElectricEquipment
 from honeybee_energy.load.process import Process
 from honeybee_energy.properties.room import RoomEnergyProperties
-from honeybee_energy_ph.properties.load import equipment, people
-from honeybee_energy_ph.properties.load.process import ProcessPhProperties
+from honeybee_energy_ph.properties.load import equipment, lighting, people, process
 from honeybee_ph import phi, phius, site
 from honeybee_ph.bldg_segment import BldgSegment
 from honeybee_ph.properties.room import RoomPhProperties, get_ph_prop_from_room
@@ -751,10 +750,17 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
     # -- Get all the PhEquipment from the HBE-Process-Loads
     room_hb_energy_process_loads: tuple[Process] = room_prop_hb_energy.process_loads
     for process_load in room_hb_energy_process_loads:
-        process_prop_ph: ProcessPhProperties = getattr(process_load.properties, "ph")
+        process_prop_ph: process.ProcessPhProperties = getattr(process_load.properties, "ph")
         if not process_prop_ph.ph_equipment:
             continue
         phx_elec_device = create_elec_equip.build_phx_elec_device(process_prop_ph.ph_equipment)
+        for zone in _variant.building.zones:
+            zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
+
+    # -- Get the PhEquipment from the HBE-Lighting, if it exists
+    lighting_prop_ph: lighting.LightingPhProperties = getattr(room_prop_hb_energy.lighting.properties, "ph")
+    if lighting_prop_ph.ph_equipment:
+        phx_elec_device = create_elec_equip.build_phx_elec_device(lighting_prop_ph.ph_equipment)
         for zone in _variant.building.zones:
             zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
 
