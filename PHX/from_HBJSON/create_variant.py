@@ -270,6 +270,11 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
 
     # -- Set the airtightness for Building
     ph_bldg.airtightness_q50 = hb_prop_energy.infiltration.flow_per_exterior_area * 3600
+    total_flow_m3_hr = ph_bldg.airtightness_q50 * _variant.get_total_gross_envelope_area()
+    try:
+        ph_bldg.airtightness_n50 = total_flow_m3_hr / _variant.building.net_volume
+    except ZeroDivisionError:
+        ph_bldg.airtightness_n50 = 1.0
 
     # -- Set the air temp setpoints
     ph_bldg.setpoints.winter = hbph_bldg_seg.set_points.winter

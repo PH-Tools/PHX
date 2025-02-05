@@ -254,7 +254,6 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
                 new_assembly.id_num = constructions.PhxConstructionOpaque._count
                 new_assembly.display_name = hb_const.display_name
                 new_assembly.layers = [build_layer_from_hb_material(mat) for mat in materials]
-
                 # -- Add the assembly to the Project
                 _project.add_assembly_type(new_assembly, hb_const.identifier)
 

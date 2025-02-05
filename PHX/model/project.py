@@ -121,6 +121,10 @@ class PhxVariant:
         """Returns the total window area of the variant.building"""
         return self.building.get_total_roof_aperture_area()
 
+    def get_total_gross_envelope_area(self) -> float:
+        """Returns the total gross envelope area of the variant.building"""
+        return self.building.get_total_gross_envelope_area()
+
     def add_mechanical_collection(self, _mech_collection: PhxMechanicalSystemCollection) -> None:
         """Add a new mechanical collection to the variant."""
         self._mech_collections.append(_mech_collection)

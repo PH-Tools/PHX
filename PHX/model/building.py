@@ -434,6 +434,10 @@ class PhxBuilding:
         """Returns the total skylight area of all the opaque components in the building."""
         return sum(c.get_total_aperture_area() for c in self.roof_aperture_components)
 
+    def get_total_gross_envelope_area(self) -> float:
+        """Returns the total gross envelope area of all the opaque components in the building."""
+        return sum(c.get_total_gross_component_area() for c in self.opaque_components)
+
     def scale_all_wall_aperture_components(self, _scale_factor: float = 1.0) -> None:
         """Scale all the wall-aperture component's polygons by a given factor.
 
