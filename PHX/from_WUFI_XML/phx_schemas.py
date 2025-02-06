@@ -445,13 +445,17 @@ def _PhxVariant(_xml_variant_data: wufi_xml.WufiVariant, _phx_project_host: PhxP
     phx_obj.name = _xml_variant_data.Name
     phx_obj.remarks = _xml_variant_data.Remarks
     phx_obj.plugin = as_phx_obj(_xml_variant_data.PlugIn, "WufiPlugin")
-    phx_obj.phius_cert = as_phx_obj(_xml_variant_data.PassivehouseData, "PhxPhiusCertification")
     phx_obj.site = as_phx_obj(_xml_variant_data.ClimateLocation, "PhxSite")
-
     phx_obj.building = as_phx_obj(
         (_xml_variant_data.Building, _xml_variant_data.Graphics_3D),
         "PhxBuilding",
         _phx_project_host=_phx_project_host,
+    )
+    # Pass along the phx-building, so we can calculate the Airtightness n50
+    phx_obj.phius_cert = as_phx_obj(
+        _model=_xml_variant_data.PassivehouseData,
+        _schema_name="PhxPhiusCertification",
+        _phx_building=phx_obj.building,
     )
 
     # -- Build the HVAC Systems, Devices, and Distribution
@@ -1085,13 +1089,13 @@ def _PhxFoundation(_data: wufi_xml.WufiFoundationInterface) -> Optional[PhxFound
 # -- Site & Climate
 
 
-def _PhxPhiusCertification(_data: wufi_xml.WufiPassivehouseData) -> PhxPhiusCertification:
+def _PhxPhiusCertification(_data: wufi_xml.WufiPassivehouseData, _phx_building: PhxBuilding) -> PhxPhiusCertification:
     phx_obj = PhxPhiusCertification()
     phx_obj.use_monthly_shading = _data.UseWUFIMeanMonthShading
 
     # no idea why PH_BuildingData is a list?....
     bldg_data = _data.PH_Buildings[0]
-    phx_obj.ph_building_data = as_phx_obj(bldg_data, "PhxPhBuildingData")
+    phx_obj.ph_building_data = as_phx_obj(bldg_data, "PhxPhBuildingData", _phx_building=_phx_building)
 
     # ----------------------------------------------------------------------
     # --- Certification Criteria
@@ -1115,19 +1119,40 @@ def _PhxPhiusCertification(_data: wufi_xml.WufiPassivehouseData) -> PhxPhiusCert
     return phx_obj
 
 
-def _PhxPhBuildingData(_data: wufi_xml.WufiPH_Building) -> PhxPhBuildingData:
+def _PhxPhBuildingData(_data: wufi_xml.WufiPH_Building, _phx_building: PhxBuilding) -> PhxPhBuildingData:
+
     phx_obj = PhxPhBuildingData()
     phx_obj.id_num = _data.IdentNr
     phx_obj.num_of_units = _data.NumberUnits
     phx_obj.num_of_floors = _data.CountStories
     phx_obj.occupancy_setting_method = _data.OccupancySettingMethod
-    phx_obj.airtightness_q50 = _data.EnvelopeAirtightnessCoefficient
     phx_obj.setpoints.winter = _data.IndoorTemperature
     phx_obj.setpoints.summer = _data.OverheatingTemperatureThreshold
     phx_obj.mech_room_temp = _data.MechanicalRoomTemperature
     phx_obj.non_combustible_materials = _data.NonCombustibleMaterials
     phx_obj.building_exposure_type = WindExposureType(_data.BuildingWindExposure)
     phx_obj.summer_hrv_bypass_mode = hvac_enums.PhxSummerBypassMode(_data.SummerHRVHumidityRecovery)
+
+    # -- Figure out the air-tightness values based on the XML, but if the values
+    # -- are not present, figure them out from the PHX-Building.
+
+    if _data.EnvelopeAirtightnessCoefficient is not None:
+        # -- If there is a q50 in the XML, use that to set both q50 and n50
+        m3h = _data.EnvelopeAirtightnessCoefficient * _phx_building.get_total_gross_envelope_area()
+        n50 = m3h / _phx_building.net_volume
+
+        phx_obj.airtightness_q50 = _data.EnvelopeAirtightnessCoefficient
+        phx_obj.airtightness_n50 = n50
+    elif _data.InfiltrationACH50 is not None:
+        # --  If there is an n50 in the XML, use that to set both q50 and n50
+        m3h = _data.InfiltrationACH50 * _phx_building.net_volume
+        q50 = m3h / _phx_building.get_total_gross_envelope_area()
+
+        phx_obj.airtightness_q50 = q50
+        phx_obj.airtightness_n50 = _data.InfiltrationACH50
+
+    phx_obj.airtightness_q50 = _data.EnvelopeAirtightnessCoefficient or q50
+    phx_obj.airtightness_n50 = _data.InfiltrationACH50 or n50
 
     for foundation_data in _data.FoundationInterfaces or []:
         phx_obj.add_foundation(as_phx_obj(foundation_data, "PhxFoundation"))

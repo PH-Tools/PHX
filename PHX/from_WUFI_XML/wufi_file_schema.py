@@ -788,7 +788,9 @@ class WufiPH_Building(BaseModel):
     OccupancySettingMethod: int
     NumberUnits: Optional[wufi_unit._Int] = None
     CountStories: Optional[int] = None
-    EnvelopeAirtightnessCoefficient: wufi_unit.M3_per_Hour_per_M2
+    InfiltrationACH50: Optional[wufi_unit.ACH] = None
+    NetAirVolumePressTest: Optional[wufi_unit.M3] = None
+    EnvelopeAirtightnessCoefficient: Optional[wufi_unit.M3_per_Hour_per_M2] = None
     SummerHRVHumidityRecovery: float
     FoundationInterfaces: Optional[List[WufiFoundationInterface]] = None
     InternalGainsAdditionalData: Optional[WufiInternalGainsAdditionalData] = None

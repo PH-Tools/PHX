@@ -136,7 +136,6 @@ class PhxZone:
         for tb in merged_tb_components:
             self.add_thermal_bridge(tb)
 
-
 @dataclass
 class PhxBuilding:
     """PHX Building Class"""
