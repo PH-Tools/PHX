@@ -44,6 +44,10 @@ if __name__ == "__main__":
         phpp_conn.xl.unprotect_all_sheets()
         phpp_conn.write_certification_config(phx_project)
         phpp_conn.write_climate_data(phx_project)
+        # Note: have to re-calc after Climate is set to avoid having any 'errors' in
+        # PHPP cells. Errors will cause XLWings to silently skip the cell, resulting in
+        # erroneous counts when locating write rows (ie: Ventilation Components)
+        phpp_conn.calculate()
         phpp_conn.write_project_constructions(phx_project)
         phpp_conn.write_project_tfa(phx_project)
         phpp_conn.write_project_opaque_surfaces(phx_project)

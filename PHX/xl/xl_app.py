@@ -619,3 +619,7 @@ class XLConnection:
             raise AttributeError(e)
         except Exception as e:
             raise WriteValueError(_xl_item.write_value, _xl_item.xl_range, _xl_item.sheet_name, e)
+
+    def calculate(self) -> None:
+        """Recalculate all the formulas in the workbook."""
+        self.wb.app.calculate()

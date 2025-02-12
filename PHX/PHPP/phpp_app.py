@@ -821,3 +821,8 @@ class PHPPConnection:
         )
 
         return None
+
+    def calculate(self) -> None:
+        """Recalculate all the worksheets in the PHPP file."""
+        self.xl.calculate()
+        return None
