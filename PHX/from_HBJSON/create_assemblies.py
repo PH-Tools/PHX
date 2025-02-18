@@ -137,12 +137,12 @@ def build_phx_material_from_hb_EnergyMaterialNoMass(
     return new_mat
 
 
-def build_phx_division_grid_from_hb_division_grid(_hb_div_grid: PhDivisionGrid) -> constructions.PhxLayerDivisionGrid:
+def build_phx_division_grid_from_hb_division_grid(_hb_div_grid: PhDivisionGrid | None) -> constructions.PhxLayerDivisionGrid:
     """Create a new PHX-DivisionGrid with attributes based on a Honeybee-PH-Utils PhDivisionGrid.
 
     Arguments:
     ----------
-        * _hb_div_grid (PhDivisionGrid): The Honeybee-PH-Utils PhDivisionGrid to use as the source.
+        * _hb_div_grid (PhDivisionGrid  | None): The Honeybee-PH-Utils PhDivisionGrid to use as the source.
 
     Returns:
     --------
@@ -150,6 +150,9 @@ def build_phx_division_grid_from_hb_division_grid(_hb_div_grid: PhDivisionGrid) 
     """
 
     new_div_grid = constructions.PhxLayerDivisionGrid()
+    
+    if _hb_div_grid is None:
+        return new_div_grid
 
     if _hb_div_grid.cell_count == 0:
         return new_div_grid

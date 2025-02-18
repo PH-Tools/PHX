@@ -238,6 +238,19 @@ def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     return None
 
 
+def get_infiltration_at_50Pa(_flow_per_exterior_area_at_4Pa: float) -> float:
+    """Calculate the Infiltration at 50Pa from the Flow per Exterior Area."""
+    C_qa = RoomEnergyProperties.solve_norm_area_flow_coefficient(
+        flow_per_exterior_area=_flow_per_exterior_area_at_4Pa,
+        flow_exponent=0.65,
+        air_density=1,  # Note: using 1.0 since HBE Grasshopper component uses 1.0, even though it should be 1.2
+        delta_pressure=4,
+    )
+    m3s_per_m2_at_50Pa = C_qa * (50**0.65)
+    m3h_per_m2_at_50Pa = m3s_per_m2_at_50Pa * 3600
+    return m3h_per_m2_at_50Pa
+
+
 def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Create and add a PhxPhBuildingData with data from a Honeybee-Room to a PHX-Variant.
 
@@ -251,41 +264,48 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
         * None
     """
 
+    # ------------------------------------------------------------------------------------------------------------------
     # -- Type Aliases
     ph_bldg = _variant.phius_cert.ph_building_data  # alias
     hb_prop_energy: RoomEnergyProperties = getattr(_hb_room.properties, "energy")
     hb_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     hbph_bldg_seg: BldgSegment = hb_prop_ph.ph_bldg_segment
 
-    # -- Set the occupancy
+    # ------------------------------------------------------------------------------------------------------------------
+    # -- Occupancy
     if hb_prop_energy.people:
         hb_ppl_prop_ph: people.PeoplePhProperties = getattr(hb_prop_energy.people.properties, "ph")
         ph_bldg.num_of_units = hb_ppl_prop_ph.number_dwelling_units
     ph_bldg.num_of_floors = hbph_bldg_seg.num_floor_levels
 
-    # -- Add Foundations
+    # ------------------------------------------------------------------------------------------------------------------
+    # -- Foundations
     for hbph_foundation in hb_prop_ph.ph_foundations:
         phx_foundation = create_foundations.create_phx_foundation_from_hbph(hbph_foundation)
         ph_bldg.add_foundation(phx_foundation)
 
-    # -- Set the airtightness for Building
-    ph_bldg.airtightness_q50 = hb_prop_energy.infiltration.flow_per_exterior_area * 3600
-    total_flow_m3_hr = ph_bldg.airtightness_q50 * _variant.get_total_gross_envelope_area()
+    # ------------------------------------------------------------------------------------------------------------------
+    # -- Air-Infiltration
+    m3h_per_m2_at_50Pa = get_infiltration_at_50Pa(hb_prop_energy.infiltration.flow_per_exterior_area)
+    ph_bldg.airtightness_q50 = m3h_per_m2_at_50Pa
+    total_flow_m3_hr_at_50Pa = ph_bldg.airtightness_q50 * _variant.get_total_gross_envelope_area()
     try:
-        ph_bldg.airtightness_n50 = total_flow_m3_hr / _variant.building.net_volume
+        ph_bldg.airtightness_n50 = total_flow_m3_hr_at_50Pa / _variant.building.net_volume
     except ZeroDivisionError:
         ph_bldg.airtightness_n50 = 1.0
 
-    # -- Set the air temp setpoints
+    # ------------------------------------------------------------------------------------------------------------------
+    # -- Air Temp Setpoints
     ph_bldg.setpoints.winter = hbph_bldg_seg.set_points.winter
     ph_bldg.setpoints.summer = hbph_bldg_seg.set_points.summer
     ph_bldg.mech_room_temp = hbph_bldg_seg.mech_room_temp
     ph_bldg.non_combustible_materials = hbph_bldg_seg.non_combustible_materials
 
+    # ------------------------------------------------------------------------------------------------------------------
     # -- Summer HRV Bypass mode
-    bm = hbph_bldg_seg.summer_hrv_bypass_mode.number
-    ph_bldg.summer_hrv_bypass_mode = hvac.PhxSummerBypassMode(bm)
+    ph_bldg.summer_hrv_bypass_mode = hvac.PhxSummerBypassMode(hbph_bldg_seg.summer_hrv_bypass_mode.number)
 
+    # ------------------------------------------------------------------------------------------------------------------
     # -- Wind Exposure
     wt = hbph_bldg_seg.wind_exposure_type.number
     ph_bldg.building_exposure_type = certification.WindExposureType(wt)

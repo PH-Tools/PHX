@@ -11,9 +11,9 @@
 		<Date_Project>
 			<Year>2025</Year>
 			<Month>2</Month>
-			<Day>12</Day>
-			<Hour>17</Hour>
-			<Minutes>6</Minutes>
+			<Day>18</Day>
+			<Hour>7</Hour>
+			<Minutes>57</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -509,7 +509,7 @@
 						<OccupancySettingMethod>2</OccupancySettingMethod>
 						<NumberUnits>1</NumberUnits>
 						<CountStories>1</CountStories>
-						<EnvelopeAirtightnessCoefficient>0.81576</EnvelopeAirtightnessCoefficient>
+						<EnvelopeAirtightnessCoefficient>4.212635805588519</EnvelopeAirtightnessCoefficient>
 						<SummerHRVHumidityRecovery>4</SummerHRVHumidityRecovery>
 						<BuildingWindExposure>1</BuildingWindExposure>
 						<FoundationInterfaces count="0"/>
