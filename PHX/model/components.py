@@ -299,6 +299,9 @@ class PhxComponentOpaque(PhxComponentBase):
         """Return the total net area of the Component (gross - apertures)."""
         return self.get_total_gross_component_area() - self.get_total_aperture_area()
 
+    def __str__(self):
+        return f"{self.__class__.__name__}(id_num={self.id_num}, display_name={self.display_name})"
+    
 
 class PhxApertureShadingDimensions(PhxComponentBase):
     """PHPP old-style shading dimensions data.
@@ -430,6 +433,12 @@ class PhxApertureElement(PhxComponentBase):
         if self.polygon != other.polygon:
             return False
 
+        return True
+
+    def polygons_are_equivalent(self, other: PhxApertureElement) -> bool:
+        """Return True if the two elements have equivalent polygons."""
+        if self.polygon != other.polygon:
+            return False
         return True
 
     def scale(self, _scale_factor: float) -> None:
@@ -627,8 +636,11 @@ class PhxComponentAperture(PhxComponentBase):
         """Scale the Component's size by the given factor."""
         for element in self.elements:
             element.scale(_scale_factor)
-
-
+    
+    def __str__(self):
+        return f"{self.__class__.__name__}(id_num={self.id_num}, display_name={self.display_name})"
+    
+    
 class PhxComponentThermalBridge(PhxComponentBase):
     """A single Thermal Bridge Element."""
 
