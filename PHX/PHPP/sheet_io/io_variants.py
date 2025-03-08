@@ -6,11 +6,20 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset
+from PHX.xl.xl_typing import (
+    xl_app_Protocol,
+    xl_apps_Protocol,
+    xl_Book_Protocol,
+    xl_Books_Protocol,
+    xl_Framework_Protocol,
+    xl_Range_Protocol,
+    xl_Sheet_Protocol,
+    xl_Sheets_Protocol,
+)
 
 
 @dataclass
@@ -43,10 +52,35 @@ class Variants:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Variants):
         self.xl = _xl
         self.shape = _shape
-        self.user_input_section_start_row: Optional[int] = None
-        self.start_assembly_layers: Optional[int] = None
-        self.start_window_types: Optional[int] = None
-        self.start_ventilation: Optional[int] = None
+        self.results_section_start_row: int | None = None
+        self.user_input_section_start_row: int | None = None
+        self.start_assembly_layers: int | None = None
+        self.start_window_types: int | None = None
+        self.start_ventilation: int | None = None
+
+    def get_results_section_start(self, _start_row: int = 1, _read_length: int = 50) -> int:
+        """Return the row number of the results section header."""
+        # -- Get the data from Excel in one operation
+        end_row = _start_row + _read_length
+        col_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.results_header.locator_col_header,
+            _row_start=_start_row,
+            _row_end=end_row,
+        )
+
+        for i, column_val in enumerate(col_data, start=_start_row):
+            if column_val == self.shape.results_header.locator_string_header:
+                return i
+
+        if end_row < 10_000:
+            return self.get_results_section_start(_start_row=end_row, _read_length=500)
+
+        raise Exception(
+            f'Error: Unable to locate the "{self.shape.results_header.locator_string_header}" '
+            f'section of the "{self.shape.name}" worksheet in '
+            f"{self.shape.results_header.locator_col_header}{_start_row}:{self.shape.results_header.locator_col_header}{end_row}?"
+        )
 
     def get_user_input_section_start(self, _start_row: int = 1, _read_length: int = 500) -> int:
         """Return the row number of the user-input section header."""
@@ -72,7 +106,7 @@ class Variants:
             f"{self.shape.input_header.locator_col_header}{_start_row}:{self.shape.input_header.locator_col_header}{end_row}?"
         )
 
-    def get_assembly_layers_start(self, _row_start: Optional[int] = None, _rows: int = 100) -> int:
+    def get_assembly_layers_start(self, _row_start: int | None = None, _rows: int = 100) -> int:
         """Return the row number of the start of the Building Assembly Layers variant section."""
         if not self.user_input_section_start_row:
             self.user_input_section_start_row = self.get_user_input_section_start()
@@ -96,7 +130,7 @@ class Variants:
             f'"{self.shape.assemblies.locator_col_header}"?'
         )
 
-    def get_window_types_start(self, _row_start: Optional[int] = None, _rows: int = 300) -> int:
+    def get_window_types_start(self, _row_start: int | None = None, _rows: int = 300) -> int:
         """Return the row number of the start of the Window Types input section."""
         if not self.start_assembly_layers:
             self.start_assembly_layers = self.get_assembly_layers_start()
@@ -120,7 +154,7 @@ class Variants:
             f'"{self.shape.windows.locator_col_header}"?'
         )
 
-    def get_ventilation_start(self, _row_start: Optional[int] = None, _rows: int = 300) -> int:
+    def get_ventilation_start(self, _row_start: int | None = None, _rows: int = 300) -> int:
         """Return the row number of the start of the Ventilation input section."""
         if not self.start_window_types:
             self.start_window_types = self.get_window_types_start()
@@ -144,7 +178,7 @@ class Variants:
             f'"{self.shape.ventilation.locator_col_header}"?'
         )
 
-    def get_ventilation_input_item_rows(self) -> Dict[str, int]:
+    def get_ventilation_input_item_rows(self) -> dict[str, int]:
         """Return a dict of the input items and their row-numbers for the ventilation items."""
         if not self.start_ventilation:
             self.start_ventilation = self.get_ventilation_start()
@@ -193,7 +227,7 @@ class Variants:
 
         return None
 
-    def get_assembly_layer_phpp_ids(self) -> List[VariantAssemblyLayerName]:
+    def get_assembly_layer_phpp_ids(self) -> list[VariantAssemblyLayerName]:
         """Return a list of the Variants PHPP-ids for all assembly layers."""
         if not self.start_assembly_layers:
             self.start_assembly_layers = self.get_assembly_layers_start()
@@ -211,7 +245,7 @@ class Variants:
             VariantAssemblyLayerName(str(data_list[0]), str(data_list[1])) for data_list in col_data if all(data_list)
         ]
 
-    def get_window_type_phpp_ids(self) -> Dict[str, VariantWindowTypeName]:
+    def get_window_type_phpp_ids(self) -> dict[str, VariantWindowTypeName]:
         if not self.start_window_types:
             self.start_window_types = self.get_window_types_start()
 
@@ -232,3 +266,23 @@ class Variants:
             for data_list in col_data
             if all(data_list)
         }
+
+    def get_variant_results_data(self, _num_variants=5) -> list[list]:
+        """Return the data from the Variants worksheet.
+
+        Data is returned 'by column' from the results section of the worksheet.
+        """
+        if not self.results_section_start_row:
+            self.results_section_start_row = self.get_results_section_start()
+
+        if not self.user_input_section_start_row:
+            self.user_input_section_start_row = self.get_user_input_section_start()
+
+        start_column = col_offset(self.shape.results_header.locator_col_header, 1)
+        end_column = col_offset(self.shape.assemblies.input_col, _num_variants + 3)
+        rng = f"{start_column}{self.results_section_start_row-1}:{end_column}{self.user_input_section_start_row-1}"
+        data = self.xl.get_data_by_columns(
+            _sheet_name=self.shape.name,
+            _range_address=rng,
+        )
+        return data

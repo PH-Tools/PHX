@@ -301,7 +301,7 @@ class PhxComponentOpaque(PhxComponentBase):
 
     def __str__(self):
         return f"{self.__class__.__name__}(id_num={self.id_num}, display_name={self.display_name})"
-    
+
 
 class PhxApertureShadingDimensions(PhxComponentBase):
     """PHPP old-style shading dimensions data.
@@ -636,11 +636,11 @@ class PhxComponentAperture(PhxComponentBase):
         """Scale the Component's size by the given factor."""
         for element in self.elements:
             element.scale(_scale_factor)
-    
+
     def __str__(self):
         return f"{self.__class__.__name__}(id_num={self.id_num}, display_name={self.display_name})"
-    
-    
+
+
 class PhxComponentThermalBridge(PhxComponentBase):
     """A single Thermal Bridge Element."""
 

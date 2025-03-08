@@ -86,9 +86,15 @@ class VariantInputHeader(BaseModel):
     locator_string_header: str
 
 
+class VariantResultsHeader(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+
+
 class Variants(BaseModel):
     name: str
     active_value_column: str
+    results_header: VariantResultsHeader
     input_header: VariantInputHeader
     assemblies: VariantAssemblies
     radiation_balance: None
@@ -178,12 +184,20 @@ class ClimateUDBlock(BaseModel):
     input_rows: ClimateUDBlockRows
 
 
+class ClimateActiveBlock(BaseModel):
+    start_row: int
+    end_row: int
+    start_col: str
+    end_col: str
+
+
 class Climate(BaseModel):
     name: str
     active_dataset: ClimateActiveDataset
+    active_block: ClimateActiveBlock
     ud_block: ClimateUDBlock
-    named_ranges: Optional[ClimateNamedRanges] = None
-    defined_ranges: Optional[ClimateDefinedRanges] = None
+    named_ranges: ClimateNamedRanges
+    defined_ranges: ClimateDefinedRanges
 
 
 # -----------------------------------------------------------------------------
@@ -578,6 +592,7 @@ class AddnlVentRoomsInputBlockRooms(BaseModel):
     locator_col_header: str
     locator_string_header: str
     locator_col_entry: str
+    last_col: str
     locator_string_entry: str
     inputs: AddnlVentInputsRooms
 

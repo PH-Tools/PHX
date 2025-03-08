@@ -5,8 +5,6 @@
 
 from __future__ import annotations
 
-from typing import List
-
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model import climate_entry
 from PHX.xl import xl_app
@@ -18,9 +16,9 @@ class Climate:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Climate):
         self.xl = _xl
         self.shape = _shape
-        self.weather_data_start_rows: List[int] = []
+        self.weather_data_start_rows: list[int] = []
 
-    def get_start_rows(self) -> List[int]:
+    def get_start_rows(self) -> list[int]:
         # TODO: make this find the right starting rows.
         return [self.shape.ud_block.start_row]
 
@@ -56,7 +54,20 @@ class Climate:
         return str(self.xl.get_single_data_item(self.shape.name, self.shape.defined_ranges.site_altitude))
 
     def read_latitude(self) -> float:
-        return float(self.xl.get_single_data_item(self.shape.name, self.shape.defined_ranges.latitude))
+        return float(self.xl.get_single_data_item(self.shape.name, self.shape.defined_ranges.latitude) or 0.0)
 
     def read_longitude(self) -> float:
-        return float(self.xl.get_single_data_item(self.shape.name, self.shape.defined_ranges.longitude))
+        return float(self.xl.get_single_data_item(self.shape.name, self.shape.defined_ranges.longitude) or 0.0)
+
+    def read_active_monthly_data(self) -> list[list]:
+        """Return the Monthly Climate data for the currently active set from the 'Climate' worksheet.
+
+        Data is returned 'by column' from the results section of the worksheet.
+        """
+
+        rng = f"{self.shape.active_block.start_col}{self.shape.active_block.start_row}:{self.shape.active_block.end_col}{self.shape.active_block.end_row}"
+        data = self.xl.get_data_by_columns(
+            _sheet_name=self.shape.name,
+            _range_address=rng,
+        )
+        return data

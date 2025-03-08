@@ -6,22 +6,24 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Collection, List, Optional, Sequence, Tuple
+from typing import Collection, Sequence
 
 from ph_units.unit_type import Unit
 
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.PHPP.phpp_model import vent_ducts, vent_space, vent_units
+from PHX.PHPP.phpp_model import vent_space, vent_units
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset, xl_writable
 
 
 class Spaces:
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent) -> None:
         self.xl = _xl
         self.shape = _shape
-        self.section_header_row: Optional[int] = None
-        self.section_first_entry_row: Optional[int] = None
+        self.section_header_row: int | None = None
+        self.section_first_entry_row: int | None = None
+        self.section_last_entry_row: int | None = None
 
     def find_section_header_row(self, _row_start: int = 1, _row_end: int = 100) -> int:
         """Return the row number of the 'Rooms' section header."""
@@ -59,7 +61,7 @@ class Spaces:
 
         for i, val in enumerate(xl_data, start=self.section_header_row):
             try:
-                val = str(int(val))  # Value comes in as  "1.0" from Excel?
+                val = str(int(val))  # Value comes in as  "1.0" from Excel? # type: ignore
             except:
                 continue
 
@@ -74,6 +76,36 @@ class Spaces:
     def find_section_shape(self) -> None:
         self.section_start_row = self.find_section_header_row()
         self.section_first_entry_row = self.find_section_first_entry_row()
+        self.section_last_entry_row = self.find_section_last_entry_row()
+
+    def find_section_last_entry_row(self, _start_row: int | None = None, _read_length: int = 50):
+        if not self.section_first_entry_row:
+            self.section_first_entry_row = self.find_section_first_entry_row()
+
+        # -- Get the data from Excel in one operation
+        if not _start_row:
+            _start_row = self.section_first_entry_row
+        end_row = _start_row + _read_length
+        col_data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=self.shape.rooms.locator_col_header,
+            _row_start=_start_row,
+            _row_end=end_row,
+        )
+
+        # -- Look for the first 'empty' (None) cell in the column
+        for i, column_val in enumerate(col_data, start=_start_row):
+            if column_val == None:
+                return i
+
+        if end_row < 10_000:
+            return self.find_section_last_entry_row(_start_row=end_row, _read_length=500)
+
+        raise Exception(
+            f'Error: Unable to locate the end of the "Rooms"'
+            f'section of the "{self.shape.name}" worksheet in '
+            f"{self.shape.rooms.locator_col_header}{_start_row}:{self.shape.rooms.locator_col_header}{end_row}?"
+        )
 
 
 @dataclass
@@ -119,9 +151,9 @@ class VentUnits:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent):
         self.xl = _xl
         self.shape = _shape
-        self._section_header_row: Optional[int] = None
-        self._section_first_entry_row: Optional[int] = None
-        self._section_last_entry_row: Optional[int] = None
+        self._section_header_row: int | None = None
+        self._section_first_entry_row: int | None = None
+        self._section_last_entry_row: int | None = None
 
     @property
     def section_header_row(self) -> int:
@@ -182,7 +214,7 @@ class VentUnits:
 
         for i, val in enumerate(xl_data, start=self.section_header_row):
             try:
-                val = str(int(val))  # Value comes in as  "1.0" from Excel?
+                val = str(int(val))  # Value comes in as  "1.0" from Excel? # type: ignore
             except:
                 continue
 
@@ -253,7 +285,7 @@ class VentUnits:
             " worksheet before writing the spaces and ducts."
         )
 
-    def get_ventilation_units(self) -> Tuple[VentilatorDeviceUsage]:
+    def get_ventilation_units(self) -> tuple[VentilatorDeviceUsage, ...]:
         """Return a tuple of VentilatorDeviceUsage objects from the PHPP worksheet."""
         input_shape = self.shape.units.inputs
         range_start = f"{input_shape.quantity.column}{self.section_first_entry_row}"
@@ -276,9 +308,9 @@ class VentDucts:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent) -> None:
         self.xl = _xl
         self.shape = _shape
-        self.section_header_row: Optional[int] = None
-        self.section_first_entry_row: Optional[int] = None
-        self.section_last_entry_row: Optional[int] = None
+        self.section_header_row: int | None = None
+        self.section_first_entry_row: int | None = None
+        self.section_last_entry_row: int | None = None
 
     def find_section_header_row(self, _row_start: int = 100, _row_end: int = 300) -> int:
         """Return the row number of the 'Rooms' section header."""
@@ -349,7 +381,7 @@ class AddnlVent:
         self.vent_units = VentUnits(self.xl, self.shape)
         self.vent_ducts = VentDucts(self.xl, self.shape)
 
-    def write_spaces(self, _spaces: List[vent_space.VentSpaceRow]) -> None:
+    def write_spaces(self, _spaces: list[vent_space.VentSpaceRow]) -> None:
         if not self.spaces.section_first_entry_row:
             self.spaces.section_first_entry_row = self.spaces.find_section_first_entry_row()
 
@@ -357,12 +389,12 @@ class AddnlVent:
             for item in space.create_xl_items(self.shape.name, _row_num=i):
                 self.xl.write_xl_item(item)
 
-    def write_vent_units(self, _vent_units: List[vent_units.VentUnitRow]) -> None:
+    def write_vent_units(self, _vent_units: list[vent_units.VentUnitRow]) -> None:
         for i, vent_unit in enumerate(_vent_units, start=self.vent_units.section_first_entry_row):
             for item in vent_unit.create_xl_items(self.shape.name, _row_num=i):
                 self.xl.write_xl_item(item)
 
-    def write_vent_ducts(self, _vent_ducts: List) -> None:
+    def write_vent_ducts(self, _vent_ducts: list) -> None:
         if not self.vent_ducts.section_first_entry_row:
             self.vent_ducts.section_first_entry_row = self.vent_ducts.find_section_first_entry_row()
 
@@ -387,6 +419,26 @@ class AddnlVent:
 
         return None
 
-    def get_ventilation_units(self) -> Tuple[VentilatorDeviceUsage]:
+    def get_ventilation_units(self) -> tuple[VentilatorDeviceUsage, ...]:
         """Return a list of Ventilation Units found in the Worksheet."""
         return self.vent_units.get_ventilation_units()
+
+    def read_space_data(self) -> list[list]:
+        """Return all of the Space data from the worksheet.
+
+        Data is returned 'by column' from the results section of the worksheet.
+        """
+
+        if not self.spaces.section_first_entry_row:
+            self.spaces.section_first_entry_row = self.spaces.find_section_first_entry_row()
+
+        if not self.spaces.section_last_entry_row:
+            self.spaces.section_last_entry_row = self.spaces.find_section_last_entry_row()
+
+        rng_start = f"{self.shape.rooms.locator_col_entry}{self.spaces.section_first_entry_row-3}"
+        rng_end = f"{self.shape.rooms.last_col}{self.spaces.section_last_entry_row}"
+        data = self.xl.get_data_by_columns(
+            _sheet_name=self.shape.name,
+            _range_address=f"{rng_start}:{rng_end}",
+        )
+        return data

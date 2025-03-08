@@ -135,6 +135,10 @@
     "VARIANTS": {
         "name": "Variants",
         "active_value_column": "E",
+        "results_header": {
+            "locator_col_header": "B",
+            "locator_string_header": "Results"
+        },
         "input_header": {
             "locator_col_header": "B",
             "locator_string_header": "Input variables"
@@ -179,6 +183,12 @@
                 "dataset": "D",
                 "elevation_override": "D"
             }
+        },
+        "active_block": {
+            "start_row": 26,
+            "end_row": 36,
+            "start_col": "D",
+            "end_col": "U"
         },
         "ud_block": {
             "start_row": 67,
@@ -866,6 +876,7 @@
             "locator_col_header": "C",
             "locator_string_header": "Room",
             "locator_col_entry": "C",
+            "last_col": "Z",
             "locator_string_entry": "1",
             "inputs": {
                 "quantity": {
