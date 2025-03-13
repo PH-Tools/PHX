@@ -19,6 +19,7 @@ try:
     from honeybee_energy.load import equipment, infiltration, people, process
     from honeybee_energy.load.infiltration import Infiltration
     from honeybee_energy.properties.room import RoomEnergyProperties
+    from honeybee_energy.properties.face import FaceEnergyProperties
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy:\n\t{}".format(e))
 
@@ -116,8 +117,15 @@ def _get_thermal_envelope_faces(_hb_room: room.Room, _all_room_ids: List[str]) -
             adjacent_room_name = face_bc.boundary_condition_objects[-1]
             if adjacent_room_name in _all_room_ids:
                 continue
-
-        exposed_faces.append(_dup_face(original_face))
+        
+        # -- Copy the Face, but be sure to set the construction explicitly
+        # -- We have to do this to make sure we don't lose any face-constructions
+        # -- which are being applied by 'Construction Sets'.
+        dup_face = _dup_face(original_face)
+        original_face_prop_e: FaceEnergyProperties = getattr(original_face.properties, "energy")
+        dup_face_prop_e: FaceEnergyProperties = getattr(dup_face.properties, "energy")
+        dup_face_prop_e.construction = original_face_prop_e.construction
+        exposed_faces.append(dup_face)
 
     return exposed_faces
 
