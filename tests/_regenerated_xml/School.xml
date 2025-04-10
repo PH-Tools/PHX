@@ -6138,7 +6138,7 @@ Instant DHW
 									<ElectricEfficiency>0.5886</ElectricEfficiency>
 									<DefrostRequired>true</DefrostRequired>
 									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-2.2222</TemperatureBelowDefrostUsed>
+									<TemperatureBelowDefrostUsed>-2</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>true</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>

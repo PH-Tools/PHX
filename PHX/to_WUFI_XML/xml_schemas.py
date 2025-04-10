@@ -988,7 +988,7 @@ def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> List[xml_wr
         XML_Node("ElectricEfficiency", _p.electric_efficiency),
         XML_Node("DefrostRequired", _p.frost_protection_reqd),
         XML_Node("FrostProtection", _p.frost_protection_reqd),
-        XML_Node("TemperatureBelowDefrostUsed", _p.temperature_below_defrost_used),
+        XML_Node("TemperatureBelowDefrostUsed", int(_p.temperature_below_defrost_used)),
         XML_Node("InConditionedSpace", _p.in_conditioned_space),
         XML_Node("NoSummerBypass", False),
         # XML_Node("SubsoilHeatExchangeEfficiency", _p.),

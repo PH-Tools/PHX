@@ -226,7 +226,7 @@ def merge_hb_shades(_faces: List[Shade], _tolerance: float, _angle_tolerance_deg
         # -- If only 1 parent, lets make some Face3Ds and Faces
         parent_face_3d = [_create_new_Face3D(p, ref_plane, ref_face) for p in parent_polygon]
         child_face_3ds = [_create_new_Face3D(p, ref_plane, ref_face) for p in child_polygons]
-        face_3ds = Face3D.from_punched_geometry(parent_face_3d[0], child_face_3ds)
-        hb_shades_ = [_create_new_HB_Shade(f3d, ref_face) for f3d in face_3ds]
+        face_3d = Face3D.from_punched_geometry(parent_face_3d[0], child_face_3ds)
+        hb_shades_ = [_create_new_HB_Shade(face_3d, ref_face)]
 
     return hb_shades_

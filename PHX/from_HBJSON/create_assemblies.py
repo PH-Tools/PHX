@@ -150,7 +150,6 @@ def build_phx_division_grid_from_hb_division_grid(
     --------
         * (constructions.PhxLayerDivisionGrid): The new PHX-DivisionGrid object.
     """
-
     new_div_grid = constructions.PhxLayerDivisionGrid()
 
     if _hb_div_grid is None:
@@ -194,9 +193,6 @@ def build_layer_from_hb_material(
     --------
         * (PhxLayer): The new PHX-Layer object.
     """
-    logger.debug(
-        f"build_layer_from_hb_material(_hb_material={_hb_material.identifier}, _no_mass_thickness_m={_no_mass_thickness_m})"
-    )
     new_layer = constructions.PhxLayer()
 
     # -- Build the division grid first, so we can check for the 'base' material

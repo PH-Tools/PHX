@@ -53,7 +53,7 @@ def test_default_PhxRoomVentilation(reset_class_counters):
         "<ElectricEfficiency>0.55</ElectricEfficiency>",
         "<DefrostRequired>true</DefrostRequired>",
         "<FrostProtection>true</FrostProtection>",
-        "<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>",
+        "<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>",
         "<InConditionedSpace>true</InConditionedSpace>",
         "<NoSummerBypass>false</NoSummerBypass>",
         "</PH_Parameters>",

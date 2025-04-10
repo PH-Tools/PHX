@@ -50450,7 +50450,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<ElectricEfficiency>1.1182977800999998</ElectricEfficiency>
 									<DefrostRequired>true</DefrostRequired>
 									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-3.333333333333333</TemperatureBelowDefrostUsed>
+									<TemperatureBelowDefrostUsed>-3</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
@@ -50476,7 +50476,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<ElectricEfficiency>1.1182977800999998</ElectricEfficiency>
 									<DefrostRequired>true</DefrostRequired>
 									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-3.333333333333333</TemperatureBelowDefrostUsed>
+									<TemperatureBelowDefrostUsed>-3</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
@@ -50614,7 +50614,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<ElectricEfficiency>0.44731911203999997</ElectricEfficiency>
 									<DefrostRequired>true</DefrostRequired>
 									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-3.333333333333333</TemperatureBelowDefrostUsed>
+									<TemperatureBelowDefrostUsed>-3</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>

@@ -18,8 +18,8 @@ except ImportError as e:
 try:
     from honeybee_energy.load import equipment, infiltration, people, process
     from honeybee_energy.load.infiltration import Infiltration
-    from honeybee_energy.properties.room import RoomEnergyProperties
     from honeybee_energy.properties.face import FaceEnergyProperties
+    from honeybee_energy.properties.room import RoomEnergyProperties
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy:\n\t{}".format(e))
 
@@ -117,7 +117,7 @@ def _get_thermal_envelope_faces(_hb_room: room.Room, _all_room_ids: List[str]) -
             adjacent_room_name = face_bc.boundary_condition_objects[-1]
             if adjacent_room_name in _all_room_ids:
                 continue
-        
+
         # -- Copy the Face, but be sure to set the construction explicitly
         # -- We have to do this to make sure we don't lose any face-constructions
         # -- which are being applied by 'Construction Sets'.
@@ -356,9 +356,10 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[process.Process]:
     ph_equipment: dict[str, process.Process] = {}
     for room in _hb_rooms:
         room_prop_energy: RoomEnergyProperties = getattr(room.properties, "energy")
+        process_loads: tuple[process.Process] = room_prop_energy.process_loads
 
         # -- Get the Equipment from the HB-Process Load (new method > Jan 2025)
-        for process_load in room_prop_energy.process_loads:
+        for process_load in process_loads:
             process_prop_ph: ProcessPhProperties = getattr(process_load.properties, "ph")
             if equip := getattr(process_prop_ph, "ph_equipment", None):  # type: PhEquipment | None
                 if equip.identifier in ph_equipment:

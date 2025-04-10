@@ -30155,7 +30155,7 @@
 									<ElectricEfficiency>0.8240088905999999</ElectricEfficiency>
 									<DefrostRequired>true</DefrostRequired>
 									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>
+									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
@@ -30181,7 +30181,7 @@
 									<ElectricEfficiency>0.8122373350199998</ElectricEfficiency>
 									<DefrostRequired>true</DefrostRequired>
 									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>
+									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
@@ -61093,7 +61093,7 @@
 									<ElectricEfficiency>0.8240088905999999</ElectricEfficiency>
 									<DefrostRequired>true</DefrostRequired>
 									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>
+									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
@@ -61119,7 +61119,7 @@
 									<ElectricEfficiency>0.8122373350199998</ElectricEfficiency>
 									<DefrostRequired>true</DefrostRequired>
 									<FrostProtection>true</FrostProtection>
-									<TemperatureBelowDefrostUsed>-5.0</TemperatureBelowDefrostUsed>
+									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
