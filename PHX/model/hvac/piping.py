@@ -314,6 +314,7 @@ class PhxPipeTrunk:
     identifier: str = field(default_factory=lambda: str(uuid4()))
     display_name: str = "_unnamed_pipe_trunk_"
     multiplier: int = 1
+    demand_recirculation: bool = False
     pipe_element: PhxPipeElement = field(default_factory=PhxPipeElement)
     branches: List[PhxPipeBranch] = field(default_factory=list)
 

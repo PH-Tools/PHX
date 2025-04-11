@@ -1378,7 +1378,7 @@ def _DistributionDHWTrunc(_t: hvac.PhxPipeTrunk) -> List[xml_writable]:
         XML_Node("PipeMaterial", _t.pipe_element.material.value),
         XML_Node("PipingDiameter", diameter_type.value),
         XML_Node("CountUnitsOrFloors", _t.multiplier),
-        XML_Node("DemandRecirculation", _t.pipe_element.demand_recirculation),
+        XML_Node("DemandRecirculation", _t.demand_recirculation),
         XML_List(
             "Branches",
             [
