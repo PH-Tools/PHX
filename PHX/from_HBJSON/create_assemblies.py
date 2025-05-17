@@ -122,7 +122,7 @@ def build_phx_material_from_hb_EnergyMaterialNoMass(
     new_mat.density = _hb_material.mass_area_density
     new_mat.heat_capacity = _hb_material.area_heat_capacity
 
-    _prop_ph = _hb_material.properties.ph  # type: EnergyMaterialPhProperties # type: ignore
+    _prop_ph: EnergyMaterialPhProperties = getattr(_hb_material.properties, "ph")
     try:
         hbph_color = _prop_ph.ph_color
     except AttributeError:
@@ -161,6 +161,7 @@ def build_phx_division_grid_from_hb_division_grid(
     # -- Setup the grid
     new_div_grid.set_column_widths(_hb_div_grid.column_widths)
     new_div_grid.set_row_heights(_hb_div_grid.row_heights)
+    new_div_grid.is_a_steel_stud_cavity = _hb_div_grid.is_a_steel_stud_cavity
 
     # -- Collect all the Materials first, otherwise they get duplicated for each cell
     materials: dict[str, constructions.PhxMaterial] = {}
@@ -199,7 +200,10 @@ def build_layer_from_hb_material(
     hbph_props: EnergyMaterialPhProperties = getattr(_hb_material.properties, "ph")
     div_grid = build_phx_division_grid_from_hb_division_grid(hbph_props.divisions)
     if mat := div_grid.get_base_material():
-        source_material = mat
+        if div_grid.is_a_steel_stud_cavity:
+            source_material = _hb_material
+        else:
+            source_material = mat
     else:
         source_material = _hb_material
 

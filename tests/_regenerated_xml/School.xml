@@ -6336,9 +6336,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6359,7 +6359,7 @@ Instant DHW
 							<Alpha>255</Alpha>
 							<Red>255</Red>
 							<Green>255</Green>
-							<Blue>255</Blue>
+							<Blue>0</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6378,9 +6378,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6410,7 +6410,7 @@ Instant DHW
 							<Alpha>255</Alpha>
 							<Red>255</Red>
 							<Green>255</Green>
-							<Blue>255</Blue>
+							<Blue>0</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6429,9 +6429,9 @@ Instant DHW
 						<ReferenceWaterContent>101.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>131</Red>
+							<Green>131</Green>
+							<Blue>131</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6459,9 +6459,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6482,7 +6482,7 @@ Instant DHW
 							<Alpha>255</Alpha>
 							<Red>255</Red>
 							<Green>255</Green>
-							<Blue>255</Blue>
+							<Blue>0</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6501,9 +6501,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6532,7 +6532,7 @@ Instant DHW
 						<Color>
 							<Alpha>255</Alpha>
 							<Red>255</Red>
-							<Green>255</Green>
+							<Green>153</Green>
 							<Blue>255</Blue>
 						</Color>
 					</Material>
@@ -6563,7 +6563,7 @@ Instant DHW
 							<Alpha>255</Alpha>
 							<Red>255</Red>
 							<Green>255</Green>
-							<Blue>255</Blue>
+							<Blue>0</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6582,9 +6582,9 @@ Instant DHW
 						<ReferenceWaterContent>101.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>131</Red>
+							<Green>131</Green>
+							<Blue>131</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6612,9 +6612,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6634,7 +6634,7 @@ Instant DHW
 						<Color>
 							<Alpha>255</Alpha>
 							<Red>255</Red>
-							<Green>255</Green>
+							<Green>153</Green>
 							<Blue>255</Blue>
 						</Color>
 					</Material>
@@ -6654,9 +6654,9 @@ Instant DHW
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>192</Red>
+							<Green>192</Green>
+							<Blue>192</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="2">
@@ -6710,9 +6710,9 @@ Instant DHW
 						<ReferenceWaterContent>35.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>185</Red>
+							<Green>200</Green>
+							<Blue>194</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6754,9 +6754,9 @@ Instant DHW
 						<ReferenceWaterContent>35.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>185</Red>
+							<Green>200</Green>
+							<Blue>194</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6775,9 +6775,9 @@ Instant DHW
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>192</Red>
+							<Green>192</Green>
+							<Blue>192</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6805,9 +6805,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6826,9 +6826,9 @@ Instant DHW
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>192</Red>
+							<Green>192</Green>
+							<Blue>192</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="2">
@@ -6882,9 +6882,9 @@ Instant DHW
 						<ReferenceWaterContent>35.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>185</Red>
+							<Green>200</Green>
+							<Blue>194</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6926,9 +6926,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -6947,9 +6947,9 @@ Instant DHW
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>192</Red>
+							<Green>192</Green>
+							<Blue>192</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="2">
@@ -7003,9 +7003,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -7048,7 +7048,7 @@ Instant DHW
 						<Color>
 							<Alpha>255</Alpha>
 							<Red>255</Red>
-							<Green>255</Green>
+							<Green>153</Green>
 							<Blue>255</Blue>
 						</Color>
 					</Material>
@@ -7077,9 +7077,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>
@@ -7099,7 +7099,7 @@ Instant DHW
 						<Color>
 							<Alpha>255</Alpha>
 							<Red>255</Red>
-							<Green>255</Green>
+							<Green>153</Green>
 							<Blue>255</Blue>
 						</Color>
 					</Material>
@@ -7119,9 +7119,9 @@ Instant DHW
 						<ReferenceWaterContent>0.0</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>192</Red>
+							<Green>192</Green>
+							<Blue>192</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="2">
@@ -7175,9 +7175,9 @@ Instant DHW
 						<ReferenceWaterContent>83.3</ReferenceWaterContent>
 						<Color>
 							<Alpha>255</Alpha>
-							<Red>255</Red>
-							<Green>255</Green>
-							<Blue>255</Blue>
+							<Red>175</Red>
+							<Green>175</Green>
+							<Blue>97</Blue>
 						</Color>
 					</Material>
 					<ExchangeDivisionHorizontal count="0"/>

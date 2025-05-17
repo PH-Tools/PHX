@@ -104,6 +104,7 @@ class PhxLayerDivisionGrid:
     _row_heights: List[float] = field(default_factory=list)
     _column_widths: List[float] = field(default_factory=list)
     _cells: List[PhxLayerDivisionCell] = field(default_factory=list)
+    is_a_steel_stud_cavity: bool = False
 
     @property
     def column_widths(self) -> List[float]:
@@ -386,6 +387,19 @@ class PhxLayer:
 
     def equivalent(self, other: PhxLayer) -> bool:
         """Check if two layers are equivalent."""
+
+        # -- If it is a 'steel-stud' material, we can't check against the other.
+        # -- When reading back in from WUFI, this information will be lost.
+        if self.divisions:
+            if self.divisions.is_a_steel_stud_cavity:
+                return all(
+                    [
+                        self.thickness_m == other.thickness_m,
+                        self.material.equivalent(other.material),
+                        # No .division check
+                    ]
+                )
+        # -- Otherwise, check the thickness, material and divisions
         return all(
             [
                 self.thickness_m == other.thickness_m,

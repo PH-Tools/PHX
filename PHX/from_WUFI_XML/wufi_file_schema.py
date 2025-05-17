@@ -872,6 +872,15 @@ class WufiVariant(BaseModel):
 # -- Constructions
 
 
+class WufiColor(BaseModel):
+    Alpha: int
+    Red: int
+    Green: int
+    Blue: int
+
+    _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
+
+
 class WufiMaterial(BaseModel):
     Name: str
     ThermalConductivity: wufi_unit.Watts_per_MK
@@ -880,6 +889,7 @@ class WufiMaterial(BaseModel):
     HeatCapacity: wufi_unit.Joule_per_KGK
     WaterVaporResistance: wufi_unit.WUFI_Vapor_Resistance_Factor
     ReferenceWaterContent: wufi_unit.KG_per_M3
+    Color: Optional[WufiColor] = None
 
     _unpack_xml_tag_name = validator("*", allow_reuse=True, pre=True)(unpack_xml_tag)
 

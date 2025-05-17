@@ -17,10 +17,10 @@ from PHX.model.building import PhxBuilding, PhxZone
 from PHX.model.certification import PhxPhBuildingData, PhxPhiusCertification
 from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
 from PHX.model.constructions import (
+    PhxColor,
     PhxConstructionOpaque,
     PhxConstructionWindow,
     PhxLayer,
-    PhxLayerDivisionCell,
     PhxLayerDivisionGrid,
     PhxMaterial,
     PhxWindowFrameElement,
@@ -353,6 +353,15 @@ def _PhxLayer(_data: wufi_xml.WufiLayer, _exchange_materials: dict[int, PhxMater
     return phx_obj
 
 
+def _PhColor(_data: wufi_xml.WufiColor) -> PhxColor:
+    phx_obj = PhxColor()
+    phx_obj.red = max(0, min(255, _data.Red))
+    phx_obj.green = max(0, min(255, _data.Green))
+    phx_obj.blue = max(0, min(255, _data.Blue))
+    phx_obj.alpha = max(0, min(255, _data.Alpha))
+    return phx_obj
+
+
 def _PhxMaterial(_data: wufi_xml.WufiMaterial) -> PhxMaterial:
     phx_obj = PhxMaterial()
     phx_obj.display_name = _data.Name
@@ -362,6 +371,9 @@ def _PhxMaterial(_data: wufi_xml.WufiMaterial) -> PhxMaterial:
     phx_obj.heat_capacity = _data.HeatCapacity
     phx_obj.water_vapor_resistance = _data.WaterVaporResistance
     phx_obj.reference_water = _data.ReferenceWaterContent
+    if _data.Color:
+        phx_obj.argb_color = as_phx_obj(_data.Color, "PhColor")
+
     return phx_obj
 
 
