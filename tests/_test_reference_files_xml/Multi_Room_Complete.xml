@@ -10,10 +10,10 @@
 		<OwnerIsClient>false</OwnerIsClient>
 		<Date_Project>
 			<Year>2025</Year>
-			<Month>6</Month>
-			<Day>30</Day>
-			<Hour>21</Hour>
-			<Minutes>44</Minutes>
+			<Month>7</Month>
+			<Day>24</Day>
+			<Hour>9</Hour>
+			<Minutes>11</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -595,7 +595,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>20</IdentNr>
-						<Name>Room_8_30c6b71a..Face5_Glz0</Name>
+						<Name>Room_4_c59a80fa..Face5_Glz0</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -687,7 +687,7 @@
 					</Component>
 					<Component index="6">
 						<IdentNr>44</IdentNr>
-						<Name>PhWindowConstruction_294723a4</Name>
+						<Name>PhWindowConstruction_bbf91f60</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -711,7 +711,7 @@
 					</Component>
 					<Component index="7">
 						<IdentNr>45</IdentNr>
-						<Name>Shade_85c8bd72</Name>
+						<Name>Shade_73b593ee</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -727,7 +727,7 @@
 					</Component>
 					<Component index="8">
 						<IdentNr>46</IdentNr>
-						<Name>Shade_5f865ff5</Name>
+						<Name>Shade_b3119c5a</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -751,7 +751,7 @@
 						<IdentNr>1</IdentNr>
 						<RoomsVentilation count="2">
 							<Room index="0">
-								<Name>101-Room_11</Name>
+								<Name>101-Room_3</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
 								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
@@ -762,7 +762,7 @@
 								<DesignVolumeFlowRateExhaust unit="m³/h">0.01</DesignVolumeFlowRateExhaust>
 							</Room>
 							<Room index="1">
-								<Name>102-Room_8</Name>
+								<Name>102-Room_4</Name>
 								<Type>99</Type>
 								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
 								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
@@ -775,14 +775,14 @@
 						</RoomsVentilation>
 						<LoadsPersonsPH count="2">
 							<LoadPerson index="0">
-								<Name>101-Room_11</Name>
+								<Name>101-Room_3</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>0.0</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">10.89</FloorAreaUtilizationZone>
 							</LoadPerson>
 							<LoadPerson index="1">
-								<Name>102-Room_8</Name>
+								<Name>102-Room_4</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>0.0</NumberOccupants>
@@ -791,7 +791,7 @@
 						</LoadsPersonsPH>
 						<LoadsLightingsPH count="2">
 							<LoadsLighting index="0">
-								<Name>101-Room_11</Name>
+								<Name>101-Room_3</Name>
 								<RoomCategory>1</RoomCategory>
 								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
 								<LightingControl>1</LightingControl>
@@ -809,7 +809,7 @@
 								<LightingFullLoadHours>8760</LightingFullLoadHours>
 							</LoadsLighting>
 							<LoadsLighting index="1">
-								<Name>102-Room_8</Name>
+								<Name>102-Room_4</Name>
 								<RoomCategory>1</RoomCategory>
 								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
 								<LightingControl>1</LightingControl>
@@ -967,49 +967,49 @@
 						</ExhaustVents>
 						<ThermalBridges count="7">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__3cf85129</Name>
+								<Name>_unnamed_bldg_segment__036db718</Name>
 								<Type>-15</Type>
 								<Length>19.8</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__7ddad778</Name>
+								<Name>_unnamed_bldg_segment__4b44e174</Name>
 								<Type>-15</Type>
-								<Length>14.000714267493642</Length>
+								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__84366605</Name>
+								<Name>_unnamed_bldg_segment__51596fdf</Name>
 								<Type>-15</Type>
 								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__91b19ef8</Name>
+								<Name>_unnamed_bldg_segment__58191bdf</Name>
 								<Type>-15</Type>
-								<Length>22.0</Length>
+								<Length>14.000714267493642</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__99c46079</Name>
+								<Name>_unnamed_bldg_segment__aabbb899</Name>
 								<Type>-15</Type>
 								<Length>19.799999999999997</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__cc315c3c</Name>
+								<Name>_unnamed_bldg_segment__bcadae20</Name>
 								<Type>-15</Type>
 								<Length>14.758048651498616</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__e9811030</Name>
+								<Name>_unnamed_bldg_segment__ca02ce7d</Name>
 								<Type>-15</Type>
 								<Length>19.8</Length>
 								<PsiValue>0.01</PsiValue>
@@ -1279,7 +1279,7 @@
 						</ZonesCoverage>
 						<Devices count="6">
 							<Device index="0">
-								<Name>127bdcbc-04d7-432d-80ff-5f3a5cecd17a</Name>
+								<Name>6824602c-ec3e-46e2-aa4d-26b31cb92daa</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
@@ -1316,7 +1316,7 @@
 							</Device>
 							<Device index="1">
 								<Name>Example_Heat_Pump</Name>
-								<IdentNr>1</IdentNr>
+								<IdentNr>2</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>true</UsedFor_Heating>
@@ -1353,7 +1353,7 @@
 							</Device>
 							<Device index="2">
 								<Name>None</Name>
-								<IdentNr>2</IdentNr>
+								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>true</UsedFor_Heating>
@@ -1514,7 +1514,7 @@
 								<CoolingViaRecirculation>true</CoolingViaRecirculation>
 								<RecirculatingAirOnOff>false</RecirculatingAirOnOff>
 								<MaxRecirculationAirCoolingPower>10.0</MaxRecirculationAirCoolingPower>
-								<MinTempCoolingCoilRecirculatingAir>12.0</MinTempCoolingCoilRecirculatingAir>
+								<MinTempCoolingCoilRecirculatingAir>11.5</MinTempCoolingCoilRecirculatingAir>
 								<RecirculationCoolingCOP>3.5</RecirculationCoolingCOP>
 								<RecirculationAirVolume>100.02</RecirculationAirVolume>
 								<ControlledRecirculationVolumeFlow>true</ControlledRecirculationVolumeFlow>
@@ -2068,7 +2068,7 @@
 	<WindowTypes count="1">
 		<WindowType index="0">
 			<IdentNr>1</IdentNr>
-			<Name>PhWindowConstruction_294723a4</Name>
+			<Name>PhWindowConstruction_bbf91f60</Name>
 			<Uw_Detailed>true</Uw_Detailed>
 			<GlazingFrameDetailed>true</GlazingFrameDetailed>
 			<FrameFactor>0.7242364315535045</FrameFactor>

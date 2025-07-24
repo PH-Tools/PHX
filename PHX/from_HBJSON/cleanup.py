@@ -20,6 +20,7 @@ try:
     from honeybee_energy.load.infiltration import Infiltration
     from honeybee_energy.properties.face import FaceEnergyProperties
     from honeybee_energy.properties.room import RoomEnergyProperties
+    from honeybee_energy.schedule.ruleset import ScheduleRuleset
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy:\n\t{}".format(e))
 
@@ -49,6 +50,37 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee_ph_utils:\n\t{}".format(e))
 
 logger = logging.getLogger()
+
+
+def _get_hb_room_energy_properties(_hb_room: room.Room) -> RoomEnergyProperties | None:
+    """Get the Honeybee-Room's Energy Properties.
+
+    Arguments:
+    ----------
+        *_hb_room: (room.Room) The Honeybee Room to get the Energy Properties from.
+
+    Returns:
+    --------
+        * (RoomEnergyProperties): The Honeybee-Room's Energy Properties.
+    """
+    return getattr(_hb_room.properties, "energy", None)
+
+
+def _get_hb_room_energy_electric_equipment(_hb_room: room.Room) -> equipment.ElectricEquipment | None:
+    """Get the Honeybee-Room's Energy Electric Equipment Properties.
+
+    Arguments:
+    ----------
+        *_hb_room: (room.Room) The Honeybee Room to get the Energy Electric Equipment Properties from.
+
+    Returns:
+    --------
+        * (equipment.ElectricEquipment): The Honeybee-Room's Energy Electric Equipment Properties.
+    """
+    energy_properties = _get_hb_room_energy_properties(_hb_room)
+    if energy_properties is None:
+        return None
+    return energy_properties.electric_equipment
 
 
 def _dup_face(_hb_face: face.Face) -> face.Face:
@@ -301,6 +333,23 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
             with values merged from the HB-Rooms.
     """
 
+    # -- Filter out any HB-Rooms which do not have an Energy Properties object
+    _hb_rooms = [rm for rm in _hb_rooms if _get_hb_room_energy_properties(rm) is not None]
+
+    # -- Filter out any HB-Rooms which do not have ElectricEquipment
+    _hb_rooms = [rm for rm in _hb_rooms if _get_hb_room_energy_electric_equipment(rm) is not None]
+    if not _hb_rooms:
+        msg = "Warning: No Honeybee-Rooms with Electric Equipment found."
+        print(msg)
+        return equipment.ElectricEquipment(
+            identifier="default_electric_equipment",
+            watts_per_area=0.0,
+            schedule=ScheduleRuleset.from_constant_value(
+                identifier="default_electric_equipment_schedule",
+                value=0.0,
+            ),
+        )
+
     # -- Collect all the unique PH-Equipment in all the rooms.
     # -- Increase the quantity for each duplicate piece of equipment found.
     ph_equipment = {}
@@ -318,10 +367,10 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
                 ph_equipment[equip_key] = equip
 
     # -- Calculate the total Watts of all of the HBE-Elec-Equipment in the rooms
-    total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
+    total_floor_area = sum(rm.floor_area for rm in _hb_rooms) or 0.0
     total_watts = sum(
         (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area) for rm in _hb_rooms  # type: ignore
-    )
+    ) or 0.0
 
     # -- Build a new HBE-Elec-Equip from the reference room, add all the PH-Equipment to it.
     reference_room = _hb_rooms[0]
