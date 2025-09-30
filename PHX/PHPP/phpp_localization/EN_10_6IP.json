@@ -1,0 +1,1564 @@
+{
+    "VERIFICATION": {
+        "name": "Verification",
+        "phi_building_category_type": {
+            "locator_col": "R",
+            "locator_string": "Building use",
+            "input_column": "T",
+            "input_row_offset": 1,
+            "options": {
+                "1": "10-Residential building: Residential",
+                "2": "12-Residential building: Other",
+                "11": "10-Residential building: Residential",
+                "12": "12-Residential building: Other"
+            }
+        },
+        "phi_building_use_type": {
+            "locator_col": "R",
+            "locator_string": "Building use",
+            "input_column": "T",
+            "input_row_offset": 1,
+            "options": {
+                "10": "10-Residential building: Residential",
+                "12": "12-Residential building: Other",
+                "20": "20-Non-res building: Office/Administration",
+                "21": "21-Non-res building: School half-days (< 7 h)",
+                "22": "22-Non-res building: School full-time (≥ 7 h)",
+                "23": "23-Non-res.: Other"
+            }
+        },
+        "phi_building_ihg_type": {
+            "locator_col": "R",
+            "locator_string": "Building use",
+            "input_column": "T",
+            "input_row_offset": 4,
+            "options": {
+                "2": "2-Standard",
+                "3": "3-PHPP-calculation ('IHG' worksheet)",
+                "4": "4-PHPP-calculation ('IHG non-res' worksheet)"
+            }
+        },
+        "phi_building_occupancy_type": {
+            "locator_col": "R",
+            "locator_string": "No. of occupants",
+            "input_column": "R",
+            "input_row_offset": 2,
+            "options": {
+                "1": null,
+                "2": null
+            }
+        },
+        "phi_certification_type": {
+            "locator_col": "T",
+            "locator_string": "Planned energy standard",
+            "input_column": "T",
+            "input_row_offset": 1,
+            "options": {
+                "10": "10-Passive house",
+                "21": "21-EnerPHit (Component method)",
+                "22": "22-EnerPHit (Energy demand method)",
+                "30": "30-PHI Low Energy Building",
+                "40": "40-Other"
+            }
+        },
+        "phi_certification_class": {
+            "locator_col": "T",
+            "locator_string": "Class | Primary energy method",
+            "input_column": "T",
+            "input_row_offset": 1,
+            "options": {
+                "10": "10-Classic | PER (renewable)",
+                "11": "11-Classic | PE (non-renewable)",
+                "20": "20-Plus | PER (renewable)",
+                "30": "30-Premium | PER (renewable)"
+            }
+        },
+        "phi_pe_type": {
+            "locator_col": "T",
+            "locator_string": "Primary energy demand criterion",
+            "input_column": "T",
+            "input_row_offset": 1,
+            "options": {
+                "1": "1-Standard",
+                "2": "2-Project-specific"
+            }
+        },
+        "phi_enerphit_type": {
+            "locator_col": "T",
+            "locator_string": "New building / Retrofit",
+            "input_column": "T",
+            "input_row_offset": 1,
+            "options": {
+                "1": "1-New building",
+                "2": "2-Retrofit",
+                "3": "3-Staged retrofit"
+            }
+        },
+        "phi_retrofit_type": {
+            "locator_col": "T",
+            "locator_string": "New building / Retrofit",
+            "input_column": "T",
+            "input_row_offset": 1,
+            "options": {
+                "1": "1-New building",
+                "2": "2-Retrofit",
+                "3": "3-Staged retrofit"
+            }
+        },
+        "num_of_units": {
+            "locator_col": "E",
+            "locator_string": "No. of dwelling units:",
+            "input_column": "F",
+            "input_row_offset": 0
+        },
+        "setpoint_winter": {
+            "locator_col": "J",
+            "locator_string": "Interior temperature winter [°F]:",
+            "input_column": "K",
+            "input_row_offset": 0,
+            "unit": "F"
+        },
+        "setpoint_summer": {
+            "locator_col": "M",
+            "locator_string": "Interior temp. summer [°F]:",
+            "input_column": "N",
+            "input_row_offset": 0,
+            "unit": "F"
+        },
+        "mechanical_cooling": {
+            "locator_col": "M",
+            "locator_string": "Mechanical cooling:",
+            "input_column": "N",
+            "input_row_offset": 0
+        }
+    },
+    "VARIANTS": {
+        "name": "Variants",
+        "active_value_column": "E",
+        "results_header": {
+            "locator_col_header": "B",
+            "locator_string_header": "Results"
+        },
+        "input_header": {
+            "locator_col_header": "B",
+            "locator_string_header": "Input variables"
+        },
+        "assemblies": {
+            "locator_col_header": "C",
+            "locator_string_header": "Building assembly layers",
+            "input_col": "C"
+        },
+        "radiation_balance": null,
+        "thermal_bridges": null,
+        "windows": {
+            "locator_col_header": "C",
+            "locator_string_header": "Windows and shading",
+            "input_col": "C"
+        },
+        "ventilation": {
+            "locator_col_header": "C",
+            "locator_string_header": "Ventilation",
+            "input_col": "C",
+            "input_item_names": {
+                "vent_type": "Ventilation type",
+                "air_change_rate": "Air change rate at pressurisation test (n50)",
+                "design_flow_rate": "Design air flow rate (maximum)",
+                "install_location": "Installation site ventilation unit",
+                "ventilator_unit": "Ventilation unit selection"
+            }
+        },
+        "summer_ventilation": null,
+        "heating": null,
+        "cooling": null,
+        "user_defined": null
+    },
+    "CLIMATE": {
+        "name": "Climate",
+        "active_dataset": {
+            "locator_col_header": "",
+            "locator_string_header": "",
+            "input_columns": {
+                "country": "D",
+                "region": "D",
+                "dataset": "D",
+                "elevation_override": "D"
+            }
+        },
+        "active_block": {
+            "start_row": 26,
+            "end_row": 36,
+            "start_col": "D",
+            "end_col": "U"
+        },
+        "ud_block": {
+            "start_row": 67,
+            "locator_col_header": "Name of location",
+            "locator_string_header": "",
+            "input_columns": {
+                "jan": "E",
+                "feb": "F",
+                "mar": "G",
+                "apr": "H",
+                "may": "I",
+                "jun": "J",
+                "jul": "K",
+                "aug": "L",
+                "sep": "M",
+                "oct": "N",
+                "nov": "O",
+                "dec": "P",
+                "peak_heating_1": "Q",
+                "peak_heating_2": "R",
+                "peak_cooling_1": "S",
+                "peak_cooling_2": "T",
+                "PER": "U",
+                "latitude": "F",
+                "longitude": "H",
+                "elevation": "J",
+                "elevation_unit": "FT",
+                "display_name": "L",
+                "summer_delta_t": "N",
+                "summer_delta_t_unit": "DELTA-F",
+                "source": "P"
+            },
+            "input_rows": {
+                "temperature_air": {
+                    "row": 1,
+                    "unit": "F"
+                },
+                "radiation_north": {
+                    "row": 2,
+                    "unit": "KBTU/FT2"
+                },
+                "radiation_east": {
+                    "row": 3,
+                    "unit": "KBTU/FT2"
+                },
+                "radiation_south": {
+                    "row": 4,
+                    "unit": "KBTU/FT2"
+                },
+                "radiation_west": {
+                    "row": 5,
+                    "unit": "KBTU/FT2"
+                },
+                "radiation_global": {
+                    "row": 6,
+                    "unit": "KBTU/FT2"
+                },
+                "temperature_dewpoint": {
+                    "row": 7,
+                    "unit": "F"
+                },
+                "temperature_sky": {
+                    "row": 8,
+                    "unit": "F"
+                }
+            }
+        },
+        "named_ranges": {
+            "country": "IP_Klima_Region",
+            "region": "IP_Klima_Region2",
+            "data_set": "IP_Klima_Standort"
+        },
+        "defined_ranges": {
+            "climate_zone": "D13",
+            "weather_station_altitude": "D17",
+            "site_altitude": "D18",
+            "latitude": "F25",
+            "longitude": "H25"
+        }
+    },
+    "UVALUES": {
+        "name": "R-Values",
+        "constructor": {
+            "locator_col_header": "L",
+            "locator_string_header": "Description of building assembly",
+            "inputs": {
+                "display_name": {
+                    "column": "L",
+                    "unit": null
+                },
+                "r_si": {
+                    "column": "M",
+                    "unit": "HR-FT2-F/BTU"
+                },
+                "r_se": {
+                    "column": "M",
+                    "unit": "HR-FT2-F/BTU"
+                },
+                "interior_insulation": {
+                    "column": "R",
+                    "unit": null
+                },
+                "sec_1_description": {
+                    "column": "L",
+                    "unit": null
+                },
+                "sec_1_conductivity": {
+                    "column": "M",
+                    "unit": "HR-FT2-F/BTU-IN"
+                },
+                "sec_2_description": {
+                    "column": "N",
+                    "unit": null
+                },
+                "sec_2_conductivity": {
+                    "column": "O",
+                    "unit": "HR-FT2-F/BTU-IN"
+                },
+                "sec_3_description": {
+                    "column": "P",
+                    "unit": null
+                },
+                "sec_3_conductivity": {
+                    "column": "Q",
+                    "unit": "HR-FT2-F/BTU-IN"
+                },
+                "thickness": {
+                    "column": "R",
+                    "unit": "IN"
+                },
+                "u_val_supplement": {
+                    "column": "R",
+                    "unit": "BTU/HR-FT2-F"
+                },
+                "variants_layer_name": "E",
+                "variants_conductivity": "F",
+                "variants_thickness": "G",
+                "sec_2_percentage": {
+                    "column": "O",
+                    "row": 15
+                },
+                "sec_3_percentage": {
+                    "column": "Q",
+                    "row": 15
+                },
+                "phpp_id_num_col_offset": 5,
+                "name_row_offset": 2,
+                "rsi_row_offset": 4,
+                "rse_row_offset": 5,
+                "first_layer_row_offset": 7,
+                "last_layer_row_offset": 14,
+                "result_val_col": "R",
+                "result_val_row_offset": 19,
+                "result_val_unit": "HR-FT2-F/BTU"
+            }
+        }
+    },
+    "AREAS": {
+        "name": "Areas",
+        "summary_rows": {
+            "temp_zones": "K",
+            "area_type": "M",
+            "group_number": "N",
+            "area": "L",
+            "average_u_value": "P"
+        },
+        "surface_rows": {
+            "locator_col_header": "K",
+            "locator_string_header": "Area input",
+            "locator_col_entry": "K",
+            "locator_string_entry": "1",
+            "inputs": {
+                "description": {
+                    "column": "L",
+                    "unit": null
+                },
+                "group_number": {
+                    "column": "M",
+                    "unit": null
+                },
+                "quantity": {
+                    "column": "N",
+                    "unit": null
+                },
+                "area": {
+                    "column": "T",
+                    "unit": "FT2"
+                },
+                "assembly_id": {
+                    "column": "AA",
+                    "unit": null
+                },
+                "orientation": {
+                    "column": "AE",
+                    "unit": null
+                },
+                "angle": {
+                    "column": "AF",
+                    "unit": null
+                },
+                "shading": {
+                    "column": "AH",
+                    "unit": null
+                },
+                "absorptivity": {
+                    "column": "AI",
+                    "unit": null
+                },
+                "emissivity": {
+                    "column": "AJ",
+                    "unit": null
+                }
+            }
+        },
+        "tfa_input": {
+            "locator_col": "M",
+            "locator_string": "1-Treated floor area",
+            "input_column": "T",
+            "input_row_offset": 0,
+            "unit": "FT2"
+        },
+        "thermal_bridge_rows": {
+            "locator_col_header": "K",
+            "locator_string_header": "Thermal bridge input",
+            "locator_col_entry": "K",
+            "locator_string_entry": "1",
+            "inputs": {
+                "description": {
+                    "column": "L",
+                    "unit": null
+                },
+                "group_number": {
+                    "column": "M",
+                    "unit": null
+                },
+                "quantity": {
+                    "column": "N",
+                    "unit": null
+                },
+                "length": {
+                    "column": "P",
+                    "unit": "FT"
+                },
+                "psi_value": {
+                    "column": "V",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "fRsi_value": {
+                    "column": "X",
+                    "unit": null
+                }
+            }
+        },
+        "defined_ranges": {
+            "treated_floor_area": {
+                "column": "L",
+                "row": 8,
+                "unit": "FT2"
+            },
+            "window_area_north": {
+                "column": "L",
+                "row": 9,
+                "unit": "FT2"
+            },
+            "window_area_east": {
+                "column": "L",
+                "row": 10,
+                "unit": "FT2"
+            },
+            "window_area_south": {
+                "column": "L",
+                "row": 11,
+                "unit": "FT2"
+            },
+            "window_area_west": {
+                "column": "L",
+                "row": 12,
+                "unit": "FT2"
+            },
+            "window_area_horizontal": {
+                "column": "L",
+                "row": 13,
+                "unit": "FT2"
+            },
+            "door_area": {
+                "column": "L",
+                "row": 14,
+                "unit": "FT2"
+            },
+            "exposed_wall_area": {
+                "column": "L",
+                "row": 15,
+                "unit": "FT2"
+            },
+            "ground_wall_area": {
+                "column": "L",
+                "row": 16,
+                "unit": "FT2"
+            },
+            "roof_ceiling_area": {
+                "column": "L",
+                "row": 17,
+                "unit": "FT2"
+            },
+            "floor_area": {
+                "column": "L",
+                "row": 18,
+                "unit": "FT2"
+            }
+        }
+    },
+    "GROUND": {
+        "name": "Ground",
+        "columns": {}
+    },
+    "COMPONENTS": {
+        "name": "Components",
+        "glazings": {
+            "entry_column": "IH",
+            "entry_start_row": 13,
+            "header_start_row": 8,
+            "inputs": {
+                "id": {
+                    "column": "IH",
+                    "unit": null
+                },
+                "description": {
+                    "column": "II",
+                    "unit": null
+                },
+                "g_value": {
+                    "column": "IJ",
+                    "unit": null
+                },
+                "u_value": {
+                    "column": "IK",
+                    "unit": "BTU/HR-FT2-F"
+                }
+            }
+        },
+        "frames": {
+            "locator_col_header": "IO",
+            "locator_string_header": "Window and door frames",
+            "locator_col_entry": "IO",
+            "locator_string_entry": "01ud",
+            "inputs": {
+                "id": {
+                    "column": "IO",
+                    "unit": null
+                },
+                "description": {
+                    "column": "IP",
+                    "unit": null
+                },
+                "u_value_left": {
+                    "column": "IU",
+                    "unit": "BTU/HR-FT2-F"
+                },
+                "u_value_right": {
+                    "column": "IW",
+                    "unit": "BTU/HR-FT2-F"
+                },
+                "u_value_bottom": {
+                    "column": "JA",
+                    "unit": "BTU/HR-FT2-F"
+                },
+                "u_value_top": {
+                    "column": "IY",
+                    "unit": "BTU/HR-FT2-F"
+                },
+                "width_left": {
+                    "column": "IT",
+                    "unit": "IN"
+                },
+                "width_right": {
+                    "column": "IV",
+                    "unit": "IN"
+                },
+                "width_bottom": {
+                    "column": "IZ",
+                    "unit": "IN"
+                },
+                "width_top": {
+                    "column": "IX",
+                    "unit": "IN"
+                },
+                "psi_g_left": {
+                    "column": "IR",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_g_right": {
+                    "column": "IR",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_g_bottom": {
+                    "column": "IR",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_g_top": {
+                    "column": "IR",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_i_left": {
+                    "column": "JZ",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_i_right": {
+                    "column": "JZ",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_i_bottom": {
+                    "column": "KA",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_i_top": {
+                    "column": "KB",
+                    "unit": "BTU/HR-FT-F"
+                }
+            }
+        },
+        "ventilators": {
+            "locator_col_header": "LQ",
+            "locator_string_header": "Ventilation units",
+            "locator_col_entry": "LQ",
+            "locator_string_entry": "01ud",
+            "inputs": {
+                "id": {
+                    "column": "LQ",
+                    "unit": null
+                },
+                "display_name": {
+                    "column": "LR",
+                    "unit": null
+                },
+                "sensible_heat_recovery": {
+                    "column": "LS",
+                    "unit": null
+                },
+                "latent_heat_recovery": {
+                    "column": "LT",
+                    "unit": null
+                },
+                "electric_efficiency": {
+                    "column": "LW",
+                    "unit": "W/CFM"
+                },
+                "min_m3h": {
+                    "column": "LX",
+                    "unit": "CFM"
+                },
+                "max_m3h": {
+                    "column": "LY",
+                    "unit": "CFM"
+                },
+                "pa_per_section": {
+                    "column": "LZ",
+                    "unit": "PA"
+                },
+                "pa_per_fittings": {
+                    "column": "MA",
+                    "unit": "PA"
+                },
+                "frost_protection_reqd": {
+                    "column": "MB",
+                    "unit": null
+                },
+                "noise_35DBA": {
+                    "column": "MC",
+                    "unit": null
+                },
+                "noise_supply_air": {
+                    "column": "MD",
+                    "unit": null
+                },
+                "noise_extract_air": {
+                    "column": "ME",
+                    "unit": null
+                },
+                "additional_info": {
+                    "column": "MF",
+                    "unit": null
+                }
+            }
+        }
+    },
+    "WINDOWS": {
+        "name": "Windows",
+        "window_rows": {
+            "locator_col_header": "L",
+            "locator_string_header": "Windows and entrance doors",
+            "locator_col_entry": "L",
+            "locator_string_entry": "Quan-",
+            "inputs": {
+                "quantity": {
+                    "column": "L",
+                    "unit": null
+                },
+                "description": {
+                    "column": "N",
+                    "unit": null
+                },
+                "orientation_angle": {
+                    "column": "O",
+                    "unit": null
+                },
+                "vertical_angle": {
+                    "column": "P",
+                    "unit": null
+                },
+                "orientation_label": {
+                    "column": "Q",
+                    "unit": null
+                },
+                "width": {
+                    "column": "R",
+                    "unit": "FT"
+                },
+                "height": {
+                    "column": "S",
+                    "unit": "FT"
+                },
+                "host": {
+                    "column": "T",
+                    "unit": null
+                },
+                "glazing_id": {
+                    "column": "U",
+                    "unit": null
+                },
+                "frame_id": {
+                    "column": "V",
+                    "unit": null
+                },
+                "psi_i_left": {
+                    "column": "AN",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_i_right": {
+                    "column": "AO",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_i_bottom": {
+                    "column": "AP",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "psi_i_top": {
+                    "column": "AQ",
+                    "unit": "BTU/HR-FT-F"
+                },
+                "window_area": {
+                    "column": "AW",
+                    "unit": "FT2"
+                },
+                "glazing_area": {
+                    "column": "AX",
+                    "unit": "FT2"
+                },
+                "glazing_fraction": {
+                    "column": "AY",
+                    "unit": null
+                },
+                "u_w": {
+                    "column": "AZ",
+                    "unit": "BTU/HR-FT2-F"
+                },
+                "u_w_installed": {
+                    "column": "BA",
+                    "unit": "BTU/HR-FT2-F"
+                },
+                "comfort_exempt": {
+                    "column": "EQ",
+                    "unit": null
+                },
+                "comfort_temp": {
+                    "column": "EQ",
+                    "unit": "F"
+                },
+                "variant_input": {
+                    "column": "F"
+                }
+            }
+        },
+        "window_rows_end": {
+            "locator_col_header": "L",
+            "locator_string_header": "Windows and entrance doors",
+            "locator_col_entry": "L",
+            "locator_string_entry": "Unhide additional rows"
+        }
+    },
+    "SHADING": {
+        "name": "Shading",
+        "shading_rows": {
+            "locator_col_header": "T",
+            "locator_string_header": "Calculation of reduction factors for shading",
+            "locator_col_entry": "T",
+            "locator_string_entry": "Quan-",
+            "inputs": {
+                "h_hori": {
+                    "column": "AB",
+                    "unit": "FT"
+                },
+                "d_hori": {
+                    "column": "AC",
+                    "unit": "FT"
+                },
+                "o_reveal": {
+                    "column": "AD",
+                    "unit": "IN"
+                },
+                "d_reveal": {
+                    "column": "AE",
+                    "unit": "IN"
+                },
+                "o_over": {
+                    "column": "AF",
+                    "unit": "IN"
+                },
+                "d_over": {
+                    "column": "AG",
+                    "unit": "IN"
+                },
+                "r_other_winter": {
+                    "column": "AH",
+                    "unit": null
+                },
+                "r_other_summer": {
+                    "column": "AI",
+                    "unit": null
+                },
+                "temp_z": {
+                    "column": "AJ",
+                    "unit": null
+                },
+                "regulated": {
+                    "column": "AK",
+                    "unit": null
+                }
+            }
+        },
+        "shading_rows_end": {
+            "locator_col_header": "T",
+            "locator_string_header": "Shading",
+            "locator_col_entry": "T",
+            "locator_string_entry": "Unhide additional rows"
+        }
+    },
+    "VENTILATION": {
+        "name": "Ventilation",
+        "vent_type": {
+            "locator_col": "I",
+            "locator_string": "Type of ventilation",
+            "input_column": "K"
+        },
+        "wind_coeff_e": {
+            "locator_col": "I",
+            "locator_string": "Wind protection coefficient, e",
+            "input_column": "J"
+        },
+        "wind_coeff_f": {
+            "locator_col": "I",
+            "locator_string": "Wind protection coefficient, f",
+            "input_column": "J"
+        },
+        "airtightness_n50": {
+            "locator_col": "I",
+            "locator_string": "Air change rate from pressurisation test",
+            "input_column": "M"
+        },
+        "airtightness_Vn50": {
+            "locator_col": "I",
+            "locator_string": "Net air volume for pressurisation test",
+            "input_column": "M",
+            "unit": "FT3"
+        },
+        "multi_unit_on": {
+            "locator_col": "I",
+            "locator_string": "'Addl vent' worksheet",
+            "input_column": "K"
+        },
+        "variants_col": "D"
+    },
+    "ADDNL_VENT": {
+        "name": "Addl vent",
+        "rooms": {
+            "locator_col_header": "C",
+            "locator_string_header": "Room",
+            "locator_col_entry": "C",
+            "last_col": "Z",
+            "locator_string_entry": "1",
+            "inputs": {
+                "quantity": {
+                    "column": "D",
+                    "unit": null
+                },
+                "display_name": {
+                    "column": "E",
+                    "unit": null
+                },
+                "vent_unit_assigned": {
+                    "column": "F",
+                    "unit": null
+                },
+                "weighted_floor_area": {
+                    "column": "G",
+                    "unit": "FT2"
+                },
+                "clear_height": {
+                    "column": "H",
+                    "unit": "FT"
+                },
+                "V_sup": {
+                    "column": "J",
+                    "unit": "CFM"
+                },
+                "V_eta": {
+                    "column": "K",
+                    "unit": "CFM"
+                },
+                "V_trans": {
+                    "column": "L",
+                    "unit": "CFM"
+                },
+                "operating_hours": {
+                    "column": "N",
+                    "unit": null
+                },
+                "operating_days": {
+                    "column": "O",
+                    "unit": null
+                },
+                "holiday_days": {
+                    "column": "P",
+                    "unit": null
+                },
+                "period_high_speed": {
+                    "column": "Q",
+                    "unit": null
+                },
+                "period_high_time": {
+                    "column": "R",
+                    "unit": null
+                },
+                "period_standard_speed": {
+                    "column": "S",
+                    "unit": null
+                },
+                "period_standard_time": {
+                    "column": "T",
+                    "unit": null
+                },
+                "period_minimum_speed": {
+                    "column": "U",
+                    "unit": null
+                },
+                "period_minimum_time": {
+                    "column": "V",
+                    "unit": null
+                }
+            }
+        },
+        "units": {
+            "locator_col_header": "C",
+            "locator_string_header": "Venti-",
+            "locator_col_entry": "C",
+            "locator_string_entry": "1",
+            "inputs": {
+                "quantity": {
+                    "column": "D",
+                    "unit": null
+                },
+                "display_name": {
+                    "column": "E",
+                    "unit": null
+                },
+                "unit_selected": {
+                    "column": "F",
+                    "unit": null
+                },
+                "oda_sup_pa": {
+                    "column": "K",
+                    "unit": "PA"
+                },
+                "eta_eha_pa": {
+                    "column": "L",
+                    "unit": "PA"
+                },
+                "addnl_pa": {
+                    "column": "M",
+                    "unit": "PA"
+                },
+                "ext_location": {
+                    "column": "Q",
+                    "unit": null
+                },
+                "subsoil_hr": {
+                    "column": "X",
+                    "unit": null
+                },
+                "frost_protection_type": {
+                    "column": "Z",
+                    "unit": null
+                },
+                "temperature_below_defrost_used": {
+                    "column": "AA",
+                    "unit": "F"
+                }
+            }
+        },
+        "ducts": {
+            "locator_col_header": "E",
+            "locator_string_header": "Round",
+            "locator_col_entry": "D",
+            "locator_string_entry": "1",
+            "locator_string_end": "Additional lines",
+            "inputs": {
+                "quantity": {
+                    "column": "D",
+                    "unit": null
+                },
+                "diameter": {
+                    "column": "F",
+                    "unit": "IN"
+                },
+                "width": {
+                    "column": "F",
+                    "unit": "IN"
+                },
+                "height": {
+                    "column": "G",
+                    "unit": "IN"
+                },
+                "insul_thickness": {
+                    "column": "H",
+                    "unit": "IN"
+                },
+                "insul_conductivity": {
+                    "column": "I",
+                    "unit": "HR-FT2-F/BUT-IN"
+                },
+                "insul_reflective": {
+                    "column": "J",
+                    "unit": null
+                },
+                "sup_air_duct_len": {
+                    "column": "L",
+                    "unit": "FT"
+                },
+                "oda_air_duct_len": {
+                    "column": "M",
+                    "unit": "FT"
+                },
+                "exh_air_duct_len": {
+                    "column": "N",
+                    "unit": "FT"
+                },
+                "duct_assign_1": {
+                    "column": "Q",
+                    "unit": null
+                },
+                "duct_assign_2": {
+                    "column": "R",
+                    "unit": null
+                },
+                "duct_assign_3": {
+                    "column": "S",
+                    "unit": null
+                },
+                "duct_assign_4": {
+                    "column": "T",
+                    "unit": null
+                },
+                "duct_assign_5": {
+                    "column": "U",
+                    "unit": null
+                },
+                "duct_assign_6": {
+                    "column": "V",
+                    "unit": null
+                },
+                "duct_assign_7": {
+                    "column": "W",
+                    "unit": null
+                },
+                "duct_assign_8": {
+                    "column": "X",
+                    "unit": null
+                },
+                "duct_assign_9": {
+                    "column": "Z",
+                    "unit": null
+                },
+                "duct_assign_10": {
+                    "column": "Z",
+                    "unit": null
+                }
+            }
+        }
+    },
+    "HEATING_DEMAND": {
+        "name": "Heating",
+        "unit": "KBTU",
+        "col_kWh_year": "O",
+        "col_kWh_m2_year": "Q",
+        "row_total_losses_transmission": 27,
+        "row_total_losses_ventilation": 43,
+        "row_total_losses": 45,
+        "row_total_gains_solar": 61,
+        "row_total_gains_internal": 65,
+        "row_utilization_factor": 72,
+        "row_useful_gains": 74,
+        "row_annual_demand": 78
+    },
+    "HEATING_PEAK_LOAD": {
+        "name": "Heating load",
+        "unit": "BTU/HR",
+        "col_weather_1": "P",
+        "col_weather_2": "R",
+        "row_total_losses_transmission": 44,
+        "row_total_losses_ventilation": 57,
+        "row_total_losses": 60,
+        "row_total_gains_solar": 73,
+        "row_total_gains_internal": 77,
+        "row_total_gains": 80,
+        "row_total_load": 88
+    },
+    "COOLING_DEMAND": {
+        "name": "Cooling",
+        "unit": "KBTU",
+        "col_kWh_year": "O",
+        "col_kWh_m2_year": "Q",
+        "row_total_losses_transmission": 29,
+        "row_total_losses_ventilation": 57,
+        "row_total_losses": 59,
+        "row_utilization_factor": 84,
+        "row_useful_losses": 86,
+        "row_total_gains_solar": 73,
+        "row_total_gains_internal": 77,
+        "row_total_gains": 79,
+        "row_annual_sensible_demand": 88,
+        "row_annual_latent_demand": 94,
+        "address_specific_latent_cooling_demand": "AN176",
+        "address_tfa": "O8"
+    },
+    "COOLING_PEAK_LOAD": {
+        "name": "Cooling load",
+        "unit": "BTU/HR",
+        "col_weather_1": "P",
+        "col_weather_2": "R",
+        "row_total_losses_transmission": 35,
+        "row_total_losses_ventilation": 43,
+        "row_total_gains_solar": 56,
+        "row_total_gains_internal": 60,
+        "row_total_sensible_load": 64,
+        "row_total_latent_load": 93
+    },
+    "SUMM_VENT": {
+        "name": "SummVent",
+        "columns": {}
+    },
+    "COOLING_UNITS": {
+        "name": "Cooling units",
+        "SEER_unit": "BTUH/W",
+        "supply_air": {
+            "used": "IP_Kuehlgeraete_Zuluft_Kuehlung_Ankreuzen",
+            "num_units": "IP_Kuehlgeraete_Kompressor_Zuluft_Anzahl",
+            "device_type_name": "IP_Kuehlgeraete_Kompressor_Zuluft_Geraet",
+            "SEER": "X32"
+        },
+        "recirculation_air": {
+            "used": "IP_Kuehlgeraete_Umluft_Kuehlung_Ankreuzen",
+            "num_units": "IP_Kuehlgeraete_Kompressor_Umluft_Anzahl",
+            "device_type_name": "IP_Kuehlgeraete_Kompressor_Umluft_Geraet",
+            "SEER": "X50"
+        },
+        "dehumidification": {
+            "used": "IP_Kuehlgeraete_Zusaetzliche_Entfeuchtung_Ankreuzen",
+            "waste_heat_to_room": "IP_Kuehlgeraete_Zusaetzliche_Entfeuchtung_Abwaerme",
+            "SEER": "IP_Kuehlgeraete_Zusaetzliche_Entfeuchtung_JAZ"
+        },
+        "panel": {
+            "used": "IP_Kuehlgeraete_Flaechenkuehlung_Ankreuzen",
+            "device_type_name": "IP_Kuehlgeraete_Kompressor_Flaechenkuehlung_Geraet",
+            "SEER": "X69"
+        }
+    },
+    "DHW": {
+        "name": "DHW+Distribution",
+        "recirc_piping": {
+            "locator_col_header": "D",
+            "locator_string_header": "DHW distribution",
+            "locator_col_entry": "E",
+            "locator_string_entry": "DHW circulation pipes or, for heat interface units, forward and return flows",
+            "input_rows_offset": {
+                "total_length": {
+                    "row": 2,
+                    "unit": "FT"
+                },
+                "diameter": {
+                    "row": 3,
+                    "unit": "IN"
+                },
+                "insul_thickness": {
+                    "row": 4,
+                    "unit": "IN"
+                },
+                "insul_reflective": {
+                    "row": 5
+                },
+                "insul_conductivity": {
+                    "row": 6,
+                    "unit": "HR-FT2-F/BTU-IN"
+                },
+                "daily_period": {
+                    "row": 12,
+                    "unit": ""
+                },
+                "water_temp": {
+                    "row": 13,
+                    "unit": "F"
+                }
+            },
+            "input_col_start": "J"
+        },
+        "branch_piping": {
+            "locator_col_header": "D",
+            "locator_string_header": "DHW distribution",
+            "locator_col_entry": "E",
+            "locator_string_entry": "DHW stub pipes / individual pipes",
+            "input_rows_offset": {
+                "water_temp": {
+                    "row": 1,
+                    "unit": "F"
+                },
+                "diameter": {
+                    "row": 2,
+                    "unit": "IN"
+                },
+                "total_length": {
+                    "row": 3,
+                    "unit": "FT"
+                },
+                "num_taps": 4
+            },
+            "input_col_start": "J"
+        },
+        "tanks": {
+            "locator_col_header": "D",
+            "locator_string_header": "Storage heat losses",
+            "locator_col_entry": "J",
+            "locator_string_entry": "Storage type",
+            "entry_row_start": 191,
+            "input_columns": {
+                "tank_1": "J",
+                "tank_2": "M",
+                "tank_buffer": "P"
+            },
+            "tank_type": {
+                "options": {
+                    "0": "0-No storage tank",
+                    "1": "1-DHW and heating",
+                    "2": "2-DHW only"
+                }
+            },
+            "tank_location": {
+                "options": {
+                    "1": "1-Inside",
+                    "0": "2-Outside"
+                }
+            },
+            "input_rows": {
+                "tank_type": {
+                    "row": 0
+                },
+                "standby_losses": {
+                    "row": 5,
+                    "unit": "BTU/HR-F"
+                },
+                "storage_capacity": {
+                    "row": 6,
+                    "unit": "GA"
+                },
+                "standby_fraction": {
+                    "row": 7
+                },
+                "tank_location": {
+                    "row": 9
+                },
+                "water_temp": {
+                    "row": 12,
+                    "unit": "F"
+                }
+            }
+        }
+    },
+    "SOLAR_DHW": {
+        "name": "SolarDHW",
+        "footprint_unit": "FT2",
+        "energy_unit": "KBTU",
+        "ranges": {
+            "footprint": "IP_SolarWW_Kollektorflaeche",
+            "annual_dhw_contribution": "N34",
+            "annual_dhw_energy": "P34",
+            "annual_heating_contribution": "N35",
+            "annual_heating_energy": "P35"
+        }
+    },
+    "SOLAR_PV": {
+        "name": "PV",
+        "footprint_unit": "FT2",
+        "energy_unit": "KWH",
+        "columns": {
+            "systems_start": "S",
+            "systems_end": "W"
+        },
+        "rows": {
+            "systems_start": 10,
+            "current": 20,
+            "voltage": 21,
+            "num_panels": 29,
+            "name": 10,
+            "footprint": 37,
+            "annual_energy": 42,
+            "systems_end": 47
+        }
+    },
+    "ELECTRICITY": {
+        "name": "Electricity",
+        "input_columns": {
+            "selection": "E",
+            "used": "E",
+            "in_conditioned_space": "F",
+            "energy_demand_per_use": "N",
+            "utilization_factor": "H",
+            "frequency": "K",
+            "reference_quantity": "I",
+            "annual_energy_demand": "AB"
+        },
+        "input_rows": {
+            "dishwasher": {
+                "data": 25,
+                "selection": 24,
+                "selection_options": {
+                    "1": "1-DHW connection",
+                    "2": "2-Cold water connection"
+                }
+            },
+            "clothes_washing": {
+                "data": 29,
+                "selection": 28,
+                "selection_options": {
+                    "1": "1-DHW connection",
+                    "2": "2-Cold water connection"
+                }
+            },
+            "clothes_drying": {
+                "data": 33,
+                "selection": 32,
+                "selection_options": {
+                    "1": "1-Clothes line",
+                    "2": "2-Drying closet (cold!)",
+                    "3": "3-Drying closet (cold!) in extract air",
+                    "4": "4-Condensation dryer",
+                    "5": "5-Electric exhaust air dryer",
+                    "6": "6-Gas exhaust air dryer"
+                }
+            },
+            "refrigerator": {
+                "data": 16,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "freezer": {
+                "data": 17,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "fridge_freezer": {
+                "data": 18,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "cooking": {
+                "data": 21,
+                "selection": 20,
+                "selection_options": {
+                    "1": "1-Electricity",
+                    "2": "2-Natural gas",
+                    "3": "3-LPG"
+                }
+            },
+            "lighting": {
+                "data": 37,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "lighting_interior": {
+                "data": 38,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "lighting_exterior": {
+                "data": 39,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "consumer_elec": {
+                "data": 68,
+                "selection": 0,
+                "selection_options": {}
+            },
+            "small_appliances": {
+                "data": 68,
+                "selection": 0,
+                "selection_options": {}
+            }
+        }
+    },
+    "USE_NON_RES": {
+        "name": "Use non-res",
+        "columns": {}
+    },
+    "ELEC_NON_RES": {
+        "name": "Electricity non-res",
+        "lighting_rows": {
+            "locator_col_header": "C",
+            "locator_string_header": "Lighting",
+            "locator_col_entry": "C",
+            "locator_string_entry": "Room / Zone",
+            "locator_string_exit": "Total net floor area",
+            "inputs": {
+                "room_zone_name": "C",
+                "net_floor_area": "D",
+                "utilization_profile": "E",
+                "room_has_window": "F",
+                "room_angle_from_north": "G",
+                "room_orientation": "H",
+                "factor": "I",
+                "glazing_light_transmission": "J",
+                "room_depth": "K",
+                "room_width": "L",
+                "room_height": "M",
+                "lintel_height": "N",
+                "window_width": "O",
+                "daily_utilization": "P",
+                "nominal_illumination": "R",
+                "installed_power": {
+                    "column": "S",
+                    "unit": "W/FT2"
+                },
+                "lighting_control": "V",
+                "motion_detector_used": "W",
+                "utilization_hours_year": "X",
+                "ud_annual_full_load_hours": "Y",
+                "annual_full_load_hours": "Z",
+                "daily_full_load_hours": "AA",
+                "annual_energy_demand": "AC"
+            }
+        }
+    },
+    "AUX_ELEC": {
+        "name": "Aux Electricity",
+        "columns": {}
+    },
+    "IHG_NON_RES": {
+        "name": "IHG non-res",
+        "columns": {}
+    },
+    "PER": {
+        "name": "PER",
+        "locator_col": "P",
+        "unit": "KBTU",
+        "named_ranges": {
+            "heating_type_1": "IP_PE_Waermeerzeuger_primaer",
+            "heating_type_2": "IP_PE_Waermeerzeuger_sekundaer"
+        },
+        "columns": {
+            "calculated_efficiency": "Q",
+            "user_determined_efficiency": "R",
+            "final_energy": "T",
+            "per_energy": "V",
+            "pe_energy": "X",
+            "co2_emissions": "Z"
+        },
+        "addresses": {
+            "tfa": "Z7",
+            "footprint": "Z8"
+        },
+        "heating_types": {
+            "range_start": "P8",
+            "range_end": "T11"
+        },
+        "heating": {
+            "locator_string_heading": "Heating",
+            "locator_string_start": "Electricity (HP compact unit)",
+            "locator_string_end": "Solar thermal system"
+        },
+        "cooling": {
+            "locator_string_heading": "Cooling and dehumidification",
+            "locator_string_start": "Electricity cooling (HP)",
+            "locator_string_end": "Electricity dehumidification (HP)"
+        },
+        "dhw": {
+            "locator_string_heading": "DHW generation",
+            "locator_string_start": "Electricity (HP compact unit)",
+            "locator_string_end": "Solar thermal system"
+        },
+        "household_electric": {
+            "locator_string_heading": "Occupant electricity + auxiliary electricity (other)",
+            "locator_string_start": "User electricity (lighting, electrical devices, etc.)",
+            "locator_string_end": "Auxiliary electricity (other)"
+        },
+        "additional_gas": {
+            "locator_string_heading": "Additional gas demand",
+            "locator_string_start": "Drying/Cooking",
+            "locator_string_end": null
+        },
+        "energy_generation": {
+            "locator_string_heading": "Energy generation",
+            "locator_string_start": "PV electricity",
+            "locator_string_end": null
+        }
+    },
+    "HP": {
+        "name": "HP",
+        "columns": {}
+    },
+    "BOILER": {
+        "name": "Boiler",
+        "columns": {}
+    },
+    "DATA": {
+        "name": "Data",
+        "version": {
+            "locator_col_header": "A",
+            "locator_string_header": "PHPP Version",
+            "locator_col_entry": "B",
+            "locator_string_entry": "",
+            "input_column": {}
+        }
+    },
+    "OVERVIEW": {
+        "name": "Overview",
+        "basic_data": {
+            "address_number_dwellings_res": "C27",
+            "address_number_dwellings_nonres": "E27",
+            "address_number_occupants_res": "C28",
+            "address_number_occupants_nonres": "E28",
+            "address_project_name": "C11"
+        },
+        "building_envelope": {
+            "address_area_envelope": {
+                "column": "C",
+                "row": 105,
+                "unit": "FT2"
+            },
+            "address_area_tfa": {
+                "column": "E",
+                "row": 105,
+                "unit": "FT2"
+            }
+        },
+        "ventilation": {
+            "vn50": {
+                "column": "C",
+                "row": 362,
+                "unit": "FT3"
+            }
+        }
+    },
+    "EASY_PH": {
+        "name": "easyPH"
+    }
+}

@@ -81,6 +81,7 @@ def convert_hb_model_to_PhxProject(
     _group_components: bool = True,
     _merge_faces: Union[bool, float] = False,
     _merge_spaces_by_erv: bool = False,
+    _merge_exhaust_vent_devices: bool = False,
 ) -> PhxProject:
     """Return a complete WUFI Project object with values based on the HB Model
 
@@ -98,6 +99,9 @@ def convert_hb_model_to_PhxProject(
         * _merge_spaces_by_erv (bool): default=False. Set to true to have the converter
             merge all the spaces by ERV zones. This is sometimes required by Phius for
             large buildings with multiple ERV zones.
+
+        * _merge_exhaust_vent_devices (bool): default=False. Set to true to have the converter
+            merge all the exhaust ventilation devices in the room into a single device in the output zone.
 
     Returns:
     --------
@@ -135,6 +139,7 @@ def convert_hb_model_to_PhxProject(
             _lighting_sched_collection=phx_project.utilization_patterns_lighting,
             _group_components=_group_components,
             _merge_spaces_by_erv=_merge_spaces_by_erv,
+            _merge_exhaust_vent_devices=_merge_exhaust_vent_devices,
             _tolerance=_hb_model.tolerance,
         )
 

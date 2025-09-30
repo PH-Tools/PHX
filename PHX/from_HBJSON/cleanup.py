@@ -368,9 +368,12 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
 
     # -- Calculate the total Watts of all of the HBE-Elec-Equipment in the rooms
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms) or 0.0
-    total_watts = sum(
-        (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area) for rm in _hb_rooms  # type: ignore
-    ) or 0.0
+    total_watts = (
+        sum(
+            (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area) for rm in _hb_rooms  # type: ignore
+        )
+        or 0.0
+    )
 
     # -- Build a new HBE-Elec-Equip from the reference room, add all the PH-Equipment to it.
     reference_room = _hb_rooms[0]

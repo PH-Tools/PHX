@@ -115,6 +115,7 @@ def build_phx_hw_heater(
             pass
 
     phx_hw_heater.usage_profile.dhw_heating = True
+    phx_hw_heater.usage_profile.dhw_heating_percent = _ph_hvac_heater.percent_coverage
 
     return phx_hw_heater
 

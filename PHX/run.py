@@ -3,7 +3,7 @@
 
 """Module for reading in HBJSON and converting to PHX-Model.
 
-Running the 'convert_hbjson_to_PHX' function will call a new subprocess using the 
+Running the 'convert_hbjson_to_PHX' function will call a new subprocess using the
 Ladybug Tools Python 3.7 interpreter.
 """
 
@@ -135,11 +135,12 @@ def convert_hbjson_to_WUFI_XML(
     _group_components=True,
     _merge_faces=False,
     _merge_spaces_by_erv=False,
+    _merge_exhaust_vent_devices=False,
     _log_level=0,
     *args,
     **kwargs
 ):
-    # type: (str, str, str, bool, Union[bool, float], bool, int, List, Dict) -> tuple[str, str, str, str]
+    # type: (str, str, str, bool, Union[bool, float], bool, bool, int, List, Dict) -> tuple[str, str, str, str]
     """Read in an hbjson file and output a new WUFI XML file in the designated location.
 
     Arguments:
@@ -151,6 +152,7 @@ def convert_hbjson_to_WUFI_XML(
         * _merge_faces (bool | float): Merge together faces of the same type and touching? If
             a number is provided, it will be used as the tolerance when merging faces. Default=False
         * _merge_spaces_by_erv (bool): Merge spaces that are connected by ERVs? Default=False
+        * _merge_exhaust_vent_devices (bool): Merge exhaust and vent devices on the same face? Default=False
         * _log_level (int): Set the logging level for the subprocess. Default=0
         * args (List): Additional arguments to pass to the subprocess.
         * kwargs (Dict): Additional keyword arguments to pass to the subprocess.
@@ -184,6 +186,7 @@ def convert_hbjson_to_WUFI_XML(
         str(_group_components),
         str(_merge_faces),
         str(_merge_spaces_by_erv),
+        str(_merge_exhaust_vent_devices),
         str(_log_level),
     ]
     stdout, stderr = _run_subprocess(commands)

@@ -144,6 +144,9 @@ class PhxClimatePeakLoad:
     radiation_south: Optional[float] = 0.0
     radiation_west: Optional[float] = 0.0
     radiation_global: Optional[float] = 0.0
+    temperature_dewpoint: Optional[float] = None
+    temperature_sky: Optional[float] = None
+    temperature_ground: Optional[float] = None
 
     def __eq__(self, other: PhxClimatePeakLoad) -> bool:
         TOLERANCE = 0.001
@@ -164,6 +167,15 @@ class PhxClimatePeakLoad:
                 return False
         if self.radiation_global and other.radiation_global:
             if abs(self.radiation_global - other.radiation_global) > TOLERANCE:
+                return False
+        if self.temperature_dewpoint and other.temperature_dewpoint:
+            if abs(self.temperature_dewpoint - self.temperature_dewpoint) > TOLERANCE:
+                return False
+        if self.temperature_sky and other.temperature_sky:
+            if abs(self.temperature_sky - self.temperature_sky) > TOLERANCE:
+                return False
+        if self.temperature_ground and other.temperature_ground:
+            if abs(self.temperature_ground - self.temperature_ground) > TOLERANCE:
                 return False
         return True
 

@@ -102,6 +102,21 @@ def merge_spaces_by_erv(_args: List[str]) -> bool:
     return _args[6].lower() == "true"
 
 
+def merge_exhaust_vent_devices(_args: List[str]) -> bool:
+    """Return the 'merge_exhaust_vent_devices' boolean from the sys.args Tuple.
+
+    Arguments:
+    ----------
+        * _args (Tuple): sys.args Tuple of inputs.
+            - [7] (str): "True" or "False" string.
+
+    Returns:
+    --------
+        * bool: True if the user wants to group components.
+    """
+    return _args[7].lower() == "true"
+
+
 def log_level(_args: List[str]) -> int:
     """Return the log_level from the sys.args Tuple.
 
@@ -215,6 +230,7 @@ if __name__ == "__main__":
     GROUP_COMPONENTS = group_components(sys.argv)
     MERGE_FACES = merge_faces(sys.argv)
     MERGE_SPACES_BY_ERV = merge_spaces_by_erv(sys.argv)
+    MERGE_EXHAUST_VENT_DEVICES = merge_exhaust_vent_devices(sys.argv)
     LOG_LEVEL = log_level(sys.argv)
 
     ## -- Setup the logging
@@ -223,6 +239,7 @@ if __name__ == "__main__":
     logger.info(f"Group Components: {GROUP_COMPONENTS}")
     logger.info(f"Merging Faces: {MERGE_FACES}")
     logger.info(f"Merging Spaces by ERV: {MERGE_SPACES_BY_ERV}")
+    logger.info(f"Merging Exhaust Ventilation Devices: {MERGE_EXHAUST_VENT_DEVICES}")
 
     # --- Read in the existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -237,6 +254,7 @@ if __name__ == "__main__":
         _group_components=GROUP_COMPONENTS,
         _merge_faces=MERGE_FACES,
         _merge_spaces_by_erv=MERGE_SPACES_BY_ERV,
+        _merge_exhaust_vent_devices=MERGE_EXHAUST_VENT_DEVICES,
     )
 
     # --- Apply the WUFI-Passive Cooling Bug fix (200 KW limit)

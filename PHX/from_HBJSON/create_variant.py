@@ -367,13 +367,16 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     phx_climate.radiation_west = ud_site.climate.monthly_radiation.west.values
     phx_climate.radiation_global = ud_site.climate.monthly_radiation.glob.values
 
-    # -- Peak Load Values
+    # -- Peak Heating Load Values
     phx_climate.peak_heating_1.temperature_air = ud_site.climate.peak_loads.heat_load_1.temp
     phx_climate.peak_heating_1.radiation_north = ud_site.climate.peak_loads.heat_load_1.rad_north
     phx_climate.peak_heating_1.radiation_east = ud_site.climate.peak_loads.heat_load_1.rad_east
     phx_climate.peak_heating_1.radiation_south = ud_site.climate.peak_loads.heat_load_1.rad_south
     phx_climate.peak_heating_1.radiation_west = ud_site.climate.peak_loads.heat_load_1.rad_west
     phx_climate.peak_heating_1.radiation_global = ud_site.climate.peak_loads.heat_load_1.rad_global
+    phx_climate.peak_heating_1.temperature_dewpoint = ud_site.climate.peak_loads.heat_load_1.dewpoint
+    phx_climate.peak_heating_1.temperature_sky = ud_site.climate.peak_loads.heat_load_1.sky_temp
+    phx_climate.peak_heating_1.temperature_ground = ud_site.climate.peak_loads.heat_load_1.ground_temp
 
     phx_climate.peak_heating_2.temperature_air = ud_site.climate.peak_loads.heat_load_2.temp
     phx_climate.peak_heating_2.radiation_north = ud_site.climate.peak_loads.heat_load_2.rad_north
@@ -381,13 +384,20 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     phx_climate.peak_heating_2.radiation_south = ud_site.climate.peak_loads.heat_load_2.rad_south
     phx_climate.peak_heating_2.radiation_west = ud_site.climate.peak_loads.heat_load_2.rad_west
     phx_climate.peak_heating_2.radiation_global = ud_site.climate.peak_loads.heat_load_2.rad_global
+    phx_climate.peak_heating_2.temperature_dewpoint = ud_site.climate.peak_loads.heat_load_2.dewpoint
+    phx_climate.peak_heating_2.temperature_sky = ud_site.climate.peak_loads.heat_load_2.sky_temp
+    phx_climate.peak_heating_2.temperature_ground = ud_site.climate.peak_loads.heat_load_2.ground_temp
 
+    # -- Peak Cooling Load Values
     phx_climate.peak_cooling_1.temperature_air = ud_site.climate.peak_loads.cooling_load_1.temp
     phx_climate.peak_cooling_1.radiation_north = ud_site.climate.peak_loads.cooling_load_1.rad_north
     phx_climate.peak_cooling_1.radiation_east = ud_site.climate.peak_loads.cooling_load_1.rad_east
     phx_climate.peak_cooling_1.radiation_south = ud_site.climate.peak_loads.cooling_load_1.rad_south
     phx_climate.peak_cooling_1.radiation_west = ud_site.climate.peak_loads.cooling_load_1.rad_west
     phx_climate.peak_cooling_1.radiation_global = ud_site.climate.peak_loads.cooling_load_1.rad_global
+    phx_climate.peak_cooling_1.temperature_dewpoint = ud_site.climate.peak_loads.cooling_load_1.dewpoint
+    phx_climate.peak_cooling_1.temperature_sky = ud_site.climate.peak_loads.cooling_load_1.sky_temp
+    phx_climate.peak_cooling_1.temperature_ground = ud_site.climate.peak_loads.cooling_load_1.ground_temp
 
     phx_climate.peak_cooling_2.temperature_air = ud_site.climate.peak_loads.cooling_load_2.temp
     phx_climate.peak_cooling_2.radiation_north = ud_site.climate.peak_loads.cooling_load_2.rad_north
@@ -395,6 +405,9 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     phx_climate.peak_cooling_2.radiation_south = ud_site.climate.peak_loads.cooling_load_2.rad_south
     phx_climate.peak_cooling_2.radiation_west = ud_site.climate.peak_loads.cooling_load_2.rad_west
     phx_climate.peak_cooling_2.radiation_global = ud_site.climate.peak_loads.cooling_load_2.rad_global
+    phx_climate.peak_cooling_2.temperature_dewpoint = ud_site.climate.peak_loads.cooling_load_2.dewpoint
+    phx_climate.peak_cooling_2.temperature_sky = ud_site.climate.peak_loads.cooling_load_2.sky_temp
+    phx_climate.peak_cooling_2.temperature_ground = ud_site.climate.peak_loads.cooling_load_2.ground_temp
 
     return None
 
@@ -499,7 +512,7 @@ def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room
 def add_exhaust_vent_devices_from_hb_rooms(
     _variant: project.PhxVariant,
     _hb_room: room.Room,
-    _merge_devices: bool = True,
+    _merge_devices: bool = False,
 ) -> None:
     """Add all the Exhaust Ventilation Equipment from the HB Room onto the new Variant/Zone.
 
@@ -855,6 +868,7 @@ def from_hb_room(
     _lighting_sched_collection: UtilizationPatternCollection_Lighting,
     _group_components: bool = False,
     _merge_spaces_by_erv: bool = False,
+    _merge_exhaust_vent_devices: bool = False,
     _tolerance: float = 0.001,
 ) -> project.PhxVariant:
     """Create a new PHX-Variant based on a single PH/Honeybee Room.
@@ -904,7 +918,7 @@ def from_hb_room(
     )
     # -- Ventilation-Exhaust Equip must come AFTER zones are instantiated, since these
     # -- devices are down at the zone level instead of up at the Variant level.
-    add_exhaust_vent_devices_from_hb_rooms(new_variant, _hb_room)
+    add_exhaust_vent_devices_from_hb_rooms(new_variant, _hb_room, _merge_exhaust_vent_devices)
     add_supportive_devices_from_hb_room(new_variant, _hb_room)
     add_renewable_devices_from_hb_room(new_variant, _hb_room)
     add_phius_certification_from_hb_room(new_variant, _hb_room)
