@@ -25,6 +25,7 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
         variant_total_airflow_rate = 0.0
         total_recirc_cop = 0.0
         total_dehumid_cop = 0.0
+        min_coil_temp = 12.0
         for phx_mech_collection in phx_variant.mech_collections:
             for hp_device in phx_mech_collection.heat_pump_devices:
                 # -- If the device doesn't have a cooling system, skip it
@@ -37,6 +38,7 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
                 variant_total_airflow_rate += hp_device.params_cooling.recirculation.flow_rate_m3_hr
                 total_recirc_cop += hp_device.params_cooling.recirculation.annual_COP
                 total_dehumid_cop += hp_device.params_cooling.dehumidification.annual_COP
+                min_coil_temp = min(min_coil_temp, hp_device.params_cooling.recirculation.min_coil_temp)
 
         # ---------------------------------------------------------------------
         # -- If the total cooling capacity is less than 200 KW, ignore this variant
@@ -71,12 +73,16 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
                 if hp_device.usage_profile.cooling is False:
                     continue
 
-                # -- If the device has a cooling system, reset it
+                # -- If the device has a cooling system, reset it to the new target values
+                hp_device.usage_profile.cooling = True
+                hp_device.params_cooling.recirculation.used = True
+                hp_device.params_cooling.dehumidification.used = True
                 hp_device.params_cooling.recirculation.capacity = target_cooling_system_size
                 hp_device.params_cooling.recirculation.flow_rate_m3_hr = target_cooling_system_airflow_rate
-                hp_device.usage_profile.cooling_percent = target_cooling_system_coverage_percentage
                 hp_device.params_cooling.recirculation.annual_COP = target_recirc_cop
                 hp_device.params_cooling.dehumidification.annual_COP = target_dehumid_cop
+                hp_device.usage_profile.cooling_percent = target_cooling_system_coverage_percentage
+                hp_device.params_cooling.recirculation.min_coil_temp = min_coil_temp
 
         # ---------------------------------------------------------------------
         # -- Add each of the new cooling systems needed
@@ -96,9 +102,10 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
             new_cooling_heat_pump.params_cooling.recirculation.annual_COP = target_recirc_cop
             new_cooling_heat_pump.params_cooling.dehumidification.annual_COP = target_dehumid_cop
             new_cooling_heat_pump.usage_profile.cooling_percent = target_cooling_system_coverage_percentage
+            new_cooling_heat_pump.params_cooling.recirculation.min_coil_temp = min_coil_temp
 
             # -- Add the new heat-pump to the mech-collection and to the variant
             new_collection.add_new_mech_device(new_cooling_heat_pump.identifier, new_cooling_heat_pump)
             phx_variant.add_mechanical_collection(new_collection)
-
+    
     return _phx_project

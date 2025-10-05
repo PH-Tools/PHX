@@ -1574,7 +1574,7 @@ def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
         # XML_Object('DistributionHeating', DistributionHeating()),
         XML_Object(
             "DistributionCooling",
-            TempDistributionCooling(_c.heat_pump_devices),
+            TempDistributionCooling([d for d in _c.heat_pump_devices if d.usage_profile.cooling]),
             _schema_name="_DistributionCooling",
         ),
         XML_List(
