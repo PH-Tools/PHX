@@ -16,7 +16,8 @@ from PHX.model import elec_equip, geometry, spaces
 from PHX.model.components import (PhxApertureElement, PhxComponentAperture,
                                   PhxComponentOpaque,
                                   PhxComponentThermalBridge)
-from PHX.model.enums.building import (AttachedZoneType, SpecificHeatCapacity,
+from PHX.model.enums.building import (AttachedZoneType,
+                                      SpecificHeatCapacityType,
                                       WufiVolumeGrossMode, WufiVolumeNetMode,
                                       WufiWeightedFloorAreaMode, ZoneType)
 from PHX.model.hvac import collection
@@ -37,7 +38,8 @@ class PhxZone:
     res_occupant_quantity: float = 0.0
     res_number_bedrooms: int = 0
     res_number_dwellings: int = 0
-    specific_heat_capacity: SpecificHeatCapacity = SpecificHeatCapacity.LIGHTWEIGHT
+    specific_heat_capacity: SpecificHeatCapacityType = SpecificHeatCapacityType.LIGHTWEIGHT
+    specific_heat_capacity_wh_m2k: int = 60
 
     # -- Neeed for WUFI's Attached Zones
     zone_type: ZoneType = ZoneType.SIMULATED

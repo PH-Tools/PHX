@@ -29599,7 +29599,7 @@
 						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
 						<ClearanceHeight>2.49936</ClearanceHeight>
 						<SpecificHeatCapacity_Selection>2</SpecificHeatCapacity_Selection>
-						<SpecificHeatCapacity>132</SpecificHeatCapacity>
+						<SpecificHeatCapacity>60</SpecificHeatCapacity>
 						<IdentNrPH_Building>1</IdentNrPH_Building>
 						<OccupantQuantityUserDef unit="-">123</OccupantQuantityUserDef>
 						<NumberBedrooms unit="-">63</NumberBedrooms>
@@ -29821,7 +29821,7 @@
 						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
 						<ClearanceHeight>2.49936</ClearanceHeight>
 						<SpecificHeatCapacity_Selection>2</SpecificHeatCapacity_Selection>
-						<SpecificHeatCapacity>132</SpecificHeatCapacity>
+						<SpecificHeatCapacity>60</SpecificHeatCapacity>
 						<IdentNrPH_Building>1</IdentNrPH_Building>
 						<OccupantQuantityUserDef unit="-">4</OccupantQuantityUserDef>
 						<NumberBedrooms unit="-">4</NumberBedrooms>
@@ -29849,7 +29849,7 @@
 						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
 						<ClearanceHeight>2.49936</ClearanceHeight>
 						<SpecificHeatCapacity_Selection>2</SpecificHeatCapacity_Selection>
-						<SpecificHeatCapacity>132</SpecificHeatCapacity>
+						<SpecificHeatCapacity>60</SpecificHeatCapacity>
 						<IdentNrPH_Building>1</IdentNrPH_Building>
 						<OccupantQuantityUserDef unit="-">4</OccupantQuantityUserDef>
 						<NumberBedrooms unit="-">4</NumberBedrooms>
@@ -30681,14 +30681,14 @@
 							<DistributionCooling>
 								<CoolingViaRecirculation>true</CoolingViaRecirculation>
 								<RecirculatingAirOnOff>false</RecirculatingAirOnOff>
-								<MaxRecirculationAirCoolingPower>83.44048285915</MaxRecirculationAirCoolingPower>
-								<MinTempCoolingCoilRecirculatingAir>9.61111111111111</MinTempCoolingCoilRecirculatingAir>
-								<RecirculationCoolingCOP>4.325</RecirculationCoolingCOP>
-								<RecirculationAirVolume>11419.1855930534</RecirculationAirVolume>
-								<ControlledRecirculationVolumeFlow>true</ControlledRecirculationVolumeFlow>
+								<MaxRecirculationAirCoolingPower>156.8809657183</MaxRecirculationAirCoolingPower>
+								<MinTempCoolingCoilRecirculatingAir>7.222222222222222</MinTempCoolingCoilRecirculatingAir>
+								<RecirculationCoolingCOP>4.65</RecirculationCoolingCOP>
+								<RecirculationAirVolume>22738.3711861068</RecirculationAirVolume>
+								<ControlledRecirculationVolumeFlow>false</ControlledRecirculationVolumeFlow>
 								<Dehumidification>true</Dehumidification>
 								<UsefullDehumidificationHeatLoss>true</UsefullDehumidificationHeatLoss>
-								<DehumdificationCOP>2.0</DehumdificationCOP>
+								<DehumdificationCOP>0.0</DehumdificationCOP>
 								<SEER/>
 								<EER/>
 								<DehumidificationElEnergy/>
@@ -60537,7 +60537,7 @@
 						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
 						<ClearanceHeight>2.49936</ClearanceHeight>
 						<SpecificHeatCapacity_Selection>2</SpecificHeatCapacity_Selection>
-						<SpecificHeatCapacity>132</SpecificHeatCapacity>
+						<SpecificHeatCapacity>60</SpecificHeatCapacity>
 						<IdentNrPH_Building>1</IdentNrPH_Building>
 						<OccupantQuantityUserDef unit="-">123</OccupantQuantityUserDef>
 						<NumberBedrooms unit="-">63</NumberBedrooms>
@@ -60759,7 +60759,7 @@
 						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
 						<ClearanceHeight>2.49936</ClearanceHeight>
 						<SpecificHeatCapacity_Selection>2</SpecificHeatCapacity_Selection>
-						<SpecificHeatCapacity>132</SpecificHeatCapacity>
+						<SpecificHeatCapacity>60</SpecificHeatCapacity>
 						<IdentNrPH_Building>1</IdentNrPH_Building>
 						<OccupantQuantityUserDef unit="-">4</OccupantQuantityUserDef>
 						<NumberBedrooms unit="-">4</NumberBedrooms>
@@ -60787,7 +60787,7 @@
 						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
 						<ClearanceHeight>2.49936</ClearanceHeight>
 						<SpecificHeatCapacity_Selection>2</SpecificHeatCapacity_Selection>
-						<SpecificHeatCapacity>132</SpecificHeatCapacity>
+						<SpecificHeatCapacity>60</SpecificHeatCapacity>
 						<IdentNrPH_Building>1</IdentNrPH_Building>
 						<OccupantQuantityUserDef unit="-">4</OccupantQuantityUserDef>
 						<NumberBedrooms unit="-">4</NumberBedrooms>
@@ -61619,14 +61619,14 @@
 							<DistributionCooling>
 								<CoolingViaRecirculation>true</CoolingViaRecirculation>
 								<RecirculatingAirOnOff>false</RecirculatingAirOnOff>
-								<MaxRecirculationAirCoolingPower>83.44048285915</MaxRecirculationAirCoolingPower>
-								<MinTempCoolingCoilRecirculatingAir>9.61111111111111</MinTempCoolingCoilRecirculatingAir>
-								<RecirculationCoolingCOP>4.325</RecirculationCoolingCOP>
-								<RecirculationAirVolume>11419.1855930534</RecirculationAirVolume>
-								<ControlledRecirculationVolumeFlow>true</ControlledRecirculationVolumeFlow>
+								<MaxRecirculationAirCoolingPower>156.8809657183</MaxRecirculationAirCoolingPower>
+								<MinTempCoolingCoilRecirculatingAir>7.222222222222222</MinTempCoolingCoilRecirculatingAir>
+								<RecirculationCoolingCOP>4.65</RecirculationCoolingCOP>
+								<RecirculationAirVolume>22738.3711861068</RecirculationAirVolume>
+								<ControlledRecirculationVolumeFlow>false</ControlledRecirculationVolumeFlow>
 								<Dehumidification>true</Dehumidification>
 								<UsefullDehumidificationHeatLoss>true</UsefullDehumidificationHeatLoss>
-								<DehumdificationCOP>2.0</DehumdificationCOP>
+								<DehumdificationCOP>0.0</DehumdificationCOP>
 								<SEER/>
 								<EER/>
 								<DehumidificationElEnergy/>

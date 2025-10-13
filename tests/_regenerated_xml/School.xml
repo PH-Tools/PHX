@@ -5832,7 +5832,7 @@ Instant DHW
 						<ClearanceHeight_Selection>1</ClearanceHeight_Selection>
 						<ClearanceHeight>2.5</ClearanceHeight>
 						<SpecificHeatCapacity_Selection>2</SpecificHeatCapacity_Selection>
-						<SpecificHeatCapacity>132</SpecificHeatCapacity>
+						<SpecificHeatCapacity>60</SpecificHeatCapacity>
 						<IdentNrPH_Building>1</IdentNrPH_Building>
 						<OccupantQuantityUserDef unit="-">6</OccupantQuantityUserDef>
 						<NumberBedrooms unit="-">4</NumberBedrooms>
@@ -6260,14 +6260,14 @@ Instant DHW
 							<DistributionCooling>
 								<CoolingViaRecirculation>true</CoolingViaRecirculation>
 								<RecirculatingAirOnOff>false</RecirculatingAirOnOff>
-								<MaxRecirculationAirCoolingPower>13.793</MaxRecirculationAirCoolingPower>
-								<MinTempCoolingCoilRecirculatingAir>9.6111</MinTempCoolingCoilRecirculatingAir>
+								<MaxRecirculationAirCoolingPower>17.586</MaxRecirculationAirCoolingPower>
+								<MinTempCoolingCoilRecirculatingAir>7.2222</MinTempCoolingCoilRecirculatingAir>
 								<RecirculationCoolingCOP>4.0</RecirculationCoolingCOP>
-								<RecirculationAirVolume>1324.2581</RecirculationAirVolume>
+								<RecirculationAirVolume>2548.5162</RecirculationAirVolume>
 								<ControlledRecirculationVolumeFlow>true</ControlledRecirculationVolumeFlow>
 								<Dehumidification>true</Dehumidification>
 								<UsefullDehumidificationHeatLoss>true</UsefullDehumidificationHeatLoss>
-								<DehumdificationCOP>2.0</DehumdificationCOP>
+								<DehumdificationCOP>0.0</DehumdificationCOP>
 								<SEER/>
 								<EER/>
 								<DehumidificationElEnergy/>

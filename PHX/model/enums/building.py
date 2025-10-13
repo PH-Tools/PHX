@@ -63,10 +63,16 @@ class ThermalBridgeType(Enum):
     UNDERGROUND = 17
 
 
-class SpecificHeatCapacity(Enum):
+class SpecificHeatCapacityType(Enum):
     LIGHTWEIGHT = 1
     MIXED = 2
     MASSIVE = 3
+    USER_DEFINED = 6
+
+class SpecificHeatCapacityValueWhM2K(Enum):
+    LIGHTWEIGHT = 60
+    MIXED = 132
+    MASSIVE = 204
 
 
 class WufiVolumeGrossMode(Enum):

@@ -107,5 +107,5 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
             # -- Add the new heat-pump to the mech-collection and to the variant
             new_collection.add_new_mech_device(new_cooling_heat_pump.identifier, new_cooling_heat_pump)
             phx_variant.add_mechanical_collection(new_collection)
-    
+
     return _phx_project

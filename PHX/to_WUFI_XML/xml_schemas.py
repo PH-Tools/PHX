@@ -193,12 +193,6 @@ def _PhxBuilding(_b: building.PhxBuilding) -> List[xml_writable]:
 
 
 def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
-    _spec_cap_WH_m2k = {
-        1: 60,
-        2: 132,
-        3: 204,
-    }
-
     def wufi_spaces(_z: building.PhxZone) -> List[spaces.PhxSpace]:
         """Return a list of all the spaces in the PhxZone for reporting out to WUFI."""
         if _z.merge_spaces_by_erv == False:
@@ -248,7 +242,7 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
         XML_Node("ClearanceHeight_Selection", 1),
         XML_Node("ClearanceHeight", _z.clearance_height),
         XML_Node("SpecificHeatCapacity_Selection", _z.specific_heat_capacity.value),
-        XML_Node("SpecificHeatCapacity", _spec_cap_WH_m2k[_z.specific_heat_capacity.value]),
+        XML_Node("SpecificHeatCapacity", _z.specific_heat_capacity_wh_m2k),
         XML_Node("IdentNrPH_Building", 1),
         XML_Node("OccupantQuantityUserDef", int(_z.res_occupant_quantity), "unit", "-"),
         XML_Node("NumberBedrooms", int(_z.res_number_bedrooms), "unit", "-"),
@@ -439,7 +433,7 @@ def _PhxHeatedBasement(_f: ground.PhxHeatedBasement):
         XML_Node("FloorSlabArea", _f.floor_slab_area_m2),
         XML_Node("FloorSlabPerimeter_Selection", 6),  # 6=User defined
         XML_Node("FloorSlabPerimeter", _f.floor_slab_exposed_perimeter_m),
-        XML_Node("U_ValueBasementSlab_Selection", 6), # 6=User defined
+        XML_Node("U_ValueBasementSlab_Selection", 6),  # 6=User defined
         XML_Node("U_ValueBasementSlab", _f.floor_slab_u_value),
         XML_Node("DepthBasementBelowGroundSurface_Selection", 6),  # 6=user-defined
         XML_Node("DepthBasementBelowGroundSurface", _f.slab_depth_below_grade_m),
@@ -478,9 +472,9 @@ def _PhxUnHeatedBasement(_f: ground.PhxUnHeatedBasement):
 def _PhxSlabOnGrade(_f: ground.PhxSlabOnGrade):
     # -- If the user didn't set a value, use Detect Automatically
     if _f.floor_slab_u_value is None:
-        selection_type  = 2 # 2=Detect Automatically
+        selection_type = 2  # 2=Detect Automatically
     else:
-        selection_type  = 6 # 6=User defined
+        selection_type = 6  # 6=User defined
 
     return [
         XML_Node("FloorSlabArea_Selection", 6),  # 6=User defined

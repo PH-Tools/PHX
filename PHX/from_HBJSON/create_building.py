@@ -26,7 +26,8 @@ from PHX.model.enums.building import (
     ComponentExposureExterior,
     ComponentFaceOpacity,
     ComponentFaceType,
-    SpecificHeatCapacity,
+    SpecificHeatCapacityType,
+    SpecificHeatCapacityValueWhM2K,
     ThermalBridgeType,
 )
 from PHX.model.utilization_patterns import (
@@ -290,6 +291,15 @@ def set_zone_occupancy(_hb_room: room.Room, zone: building.PhxZone) -> building.
     return zone
 
 
+def create_specific_heat_capacity(_room_prop_ph: RoomPhProperties) -> tuple[SpecificHeatCapacityType, int]:
+    spec_heat_type = SpecificHeatCapacityType(_room_prop_ph.specific_heat_capacity.number)
+    try:
+        value = SpecificHeatCapacityValueWhM2K[spec_heat_type.name].value
+    except KeyError:
+        value = getattr(_room_prop_ph, "specific_heat_capacity_wh_m2k", 60)
+    return spec_heat_type, value
+
+
 def create_zones_from_hb_room(
     _hb_room: room.Room,
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
@@ -316,7 +326,7 @@ def create_zones_from_hb_room(
 
     # -- Sort the HB-Room's Spaces by their full_name
     room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
-    sorted_spaces = sorted(room_prop_ph.spaces, key=lambda space: space.full_name)
+    sorted_spaces = sorted(room_prop_ph.spaces, key=lambda sp: sp.full_name)
 
     # -- Create a new WUFI-Space (Room) for each HBPH-Space
     _create_space = partial(
@@ -331,8 +341,12 @@ def create_zones_from_hb_room(
     new_zone.volume_gross = _hb_room.volume
     new_zone.weighted_net_floor_area = sum((rm.weighted_floor_area for rm in new_zone.spaces))
     new_zone.volume_net = sum((rm.net_volume for rm in new_zone.spaces))
-    new_zone.specific_heat_capacity = SpecificHeatCapacity(room_prop_ph.specific_heat_capacity.number)
     new_zone.merge_spaces_by_erv = _merge_spaces_by_erv
+
+    # -- Set the Zone's Specific Heat Capacity
+    spec_heat_type, spec_heat_wh_m2k = create_specific_heat_capacity(room_prop_ph)
+    new_zone.specific_heat_capacity = spec_heat_type
+    new_zone.specific_heat_capacity_wh_m2k = spec_heat_wh_m2k
 
     # -- Set the Zone's Occupancy based on the merged HB room
     new_zone = set_zone_occupancy(_hb_room, new_zone)

@@ -49,7 +49,7 @@ from PHX.model.enums.building import (
     ComponentExposureExterior,
     ComponentFaceOpacity,
     ComponentFaceType,
-    SpecificHeatCapacity,
+    SpecificHeatCapacityType,
     ThermalBridgeType,
     WindExposureType,
     ZoneType,
@@ -1321,7 +1321,7 @@ def _PhxZone(_data: wufi_xml.WufiZone, _phx_project_host: PhxProject) -> PhxZone
     phx_obj.clearance_height = _data.ClearanceHeight or 0.0
     phx_obj.res_occupant_quantity = _data.OccupantQuantityUserDef
     phx_obj.res_number_bedrooms = _data.NumberBedrooms or 0
-    phx_obj.specific_heat_capacity = SpecificHeatCapacity(_spec_cap_WH_m2k(_data.SpecificHeatCapacity))
+    phx_obj.specific_heat_capacity = SpecificHeatCapacityType(_spec_cap_WH_m2k(_data.SpecificHeatCapacity))
 
     # ----------------------------------------------------------------------
     # -- Create all the spaces from the XML "RoomsVentilation" data
