@@ -327,6 +327,8 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
         XML_Node("IdentNrSolarProtection", _c.shade_type_id_num),
         XML_Node("IdentNrOverhang", -1),
         XML_Node("DefaultCorrectionShadingMonth", _c.default_monthly_shading_correction_factor),
+        # XML_Node("OtherShading", _c.elements.winter_shading_factor, "unit", "-"), # TODO: Custom Shading
+        # XML_Node("OtherShadingSummer", _c.elements.summer_shading_factor, "unit", "-"),
     ]
 
 
