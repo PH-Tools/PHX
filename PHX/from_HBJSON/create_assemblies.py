@@ -20,6 +20,7 @@ from honeybee_energy_ph.properties.construction.window import WindowConstruction
 from honeybee_energy_ph.properties.materials.opaque import EnergyMaterialPhProperties, PhDivisionGrid
 from honeybee_ph_utils import color, iso_10077_1
 
+from PHX.from_HBJSON._type_utils import get_face_energy_properties, get_aperture_energy_properties, MissingEnergyPropertiesError
 from PHX.model import constructions, project, shades
 
 logger = logging.getLogger(__name__)
@@ -248,8 +249,12 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
 
     for room in _hb_model.rooms:
         for face in room.faces:
-            face_prop_energy: FaceEnergyProperties = getattr(face.properties, "energy")
-            hb_const: OpaqueConstruction | AirBoundaryConstruction = face_prop_energy.construction
+            try:
+                face_energy_props = get_face_energy_properties(face)
+                hb_const: OpaqueConstruction | AirBoundaryConstruction = face_energy_props.construction
+            except MissingEnergyPropertiesError:
+                # Face has no energy properties, skip it
+                continue
 
             # -- If is an AirBoundary, use the default material
             materials: list[EnergyMaterial] = getattr(hb_const, "materials", DEFAULT_MATERIALS)
@@ -450,7 +455,12 @@ def build_transparent_assembly_types_from_HB_Model(_project: project.PhxProject,
 
     for aperture in _hb_apertures:
         # ---------------------------------------------------------------------
-        ap_ep_const = aperture.properties.energy.construction  # type: ignore
+        try:
+            ap_energy_props = get_aperture_energy_properties(aperture)
+            ap_ep_const = ap_energy_props.construction
+        except MissingEnergyPropertiesError:
+            # Aperture has no energy properties, skip it
+            continue
         hb_win_const, hb_shade_const = _get_hbph_window_constructions(ap_ep_const)
 
         # ---------------------------------------------------------------------

@@ -19,6 +19,7 @@ from honeybee_ph.properties.aperture import AperturePhProperties
 from honeybee_ph.properties.room import RoomPhProperties
 
 from PHX.from_HBJSON import create_geometry
+from PHX.from_HBJSON._type_utils import get_room_people, MissingEnergyPropertiesError
 from PHX.from_HBJSON.create_rooms import create_room_from_space
 from PHX.model import building, components, constructions
 from PHX.model.enums.building import (
@@ -281,12 +282,16 @@ def create_components_from_hb_room(
 def set_zone_occupancy(_hb_room: room.Room, zone: building.PhxZone) -> building.PhxZone:
     """Set the Zone's Residential Occupancy values."""
     # -- Type Aliases
-    hb_room_energy_prop: RoomEnergyProperties = getattr(_hb_room.properties, "energy")
-    hbph_people_prop: PeoplePhProperties = getattr(hb_room_energy_prop.people.properties, "ph")
+    try:
+        hb_people = get_room_people(_hb_room)
+        hbph_people_prop: PeoplePhProperties = getattr(hb_people.properties, "ph")
 
-    zone.res_occupant_quantity = hbph_people_prop.number_people
-    zone.res_number_bedrooms = hbph_people_prop.number_bedrooms
-    zone.res_number_dwellings = hbph_people_prop.number_dwelling_units
+        zone.res_occupant_quantity = hbph_people_prop.number_people
+        zone.res_number_bedrooms = hbph_people_prop.number_bedrooms
+        zone.res_number_dwellings = hbph_people_prop.number_dwelling_units
+    except MissingEnergyPropertiesError:
+        # No people defined, skip setting occupancy values
+        pass
 
     return zone
 

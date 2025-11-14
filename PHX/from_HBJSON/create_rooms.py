@@ -14,6 +14,7 @@ from honeybee_ph_utils.occupancy import hb_room_ppl_per_area
 from honeybee_ph_utils.ventilation import hb_room_vent_flowrates
 from honeybee_phhvac.properties.room import get_ph_hvac_from_space
 
+from PHX.from_HBJSON._type_utils import get_space_energy_properties, get_ventilation_schedule
 from PHX.model import spaces
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Lighting,
@@ -68,10 +69,13 @@ def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
 
 
 def _get_energy_properties_from_space(_space: space.Space) -> RoomEnergyProperties:
-    """Return the "energy" Properties of a Honeybee-PH Space's host Room."""
-    if not _space.host:
-        raise ValueError(f"The Honeybee-PH Space {_space.display_name} is missing a host-HB-Room.")
-    return getattr(_space.host.properties, "energy")
+    """Return the "energy" Properties of a Honeybee-PH Space's host Room.
+    
+    Raises:
+    -------
+        * MissingEnergyPropertiesError: If the space has no host or the host has no energy properties.
+    """
+    return get_space_energy_properties(_space)
 
 
 def create_room_from_space(

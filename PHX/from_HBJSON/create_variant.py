@@ -27,6 +27,13 @@ from honeybee_phhvac.properties.room import (
 )
 
 from PHX.from_HBJSON import create_building, create_elec_equip, create_foundations, create_hvac
+from PHX.from_HBJSON._type_utils import (
+    get_room_energy_properties,
+    get_room_infiltration,
+    get_room_people,
+    get_room_electric_equipment,
+    MissingEnergyPropertiesError,
+)
 from PHX.from_HBJSON.create_shw_devices import (
     build_phx_hw_heater,
     build_phx_hw_storage,
@@ -267,15 +274,18 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     # ------------------------------------------------------------------------------------------------------------------
     # -- Type Aliases
     ph_bldg = _variant.phius_cert.ph_building_data  # alias
-    hb_prop_energy: RoomEnergyProperties = getattr(_hb_room.properties, "energy")
     hb_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
     hbph_bldg_seg: BldgSegment = hb_prop_ph.ph_bldg_segment
 
     # ------------------------------------------------------------------------------------------------------------------
     # -- Occupancy
-    if hb_prop_energy.people:
-        hb_ppl_prop_ph: people.PeoplePhProperties = getattr(hb_prop_energy.people.properties, "ph")
+    try:
+        hb_people = get_room_people(_hb_room)
+        hb_ppl_prop_ph: people.PeoplePhProperties = getattr(hb_people.properties, "ph")
         ph_bldg.num_of_units = hb_ppl_prop_ph.number_dwelling_units
+    except MissingEnergyPropertiesError:
+        # No people defined, skip setting num_of_units
+        pass
     ph_bldg.num_of_floors = hbph_bldg_seg.num_floor_levels
 
     # ------------------------------------------------------------------------------------------------------------------
@@ -286,13 +296,18 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
 
     # ------------------------------------------------------------------------------------------------------------------
     # -- Air-Infiltration
-    m3h_per_m2_at_50Pa = get_infiltration_at_50Pa(hb_prop_energy.infiltration.flow_per_exterior_area)
-    ph_bldg.airtightness_q50 = m3h_per_m2_at_50Pa
-    total_flow_m3_hr_at_50Pa = ph_bldg.airtightness_q50 * _variant.get_total_gross_envelope_area()
     try:
-        ph_bldg.airtightness_n50 = total_flow_m3_hr_at_50Pa / _variant.building.net_volume
-    except ZeroDivisionError:
-        ph_bldg.airtightness_n50 = 1.0
+        hb_infiltration = get_room_infiltration(_hb_room)
+        m3h_per_m2_at_50Pa = get_infiltration_at_50Pa(hb_infiltration.flow_per_exterior_area)
+        ph_bldg.airtightness_q50 = m3h_per_m2_at_50Pa
+        total_flow_m3_hr_at_50Pa = ph_bldg.airtightness_q50 * _variant.get_total_gross_envelope_area()
+        try:
+            ph_bldg.airtightness_n50 = total_flow_m3_hr_at_50Pa / _variant.building.net_volume
+        except ZeroDivisionError:
+            ph_bldg.airtightness_n50 = 1.0
+    except MissingEnergyPropertiesError:
+        # No infiltration defined, skip setting airtightness values
+        pass
 
     # ------------------------------------------------------------------------------------------------------------------
     # -- Air Temp Setpoints
@@ -776,31 +791,44 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
     """
 
     # -- Get all the PhEquipment from the HBE-Electric-Equipment
-    room_prop_hb_energy: RoomEnergyProperties = getattr(_hb_room.properties, "energy")
-    room_hb_energy_elec_equip: ElectricEquipment = room_prop_hb_energy.electric_equipment
-    if room_hb_energy_elec_equip:
+    try:
+        room_hb_energy_elec_equip = get_room_electric_equipment(_hb_room)
         ee_properties_ph: equipment.ElectricEquipmentPhProperties = getattr(room_hb_energy_elec_equip.properties, "ph")
         for equip_key, device in ee_properties_ph.equipment_collection.items():
             phx_elec_device = create_elec_equip.build_phx_elec_device(device)
             for zone in _variant.building.zones:
                 zone.elec_equipment_collection.add_new_device(equip_key, phx_elec_device)
+    except MissingEnergyPropertiesError:
+        # No electric equipment defined, skip
+        pass
 
     # -- Get all the PhEquipment from the HBE-Process-Loads
-    room_hb_energy_process_loads: tuple[Process] = room_prop_hb_energy.process_loads
-    for process_load in room_hb_energy_process_loads:
-        process_prop_ph: process.ProcessPhProperties = getattr(process_load.properties, "ph")
-        if not process_prop_ph.ph_equipment:
-            continue
-        phx_elec_device = create_elec_equip.build_phx_elec_device(process_prop_ph.ph_equipment)
-        for zone in _variant.building.zones:
-            zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
+    try:
+        room_energy_props = get_room_energy_properties(_hb_room)
+        room_hb_energy_process_loads: tuple[Process] = room_energy_props.process_loads
+        for process_load in room_hb_energy_process_loads:
+            process_prop_ph: process.ProcessPhProperties = getattr(process_load.properties, "ph")
+            if not process_prop_ph.ph_equipment:
+                continue
+            phx_elec_device = create_elec_equip.build_phx_elec_device(process_prop_ph.ph_equipment)
+            for zone in _variant.building.zones:
+                zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
+    except MissingEnergyPropertiesError:
+        # No energy properties or process loads defined, skip
+        pass
 
     # -- Get the PhEquipment from the HBE-Lighting, if it exists
-    lighting_prop_ph: lighting.LightingPhProperties = getattr(room_prop_hb_energy.lighting.properties, "ph")
-    if lighting_prop_ph.ph_equipment:
-        phx_elec_device = create_elec_equip.build_phx_elec_device(lighting_prop_ph.ph_equipment)
-        for zone in _variant.building.zones:
-            zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
+    try:
+        room_energy_props = get_room_energy_properties(_hb_room)
+        if room_energy_props.lighting is not None:
+            lighting_prop_ph: lighting.LightingPhProperties = getattr(room_energy_props.lighting.properties, "ph")
+            if lighting_prop_ph.ph_equipment:
+                phx_elec_device = create_elec_equip.build_phx_elec_device(lighting_prop_ph.ph_equipment)
+                for zone in _variant.building.zones:
+                    zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
+    except MissingEnergyPropertiesError:
+        # No energy properties or lighting defined, skip
+        pass
 
     return None
 

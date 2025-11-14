@@ -12,6 +12,15 @@ from honeybee_energy.schedule import ruleset as hbe_ruleset
 from honeybee_energy_ph.properties import ruleset as phx_ruleset
 from honeybee_ph_utils.schedules import calc_four_part_vent_sched_values_from_hb_room
 
+from PHX.from_HBJSON._type_utils import (
+    get_room_energy_properties,
+    get_room_ventilation,
+    get_room_people,
+    get_ventilation_schedule,
+    get_people_schedule,
+    get_lighting_schedule,
+    MissingEnergyPropertiesError,
+)
 from PHX.model import project
 from PHX.model.schedules import lighting, occupancy, ventilation
 
@@ -31,18 +40,15 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
 
     # -------------------------------------------------------------------------
     # -- Honeybee-Energy data might not be there...
-    hbe_prop: Optional[RoomEnergyProperties] = _hb_room.properties.energy  # type: ignore
-    if not hbe_prop:
-        # No Honeybee-Energy Room Properties
-        return False
-
-    if hbe_prop.ventilation.schedule is None:
-        # Not Honeybee-Energy Ventilation Schedule
+    try:
+        hbe_vent_sched = get_ventilation_schedule(_hb_room)
+    except MissingEnergyPropertiesError:
+        # No Honeybee-Energy Room Properties or Ventilation Schedule
         return False
 
     # -------------------------------------------------------------------------
     # -- Check Honeybee-Energy-PH detailed data
-    hbe_vent_sched_prop = hbe_prop.ventilation.schedule.properties
+    hbe_vent_sched_prop = hbe_vent_sched.properties
     hbph_sched_prop: phx_ruleset.ScheduleRulesetPhProperties = hbe_vent_sched_prop.ph  # type: ignore
     if not hbph_sched_prop.daily_operating_periods:
         # No Honeybee-Energy-PH Schedule detailed Operating Periods
@@ -71,7 +77,7 @@ def _create_vent_schedule_from_hb_style(
     """
 
     # -- Type Aliases
-    hbe_room_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
+    hbe_vent_sched = get_ventilation_schedule(_hb_room)
 
     new_phx_vent_schedule = ventilation.PhxScheduleVentilation()
 
@@ -87,11 +93,11 @@ def _create_vent_schedule_from_hb_style(
     op_periods.minimum.period_operation_speed = wufi_sched.minimum.period_speed
 
     # -- Keep all the IDs in alignment....
-    new_phx_vent_schedule.identifier = hbe_room_prop.ventilation.schedule.identifier
+    new_phx_vent_schedule.identifier = hbe_vent_sched.identifier
     new_phx_vent_schedule.id_num = new_phx_vent_schedule._count
-    ph_sched_props: phx_ruleset.ScheduleRulesetPhProperties = hbe_room_prop.ventilation.schedule.properties.ph  # type: ignore
+    ph_sched_props: phx_ruleset.ScheduleRulesetPhProperties = hbe_vent_sched.properties.ph  # type: ignore
     ph_sched_props.id_num = new_phx_vent_schedule.id_num  # <--- Important!
-    new_phx_vent_schedule.name = hbe_room_prop.ventilation.schedule.display_name
+    new_phx_vent_schedule.name = hbe_vent_sched.display_name
 
     return new_phx_vent_schedule
 
@@ -112,14 +118,13 @@ def _create_vent_schedule_from_ph_style(
     """
 
     # -- Type Aliases
-    hbe_room_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-    hbe_vent_sched = hbe_room_prop.ventilation.schedule
+    hbe_vent_sched = get_ventilation_schedule(_hb_room)
     hbe_vent_sched_prop = hbe_vent_sched.properties
     hbe_vent_sched_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_vent_sched_prop.ph  # type: ignore
 
     # -- Create the new Schedule object
     new_phx_vent_schedule = ventilation.PhxScheduleVentilation()
-    new_phx_vent_schedule.name = hbe_room_prop.ventilation.schedule.display_name
+    new_phx_vent_schedule.name = hbe_vent_sched.display_name
 
     # -- Set all the ventilation schedule data from the room's properties
     new_phx_vent_schedule.operating_hours = 24.0
@@ -133,7 +138,7 @@ def _create_vent_schedule_from_ph_style(
         setattr(new_phx_vent_schedule.operating_periods, op_period.name, phx_vent_util_period)
 
     # -- Keep all the IDs in alignment....
-    new_phx_vent_schedule.identifier = hbe_room_prop.ventilation.schedule.identifier
+    new_phx_vent_schedule.identifier = hbe_vent_sched.identifier
     new_phx_vent_schedule.id_num = new_phx_vent_schedule._count
     hbe_vent_sched_prop_ph.id_num = new_phx_vent_schedule.id_num  # Important!
 
@@ -156,11 +161,10 @@ def build_ventilation_schedule_from_hb_room(
     """
 
     # -- Make sure that the room has vent schedule
-    hbe_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-    if hbe_prop.ventilation is None:
-        return None
-
-    if hbe_prop.ventilation.schedule is None:
+    try:
+        get_ventilation_schedule(_hb_room)
+    except MissingEnergyPropertiesError:
+        # No ventilation or ventilation.schedule found
         return None
 
     if _room_has_ph_style_ventilation(_hb_room):
@@ -196,15 +200,12 @@ def build_occupancy_schedule_from_hb_room(
     """
 
     # -- Make sure that the room has an occupancy schedule
-    hbe_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-    if hbe_prop.people is None:
+    try:
+        hbe_schedule = get_people_schedule(_hb_room)
+    except MissingEnergyPropertiesError:
+        # No people or occupancy_schedule found
         return None
 
-    if hbe_prop.people.occupancy_schedule is None:
-        return None
-
-    # -- Aliases
-    hbe_schedule = hbe_prop.people.occupancy_schedule
     hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
     daily_period = hbe_schedule_prop_ph.first_operating_period
 
@@ -240,15 +241,12 @@ def build_lighting_schedule_from_hb_room(
     """
 
     # -- Make sure that the room has an occupancy schedule
-    hbe_prop: RoomEnergyProperties = _hb_room.properties.energy  # type: ignore
-    if hbe_prop.lighting is None:
+    try:
+        hbe_schedule = get_lighting_schedule(_hb_room)
+    except MissingEnergyPropertiesError:
+        # No lighting or lighting.schedule found
         return None
 
-    if hbe_prop.lighting.schedule is None:
-        return None
-
-    # -- Aliases
-    hbe_schedule = hbe_prop.lighting.schedule
     hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
     daily_period = hbe_schedule_prop_ph.first_operating_period
 
@@ -289,10 +287,19 @@ def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:
     default_ventilation_schedule = hbe_ruleset.ScheduleRuleset.from_constant_value("default_schedule", 1.0, type_limit)
 
     for hb_room in _hb_model.rooms:
-        if hb_room.properties.energy.ventilation.schedule is None:
-            hb_room.properties.energy.ventilation.unlock()
-            hb_room.properties.energy.ventilation.schedule = default_ventilation_schedule
-            hb_room.properties.energy.ventilation.lock()
+        try:
+            get_ventilation_schedule(hb_room)
+        except MissingEnergyPropertiesError:
+            # No ventilation schedule found - add default
+            try:
+                room_energy_props = get_room_energy_properties(hb_room)
+                if room_energy_props.ventilation is not None:
+                    room_energy_props.ventilation.unlock()  # type: ignore
+                    room_energy_props.ventilation.schedule = default_ventilation_schedule
+                    room_energy_props.ventilation.lock()  # type: ignore
+            except MissingEnergyPropertiesError:
+                # Room has no energy properties at all - skip it
+                continue
 
     return _hb_model
 
@@ -317,8 +324,12 @@ def add_all_HB_Model_ventilation_schedules_to_PHX_Project(_project: project.PhxP
 
     # -- NEXT: Build up the new Ventilation Schedules from the Room's data
     for hb_room in _hb_model.rooms:
-        hbe_room_energy_prop: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
-        vent_schedule_id = hbe_room_energy_prop.ventilation.schedule.identifier
+        try:
+            vent_schedule = get_ventilation_schedule(hb_room)
+            vent_schedule_id = vent_schedule.identifier
+        except MissingEnergyPropertiesError:
+            # No ventilation schedule found, skip this room
+            continue
 
         if _project.vent_sched_in_project_collection(vent_schedule_id):
             # -- This is just to help speed things up.
@@ -345,13 +356,13 @@ def add_all_HB_Model_occupancy_schedules_to_PHX_Project(_project: project.PhxPro
         * None
     """
     for hb_room in _hb_model.rooms:
-        hbe_room_energy_prop: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
-
-        # -- Sometimes there is no 'People'
-        if hbe_room_energy_prop.people is None:
+        try:
+            occ_schedule = get_people_schedule(hb_room)
+            occ_schedule_id = occ_schedule.identifier
+        except MissingEnergyPropertiesError:
+            # No people or occupancy schedule found, skip this room
             continue
 
-        occ_schedule_id = hbe_room_energy_prop.people.occupancy_schedule.identifier
         if _project.occupancy_sched_in_project_collection(occ_schedule_id):
             # -- This is just to help speed things up.
             # -- Don't re-make the util-pattern if it is already in collection.
@@ -363,12 +374,13 @@ def add_all_HB_Model_occupancy_schedules_to_PHX_Project(_project: project.PhxPro
 
 def add_all_HB_Model_lighting_schedules_to_PHX_Project(_project: project.PhxProject, _hb_model: model.Model) -> None:
     for hb_room in _hb_model.rooms:
-        hbe_room_energy_prop: RoomEnergyProperties = hb_room.properties.energy  # type: ignore
-
-        if hbe_room_energy_prop.lighting is None:
+        try:
+            lighting_schedule = get_lighting_schedule(hb_room)
+            lighting_schedule_id = lighting_schedule.identifier
+        except MissingEnergyPropertiesError:
+            # No lighting or lighting.schedule found, skip this room
             continue
 
-        lighting_schedule_id = hbe_room_energy_prop.lighting.schedule.identifier
         if _project.lighting_sched_in_project_collection(lighting_schedule_id):
             # -- This is just to help speed things up.
             # -- Don't re-make the util-pattern if it is already in collection.
