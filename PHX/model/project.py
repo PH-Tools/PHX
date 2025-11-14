@@ -277,7 +277,7 @@ class PhxProject:
         """Returns the PhxConstructionWindow with the specified key"""
         try:
             return self.window_types[_key]
-        except KeyError as e:
+        except KeyError:
             valid_keys = "  |  ".join([f"{k}::{v.display_name}" for k, v in self.window_types.items()])
             msg = (
                 f"Window Type: '{_key}' not found in project collection? "

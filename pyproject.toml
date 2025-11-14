@@ -24,3 +24,11 @@ directory = "_coverage_html"
 
 [tool.black]
 line-length = 120
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+extend-ignore = ["F403", "F405", "N802"]

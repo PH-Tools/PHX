@@ -1,5 +1,3 @@
-import pytest
-
 from PHX.model import geometry
 
 

@@ -6,7 +6,7 @@
 import operator
 import sys
 from functools import reduce
-from typing import Any, Dict, List, Optional, TypeVar
+from typing import Dict, List, Optional, TypeVar
 
 from ph_units.converter import convert
 

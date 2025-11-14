@@ -9,7 +9,6 @@ from typing import Dict, Set
 logger = logging.getLogger()
 
 from honeybee import room
-from honeybee_energy.load.equipment import ElectricEquipment
 from honeybee_energy.load.process import Process
 from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_energy_ph.properties.load import equipment, lighting, people, process
@@ -28,11 +27,11 @@ from honeybee_phhvac.properties.room import (
 
 from PHX.from_HBJSON import create_building, create_elec_equip, create_foundations, create_hvac
 from PHX.from_HBJSON._type_utils import (
+    MissingEnergyPropertiesError,
+    get_room_electric_equipment,
     get_room_energy_properties,
     get_room_infiltration,
     get_room_people,
-    get_room_electric_equipment,
-    MissingEnergyPropertiesError,
 )
 from PHX.from_HBJSON.create_shw_devices import (
     build_phx_hw_heater,

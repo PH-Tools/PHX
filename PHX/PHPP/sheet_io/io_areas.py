@@ -10,7 +10,7 @@ from typing import Dict, Generator, List, Optional, Tuple
 from ph_units.unit_type import Unit
 
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.PHPP.phpp_model import areas_data, areas_surface, areas_thermal_bridges, version
+from PHX.PHPP.phpp_model import areas_data, areas_surface, areas_thermal_bridges
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset
 
@@ -128,7 +128,7 @@ class Surfaces:
             if val == self.shape.surface_rows.locator_string_entry:
                 return i
 
-        raise Exception(f'\n\tError: Not able to find the first surface entry row in the "Areas input" section?')
+        raise Exception('\n\tError: Not able to find the first surface entry row in the "Areas input" section?')
 
     def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
         """Return the row number of the last user-input entry row in the 'Area input' section."""
@@ -136,7 +136,7 @@ class Surfaces:
         if not _start_row:
             _start_row = self.section_first_entry_row
         elif _start_row > 10_000:
-            raise Exception(f'\n\tError: Not able to find the last surface entry row in the "Areas input" section?')
+            raise Exception('\n\tError: Not able to find the last surface entry row in the "Areas input" section?')
 
         _row_end = _start_row + 500
         xl_data = self.xl.get_single_column_data(
@@ -301,7 +301,7 @@ class ThermalBridges:
                 return i
 
         raise Exception(
-            f'\n\tError: Not able to find the first Thermal Bridge entry row in the "Thermal Bridge input" section?'
+            '\n\tError: Not able to find the first Thermal Bridge entry row in the "Thermal Bridge input" section?'
         )
 
 

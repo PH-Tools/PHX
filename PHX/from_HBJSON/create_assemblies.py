@@ -14,13 +14,16 @@ from honeybee_energy.construction.opaque import OpaqueConstruction
 from honeybee_energy.construction.window import WindowConstruction
 from honeybee_energy.construction.windowshade import WindowConstructionShade
 from honeybee_energy.material.opaque import EnergyMaterial, EnergyMaterialNoMass
-from honeybee_energy.properties.face import FaceEnergyProperties
 from honeybee_energy_ph.construction.window import PhWindowFrame, PhWindowGlazing
 from honeybee_energy_ph.properties.construction.window import WindowConstructionPhProperties
 from honeybee_energy_ph.properties.materials.opaque import EnergyMaterialPhProperties, PhDivisionGrid
 from honeybee_ph_utils import color, iso_10077_1
 
-from PHX.from_HBJSON._type_utils import get_face_energy_properties, get_aperture_energy_properties, MissingEnergyPropertiesError
+from PHX.from_HBJSON._type_utils import (
+    MissingEnergyPropertiesError,
+    get_aperture_energy_properties,
+    get_face_energy_properties,
+)
 from PHX.model import constructions, project, shades
 
 logger = logging.getLogger(__name__)
@@ -258,7 +261,7 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
 
             # -- If is an AirBoundary, use the default material
             materials: list[EnergyMaterial] = getattr(hb_const, "materials", DEFAULT_MATERIALS)
-            if not hb_const.identifier in _project.assembly_types:
+            if hb_const.identifier not in _project.assembly_types:
                 # -- Create a new Assembly with Layers from the Honeybee-Construction
                 new_assembly = constructions.PhxConstructionOpaque()
                 new_assembly.id_num = constructions.PhxConstructionOpaque._count

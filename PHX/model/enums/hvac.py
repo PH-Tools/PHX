@@ -5,8 +5,6 @@
 
 from enum import Enum
 
-from honeybee_phhvac.hot_water_devices import PhHvacHotWaterTankType
-
 
 class PhxFuelType(Enum):
     NATURAL_GAS = 1

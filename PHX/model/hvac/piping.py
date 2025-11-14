@@ -12,11 +12,9 @@ from uuid import uuid4
 
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
-from ph_units.converter import convert
 
 from PHX.model.enums.hvac import (
     PhxHotWaterPipingCalcMethod,
-    PhxHotWaterPipingInchDiameterType,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
 )

@@ -4,7 +4,7 @@
 """XL-App Protocol Classes."""
 
 import pathlib
-from typing import Any, Callable, Dict, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 from PHX.xl import xl_data
 

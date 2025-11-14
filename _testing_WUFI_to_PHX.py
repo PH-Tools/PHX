@@ -28,7 +28,7 @@ for i, xm_source_file_name in enumerate(SOURCE_FILE_NAMES):
 
     # ----------------------------------------------------------------
     # -- 2) Convert the Pydantic WUFI model over to a PHX model
-    print(f"[green bold]> Converting XML-data to a PHX-Model[/green bold]")
+    print("[green bold]> Converting XML-data to a PHX-Model[/green bold]")
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
 
     # ----------------------------------------------------------------

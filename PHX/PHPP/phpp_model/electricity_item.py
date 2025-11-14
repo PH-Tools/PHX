@@ -4,7 +4,7 @@
 """Model class for a PHPP Electricity / Equipment row input."""
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, NamedTuple, Tuple
+from typing import Any, List, NamedTuple, Tuple
 
 from PHX.model import elec_equip
 from PHX.model.enums.elec_equip import ElectricEquipmentType

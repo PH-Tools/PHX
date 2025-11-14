@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from functools import partial
 from typing import Any, Dict, List
 
 from ph_units.unit_type import Unit

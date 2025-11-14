@@ -56,6 +56,7 @@ from PHX.model.enums.building import (
 )
 from PHX.model.enums.elec_equip import ElectricEquipmentType
 from PHX.model.enums.foundations import FoundationType
+from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType
 from PHX.model.enums.phius_certification import (
     PhiusCertificationBuildingCategoryType,
     PhiusCertificationBuildingStatus,
@@ -79,12 +80,7 @@ from PHX.model.hvac import (
     PhxHeatPumpMonthly,
 )
 from PHX.model.hvac._base import PhxUsageProfile
-from PHX.model.hvac.collection import (
-    AnyMechDevice,
-    PhxMechanicalSystemCollection,
-    PhxRecirculationParameters,
-    PhxZoneCoverage,
-)
+from PHX.model.hvac.collection import PhxMechanicalSystemCollection, PhxRecirculationParameters, PhxZoneCoverage
 from PHX.model.hvac.cooling_params import (
     PhxCoolingDehumidificationParams,
     PhxCoolingPanelParams,
@@ -94,7 +90,6 @@ from PHX.model.hvac.cooling_params import (
 from PHX.model.hvac.ducting import PhxDuctElement, PhxDuctSegment, PhxVentDuctType
 from PHX.model.hvac.piping import (
     PhxHotWaterPipingCalcMethod,
-    PhxHotWaterPipingInchDiameterType,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
     PhxPipeBranch,

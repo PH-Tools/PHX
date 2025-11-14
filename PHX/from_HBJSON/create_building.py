@@ -7,19 +7,16 @@ from functools import partial
 from typing import Dict, List, Union
 
 from honeybee import aperture, face, room
-from honeybee_energy.construction import window, windowshade
+from honeybee_energy.construction import window
 from honeybee_energy.properties.aperture import ApertureEnergyProperties
 from honeybee_energy.properties.face import FaceEnergyProperties
-from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_energy_ph.properties.construction.opaque import OpaqueConstructionPhProperties
-from honeybee_energy_ph.properties.construction.window import WindowConstructionPhProperties
 from honeybee_energy_ph.properties.load.people import PeoplePhProperties
-from honeybee_ph import space
 from honeybee_ph.properties.aperture import AperturePhProperties
 from honeybee_ph.properties.room import RoomPhProperties
 
 from PHX.from_HBJSON import create_geometry
-from PHX.from_HBJSON._type_utils import get_room_people, MissingEnergyPropertiesError
+from PHX.from_HBJSON._type_utils import MissingEnergyPropertiesError, get_room_people
 from PHX.from_HBJSON.create_rooms import create_room_from_space
 from PHX.model import building, components, constructions
 from PHX.model.enums.building import (

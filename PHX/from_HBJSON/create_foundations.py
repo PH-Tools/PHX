@@ -50,7 +50,7 @@ def create_phx_foundation_from_hbph(
                 setattr(new_phx_foundation, attr_name, getattr(_hbph_foundation, attr_name))
             except KeyError:
                 raise
-            except Exception as e:
+            except Exception:
                 msg = f"\n\tError setting attribute '{attr_name}' on '{new_phx_foundation.__class__.__name__}'?"
                 raise Exception(msg)
 

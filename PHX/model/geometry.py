@@ -241,7 +241,7 @@ class PhxPolygon:
         if not len(self.child_polygon_ids) == len(other.child_polygon_ids):
             return False
         for _ in self.child_polygon_ids:
-            if not _ in other.child_polygon_ids:
+            if _ not in other.child_polygon_ids:
                 return False
 
         # # -- Check the actual vertices

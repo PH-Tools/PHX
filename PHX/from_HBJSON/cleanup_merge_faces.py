@@ -59,11 +59,11 @@ def _check_and_add_sub_face(
             _add_sub_face(_face, aperture)
 
 
-def _create_new_HB_Face(_face3D: Face3D, _ref_face: Face) -> Face:
+def _create_new_HB_Face(_face3d: Face3D, _ref_face: Face) -> Face:
     """Create a new HB-Face using a Face3D and a reference HB-Face."""
     new_face = Face(
         identifier=_ref_face.identifier,
-        geometry=_face3D,
+        geometry=_face3d,
         type=_ref_face.type,
         boundary_condition=_ref_face.boundary_condition,
     )
@@ -74,11 +74,11 @@ def _create_new_HB_Face(_face3D: Face3D, _ref_face: Face) -> Face:
     return new_face
 
 
-def _create_new_HB_Shade(_face3D: Face3D, _ref_face: Shade) -> Shade:
+def _create_new_HB_Shade(_face3d: Face3D, _ref_face: Shade) -> Shade:
     """Create a new HB-Shade using a Face3D and a reference HB-Shade."""
     new_face = Shade(
         identifier=_ref_face.identifier,
-        geometry=_face3D,
+        geometry=_face3d,
         is_detached=True,
     )
     new_face.display_name = _ref_face.display_name
@@ -88,10 +88,10 @@ def _create_new_HB_Shade(_face3D: Face3D, _ref_face: Shade) -> Shade:
     return new_face
 
 
-def _create_new_Face3D(_poly2D: Polygon2D, _base_plane: Plane, _ref_face: TFaceOrShade) -> Face3D:
+def _create_new_Face3D(_poly2d: Polygon2D, _base_plane: Plane, _ref_face: TFaceOrShade) -> Face3D:
     """Return a new Face3D based on a Polygon2D and a reference HB-Face."""
     return Face3D(
-        boundary=tuple(_base_plane.xy_to_xyz(v) for v in _poly2D.vertices),
+        boundary=tuple(_base_plane.xy_to_xyz(v) for v in _poly2d.vertices),
         plane=_ref_face.geometry.plane,
     )
 
@@ -151,22 +151,22 @@ def merge_hb_faces(_faces: List[Face], _tolerance: float, _angle_tolerance_degre
 
     # -------------------------------------------------------------------------
     # -- Merge the HB-Faces' Polygons together
-    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(face3Ds(_faces), _tolerance)
+    merged_polygon2ds = polygon2d_tools.merge_lbt_face_polygons(face3Ds(_faces), _tolerance)
 
     # -------------------------------------------------------------------------
     # -- Create new LBT-Face3D, and HB-Faces from the Polygon2Ds
     ref_face = _faces[0]
     ref_plane = ref_face.geometry.plane
     faces = []
-    if len(merged_polygon2Ds) == 1:
+    if len(merged_polygon2ds) == 1:
         # -- Create new faces for the merged Polygon2Ds
-        face3ds = (_create_new_Face3D(p, ref_plane, ref_face) for p in merged_polygon2Ds)
+        face3ds = (_create_new_Face3D(p, ref_plane, ref_face) for p in merged_polygon2ds)
         faces = [_create_new_HB_Face(f3d, ref_face) for f3d in face3ds]
-    elif len(merged_polygon2Ds) > 1:
+    elif len(merged_polygon2ds) > 1:
         # -- It may mean that there are 'holes' in a surface? So try and find
         # -- the parent and any child surfaces.
 
-        parent_polygon, child_polygons = find_parent_and_child_polygons(merged_polygon2Ds)
+        parent_polygon, child_polygons = find_parent_and_child_polygons(merged_polygon2ds)
 
         # -- Check the results
         if len(parent_polygon) != 1:
@@ -200,22 +200,22 @@ def merge_hb_shades(_faces: List[Shade], _tolerance: float, _angle_tolerance_deg
 
     # -------------------------------------------------------------------------
     # -- Merge the HB-Face's Polygons together
-    merged_polygon2Ds = polygon2d_tools.merge_lbt_face_polygons(face3Ds(_faces), _tolerance)
+    merged_polygon2ds = polygon2d_tools.merge_lbt_face_polygons(face3Ds(_faces), _tolerance)
 
     # -------------------------------------------------------------------------
     # -- Create new LBT-Face3D, and HB-Faces from the Polygon2Ds
     ref_face = _faces[0]
     ref_plane = ref_face.geometry.plane
     hb_shades_ = []
-    if len(merged_polygon2Ds) == 1:
+    if len(merged_polygon2ds) == 1:
         # -- Create new faces for the merged Polygon2Ds
-        face3ds = (_create_new_Face3D(p, ref_plane, ref_face) for p in merged_polygon2Ds)
+        face3ds = (_create_new_Face3D(p, ref_plane, ref_face) for p in merged_polygon2ds)
         hb_shades_ = [_create_new_HB_Shade(f3d, ref_face) for f3d in face3ds]
-    elif len(merged_polygon2Ds) > 1:
+    elif len(merged_polygon2ds) > 1:
         # -- It may mean that there are 'holes' in a surface? So try and find
         # -- the parent and any child surfaces.
 
-        parent_polygon, child_polygons = find_parent_and_child_polygons(merged_polygon2Ds)
+        parent_polygon, child_polygons = find_parent_and_child_polygons(merged_polygon2ds)
 
         # -- Check the results
         if len(parent_polygon) != 1:

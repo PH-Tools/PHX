@@ -10,16 +10,6 @@ from dataclasses import dataclass
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset
-from PHX.xl.xl_typing import (
-    xl_app_Protocol,
-    xl_apps_Protocol,
-    xl_Book_Protocol,
-    xl_Books_Protocol,
-    xl_Framework_Protocol,
-    xl_Range_Protocol,
-    xl_Sheet_Protocol,
-    xl_Sheets_Protocol,
-)
 
 
 @dataclass

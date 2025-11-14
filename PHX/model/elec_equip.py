@@ -7,7 +7,7 @@ import inspect
 import sys
 import uuid
 from dataclasses import dataclass, field
-from typing import Any, ClassVar, Dict, List, Optional, Type, Union
+from typing import ClassVar, Dict, List, Optional, Type, Union
 
 from PHX.model.enums.elec_equip import ElectricEquipmentType
 

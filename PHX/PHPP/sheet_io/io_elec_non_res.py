@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from typing import Generator, List, Optional, Tuple
+from typing import Generator, Optional, Tuple
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model.elec_non_res import ExistingLightingRow
@@ -76,7 +76,7 @@ class Lighting:
             if val == self.shape.lighting_rows.locator_string_entry:
                 return i + 1
 
-        raise Exception(f'\n\tError: Not able to find the first surface entry row in the "Lighting input" section?')
+        raise Exception('\n\tError: Not able to find the first surface entry row in the "Lighting input" section?')
 
     def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
         """Return the row number of the last user-input entry row in the 'Lighting input' section."""
@@ -84,7 +84,7 @@ class Lighting:
         if not _start_row:
             _start_row = self.section_first_entry_row
         elif _start_row > 10_000:
-            raise Exception(f'\n\tError: Not able to find the last surface entry row in the "Lighting input" section?')
+            raise Exception('\n\tError: Not able to find the last surface entry row in the "Lighting input" section?')
 
         _row_end = _start_row + 500
         xl_data = self.xl.get_single_column_data(

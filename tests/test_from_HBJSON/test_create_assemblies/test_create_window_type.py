@@ -1,7 +1,5 @@
 from honeybee_energy.construction.window import WindowConstruction
-from honeybee_energy.construction.windowshade import WindowConstructionShade
 from honeybee_energy.material.glazing import EnergyWindowMaterialSimpleGlazSys
-from honeybee_energy.material.shade import EnergyWindowMaterialShade
 from honeybee_energy_ph.construction.window import PhWindowFrame, PhWindowFrameElement, PhWindowGlazing
 
 from PHX.from_HBJSON.create_assemblies import build_phx_window_type_from_HB_WindowConstruction

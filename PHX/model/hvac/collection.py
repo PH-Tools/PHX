@@ -9,7 +9,7 @@ from collections import defaultdict
 from copy import copy
 from dataclasses import dataclass, field
 from functools import reduce
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import ClassVar, Dict, List, Optional, Union
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import DeviceType, PhxSupportiveDeviceType

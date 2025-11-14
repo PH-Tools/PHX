@@ -16,8 +16,10 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
 
 try:
-    from honeybee_energy.load import equipment, infiltration, people, process
+    from honeybee_energy.load.equipment import ElectricEquipment
     from honeybee_energy.load.infiltration import Infiltration
+    from honeybee_energy.load.people import People
+    from honeybee_energy.load.process import Process
     from honeybee_energy.properties.face import FaceEnergyProperties
     from honeybee_energy.properties.room import RoomEnergyProperties
     from honeybee_energy.schedule.ruleset import ScheduleRuleset
@@ -31,7 +33,6 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee_ph:\n\t{}".format(e))
 
 try:
-    from honeybee_energy_ph.load.ph_equipment import PhEquipment
     from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
     from honeybee_energy_ph.properties.load.process import ProcessPhProperties
@@ -39,14 +40,15 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy_ph:\n\t{}".format(e))
 
 try:
-    from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_faces
     from PHX.from_HBJSON._type_utils import (
-        get_room_energy_properties,
-        get_room_people,
-        get_room_infiltration,
-        get_room_electric_equipment,
         MissingEnergyPropertiesError,
+        get_face_energy_properties,
+        get_room_electric_equipment,
+        get_room_energy_properties,
+        get_room_infiltration,
+        get_room_people,
     )
+    from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_faces
     from PHX.model import project
 except ImportError as e:
     raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
@@ -73,7 +75,7 @@ def _get_hb_room_energy_properties(_hb_room: room.Room) -> RoomEnergyProperties 
     return getattr(_hb_room.properties, "energy", None)
 
 
-def _get_hb_room_energy_electric_equipment(_hb_room: room.Room) -> equipment.ElectricEquipment | None:
+def _get_hb_room_energy_electric_equipment(_hb_room: room.Room) -> ElectricEquipment | None:
     """Get the Honeybee-Room's Energy Electric Equipment Properties.
 
     Arguments:
@@ -121,7 +123,8 @@ def _dup_face(_hb_face: face.Face) -> face.Face:
                 continue
             new_extension = original_extension.__copy__()
             setattr(new_face._properties, f"_{extension_name}", new_extension)
-        except:
+        except Exception as e:
+            logger.debug(f"Failed to copy extension '{extension_name}': {e}")
             pass
 
     return new_face
@@ -209,7 +212,7 @@ def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellin
     return list(dwellings)
 
 
-def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
+def merge_occupancies(_hb_rooms: List[room.Room]) -> People:
     """Returns a new HB-People-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -235,7 +238,7 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     total_ph_people = 0.0
     total_hb_people = 0.0
     reference_people = None
-    
+
     for hb_room in _hb_rooms:
         try:
             hb_ppl_obj = get_room_people(hb_room)
@@ -253,23 +256,22 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     # -------------------------------------------------------------------------
     # -- Build up the new People object's attributes
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
-    
+
     if reference_people is None:
         # No people found on any rooms - create a default
         logger.warning("No people found on any rooms. Creating default people object with 0.0 people_per_area.")
-        from honeybee_energy.load.people import People as HBPeople
-        from honeybee_energy.schedule.ruleset import ScheduleRuleset
-        new_hb_ppl = HBPeople(
+
+        new_hb_ppl = People(
             identifier="default_people",
             people_per_area=0.0,
             occupancy_schedule=ScheduleRuleset.from_constant_value("default_occ_schedule", 1.0),
         )
         new_hb_ppl_prop_ph: PeoplePhProperties = getattr(new_hb_ppl.properties, "ph")
     else:
-        new_hb_ppl: people.People = reference_people.__copy__()
+        new_hb_ppl: People = reference_people.__copy__()
         new_hb_ppl_prop_ph: PeoplePhProperties = getattr(new_hb_ppl.properties, "ph")
         new_hb_ppl.people_per_area = total_hb_people / total_floor_area if total_floor_area > 0 else 0.0
-    
+
     new_hb_ppl_prop_ph.number_bedrooms = total_ph_bedrooms
     new_hb_ppl_prop_ph.number_people = total_ph_people
     new_hb_ppl_prop_ph.dwellings = merged_ph_dwellings
@@ -277,7 +279,7 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     return new_hb_ppl
 
 
-def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration:
+def merge_infiltrations(_hb_rooms: List[room.Room]) -> Infiltration:
     """Returns a new HB-Infiltration-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -295,7 +297,7 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
     total_m3_s = 0.0
     total_exposed_area = 0.0
     reference_infiltration = None
-    
+
     for room in _hb_rooms:
         try:
             room_infiltration = get_room_infiltration(room)
@@ -312,10 +314,11 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
 
     # -- If no rooms had infiltration, create a default one
     if reference_infiltration is None:
-        logger.warning(f"No infiltration found on any rooms. Creating default infiltration with 0.0 flow_per_exterior_area.")
-        from honeybee_energy.load.infiltration import Infiltration as HBInfiltration
-        from honeybee_energy.schedule.ruleset import ScheduleRuleset
-        new_infil = HBInfiltration(
+        logger.warning(
+            "No infiltration found on any rooms. Creating default infiltration with 0.0 flow_per_exterior_area."
+        )
+
+        new_infil = Infiltration(
             identifier="default_infiltration",
             flow_per_exterior_area=0.0,
             schedule=ScheduleRuleset.from_constant_value("default_infil_schedule", 1.0),
@@ -356,7 +359,7 @@ def merge_shw_programs(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
             continue
 
     if len(shw_programs) > 1:
-        print(f"Warning: More than one SHW Program Type found in the model.")
+        print("Warning: More than one SHW Program Type found in the model.")
 
     return shw.SHWSystem(
         identifier=clean_ep_string("_default_shw_system_"),
@@ -364,7 +367,7 @@ def merge_shw_programs(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
     )
 
 
-def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
+def merge_elec_equip(_hb_rooms: List[room.Room]) -> ElectricEquipment:
     """Returns a new HB-ElectricEquipment-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -386,7 +389,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     if not _hb_rooms:
         msg = "Warning: No Honeybee-Rooms with Electric Equipment found."
         print(msg)
-        return equipment.ElectricEquipment(
+        return ElectricEquipment(
             identifier="default_electric_equipment",
             watts_per_area=0.0,
             schedule=ScheduleRuleset.from_constant_value(
@@ -419,7 +422,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms) or 0.0
     total_watts = 0.0
     reference_electric_equipment = None
-    
+
     for rm in _hb_rooms:
         try:
             ee = get_room_electric_equipment(rm)
@@ -433,14 +436,16 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     # -- Build a new HBE-Elec-Equip from the reference room, add all the PH-Equipment to it.
     if reference_electric_equipment is None:
         # No electric equipment found on any rooms - create a default
-        logger.warning("No electric equipment found on any rooms. Creating default electric equipment with 0.0 watts_per_area.")
-        new_hb_equip: equipment.ElectricEquipment = equipment.ElectricEquipment(
+        logger.warning(
+            "No electric equipment found on any rooms. Creating default electric equipment with 0.0 watts_per_area."
+        )
+        new_hb_equip = ElectricEquipment(
             identifier="default_electric_equipment",
             watts_per_area=0.0,
             schedule=ScheduleRuleset.from_constant_value("default_ee_schedule", 1.0),
         )
     else:
-        new_hb_equip: equipment.ElectricEquipment = reference_electric_equipment.duplicate()  # type: ignore
+        new_hb_equip: ElectricEquipment = reference_electric_equipment.duplicate()  # type: ignore
         new_hb_equip.watts_per_area = total_watts / total_floor_area if total_floor_area > 0 else 0.0
     new_hb_equip_prop_ph: ElectricEquipmentPhProperties = getattr(new_hb_equip.properties, "ph")
     new_hb_equip_prop_ph.equipment_collection.remove_all_equipment()
@@ -451,7 +456,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     return new_hb_equip
 
 
-def merge_process_loads(_hb_rooms: list[room.Room]) -> list[process.Process]:
+def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
     """Returns a new HB-Process-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -465,11 +470,11 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[process.Process]:
     """
     # -- Collect all the unique Process-Load/PH-Equipment in all the rooms.
     # -- Increase the quantity for each duplicate piece of equipment found
-    ph_equipment: dict[str, process.Process] = {}
+    ph_equipment: dict[str, Process] = {}
     for room in _hb_rooms:
         try:
             room_energy_props = get_room_energy_properties(room)
-            process_loads: tuple[process.Process] = room_energy_props.process_loads
+            process_loads: tuple[Process] = room_energy_props.process_loads
         except MissingEnergyPropertiesError:
             # Room has no energy properties, skip it
             continue
@@ -570,7 +575,6 @@ def merge_rooms(
         merged_faces = []
         for face_group in face_groups:
             try:
-                from PHX.from_HBJSON._type_utils import get_face_energy_properties
                 face_energy_props = get_face_energy_properties(face_group[0])
                 const_name = face_energy_props.construction.display_name
             except MissingEnergyPropertiesError:

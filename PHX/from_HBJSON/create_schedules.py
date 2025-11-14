@@ -7,19 +7,16 @@ from typing import Optional
 
 from honeybee import model, room
 from honeybee_energy.lib.scheduletypelimits import schedule_type_limit_by_identifier
-from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_energy.schedule import ruleset as hbe_ruleset
 from honeybee_energy_ph.properties import ruleset as phx_ruleset
 from honeybee_ph_utils.schedules import calc_four_part_vent_sched_values_from_hb_room
 
 from PHX.from_HBJSON._type_utils import (
-    get_room_energy_properties,
-    get_room_ventilation,
-    get_room_people,
-    get_ventilation_schedule,
-    get_people_schedule,
-    get_lighting_schedule,
     MissingEnergyPropertiesError,
+    get_lighting_schedule,
+    get_people_schedule,
+    get_room_energy_properties,
+    get_ventilation_schedule,
 )
 from PHX.model import project
 from PHX.model.schedules import lighting, occupancy, ventilation

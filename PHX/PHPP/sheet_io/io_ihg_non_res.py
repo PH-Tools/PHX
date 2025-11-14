@@ -5,12 +5,8 @@
 
 from __future__ import annotations
 
-from typing import List, Optional
-
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.PHPP.phpp_model import uvalues_constructor
-from PHX.xl import xl_app, xl_data
-from PHX.xl.xl_data import col_offset
+from PHX.xl import xl_app
 
 
 class IhgNonRes:

@@ -3,7 +3,8 @@ from ladybug_geometry.geometry3d.pointvector import Point3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
 from ph_units.converter import convert
 
-from PHX.model.hvac.piping import PhxHotWaterPipingInchDiameterType, PhxHotWaterPipingMaterial, PhxPipeSegment
+from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType
+from PHX.model.hvac.piping import PhxHotWaterPipingMaterial, PhxPipeSegment
 
 
 def test_PhxPipeSegment_to_wufi_diameter_type():
