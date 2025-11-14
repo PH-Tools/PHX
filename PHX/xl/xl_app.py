@@ -17,7 +17,6 @@ from PHX.xl.xl_typing import (
     xl_Framework_Protocol,
     xl_Range_Protocol,
     xl_Sheet_Protocol,
-    xl_Sheets_Protocol,
 )
 
 # -----------------------------------------------------------------------------

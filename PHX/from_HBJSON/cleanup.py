@@ -16,8 +16,10 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
 
 try:
-    from honeybee_energy.load import equipment, infiltration, people, process
+    from honeybee_energy.load.equipment import ElectricEquipment
     from honeybee_energy.load.infiltration import Infiltration
+    from honeybee_energy.load.people import People
+    from honeybee_energy.load.process import Process
     from honeybee_energy.properties.face import FaceEnergyProperties
     from honeybee_energy.properties.room import RoomEnergyProperties
     from honeybee_energy.schedule.ruleset import ScheduleRuleset
@@ -31,7 +33,6 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee_ph:\n\t{}".format(e))
 
 try:
-    from honeybee_energy_ph.load.ph_equipment import PhEquipment
     from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
     from honeybee_energy_ph.properties.load.process import ProcessPhProperties
@@ -39,6 +40,14 @@ except ImportError as e:
     raise ImportError("\nFailed to import honeybee_energy_ph:\n\t{}".format(e))
 
 try:
+    from PHX.from_HBJSON._type_utils import (
+        MissingEnergyPropertiesError,
+        get_face_energy_properties,
+        get_room_electric_equipment,
+        get_room_energy_properties,
+        get_room_infiltration,
+        get_room_people,
+    )
     from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_faces
     from PHX.model import project
 except ImportError as e:
@@ -66,7 +75,7 @@ def _get_hb_room_energy_properties(_hb_room: room.Room) -> RoomEnergyProperties 
     return getattr(_hb_room.properties, "energy", None)
 
 
-def _get_hb_room_energy_electric_equipment(_hb_room: room.Room) -> equipment.ElectricEquipment | None:
+def _get_hb_room_energy_electric_equipment(_hb_room: room.Room) -> ElectricEquipment | None:
     """Get the Honeybee-Room's Energy Electric Equipment Properties.
 
     Arguments:
@@ -114,7 +123,8 @@ def _dup_face(_hb_face: face.Face) -> face.Face:
                 continue
             new_extension = original_extension.__copy__()
             setattr(new_face._properties, f"_{extension_name}", new_extension)
-        except:
+        except Exception as e:
+            logger.debug(f"Failed to copy extension '{extension_name}': {e}")
             pass
 
     return new_face
@@ -190,15 +200,19 @@ def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellin
     --------
         * (List[PhDwellings])
     """
-    dwellings = {
-        room.properties.energy.people.properties.ph.dwellings  # type: ignore
-        for room in _hb_rooms
-        if room.properties.energy.people  # type: ignore
-    }
+    dwellings = set()
+    for room in _hb_rooms:
+        try:
+            hb_people = get_room_people(room)
+            hbph_people_prop_ph: PeoplePhProperties = getattr(hb_people.properties, "ph")
+            dwellings.add(hbph_people_prop_ph.dwellings)
+        except MissingEnergyPropertiesError:
+            # Room has no people defined, skip it
+            continue
     return list(dwellings)
 
 
-def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
+def merge_occupancies(_hb_rooms: List[room.Room]) -> People:
     """Returns a new HB-People-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -223,13 +237,15 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     total_ph_bedrooms = 0
     total_ph_people = 0.0
     total_hb_people = 0.0
-    for hb_room in _hb_rooms:
-        # -- Type Aliases
-        hb_room_prop_energy: RoomEnergyProperties = getattr(hb_room.properties, "energy")
-        hb_ppl_obj = hb_room_prop_energy.people
+    reference_people = None
 
-        # -- Sometimes there is no 'People'
-        if hb_ppl_obj is None:
+    for hb_room in _hb_rooms:
+        try:
+            hb_ppl_obj = get_room_people(hb_room)
+            if reference_people is None:
+                reference_people = hb_ppl_obj
+        except MissingEnergyPropertiesError:
+            # Room has no people defined, skip it
             continue
 
         hbph_people_prop_ph: PeoplePhProperties = getattr(hb_ppl_obj.properties, "ph")
@@ -240,12 +256,22 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     # -------------------------------------------------------------------------
     # -- Build up the new People object's attributes
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms)
-    new_hb_prop_energy: RoomEnergyProperties = getattr(_hb_rooms[0].properties, "energy")
-    if not new_hb_prop_energy.people:
-        raise ValueError(f"Error: No 'people' found on room: {_hb_rooms[0].display_name}?")
-    new_hb_ppl: people.People = new_hb_prop_energy.people.__copy__()
-    new_hb_ppl_prop_ph: PeoplePhProperties = getattr(new_hb_ppl.properties, "ph")
-    new_hb_ppl.people_per_area = total_hb_people / total_floor_area
+
+    if reference_people is None:
+        # No people found on any rooms - create a default
+        logger.warning("No people found on any rooms. Creating default people object with 0.0 people_per_area.")
+
+        new_hb_ppl = People(
+            identifier="default_people",
+            people_per_area=0.0,
+            occupancy_schedule=ScheduleRuleset.from_constant_value("default_occ_schedule", 1.0),
+        )
+        new_hb_ppl_prop_ph: PeoplePhProperties = getattr(new_hb_ppl.properties, "ph")
+    else:
+        new_hb_ppl: People = reference_people.__copy__()
+        new_hb_ppl_prop_ph: PeoplePhProperties = getattr(new_hb_ppl.properties, "ph")
+        new_hb_ppl.people_per_area = total_hb_people / total_floor_area if total_floor_area > 0 else 0.0
+
     new_hb_ppl_prop_ph.number_bedrooms = total_ph_bedrooms
     new_hb_ppl_prop_ph.number_people = total_ph_people
     new_hb_ppl_prop_ph.dwellings = merged_ph_dwellings
@@ -253,7 +279,7 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> people.People:
     return new_hb_ppl
 
 
-def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration:
+def merge_infiltrations(_hb_rooms: List[room.Room]) -> Infiltration:
     """Returns a new HB-Infiltration-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -270,22 +296,40 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> infiltration.Infiltration
     # -- Calculate the total airflow per room, total exposed area per room
     total_m3_s = 0.0
     total_exposed_area = 0.0
+    reference_infiltration = None
+
     for room in _hb_rooms:
-        room_infil_exposed_area = _get_room_exposed_face_area(room)
-        room_prop_energy: RoomEnergyProperties = getattr(room.properties, "energy")
-        room_infil_m3_s = room_infil_exposed_area * room_prop_energy.infiltration.flow_per_exterior_area
+        try:
+            room_infiltration = get_room_infiltration(room)
+            if reference_infiltration is None:
+                reference_infiltration = room_infiltration
+            room_infil_exposed_area = _get_room_exposed_face_area(room)
+            room_infil_m3_s = room_infil_exposed_area * room_infiltration.flow_per_exterior_area
 
-        total_exposed_area += room_infil_exposed_area
-        total_m3_s += room_infil_m3_s
+            total_exposed_area += room_infil_exposed_area
+            total_m3_s += room_infil_m3_s
+        except MissingEnergyPropertiesError:
+            # Room has no infiltration defined, skip it
+            continue
 
-    # -- Set the new Infiltration Object's attr to the weighted average
-    reference_room = _hb_rooms[0]
-    reference_room_prop_energy: RoomEnergyProperties = getattr(reference_room.properties, "energy")
-    new_infil: Infiltration = reference_room_prop_energy.infiltration.duplicate()  # type: ignore
-    try:
-        new_infil.flow_per_exterior_area = total_m3_s / total_exposed_area
-    except ZeroDivisionError:
-        new_infil.flow_per_exterior_area = 0.0
+    # -- If no rooms had infiltration, create a default one
+    if reference_infiltration is None:
+        logger.warning(
+            "No infiltration found on any rooms. Creating default infiltration with 0.0 flow_per_exterior_area."
+        )
+
+        new_infil = Infiltration(
+            identifier="default_infiltration",
+            flow_per_exterior_area=0.0,
+            schedule=ScheduleRuleset.from_constant_value("default_infil_schedule", 1.0),
+        )
+    else:
+        # -- Set the new Infiltration Object's attr to the weighted average
+        new_infil: Infiltration = reference_infiltration.duplicate()  # type: ignore
+        try:
+            new_infil.flow_per_exterior_area = total_m3_s / total_exposed_area
+        except ZeroDivisionError:
+            new_infil.flow_per_exterior_area = 0.0
 
     return new_infil
 
@@ -306,12 +350,16 @@ def merge_shw_programs(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
     # -- Find all the unique SHW Programs in the Model
     shw_programs: Set[shw.SHWSystem] = set()
     for room in _hb_rooms:
-        room_prop_energy: RoomEnergyProperties = getattr(room.properties, "energy")
-        if room_prop_energy.shw:
-            shw_programs.add(room_prop_energy.shw)
+        try:
+            room_energy_props = get_room_energy_properties(room)
+            if room_energy_props.shw:
+                shw_programs.add(room_energy_props.shw)
+        except MissingEnergyPropertiesError:
+            # Room has no energy properties, skip it
+            continue
 
     if len(shw_programs) > 1:
-        print(f"Warning: More than one SHW Program Type found in the model.")
+        print("Warning: More than one SHW Program Type found in the model.")
 
     return shw.SHWSystem(
         identifier=clean_ep_string("_default_shw_system_"),
@@ -319,7 +367,7 @@ def merge_shw_programs(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
     )
 
 
-def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
+def merge_elec_equip(_hb_rooms: List[room.Room]) -> ElectricEquipment:
     """Returns a new HB-ElectricEquipment-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -341,7 +389,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     if not _hb_rooms:
         msg = "Warning: No Honeybee-Rooms with Electric Equipment found."
         print(msg)
-        return equipment.ElectricEquipment(
+        return ElectricEquipment(
             identifier="default_electric_equipment",
             watts_per_area=0.0,
             schedule=ScheduleRuleset.from_constant_value(
@@ -354,34 +402,51 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     # -- Increase the quantity for each duplicate piece of equipment found.
     ph_equipment = {}
     for room in _hb_rooms:
-        room_prop_energy: RoomEnergyProperties = getattr(room.properties, "energy")
-        room_ee_prop = room_prop_energy.electric_equipment.properties
-        room_ee_prop_ph: ElectricEquipmentPhProperties = getattr(room_ee_prop, "ph")
+        try:
+            room_electric_equipment = get_room_electric_equipment(room)
+            room_ee_prop = room_electric_equipment.properties
+            room_ee_prop_ph: ElectricEquipmentPhProperties = getattr(room_ee_prop, "ph")
 
-        # TODO: Deprecate...
-        # -- Get the Equipment from the HB-Elec-Equip (old method < Jan 2025)
-        for equip_key, equip in room_ee_prop_ph.equipment_collection.items():
-            try:
-                ph_equipment[equip_key].quantity += 1
-            except KeyError:
-                ph_equipment[equip_key] = equip
+            # TODO: Deprecate...
+            # -- Get the Equipment from the HB-Elec-Equip (old method < Jan 2025)
+            for equip_key, equip in room_ee_prop_ph.equipment_collection.items():
+                try:
+                    ph_equipment[equip_key].quantity += 1
+                except KeyError:
+                    ph_equipment[equip_key] = equip
+        except MissingEnergyPropertiesError:
+            # Room has no electric equipment, skip it
+            continue
 
     # -- Calculate the total Watts of all of the HBE-Elec-Equipment in the rooms
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms) or 0.0
-    total_watts = (
-        sum(
-            (rm.floor_area * rm.properties.energy.electric_equipment.watts_per_area) for rm in _hb_rooms  # type: ignore
-        )
-        or 0.0
-    )
+    total_watts = 0.0
+    reference_electric_equipment = None
+
+    for rm in _hb_rooms:
+        try:
+            ee = get_room_electric_equipment(rm)
+            if reference_electric_equipment is None:
+                reference_electric_equipment = ee
+            total_watts += rm.floor_area * ee.watts_per_area
+        except MissingEnergyPropertiesError:
+            # Room has no electric equipment, skip it
+            continue
 
     # -- Build a new HBE-Elec-Equip from the reference room, add all the PH-Equipment to it.
-    reference_room = _hb_rooms[0]
-    reference_room_prop_energy: RoomEnergyProperties = getattr(reference_room.properties, "energy")
-    ref_room_ee: equipment.ElectricEquipment = reference_room_prop_energy.electric_equipment
-
-    new_hb_equip: equipment.ElectricEquipment = ref_room_ee.duplicate()  # type: ignore
-    new_hb_equip.watts_per_area = total_watts / total_floor_area
+    if reference_electric_equipment is None:
+        # No electric equipment found on any rooms - create a default
+        logger.warning(
+            "No electric equipment found on any rooms. Creating default electric equipment with 0.0 watts_per_area."
+        )
+        new_hb_equip = ElectricEquipment(
+            identifier="default_electric_equipment",
+            watts_per_area=0.0,
+            schedule=ScheduleRuleset.from_constant_value("default_ee_schedule", 1.0),
+        )
+    else:
+        new_hb_equip: ElectricEquipment = reference_electric_equipment.duplicate()  # type: ignore
+        new_hb_equip.watts_per_area = total_watts / total_floor_area if total_floor_area > 0 else 0.0
     new_hb_equip_prop_ph: ElectricEquipmentPhProperties = getattr(new_hb_equip.properties, "ph")
     new_hb_equip_prop_ph.equipment_collection.remove_all_equipment()
 
@@ -391,7 +456,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> equipment.ElectricEquipment:
     return new_hb_equip
 
 
-def merge_process_loads(_hb_rooms: list[room.Room]) -> list[process.Process]:
+def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
     """Returns a new HB-Process-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -405,10 +470,14 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[process.Process]:
     """
     # -- Collect all the unique Process-Load/PH-Equipment in all the rooms.
     # -- Increase the quantity for each duplicate piece of equipment found
-    ph_equipment: dict[str, process.Process] = {}
+    ph_equipment: dict[str, Process] = {}
     for room in _hb_rooms:
-        room_prop_energy: RoomEnergyProperties = getattr(room.properties, "energy")
-        process_loads: tuple[process.Process] = room_prop_energy.process_loads
+        try:
+            room_energy_props = get_room_energy_properties(room)
+            process_loads: tuple[Process] = room_energy_props.process_loads
+        except MissingEnergyPropertiesError:
+            # Room has no energy properties, skip it
+            continue
 
         # -- Get the Equipment from the HB-Process Load (new method > Jan 2025)
         for process_load in process_loads:
@@ -505,7 +574,11 @@ def merge_rooms(
         face_groups = face_tools.group_hb_faces(exposed_faces, _tolerance, _angle_tolerance_degrees)
         merged_faces = []
         for face_group in face_groups:
-            const_name = face_group[0].properties.energy.construction.display_name
+            try:
+                face_energy_props = get_face_energy_properties(face_group[0])
+                const_name = face_energy_props.construction.display_name
+            except MissingEnergyPropertiesError:
+                const_name = "Unknown"
             logger.debug(f"Merging {len(face_group)} Faces with Construction: {const_name}")
             merged_faces.extend(merge_hb_faces(face_group, _tolerance, _angle_tolerance_degrees))
         exposed_faces = merged_faces
@@ -528,10 +601,14 @@ def merge_rooms(
     dup_ph_prop._ph_foundations = merge_foundations(_hb_rooms)
     setattr(new_room._properties, "_ph", dup_ph_prop)
 
-    ref_rm_prop_energy: RoomEnergyProperties = getattr(reference_room.properties, "energy")
-    new_rm_prop_energy: RoomEnergyProperties = getattr(new_room.properties, "energy")
-    dup_energy_prop = ref_rm_prop_energy.duplicate(new_rm_prop_energy)
-    setattr(new_room._properties, "_energy", dup_energy_prop)
+    try:
+        ref_rm_energy_props = get_room_energy_properties(reference_room)
+        new_rm_energy_props = get_room_energy_properties(new_room)
+        dup_energy_prop = ref_rm_energy_props.duplicate(new_rm_energy_props)
+        setattr(new_room._properties, "_energy", dup_energy_prop)
+    except MissingEnergyPropertiesError:
+        # Reference room has no energy properties - this is OK, just skip setting energy properties
+        pass
 
     # -------------------------------------------------------------------------
     # -- Then, collect all the spaces from the input rooms and add to the NEW room
@@ -558,13 +635,17 @@ def merge_rooms(
 
     # -------------------------------------------------------------------------
     # -- Merge the hb_rooms' load values
-    new_rm_prop_energy: RoomEnergyProperties = getattr(new_room.properties, "energy")
-    new_rm_prop_energy.infiltration = merge_infiltrations(_hb_rooms)
-    new_rm_prop_energy.people = merge_occupancies(_hb_rooms)
-    new_rm_prop_energy.electric_equipment = merge_elec_equip(_hb_rooms)
-    new_rm_prop_energy.shw = merge_shw_programs(_hb_rooms)
-    new_rm_prop_energy.remove_process_loads()
-    new_rm_prop_energy._process_loads = merge_process_loads(_hb_rooms)
+    try:
+        new_rm_energy_props = get_room_energy_properties(new_room)
+        new_rm_energy_props.infiltration = merge_infiltrations(_hb_rooms)
+        new_rm_energy_props.people = merge_occupancies(_hb_rooms)
+        new_rm_energy_props.electric_equipment = merge_elec_equip(_hb_rooms)
+        new_rm_energy_props.shw = merge_shw_programs(_hb_rooms)
+        new_rm_energy_props.remove_process_loads()
+        new_rm_energy_props._process_loads = merge_process_loads(_hb_rooms)
+    except MissingEnergyPropertiesError:
+        # New room has no energy properties - this is OK, just skip merging loads
+        pass
 
     # -------------------------------------------------------------------------
     # -- TODO: Can I merge together the surfaces as well?

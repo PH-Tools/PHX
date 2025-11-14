@@ -5,7 +5,6 @@
 
 import re
 from dataclasses import dataclass
-from typing import Dict, List, Optional
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data

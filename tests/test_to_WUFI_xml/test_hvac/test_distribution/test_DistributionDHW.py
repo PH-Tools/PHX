@@ -2,15 +2,7 @@ from ladybug_geometry.geometry3d.pointvector import Point3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
 from PHX.model.hvac.collection import PhxMechanicalSystemCollection
-from PHX.model.hvac.piping import (
-    PhxHotWaterPipingInchDiameterType,
-    PhxHotWaterPipingMaterial,
-    PhxPipeBranch,
-    PhxPipeElement,
-    PhxPipeSegment,
-    PhxPipeTrunk,
-)
-from PHX.to_WUFI_XML import xml_schemas
+from PHX.model.hvac.piping import PhxHotWaterPipingMaterial, PhxPipeBranch, PhxPipeElement, PhxPipeSegment, PhxPipeTrunk
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 

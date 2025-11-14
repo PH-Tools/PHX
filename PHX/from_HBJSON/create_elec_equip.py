@@ -62,7 +62,7 @@ def build_phx_elec_device(
             except KeyError:
                 raise
             except Exception as e:
-                msg = f"\n\tError setting attribute '{attr_name}' on '{phx_device.__class__.__name__}'?"
+                msg = f"\n\tError setting attribute '{attr_name}' on '{phx_device.__class__.__name__}'?/n\t{e}"
                 raise Exception(msg)
 
     return phx_device

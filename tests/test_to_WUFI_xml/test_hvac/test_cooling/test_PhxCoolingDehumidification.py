@@ -1,6 +1,4 @@
-from PHX.model.hvac import collection, cooling_params
-from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
-from tests.test_to_WUFI_xml._utils import xml_string_to_list
+from PHX.model.hvac import cooling_params
 
 
 def test_default_PhxCoolingDehumidification(reset_class_counters):

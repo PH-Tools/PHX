@@ -5,7 +5,7 @@
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 from PHX.model import constructions, geometry
 from PHX.PHPP.phpp_localization import shape_model

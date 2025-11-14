@@ -6,7 +6,7 @@
 from honeybee_phhvac import hot_water_devices, hot_water_piping
 
 from PHX.model import hvac
-from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType, PhxHotWaterPipingMaterial, PhxHotWaterTankType
+from PHX.model.enums.hvac import PhxHotWaterPipingMaterial, PhxHotWaterTankType
 from PHX.model.hvac import piping
 
 # -- Storage ------------------------------------------------------------------

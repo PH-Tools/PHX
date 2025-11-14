@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Collection, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Collection, Dict, List, Optional, Sequence, Tuple, Union
 
 from ph_units.unit_type import Unit
 

@@ -3,12 +3,12 @@
 
 """DEV SANDBOX: convert an HBJSON file over to WUFI XML format."""
 
+import logging
 import pathlib
 
 from rich import print
 
 from PHX.from_HBJSON import create_project, read_HBJSON_file
-from PHX.model import building, certification, components, constructions, elec_equip, geometry, project, schedules
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 from tests.conftest import _reload_phx_classes, _reset_phx_class_counters
 
@@ -23,9 +23,8 @@ TARGET_DIR = pathlib.Path("tests", "_test_reference_files_xml")
 
 # -- Temp
 # SOURCE_FILES = [pathlib.Path("/Users/em/Desktop/hvac_equipment_ph_test.hbjson")]
-# TARGET_DIR = pathlib.Path("sample")
 
-import logging
+# TARGET_DIR = pathlib.Path("sample")
 
 logger = logging.getLogger()
 

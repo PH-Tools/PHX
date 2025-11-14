@@ -1,4 +1,3 @@
-from PHX.model.enums import hvac
 from PHX.model.hvac import cooling_params
 
 # -- Ventilation Cooling ------------------------------------------------------

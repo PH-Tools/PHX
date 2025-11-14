@@ -7,10 +7,11 @@ import logging
 from collections import defaultdict
 from typing import List, Tuple, Union
 
-from honeybee import model, room
+from honeybee import model
 from honeybee.aperture import Aperture
+from honeybee.room import Room
 from honeybee_ph.properties.room import RoomPhProperties
-from honeybee_ph.team import ProjectTeam, ProjectTeamMember
+from honeybee_ph.team import ProjectTeamMember
 
 from PHX.from_HBJSON import cleanup, create_assemblies, create_schedules, create_shades, create_variant
 from PHX.model.project import PhxProject, PhxProjectData, ProjectData_Agent
@@ -27,7 +28,7 @@ class MissingPropertiesError(Exception):
         super().__init__(self.message)
 
 
-def sort_hb_rooms_by_bldg_segment(_hb_rooms: Tuple[room.Room]) -> List[List[room.Room]]:
+def sort_hb_rooms_by_bldg_segment(_hb_rooms: Tuple[Room]) -> List[List[Room]]:
     """Returns Groups of Honeybee-Rooms broken up by properties.ph.ph_bldg_segment.identifier.
 
     Arguments:
@@ -41,7 +42,7 @@ def sort_hb_rooms_by_bldg_segment(_hb_rooms: Tuple[room.Room]) -> List[List[room
 
     rooms_by_segment = defaultdict(list)
     for room in _hb_rooms:
-        hb_room_prop_ph: RoomPhProperties = room.properties.ph  # type: ignore
+        hb_room_prop_ph: RoomPhProperties = getattr(room.properties, "ph")
         rooms_by_segment[hb_room_prop_ph.ph_bldg_segment.identifier].append(room)
     return list(rooms_by_segment.values())
 
@@ -119,7 +120,7 @@ def convert_hb_model_to_PhxProject(
     # -- Merge the rooms together by their Building Segment, Add to the Project
     # -- then create a new variant from the merged room.
     # -- try and weld the vertices too in order to reduce load-time.
-    for room_group in sort_hb_rooms_by_bldg_segment(_hb_model.rooms):  # type: ignore
+    for room_group in sort_hb_rooms_by_bldg_segment(_hb_model.rooms):
         # -- Configure the merge_faces and merge_face_tolerance
         if isinstance(_merge_faces, bool):
             merge_faces: bool = _merge_faces

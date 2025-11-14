@@ -3,7 +3,7 @@ from copy import copy
 import pytest
 
 from PHX.model.enums.hvac import PhxSupportiveDeviceType
-from PHX.model.hvac import collection, cooling_params, heating, supportive_devices, ventilation, water
+from PHX.model.hvac import collection, supportive_devices, ventilation
 
 
 def test_default_PhxMechanicalEquipmentCollection(reset_class_counters):

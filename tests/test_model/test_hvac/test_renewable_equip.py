@@ -1,6 +1,3 @@
-import pytest
-
-from PHX.model.enums.hvac import DeviceType, SystemType
 from PHX.model.hvac import PhxDevicePhotovoltaic, PhxDevicePhotovoltaicParams
 
 

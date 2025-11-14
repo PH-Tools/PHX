@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model import verification_data

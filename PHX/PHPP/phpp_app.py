@@ -22,7 +22,6 @@ from PHX.PHPP.phpp_model import (
     hot_water_tank,
     shading_rows,
     uvalues_constructor,
-    vent_ducts,
     vent_space,
     vent_units,
     ventilation_data,

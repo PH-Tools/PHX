@@ -5,7 +5,7 @@
 
 from dataclasses import dataclass
 from functools import partial
-from typing import ClassVar, Dict, List, Tuple
+from typing import ClassVar, List
 
 from PHX.model import phx_site
 from PHX.PHPP.phpp_localization import shape_model

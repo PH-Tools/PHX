@@ -10,10 +10,10 @@
 		<OwnerIsClient>false</OwnerIsClient>
 		<Date_Project>
 			<Year>2025</Year>
-			<Month>10</Month>
-			<Day>13</Day>
-			<Hour>12</Hour>
-			<Minutes>17</Minutes>
+			<Month>11</Month>
+			<Day>14</Day>
+			<Hour>15</Hour>
+			<Minutes>26</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -595,7 +595,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>20</IdentNr>
-						<Name>Room_4_b3f5e5da..Face5_Glz0</Name>
+						<Name>Room_4_6b80c479..Face5_Glz0</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -687,7 +687,7 @@
 					</Component>
 					<Component index="6">
 						<IdentNr>44</IdentNr>
-						<Name>PhWindowConstruction_78cc838a</Name>
+						<Name>PhWindowConstruction_87009c53</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -711,7 +711,7 @@
 					</Component>
 					<Component index="7">
 						<IdentNr>45</IdentNr>
-						<Name>Shade_caf5f86f</Name>
+						<Name>Shade_c032b2a1</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -727,7 +727,7 @@
 					</Component>
 					<Component index="8">
 						<IdentNr>46</IdentNr>
-						<Name>Shade_6e122ae8</Name>
+						<Name>Shade_290d0969</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -967,51 +967,51 @@
 						</ExhaustVents>
 						<ThermalBridges count="7">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__10009fc5</Name>
+								<Name>_unnamed_bldg_segment__094e697b</Name>
 								<Type>-15</Type>
-								<Length>22.0</Length>
+								<Length>19.8</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__387c71f1</Name>
+								<Name>_unnamed_bldg_segment__237a1f90</Name>
 								<Type>-15</Type>
 								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__5ab223ce</Name>
+								<Name>_unnamed_bldg_segment__36e05cea</Name>
 								<Type>-15</Type>
-								<Length>19.8</Length>
+								<Length>19.799999999999997</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__638e3e9d</Name>
+								<Name>_unnamed_bldg_segment__4e7e752e</Name>
 								<Type>-15</Type>
-								<Length>19.8</Length>
+								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__6fb77911</Name>
-								<Type>-15</Type>
-								<Length>14.758048651498616</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__83859341</Name>
+								<Name>_unnamed_bldg_segment__75864c9b</Name>
 								<Type>-15</Type>
 								<Length>14.000714267493642</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
-							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__f4606ddf</Name>
+							<ThermalBridge index="5">
+								<Name>_unnamed_bldg_segment__c5bdffc0</Name>
 								<Type>-15</Type>
-								<Length>19.799999999999997</Length>
+								<Length>19.8</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="6">
+								<Name>_unnamed_bldg_segment__e144cbcf</Name>
+								<Type>-15</Type>
+								<Length>14.758048651498616</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
@@ -1279,7 +1279,7 @@
 						</ZonesCoverage>
 						<Devices count="6">
 							<Device index="0">
-								<Name>236b6b0c-ce11-4b75-8a08-11866aa9df41</Name>
+								<Name>3a3e8231-f071-41a4-82f3-fc1da3023f4e</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
@@ -2068,7 +2068,7 @@
 	<WindowTypes count="1">
 		<WindowType index="0">
 			<IdentNr>1</IdentNr>
-			<Name>PhWindowConstruction_78cc838a</Name>
+			<Name>PhWindowConstruction_87009c53</Name>
 			<Uw_Detailed>true</Uw_Detailed>
 			<GlazingFrameDetailed>true</GlazingFrameDetailed>
 			<FrameFactor>0.7242364315535045</FrameFactor>

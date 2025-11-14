@@ -1,5 +1,3 @@
-from typing import Any, Dict
-
 from PHX.from_WUFI_XML.phx_schemas import _PhxProject
 from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 from PHX.model import project
