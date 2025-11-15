@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions to create PHX-Service Hot Water objects from Honeybee-PH-HVAC Hot-Water"""
@@ -98,7 +97,7 @@ def build_phx_hw_heater(
     phx_hw_heater.display_name = _ph_hvac_heater.display_name
 
     # -- Pull out all the detailed data which varies depending on the 'type'
-    for attr_name in vars(phx_hw_heater).keys():
+    for attr_name in vars(phx_hw_heater):
         try:
             if attr_name.startswith("_"):
                 attr_name = attr_name[1:]
@@ -106,7 +105,7 @@ def build_phx_hw_heater(
         except AttributeError:
             pass
 
-    for attr_name in vars(phx_hw_heater.params).keys():
+    for attr_name in vars(phx_hw_heater.params):
         try:
             if attr_name.startswith("_"):
                 attr_name = attr_name[1:]

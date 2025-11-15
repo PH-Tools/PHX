@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a single PHPP Addition Vent / Unit-Entry row."""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List
 
 from PHX.model import hvac
 from PHX.PHPP.phpp_localization import shape_model
@@ -30,7 +28,7 @@ class VentUnitRow:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.units.inputs, _field_name).unit
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
 
         Arguments:
@@ -44,7 +42,7 @@ class VentUnitRow:
 
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemVentUnit = partial(xl_data.XlItem, _sheet_name)
-        items: List[xl_data.XlItem] = [
+        items: list[xl_data.XlItem] = [
             XLItemVentUnit(create_range("quantity"), self.phx_vent_sys.quantity),
             XLItemVentUnit(create_range("display_name"), self.phx_vent_sys.display_name),
             XLItemVentUnit(create_range("unit_selected"), self.phpp_id_ventilator),

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Type-safe utility functions for accessing Honeybee energy properties.

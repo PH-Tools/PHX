@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Classes for converting WUFI-Pydantic Entities to PHX Model Objects."""
 
 import sys
 from functools import partial
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
@@ -315,7 +314,9 @@ def _PhxConstructionOpaque(_data: wufi_xml.WufiAssembly) -> PhxConstructionOpaqu
     return phx_obj
 
 
-def _PhxLayer(_data: wufi_xml.WufiLayer, _exchange_materials: dict[int, PhxMaterial] = {}) -> PhxLayer:
+def _PhxLayer(_data: wufi_xml.WufiLayer, _exchange_materials: dict[int, PhxMaterial] = None) -> PhxLayer:
+    if _exchange_materials is None:
+        _exchange_materials = {}
     phx_obj = PhxLayer()
     phx_obj.thickness_m = _data.Thickness
     new_mat: PhxMaterial = as_phx_obj(_data.Material, "PhxMaterial")
@@ -796,8 +797,8 @@ def _Fixture(_data: wufi_xml.WufiTwig) -> PhxPipeElement:
 
 
 def _get_compo_data_by_type(
-    _data: List[wufi_xml.WufiComponent],
-) -> Tuple[List[wufi_xml.WufiComponent], List[wufi_xml.WufiComponent]]:
+    _data: list[wufi_xml.WufiComponent],
+) -> tuple[list[wufi_xml.WufiComponent], list[wufi_xml.WufiComponent]]:
     """Helper function to sort the component dictionaries by type.
 
     Args:
@@ -808,8 +809,8 @@ def _get_compo_data_by_type(
         - [1] = List of aperture components dicts
     """
 
-    ap_dicts: List[wufi_xml.WufiComponent] = []
-    opaque_dicts: List[wufi_xml.WufiComponent] = []
+    ap_dicts: list[wufi_xml.WufiComponent] = []
+    opaque_dicts: list[wufi_xml.WufiComponent] = []
     for d in _data:
         if ComponentFaceOpacity(d.Type) == ComponentFaceOpacity.TRANSPARENT:
             ap_dicts.append(d)
@@ -819,7 +820,7 @@ def _get_compo_data_by_type(
 
 
 def _PhxBuilding(
-    _data: Tuple[wufi_xml.WufiBuilding, wufi_xml.WufiGraphics_3D],
+    _data: tuple[wufi_xml.WufiBuilding, wufi_xml.WufiGraphics_3D],
     _phx_project_host: PhxProject,
 ) -> PhxBuilding:
     phx_obj = PhxBuilding()
@@ -827,8 +828,8 @@ def _PhxBuilding(
     # ------------------------------------------------------------------
     # -- First, build all the vertices and polygons needed by the Components
     bldg_data, geom_data = _data
-    vertix_dict: Dict[int, PhxVertix] = {v.IdentNr: as_phx_obj(v, "PhxVertix") for v in geom_data.Vertices}
-    polygon_dict: Dict[int, PhxPolygon] = {
+    vertix_dict: dict[int, PhxVertix] = {v.IdentNr: as_phx_obj(v, "PhxVertix") for v in geom_data.Vertices}
+    polygon_dict: dict[int, PhxPolygon] = {
         v.IdentNr: as_phx_obj(v, "PhxPolygon", _vertix_dict=vertix_dict) for v in geom_data.Polygons
     }
 
@@ -837,7 +838,7 @@ def _PhxBuilding(
     opaque_compo_dicts, ap_compo_dicts = _get_compo_data_by_type(bldg_data.Components)
 
     # -- Build all of the Aperture Components first
-    aperture_dict: Dict[Tuple[int, ...], PhxComponentAperture] = {}
+    aperture_dict: dict[tuple[int, ...], PhxComponentAperture] = {}
     for component_dict in ap_compo_dicts:
         ap_component: PhxComponentAperture = as_phx_obj(
             component_dict,
@@ -876,7 +877,9 @@ def _PhxVertix(_data: wufi_xml.WufiVertix) -> PhxVertix:
     return phx_obj
 
 
-def _PhxPolygon(_data: wufi_xml.WufiPolygon, _vertix_dict: Dict[int, PhxVertix] = {}) -> PhxPolygon:
+def _PhxPolygon(_data: wufi_xml.WufiPolygon, _vertix_dict: dict[int, PhxVertix] = None) -> PhxPolygon:
+    if _vertix_dict is None:
+        _vertix_dict = {}
     surface_normal = PhxVector(
         float(_data.NormalVectorX),
         float(_data.NormalVectorY),
@@ -919,8 +922,8 @@ def _PhxPolygon(_data: wufi_xml.WufiPolygon, _vertix_dict: Dict[int, PhxVertix] 
 
 def _PhxComponentAperture(
     _data: wufi_xml.WufiComponent,
-    _polygons: Dict[int, PhxPolygon],
-    _window_types: Dict[str, PhxConstructionWindow],
+    _polygons: dict[int, PhxPolygon],
+    _window_types: dict[str, PhxConstructionWindow],
 ) -> PhxComponentAperture:
     phx_obj = PhxComponentAperture(_host=None)  # type: ignore
 
@@ -954,9 +957,9 @@ def _PhxComponentAperture(
 
 def _PhxComponentOpaque(
     _data: wufi_xml.WufiComponent,
-    _polygons: Dict[int, PhxPolygon],
-    _assembly_types: Dict[str, PhxConstructionOpaque],
-    _aperture_dict: Dict[Tuple[int, ...], PhxComponentAperture],
+    _polygons: dict[int, PhxPolygon],
+    _assembly_types: dict[str, PhxConstructionOpaque],
+    _aperture_dict: dict[tuple[int, ...], PhxComponentAperture],
 ) -> PhxComponentOpaque:
     # -- Build either an opaque or transparent component
     phx_obj = PhxComponentOpaque()
@@ -1074,7 +1077,7 @@ def _PhxVentedCrawlspace(_data: wufi_xml.WufiFoundationInterface) -> PhxVentedCr
     return phx_obj
 
 
-def _PhxFoundation(_data: wufi_xml.WufiFoundationInterface) -> Optional[PhxFoundation]:
+def _PhxFoundation(_data: wufi_xml.WufiFoundationInterface) -> PhxFoundation | None:
     foundation_type_builders = {
         FoundationType.HEATED_BASEMENT: "PhxHeatedBasement",
         FoundationType.UNHEATED_BASEMENT: "PhxUnHeatedBasement",
@@ -1187,7 +1190,7 @@ def _PhxSite(_data: wufi_xml.WufiClimateLocation) -> PhxSite:
 
 
 def _PhxClimate(_data: wufi_xml.WufiPH_ClimateLocation) -> PhxClimate:
-    def _monthly_values(_in) -> List[float]:
+    def _monthly_values(_in) -> list[float]:
         values = []
         for i in range(12):
             try:
@@ -1281,10 +1284,10 @@ def _PhxSiteEnergyFactors(_data: wufi_xml.WufiPH_ClimateLocation) -> PhxSiteEner
     #
     # If User-defined factors are used, they will be included in the XML file.
     # So in that case, use those values for the PE and CO2 factors.
-    for name, factor in zip(_wufi_order, _data.PEFactorsUserDef or []):
+    for name, factor in zip(_wufi_order, _data.PEFactorsUserDef or [], strict=False):
         phx_obj.pe_factors[name] = PhxPEFactor(factor.__root__, "kWh/kWh", name)
 
-    for name, factor in zip(_wufi_order, _data.CO2FactorsUserDef or []):
+    for name, factor in zip(_wufi_order, _data.CO2FactorsUserDef or [], strict=False):
         phx_obj.co2_factors[name] = PhxCO2Factor(factor.__root__, "g/kWh", name)
 
     return phx_obj
@@ -1360,7 +1363,7 @@ def _PhxZone(_data: wufi_xml.WufiZone, _phx_project_host: PhxProject) -> PhxZone
 def _add_occupancy_data_to_space(
     _space: PhxSpace,
     _phx_project_host: PhxProject,
-    _occupancy_data: Optional[wufi_xml.WufiLoadPerson],
+    _occupancy_data: wufi_xml.WufiLoadPerson | None,
 ) -> PhxSpace:
     """Add occupancy data to a space, if any is supplied."""
     if not _occupancy_data:
@@ -1391,7 +1394,7 @@ def _add_occupancy_data_to_space(
 def _add_lighting_data_to_space(
     _space: PhxSpace,
     _phx_project_host: PhxProject,
-    _lighting_data: Optional[wufi_xml.WufiLoadsLighting],
+    _lighting_data: wufi_xml.WufiLoadsLighting | None,
 ) -> PhxSpace:
     """Add lighting data to a space, if any is supplied."""
     if not _lighting_data:
@@ -1515,7 +1518,7 @@ def _PhxDevice_Electric(_data: wufi_xml.WufiDevice) -> PhxHeaterElectric:
     return phx_obj
 
 
-def _PhxDevice_Boiler(_data: wufi_xml.WufiDevice) -> Optional[AnyPhxHeaterBoiler]:
+def _PhxDevice_Boiler(_data: wufi_xml.WufiDevice) -> AnyPhxHeaterBoiler | None:
     boiler_builders = {
         hvac_enums.PhxFuelType.NATURAL_GAS: "PhxHeaterBoilerFossil",
         hvac_enums.PhxFuelType.OIL: "PhxHeaterBoilerFossil",
@@ -1568,7 +1571,7 @@ def _PhxDevice_DistrictHeat(_data: wufi_xml.WufiDevice) -> PhxHeaterDistrictHeat
     return phx_obj
 
 
-def _PhxDevice_HeatPump(_data: wufi_xml.WufiDevice) -> Optional[PhxHeatPumpDevice]:
+def _PhxDevice_HeatPump(_data: wufi_xml.WufiDevice) -> PhxHeatPumpDevice | None:
     hp_builders = {
         hvac_enums.HeatPumpType.COMBINED: "PhxDevice_HeatPump_Combined",
         hvac_enums.HeatPumpType.ANNUAL: "PhxDevice_HeatPump_Annual",

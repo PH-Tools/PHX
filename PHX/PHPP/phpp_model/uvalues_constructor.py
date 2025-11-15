@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Data-entry constructor for the U-Values Worksheet."""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List
 
 from PHX.model.constructions import PhxConstructionOpaque, PhxLayer
 from PHX.PHPP.phpp_localization import shape_model
@@ -37,14 +35,14 @@ class ConstructorBlock:
 
         return False
 
-    def create_xl_items(self, _sheet_name: str, _start_row: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _start_row: int) -> list[xl_data.XlItem]:
         """Convert the PHX-Construction into a list of XLItems for writing to the PHPP."""
 
         create_range = partial(self._create_range, _start_row=_start_row)
         XLItemUValues = partial(xl_data.XlItem, _sheet_name)
 
         # -- Build the basic assembly attributes
-        xl_items_list: List[xl_data.XlItem] = [
+        xl_items_list: list[xl_data.XlItem] = [
             XLItemUValues(
                 create_range("display_name", self.shape.constructor.inputs.name_row_offset),
                 f"'{self.phx_construction.display_name}",
@@ -82,7 +80,7 @@ class ConstructorBlock:
 
             # -- add in each of the PhxMaterials found in the PhxLayer.materials collection
             for j, material in enumerate(layer.materials, start=1):
-                layer_items: List[xl_data.XlItem] = [
+                layer_items: list[xl_data.XlItem] = [
                     XLItemUValues(
                         create_range(f"sec_{j}_description", i),
                         f"'{material.display_name}",

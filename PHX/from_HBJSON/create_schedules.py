@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions used to create Project elements from the Honeybee-Model"""
 
-from typing import Optional
 
 from honeybee import model, room
 from honeybee_energy.lib.scheduletypelimits import schedule_type_limit_by_identifier
@@ -47,12 +45,8 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
     # -- Check Honeybee-Energy-PH detailed data
     hbe_vent_sched_prop = hbe_vent_sched.properties
     hbph_sched_prop: phx_ruleset.ScheduleRulesetPhProperties = hbe_vent_sched_prop.ph  # type: ignore
-    if not hbph_sched_prop.daily_operating_periods:
-        # No Honeybee-Energy-PH Schedule detailed Operating Periods
-        return False
-
-    # -- So then the room must have the detailed data
-    return True
+    # No Honeybee-Energy-PH Schedule detailed Operating Periods - return whether they exist
+    return bool(hbph_sched_prop.daily_operating_periods)
 
 
 def _create_vent_schedule_from_hb_style(
@@ -144,7 +138,7 @@ def _create_vent_schedule_from_ph_style(
 
 def build_ventilation_schedule_from_hb_room(
     _hb_room: room.Room,
-) -> Optional[ventilation.PhxScheduleVentilation]:
+) -> ventilation.PhxScheduleVentilation | None:
     """Build a new Ventilation Schedule based on a Honeybee-Room's energy.ventilation values.
 
     Arguments:
@@ -184,7 +178,7 @@ def build_ventilation_schedule_from_hb_room(
 
 def build_occupancy_schedule_from_hb_room(
     _hb_room: room.Room,
-) -> Optional[occupancy.PhxScheduleOccupancy]:
+) -> occupancy.PhxScheduleOccupancy | None:
     """Build a new PHX Occupancy Schedule based on a Honeybee-Room's energy.people values.
 
     Arguments:
@@ -225,7 +219,7 @@ def build_occupancy_schedule_from_hb_room(
 
 def build_lighting_schedule_from_hb_room(
     _hb_room: room.Room,
-) -> Optional[lighting.PhxScheduleLighting]:
+) -> lighting.PhxScheduleLighting | None:
     """Build a new PHX Lighting Schedule based on a Honeybee-Room's energy.lighting.schedule values.
 
     Arguments:

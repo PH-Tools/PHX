@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
 import logging
-from typing import Dict, List, Optional, Set
 
 try:  # import the core honeybee dependencies
     from honeybee import face, room
@@ -13,7 +11,7 @@ try:  # import the core honeybee dependencies
     from honeybee.typing import clean_ep_string
     from honeybee_energy import shw
 except ImportError as e:
-    raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import honeybee:\n\t{e}")
 
 try:
     from honeybee_energy.load.equipment import ElectricEquipment
@@ -24,20 +22,20 @@ try:
     from honeybee_energy.properties.room import RoomEnergyProperties
     from honeybee_energy.schedule.ruleset import ScheduleRuleset
 except ImportError as e:
-    raise ImportError("\nFailed to import honeybee_energy:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import honeybee_energy:\n\t{e}")
 
 try:
     from honeybee_ph.foundations import PhFoundation
     from honeybee_ph.properties.room import RoomPhProperties
 except ImportError as e:
-    raise ImportError("\nFailed to import honeybee_ph:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import honeybee_ph:\n\t{e}")
 
 try:
     from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
     from honeybee_energy_ph.properties.load.process import ProcessPhProperties
 except ImportError as e:
-    raise ImportError("\nFailed to import honeybee_energy_ph:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import honeybee_energy_ph:\n\t{e}")
 
 try:
     from PHX.from_HBJSON._type_utils import (
@@ -51,12 +49,12 @@ try:
     from PHX.from_HBJSON.cleanup_merge_faces import merge_hb_faces
     from PHX.model import project
 except ImportError as e:
-    raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import PHX:\n\t{e}")
 
 try:
     from honeybee_ph_utils import face_tools
 except ImportError as e:
-    raise ImportError("\nFailed to import honeybee_ph_utils:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import honeybee_ph_utils:\n\t{e}")
 
 logger = logging.getLogger()
 
@@ -110,7 +108,7 @@ def _dup_face(_hb_face: face.Face) -> face.Face:
     # -- Note, this is required if the user has set custom .energy constructions
     # -- or other custom face-specific attributes
     # -- Duplicate any extensions like .ph, .energy or .radiance
-    face_prop: Optional[FaceProperties] = _hb_face._properties
+    face_prop: FaceProperties | None = _hb_face._properties
     if not face_prop:
         return new_face
 
@@ -130,7 +128,7 @@ def _dup_face(_hb_face: face.Face) -> face.Face:
     return new_face
 
 
-def _get_thermal_envelope_faces(_hb_room: room.Room, _all_room_ids: List[str]) -> List[face.Face]:
+def _get_thermal_envelope_faces(_hb_room: room.Room, _all_room_ids: list[str]) -> list[face.Face]:
     """Return a list of all the thermal-envelope faces for a Honeybee Room.
 
     This will include all the 'Outdoor', 'Ground' and 'Adiabatic' faces.
@@ -149,7 +147,7 @@ def _get_thermal_envelope_faces(_hb_room: room.Room, _all_room_ids: List[str]) -
     --------
         * (List[face.Face]) A List of all the thermal boundary faces.
     """
-    exposed_faces: List[face.Face] = []
+    exposed_faces: list[face.Face] = []
     for original_face in _hb_room.faces:
         # -- If it is a Surface exposure, but the face's adjacent zone is NOT part of
         # -- the room group, it must be exposed to another zone (ie: the floor surface
@@ -164,8 +162,8 @@ def _get_thermal_envelope_faces(_hb_room: room.Room, _all_room_ids: List[str]) -
         # -- We have to do this to make sure we don't lose any face-constructions
         # -- which are being applied by 'Construction Sets'.
         dup_face = _dup_face(original_face)
-        original_face_prop_e: FaceEnergyProperties = getattr(original_face.properties, "energy")
-        dup_face_prop_e: FaceEnergyProperties = getattr(dup_face.properties, "energy")
+        original_face_prop_e: FaceEnergyProperties = original_face.properties.energy
+        dup_face_prop_e: FaceEnergyProperties = dup_face.properties.energy
         dup_face_prop_e.construction = original_face_prop_e.construction
         exposed_faces.append(dup_face)
 
@@ -189,7 +187,7 @@ def _get_room_exposed_face_area(_hb_room: room.Room) -> float:
     return sum(fc.area for fc in _hb_room.faces if isinstance(fc.boundary_condition, (Outdoors, Ground)))
 
 
-def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellings]:
+def all_unique_ph_dwelling_objects(_hb_rooms: list[room.Room]) -> list[PhDwellings]:
     """Return a list of all the unique PhDwelling objects from a set of HB-Rooms.
 
     Arguments:
@@ -204,7 +202,7 @@ def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellin
     for room in _hb_rooms:
         try:
             hb_people = get_room_people(room)
-            hbph_people_prop_ph: PeoplePhProperties = getattr(hb_people.properties, "ph")
+            hbph_people_prop_ph: PeoplePhProperties = hb_people.properties.ph
             dwellings.add(hbph_people_prop_ph.dwellings)
         except MissingEnergyPropertiesError:
             # Room has no people defined, skip it
@@ -212,7 +210,7 @@ def all_unique_ph_dwelling_objects(_hb_rooms: List[room.Room]) -> List[PhDwellin
     return list(dwellings)
 
 
-def merge_occupancies(_hb_rooms: List[room.Room]) -> People:
+def merge_occupancies(_hb_rooms: list[room.Room]) -> People:
     """Returns a new HB-People-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -224,6 +222,7 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> People:
     -------
         * (people.People): A new Honeybee People object with values merged from the HB-Rooms.
     """
+    logger.debug(f"Merging Occupancies from {len(_hb_rooms)} Rooms")
 
     # -------------------------------------------------------------------------
     # Calculate the total dwelling-unit count. Ensure always at least 1 (even Non-Res)
@@ -248,7 +247,7 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> People:
             # Room has no people defined, skip it
             continue
 
-        hbph_people_prop_ph: PeoplePhProperties = getattr(hb_ppl_obj.properties, "ph")
+        hbph_people_prop_ph: PeoplePhProperties = hb_ppl_obj.properties.ph
         total_ph_bedrooms += int(hbph_people_prop_ph.number_bedrooms)
         total_ph_people += float(hbph_people_prop_ph.number_people)
         total_hb_people += hb_ppl_obj.people_per_area * hb_room.floor_area
@@ -266,10 +265,10 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> People:
             people_per_area=0.0,
             occupancy_schedule=ScheduleRuleset.from_constant_value("default_occ_schedule", 1.0),
         )
-        new_hb_ppl_prop_ph: PeoplePhProperties = getattr(new_hb_ppl.properties, "ph")
+        new_hb_ppl_prop_ph: PeoplePhProperties = new_hb_ppl.properties.ph
     else:
         new_hb_ppl: People = reference_people.__copy__()
-        new_hb_ppl_prop_ph: PeoplePhProperties = getattr(new_hb_ppl.properties, "ph")
+        new_hb_ppl_prop_ph: PeoplePhProperties = new_hb_ppl.properties.ph
         new_hb_ppl.people_per_area = total_hb_people / total_floor_area if total_floor_area > 0 else 0.0
 
     new_hb_ppl_prop_ph.number_bedrooms = total_ph_bedrooms
@@ -279,7 +278,7 @@ def merge_occupancies(_hb_rooms: List[room.Room]) -> People:
     return new_hb_ppl
 
 
-def merge_infiltrations(_hb_rooms: List[room.Room]) -> Infiltration:
+def merge_infiltrations(_hb_rooms: list[room.Room]) -> Infiltration:
     """Returns a new HB-Infiltration-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -292,6 +291,7 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> Infiltration:
         * (infiltration.Infiltration): A new Honeybee Infiltration object
             with values merged from the HB-Rooms.
     """
+    logger.debug(f"Merging Infiltrations from {len(_hb_rooms)} Rooms")
 
     # -- Calculate the total airflow per room, total exposed area per room
     total_m3_s = 0.0
@@ -334,7 +334,7 @@ def merge_infiltrations(_hb_rooms: List[room.Room]) -> Infiltration:
     return new_infil
 
 
-def merge_shw_programs(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
+def merge_shw_programs(_hb_rooms: list[room.Room]) -> shw.SHWSystem:
     """Merge together several HB-Room's Honeybee-Energy SHW System objects (if they exist).
 
     Arguments:
@@ -346,9 +346,10 @@ def merge_shw_programs(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
     --------
         * (shw.SHWSystem): A single new Honeybee-Energy SHW System Object.
     """
+    logger.debug(f"Merging SHW Programs from {len(_hb_rooms)} Rooms")
 
     # -- Find all the unique SHW Programs in the Model
-    shw_programs: Set[shw.SHWSystem] = set()
+    shw_programs: set[shw.SHWSystem] = set()
     for room in _hb_rooms:
         try:
             room_energy_props = get_room_energy_properties(room)
@@ -359,7 +360,7 @@ def merge_shw_programs(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
             continue
 
     if len(shw_programs) > 1:
-        print("Warning: More than one SHW Program Type found in the model.")
+        pass
 
     return shw.SHWSystem(
         identifier=clean_ep_string("_default_shw_system_"),
@@ -367,7 +368,7 @@ def merge_shw_programs(_hb_rooms: List[room.Room]) -> shw.SHWSystem:
     )
 
 
-def merge_elec_equip(_hb_rooms: List[room.Room]) -> ElectricEquipment:
+def merge_elec_equip(_hb_rooms: list[room.Room]) -> ElectricEquipment:
     """Returns a new HB-ElectricEquipment-Obj with it's values set from a list of input HB-Rooms.
 
     Arguments:
@@ -380,6 +381,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> ElectricEquipment:
         * (equipment.ElectricEquipment): A new Honeybee ElectricEquipment object
             with values merged from the HB-Rooms.
     """
+    logger.debug(f"Merging Electric Equipment from {len(_hb_rooms)} Rooms")
 
     # -- Filter out any HB-Rooms which do not have an Energy Properties object
     _hb_rooms = [rm for rm in _hb_rooms if _get_hb_room_energy_properties(rm) is not None]
@@ -387,8 +389,6 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> ElectricEquipment:
     # -- Filter out any HB-Rooms which do not have ElectricEquipment
     _hb_rooms = [rm for rm in _hb_rooms if _get_hb_room_energy_electric_equipment(rm) is not None]
     if not _hb_rooms:
-        msg = "Warning: No Honeybee-Rooms with Electric Equipment found."
-        print(msg)
         return ElectricEquipment(
             identifier="default_electric_equipment",
             watts_per_area=0.0,
@@ -405,7 +405,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> ElectricEquipment:
         try:
             room_electric_equipment = get_room_electric_equipment(room)
             room_ee_prop = room_electric_equipment.properties
-            room_ee_prop_ph: ElectricEquipmentPhProperties = getattr(room_ee_prop, "ph")
+            room_ee_prop_ph: ElectricEquipmentPhProperties = room_ee_prop.ph
 
             # TODO: Deprecate...
             # -- Get the Equipment from the HB-Elec-Equip (old method < Jan 2025)
@@ -447,7 +447,7 @@ def merge_elec_equip(_hb_rooms: List[room.Room]) -> ElectricEquipment:
     else:
         new_hb_equip: ElectricEquipment = reference_electric_equipment.duplicate()  # type: ignore
         new_hb_equip.watts_per_area = total_watts / total_floor_area if total_floor_area > 0 else 0.0
-    new_hb_equip_prop_ph: ElectricEquipmentPhProperties = getattr(new_hb_equip.properties, "ph")
+    new_hb_equip_prop_ph: ElectricEquipmentPhProperties = new_hb_equip.properties.ph
     new_hb_equip_prop_ph.equipment_collection.remove_all_equipment()
 
     for ph_item in ph_equipment.values():
@@ -468,6 +468,8 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
     --------
         * (list[process.Process]): A list with new Honeybee Process objects with values merged from the HB-Rooms.
     """
+    logger.debug(f"Merging Process Loads from {len(_hb_rooms)} Rooms")
+
     # -- Collect all the unique Process-Load/PH-Equipment in all the rooms.
     # -- Increase the quantity for each duplicate piece of equipment found
     ph_equipment: dict[str, Process] = {}
@@ -481,10 +483,10 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
 
         # -- Get the Equipment from the HB-Process Load (new method > Jan 2025)
         for process_load in process_loads:
-            process_prop_ph: ProcessPhProperties = getattr(process_load.properties, "ph")
+            process_prop_ph: ProcessPhProperties = process_load.properties.ph
             if equip := getattr(process_prop_ph, "ph_equipment", None):  # type: PhEquipment | None
                 if equip.identifier in ph_equipment:
-                    process_prop_ph: ProcessPhProperties = getattr(ph_equipment[equip.identifier].properties, "ph")
+                    process_prop_ph: ProcessPhProperties = ph_equipment[equip.identifier].properties.ph
                     if process_prop_ph.ph_equipment:
                         process_prop_ph.ph_equipment.quantity += 1
                     else:
@@ -496,12 +498,12 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
 
 
 def check_room_has_spaces(_hb_room: room.Room) -> None:
-    rm_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    rm_prop_ph: RoomPhProperties = _hb_room.properties.ph
     if len(rm_prop_ph.spaces) == 0:
-        print(f"Warning: Room '{_hb_room.display_name}' has no spaces?" " Merge may not work correctly")
+        pass
 
 
-def merge_foundations(_hb_rooms: List[room.Room]) -> Dict[str, PhFoundation]:
+def merge_foundations(_hb_rooms: list[room.Room]) -> dict[str, PhFoundation]:
     """
 
     Arguments:
@@ -516,27 +518,26 @@ def merge_foundations(_hb_rooms: List[room.Room]) -> Dict[str, PhFoundation]:
     # -- Group by Identifier
     foundation_groups = {}
     for rm in _hb_rooms:
-        room_prop_ph: RoomPhProperties = getattr(rm.properties, "ph")
+        room_prop_ph: RoomPhProperties = rm.properties.ph
         foundations = room_prop_ph.ph_foundations
         for foundation in foundations:
             foundation_groups[foundation.identifier] = foundation
 
     # -- Warn if more than 3 of them
     if len(foundation_groups) > 3:
-        room_prop_ph: RoomPhProperties = getattr(_hb_rooms[0].properties, "ph")
+        room_prop_ph: RoomPhProperties = _hb_rooms[0].properties.ph
         name = room_prop_ph.ph_bldg_segment.display_name
-        msg = (
+        (
             f"\tWarning: WUFI-Passive only allows 3 Foundation types. "
             f" {len(foundation_groups)} found on the Building Segment '"
             f"{name}'?"
         )
-        print(msg)
 
     return foundation_groups
 
 
 def merge_rooms(
-    _hb_rooms: List[room.Room],
+    _hb_rooms: list[room.Room],
     _tolerance: float,
     _angle_tolerance_degrees: float,
     _merge_faces: bool = False,
@@ -555,6 +556,8 @@ def merge_rooms(
     --------
         * room.Room: The new Honeybee Room.
     """
+    logger.debug(f"Merging Rooms from {len(_hb_rooms)} Rooms")
+
     reference_room = _hb_rooms[0]
 
     # -------------------------------------------------------------------------
@@ -585,7 +588,7 @@ def merge_rooms(
 
     # -------------------------------------------------------------------------
     # Build the new room from the exposed (possibly merged) faces
-    room_ph_prop: RoomPhProperties = getattr(reference_room.properties, "ph")
+    room_ph_prop: RoomPhProperties = reference_room.properties.ph
     new_room = room.Room(
         identifier=room_ph_prop.ph_bldg_segment.display_name,
         faces=exposed_faces,
@@ -595,17 +598,17 @@ def merge_rooms(
     # -- Set the new Merged-Room's properties.ph and
     # -- properties.energy to match the 'reference' room to start with, but leave
     # -- off the PH-Spaces so they don't get duplicated
-    ref_rm_prop_ph: RoomPhProperties = getattr(reference_room.properties, "ph")
-    new_rm_prop_ph: RoomPhProperties = getattr(new_room.properties, "ph")
+    ref_rm_prop_ph: RoomPhProperties = reference_room.properties.ph
+    new_rm_prop_ph: RoomPhProperties = new_room.properties.ph
     dup_ph_prop = ref_rm_prop_ph.duplicate(new_rm_prop_ph, include_spaces=False)
     dup_ph_prop._ph_foundations = merge_foundations(_hb_rooms)
-    setattr(new_room._properties, "_ph", dup_ph_prop)
+    new_room._properties._ph = dup_ph_prop
 
     try:
         ref_rm_energy_props = get_room_energy_properties(reference_room)
         new_rm_energy_props = get_room_energy_properties(new_room)
         dup_energy_prop = ref_rm_energy_props.duplicate(new_rm_energy_props)
-        setattr(new_room._properties, "_energy", dup_energy_prop)
+        new_room._properties._energy = dup_energy_prop
     except MissingEnergyPropertiesError:
         # Reference room has no energy properties - this is OK, just skip setting energy properties
         pass
@@ -617,7 +620,7 @@ def merge_rooms(
     for hb_room in _hb_rooms:
         check_room_has_spaces(hb_room)
 
-        rm_prop_ph: RoomPhProperties = getattr(hb_room.properties, "ph")
+        rm_prop_ph: RoomPhProperties = hb_room.properties.ph
         for existing_space in rm_prop_ph.spaces:
             # -- Preserve the space host HB-Room's .energy and .ph properties over
             # -- on the space itself. We need to do this cus' the host HB-Room is being
@@ -630,7 +633,7 @@ def merge_rooms(
             # existing_space.properties._ph = hb_room.properties._ph.duplicate(
             #     new_host=existing_space)
 
-            new_rm_prop_ph: RoomPhProperties = getattr(new_room.properties, "ph")
+            new_rm_prop_ph: RoomPhProperties = new_room.properties.ph
             new_rm_prop_ph.add_new_space(existing_space)
 
     # -------------------------------------------------------------------------
@@ -671,6 +674,7 @@ def weld_vertices(_variant: project.PhxVariant) -> project.PhxVariant:
         * (project.Variant): The variant, with its vertix objects welded.
 
     """
+    logger.debug(f"Welding Vertices for Variant: {_variant.name}")
 
     unique_vertix_dict = {}
     for component in _variant.building.all_components:

@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Data model of the PHPP 'Shape' (worksheet names and input column names)."""
 
-from typing import Dict, Optional
 
 from pydantic import BaseModel
 
@@ -11,9 +9,9 @@ from pydantic import BaseModel
 
 
 class InputItem(BaseModel):
-    column: Optional[str] = None
-    row: Optional[int] = None
-    unit: Optional[str] = None
+    column: str | None = None
+    row: int | None = None
+    unit: str | None = None
 
     @property
     def xl_range(self) -> str:
@@ -28,8 +26,8 @@ class VerificationInputItem(BaseModel):
     locator_string: str
     input_column: str
     input_row_offset: int
-    options: Optional[Dict] = None
-    unit: Optional[str] = None
+    options: dict | None = None
+    unit: str | None = None
 
 
 class Verification(BaseModel):
@@ -515,7 +513,7 @@ class VentilationInputItem(BaseModel):
     locator_col: str
     locator_string: str
     input_column: str
-    unit: Optional[str] = None
+    unit: str | None = None
 
 
 class Ventilation(BaseModel):
@@ -776,7 +774,7 @@ class DhwBranchPiping(BaseModel):
 
 
 class DhwTankInputOptions(BaseModel):
-    options: Dict
+    options: dict
 
 
 class DhwTankInputColumns(BaseModel):
@@ -875,7 +873,7 @@ class ElectricityInputColumns(BaseModel):
 class ElectricityInputRow(BaseModel):
     data: int
     selection: int
-    selection_options: Dict
+    selection_options: dict
 
 
 class ElectricityInputRows(BaseModel):
@@ -995,7 +993,7 @@ class PerAddresses(BaseModel):
 class PerDataBlock(BaseModel):
     locator_string_heading: str
     locator_string_start: str
-    locator_string_end: Optional[str] = None
+    locator_string_end: str | None = None
 
 
 class PerNamedRanges(BaseModel):
@@ -1048,7 +1046,7 @@ class DataVersion(BaseModel):
     locator_string_header: str
     locator_col_entry: str
     locator_string_entry: str
-    input_column: Dict
+    input_column: dict
 
 
 class Data(BaseModel):

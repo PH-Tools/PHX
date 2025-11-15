@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Window Shades."""
@@ -7,14 +6,14 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass, field
-from typing import ClassVar, Union
+from typing import ClassVar
 
 
 @dataclass
 class PhxWindowShade:
     _count: ClassVar[int] = 0
 
-    _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
+    _identifier: uuid.UUID | str = field(init=False, default_factory=uuid.uuid4)
     id_num: int = field(init=False, default=0)
     display_name: str = "__unnamed_shade__"
     operation_mode: int = 1  # 1=Reduce overheating

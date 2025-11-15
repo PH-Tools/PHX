@@ -5,7 +5,6 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 def test_default_PhxProject(reset_class_counters):
     v1 = project.PhxVariant()
-    print("remarks=", v1.remarks)
     result = generate_WUFI_XML_from_object(v1, _header="")
     assert xml_string_to_list(result) == [
         "<IdentNr>1</IdentNr>",

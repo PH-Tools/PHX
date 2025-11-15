@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Program Class for organizing Fresh-Air Ventilation Data."""

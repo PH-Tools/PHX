@@ -13,6 +13,7 @@ def test_building_has_same_number_of_polygons(
     for hbjson_variant, wufi_xml_variant in zip(
         phx_project_from_hbjson.variants,
         phx_project_from_wufi_xml.variants,
+        strict=False,
     ):
         num_hbjson_polygons = _total_num_polygons(hbjson_variant)
         num_xml_polygons = _total_num_polygons(wufi_xml_variant)

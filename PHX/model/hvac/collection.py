@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Mechanical Collection Classes."""
@@ -9,7 +8,7 @@ from collections import defaultdict
 from copy import copy
 from dataclasses import dataclass, field
 from functools import reduce
-from typing import ClassVar, Dict, List, Optional, Union
+from typing import ClassVar, Union
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import DeviceType, PhxSupportiveDeviceType
@@ -77,18 +76,18 @@ class PhxRenewableDeviceCollection:
 
     id_num: int = field(init=False, default=0)
     display_name: str = "Renewable Energy Device Collection"
-    _devices: Dict[str, AnyRenewableDevice] = field(default_factory=dict)
+    _devices: dict[str, AnyRenewableDevice] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
     @property
-    def devices(self) -> List[AnyRenewableDevice]:
+    def devices(self) -> list[AnyRenewableDevice]:
         return list(self._devices.values())
 
     @property
-    def pv_devices(self) -> List[PhxDevicePhotovoltaic]:
+    def pv_devices(self) -> list[PhxDevicePhotovoltaic]:
         """Return a List of all the Photovoltaic devices"""
         return [d for d in self.devices if d.device_type == DeviceType.PHOTOVOLTAIC]
 
@@ -98,9 +97,9 @@ class PhxRenewableDeviceCollection:
 
     def device_in_collection(self, _device_key) -> bool:
         """Return True if a PHX Renewable Device with the matching key is in the collection."""
-        return _device_key in self._devices.keys()
+        return _device_key in self._devices
 
-    def get_device_by_key(self, _key: str) -> Optional[AnyRenewableDevice]:
+    def get_device_by_key(self, _key: str) -> AnyRenewableDevice | None:
         """Returns the PHX Renewable Device with the matching key, or None if not found.
 
         Arguments:
@@ -149,13 +148,13 @@ class PhxRenewableDeviceCollection:
             return
         self._devices[_key] = _d
 
-    def group_devices_by_identifier(self, _devices: List[AnyRenewableDevice]) -> Dict[str, List[AnyRenewableDevice]]:
+    def group_devices_by_identifier(self, _devices: list[AnyRenewableDevice]) -> dict[str, list[AnyRenewableDevice]]:
         d = defaultdict(list)
         for device in _devices:
             d[device.identifier].append(copy(device))
         return d
 
-    def merge_group_of_devices(self, _groups: Dict[str, List[AnyRenewableDevice]]) -> List[AnyRenewableDevice]:
+    def merge_group_of_devices(self, _groups: dict[str, list[AnyRenewableDevice]]) -> list[AnyRenewableDevice]:
         """Merge a group of Dict of device-groups together into a single device."""
         merged_devices = []
         for group in _groups.values():
@@ -175,8 +174,7 @@ class PhxRenewableDeviceCollection:
 
     def __iter__(self):
         """Get each device in the PhxRenewableDeviceCollection, one at a time."""
-        for _ in self.devices:
-            yield _
+        yield from self.devices
 
     def __len__(self) -> int:
         """Number of devices in the PhxRenewableDeviceCollection"""
@@ -194,33 +192,33 @@ class PhxSupportiveDeviceCollection:
 
     id_num: int = field(init=False, default=0)
     display_name: str = "Supportive Device Collection"
-    _devices: Dict[str, PhxSupportiveDevice] = field(default_factory=dict)
+    _devices: dict[str, PhxSupportiveDevice] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
     @property
-    def devices(self) -> List[PhxSupportiveDevice]:
+    def devices(self) -> list[PhxSupportiveDevice]:
         return list(self._devices.values())
 
     @property
-    def heat_circulating_pumps(self) -> List[PhxSupportiveDevice]:
+    def heat_circulating_pumps(self) -> list[PhxSupportiveDevice]:
         """Return a List of all the Kitchen Hood devices"""
         return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.HEAT_CIRCULATING_PUMP]
 
     @property
-    def dhw_circulating_pumps(self) -> List[PhxSupportiveDevice]:
+    def dhw_circulating_pumps(self) -> list[PhxSupportiveDevice]:
         """Return a List of all the Kitchen Hood devices"""
         return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.DHW_CIRCULATING_PUMP]
 
     @property
-    def dhw_storage_pumps(self) -> List[PhxSupportiveDevice]:
+    def dhw_storage_pumps(self) -> list[PhxSupportiveDevice]:
         """Return a List of all the Kitchen Hood devices"""
         return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.DHW_STORAGE_LOAD_PUMP]
 
     @property
-    def other_devices(self) -> List[PhxSupportiveDevice]:
+    def other_devices(self) -> list[PhxSupportiveDevice]:
         """Return a List of all the Kitchen Hood devices"""
         return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.OTHER]
 
@@ -230,9 +228,9 @@ class PhxSupportiveDeviceCollection:
 
     def device_in_collection(self, _device_key) -> bool:
         """Return True if a PHX Supportive Device with the matching key is in the collection."""
-        return _device_key in self._devices.keys()
+        return _device_key in self._devices
 
-    def get_device_by_key(self, _key: str) -> Optional[PhxSupportiveDevice]:
+    def get_device_by_key(self, _key: str) -> PhxSupportiveDevice | None:
         """Returns the PHX Supportive Device with the matching key, or None if not found.
 
         Arguments:
@@ -281,13 +279,13 @@ class PhxSupportiveDeviceCollection:
             return
         self._devices[_key] = _d
 
-    def group_devices_by_identifier(self, _devices: List[PhxSupportiveDevice]) -> Dict[str, List[PhxSupportiveDevice]]:
+    def group_devices_by_identifier(self, _devices: list[PhxSupportiveDevice]) -> dict[str, list[PhxSupportiveDevice]]:
         d = defaultdict(list)
         for device in _devices:
             d[device.identifier].append(copy(device))
         return d
 
-    def merge_group_of_devices(self, _groups: Dict[str, List[PhxSupportiveDevice]]) -> List[PhxSupportiveDevice]:
+    def merge_group_of_devices(self, _groups: dict[str, list[PhxSupportiveDevice]]) -> list[PhxSupportiveDevice]:
         """Merge a group of Dict of device-groups together into a single device."""
         merged_devices = []
         for group in _groups.values():
@@ -316,8 +314,7 @@ class PhxSupportiveDeviceCollection:
 
     def __iter__(self):
         """Get each device in the PhxSupportiveDeviceCollection, one at a time."""
-        for _ in self.devices:
-            yield _
+        yield from self.devices
 
     def __len__(self) -> int:
         """Number of devices in the PhxSupportiveDeviceCollection"""
@@ -335,28 +332,28 @@ class PhxExhaustVentilatorCollection:
 
     id_num: int = field(init=False, default=0)
     display_name: str = "Exhaust Ventilator Collection"
-    _devices: Dict[str, AnyPhxExhaustVent] = field(default_factory=dict)
+    _devices: dict[str, AnyPhxExhaustVent] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
         self.id_num = self.__class__._count
 
     @property
-    def devices(self) -> List[AnyPhxExhaustVent]:
+    def devices(self) -> list[AnyPhxExhaustVent]:
         return list(self._devices.values())
 
     @property
-    def kitchen_hood_devices(self) -> List[PhxExhaustVentilatorRangeHood]:
+    def kitchen_hood_devices(self) -> list[PhxExhaustVentilatorRangeHood]:
         """Return a List of all the Kitchen Hood devices"""
         return [d for d in self.devices if isinstance(d, PhxExhaustVentilatorRangeHood)]
 
     @property
-    def dryer_devices(self) -> List[PhxExhaustVentilatorDryer]:
+    def dryer_devices(self) -> list[PhxExhaustVentilatorDryer]:
         """Return a List of all the Dryer devices"""
         return [d for d in self.devices if isinstance(d, PhxExhaustVentilatorDryer)]
 
     @property
-    def user_determined_devices(self) -> List[PhxExhaustVentilatorUserDefined]:
+    def user_determined_devices(self) -> list[PhxExhaustVentilatorUserDefined]:
         """Return a List of all the User-Determined devices"""
         return [d for d in self.devices if isinstance(d, PhxExhaustVentilatorUserDefined)]
 
@@ -366,9 +363,9 @@ class PhxExhaustVentilatorCollection:
 
     def device_in_collection(self, _device_key) -> bool:
         """Return True if a PHX Exhaust Ventilator with the matching key is in the collection."""
-        return _device_key in self._devices.keys()
+        return _device_key in self._devices
 
-    def get_ventilator_by_key(self, _key: str) -> Optional[AnyPhxExhaustVent]:
+    def get_ventilator_by_key(self, _key: str) -> AnyPhxExhaustVent | None:
         """Returns the PHX Exhaust Ventilator with the matching key, or None if not found.
 
         Arguments:
@@ -442,8 +439,7 @@ class PhxExhaustVentilatorCollection:
 
     def __iter__(self):
         """Get each device in the PhxExhaustVentilatorCollection, one at a time."""
-        for _ in self.devices:
-            yield _
+        yield from self.devices
 
     def __len__(self) -> int:
         """Number of devices in the PhxExhaustVentilatorCollection"""
@@ -468,14 +464,14 @@ class PhxMechanicalSystemCollection:
     sys_type_str: str = "User defined (ideal system)"
     zone_coverage: PhxZoneCoverage = field(default_factory=PhxZoneCoverage)
 
-    _devices: Dict[str, AnyMechDevice] = field(default_factory=dict)
+    _devices: dict[str, AnyMechDevice] = field(default_factory=dict)
     _distribution_hw_recirculation_params: PhxRecirculationParameters = field(
         default_factory=PhxRecirculationParameters
     )
-    _distribution_piping_trunks: Dict[str, hvac.PhxPipeTrunk] = field(default_factory=dict)
-    _distribution_piping_recirc: Dict[str, hvac.PhxPipeElement] = field(default_factory=dict)
+    _distribution_piping_trunks: dict[str, hvac.PhxPipeTrunk] = field(default_factory=dict)
+    _distribution_piping_recirc: dict[str, hvac.PhxPipeElement] = field(default_factory=dict)
     _distribution_num_hw_tap_points: int = 1
-    _distribution_ducting: Dict[str, hvac.PhxDuctElement] = field(default_factory=dict)
+    _distribution_ducting: dict[str, hvac.PhxDuctElement] = field(default_factory=dict)
 
     supportive_devices: PhxSupportiveDeviceCollection = field(default_factory=PhxSupportiveDeviceCollection)
     renewable_devices: PhxRenewableDeviceCollection = field(default_factory=PhxRenewableDeviceCollection)
@@ -488,35 +484,35 @@ class PhxMechanicalSystemCollection:
     #  -- Mechanical Devices
 
     @property
-    def devices(self) -> List[AnyMechDevice]:
+    def devices(self) -> list[AnyMechDevice]:
         """Returns a list of the 'devices' in the collection."""
-        return list(sorted(self._devices.values(), key=lambda d: d.display_name))
+        return sorted(self._devices.values(), key=lambda d: d.display_name)
 
     @property
-    def ventilation_devices(self) -> List[hvac.AnyPhxVentilation]:
+    def ventilation_devices(self) -> list[hvac.AnyPhxVentilation]:
         """Returns a list of the 'Ventilation' devices in the collection."""
         return [_ for _ in self.devices if isinstance(_, hvac.PhxDeviceVentilation)]
 
     @property
-    def space_heating_devices(self) -> List[hvac.AnyPhxHeater]:
+    def space_heating_devices(self) -> list[hvac.AnyPhxHeater]:
         """Returns a list of the 'Space Heating' devices in the collection."""
         return [_ for _ in self.devices if isinstance(_, hvac.PhxHeatingDevice)]
 
     @property
-    def heat_pump_devices(self) -> List[hvac.PhxHeatPumpDevice]:
+    def heat_pump_devices(self) -> list[hvac.PhxHeatPumpDevice]:
         """Returns a list of all the Heat-Pump devices in the collection."""
         return [d for d in self.devices if isinstance(d, hvac.PhxHeatPumpDevice)]
 
     @property
-    def cooling_devices(self) -> List[hvac.PhxHeatPumpDevice]:
+    def cooling_devices(self) -> list[hvac.PhxHeatPumpDevice]:
         """Returns a list of all the Cooling devices (heat pumps) in the collection."""
-        return [d for d in self.heat_pump_devices if d.usage_profile.cooling == True]
+        return [d for d in self.heat_pump_devices if d.usage_profile.cooling]
 
     def device_in_collection(self, _device_key) -> bool:
         """Return True if the a Mech device with the matching key is already in the collection."""
-        return _device_key in self._devices.keys()
+        return _device_key in self._devices
 
-    def get_mech_device_by_key(self, _key: str) -> Optional[hvac.PhxMechanicalDevice]:
+    def get_mech_device_by_key(self, _key: str) -> hvac.PhxMechanicalDevice | None:
         """Returns the mechanical device with the matching key, or None if not found.
 
         Arguments:
@@ -577,7 +573,7 @@ class PhxMechanicalSystemCollection:
         self._distribution_piping_recirc[_p.identifier] = _p
 
     @property
-    def dhw_heating_devices(self) -> List[hvac.AnyPhxHeater]:
+    def dhw_heating_devices(self) -> list[hvac.AnyPhxHeater]:
         """Returns a list of only the 'DHW Heating' devices (no tanks) in the collection."""
         return [
             _
@@ -588,7 +584,7 @@ class PhxMechanicalSystemCollection:
         ]
 
     @property
-    def dhw_tank_devices(self) -> List[hvac.AnyWaterTank]:
+    def dhw_tank_devices(self) -> list[hvac.AnyWaterTank]:
         """Returns a list of only the 'DHW Storage Tank' devices (no heaters) in the collection."""
         return [
             _
@@ -603,9 +599,9 @@ class PhxMechanicalSystemCollection:
         return sorted(self._distribution_piping_trunks.values(), key=lambda p: p.display_name)
 
     @property
-    def dhw_distribution_piping(self) -> List[hvac.PhxPipeElement]:
+    def dhw_distribution_piping(self) -> list[hvac.PhxPipeElement]:
         """Returns a list of ALL the DHW Piping from ALL Trunks, Branches, Twigs in the collection."""
-        piping: List[hvac.PhxPipeElement] = []
+        piping: list[hvac.PhxPipeElement] = []
 
         for trunk in self._distribution_piping_trunks.values():
             piping.append(trunk.pipe_element)
@@ -617,9 +613,9 @@ class PhxMechanicalSystemCollection:
         return piping
 
     @property
-    def dhw_distribution_piping_segments(self) -> List[hvac.PhxPipeSegment]:
+    def dhw_distribution_piping_segments(self) -> list[hvac.PhxPipeSegment]:
         """Returns a list of ALL the DHW Piping Segments from ALL Trunks, Branches, Twigs in the collection."""
-        pipe_segments: List[hvac.PhxPipeSegment] = []
+        pipe_segments: list[hvac.PhxPipeSegment] = []
 
         for trunk in self._distribution_piping_trunks.values():
             pipe_segments.extend(trunk.pipe_element.segments)
@@ -631,25 +627,25 @@ class PhxMechanicalSystemCollection:
         return pipe_segments
 
     @property
-    def dhw_distribution_piping_segments_by_diam(self) -> List[List[hvac.PhxPipeSegment]]:
+    def dhw_distribution_piping_segments_by_diam(self) -> list[list[hvac.PhxPipeSegment]]:
         """Returns a list of the DHW branch-piping segments, grouped by diameter."""
         # -- Group piping segments by diameter
-        d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
+        d: dict[float, list[hvac.PhxPipeSegment]] = defaultdict(list)
         for pipe_segment in self.dhw_distribution_piping_segments:
             d[pipe_segment.diameter_m].append(pipe_segment)
 
         return list(d.values())
 
     @property
-    def dhw_recirc_piping(self) -> List[hvac.PhxPipeElement]:
+    def dhw_recirc_piping(self) -> list[hvac.PhxPipeElement]:
         """Returns a list of all the DHW recirculation-piping in the collection."""
         return list(self._distribution_piping_recirc.values())
 
     @property
-    def dhw_recirc_piping_segments_by_diam(self) -> List[List[hvac.PhxPipeSegment]]:
+    def dhw_recirc_piping_segments_by_diam(self) -> list[list[hvac.PhxPipeSegment]]:
         """Returns a list of the DHW recirculation-piping segments, grouped by diameter."""
         # -- Group piping segments by diameter
-        d: Dict[float, List[hvac.PhxPipeSegment]] = defaultdict(list)
+        d: dict[float, list[hvac.PhxPipeSegment]] = defaultdict(list)
         for pipe in self.dhw_recirc_piping:
             for segment in pipe.segments:
                 d[segment.diameter_m].append(segment)
@@ -661,7 +657,7 @@ class PhxMechanicalSystemCollection:
         return sum(_.length_m for _ in self.dhw_recirc_piping)
 
     @property
-    def dhw_recirc_weighted_heat_loss_coeff(self) -> Optional[float]:
+    def dhw_recirc_weighted_heat_loss_coeff(self) -> float | None:
         """Return a length-weighted average pipe heat-loss coefficient."""
         if not self.dhw_recirc_total_length_m:
             return None
@@ -676,7 +672,7 @@ class PhxMechanicalSystemCollection:
         return sum(_.length_m for _ in self.dhw_distribution_piping_segments)
 
     @property
-    def dhw_distribution_weighted_diameter_mm(self) -> Optional[float]:
+    def dhw_distribution_weighted_diameter_mm(self) -> float | None:
         """Return a length-weighted average diameter for the trunk/branch/twig piping."""
         if not self.dhw_distribution_total_length_m:
             return None
@@ -693,6 +689,6 @@ class PhxMechanicalSystemCollection:
         self._distribution_ducting[_d.identifier] = _d
 
     @property
-    def vent_ducting(self) -> List[hvac.PhxDuctElement]:
+    def vent_ducting(self) -> list[hvac.PhxDuctElement]:
         """Returns a list of all the Vent. Ducting in the collection."""
         return list(self._distribution_ducting.values())

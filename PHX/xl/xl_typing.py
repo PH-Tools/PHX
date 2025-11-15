@@ -1,17 +1,16 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """XL-App Protocol Classes."""
 
 import pathlib
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 from PHX.xl import xl_data
 
 
 class xl_Range_Font:
     def __init__(self):
-        self.color: Optional[Tuple[int, ...]]
+        self.color: tuple[int, ...] | None
 
 
 class xl_RangeColumns_Protocol:
@@ -28,7 +27,7 @@ class xl_CellRange_Protocol:
 class xl_Range_Protocol:
     def __init__(self):
         self.value: xl_data.xl_range_value
-        self.color: Optional[Tuple[int, ...]]
+        self.color: tuple[int, ...] | None
         self.font: xl_Range_Font = xl_Range_Font()
         self.columns: xl_RangeColumns_Protocol = xl_RangeColumns_Protocol()
         self.last_cell: xl_CellRange_Protocol
@@ -48,8 +47,8 @@ class xl_Range_Protocol:
 
 class xl_API_Protocol:
     def __init__(self, sheet):
-        self.sheet: "xl_Sheet_Protocol" = sheet
-        self.rows: Dict
+        self.sheet: xl_Sheet_Protocol = sheet
+        self.rows: dict
         self.outline_object: Any
 
     def Rows(*args, **kwargs) -> Any: ...
@@ -65,11 +64,11 @@ class xl_Sheet_Protocol:
     def __init__(self, name="Sheet1"):
         self.api = xl_API_Protocol(self)
         self.protected = True
-        self._ranges: Dict[str, xl_Range_Protocol] = {}
+        self._ranges: dict[str, xl_Range_Protocol] = {}
         self.name: str = name
 
-    def range(self, cell1: str, cell2: Optional[str] = None) -> xl_Range_Protocol:
-        if cell1 in self._ranges.keys():
+    def range(self, cell1: str, cell2: str | None = None) -> xl_Range_Protocol:
+        if cell1 in self._ranges:
             return self._ranges[cell1]
         else:
             rng_obj = xl_Range_Protocol()
@@ -91,18 +90,18 @@ class xl_Sheet_Protocol:
 
 class xl_Sheets_Protocol:
     def __init__(self):
-        self.storage: Dict[str, xl_Sheet_Protocol] = {}
+        self.storage: dict[str, xl_Sheet_Protocol] = {}
 
     def __getitem__(self, _key) -> xl_Sheet_Protocol:
         return self.storage[_key]
 
     def add(
         self,
-        name: Optional[str] = None,
-        before: Optional[str] = None,
-        after: Optional[str] = None,
+        name: str | None = None,
+        before: str | None = None,
+        after: str | None = None,
     ) -> xl_Sheet_Protocol:
-        if name in self.storage.keys():
+        if name in self.storage:
             return self.storage[str(name)]
         else:
             new_sheet = xl_Sheet_Protocol(name=str(name))
@@ -110,8 +109,7 @@ class xl_Sheets_Protocol:
             return new_sheet
 
     def __iter__(self):
-        for _ in self.storage.values():
-            yield _
+        yield from self.storage.values()
 
     def __contains__(self, key):
         return key in self.storage

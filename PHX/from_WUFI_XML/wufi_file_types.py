@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Pydantic Model Unit-Types for WUFI-XML file format."""
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional, Union
+from typing import Any
 
 from ph_units.converter import convert
 
@@ -26,7 +25,7 @@ class BaseConverter:
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]):
+    def validate(cls, v: str | dict[str, Any]):
         """
         Since WUFI XMl files come in several shapes and the XML tag may, or
         may not, include a "unit=..." attribute, we don't know what sort of input
@@ -74,7 +73,7 @@ class BaseCaster:
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]):
+    def validate(cls, v: str | dict[str, Any]):
         # def validate(cls, v: Union[Dict[str, Union[float, int]], None, float]):
         """
         _input: Dict[str, Any] | None | float
@@ -179,7 +178,7 @@ class kWh_per_kWh(float):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]) -> Optional[float]:
+    def validate(cls, v: str | dict[str, Any]) -> float | None:
         # If v is not a dictionary, cast it to the correct type and return it
         if not isinstance(v, dict):
             return cls.__value_type__(v)
@@ -248,7 +247,7 @@ class Liter(float):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]) -> Optional[float]:
+    def validate(cls, v: str | dict[str, Any]) -> float | None:
         if not isinstance(v, dict):
             return cls.__value_type__(v)
 
@@ -281,7 +280,7 @@ class DegreeDeltaK(float):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]):
+    def validate(cls, v: str | dict[str, Any]):
         if not isinstance(v, dict):
             return float(v)
 
@@ -418,7 +417,7 @@ class WUFI_Vapor_Resistance_Factor(float):
         yield cls.validate
 
     @classmethod
-    def validate(cls, v: Union[str, Dict[str, Any]]) -> Optional[float]:
+    def validate(cls, v: str | dict[str, Any]) -> float | None:
         if not isinstance(v, dict):
             return cls.__value_type__(v)
 

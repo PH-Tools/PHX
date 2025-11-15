@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP "DHW+Distribution" worksheet."""
@@ -6,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ph_units.unit_type import Unit
 
@@ -21,7 +20,7 @@ class RecircPiping:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Dhw):
         self.xl = _xl
         self.shape = _shape
-        self._header_row: Optional[int] = None
+        self._header_row: int | None = None
 
     @property
     def header_row(self) -> int:
@@ -53,7 +52,7 @@ class BranchPiping:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Dhw):
         self.xl = _xl
         self.shape = _shape
-        self._header_row: Optional[int] = None
+        self._header_row: int | None = None
 
     @property
     def header_row(self) -> int:
@@ -85,7 +84,7 @@ class DHWPiping:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Dhw):
         self.xl = _xl
         self.shape = _shape
-        self._header_row: Optional[int] = None
+        self._header_row: int | None = None
         self.recirc_piping = RecircPiping(self.xl, self.shape)
         self.branch_piping = BranchPiping(self.xl, self.shape)
 
@@ -128,7 +127,7 @@ class TankData:
     volume: Unit = field(default_factory=Unit)
 
     @classmethod
-    def from_phpp_data(cls, _d: Dict[str, Any]) -> "TankData":
+    def from_phpp_data(cls, _d: dict[str, Any]) -> TankData:
         return cls(
             type=_d["type"],
             heat_loss_rate=Unit(_d["heat_loss_rate"], _d["heat_loss_rate_unit"]),
@@ -142,7 +141,7 @@ class Tank:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Dhw):
         self.xl = _xl
         self.shape = _shape
-        self._entry_row_start: Optional[int] = None
+        self._entry_row_start: int | None = None
 
     @property
     def entry_row_start(self) -> int:
@@ -187,7 +186,7 @@ class Tanks:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Dhw) -> None:
         self.xl = _xl
         self.shape = _shape
-        self._header_row: Optional[int] = None
+        self._header_row: int | None = None
 
         self.tank_1 = Tank(self.xl, self.shape)
         self.tank_2 = Tank(self.xl, self.shape)
@@ -217,7 +216,7 @@ class Tanks:
             f"header on the '{self.shape.name}' sheet, column {self.shape.tanks.locator_string_header}?"
         )
 
-    def get_all_tank_device_data(self) -> List[TankData]:
+    def get_all_tank_device_data(self) -> list[TankData]:
         """Get all the tank data from the spreadsheet."""
         return [
             self.tank_1.get_phpp_data(1),
@@ -234,24 +233,24 @@ class HotWater:
         self.tanks = Tanks(self.xl, self.shape)
         self.dhw_piping = DHWPiping(self.xl, self.shape)
 
-    def write_tanks(self, _phpp_hw_tanks: List[hot_water_tank.TankInput]) -> None:
+    def write_tanks(self, _phpp_hw_tanks: list[hot_water_tank.TankInput]) -> None:
         """Write the tank data to the spreadsheet."""
         for phpp_Tank_input in _phpp_hw_tanks:
             for item in phpp_Tank_input.create_xl_items(self.shape.name, self.tanks.tank_1.entry_row_start):
                 self.xl.write_xl_item(item)
 
-    def write_branch_piping(self, _phpp_branch_piping: List[hot_water_piping.BranchPipingInput]) -> None:
+    def write_branch_piping(self, _phpp_branch_piping: list[hot_water_piping.BranchPipingInput]) -> None:
         """Write the branch piping data to the spreadsheet."""
         for pipe_inputs in _phpp_branch_piping:
             for item in pipe_inputs.create_xl_items(self.shape.name, self.dhw_piping.branch_piping.header_row):
                 self.xl.write_xl_item(item)
 
-    def write_recirc_piping(self, _phpp_recirc_piping: List[hot_water_piping.BranchPipingInput]) -> None:
+    def write_recirc_piping(self, _phpp_recirc_piping: list[hot_water_piping.BranchPipingInput]) -> None:
         """Write the recirc piping data to the spreadsheet."""
         for pipe_inputs in _phpp_recirc_piping:
             for item in pipe_inputs.create_xl_items(self.shape.name, self.dhw_piping.recirc_piping.header_row):
                 self.xl.write_xl_item(item)
 
-    def get_all_tank_device_data(self) -> List[TankData]:
+    def get_all_tank_device_data(self) -> list[TankData]:
         """Get all the tank data from the PHPP worksheet."""
         return self.tanks.get_all_tank_device_data()

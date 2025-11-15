@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions used to convert a standard HBJSON Model over to WUFI Objects"""
 
 import logging
 from collections import defaultdict
-from typing import List, Tuple, Union
 
 from honeybee import model
 from honeybee.aperture import Aperture
@@ -28,7 +26,7 @@ class MissingPropertiesError(Exception):
         super().__init__(self.message)
 
 
-def sort_hb_rooms_by_bldg_segment(_hb_rooms: Tuple[Room]) -> List[List[Room]]:
+def sort_hb_rooms_by_bldg_segment(_hb_rooms: tuple[Room]) -> list[list[Room]]:
     """Returns Groups of Honeybee-Rooms broken up by properties.ph.ph_bldg_segment.identifier.
 
     Arguments:
@@ -42,7 +40,7 @@ def sort_hb_rooms_by_bldg_segment(_hb_rooms: Tuple[Room]) -> List[List[Room]]:
 
     rooms_by_segment = defaultdict(list)
     for room in _hb_rooms:
-        hb_room_prop_ph: RoomPhProperties = getattr(room.properties, "ph")
+        hb_room_prop_ph: RoomPhProperties = room.properties.ph
         rooms_by_segment[hb_room_prop_ph.ph_bldg_segment.identifier].append(room)
     return list(rooms_by_segment.values())
 
@@ -72,7 +70,7 @@ def get_project_data_from_hb_model(_hb_model: model.Model) -> PhxProjectData:
     return new_project_data
 
 
-def get_hb_apertures(_hb_model: model.Model) -> List[Aperture]:
+def get_hb_apertures(_hb_model: model.Model) -> list[Aperture]:
     """Return a list of all the HB Apertures in the Model."""
     return [aperture for room in _hb_model.rooms for face in room.faces for aperture in face.apertures]
 
@@ -80,7 +78,7 @@ def get_hb_apertures(_hb_model: model.Model) -> List[Aperture]:
 def convert_hb_model_to_PhxProject(
     _hb_model: model.Model,
     _group_components: bool = True,
-    _merge_faces: Union[bool, float] = False,
+    _merge_faces: bool | float = False,
     _merge_spaces_by_erv: bool = False,
     _merge_exhaust_vent_devices: bool = False,
 ) -> PhxProject:

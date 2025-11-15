@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions used to create Project elements from the Honeybee-Model"""
 
 import logging
-from typing import List, Optional, Tuple, Union
 
 from honeybee import model
 from honeybee.aperture import Aperture
@@ -46,7 +44,7 @@ def _conductivity_from_r_value(_r_value: float, _thickness: float) -> float:
 
 
 def create_phx_color_from_hbph_color(
-    _hbph_color: Optional[color.PhColor],
+    _hbph_color: color.PhColor | None,
 ) -> constructions.PhxColor:
     """Create a new PHX-Color from a Honeybee-PH-Utils PhColor.
 
@@ -88,7 +86,7 @@ def build_phx_material_from_hb_EnergyMaterial(
     new_mat.density = _hb_material.density
     new_mat.heat_capacity = _hb_material.specific_heat
 
-    _prop_ph: EnergyMaterialPhProperties = getattr(_hb_material.properties, "ph")
+    _prop_ph: EnergyMaterialPhProperties = _hb_material.properties.ph
 
     try:
         hbph_color = _prop_ph.ph_color
@@ -126,7 +124,7 @@ def build_phx_material_from_hb_EnergyMaterialNoMass(
     new_mat.density = _hb_material.mass_area_density
     new_mat.heat_capacity = _hb_material.area_heat_capacity
 
-    _prop_ph: EnergyMaterialPhProperties = getattr(_hb_material.properties, "ph")
+    _prop_ph: EnergyMaterialPhProperties = _hb_material.properties.ph
     try:
         hbph_color = _prop_ph.ph_color
     except AttributeError:
@@ -171,13 +169,13 @@ def build_phx_division_grid_from_hb_division_grid(
     materials: dict[str, constructions.PhxMaterial] = {}
     for cell in _hb_div_grid.cells:
         new_phx_material = build_phx_material_from_hb_EnergyMaterial(cell.material)
-        key = "{}-{}".format(new_phx_material.display_name, new_phx_material.conductivity)
+        key = f"{new_phx_material.display_name}-{new_phx_material.conductivity}"
         materials[key] = new_phx_material
 
     # -- Set all the cell materials
     for cell in _hb_div_grid.cells:
         new_phx_material = build_phx_material_from_hb_EnergyMaterial(cell.material)
-        key = "{}-{}".format(new_phx_material.display_name, new_phx_material.conductivity)
+        key = f"{new_phx_material.display_name}-{new_phx_material.conductivity}"
         new_phx_material = materials[key]
         new_div_grid.set_cell_material(cell.column, cell.row, new_phx_material)
 
@@ -185,7 +183,7 @@ def build_phx_division_grid_from_hb_division_grid(
 
 
 def build_layer_from_hb_material(
-    _hb_material: Union[EnergyMaterial, EnergyMaterialNoMass], _no_mass_thickness_m: float = 0.1
+    _hb_material: EnergyMaterial | EnergyMaterialNoMass, _no_mass_thickness_m: float = 0.1
 ) -> constructions.PhxLayer:
     """Returns a new PHX-Layer with attributes based on a Honeybee-Material.
 
@@ -201,13 +199,10 @@ def build_layer_from_hb_material(
     new_layer = constructions.PhxLayer()
 
     # -- Build the division grid first, so we can check for the 'base' material
-    hbph_props: EnergyMaterialPhProperties = getattr(_hb_material.properties, "ph")
+    hbph_props: EnergyMaterialPhProperties = _hb_material.properties.ph
     div_grid = build_phx_division_grid_from_hb_division_grid(hbph_props.divisions)
     if mat := div_grid.get_base_material():
-        if div_grid.is_a_steel_stud_cavity:
-            source_material = _hb_material
-        else:
-            source_material = mat
+        source_material = _hb_material if div_grid.is_a_steel_stud_cavity else mat
     else:
         source_material = _hb_material
 
@@ -279,7 +274,7 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
 
 def _set_phx_window_type_glazing(
     _phx_window_type: constructions.PhxConstructionWindow,
-    _hbph_glazing: Optional[PhWindowGlazing],
+    _hbph_glazing: PhWindowGlazing | None,
 ) -> constructions.PhxConstructionWindow:
     if _hbph_glazing:
         # -- Use Detailed PH-Params
@@ -291,7 +286,7 @@ def _set_phx_window_type_glazing(
 
 def _set_phx_window_type_frames(
     _phx_window_type: constructions.PhxConstructionWindow,
-    _hbph_frame: Optional[PhWindowFrame],
+    _hbph_frame: PhWindowFrame | None,
 ) -> constructions.PhxConstructionWindow:
     """Sets the Frame properties of a PhxConstructionWindow based on a Honeybee-Ph WindowFrame."""
     if _hbph_frame:
@@ -321,8 +316,8 @@ def _set_phx_window_type_frames(
 
 def _set_phx_window_type_u_w_value(
     _phx_window_type: constructions.PhxConstructionWindow,
-    _hbph_frame: Optional[PhWindowFrame],
-    _hbph_glazing: Optional[PhWindowGlazing],
+    _hbph_frame: PhWindowFrame | None,
+    _hbph_glazing: PhWindowGlazing | None,
 ) -> constructions.PhxConstructionWindow:
     """Set the U-Value and Frame-Factor of a PhxConstructionWindow based on the given HBPH-Params."""
     if _hbph_frame and _hbph_glazing:
@@ -334,7 +329,7 @@ def _set_phx_window_type_u_w_value(
 def build_phx_window_type_from_HB_WindowConstruction(
     _project: project.PhxProject,
     _hb_win_const: window.WindowConstruction,
-    _shade_const: Optional[windowshade.WindowConstructionShade],
+    _shade_const: windowshade.WindowConstructionShade | None,
 ) -> constructions.PhxConstructionWindow:
     """Create a new PhxConstructionWindow based on a HBPH-WindowConstruction.
 
@@ -419,7 +414,7 @@ def build_phx_shade_type_from_HB_WindowConstructionShade(
 
 def _get_hbph_window_constructions(
     _ap_ep_const,
-) -> Tuple[WindowConstruction, Optional[WindowConstructionShade]]:
+) -> tuple[WindowConstruction, WindowConstructionShade | None]:
     """Get the WindowConstruction and WindowConstructionShade from an HB-Aperture Construction."""
     try:
         # -- It is a WindowConstructionShade if it has a 'window_construction' attribute
@@ -435,13 +430,10 @@ def _get_hbph_window_constructions(
 
 def _new_shade_type(_project: project.PhxProject, hb_shade_const: WindowConstructionShade) -> bool:
     """Check if a new shade type needs to be created for the given HB-WindowConstructionShade."""
-    if hb_shade_const.shade_material.identifier in _project.shade_types:
-        return False
-    else:
-        return True
+    return hb_shade_const.shade_material.identifier not in _project.shade_types
 
 
-def build_transparent_assembly_types_from_HB_Model(_project: project.PhxProject, _hb_apertures: List[Aperture]) -> None:
+def build_transparent_assembly_types_from_HB_Model(_project: project.PhxProject, _hb_apertures: list[Aperture]) -> None:
     """Create PHX-WindowTypes (constructions) from an HB Model and add to the PHX-Project
 
     Will also align the id_nums of the Aperture Construction's with the WindowType in the Project dict.

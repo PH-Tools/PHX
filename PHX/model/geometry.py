@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Geometry Classes"""
@@ -6,8 +5,9 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Collection
 from dataclasses import dataclass, field
-from typing import ClassVar, Collection, List, Optional, Union
+from typing import ClassVar
 
 
 class PolygonEdgeError(Exception):
@@ -203,20 +203,16 @@ class PhxLineSegment:
     def length(self) -> float:
         return abs(
             math.sqrt(
-                (
-                    (self.vertix_2.x - self.vertix_1.x) ** 2
-                    + (self.vertix_2.y - self.vertix_1.y) ** 2
-                    + (self.vertix_2.z - self.vertix_1.z) ** 2
-                )
+                (self.vertix_2.x - self.vertix_1.x) ** 2
+                + (self.vertix_2.y - self.vertix_1.y) ** 2
+                + (self.vertix_2.z - self.vertix_1.z) ** 2
             )
         )
 
     def __eq__(self, other: PhxLineSegment) -> bool:
         if self.vertix_1 == other.vertix_1 and self.vertix_2 == other.vertix_2:
             return True
-        if self.vertix_1 == other.vertix_2 and self.vertix_2 == other.vertix_1:
-            return True
-        return False
+        return bool(self.vertix_1 == other.vertix_2 and self.vertix_2 == other.vertix_1)
 
 
 @dataclass
@@ -226,13 +222,13 @@ class PhxPolygon:
     _count: ClassVar[int] = 0
 
     _display_name: str
-    _area: Optional[float]
-    _center: Optional[PhxVertix]
+    _area: float | None
+    _center: PhxVertix | None
     normal_vector: PhxVector
     plane: PhxPlane
 
-    _vertices: List[PhxVertix] = field(init=False, default_factory=list)
-    child_polygon_ids: List[int] = field(init=False, default_factory=list)
+    _vertices: list[PhxVertix] = field(init=False, default_factory=list)
+    child_polygon_ids: list[int] = field(init=False, default_factory=list)
 
     id_num: int = field(init=False, default=0)
 
@@ -248,11 +244,7 @@ class PhxPolygon:
         if not len(self.vertices) == len(other.vertices):
             return False
         # -- For each Vertix, make sure this is an equivalent vertix in the other
-        for v in self.vertices:
-            if not any((_.is_equivalent(v) for _ in other.vertices)):
-                return False
-
-        return True
+        return all(any(_.is_equivalent(v) for _ in other.vertices) for v in self.vertices)
 
     @property
     def area(self) -> float:
@@ -261,7 +253,7 @@ class PhxPolygon:
         return self._area
 
     @area.setter
-    def area(self, _in: Optional[float]):
+    def area(self, _in: float | None):
         if _in:
             self._area = _in
 
@@ -272,7 +264,7 @@ class PhxPolygon:
         return self._center
 
     @center.setter
-    def center(self, _in: Optional[PhxVertix]):
+    def center(self, _in: PhxVertix | None):
         if _in:
             self._center = _in
 
@@ -292,11 +284,11 @@ class PhxPolygon:
         self._display_name = str(_in)
 
     @property
-    def vertices(self) -> List[PhxVertix]:
+    def vertices(self) -> list[PhxVertix]:
         return self._vertices
 
     @property
-    def vertices_id_numbers(self) -> List[int]:
+    def vertices_id_numbers(self) -> list[int]:
         return [v.id_num for v in self.vertices]
 
     @property
@@ -329,21 +321,15 @@ class PhxPolygon:
     @property
     def is_horizontal(self, tolerance: float = 0.0001) -> bool:
         a = self.angle_from_horizontal
-        if abs(a) < tolerance:
-            return True
-        elif abs(180 - abs(a)) < tolerance:
-            return True
-        return False
+        return bool(abs(a) < tolerance or abs(180 - abs(a)) < tolerance)
 
     @property
     def is_vertical(self, tolerance: float = 0.0001) -> bool:
         a = self.angle_from_horizontal
-        if abs(90 - abs(a)) < tolerance:
-            return True
-        return False
+        return abs(90 - abs(a)) < tolerance
 
     @property
-    def cardinal_orientation_angle(self, _reference_vector: Optional[PhxVector] = None) -> float:
+    def cardinal_orientation_angle(self, _reference_vector: PhxVector | None = None) -> float:
         """Calculate polygon normal's horizontal angle off a reference. By default, the
         reference vector will be (x=0,y=1,z=0) assuming north is y-direction.
 
@@ -382,7 +368,7 @@ class PhxPolygon:
     def add_vertix(self, _phx_vertix: PhxVertix) -> None:
         self.vertices.append(_phx_vertix)
 
-    def add_child_poly_id(self, _child_ids: Union[Collection[int], int]) -> None:
+    def add_child_poly_id(self, _child_ids: Collection[int] | int) -> None:
         if not isinstance(_child_ids, Collection):
             _child_ids = (_child_ids,)
 
@@ -449,10 +435,10 @@ class PhxPolygon:
 class PhxPolygonRectangular(PhxPolygon):
     """A Polygon with additional geometric attributes for rectangular surfaces."""
 
-    vertix_upper_left: Optional[PhxVertix] = field(init=False, default=None)
-    vertix_lower_left: Optional[PhxVertix] = field(init=False, default=None)
-    vertix_lower_right: Optional[PhxVertix] = field(init=False, default=None)
-    vertix_upper_right: Optional[PhxVertix] = field(init=False, default=None)
+    vertix_upper_left: PhxVertix | None = field(init=False, default=None)
+    vertix_lower_left: PhxVertix | None = field(init=False, default=None)
+    vertix_lower_right: PhxVertix | None = field(init=False, default=None)
+    vertix_upper_right: PhxVertix | None = field(init=False, default=None)
 
     VERTEX_ORDER = [
         "vertix_upper_left",
@@ -501,13 +487,10 @@ class PhxPolygonRectangular(PhxPolygon):
         return self.edge_left.length
 
     def add_vertix(self, _phx_vertix: PhxVertix) -> None:
-        print(
-            f'Method "add_vertix()" is not allowed for {self.__class__.__name__} objects.'
-            f"Please assign the vertix corners directly (vertix_upper_left-left, vertix_lower_left-right, etc..)"
-        )
+        pass
 
     @property
-    def vertices(self) -> List[PhxVertix]:
+    def vertices(self) -> list[PhxVertix]:
         """Return a List of the PhxPolygonRectangle Vertices (counter-clockwise from upper-left)."""
         corner_vertices = [getattr(self, v) for v in self.VERTEX_ORDER]
         # filter out any 'None' vertices
@@ -530,17 +513,17 @@ class PhxPolygonRectangular(PhxPolygon):
 
 @dataclass
 class PhxGraphics3D:
-    polygons: List[PhxPolygon] = field(default_factory=list)
+    polygons: list[PhxPolygon] = field(default_factory=list)
 
     @property
-    def vertices(self) -> List[PhxVertix]:
+    def vertices(self) -> list[PhxVertix]:
         """Returns a sorted list with all of the unique vertix objects of all the polygons in the collection."""
         return sorted(
             {vertix for polygon in self.polygons for vertix in polygon.vertices},
             key=lambda _: _.id_num,
         )
 
-    def add_polygons(self, _polygons: Union[Collection[PhxPolygon], PhxPolygon]) -> None:
+    def add_polygons(self, _polygons: Collection[PhxPolygon] | PhxPolygon) -> None:
         """Adds a new Polygon object to the collection"""
 
         if not isinstance(_polygons, Collection):
@@ -549,7 +532,7 @@ class PhxGraphics3D:
         for polygon in _polygons:
             self.polygons.append(polygon)
 
-    def get_polygons_by_id(self, _ids: Collection[int]) -> List[PhxPolygon]:
+    def get_polygons_by_id(self, _ids: Collection[int]) -> list[PhxPolygon]:
         """Returns a sorted list of polygons in the collection matching the IDs supplied.
 
         Arguments:

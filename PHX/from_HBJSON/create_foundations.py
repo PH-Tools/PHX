@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions to build PHX-Foundations from HBPH source objects."""
 
-from typing import Dict
 
 from honeybee_ph.foundations import PhFoundation
 
@@ -25,7 +23,7 @@ def create_phx_foundation_from_hbph(
         * (PhxFoundation)
     """
 
-    phx_foundation_type_map: Dict[str, ground.PhxFoundationTypes] = {
+    phx_foundation_type_map: dict[str, ground.PhxFoundationTypes] = {
         "PhHeatedBasement": ground.PhxHeatedBasement,
         "PhUnheatedBasement": ground.PhxUnHeatedBasement,
         "PhSlabOnGrade": ground.PhxSlabOnGrade,
@@ -37,7 +35,7 @@ def create_phx_foundation_from_hbph(
     new_phx_foundation.foundation_type_num = FoundationType(_hbph_foundation.foundation_type.number)
 
     # -- Pull out all the PH attributes and set the PHX ones to match.
-    for attr_name in vars(_hbph_foundation).keys():
+    for attr_name in vars(_hbph_foundation):
         if str(attr_name).startswith("_"):
             attr_name = attr_name[1:]
 

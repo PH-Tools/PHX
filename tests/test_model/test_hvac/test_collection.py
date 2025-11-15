@@ -102,7 +102,7 @@ def test_get_exhaust_ventilation_device_error(reset_class_counters):
     vent_device2 = ventilation.PhxExhaustVentilatorRangeHood()
     c1.add_new_ventilator(vent_device1.identifier, vent_device1)
 
-    assert c1.get_ventilator_by_key(vent_device2.identifier) == None
+    assert c1.get_ventilator_by_key(vent_device2.identifier) is None
 
     with pytest.raises(collection.NoDeviceFoundError):
         c1.get_ventilator_by_id(vent_device2.id_num)
@@ -138,7 +138,7 @@ def test_get_supportive_device_error(reset_class_counters):
     supp_device2 = supportive_devices.PhxSupportiveDevice()
     c1.add_new_device(supp_device1.identifier, supp_device1)
 
-    assert c1.get_device_by_key(supp_device2.identifier) == None
+    assert c1.get_device_by_key(supp_device2.identifier) is None
 
     with pytest.raises(collection.NoSupportiveDeviceUnitFoundError):
         c1.get_device_by_id(supp_device2.id_num)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Apply bug-fixes to the WUFI-XML."""
@@ -47,10 +46,6 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
 
         # ---------------------------------------------------------------------
         # -- Figure out the number of cooling systems needed and the attributes
-        print(
-            f"Total cooling system capacity = {variant_total_cooling_capacity :.1f} KW. "
-            "Splitting the cooling system into multiple systems."
-        )
 
         number_of_new_cooling_systems = int(variant_total_cooling_capacity / 200.0)
         target_number_of_cooling_systems = number_of_new_cooling_systems + 1
@@ -60,10 +55,6 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
         target_cooling_system_coverage_percentage = 1.0 / target_number_of_cooling_devices
         target_recirc_cop = total_recirc_cop / total_number_of_cooling_devices
         target_dehumid_cop = total_dehumid_cop / total_number_of_cooling_devices
-        print(
-            f"Splitting {variant_total_cooling_capacity :.1f} KW into "
-            f" {target_number_of_cooling_systems} equal-size systems of {target_cooling_system_size} KW."
-        )
 
         # ---------------------------------------------------------------------
         # -- Reset the existing cooling systems
@@ -89,11 +80,11 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
         for i in range(number_of_new_cooling_systems):
             new_collection = PhxMechanicalSystemCollection()
 
-            new_collection.display_name = "Cooling System [{}]".format(i + 2)
+            new_collection.display_name = f"Cooling System [{i + 2}]"
 
             # -- Build the new Heat Pump for cooling only
             new_cooling_heat_pump = PhxHeatPumpAnnual()
-            new_cooling_heat_pump.display_name = "Cooling System [{}]".format(i + 2)
+            new_cooling_heat_pump.display_name = f"Cooling System [{i + 2}]"
             new_cooling_heat_pump.usage_profile.cooling = True
             new_cooling_heat_pump.params_cooling.recirculation.used = True
             new_cooling_heat_pump.params_cooling.dehumidification.used = True

@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a PHPP Shading/Shading-Entry row"""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List
 
 from PHX.model import components
 from PHX.PHPP.phpp_localization import shape_model
@@ -36,7 +34,7 @@ class ShadingRow:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.shading_rows.inputs, _field_name).unit
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
 
         Arguments:
@@ -49,7 +47,7 @@ class ShadingRow:
         """
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemShading = partial(xl_data.XlItem, _sheet_name)
-        items: List[xl_data.XlItem] = [
+        items: list[xl_data.XlItem] = [
             XLItemShading(
                 create_range("h_hori"),
                 self.shading_dims.h_hori,

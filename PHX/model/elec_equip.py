@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Passive House Electrical Equipment (Appliances) Classes"""
@@ -7,7 +6,7 @@ import inspect
 import sys
 import uuid
 from dataclasses import dataclass, field
-from typing import ClassVar, Dict, List, Optional, Type, Union
+from typing import ClassVar
 
 from PHX.model.enums.elec_equip import ElectricEquipmentType
 
@@ -18,18 +17,18 @@ class PhxElectricalDevice:
 
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
-    identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
+    identifier: uuid.UUID | str = field(default_factory=uuid.uuid4)
 
     _reference_quantity: int = 1
     _reference_energy_norm: int = 2
     _quantity: int = 1
 
-    display_name: Optional[str] = "_unnamed_equipment_"
-    comment: Optional[str] = ""
-    in_conditioned_space: Optional[bool] = True
-    energy_demand: Optional[float] = 100.0
-    energy_demand_per_use: Optional[float] = 100.0
-    combined_energy_factor: Optional[float] = 0.0
+    display_name: str | None = "_unnamed_equipment_"
+    comment: str | None = ""
+    in_conditioned_space: bool | None = True
+    energy_demand: float | None = 100.0
+    energy_demand_per_use: float | None = 100.0
+    combined_energy_factor: float | None = 0.0
 
     device_type: ElectricEquipmentType = field(default=ElectricEquipmentType.CUSTOM)
 
@@ -42,7 +41,7 @@ class PhxElectricalDevice:
         return self._reference_quantity
 
     @reference_quantity.setter
-    def reference_quantity(self, value: Optional[int]) -> None:
+    def reference_quantity(self, value: int | None) -> None:
         if value is not None:
             self._reference_quantity = value
 
@@ -51,7 +50,7 @@ class PhxElectricalDevice:
         return self._reference_energy_norm
 
     @reference_energy_norm.setter
-    def reference_energy_norm(self, value: Optional[int]) -> None:
+    def reference_energy_norm(self, value: int | None) -> None:
         if value is not None:
             self._reference_energy_norm = value
 
@@ -60,7 +59,7 @@ class PhxElectricalDevice:
         return self._quantity
 
     @quantity.setter
-    def quantity(self, value: Optional[int]) -> None:
+    def quantity(self, value: int | None) -> None:
         if value is not None:
             self._quantity = value
 
@@ -83,24 +82,24 @@ class PhxDeviceDishwasher(PhxElectricalDevice):
         self._water_connection: int = 1  # DHW Connection
         self._capacity_type: int = 1
         self.display_name = "Kitchen Dishwasher"
-        self.capacity: Optional[float] = 1.0
+        self.capacity: float | None = 1.0
         self.device_type = ElectricEquipmentType.DISHWASHER
 
     @property
-    def water_connection(self) -> Optional[int]:
+    def water_connection(self) -> int | None:
         return self._water_connection
 
     @water_connection.setter
-    def water_connection(self, value: Optional[int]) -> None:
+    def water_connection(self, value: int | None) -> None:
         if value is not None:
             self._water_connection = value
 
     @property
-    def capacity_type(self) -> Optional[int]:
+    def capacity_type(self) -> int | None:
         return self._capacity_type
 
     @capacity_type.setter
-    def capacity_type(self, value: Optional[int]) -> None:
+    def capacity_type(self, value: int | None) -> None:
         if value is not None:
             self._capacity_type = value
 
@@ -111,17 +110,17 @@ class PhxDeviceClothesWasher(PhxElectricalDevice):
         self.display_name = "Laundry - washer"
         self._water_connection: int = 1  # DHW Connection
 
-        self.capacity: Optional[float] = 0.0814  # m3
-        self.modified_energy_factor: Optional[float] = 2.38
-        self.utilization_factor: Optional[float] = 1.0
+        self.capacity: float | None = 0.0814  # m3
+        self.modified_energy_factor: float | None = 2.38
+        self.utilization_factor: float | None = 1.0
         self.device_type = ElectricEquipmentType.CLOTHES_WASHER
 
     @property
-    def water_connection(self) -> Optional[int]:
+    def water_connection(self) -> int | None:
         return self._water_connection
 
     @water_connection.setter
-    def water_connection(self, value: Optional[int]) -> None:
+    def water_connection(self, value: int | None) -> None:
         if value is not None:
             self._water_connection = value
 
@@ -133,9 +132,9 @@ class PhxDeviceClothesDryer(PhxElectricalDevice):
         self._dryer_type: int = 4  # Condensation dryer
         self._field_utilization_factor_type: int = 1  # Timer
 
-        self.gas_consumption: Optional[float] = 0.0  # kWh
-        self.gas_efficiency_factor: Optional[float] = 2.67
-        self.field_utilization_factor: Optional[float] = 1.18
+        self.gas_consumption: float | None = 0.0  # kWh
+        self.gas_efficiency_factor: float | None = 2.67
+        self.field_utilization_factor: float | None = 1.18
         self.device_type = ElectricEquipmentType.CLOTHES_DRYER
 
     @property
@@ -143,16 +142,16 @@ class PhxDeviceClothesDryer(PhxElectricalDevice):
         return self._dryer_type
 
     @dryer_type.setter
-    def dryer_type(self, value: Optional[int]) -> None:
+    def dryer_type(self, value: int | None) -> None:
         if value is not None:
             self._dryer_type = value
 
     @property
-    def field_utilization_factor_type(self) -> Optional[int]:
+    def field_utilization_factor_type(self) -> int | None:
         return self._field_utilization_factor_type
 
     @field_utilization_factor_type.setter
-    def field_utilization_factor_type(self, value: Optional[int]) -> None:
+    def field_utilization_factor_type(self, value: int | None) -> None:
         if value is not None:
             self._field_utilization_factor_type = value
 
@@ -190,7 +189,7 @@ class PhxDeviceCooktop(PhxElectricalDevice):
         return self._cooktop_type
 
     @cooktop_type.setter
-    def cooktop_type(self, value: Optional[int]) -> None:
+    def cooktop_type(self, value: int | None) -> None:
         if value is not None:
             self._cooktop_type = value
 
@@ -206,7 +205,7 @@ class PhxDeviceLightingInterior(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Interior Lighting"
-        self.frac_high_efficiency: Optional[float] = 1.0
+        self.frac_high_efficiency: float | None = 1.0
         self.device_type = ElectricEquipmentType.LIGHTING_INTERIOR
 
 
@@ -214,7 +213,7 @@ class PhxDeviceLightingExterior(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Exterior Lighting"
-        self.frac_high_efficiency: Optional[float] = 1.0
+        self.frac_high_efficiency: float | None = 1.0
         self.device_type = ElectricEquipmentType.LIGHTING_EXTERIOR
         self.in_conditioned_space = False
 
@@ -223,7 +222,7 @@ class PhxDeviceLightingGarage(PhxElectricalDevice):
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Garage Lighting"
-        self.frac_high_efficiency: Optional[float] = 1.0
+        self.frac_high_efficiency: float | None = 1.0
         self.device_type = ElectricEquipmentType.LIGHTING_GARAGE
         self.in_conditioned_space = False
 
@@ -317,14 +316,14 @@ class PhxElevatorGearlessTraction(PhxElectricalDevice):
 # -----------------------------------------------------------------------------
 
 
-def get_device_type_map() -> Dict[ElectricEquipmentType, Type[PhxElectricalDevice]]:
+def get_device_type_map() -> dict[ElectricEquipmentType, type[PhxElectricalDevice]]:
     """Returns a dictionary mapping all the device enum types to the PhxElectricalDevice classes.
 
     This is useful of you are building up new Devices from raw data or types inputs.
     """
 
     d = {}
-    for name, device_class in inspect.getmembers(sys.modules[__name__]):
+    for _name, device_class in inspect.getmembers(sys.modules[__name__]):
         if not inspect.isclass(device_class):
             continue
         if not issubclass(device_class, PhxElectricalDevice):
@@ -346,7 +345,7 @@ class PhxElectricDeviceCollection:
     _devices: dict = field(default_factory=dict)
 
     @property
-    def devices(self) -> List[PhxElectricalDevice]:
+    def devices(self) -> list[PhxElectricalDevice]:
         """Returns a list of all the devices in the PhxElectricDeviceCollection, sorted by display_name."""
         if not self._devices:
             return []
@@ -354,9 +353,9 @@ class PhxElectricDeviceCollection:
 
     def device_key_in_collection(self, _device_key) -> bool:
         """Returns True if the key supplied is in the existing device collection."""
-        return _device_key in self._devices.keys()
+        return _device_key in self._devices
 
-    def get_equipment_by_key(self, _key: str) -> Optional[PhxElectricalDevice]:
+    def get_equipment_by_key(self, _key: str) -> PhxElectricalDevice | None:
         return self._devices.get(_key, None)
 
     def add_new_device(self, _key: str, _device: PhxElectricalDevice) -> None:
@@ -376,8 +375,7 @@ class PhxElectricDeviceCollection:
 
     def __iter__(self):
         """Get each device in the PhxElectricDeviceCollection, one at a time."""
-        for _ in self.devices:
-            yield _
+        yield from self.devices
 
     def __len__(self) -> int:
         """Number of devices in the PhxElectricDeviceCollection"""

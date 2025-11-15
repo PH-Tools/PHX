@@ -13,6 +13,7 @@ def test_building_has_same_number_of_vertices(
     for hbjson_variant, wufi_xml_variant in zip(
         phx_project_from_hbjson.variants,
         phx_project_from_wufi_xml.variants,
+        strict=False,
     ):
         num_hbjson_vertices = _total_num_vertices(hbjson_variant)
         num_xml_vertices = _total_num_vertices(wufi_xml_variant)

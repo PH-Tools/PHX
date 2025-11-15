@@ -2,7 +2,7 @@ from PHX.model.hvac import cooling_params
 
 
 def test_default_PhxCoolingDehumidification(reset_class_counters):
-    d1 = cooling_params.PhxCoolingDehumidificationParams()
+    cooling_params.PhxCoolingDehumidificationParams()
     """
     coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_device(d1.identifier, d1)

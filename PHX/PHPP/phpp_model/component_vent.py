@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a PHPP Components/Window-Frame row."""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List
 
 from PHX.model import hvac
 from PHX.PHPP.phpp_localization import shape_model
@@ -32,7 +30,7 @@ class VentilatorRow:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.ventilators.inputs, _field_name).unit
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
 
         Arguments:
@@ -52,7 +50,7 @@ class VentilatorRow:
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemCompo = partial(xl_data.XlItem, _sheet_name)
         params = self.phx_vent_sys.params
-        items: List[xl_data.XlItem] = [
+        items: list[xl_data.XlItem] = [
             XLItemCompo(create_range("display_name"), self.phx_vent_sys.display_name),
             XLItemCompo(create_range("sensible_heat_recovery"), params.sensible_heat_recovery),
             XLItemCompo(create_range("latent_heat_recovery"), params.latent_heat_recovery),

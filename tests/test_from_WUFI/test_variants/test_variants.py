@@ -11,7 +11,7 @@ def test_project_variants(
 
     assert len(variants_hbjson) == len(variants_xml)
 
-    for var_hbjson, var_xml in zip(variants_hbjson, variants_xml):
+    for var_hbjson, var_xml in zip(variants_hbjson, variants_xml, strict=False):
         assert var_hbjson.name == var_xml.name
         assert var_hbjson.remarks == var_xml.remarks
         assert var_hbjson.plugin == var_xml.plugin

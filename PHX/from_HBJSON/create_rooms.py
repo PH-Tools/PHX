@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions to build PHX 'RoomVentilation' entities from Honeybee-PH Spaces"""
 
-from typing import Optional
 
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
@@ -38,7 +36,7 @@ def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
         * (float)
     """
     # Type Aliases
-    host: Optional[room.Room] = _space.host
+    host: room.Room | None = _space.host
     if not host:
         raise ValueError(f"The Honeybee-PH Space {_space.display_name} is missing a host-HB-Room.")
 

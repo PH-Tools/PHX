@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a PHPP Windows/Window-Entry row"""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List, Optional
 
 from PHX.model import constructions, geometry
 from PHX.PHPP.phpp_localization import shape_model
@@ -13,13 +11,13 @@ from PHX.xl import xl_data
 
 
 def get_name_from_glazing_id(
-    _phpp_glazing_id: Optional[xl_data.xl_range_single_value],
+    _phpp_glazing_id: xl_data.xl_range_single_value | None,
 ) -> str:
     """Return the aperture's PHPP-Name (ie: "MyGlass") from phpp-id-string."""
     try:
         return str(_phpp_glazing_id).split("-", 1)[1]
     except:
-        if _phpp_glazing_id == None or _phpp_glazing_id == "None":
+        if _phpp_glazing_id is None or _phpp_glazing_id == "None":
             return ""
         else:
             msg = f"Error getting construction PHPP-Name? " f"Could not split {_phpp_glazing_id} on '-'?"
@@ -42,10 +40,10 @@ class WindowRow:
     shape: shape_model.Windows
     phx_polygon: geometry.PhxPolygonRectangular
     phx_construction: constructions.PhxConstructionWindow
-    phpp_host_surface_id_name: Optional[str]
-    phpp_id_frame: Optional[str]
-    phpp_id_glazing: Optional[str]
-    phpp_id_variant_type: Optional[str]
+    phpp_host_surface_id_name: str | None
+    phpp_id_frame: str | None
+    phpp_id_glazing: str | None
+    phpp_id_variant_type: str | None
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -56,7 +54,7 @@ class WindowRow:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.window_rows.inputs, _field_name).unit
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
 
         Arguments:
@@ -69,7 +67,7 @@ class WindowRow:
         """
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemWindows = partial(xl_data.XlItem, _sheet_name)
-        items: List[xl_data.XlItem] = [
+        items: list[xl_data.XlItem] = [
             XLItemWindows(create_range("variant_input"), self.phpp_id_variant_type),
             XLItemWindows(create_range("quantity"), 1),
             XLItemWindows(create_range("description"), f"'{self.phx_polygon.display_name}"),

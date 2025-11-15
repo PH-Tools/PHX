@@ -41,7 +41,7 @@ def test_add_mixed_PhxVentilatorParams(reset_class_counters):
     assert p3.latent_heat_recovery == 15
     assert p3.quantity == 5
     assert p3.electric_efficiency == 3
-    assert p3.frost_protection_reqd == True
+    assert p3.frost_protection_reqd
     assert p3.temperature_below_defrost_used == 0.0
 
 
@@ -99,7 +99,7 @@ def test_add_mixed_PhxVentilator(reset_class_counters):
     assert d3.params.latent_heat_recovery == 15
     assert d3.params.quantity == 5
     assert d3.params.electric_efficiency == 3
-    assert d3.params.frost_protection_reqd == True
+    assert d3.params.frost_protection_reqd
     assert d3.params.temperature_below_defrost_used == 0.0
 
 
@@ -118,7 +118,7 @@ def test_add_error(reset_class_counters):
     o2 = ventilation.PhxExhaustVentilatorDryer()
 
     with pytest.raises(Exception):
-        o3 = o1 + o2
+        o1 + o2
 
 
 def test_add_range_hoods(reset_class_counters):

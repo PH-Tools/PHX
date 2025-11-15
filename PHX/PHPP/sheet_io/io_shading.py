@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP Shading worksheet."""
 
 from __future__ import annotations
-
-from typing import List, Optional
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model import shading_rows
@@ -15,9 +12,9 @@ from PHX.xl import xl_app
 class Shading:
     """IO Controller Class for PHPP "Shading" worksheet."""
 
-    _header_row: Optional[int] = None
-    _entry_row_start: Optional[int] = None
-    _entry_row_end: Optional[int] = None
+    _header_row: int | None = None
+    _entry_row_start: int | None = None
+    _entry_row_end: int | None = None
 
     def __init__(self, _xl: xl_app.XLConnection, shape: shape_model.Shading):
         self.xl = _xl
@@ -105,7 +102,7 @@ class Shading:
             f"marker on the '{self.shape.name}' sheet, column {self.shape.shading_rows_end.locator_col_entry}?"
         )
 
-    def write_shading(self, _shading_rows: List[shading_rows.ShadingRow]) -> None:
+    def write_shading(self, _shading_rows: list[shading_rows.ShadingRow]) -> None:
         """Write a list of ShadingRow objects to the Shading worksheet."""
 
         for i, shading_row in enumerate(_shading_rows, start=self.entry_row_start):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Occupancy (People) Load."""
@@ -16,4 +15,4 @@ class PhxLoadOccupancy:
 
     @property
     def unique_key(self) -> str:
-        return "{}_{:.6f}_".format(self.__class__.__name__, self.people_per_m2)
+        return f"{self.__class__.__name__}_{self.people_per_m2:.6f}_"

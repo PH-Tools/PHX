@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Classes used to build XML Node Objects which are used during XML Output"""
 
-from typing import Any, Collection, Optional, Union
+from collections.abc import Collection
+from typing import Any, Union
 
 # Type Alias
 xml_valid = Union[str, float, int, bool, None]
@@ -16,7 +16,7 @@ class XML_Node:
         self,
         _node_name: str,
         _node_value: xml_valid,
-        _attr_name: Optional[str] = None,
+        _attr_name: str | None = None,
         _attr_value: xml_valid = None,
     ):
         self.node_name = _node_name
@@ -60,9 +60,9 @@ class XML_Object:
         self,
         _node_name: str,
         _node_object: Any,
-        _attr_name: Optional[str] = None,
+        _attr_name: str | None = None,
         _attr_value: xml_valid = None,
-        _schema_name: Optional[str] = None,
+        _schema_name: str | None = None,
     ):
         """
         Arguments:

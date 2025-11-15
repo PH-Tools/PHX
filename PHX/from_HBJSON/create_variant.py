@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions to build PHX-Variant from Honeybee Rooms"""
 
 import logging
-from typing import Dict, Set
 
 logger = logging.getLogger()
 
@@ -51,8 +49,8 @@ from PHX.model.utilization_patterns import (
 def add_building_from_hb_room(
     _variant: project.PhxVariant,
     _hb_room: room.Room,
-    _assembly_dict: Dict[str, constructions.PhxConstructionOpaque],
-    _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
+    _assembly_dict: dict[str, constructions.PhxConstructionOpaque],
+    _window_type_dict: dict[str, constructions.PhxConstructionWindow],
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     _lighting_sched_collection: UtilizationPatternCollection_Lighting,
@@ -81,6 +79,8 @@ def add_building_from_hb_room(
     --------
         * None
     """
+    logger.debug(f"Adding PhxBuilding to PhxVariant '{_variant.name}' from HB-Room: {_hb_room.display_name}")
+
     _variant.building.add_components(
         create_building.create_components_from_hb_room(_hb_room, _assembly_dict, _window_type_dict, _tolerance)
     )
@@ -114,7 +114,7 @@ def add_phius_certification_from_hb_room(_variant: project.PhxVariant, _hb_room:
     """
 
     # -- alias cus' all this shit is deep in there...
-    room_ph_prop: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_ph_prop: RoomPhProperties = _hb_room.properties.ph
     hbph_phius_cert: phius.PhiusCertification = room_ph_prop.ph_bldg_segment.phius_certification
     phx_phius_cert_criteria = _variant.phius_cert.phius_certification_criteria
     phx_phius_cert_settings = _variant.phius_cert.phius_certification_settings
@@ -224,7 +224,7 @@ def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: r
         * None
     """
     # alias
-    room_ph_prop: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_ph_prop: RoomPhProperties = _hb_room.properties.ph
     hbph_settings: phi.PhiCertification = room_ph_prop.ph_bldg_segment.phi_certification
     phx_phi_cert = _variant.phi_cert
     phx_settings = _variant.phi_cert.phi_certification_settings
@@ -273,14 +273,14 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     # ------------------------------------------------------------------------------------------------------------------
     # -- Type Aliases
     ph_bldg = _variant.phius_cert.ph_building_data  # alias
-    hb_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    hb_prop_ph: RoomPhProperties = _hb_room.properties.ph
     hbph_bldg_seg: BldgSegment = hb_prop_ph.ph_bldg_segment
 
     # ------------------------------------------------------------------------------------------------------------------
     # -- Occupancy
     try:
         hb_people = get_room_people(_hb_room)
-        hb_ppl_prop_ph: people.PeoplePhProperties = getattr(hb_people.properties, "ph")
+        hb_ppl_prop_ph: people.PeoplePhProperties = hb_people.properties.ph
         ph_bldg.num_of_units = hb_ppl_prop_ph.number_dwelling_units
     except MissingEnergyPropertiesError:
         # No people defined, skip setting num_of_units
@@ -341,7 +341,7 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     """
 
     # -- aliases
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     ud_site: site.Site = room_prop_ph.ph_bldg_segment.site
     ud_ground = ud_site.climate.ground
     phx_climate = _variant.site.climate
@@ -439,7 +439,7 @@ def add_local_pe_conversion_factors(_variant: project.PhxVariant, _hb_room: room
         * None
     """
 
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for factor in room_prop_ph.ph_bldg_segment.source_energy_factors:
         new_phx_factor = phx_site.PhxPEFactor()
         new_phx_factor.fuel_name = factor.fuel_name
@@ -462,7 +462,7 @@ def add_local_co2_conversion_factors(_variant: project.PhxVariant, _hb_room: roo
         * None
     """
 
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for factor in room_prop_ph.ph_bldg_segment.co2e_factors:
         new_phx_factor = phx_site.PhxCO2Factor()
         new_phx_factor.fuel_name = factor.fuel_name
@@ -542,7 +542,7 @@ def add_exhaust_vent_devices_from_hb_rooms(
         * None
     """
 
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for hbph_space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
@@ -584,7 +584,7 @@ def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
         * None
     """
 
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
@@ -601,7 +601,7 @@ def add_heating_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: ro
                 _variant.default_mech_collection.add_new_mech_device(hbph_sys.key, phx_heating_device)  # type: ignore
 
             # -- Keep the ID-Numbers aligned
-            setattr(hbph_sys, "id_num", phx_heating_device.id_num)
+            hbph_sys.id_num = phx_heating_device.id_num
 
     return None
 
@@ -619,7 +619,7 @@ def add_heat_pump_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: 
         * None
     """
 
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
@@ -636,7 +636,7 @@ def add_heat_pump_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room: 
                 _variant.default_mech_collection.add_new_mech_device(hbph_sys.key, phx_heat_pump_device)  # type: ignore
 
             # -- Keep the ID-Numbers aligned
-            setattr(hbph_sys, "id_num", phx_heat_pump_device.id_num)
+            hbph_sys.id_num = phx_heat_pump_device.id_num
 
     return None
 
@@ -657,7 +657,7 @@ def add_shw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
         * None
     """
 
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for space in room_prop_ph.spaces:
         if not space.host:
             continue
@@ -695,7 +695,7 @@ def add_shw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
         * None
     """
 
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for space in room_prop_ph.spaces:
         if not space.host:
             continue
@@ -714,34 +714,32 @@ def add_shw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
             _variant.default_mech_collection.add_new_mech_device(heater.identifier, phx_hw_heater)
 
 
-def shw_recirc_temp(_recirc_temps: Set[float]):
+def shw_recirc_temp(_recirc_temps: set[float]):
     """Get the DHW recirculation temperature."""
     if len(_recirc_temps) == 0:
         return 60.0
     elif len(_recirc_temps) == 1:
         return _recirc_temps.pop()
     else:
-        print(f"Warning: Multiple recirculation temperatures found. {_recirc_temps}")
         return 60.0
 
 
-def shw_recirc_hours(_recirc_temps: Set[int]) -> int:
+def shw_recirc_hours(_recirc_temps: set[int]) -> int:
     """Get the number of hours that the DHW recirculation is active."""
     if len(_recirc_temps) == 0:
         return 24
     elif len(_recirc_temps) == 1:
         return _recirc_temps.pop()
     else:
-        print(f"Warning: Multiple recirculation run-times found. {_recirc_temps}")
         return 24
 
 
 def add_shw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     phx_mech_sys = _variant.default_mech_collection
-    phx_recirc_temps: Set[float] = set()
-    phx_recirc_hours: Set[int] = set()
+    phx_recirc_temps: set[float] = set()
+    phx_recirc_hours: set[int] = set()
 
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for hbph_space in room_prop_ph.spaces:
         if not hbph_space.host:
             continue
@@ -792,7 +790,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
     # -- Get all the PhEquipment from the HBE-Electric-Equipment
     try:
         room_hb_energy_elec_equip = get_room_electric_equipment(_hb_room)
-        ee_properties_ph: equipment.ElectricEquipmentPhProperties = getattr(room_hb_energy_elec_equip.properties, "ph")
+        ee_properties_ph: equipment.ElectricEquipmentPhProperties = room_hb_energy_elec_equip.properties.ph
         for equip_key, device in ee_properties_ph.equipment_collection.items():
             phx_elec_device = create_elec_equip.build_phx_elec_device(device)
             for zone in _variant.building.zones:
@@ -806,7 +804,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
         room_energy_props = get_room_energy_properties(_hb_room)
         room_hb_energy_process_loads: tuple[Process] = room_energy_props.process_loads
         for process_load in room_hb_energy_process_loads:
-            process_prop_ph: process.ProcessPhProperties = getattr(process_load.properties, "ph")
+            process_prop_ph: process.ProcessPhProperties = process_load.properties.ph
             if not process_prop_ph.ph_equipment:
                 continue
             phx_elec_device = create_elec_equip.build_phx_elec_device(process_prop_ph.ph_equipment)
@@ -820,7 +818,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
     try:
         room_energy_props = get_room_energy_properties(_hb_room)
         if room_energy_props.lighting is not None:
-            lighting_prop_ph: lighting.LightingPhProperties = getattr(room_energy_props.lighting.properties, "ph")
+            lighting_prop_ph: lighting.LightingPhProperties = room_energy_props.lighting.properties.ph
             if lighting_prop_ph.ph_equipment:
                 phx_elec_device = create_elec_equip.build_phx_elec_device(lighting_prop_ph.ph_equipment)
                 for zone in _variant.building.zones:
@@ -837,7 +835,7 @@ def add_supportive_devices_from_hb_room(
     _hb_room: room.Room,
     _merge_devices: bool = True,
 ) -> None:
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for hbph_space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices.
@@ -864,7 +862,7 @@ def add_renewable_devices_from_hb_room(
     _hb_room: room.Room,
     _merge_devices: bool = True,
 ) -> None:
-    room_prop_ph: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for hbph_space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
@@ -888,8 +886,8 @@ def add_renewable_devices_from_hb_room(
 
 def from_hb_room(
     _hb_room: room.Room,
-    _assembly_dict: Dict[str, constructions.PhxConstructionOpaque],
-    _window_type_dict: Dict[str, constructions.PhxConstructionWindow],
+    _assembly_dict: dict[str, constructions.PhxConstructionOpaque],
+    _window_type_dict: dict[str, constructions.PhxConstructionWindow],
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     _lighting_sched_collection: UtilizationPatternCollection_Lighting,
@@ -915,11 +913,12 @@ def from_hb_room(
     --------
         * A new Variant object.
     """
+    logger.debug(f"Creating new PHX-Variant from Honeybee-Room: {_hb_room.display_name}")
 
     new_variant = project.PhxVariant()
 
     # -- Keep all the ID numbers aligned
-    room_ph_prop: RoomPhProperties = getattr(_hb_room.properties, "ph")
+    room_ph_prop: RoomPhProperties = _hb_room.properties.ph
     new_variant.id_num = project.PhxVariant._count
     room_ph_prop.id_num = new_variant.id_num
     new_variant.name = _hb_room.display_name

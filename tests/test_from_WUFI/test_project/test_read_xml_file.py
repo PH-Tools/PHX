@@ -28,7 +28,7 @@ def test_read_xml_file(reset_class_counters) -> None:
         "WindowTypes",
         "SolarProtectionTypes",
     ]:
-        assert k in wufi_xml_data.keys()
+        assert k in wufi_xml_data
 
 
 def test_read_xml_and_convert_to_phx_project(reset_class_counters) -> None:

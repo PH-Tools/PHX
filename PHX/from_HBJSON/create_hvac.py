@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions to create PHX-HVAC objects from Honeybee-Energy-PH HVAC"""
 
-from typing import Callable, Dict, TypeVar, Union
+from collections.abc import Callable
+from typing import TypeVar
 
 from honeybee_phhvac import _base, ducting, heat_pumps, heating, supportive_device, ventilation
 from honeybee_phhvac.renewable_devices import PhPhotovoltaicDevice, PhRenewableEnergyDevice
@@ -15,7 +15,7 @@ from PHX.model.hvac.heating import AnyPhxHeater
 from PHX.model.hvac.renewable_devices import AnyRenewableDevice, PhxDevicePhotovoltaic
 from PHX.model.hvac.ventilation import AnyPhxVentilation
 
-T = TypeVar("T", bound=Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxHeatPump])
+T = TypeVar("T", bound=AnyPhxVentilation | AnyPhxHeater | AnyPhxHeatPump)
 
 
 def _transfer_attributes(_hbeph_obj: _base._PhHVACBase, _phx_obj: T) -> T:
@@ -284,7 +284,7 @@ def build_phx_heating_device(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeati
     """Returns a new PHX-Heating-Device based on an input Honeybee-PH Heating System."""
 
     # -- Mapping Honeybee-PH -> PHX types
-    phx_heater_classes: Dict[str, Callable[[heating.PhHeatingSystem], hvac.PhxHeatingDevice]] = {
+    phx_heater_classes: dict[str, Callable[[heating.PhHeatingSystem], hvac.PhxHeatingDevice]] = {
         "PhHeatingDirectElectric": build_phx_heating_electric,
         "PhHeatingFossilBoiler": build_phx_heating_fossil_boiler,
         "PhHeatingWoodBoiler": build_phx_heating_wood_boiler,
@@ -393,7 +393,7 @@ def build_phx_heat_pump_device(
     """Returns a new PHX-He"at-Pump-Device based on an input Honeybee-PH Heat-Pump System."""
 
     # -- Mapping Honeybee-PH -> PHX types
-    phx_heat_pump_classes: Dict[str, Callable[[heat_pumps.PhHeatPumpSystem], hvac.PhxHeatPumpDevice]] = {
+    phx_heat_pump_classes: dict[str, Callable[[heat_pumps.PhHeatPumpSystem], hvac.PhxHeatPumpDevice]] = {
         "PhHeatPumpAnnual": build_phx_heating_hp_annual,
         "PhHeatPumpRatedMonthly": build_phx_heating_hp_monthly,
         "PhHeatPumpCombined": build_phx_heating_hp_combined,

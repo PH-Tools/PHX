@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP 'Components' worksheet."""
@@ -6,7 +5,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional
 
 from ph_units.unit_type import Unit
 
@@ -33,9 +31,9 @@ class Glazings:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
-        self._section_header_row: Optional[int] = None
-        self._section_first_entry_row: Optional[int] = None
-        self._section_last_entry_row: Optional[int] = None
+        self._section_header_row: int | None = None
+        self._section_first_entry_row: int | None = None
+        self._section_last_entry_row: int | None = None
         self.cache = {}
 
     @property
@@ -82,7 +80,7 @@ class Glazings:
 
         return self.shape.glazings.entry_start_row
 
-    def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+    def find_section_last_entry_row(self, _start_row: int | None = None) -> int:
         """Return the last row of the glazing input section."""
         if not _start_row:
             _start_row = self.section_first_entry_row
@@ -124,7 +122,7 @@ class Glazings:
             f"Error: Cannot find the first empty row in the '{self.shape.name}' sheet, column {search_col}?"
         )
 
-    def get_glazing_phpp_id_by_name(self, _name: str, _use_cache: bool = False) -> Optional[str]:
+    def get_glazing_phpp_id_by_name(self, _name: str, _use_cache: bool = False) -> str | None:
         """Return the PHPP Glazing ID for the given name."""
         if _use_cache:
             try:
@@ -147,7 +145,6 @@ class Glazings:
             self.shape.name,
             f"{col_offset(str(self.shape.glazings.inputs.description.column), -1)}{row}",
         )
-        print(f"Getting PHPP Glazing PHPP-id for {_name}")
         name_with_id = f"{prefix}-{_name}"
 
         self.cache[_name] = name_with_id
@@ -162,9 +159,9 @@ class Glazings:
         id_name = self.xl.get_data(self.shape.name, f"{name_col}{_row_num}")
         return f"{id_num}-{id_name}"
 
-    def get_all_glazing_types(self) -> List[ExistingGlazingTypeData]:
+    def get_all_glazing_types(self) -> list[ExistingGlazingTypeData]:
         """Return a set of all glazing types in the Glazing input section."""
-        glazing_types: Dict[str, ExistingGlazingTypeData] = {}
+        glazing_types: dict[str, ExistingGlazingTypeData] = {}
         unit_type = str(self.shape.glazings.inputs.u_value.unit)
         start = f"{self.shape.glazings.inputs.description.column}{self.section_first_entry_row}"
         end = f"{self.shape.glazings.inputs.u_value.column}{self.section_last_entry_row}"
@@ -192,9 +189,9 @@ class Frames:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
-        self._section_header_row: Optional[int] = None
-        self._section_first_entry_row: Optional[int] = None
-        self._section_last_entry_row: Optional[int] = None
+        self._section_header_row: int | None = None
+        self._section_first_entry_row: int | None = None
+        self._section_last_entry_row: int | None = None
         self.cache = {}
 
     @property
@@ -254,7 +251,7 @@ class Frames:
             f"entry start on the 'Components' sheet, column {self.shape.frames.locator_col_entry}?"
         )
 
-    def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+    def find_section_last_entry_row(self, _start_row: int | None = None) -> int:
         """Return the last row of the Frames input section."""
         if not _start_row:
             _start_row = self.section_first_entry_row
@@ -328,7 +325,6 @@ class Frames:
             self.shape.name,
             f"{col_offset(str(self.shape.frames.inputs.description.column), -1)}{row}",
         )
-        print(f"Getting PHPP Frame id for {_name}")
         name_with_id = f"{prefix}-{_name}"
         self.cache[_name] = name_with_id
 
@@ -347,9 +343,9 @@ class Ventilators:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
-        self._section_header_row: Optional[int] = None
-        self._section_first_entry_row: Optional[int] = None
-        self._section_last_entry_row: Optional[int] = None
+        self._section_header_row: int | None = None
+        self._section_first_entry_row: int | None = None
+        self._section_last_entry_row: int | None = None
 
     @property
     def section_header_row(self) -> int:
@@ -372,7 +368,7 @@ class Ventilators:
             self._section_last_entry_row = self.find_section_last_entry_row()
         return self._section_last_entry_row
 
-    def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+    def find_section_last_entry_row(self, _start_row: int | None = None) -> int:
         """Return the last row of the Ventilators input section."""
         if not _start_row:
             _start_row = self.section_first_entry_row
@@ -512,7 +508,7 @@ class Components:
             self.xl.write_xl_item(item)
         return self.glazings.get_glazing_phpp_id_by_row_num(_row_num)
 
-    def write_glazings(self, _glazing_rows: List[GlazingRow]) -> None:
+    def write_glazings(self, _glazing_rows: list[GlazingRow]) -> None:
         """Write a list of GlazingRow objects to the PHPP "Components" worksheet."""
         for i, glazing_row in enumerate(_glazing_rows, start=self.glazings.section_first_entry_row):
             self.write_single_glazing(i, glazing_row)
@@ -528,7 +524,7 @@ class Components:
             self.xl.write_xl_item(item)
         return self.frames.get_frame_phpp_id_by_row_num(_row_num)
 
-    def write_frames(self, _frame_row: List[FrameRow]) -> None:
+    def write_frames(self, _frame_row: list[FrameRow]) -> None:
         """Write a list of FrameRow objects to the PHPP "Components" worksheet."""
         start = self.frames.section_first_entry_row
         for i, frame_row in enumerate(_frame_row, start=start):
@@ -545,7 +541,7 @@ class Components:
             self.xl.write_xl_item(item)
         return self.ventilators.get_ventilator_phpp_id_by_row_num(_row_num)
 
-    def write_ventilators(self, _ventilator_row: List[VentilatorRow]) -> None:
+    def write_ventilators(self, _ventilator_row: list[VentilatorRow]) -> None:
         """Write a list of VentilatorRow objects to the PHPP "Components" worksheet."""
         start = self.ventilators.section_first_entry_row
         for i, ventilator_row in enumerate(_ventilator_row, start):

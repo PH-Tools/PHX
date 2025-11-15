@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """DEV SANDBOX: convert an HBJSON file over to WUFI XML format."""
@@ -6,7 +5,7 @@
 import logging
 import pathlib
 
-from rich import print
+from rich import print as rich_print
 
 from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
@@ -38,8 +37,8 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
-    print("[bold green]- [/bold green]" * 50)
-    print(f"[bold green]> Reading in the HBJSON file: ./{_source}[/bold green]")
+    rich_print("[bold green]- [/bold green]" * 50)
+    rich_print(f"[bold green]> Reading in the HBJSON file: ./{_source}[/bold green]")
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(_source)
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
 
@@ -49,10 +48,10 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
 
     # --- Output the WUFI Project as an XML Text File
     # -------------------------------------------------------------------------
-    print(f"[bold]> Generating XML Text for the Honeybee Model: [{hb_model}][/bold]")
+    rich_print(f"[bold]> Generating XML Text for the Honeybee Model: [{hb_model}][/bold]")
     xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
 
-    print(f"[bold]> Saving the XML file to: ./{target_file}[/bold]")
+    rich_print(f"[bold]> Saving the XML file to: ./{target_file}[/bold]")
     xml_txt_to_file.write_XML_text_file(target_file, xml_txt, False)
 
 

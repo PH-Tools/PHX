@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for the Ventilation worksheet various input items."""
@@ -7,7 +6,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
@@ -21,8 +19,8 @@ class VerificationInput:
     shape: shape_model.Verification
     input_type: str
     input_data: xl_writable
-    input_unit: Optional[str] = None
-    target_unit: Optional[str] = None
+    input_unit: str | None = None
+    target_unit: str | None = None
 
     @classmethod
     def item(
@@ -30,8 +28,8 @@ class VerificationInput:
         shape: shape_model.Verification,
         input_type: str,
         input_data: xl_writable,
-        input_unit: Optional[str] = None,
-        target_unit: Optional[str] = None,
+        input_unit: str | None = None,
+        target_unit: str | None = None,
     ) -> VerificationInput:
         """Create a new data-input item."""
         return cls(shape, input_type, input_data, input_unit, target_unit)

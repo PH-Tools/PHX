@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions for building PHX-Geometry from Ladybug / Honeybee Geometry."""
 
-from typing import Union
 
 from honeybee import aperture, face, shade
 from ladybug_geometry.geometry3d.plane import Plane
@@ -13,7 +11,7 @@ from PHX.model import geometry
 
 
 class InvalidRectangularFaceError(Exception):
-    def __init__(self, _hb_face: Union[aperture.Aperture, face.Face, shade.Shade]):
+    def __init__(self, _hb_face: aperture.Aperture | face.Face | shade.Shade):
         self.msg = (
             f"Error: Cannot create a PhxPolygonRectangular for the"
             f"Honeybee Face: {_hb_face.display_name}. Must have at least 4 vertices?"
@@ -49,7 +47,7 @@ def create_PhxPlane_from_lbt_Plane(_lbt_plane: Plane) -> geometry.PhxPlane:
     )
 
 
-def create_PhxPolygon_from_hb_Face(_hb_face: Union[aperture.Aperture, face.Face, shade.Shade]) -> geometry.PhxPolygon:
+def create_PhxPolygon_from_hb_Face(_hb_face: aperture.Aperture | face.Face | shade.Shade) -> geometry.PhxPolygon:
     """Return a new PhxPolygon based on an input honeybee-Face.
 
     Arguments:
@@ -76,7 +74,7 @@ def create_PhxPolygon_from_hb_Face(_hb_face: Union[aperture.Aperture, face.Face,
 
 
 def create_PhxPolygonRectangular_from_hb_Face(
-    _hb_face: Union[aperture.Aperture, face.Face, shade.Shade], _tolerance: float = 0.001
+    _hb_face: aperture.Aperture | face.Face | shade.Shade, _tolerance: float = 0.001
 ) -> geometry.PhxPolygonRectangular:
     """Return a new PhxPolygonRectangular based on an input honeybee-Face.
 

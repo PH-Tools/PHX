@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions for writing XML Text out to a file on disk."""
@@ -55,12 +54,6 @@ def write_XML_text_file(_file_address: Path, _xml_text: str, _write_copy: bool =
 
     except PermissionError:
         # - In case the file is being used by WUFI or something else, make a new copy.
-        print(
-            f"> Target file: ./{save_address_1} is currently being used by another process and is protected.\n"
-            f"> Writing to a new file: ./{save_address_2}"
-        )
 
         with open(save_address_2, "w", encoding="utf8") as f:
             f.writelines(_xml_text)
-
-    print("> Successfully wrote to file.")

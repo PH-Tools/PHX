@@ -15,10 +15,10 @@ def test_space_no_vent(reset_class_counters) -> None:
     rm_vent_1.ventilation.load.flow_extract = 0
     rm_vent_1.ventilation.load.flow_supply = 0
     rm_vent_1.ventilation.load.flow_transfer = 0
-    assert rm_vent_1.has_ventilation_airflow == False
+    assert not rm_vent_1.has_ventilation_airflow
 
     rm_vent_2 = spaces.PhxSpace()
     rm_vent_2.ventilation.load.flow_extract = 1
     rm_vent_2.ventilation.load.flow_supply = 1
     rm_vent_2.ventilation.load.flow_transfer = 1
-    assert rm_vent_2.has_ventilation_airflow == True
+    assert rm_vent_2.has_ventilation_airflow

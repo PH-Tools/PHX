@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Valid 'types' for PHI Certification Settings (PHPP v9)."""

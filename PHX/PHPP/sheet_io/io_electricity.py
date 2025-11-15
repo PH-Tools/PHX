@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP 'Electricity' worksheet."""
 
 from __future__ import annotations
-
-from typing import List
 
 from PHX.model import elec_equip
 from PHX.PHPP.phpp_localization import shape_model
@@ -37,7 +34,7 @@ class Electricity:
 
             self.xl.write_xl_item(xl_data.XlItem(self.shape.name, f"{self.shape.input_columns.used}{item[1].data}", 0))
 
-    def write_equipment(self, _equipment_inputs: List[electricity_item.ElectricityItemXLWriter]) -> None:
+    def write_equipment(self, _equipment_inputs: list[electricity_item.ElectricityItemXLWriter]) -> None:
         """Write a list of equipment-input objects to the Worksheet."""
         self._turn_off_all_equipment()
 
@@ -58,7 +55,7 @@ class Electricity:
             setattr(phx_elec_device, phpp_read_address.attr_name, phpp_data)
         return phx_elec_device
 
-    def get_phx_elec_devices(self) -> List[elec_equip.PhxElectricalDevice]:
+    def get_phx_elec_devices(self) -> list[elec_equip.PhxElectricalDevice]:
         """Read the Device data from the PHPP worksheet and return a list of PhxElectricalDevice objects."""
         # -- Setup the reader class
         reader = electricity_item.ElectricityItemXLReader(self.shape)

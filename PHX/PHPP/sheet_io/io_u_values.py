@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP "U-Values" worksheet."""
 
 from __future__ import annotations
 
+from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Generator, List, Optional
 
 from ph_units.unit_type import Unit
 
@@ -40,14 +39,14 @@ class UValues:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.UValues) -> None:
         self.xl = _xl
         self.shape = _shape
-        self._constructor_start_rows: List[int] = []
+        self._constructor_start_rows: list[int] = []
         self.cache = {}
 
     # -------------------------------------------------------------------------
     # -- Getters
 
     @property
-    def all_constructor_start_rows(self) -> List[int]:
+    def all_constructor_start_rows(self) -> list[int]:
         """Return a list of all of the PHPP Constructor starting rows"""
         if not self._constructor_start_rows:
             self._constructor_start_rows = self.get_start_rows()
@@ -62,7 +61,7 @@ class UValues:
             if self.xl.get_data(self.shape.name, name_range):
                 yield row_num
 
-    def get_start_rows(self, _row_start: int = 1, _row_end: int = 1730) -> List[int]:
+    def get_start_rows(self, _row_start: int = 1, _row_end: int = 1730) -> list[int]:
         """Reads through the U-Values worksheet and finds each of the constructor 'start' (title) rows.
 
         Arguments:
@@ -85,11 +84,9 @@ class UValues:
         )
 
         # -- Find the starting row numbers
-        constructors: List[int] = []
+        constructors: list[int] = []
         for i, column_val in enumerate(col_data):
-            if column_val[0] == self.shape.constructor.locator_string_header:
-                constructors.append(i)
-            elif column_val[0] == "Bauteil Nr.":  # Fuck you PHPP
+            if column_val[0] == self.shape.constructor.locator_string_header or column_val[0] == "Bauteil Nr.":
                 constructors.append(i)
 
         return constructors
@@ -100,7 +97,7 @@ class UValues:
         _row_start: int = 1,
         _row_end: int = 1730,
         _use_cache: bool = False,
-    ) -> Optional[str]:
+    ) -> str | None:
         """Returns the full PHPP-style value for the constructor with a specified name.
 
         ie: "Exterior Wall" in constructor 1 will return "01ud-Exterior Wall"
@@ -141,7 +138,7 @@ class UValues:
 
         return name_with_id
 
-    def get_used_constructor_names(self) -> List[str]:
+    def get_used_constructor_names(self) -> list[str]:
         """Return a list of the used construction names."""
 
         name_col = self.shape.constructor.inputs.display_name.column
@@ -229,7 +226,7 @@ class UValues:
         for item in _construction.create_xl_items(self.shape.name, _start_row):
             self.xl.write_xl_item(item)
 
-    def write_constructor_blocks(self, _const_blocks: List[uvalues_constructor.ConstructorBlock]) -> None:
+    def write_constructor_blocks(self, _const_blocks: list[uvalues_constructor.ConstructorBlock]) -> None:
         """Write a list of ConstructorBlocks to the U-Values worksheet."""
 
         self.clear_all_constructor_data(_clear_name=True)
@@ -238,7 +235,7 @@ class UValues:
             self.all_constructor_start_rows
         ), f"Error: Too many U-Value Constructions: {len(self.all_constructor_start_rows)}"
 
-        for construction, start_row in zip(_const_blocks, self.all_constructor_start_rows):
+        for construction, start_row in zip(_const_blocks, self.all_constructor_start_rows, strict=False):
             self.write_single_constructor_block(construction, start_row)
 
     def add_new_phx_construction(self, _phx_construction: PhxConstructionOpaque) -> str:
@@ -290,7 +287,7 @@ class UValues:
 
     # -------------------------------------------------------------------------
 
-    def activate_variants(self, _assembly_phpp_ids: List[VariantAssemblyLayerName]) -> None:
+    def activate_variants(self, _assembly_phpp_ids: list[VariantAssemblyLayerName]) -> None:
         """Connect all the links to make the 'Variants' page drive the input values."""
 
         self.clear_all_constructor_data(_clear_name=False)
@@ -343,8 +340,8 @@ class UValues:
                         )
                     )
 
-    def get_all_envelope_assemblies(self) -> List[ExistingAssemblyData]:
-        assemblies: List[ExistingAssemblyData] = []
+    def get_all_envelope_assemblies(self) -> list[ExistingAssemblyData]:
+        assemblies: list[ExistingAssemblyData] = []
 
         for row_num in self.used_constructor_start_rows:
             existing_assembly = ExistingAssemblyData(

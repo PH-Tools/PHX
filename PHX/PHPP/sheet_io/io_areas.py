@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP "Areas" worksheet."""
 
 from __future__ import annotations
 
-from typing import Dict, Generator, List, Optional, Tuple
+from collections.abc import Generator
 
 from ph_units.unit_type import Unit
 
@@ -57,13 +56,13 @@ class Surfaces:
         self,
         _xl: xl_app.XLConnection,
         _shape: shape_model.Areas,
-        _group_type_exposures: Dict[int, str],
+        _group_type_exposures: dict[int, str],
     ) -> None:
         self.xl = _xl
         self.shape = _shape
-        self._section_header_row: Optional[int] = None
-        self._section_first_entry_row: Optional[int] = None
-        self._section_last_entry_row: Optional[int] = None
+        self._section_header_row: int | None = None
+        self._section_first_entry_row: int | None = None
+        self._section_last_entry_row: int | None = None
         self.surface_cache = {}
         self.group_type_exposures = _group_type_exposures
 
@@ -130,7 +129,7 @@ class Surfaces:
 
         raise Exception('\n\tError: Not able to find the first surface entry row in the "Areas input" section?')
 
-    def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+    def find_section_last_entry_row(self, _start_row: int | None = None) -> int:
         """Return the row number of the last user-input entry row in the 'Area input' section."""
 
         if not _start_row:
@@ -217,7 +216,7 @@ class Surfaces:
     @property
     def all_surface_rows(
         self,
-    ) -> Generator[Tuple[int, areas_surface.ExistingSurfaceRow], None, None]:
+    ) -> Generator[tuple[int, areas_surface.ExistingSurfaceRow], None, None]:
         """Return a generator of all the row_nums and surface rows in the Areas worksheet.
 
         Yields:
@@ -238,8 +237,8 @@ class ThermalBridges:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Areas) -> None:
         self.xl = _xl
         self.shape = _shape
-        self._section_header_row: Optional[int] = None
-        self._section_first_entry_row: Optional[int] = None
+        self._section_header_row: int | None = None
+        self._section_first_entry_row: int | None = None
 
     @property
     def section_header_row(self) -> int:
@@ -315,14 +314,14 @@ class Areas:
         self.surfaces = Surfaces(self.xl, self.shape, self.group_type_exposures)
         self.thermal_bridges = ThermalBridges(self.xl, self.shape)
 
-    def write_thermal_bridges(self, _tbs: List[areas_thermal_bridges.ThermalBridgeRow]) -> None:
+    def write_thermal_bridges(self, _tbs: list[areas_thermal_bridges.ThermalBridgeRow]) -> None:
         """Write all of the the thermal bridge data to the PHPP Areas worksheet."""
 
         for i, tb in enumerate(_tbs, start=self.thermal_bridges.section_first_entry_row):
             for item in tb.create_xl_items(self.shape.name, _row_num=i):
                 self.xl.write_xl_item(item)
 
-    def write_surfaces(self, _surfaces: List[areas_surface.SurfaceRow]) -> None:
+    def write_surfaces(self, _surfaces: list[areas_surface.SurfaceRow]) -> None:
         """Write all of the the surface data to the PHPP Areas worksheet."""
         start = self.surfaces.section_first_entry_row
         for i, surface in enumerate(_surfaces, start=start):
@@ -347,7 +346,7 @@ class Areas:
         xl_item = _phpp_model_obj.create_xl_item(self.shape.name, input_row)
         self.xl.write_xl_item(xl_item)
 
-    def get_group_type_exposures(self) -> Dict[int, str]:
+    def get_group_type_exposures(self) -> dict[int, str]:
         """Return the group type exposures dictionary from the PHPP Areas worksheet."""
         zone_type_letters = self.xl.get_single_column_data(
             self.shape.name,
@@ -363,7 +362,7 @@ class Areas:
         )
 
         d = {}
-        for group_num, temp_zone in zip(zone_group_numbers, zone_type_letters):
+        for group_num, temp_zone in zip(zone_group_numbers, zone_type_letters, strict=False):
             if not group_num or not temp_zone:
                 continue
 
@@ -400,8 +399,8 @@ class Areas:
         end = self.shape.defined_ranges.window_area_west.xl_range
         _range = f"{start}:{end}"
 
-        xl_data: List[float] = self.xl.get_data(self.shape.name, _range)  # type: ignore
-        unit_data: List[Unit] = [Unit(v, str(unit_type)) for v in xl_data]
+        xl_data: list[float] = self.xl.get_data(self.shape.name, _range)  # type: ignore
+        unit_data: list[Unit] = [Unit(v, str(unit_type)) for v in xl_data]
 
         return sum(unit_data) or Unit(0.0, str(unit_type))
 

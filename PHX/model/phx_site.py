@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Site (Location and Climate) Dataclasses"""
 
 from __future__ import annotations
 
+from collections.abc import Generator
 from dataclasses import dataclass, field
-from typing import Any, Generator, List, Optional, Tuple, Union
+from typing import Any, Union
 
 from PHX.model.enums.phx_site import SiteClimateSelection, SiteEnergyFactorSelection, SiteSelection
 
@@ -121,7 +121,7 @@ class PhxLocation:
 
     latitude: float = 40.6
     longitude: float = -73.8
-    site_elevation: Optional[float] = None
+    site_elevation: float | None = None
     climate_zone: int = 1
     hours_from_UTC: int = -4
 
@@ -138,15 +138,15 @@ class PhxLocation:
 
 @dataclass
 class PhxClimatePeakLoad:
-    temperature_air: Optional[float] = 0.0
-    radiation_north: Optional[float] = 0.0
-    radiation_east: Optional[float] = 0.0
-    radiation_south: Optional[float] = 0.0
-    radiation_west: Optional[float] = 0.0
-    radiation_global: Optional[float] = 0.0
-    temperature_dewpoint: Optional[float] = None
-    temperature_sky: Optional[float] = None
-    temperature_ground: Optional[float] = None
+    temperature_air: float | None = 0.0
+    radiation_north: float | None = 0.0
+    radiation_east: float | None = 0.0
+    radiation_south: float | None = 0.0
+    radiation_west: float | None = 0.0
+    radiation_global: float | None = 0.0
+    temperature_dewpoint: float | None = None
+    temperature_sky: float | None = None
+    temperature_ground: float | None = None
 
     def __eq__(self, other: PhxClimatePeakLoad) -> bool:
         TOLERANCE = 0.001
@@ -221,12 +221,9 @@ class PhxClimate:
     peak_cooling_2: PhxClimatePeakLoad = field(default_factory=PhxClimatePeakLoad)
 
     @staticmethod
-    def _list_eq(list_a: List[float], list_b: List[float]) -> bool:
+    def _list_eq(list_a: list[float], list_b: list[float]) -> bool:
         TOLERANCE = 0.001
-        for a, b in zip(list_a, list_b):
-            if abs(a - b) > TOLERANCE:
-                return False
-        return True
+        return all(abs(a - b) <= TOLERANCE for a, b in zip(list_a, list_b, strict=False))
 
     def __eq__(self, other) -> bool:
         TOLERANCE = 0.01
@@ -272,7 +269,7 @@ class PhxClimate:
         return (self.max_air_temperature_amplitude) / 2
 
     @property
-    def monthly_hours(self) -> List[Tuple[str, int]]:
+    def monthly_hours(self) -> list[tuple[str, int]]:
         """The a ordered (Jan-Dec) list of tuples containing the month-name and the number of hours in that month."""
         return [
             ("JAN", 744),

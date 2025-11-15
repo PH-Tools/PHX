@@ -2,7 +2,7 @@ from PHX.model.hvac import cooling_params
 
 
 def test_default_PhxCoolingPanel(reset_class_counters):
-    d1 = cooling_params.PhxCoolingPanelParams()
+    cooling_params.PhxCoolingPanelParams()
     """
     coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_device(d1.identifier, d1)

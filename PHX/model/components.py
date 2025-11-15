@@ -1,11 +1,11 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Component (Face, Aperture) Classes"""
 
 from __future__ import annotations
 
-from typing import ClassVar, Collection, List, Optional, Set, Tuple, Union
+from collections.abc import Collection
+from typing import ClassVar
 
 from PHX.model import constructions, geometry
 from PHX.model.enums.building import (
@@ -52,8 +52,8 @@ class PhxComponentOpaque(PhxComponentBase):
         self.assembly: constructions.PhxConstructionOpaque = constructions.PhxConstructionOpaque()
         self.assembly_type_id_num: int = -1
 
-        self.apertures: List[PhxComponentAperture] = []
-        self.polygons: List[geometry.PhxPolygon] = []
+        self.apertures: list[PhxComponentAperture] = []
+        self.polygons: list[geometry.PhxPolygon] = []
 
     def __eq__(self, other: PhxComponentOpaque) -> bool:
         if (
@@ -73,24 +73,20 @@ class PhxComponentOpaque(PhxComponentBase):
         if len(self.apertures) != len(other.apertures):
             return False
         for this_ap in self.apertures:
-            if not any((this_ap == other_ap for other_ap in other.apertures)):
+            if not any(this_ap == other_ap for other_ap in other.apertures):
                 return False
 
         # -- check the polygons
         if len(self.polygons) != len(other.polygons):
             return False
-        for this_poly in self.polygons:
-            if not any((this_poly == other_poly for other_poly in other.polygons)):
-                return False
-
-        return True
+        return all(any(this_poly == other_poly for other_poly in other.polygons) for this_poly in self.polygons)
 
     @property
     def u_value(self) -> float:
         return self.assembly.u_value
 
     @property
-    def polygon_ids(self) -> Set[int]:
+    def polygon_ids(self) -> set[int]:
         """Return a Set of all the Polygon-id numbers found in the Component's Polygon group."""
         return {polygon.id_num for polygon in self.polygons}
 
@@ -106,49 +102,37 @@ class PhxComponentOpaque(PhxComponentBase):
     def is_shade(self) -> bool:
         if self.face_opacity != ComponentFaceOpacity.OPAQUE:
             return False
-        if self.exposure_interior != -1:
-            return False
-        return True
+        return self.exposure_interior == -1
 
     @property
     def is_above_grade_wall(self) -> bool:
         if self.face_type != ComponentFaceType.WALL:
             return False
-        if self.exposure_exterior != ComponentExposureExterior.EXTERIOR:
-            return False
-        return True
+        return self.exposure_exterior == ComponentExposureExterior.EXTERIOR
 
     @property
     def is_below_grade_wall(self) -> bool:
         if self.face_type != ComponentFaceType.WALL:
             return False
-        if self.exposure_exterior != ComponentExposureExterior.GROUND:
-            return False
-        return True
+        return self.exposure_exterior == ComponentExposureExterior.GROUND
 
     @property
     def is_above_grade_floor(self) -> bool:
         if self.face_type != ComponentFaceType.FLOOR:
             return False
-        if self.exposure_exterior != ComponentExposureExterior.EXTERIOR:
-            return False
-        return True
+        return self.exposure_exterior == ComponentExposureExterior.EXTERIOR
 
     @property
     def is_below_grade_floor(self) -> bool:
         if self.face_type != ComponentFaceType.FLOOR:
             return False
-        if self.exposure_exterior != ComponentExposureExterior.GROUND:
-            return False
-        return True
+        return self.exposure_exterior == ComponentExposureExterior.GROUND
 
     @property
     def is_roof(self) -> bool:
-        if self.face_type != ComponentFaceType.ROOF_CEILING:
-            return False
-        return True
+        return self.face_type == ComponentFaceType.ROOF_CEILING
 
-    def add_polygons(self, _input: Union[Collection[geometry.PhxPolygon], geometry.PhxPolygon]) -> None:
+    def add_polygons(self, _input: Collection[geometry.PhxPolygon] | geometry.PhxPolygon) -> None:
         """Adds a new Polygon or Polygons to the Component's collection.
 
         Arguments:
@@ -167,12 +151,12 @@ class PhxComponentOpaque(PhxComponentBase):
             self.polygons.append(polygon)
 
     @property
-    def aperture_ids(self) -> Set[int]:
+    def aperture_ids(self) -> set[int]:
         """Return a Set of all the Aperture-id numbers found in the Component's Aperture group."""
         return {aperture.id_num for aperture in self.apertures}
 
     @property
-    def aperture_elements(self) -> List[PhxApertureElement]:
+    def aperture_elements(self) -> list[PhxApertureElement]:
         """Return a list of all the Aperture Elements found in the Component's Aperture group."""
         return [element for aperture in self.apertures for element in aperture.elements]
 
@@ -323,16 +307,16 @@ class PhxApertureShadingDimensions(PhxComponentBase):
         super().__init__()
 
         # -- Horizon Objects
-        self.d_hori: Optional[float] = None  # Vertical distance to the shading top
-        self.h_hori: Optional[float] = None  # Horizontal distance to the shading
+        self.d_hori: float | None = None  # Vertical distance to the shading top
+        self.h_hori: float | None = None  # Horizontal distance to the shading
 
         # -- Shading to the sides (reveal)
-        self.d_reveal: Optional[float] = None  # Reveal distance 'over' from glass
-        self.o_reveal: Optional[float] = None  # Reveal depth from glass
+        self.d_reveal: float | None = None  # Reveal distance 'over' from glass
+        self.o_reveal: float | None = None  # Reveal depth from glass
 
         # -- Overhand Shading
-        self.d_over: Optional[float] = None  # Overhang height 'up' from glass
-        self.o_over: Optional[float] = None  # Overhang Depth from glass
+        self.d_over: float | None = None  # Overhang height 'up' from glass
+        self.o_over: float | None = None  # Overhang Depth from glass
 
 
 class PhxApertureElement(PhxComponentBase):
@@ -343,7 +327,7 @@ class PhxApertureElement(PhxComponentBase):
 
         self.host: PhxComponentAperture = _host
         self.display_name: str = ""
-        self.polygon: Union[geometry.PhxPolygonRectangular, geometry.PhxPolygon, None] = None
+        self.polygon: geometry.PhxPolygonRectangular | geometry.PhxPolygon | None = None
         self.winter_shading_factor: float = 0.75
         self.summer_shading_factor: float = 0.75
         self.shading_dimensions = PhxApertureShadingDimensions()
@@ -430,16 +414,11 @@ class PhxApertureElement(PhxComponentBase):
         ):
             return False
 
-        if self.polygon != other.polygon:
-            return False
-
-        return True
+        return self.polygon == other.polygon
 
     def polygons_are_equivalent(self, other: PhxApertureElement) -> bool:
         """Return True if the two elements have equivalent polygons."""
-        if self.polygon != other.polygon:
-            return False
-        return True
+        return self.polygon == other.polygon
 
     def scale(self, _scale_factor: float) -> None:
         """Scale the element's polygon by the specified factor."""
@@ -470,7 +449,7 @@ class PhxComponentAperture(PhxComponentBase):
         self._install_depth: float = 0.1016  # m
         self._default_monthly_shading_correction_factor: float = 0.5
 
-        self.elements: List[PhxApertureElement] = []
+        self.elements: list[PhxApertureElement] = []
 
     @property
     def install_depth(self) -> float:
@@ -478,13 +457,13 @@ class PhxComponentAperture(PhxComponentBase):
         return self._install_depth
 
     @install_depth.setter
-    def install_depth(self, _depth: Optional[float]) -> None:
+    def install_depth(self, _depth: float | None) -> None:
         """Set the installation depth of the Aperture."""
-        if _depth != None:
+        if _depth is not None:
             self._install_depth = _depth
 
     @property
-    def average_shading_d_reveal(self) -> Optional[float]:
+    def average_shading_d_reveal(self) -> float | None:
         """The average shading 'reveal' distance of the Aperture's Elements from the glass."""
         if not all(e.shading_dimensions.d_reveal for e in self.elements):
             return None
@@ -501,9 +480,9 @@ class PhxComponentAperture(PhxComponentBase):
         return self._default_monthly_shading_correction_factor
 
     @default_monthly_shading_correction_factor.setter
-    def default_monthly_shading_correction_factor(self, _factor: Optional[float]) -> None:
+    def default_monthly_shading_correction_factor(self, _factor: float | None) -> None:
         """Set the default monthly shading correction factor."""
-        if _factor != None:
+        if _factor is not None:
             self._default_monthly_shading_correction_factor = _factor
 
     @property
@@ -518,16 +497,16 @@ class PhxComponentAperture(PhxComponentBase):
     @property
     def polygons(
         self,
-    ) -> List[Union[geometry.PhxPolygonRectangular, geometry.PhxPolygon]]:
+    ) -> list[geometry.PhxPolygonRectangular | geometry.PhxPolygon]:
         return [e.polygon for e in self.elements if e.polygon]
 
     @property
-    def polygon_ids(self) -> Set[int]:
+    def polygon_ids(self) -> set[int]:
         """Return a Set of all the Polygon-id numbers found in the Component's Polygon group."""
         return {polygon.id_num for polygon in self.polygons}
 
     @property
-    def polygon_ids_sorted(self) -> Tuple[int, ...]:
+    def polygon_ids_sorted(self) -> tuple[int, ...]:
         """Return a Tuple of all the Polygon-id numbers found in the Component's Polygon group, sorted."""
         return tuple(sorted(self.polygon_ids))
 
@@ -616,17 +595,13 @@ class PhxComponentAperture(PhxComponentBase):
         if len(self.elements) != len(other.elements):
             return False
         for this_el in self.elements:
-            if not any((this_el.is_equivalent(other_el) for other_el in other.elements)):
+            if not any(this_el.is_equivalent(other_el) for other_el in other.elements):
                 return False
 
         # -- check the polygons
         if len(self.polygons) != len(other.polygons):
             return False
-        for this_poly in self.polygons:
-            if not any((this_poly == other_poly for other_poly in other.polygons)):
-                return False
-
-        return True
+        return all(any(this_poly == other_poly for other_poly in other.polygons) for this_poly in self.polygons)
 
     def get_total_aperture_area(self) -> float:
         """Return the total Window Area of the Component."""
@@ -647,38 +622,38 @@ class PhxComponentThermalBridge(PhxComponentBase):
     def __init__(self):
         super().__init__()
 
-        self._identifier: Optional[str] = ""
-        self._quantity: Optional[float] = 0.0
-        self._group_type: Optional[ThermalBridgeType] = ThermalBridgeType.AMBIENT
-        self._display_name: Optional[str] = ""
-        self._psi_value: Optional[float] = 0.1
-        self._fRsi_value: Optional[float] = 0.75
-        self._length: Optional[float] = 0.0
+        self._identifier: str | None = ""
+        self._quantity: float | None = 0.0
+        self._group_type: ThermalBridgeType | None = ThermalBridgeType.AMBIENT
+        self._display_name: str | None = ""
+        self._psi_value: float | None = 0.1
+        self._fRsi_value: float | None = 0.75
+        self._length: float | None = 0.0
 
     @property
-    def identifier(self) -> Optional[str]:
+    def identifier(self) -> str | None:
         return self._identifier
 
     @identifier.setter
-    def identifier(self, value: Optional[str]) -> None:
+    def identifier(self, value: str | None) -> None:
         if value is not None:
             self._identifier = value
 
     @property
-    def quantity(self) -> Optional[float]:
+    def quantity(self) -> float | None:
         return self._quantity
 
     @quantity.setter
-    def quantity(self, value: Optional[float]) -> None:
+    def quantity(self, value: float | None) -> None:
         if value is not None:
             self._quantity = value
 
     @property
-    def group_type(self) -> Optional[ThermalBridgeType]:
+    def group_type(self) -> ThermalBridgeType | None:
         return self._group_type
 
     @group_type.setter
-    def group_type(self, value: Optional[ThermalBridgeType]) -> None:
+    def group_type(self, value: ThermalBridgeType | None) -> None:
         if value is not None:
             self._group_type = value
 
@@ -690,38 +665,38 @@ class PhxComponentThermalBridge(PhxComponentBase):
             return 15
 
     @property
-    def display_name(self) -> Optional[str]:
+    def display_name(self) -> str | None:
         return self._display_name
 
     @display_name.setter
-    def display_name(self, value: Optional[str]) -> None:
+    def display_name(self, value: str | None) -> None:
         if value is not None:
             self._display_name = value
 
     @property
-    def psi_value(self) -> Optional[float]:
+    def psi_value(self) -> float | None:
         return self._psi_value
 
     @psi_value.setter
-    def psi_value(self, value: Optional[float]) -> None:
+    def psi_value(self, value: float | None) -> None:
         if value is not None:
             self._psi_value = value
 
     @property
-    def fRsi_value(self) -> Optional[float]:
+    def fRsi_value(self) -> float | None:
         return self._fRsi_value
 
     @fRsi_value.setter
-    def fRsi_value(self, value: Optional[float]) -> None:
+    def fRsi_value(self, value: float | None) -> None:
         if value is not None:
             self._fRsi_value = value
 
     @property
-    def length(self) -> Optional[float]:
+    def length(self) -> float | None:
         return self._length
 
     @length.setter
-    def length(self, value: Optional[float]) -> None:
+    def length(self, value: float | None) -> None:
         if value is not None:
             self._length = value
 
@@ -768,12 +743,10 @@ class PhxComponentThermalBridge(PhxComponentBase):
 
     def __eq__(self, other: PhxComponentThermalBridge) -> bool:
         TOLERANCE = 0.001
-        if (
+        return not (
             self.group_type != other.group_type
             or self.display_name != other.display_name
             or abs((self.psi_value or 0) - (other.psi_value or 0)) > TOLERANCE
             or abs((self.fRsi_value or 0) - (other.fRsi_value or 0)) > TOLERANCE
             or abs((self.length or 0) - (other.length or 0)) > TOLERANCE
-        ):
-            return False
-        return True
+        )

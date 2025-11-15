@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Function to create new PhxElectricalDevices from Honeybee-PH-PhEquipment"""
@@ -48,7 +47,7 @@ def build_phx_elec_device(
     phx_device = device_class()
 
     # -- Pull out all the PH attributes and set the PHX ones to match.
-    for attr_name in vars(_hbph_device).keys():
+    for attr_name in vars(_hbph_device):
         if str(attr_name).startswith("_"):
             attr_name = attr_name[1:]
 

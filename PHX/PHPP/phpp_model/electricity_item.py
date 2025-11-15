@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a PHPP Electricity / Equipment row input."""
 
 from dataclasses import dataclass
-from typing import Any, List, NamedTuple, Tuple
+from typing import Any, NamedTuple
 
 from PHX.model import elec_equip
 from PHX.model.enums.elec_equip import ElectricEquipmentType
@@ -22,7 +21,7 @@ class ElectricityItemXLWriter:
     __slots__ = "phx_equipment"
     phx_equipment: Any
 
-    def create_xl_items(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         """Returns a list of xl_data.XlItem or raises and Error if equipment type is unrecognized."""
         xl_item_functions = {
             "PhxDeviceDishwasher": self._dishwasher,
@@ -47,7 +46,7 @@ class ElectricityItemXLWriter:
                 f"No matching XL-write function found for equipment type: '{self.phx_equipment.__class__.__name__}'"
             )
 
-    def _dishwasher(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _dishwasher(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceDishwasher = self.phx_equipment
         cols = _shape.input_columns
         rows = _shape.input_rows
@@ -56,7 +55,7 @@ class ElectricityItemXLWriter:
         address_demand = f"{cols.energy_demand_per_use}{rows.dishwasher.data}"
         address_selection = f"{cols.selection}{rows.dishwasher.selection}"
 
-        items: List[Tuple[str, xl_data.xl_writable]] = [
+        items: list[tuple[str, xl_data.xl_writable]] = [
             (address_used, 1),
             (address_inside, str(int(equip.in_conditioned_space or 1))),
             (address_demand, equip.energy_demand_per_use),
@@ -67,9 +66,9 @@ class ElectricityItemXLWriter:
         ]
         return [xl_data.XlItem(_shape.name, *item) for item in items]
 
-    def _clothes_washer(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _clothes_washer(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceClothesWasher = self.phx_equipment
-        items: List[Tuple[str, xl_data.xl_writable]] = [
+        items: list[tuple[str, xl_data.xl_writable]] = [
             (f"{_shape.input_columns.used}{_shape.input_rows.clothes_washing.data}", 1),
             (
                 f"{_shape.input_columns.in_conditioned_space}{_shape.input_rows.clothes_washing.data}",
@@ -86,9 +85,9 @@ class ElectricityItemXLWriter:
         ]
         return [xl_data.XlItem(_shape.name, *item) for item in items]
 
-    def _clothes_dryer(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _clothes_dryer(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceClothesDryer = self.phx_equipment
-        items: List[Tuple[str, xl_data.xl_writable]] = [
+        items: list[tuple[str, xl_data.xl_writable]] = [
             (
                 f"{_shape.input_columns.in_conditioned_space}{_shape.input_rows.clothes_drying.data}",
                 str(int(equip.in_conditioned_space or 1)),
@@ -119,9 +118,9 @@ class ElectricityItemXLWriter:
 
         return [xl_data.XlItem(_shape.name, *item) for item in items]
 
-    def _refrigerator(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _refrigerator(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceRefrigerator = self.phx_equipment
-        items: List[Tuple[str, xl_data.xl_writable]] = [
+        items: list[tuple[str, xl_data.xl_writable]] = [
             (f"{_shape.input_columns.used}{_shape.input_rows.refrigerator.data}", 1),
             (
                 f"{_shape.input_columns.energy_demand_per_use}{_shape.input_rows.refrigerator.data}",
@@ -130,9 +129,9 @@ class ElectricityItemXLWriter:
         ]
         return [xl_data.XlItem(_shape.name, *item) for item in items]
 
-    def _fridge_freezer(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _fridge_freezer(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceFridgeFreezer = self.phx_equipment
-        items: List[Tuple[str, xl_data.xl_writable]] = [
+        items: list[tuple[str, xl_data.xl_writable]] = [
             (f"{_shape.input_columns.used}{_shape.input_rows.fridge_freezer.data}", 1),
             (
                 f"{_shape.input_columns.energy_demand_per_use}{_shape.input_rows.fridge_freezer.data}",
@@ -141,9 +140,9 @@ class ElectricityItemXLWriter:
         ]
         return [xl_data.XlItem(_shape.name, *item) for item in items]
 
-    def _freezer(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _freezer(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceFreezer = self.phx_equipment
-        items: List[Tuple[str, xl_data.xl_writable]] = [
+        items: list[tuple[str, xl_data.xl_writable]] = [
             (f"{_shape.input_columns.used}{_shape.input_rows.freezer.data}", 1),
             (
                 f"{_shape.input_columns.in_conditioned_space}{_shape.input_rows.freezer.data}",
@@ -156,9 +155,9 @@ class ElectricityItemXLWriter:
         ]
         return [xl_data.XlItem(_shape.name, *item) for item in items]
 
-    def _cooktop(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _cooktop(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceCooktop = self.phx_equipment
-        items: List[Tuple[str, xl_data.xl_writable]] = [
+        items: list[tuple[str, xl_data.xl_writable]] = [
             (
                 f"{_shape.input_columns.energy_demand_per_use}{_shape.input_rows.cooking.data}",
                 equip.energy_demand_per_use,
@@ -170,25 +169,25 @@ class ElectricityItemXLWriter:
         ]
         return [xl_data.XlItem(_shape.name, *item) for item in items]
 
-    def _mel(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _mel(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         return []
 
-    def _lighting_interior(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _lighting_interior(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         return []
 
-    def _lighting_exterior(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _lighting_exterior(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         return []
 
-    def _lighting_garage(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _lighting_garage(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         return []
 
-    def _custom_elec(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _custom_elec(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         return []
 
-    def _custom_lighting(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _custom_lighting(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         return []
 
-    def _custom_mel(self, _shape: shape_model.Electricity) -> List[xl_data.XlItem]:
+    def _custom_mel(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         return []
 
 
@@ -207,7 +206,7 @@ class ReaderDataItem(NamedTuple):
     """Electric-Equipment data for a single PHPP item."""
 
     type: ElectricEquipmentType
-    data: List[PHPPReadAddress]
+    data: list[PHPPReadAddress]
 
 
 class ReaderAddressesGroup(NamedTuple):

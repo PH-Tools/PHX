@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Construction, Materials Classes"""
@@ -7,8 +6,9 @@ from __future__ import annotations
 
 import uuid
 import warnings
+from collections.abc import Generator, Iterable
 from dataclasses import dataclass, field
-from typing import ClassVar, Generator, Iterable, List, Optional, Union
+from typing import ClassVar
 
 # -----------------------------------------------------------------------------
 # Materials
@@ -101,13 +101,13 @@ class PhxLayerDivisionGrid:
     | R2 | 0,2 | 1,2 | 2,2 | ...
     """
 
-    _row_heights: List[float] = field(default_factory=list)
-    _column_widths: List[float] = field(default_factory=list)
-    _cells: List[PhxLayerDivisionCell] = field(default_factory=list)
+    _row_heights: list[float] = field(default_factory=list)
+    _column_widths: list[float] = field(default_factory=list)
+    _cells: list[PhxLayerDivisionCell] = field(default_factory=list)
     is_a_steel_stud_cavity: bool = False
 
     @property
-    def column_widths(self) -> List[float]:
+    def column_widths(self) -> list[float]:
         """Return the list of column widths."""
         return self._column_widths
 
@@ -117,7 +117,7 @@ class PhxLayerDivisionGrid:
         return len(self._column_widths)
 
     @property
-    def row_heights(self) -> List[float]:
+    def row_heights(self) -> list[float]:
         """Return the list of row heights."""
         return self._row_heights
 
@@ -156,7 +156,7 @@ class PhxLayerDivisionGrid:
         """Add a new ROW to the grid with the given height. Will add a default column if none are set."""
         self._row_heights.append(float(_row_height))
 
-    def get_cell(self, _column: int, _row: int) -> Optional[PhxLayerDivisionCell]:
+    def get_cell(self, _column: int, _row: int) -> PhxLayerDivisionCell | None:
         """Get the PhxLayerDivisionCell at the given column and row position."""
         for cell in self._cells:
             if cell.column == _column and cell.row == _row:
@@ -195,7 +195,7 @@ class PhxLayerDivisionGrid:
 
         self._cells.append(cell)
 
-    def get_cell_material(self, _column_num: int, _row_num: int) -> Optional[PhxMaterial]:
+    def get_cell_material(self, _column_num: int, _row_num: int) -> PhxMaterial | None:
         """Get the PhxMaterial for a specific cell in the grid by its column/row position."""
         for cell in self._cells:
             if cell.row == _row_num and cell.column == _column_num:
@@ -279,7 +279,7 @@ class PhxLayer:
         return None
 
     @property
-    def materials(self) -> List[PhxMaterial]:
+    def materials(self) -> list[PhxMaterial]:
         """Return a list of all the PhxMaterials in the Layer."""
         self._update_material_percentages()
         return [self.material] + self.exchange_materials
@@ -304,7 +304,7 @@ class PhxLayer:
             "The 'add_material' method is deprecated. Please use the 'set_material()' method or "
             "the 'divisions' attribute for mixed materials."
         )
-        warnings.warn(msg, DeprecationWarning)
+        warnings.warn(msg, DeprecationWarning, stacklevel=2)
 
     def set_material(self, _material: PhxMaterial) -> None:
         """Set the PhxMaterial for the layer."""
@@ -367,12 +367,12 @@ class PhxLayer:
         ]
 
     @property
-    def exchange_materials(self) -> List[PhxMaterial]:
+    def exchange_materials(self) -> list[PhxMaterial]:
         """Returns a list of all the 'Exchange' materials (for mixed layers) in all the Division Cells."""
         return list({m for m in self.division_materials if m != self.material})
 
     @property
-    def division_material_id_numbers(self) -> List[int]:
+    def division_material_id_numbers(self) -> list[int]:
         """Returns a list of all the 'Exchange' material id-numbers in all the Division Cells.
 
         Will return -1 if the cell has the Layer's Material.
@@ -390,15 +390,14 @@ class PhxLayer:
 
         # -- If it is a 'steel-stud' material, we can't check against the other.
         # -- When reading back in from WUFI, this information will be lost.
-        if self.divisions:
-            if self.divisions.is_a_steel_stud_cavity:
-                return all(
-                    [
-                        self.thickness_m == other.thickness_m,
-                        self.material.equivalent(other.material),
-                        # No .division check
-                    ]
-                )
+        if self.divisions and self.divisions.is_a_steel_stud_cavity:
+            return all(
+                [
+                    self.thickness_m == other.thickness_m,
+                    self.material.equivalent(other.material),
+                    # No .division check
+                ]
+            )
         # -- Otherwise, check the thickness, material and divisions
         return all(
             [
@@ -417,7 +416,7 @@ class PhxLayer:
 class PhxConstructionOpaque:
     _count: ClassVar[int] = 0
 
-    _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
+    _identifier: uuid.UUID | str = field(init=False, default_factory=uuid.uuid4)
     id_num: int = field(init=False, default=0)
     display_name: str = ""
     layer_order: int = 2  # Outside to Inside
@@ -433,14 +432,14 @@ class PhxConstructionOpaque:
         return str(self._identifier)
 
     @identifier.setter
-    def identifier(self, _in: Optional[str]) -> None:
+    def identifier(self, _in: str | None) -> None:
         if not _in:
             return
         self._identifier = str(_in)
 
     @property
     def r_value(self) -> float:
-        return sum(l.layer_resistance for l in self.layers)
+        return sum(layer.layer_resistance for layer in self.layers)
 
     @property
     def u_value(self) -> float:
@@ -461,7 +460,7 @@ class PhxConstructionOpaque:
         return obj
 
     @property
-    def exchange_materials(self) -> List[PhxMaterial]:
+    def exchange_materials(self) -> list[PhxMaterial]:
         """Returns a flat list of all the 'Exchange' materials (for mixed layers) from all the Layers."""
         return [material for layer in self.layers for material in layer.exchange_materials]
 
@@ -492,7 +491,7 @@ class PhxWindowFrameElement:
 class PhxConstructionWindow:
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
-    _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
+    _identifier: uuid.UUID | str = field(init=False, default_factory=uuid.uuid4)
     display_name: str = ""
     _glazing_type_display_name: str = ""
     _frame_type_display_name: str = ""
@@ -550,8 +549,8 @@ class PhxConstructionWindow:
         return self._id_num_shade
 
     @id_num_shade.setter
-    def id_num_shade(self, _in: Optional[int]) -> None:
-        if _in != None:
+    def id_num_shade(self, _in: int | None) -> None:
+        if _in is not None:
             self._id_num_shade = _in
 
     @classmethod
@@ -580,13 +579,12 @@ class PhxConstructionWindow:
     @property
     def frames(self) -> Generator[PhxWindowFrameElement, None, None]:
         """Returns a generator of all frame elements in order: Top, Right, Bottom, Left."""
-        for frame in (
+        yield from (
             self.frame_top,
             self.frame_right,
             self.frame_bottom,
             self.frame_left,
-        ):
-            yield frame
+        )
 
     def set_all_frames_u_value(self, _u_value: float) -> None:
         """Sets the u-value of all frame elements to the given value."""

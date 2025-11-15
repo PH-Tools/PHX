@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Mechanical Heat-Pump (Heating + Cooling) Devices."""
@@ -6,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Union
 
 from PHX.model.enums.hvac import DeviceType, HeatPumpType, SystemType
 from PHX.model.hvac import _base
@@ -31,17 +30,17 @@ class PhxHeatPumpDevice(_base.PhxMechanicalDevice):
 @dataclass
 class PhxHeatPumpAnnualParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.ANNUAL)
-    annual_COP: Optional[float] = None
-    total_system_perf_ratio: Optional[float] = None
+    annual_COP: float | None = None
+    total_system_perf_ratio: float | None = None
 
 
 @dataclass
 class PhxHeatPumpMonthlyParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.RATED_MONTHLY)
-    _COP_1: Optional[float] = None
-    _COP_2: Optional[float] = None
-    _ambient_temp_1: Optional[float] = None
-    _ambient_temp_2: Optional[float] = None
+    _COP_1: float | None = None
+    _COP_2: float | None = None
+    _ambient_temp_1: float | None = None
+    _ambient_temp_2: float | None = None
 
     @property
     def monthly_COPS(self):
@@ -74,38 +73,38 @@ class PhxHeatPumpMonthlyParams(_base.PhxMechanicalDeviceParams):
             self.ambient_temp_2 = _in[0]
 
     @property
-    def COP_1(self) -> Optional[float]:
+    def COP_1(self) -> float | None:
         return self._COP_1
 
     @COP_1.setter
-    def COP_1(self, value: Optional[float]) -> None:
+    def COP_1(self, value: float | None) -> None:
         if value is not None:
             self._COP_1 = value
 
     @property
-    def COP_2(self) -> Optional[float]:
+    def COP_2(self) -> float | None:
         return self._COP_2
 
     @COP_2.setter
-    def COP_2(self, value: Optional[float]) -> None:
+    def COP_2(self, value: float | None) -> None:
         if value is not None:
             self._COP_2 = value
 
     @property
-    def ambient_temp_1(self) -> Optional[float]:
+    def ambient_temp_1(self) -> float | None:
         return self._ambient_temp_1
 
     @ambient_temp_1.setter
-    def ambient_temp_1(self, value: Optional[float]) -> None:
+    def ambient_temp_1(self, value: float | None) -> None:
         if value is not None:
             self._ambient_temp_1 = value
 
     @property
-    def ambient_temp_2(self) -> Optional[float]:
+    def ambient_temp_2(self) -> float | None:
         return self._ambient_temp_2
 
     @ambient_temp_2.setter
-    def ambient_temp_2(self, value: Optional[float]) -> None:
+    def ambient_temp_2(self, value: float | None) -> None:
         if value is not None:
             self._ambient_temp_2 = value
 
@@ -113,9 +112,9 @@ class PhxHeatPumpMonthlyParams(_base.PhxMechanicalDeviceParams):
 @dataclass
 class PhxHeatPumpHotWaterParams(_base.PhxMechanicalDeviceParams):
     hp_type: HeatPumpType = field(init=False, default=HeatPumpType.HOT_WATER)
-    annual_COP: Optional[float] = None
-    total_system_perf_ratio: Optional[float] = None
-    annual_energy_factor: Optional[float] = None
+    annual_COP: float | None = None
+    total_system_perf_ratio: float | None = None
+    annual_energy_factor: float | None = None
 
 
 @dataclass

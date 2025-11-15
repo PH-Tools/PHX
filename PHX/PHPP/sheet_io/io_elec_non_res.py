@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP "Electricity non-res" worksheet."""
 
 from __future__ import annotations
 
-from typing import Generator, Optional, Tuple
+from collections.abc import Generator
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model.elec_non_res import ExistingLightingRow
@@ -16,9 +15,9 @@ class Lighting:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.ElecNonRes) -> None:
         self.xl = _xl
         self.shape = _shape
-        self._section_header_row: Optional[int] = None
-        self._section_first_entry_row: Optional[int] = None
-        self._section_last_entry_row: Optional[int] = None
+        self._section_header_row: int | None = None
+        self._section_first_entry_row: int | None = None
+        self._section_last_entry_row: int | None = None
 
     @property
     def section_header_row(self) -> int:
@@ -78,7 +77,7 @@ class Lighting:
 
         raise Exception('\n\tError: Not able to find the first surface entry row in the "Lighting input" section?')
 
-    def find_section_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+    def find_section_last_entry_row(self, _start_row: int | None = None) -> int:
         """Return the row number of the last user-input entry row in the 'Lighting input' section."""
 
         if not _start_row:
@@ -110,7 +109,7 @@ class Lighting:
     @property
     def all_lighting_row_data(
         self,
-    ) -> Generator[Tuple[int, ExistingLightingRow], None, None]:
+    ) -> Generator[tuple[int, ExistingLightingRow], None, None]:
         """Return a generator of all the row_nums and lighting rows in the Lighting worksheet.
 
         Yields:

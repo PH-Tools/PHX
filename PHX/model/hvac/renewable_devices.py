@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Passive House Renewable Energy (PV) Device classes"""
@@ -6,7 +5,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from PHX.model.enums.hvac import DeviceType, SystemType
 from PHX.model.hvac import _base
@@ -32,7 +30,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._location_type
 
     @location_type.setter
-    def location_type(self, value: Optional[int]) -> None:
+    def location_type(self, value: int | None) -> None:
         if value is not None:
             self._location_type = value
 
@@ -41,7 +39,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._onsite_utilization_type
 
     @onsite_utilization_type.setter
-    def onsite_utilization_type(self, value: Optional[int]) -> None:
+    def onsite_utilization_type(self, value: int | None) -> None:
         if value is not None:
             self._onsite_utilization_type = value
 
@@ -50,7 +48,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._utilization_type
 
     @utilization_type.setter
-    def utilization_type(self, value: Optional[int]) -> None:
+    def utilization_type(self, value: int | None) -> None:
         if value is not None:
             self._utilization_type = value
 
@@ -59,7 +57,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._array_size
 
     @array_size.setter
-    def array_size(self, value: Optional[float]) -> None:
+    def array_size(self, value: float | None) -> None:
         if value is not None:
             self._array_size = value
 
@@ -68,7 +66,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._photovoltaic_renewable_energy
 
     @photovoltaic_renewable_energy.setter
-    def photovoltaic_renewable_energy(self, value: Optional[float]) -> None:
+    def photovoltaic_renewable_energy(self, value: float | None) -> None:
         if value is not None:
             self._photovoltaic_renewable_energy = value
 
@@ -77,7 +75,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._onsite_utilization_factor
 
     @onsite_utilization_factor.setter
-    def onsite_utilization_factor(self, value: Optional[float]) -> None:
+    def onsite_utilization_factor(self, value: float | None) -> None:
         if value is not None:
             self._onsite_utilization_factor = value
 
@@ -86,7 +84,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._auxiliary_energy
 
     @auxiliary_energy.setter
-    def auxiliary_energy(self, value: Optional[float]) -> None:
+    def auxiliary_energy(self, value: float | None) -> None:
         if value is not None:
             self._auxiliary_energy = value
 
@@ -95,7 +93,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._auxiliary_energy_DHW
 
     @auxiliary_energy_DHW.setter
-    def auxiliary_energy_DHW(self, value: Optional[float]) -> None:
+    def auxiliary_energy_DHW(self, value: float | None) -> None:
         if value is not None:
             self._auxiliary_energy_DHW = value
 
@@ -104,7 +102,7 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
         return self._in_conditioned_space
 
     @in_conditioned_space.setter
-    def in_conditioned_space(self, value: Optional[bool]) -> None:
+    def in_conditioned_space(self, value: bool | None) -> None:
         if value is not None:
             self._in_conditioned_space = value
 

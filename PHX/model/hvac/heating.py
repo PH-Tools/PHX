@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Mechanical Heating Devices."""
@@ -6,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional, Union
+from typing import Union
 
 from PHX.model.enums.hvac import DeviceType, PhxFuelType, SystemType
 from PHX.model.hvac import _base
@@ -49,7 +48,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
     _avg_temp_at_70C_55C: float = 41
     _avg_temp_at_55C_45C: float = 35
     _avg_temp_at_32C_28C: float = 24
-    _standby_loss_at_70C: Optional[float] = None
+    _standby_loss_at_70C: float | None = None
     _rated_capacity: float = 10.0  # kW
 
     @property
@@ -68,7 +67,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._condensing
 
     @condensing.setter
-    def condensing(self, value: Optional[bool]) -> None:
+    def condensing(self, value: bool | None) -> None:
         if value is not None:
             self._condensing = value
 
@@ -77,7 +76,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._in_conditioned_space
 
     @in_conditioned_space.setter
-    def in_conditioned_space(self, value: Optional[bool]) -> None:
+    def in_conditioned_space(self, value: bool | None) -> None:
         if value is not None:
             self._in_conditioned_space = value
 
@@ -86,7 +85,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._effic_at_30_percent_load
 
     @effic_at_30_percent_load.setter
-    def effic_at_30_percent_load(self, value: Optional[float]) -> None:
+    def effic_at_30_percent_load(self, value: float | None) -> None:
         if value is not None:
             self._effic_at_30_percent_load = value
 
@@ -95,7 +94,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._effic_at_nominal_load
 
     @effic_at_nominal_load.setter
-    def effic_at_nominal_load(self, value: Optional[float]) -> None:
+    def effic_at_nominal_load(self, value: float | None) -> None:
         if value is not None:
             self._effic_at_nominal_load = value
 
@@ -104,7 +103,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._avg_rtrn_temp_at_30_percent_load
 
     @avg_rtrn_temp_at_30_percent_load.setter
-    def avg_rtrn_temp_at_30_percent_load(self, value: Optional[float]) -> None:
+    def avg_rtrn_temp_at_30_percent_load(self, value: float | None) -> None:
         if value is not None:
             self._avg_rtrn_temp_at_30_percent_load = value
 
@@ -113,7 +112,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._avg_temp_at_70C_55C
 
     @avg_temp_at_70C_55C.setter
-    def avg_temp_at_70C_55C(self, value: Optional[float]) -> None:
+    def avg_temp_at_70C_55C(self, value: float | None) -> None:
         if value is not None:
             self._avg_temp_at_70C_55C = value
 
@@ -122,7 +121,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._avg_temp_at_55C_45C
 
     @avg_temp_at_55C_45C.setter
-    def avg_temp_at_55C_45C(self, value: Optional[float]) -> None:
+    def avg_temp_at_55C_45C(self, value: float | None) -> None:
         if value is not None:
             self._avg_temp_at_55C_45C = value
 
@@ -131,16 +130,16 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._avg_temp_at_32C_28C
 
     @avg_temp_at_32C_28C.setter
-    def avg_temp_at_32C_28C(self, value: Optional[float]) -> None:
+    def avg_temp_at_32C_28C(self, value: float | None) -> None:
         if value is not None:
             self._avg_temp_at_32C_28C = value
 
     @property
-    def standby_loss_at_70C(self) -> Optional[float]:
+    def standby_loss_at_70C(self) -> float | None:
         return self._standby_loss_at_70C
 
     @standby_loss_at_70C.setter
-    def standby_loss_at_70C(self, value: Optional[float]) -> None:
+    def standby_loss_at_70C(self, value: float | None) -> None:
         if value is not None:
             self._standby_loss_at_70C = value
 
@@ -149,7 +148,7 @@ class PhxHeaterBoilerFossilParams(_base.PhxMechanicalDeviceParams):
         return self._rated_capacity
 
     @rated_capacity.setter
-    def rated_capacity(self, value: Optional[float]) -> None:
+    def rated_capacity(self, value: float | None) -> None:
         if value is not None:
             self._rated_capacity = value
 
@@ -164,10 +163,10 @@ class PhxHeaterBoilerWoodParams(_base.PhxMechanicalDeviceParams):
     rated_capacity: float = 15.0  # kW
     demand_basic_cycle: float = 1.0  # kWh
     power_stationary_run: float = 1.0  # W
-    power_standard_run: Optional[float] = None
-    no_transport_pellets: Optional[bool] = None
-    only_control: Optional[bool] = None
-    area_mech_room: Optional[float] = None
+    power_standard_run: float | None = None
+    no_transport_pellets: bool | None = None
+    only_control: bool | None = None
+    area_mech_room: float | None = None
 
     @property
     def fuel(self):

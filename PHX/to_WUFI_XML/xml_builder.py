@@ -1,15 +1,14 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions used to build up an XML file from a Honeybee Object"""
 
-from typing import Any, Optional, Union
+from typing import Any
 from xml.dom.minidom import Document, Element
 
 from PHX.to_WUFI_XML import xml_converter, xml_writables
 
 
-def _xml_str(_: Union[str, bool, float]) -> str:
+def _xml_str(_: str | bool | float) -> str:
     """Util: Handle converting Boolean values to xml text format properly"""
     if isinstance(_, bool):
         if _:
@@ -46,7 +45,7 @@ def _add_text_node(_doc: Document, _parent_node: Element, _data: xml_writables.X
     # -- 1) Create a new Element
     new_element = _doc.createElementNS(None, _xml_str(_data.node_name))
 
-    if _data.node_value != None:
+    if _data.node_value is not None:
         # -- 2) Create the new text-node
         new_text_node = _doc.createTextNode(_xml_str(_data.node_value))
 
@@ -108,7 +107,7 @@ def add_children(_doc: Document, _parent_node: Element, _item: xml_writables.xml
 
 
 def generate_WUFI_XML_from_object(
-    _phx_object: Any, _header: str = "WUFIplusProject", _schema_name: Optional[str] = None
+    _phx_object: Any, _header: str = "WUFIplusProject", _schema_name: str | None = None
 ) -> str:
     """Create all the XML Nodes as text for the input Honeybee Model
 

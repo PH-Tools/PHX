@@ -173,15 +173,15 @@ def test_simple_set_material_multiple_columns(reset_class_counters) -> None:
     layer.divisions.set_cell_material(1, 0, mat_3)
 
     assert layer.divisions.get_cell_material(0, 0) == mat_2
-    assert layer.divisions.get_cell_material(0, 1) == None
+    assert layer.divisions.get_cell_material(0, 1) is None
     assert layer.divisions.get_cell_material(1, 0) == mat_3
-    assert layer.divisions.get_cell_material(1, 1) == None
+    assert layer.divisions.get_cell_material(1, 1) is None
 
 
 def test_reset_material_multiple_columns(reset_class_counters) -> None:
     mat_1 = PhxMaterial(display_name="mat_1")
     mat_2 = PhxMaterial(display_name="mat_2")
-    mat_3 = PhxMaterial(display_name="mat_3")
+    PhxMaterial(display_name="mat_3")
 
     layer = PhxLayer()
     layer.set_material(mat_1)

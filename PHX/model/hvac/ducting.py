@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Ventilation Ducting Distribution Objects."""
@@ -7,7 +6,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import ClassVar, Dict, List, Optional
+from typing import ClassVar
 
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
@@ -22,8 +21,8 @@ class PhxDuctSegment:
     display_name: str
     geometry: LineSegment3D
     diameter_m: float
-    height_m: Optional[float]
-    width_m: Optional[float]
+    height_m: float | None
+    width_m: float | None
     insulation_thickness_m: float
     insulation_conductivity_wmk: float
     insulation_reflective: bool
@@ -38,7 +37,7 @@ class PhxDuctSegment:
         return self.diameter_m * 1000.0
 
     @property
-    def height_mm(self) -> Optional[float]:
+    def height_mm(self) -> float | None:
         """Return the height in MM."""
         if self.height_m:
             return self.height_m * 1000.0
@@ -46,7 +45,7 @@ class PhxDuctSegment:
             return None
 
     @property
-    def width_mm(self) -> Optional[float]:
+    def width_mm(self) -> float | None:
         """Return the width in MM."""
         if self.width_m:
             return self.width_m * 1000.0
@@ -70,7 +69,7 @@ class PhxDuctElement:
     display_name: str
     duct_type: PhxVentDuctType = field(init=False, default=PhxVentDuctType.SUPPLY)
     vent_unit_id: int
-    _segments: Dict = field(default_factory=dict)
+    _segments: dict = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
@@ -81,7 +80,7 @@ class PhxDuctElement:
         return 1
 
     @property
-    def segments(self) -> List[PhxDuctSegment]:
+    def segments(self) -> list[PhxDuctSegment]:
         return list(self._segments.values())
 
     @property
@@ -152,10 +151,10 @@ class PhxDuctElement:
 
     @property
     def is_reflective(self) -> bool:
-        return any({seg.insulation_reflective for seg in self.segments})
+        return any(seg.insulation_reflective for seg in self.segments)
 
     @property
-    def assigned_vent_unit_ids(self) -> List[int]:
+    def assigned_vent_unit_ids(self) -> list[int]:
         return [self.vent_unit_id]
 
     def add_segment(self, _s: PhxDuctSegment) -> None:

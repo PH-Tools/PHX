@@ -1,5 +1,3 @@
-from typing import Dict
-
 import pytest
 
 from PHX.model import geometry
@@ -286,7 +284,7 @@ def test_add_child_poly_id(reset_class_counters, polygon_1x1x0, polygon_2x2x0):
 
 
 def test_cube_polygons_cardinal_orientation_on_axis(
-    reset_class_counters, phx_polygons: Dict[str, Dict[str, geometry.PhxPolygon]]
+    reset_class_counters, phx_polygons: dict[str, dict[str, geometry.PhxPolygon]]
 ):
     assert phx_polygons["vertical"]["north"].cardinal_orientation_angle == 0
     assert phx_polygons["vertical"]["east"].cardinal_orientation_angle == 90
@@ -298,35 +296,35 @@ def test_cube_polygons_cardinal_orientation_on_axis(
 
 
 def test_cube_polygons_vertical_orientation_on_axis(
-    reset_class_counters, phx_polygons: Dict[str, Dict[str, geometry.PhxPolygon]]
+    reset_class_counters, phx_polygons: dict[str, dict[str, geometry.PhxPolygon]]
 ):
     assert phx_polygons["vertical"]["north"].angle_from_horizontal == 90
-    assert phx_polygons["vertical"]["north"].is_vertical == True
-    assert phx_polygons["vertical"]["north"].is_horizontal == False
+    assert phx_polygons["vertical"]["north"].is_vertical
+    assert not phx_polygons["vertical"]["north"].is_horizontal
 
     assert phx_polygons["vertical"]["east"].angle_from_horizontal == 90
-    assert phx_polygons["vertical"]["east"].is_vertical == True
-    assert phx_polygons["vertical"]["east"].is_horizontal == False
+    assert phx_polygons["vertical"]["east"].is_vertical
+    assert not phx_polygons["vertical"]["east"].is_horizontal
 
     assert phx_polygons["vertical"]["south"].angle_from_horizontal == 90
-    assert phx_polygons["vertical"]["south"].is_vertical == True
-    assert phx_polygons["vertical"]["south"].is_horizontal == False
+    assert phx_polygons["vertical"]["south"].is_vertical
+    assert not phx_polygons["vertical"]["south"].is_horizontal
 
     assert phx_polygons["vertical"]["west"].angle_from_horizontal == 90
-    assert phx_polygons["vertical"]["west"].is_vertical == True
-    assert phx_polygons["vertical"]["west"].is_horizontal == False
+    assert phx_polygons["vertical"]["west"].is_vertical
+    assert not phx_polygons["vertical"]["west"].is_horizontal
 
     assert phx_polygons["horizontal"]["downward"].angle_from_horizontal == 180
-    assert phx_polygons["horizontal"]["downward"].is_vertical == False
-    assert phx_polygons["horizontal"]["downward"].is_horizontal == True
+    assert not phx_polygons["horizontal"]["downward"].is_vertical
+    assert phx_polygons["horizontal"]["downward"].is_horizontal
 
     assert phx_polygons["horizontal"]["upward"].angle_from_horizontal == 0
-    assert phx_polygons["horizontal"]["upward"].is_vertical == False
-    assert phx_polygons["horizontal"]["upward"].is_horizontal == True
+    assert not phx_polygons["horizontal"]["upward"].is_vertical
+    assert phx_polygons["horizontal"]["upward"].is_horizontal
 
 
 def test_cube_polygons_cardinal_orientation_rotated(
-    reset_class_counters, phx_polygons: Dict[str, Dict[str, geometry.PhxPolygon]]
+    reset_class_counters, phx_polygons: dict[str, dict[str, geometry.PhxPolygon]]
 ):
     vert_srfcs = phx_polygons["vertical"]
     assert vert_srfcs["northeast"].cardinal_orientation_angle == pytest.approx(0 + 60)
@@ -340,67 +338,67 @@ def test_cube_polygons_cardinal_orientation_rotated(
 
 
 def test_cube_polygons_vertical_orientation_rotated(
-    reset_class_counters, phx_polygons: Dict[str, Dict[str, geometry.PhxPolygon]]
+    reset_class_counters, phx_polygons: dict[str, dict[str, geometry.PhxPolygon]]
 ):
     assert phx_polygons["vertical"]["northeast"].angle_from_horizontal == 90
-    assert phx_polygons["vertical"]["northeast"].is_vertical == True
-    assert phx_polygons["vertical"]["northeast"].is_horizontal == False
+    assert phx_polygons["vertical"]["northeast"].is_vertical
+    assert not phx_polygons["vertical"]["northeast"].is_horizontal
 
     assert phx_polygons["vertical"]["southeast"].angle_from_horizontal == 90
-    assert phx_polygons["vertical"]["southeast"].is_vertical == True
-    assert phx_polygons["vertical"]["southeast"].is_horizontal == False
+    assert phx_polygons["vertical"]["southeast"].is_vertical
+    assert not phx_polygons["vertical"]["southeast"].is_horizontal
 
     assert phx_polygons["vertical"]["southwest"].angle_from_horizontal == 90
-    assert phx_polygons["vertical"]["southwest"].is_vertical == True
-    assert phx_polygons["vertical"]["southwest"].is_horizontal == False
+    assert phx_polygons["vertical"]["southwest"].is_vertical
+    assert not phx_polygons["vertical"]["southwest"].is_horizontal
 
     assert phx_polygons["vertical"]["northwest"].angle_from_horizontal == 90
-    assert phx_polygons["vertical"]["northwest"].is_vertical == True
-    assert phx_polygons["vertical"]["northwest"].is_horizontal == False
+    assert phx_polygons["vertical"]["northwest"].is_vertical
+    assert not phx_polygons["vertical"]["northwest"].is_horizontal
 
     assert phx_polygons["horizontal"]["downward_rotated"].angle_from_horizontal == 180
-    assert phx_polygons["horizontal"]["downward_rotated"].is_vertical == False
-    assert phx_polygons["horizontal"]["downward_rotated"].is_horizontal == True
+    assert not phx_polygons["horizontal"]["downward_rotated"].is_vertical
+    assert phx_polygons["horizontal"]["downward_rotated"].is_horizontal
 
     assert phx_polygons["horizontal"]["upward_rotated"].angle_from_horizontal == 0
-    assert phx_polygons["horizontal"]["upward_rotated"].is_vertical == False
-    assert phx_polygons["horizontal"]["upward_rotated"].is_horizontal == True
+    assert not phx_polygons["horizontal"]["upward_rotated"].is_vertical
+    assert phx_polygons["horizontal"]["upward_rotated"].is_horizontal
 
 
 # -- Test Square Pyramid
 
 
 def test_sq_pyramid_polygons_vertical_orientation_on_axis(
-    reset_class_counters, phx_polygons: Dict[str, Dict[str, geometry.PhxPolygon]]
+    reset_class_counters, phx_polygons: dict[str, dict[str, geometry.PhxPolygon]]
 ):
     pyramid_srfcs = phx_polygons["sq_pyramid"]
     assert pyramid_srfcs["north"].angle_from_horizontal == pytest.approx(77.74803)
-    assert pyramid_srfcs["north"].is_vertical == False
-    assert pyramid_srfcs["north"].is_horizontal == False
+    assert not pyramid_srfcs["north"].is_vertical
+    assert not pyramid_srfcs["north"].is_horizontal
 
     assert pyramid_srfcs["east"].angle_from_horizontal == pytest.approx(77.74803)
-    assert pyramid_srfcs["east"].is_vertical == False
-    assert pyramid_srfcs["east"].is_horizontal == False
+    assert not pyramid_srfcs["east"].is_vertical
+    assert not pyramid_srfcs["east"].is_horizontal
 
     assert pyramid_srfcs["south"].angle_from_horizontal == pytest.approx(77.74803)
-    assert pyramid_srfcs["south"].is_vertical == False
-    assert pyramid_srfcs["south"].is_horizontal == False
+    assert not pyramid_srfcs["south"].is_vertical
+    assert not pyramid_srfcs["south"].is_horizontal
 
     assert pyramid_srfcs["west"].angle_from_horizontal == pytest.approx(77.74803)
-    assert pyramid_srfcs["west"].is_vertical == False
-    assert pyramid_srfcs["west"].is_horizontal == False
+    assert not pyramid_srfcs["west"].is_vertical
+    assert not pyramid_srfcs["west"].is_horizontal
 
     assert pyramid_srfcs["downward"].angle_from_horizontal == 180
-    assert pyramid_srfcs["downward"].is_vertical == False
-    assert pyramid_srfcs["downward"].is_horizontal == True
+    assert not pyramid_srfcs["downward"].is_vertical
+    assert pyramid_srfcs["downward"].is_horizontal
 
     assert pyramid_srfcs["upward"].angle_from_horizontal == 0
-    assert pyramid_srfcs["upward"].is_vertical == False
-    assert pyramid_srfcs["upward"].is_horizontal == True
+    assert not pyramid_srfcs["upward"].is_vertical
+    assert pyramid_srfcs["upward"].is_horizontal
 
 
 def test_sq_pyramid_polygons_cardinal_orientation_on_axis(
-    reset_class_counters, phx_polygons: Dict[str, Dict[str, geometry.PhxPolygon]]
+    reset_class_counters, phx_polygons: dict[str, dict[str, geometry.PhxPolygon]]
 ):
     pyramid_srfcs = phx_polygons["sq_pyramid"]
     assert pyramid_srfcs["north"].cardinal_orientation_angle == 0
@@ -413,36 +411,36 @@ def test_sq_pyramid_polygons_cardinal_orientation_on_axis(
 
 
 def test_sq_pyramid_polygons_vertical_orientation_rotated(
-    reset_class_counters, phx_polygons: Dict[str, Dict[str, geometry.PhxPolygon]]
+    reset_class_counters, phx_polygons: dict[str, dict[str, geometry.PhxPolygon]]
 ):
     pyramid_srfcs = phx_polygons["sq_pyramid"]
     assert pyramid_srfcs["northeast"].angle_from_horizontal == pytest.approx(77.74803)
-    assert pyramid_srfcs["northeast"].is_vertical == False
-    assert pyramid_srfcs["northeast"].is_horizontal == False
+    assert not pyramid_srfcs["northeast"].is_vertical
+    assert not pyramid_srfcs["northeast"].is_horizontal
 
     assert pyramid_srfcs["southeast"].angle_from_horizontal == pytest.approx(77.74803)
-    assert pyramid_srfcs["southeast"].is_vertical == False
-    assert pyramid_srfcs["southeast"].is_horizontal == False
+    assert not pyramid_srfcs["southeast"].is_vertical
+    assert not pyramid_srfcs["southeast"].is_horizontal
 
     assert pyramid_srfcs["southwest"].angle_from_horizontal == pytest.approx(77.74803)
-    assert pyramid_srfcs["southwest"].is_vertical == False
-    assert pyramid_srfcs["southwest"].is_horizontal == False
+    assert not pyramid_srfcs["southwest"].is_vertical
+    assert not pyramid_srfcs["southwest"].is_horizontal
 
     assert pyramid_srfcs["northwest"].angle_from_horizontal == pytest.approx(77.74803)
-    assert pyramid_srfcs["northwest"].is_vertical == False
-    assert pyramid_srfcs["northwest"].is_horizontal == False
+    assert not pyramid_srfcs["northwest"].is_vertical
+    assert not pyramid_srfcs["northwest"].is_horizontal
 
     assert pyramid_srfcs["downward_rotated"].angle_from_horizontal == 180
-    assert pyramid_srfcs["downward_rotated"].is_vertical == False
-    assert pyramid_srfcs["downward_rotated"].is_horizontal == True
+    assert not pyramid_srfcs["downward_rotated"].is_vertical
+    assert pyramid_srfcs["downward_rotated"].is_horizontal
 
     assert pyramid_srfcs["upward_rotated"].angle_from_horizontal == 0
-    assert pyramid_srfcs["upward_rotated"].is_vertical == False
-    assert pyramid_srfcs["upward_rotated"].is_horizontal == True
+    assert not pyramid_srfcs["upward_rotated"].is_vertical
+    assert pyramid_srfcs["upward_rotated"].is_horizontal
 
 
 def test_sq_pyramid_polygons_cardinal_orientation_rotated(
-    reset_class_counters, phx_polygons: Dict[str, Dict[str, geometry.PhxPolygon]]
+    reset_class_counters, phx_polygons: dict[str, dict[str, geometry.PhxPolygon]]
 ):
     polys = phx_polygons["sq_pyramid"]
     assert polys["northeast"].cardinal_orientation_angle == pytest.approx(0 + 60)

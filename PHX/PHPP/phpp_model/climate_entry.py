@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Data-entry constructor for the Climate Worksheet."""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import ClassVar, List
+from typing import ClassVar
 
 from PHX.model import phx_site
 from PHX.PHPP.phpp_localization import shape_model
@@ -25,12 +24,12 @@ class ClimateSettings:
         col = getattr(self.shape.active_dataset.input_columns, _field_name)
         return f"{col}{_start_row + _row_offset}"
 
-    def create_xl_items(self, _sheet_name: str, _start_row: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _start_row: int) -> list[xl_data.XlItem]:
         """Return a list of the XL items to write to the worksheet."""
         create_range = partial(self._create_range, _start_row=_start_row)
         XLItemClimate = partial(xl_data.XlItem, _sheet_name)
 
-        xl_item_list: List[xl_data.XlItem] = [
+        xl_item_list: list[xl_data.XlItem] = [
             XLItemClimate(create_range("country", 0), self.phx_site.phpp_codes.country_code),
             XLItemClimate(create_range("region", 1), self.phx_site.phpp_codes.region_code),
             XLItemClimate(create_range("dataset", 3), f"{self.phx_site.phpp_codes.dataset_name}"),
@@ -57,7 +56,7 @@ class ClimateSettings:
 class ClimateDataBlock:
     """A single Climate / Weather-Station entry block."""
 
-    month_order: ClassVar[List[str]] = [
+    month_order: ClassVar[list[str]] = [
         "jan",
         "feb",
         "mar",
@@ -89,11 +88,11 @@ class ClimateDataBlock:
             "radiation": "KWH/M2",
             "temperature": "C",
         }
-        for k in INPUT_UNITS.keys():
+        for k in INPUT_UNITS:
             if k in _input_name:
                 return INPUT_UNITS[k]
 
-    def create_xl_items(self, _sheet_name: str, _start_row: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _start_row: int) -> list[xl_data.XlItem]:
         """Return a list of the XL items to write to the worksheet."""
         create_range = partial(self._create_range, _start_row=_start_row)
         XLItemClimate = partial(xl_data.XlItem, _sheet_name)
@@ -101,7 +100,7 @@ class ClimateDataBlock:
         phx_site = self.phx_site.location
 
         # -- Build the Header assembly attributes
-        xl_items_list: List[xl_data.XlItem] = [
+        xl_items_list: list[xl_data.XlItem] = [
             XLItemClimate(create_range("latitude", 0), phx_site.latitude),
             XLItemClimate(create_range("longitude", 0), phx_site.longitude),
             XLItemClimate(

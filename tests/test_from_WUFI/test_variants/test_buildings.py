@@ -13,7 +13,7 @@ def test_variant_buildings(
 
     assert len(variants_hbjson) == len(variants_xml)
 
-    for var_hbjson, var_xml in zip(variants_hbjson, variants_xml):
+    for var_hbjson, var_xml in zip(variants_hbjson, variants_xml, strict=False):
         b1 = var_hbjson.building
         b2 = var_xml.building
 

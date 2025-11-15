@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a PHPP DHW Tank"""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List
 
 from PHX.model.hvac import water
 from PHX.PHPP.phpp_localization import shape_model
@@ -30,7 +28,7 @@ class TankInput:
         """Return the XL Range ("P12",...) for the specific field name."""
         return f"{self.input_column}{_row_num}"
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this DHW Tank
 
         Arguments:

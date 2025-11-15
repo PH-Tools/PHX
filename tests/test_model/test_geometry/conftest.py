@@ -1,5 +1,3 @@
-from typing import Dict
-
 import pytest
 
 from PHX.model import geometry
@@ -518,15 +516,15 @@ def phx_polygon_sq_pyramid_rotated_horizontal_downward_facing() -> geometry.PhxP
 
 
 @pytest.fixture
-def phx_polygons() -> Dict[str, Dict[str, geometry.PhxPolygon]]:
-    horizontal: Dict[str, geometry.PhxPolygon] = {
+def phx_polygons() -> dict[str, dict[str, geometry.PhxPolygon]]:
+    horizontal: dict[str, geometry.PhxPolygon] = {
         "downward": phx_polygon_horizontal_downward_facing(),
         "upward": phx_polygon_horizontal_upward_facing(),
         "downward_rotated": phx_polygon_30_rotated_horizontal_downward_facing(),
         "upward_rotated": phx_polygon_30_rotated_horizontal_upward_facing(),
     }
 
-    vertical: Dict[str, geometry.PhxPolygon] = {
+    vertical: dict[str, geometry.PhxPolygon] = {
         "north": phx_polygon_vertical_north_facing(),
         "east": phx_polygon_vertical_east_facing(),
         "south": phx_polygon_vertical_south_facing(),
@@ -537,7 +535,7 @@ def phx_polygons() -> Dict[str, Dict[str, geometry.PhxPolygon]]:
         "northwest": phx_polygon_30_rotated_vertical_northwest_facing(),
     }
 
-    sq_pyramid: Dict[str, geometry.PhxPolygon] = {
+    sq_pyramid: dict[str, geometry.PhxPolygon] = {
         "north": phx_polygon_sq_pyramid_vertical_north_facing(),
         "east": phx_polygon_sq_pyramid_vertical_east_facing(),
         "south": phx_polygon_sq_pyramid_vertical_south_facing(),

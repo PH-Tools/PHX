@@ -24,11 +24,70 @@ directory = "_coverage_html"
 
 [tool.black]
 line-length = 120
+# Exclude Python 2.7 compatibility file
+extend-exclude = "PHX/run.py"
+
+[tool.isort]
+profile = "black"
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+skip_gitignore = true
+# Exclude Python 2.7 compatibility file
+extend_skip = ["PHX/run.py"]
 
 [tool.ruff]
 line-length = 120
 target-version = "py310"
+# Exclude Python 2.7 compatibility file from all ruff checks
+exclude = ["PHX/run.py"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "N", "W"]
-extend-ignore = ["F403", "F405", "N802"]
+select = ["E", "F", "I", "N", "W", "UP", "B", "A", "C4", "T20", "SIM"]
+extend-ignore = [
+    "F403",   # Unable to detect undefined names (from ... import *)
+    "F405",   # Name may be undefined, or defined from star imports
+    "N802",   # Function name should be lowercase
+    "N803",   # Argument name should be lowercase
+    "N806",   # Variable in function should be lowercase
+    "N815",   # Variable in class scope should not be mixedCase
+    "N816",   # Variable in global scope should not be mixedCase
+    "N999",   # Invalid module name (many test files use PascalCase)
+    "N801",   # Class name should use CapWords (intentional for some XML/typing classes)
+    "E501",   # Line too long (handled by black)
+    "E711",   # Comparison to None (acceptable in tests)
+    "E712",   # Comparison to True/False (acceptable in tests)
+    "E722",   # Bare except (sometimes necessary)
+    "T201",   # print statements (used for debugging/logging)
+    "B017",   # pytest.raises(Exception) is intentional in tests
+    "B904",   # raise without from (not always needed)
+    "UP007",  # Use X | Y (keeping Union for clarity/compatibility)
+    "UP035",  # typing.Dict deprecated (keeping for compatibility)
+    "UP045",  # Use X | None (keeping Optional for clarity)
+    "SIM102", # Collapsible if (sometimes clearer separate)
+    "SIM105", # Use contextlib.suppress (not always clearer)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Allow PascalCase functions in XML schema files (they match XML/C# structure)
+"**/xml_schemas.py" = ["N802", "B018", "SIM108", "A001"]
+# Allow PascalCase in XML writable classes
+"**/xml_writables.py" = ["N802", "N815"]
+# Test files can have more relaxed rules
+"tests/**/*.py" = ["F403", "F405", "F841"]
+# Python 2.7 compatibility file - ignore all modernization checks
+"**/run.py" = ["F401", "SIM105", "SIM210", "UP009", "UP010", "UP032"]
+# Exception naming in PHPP is intentional
+"**/io_exceptions.py" = ["N818"]
+"**/xl_app.py" = ["N818", "SIM105"]
+# Import shadowing is intentional (rich print)
+"**/phx_schemas.py" = ["A004"]
+# Type variable shadowing in WUFI parser (from XML data)
+"**/wufi_file_types.py" = ["A001"]
+# Pydantic v1 validators use 'cls' not 'self' (N805), and other intentional patterns
+"**/wufi_file_schema.py" = ["B018", "N805"]
+# Module imports after logging setup
+"**/create_variant.py" = ["E402"]

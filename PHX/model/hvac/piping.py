@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Water Piping Distribution Objects."""
@@ -7,7 +6,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Union
 from uuid import uuid4
 
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
@@ -88,7 +87,7 @@ class PhxPipeSegment:
         else:
             return 8.0
 
-    def _calc_pipe_heat_loss_coeff(self, _alpha: float, _conductivity: Optional[float] = None) -> float:
+    def _calc_pipe_heat_loss_coeff(self, _alpha: float, _conductivity: float | None = None) -> float:
         """Calculate the pipe heat-loss coefficient (W/mk) with a known Alpha (W/m2k) value."""
 
         # -- Allow for 'reverse' solver....
@@ -103,7 +102,7 @@ class PhxPipeSegment:
         )
         return math.pi / _c
 
-    def _calc_pipe_surface_temp(self, dT, _k, _conductivity: Optional[float] = None) -> float:
+    def _calc_pipe_surface_temp(self, dT, _k, _conductivity: float | None = None) -> float:
         """Return a surface temp (k) for the pipe with a known heat-loss-coefficient (W/mk) value."""
 
         # -- Allow for 'reverse' solver....
@@ -116,10 +115,10 @@ class PhxPipeSegment:
 
     def _solve_for_pipe_heat_loss_coeff(
         self,
-        _alpha: Optional[float] = None,
+        _alpha: float | None = None,
         _k1: float = 100.0,
         _k2: float = 1.0,
-        _surface_temp: Optional[float] = None,
+        _surface_temp: float | None = None,
     ) -> float:
         """Return a heat-loss coefficient (W/mk) considering the diameter and insulation.
 
@@ -127,10 +126,7 @@ class PhxPipeSegment:
         """
         TOLERANCE = 0.001
         DELTA_T = 30  # K
-        if self.insulation_reflective:
-            N = 0.1
-        else:
-            N = 0.85
+        N = 0.1 if self.insulation_reflective else 0.85
 
         while _k1 - _k2 > TOLERANCE:
             # -- hang onto the old k to test against tolerance later
@@ -165,10 +161,7 @@ class PhxPipeSegment:
         TOLERANCE_B = 0.01
         DELTA_T = 30  # K
 
-        if self.insulation_reflective:
-            N = 0.1
-        else:
-            N = 0.85
+        N = 0.1 if self.insulation_reflective else 0.85
 
         conductivity = starting_conductivity
 
@@ -199,7 +192,7 @@ class PhxPipeSegment:
         length_m: float,
         pipe_material: PhxHotWaterPipingMaterial,
         pipe_diameter_m: float,
-    ) -> "PhxPipeSegment":
+    ) -> PhxPipeSegment:
         """Create a Pipe Segment from a length value (m)."""
         _l: int = length_m  # type: ignore # untyped LBT
 
@@ -225,14 +218,14 @@ class PhxPipeElement:
     id_num: int = field(init=False, default=0)
     identifier: str = field(default_factory=lambda: str(uuid4()))
     display_name: str = "_unnamed_pipe_element_"
-    _segments: Dict = field(default_factory=dict)
+    _segments: dict = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         PhxPipeElement._count += 1
         self.id_num = PhxPipeElement._count
 
     @property
-    def segments(self) -> List[PhxPipeSegment]:
+    def segments(self) -> list[PhxPipeSegment]:
         return list(self._segments.values())
 
     @property
@@ -270,8 +263,8 @@ class PhxPipeElement:
         materials = list({s.pipe_material for s in self.segments})
         if len(materials) != 1:
             raise ValueError(
-                "Error: Pipe Element '{}' has multiple materials: '{}'."
-                "Please rebuild the pipe with a single material. {}".format(self.display_name, materials, self.segments)
+                f"Error: Pipe Element '{self.display_name}' has multiple materials: '{materials}'."
+                f"Please rebuild the pipe with a single material. {self.segments}"
             )
         else:
             return materials[0]
@@ -293,7 +286,7 @@ class PhxPipeBranch:
     identifier: str = field(default_factory=lambda: str(uuid4()))
     display_name: str = "_unnamed_pipe_branch_"
     pipe_element: PhxPipeElement = field(default_factory=PhxPipeElement)
-    fixtures: List[PhxPipeElement] = field(default_factory=list)
+    fixtures: list[PhxPipeElement] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         PhxPipeBranch._count += 1
@@ -314,7 +307,7 @@ class PhxPipeTrunk:
     multiplier: int = 1
     demand_recirculation: bool = False
     pipe_element: PhxPipeElement = field(default_factory=PhxPipeElement)
-    branches: List[PhxPipeBranch] = field(default_factory=list)
+    branches: list[PhxPipeBranch] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         PhxPipeTrunk._count += 1

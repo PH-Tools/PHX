@@ -29,7 +29,7 @@ def test_add_single_schedule_to_collection(reset_class_counters):
     coll.add_new_util_pattern(vent_sched_1)
 
     assert len(coll) == 1
-    assert vent_sched_1.identifier in coll.patterns.keys()
+    assert vent_sched_1.identifier in coll.patterns
     assert coll.key_is_in_collection(vent_sched_1.identifier)
 
     for pat in coll:
@@ -58,8 +58,8 @@ def test_add_multiple_schedules_to_collection(reset_class_counters):
     coll.add_new_util_pattern(pat_2)
 
     assert len(coll) == 2
-    assert pat_1.identifier in coll.patterns.keys()
-    assert pat_2.identifier in coll.patterns.keys()
+    assert pat_1.identifier in coll.patterns
+    assert pat_2.identifier in coll.patterns
     assert coll.key_is_in_collection(pat_1.identifier)
     assert coll.key_is_in_collection(pat_2.identifier)
 

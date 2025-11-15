@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a PHPP DHW Piping Elements."""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List
 
 from PHX.model.hvac import piping
 from PHX.PHPP.phpp_localization import shape_model
@@ -18,7 +16,7 @@ class RecircPipingInput:
 
     __slots__ = ("shape", "phx_pipe", "pipe_group_num")
     shape: shape_model.Dhw
-    phx_pipe: List[piping.PhxPipeSegment]
+    phx_pipe: list[piping.PhxPipeSegment]
     pipe_group_num: int
 
     @property
@@ -39,12 +37,12 @@ class RecircPipingInput:
         return getattr(self.shape.recirc_piping.input_rows_offset, _field_name).unit
 
     def _bool_as_x(self, _value: bool):
-        if _value == True:
+        if _value:
             return "x"
         else:
             return ""
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemDHW = partial(xl_data.XlItem, _sheet_name)
         total_length = sum(s.length_m for s in self.phx_pipe)
@@ -70,7 +68,7 @@ class RecircPipingInput:
             ),
             XLItemDHW(
                 create_range("insul_reflective"),
-                self._bool_as_x(any([s.insulation_reflective for s in self.phx_pipe])),
+                self._bool_as_x(any(s.insulation_reflective for s in self.phx_pipe)),
             ),
             XLItemDHW(
                 create_range("insul_conductivity"),
@@ -99,7 +97,7 @@ class BranchPipingInput:
 
     __slots__ = ("shape", "phx_pipe", "pipe_group_num", "num_tap_points")
     shape: shape_model.Dhw
-    phx_pipe: List[piping.PhxPipeSegment]
+    phx_pipe: list[piping.PhxPipeSegment]
     pipe_group_num: int
     num_tap_points: int
 
@@ -116,7 +114,7 @@ class BranchPipingInput:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.branch_piping.input_rows_offset, _field_name).unit
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of Branch Piping Xl-Write items."""
 
         XLItemDHW = partial(xl_data.XlItem, _sheet_name)

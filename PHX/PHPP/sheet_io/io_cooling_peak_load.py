@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Classes for the PHPP 'Cooling Load' (Peak Cooling Load) Worksheet."""
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 from ph_units.unit_type import Unit
 
@@ -20,7 +19,7 @@ class CoolingPeakLoad:
         self.xl = _xl
         self.shape = _shape
 
-    def _get_peak_load(self, _col: str) -> Dict[str, Unit]:
+    def _get_peak_load(self, _col: str) -> dict[str, Unit]:
         """Return a Dict of all the Peak Heating Load data from the specified column."""
         shp = self.shape
 
@@ -39,10 +38,10 @@ class CoolingPeakLoad:
             "peak_latent_cooling_load": Unit(float(pD or 0.0), str(shp.unit)),
         }
 
-    def get_peak_load_1_data(self) -> Dict[str, Any]:
+    def get_peak_load_1_data(self) -> dict[str, Any]:
         """Return a Dict of all the Weather-1 Peak Heating Load data (Watts | Btuh)"""
         return self._get_peak_load(self.shape.col_weather_1)
 
-    def get_peak_load_2_data(self) -> Dict[str, Any]:
+    def get_peak_load_2_data(self) -> dict[str, Any]:
         """Return a Dict of all the Weather-2 Peak Heating Load data (Watts | Btuh)"""
         return self._get_peak_load(self.shape.col_weather_2)

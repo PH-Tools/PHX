@@ -1,4 +1,4 @@
-from typing import ValuesView
+from collections.abc import ValuesView
 
 from PHX.model.constructions import PhxConstructionWindow
 from PHX.model.project import PhxProject

@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller for managing the PHPP Connection."""
 
-from typing import Dict, List
 
 from PHX.model import building, certification, components, project
 from PHX.model.hvac.collection import NoDeviceFoundError
@@ -146,7 +144,7 @@ class PHPPConnection:
             "1-PE-FACTORS": "EN",
         }
         language = None
-        for search_string in language_search_data.keys():
+        for search_string in language_search_data:
             if search_string in str(data[-1]).upper().strip():
                 language = language_search_data[search_string]
                 language = language.strip().replace(" ", "_").replace(".", "_")
@@ -163,17 +161,11 @@ class PHPPConnection:
     def is_easyPh(self) -> bool:
         """Return True if the active PHPP file is an 'easyPH' file."""
         name = self.shape.EASY_PH.name.upper()
-        if name in self.xl.get_upper_case_worksheet_names():
-            print("PHPP is easyPH")
-            return True
-        else:
-            return False
+        return name in self.xl.get_upper_case_worksheet_names()
 
     def phpp_version_equals_phx_phi_cert_version(self, _phx_variant: project.PhxVariant) -> bool:
         """Return True if the PHX PHI Certification Version and the PHPP Version match."""
-        if not int(_phx_variant.phi_certification_major_version) == int(self.version.number_major):
-            return False
-        return True
+        return int(_phx_variant.phi_certification_major_version) == int(self.version.number_major)
 
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
         if self.easyPh:
@@ -309,7 +301,7 @@ class PHPPConnection:
     def write_project_constructions(self, phx_project: project.PhxProject) -> None:
         """Write all of the opaque constructions to the PHPP 'U-Values' worksheet."""
 
-        construction_blocks: List[uvalues_constructor.ConstructorBlock] = []
+        construction_blocks: list[uvalues_constructor.ConstructorBlock] = []
         for phx_construction in phx_project.assembly_types.values():
             construction_blocks.append(
                 uvalues_constructor.ConstructorBlock(shape=self.shape.UVALUES, phx_construction=phx_construction)
@@ -321,8 +313,8 @@ class PHPPConnection:
     def write_project_window_components(self, phx_project: project.PhxProject) -> None:
         """Write all of the frame and glass constructions from a PhxProject to the PHPP 'Components' worksheet."""
 
-        glazing_component_rows: List[component_glazing.GlazingRow] = []
-        frame_component_rows: List[component_frame.FrameRow] = []
+        glazing_component_rows: list[component_glazing.GlazingRow] = []
+        frame_component_rows: list[component_frame.FrameRow] = []
         for phx_construction in phx_project.window_types.values():
             glazing_component_rows.append(
                 component_glazing.GlazingRow(shape=self.shape.COMPONENTS, phx_construction=phx_construction)
@@ -337,7 +329,7 @@ class PHPPConnection:
     def write_project_ventilation_components(self, phx_project: project.PhxProject) -> None:
         """Write all of the ventilators from a PhxProject to the PHPP 'Components' worksheet."""
 
-        phpp_ventilator_rows: List[component_vent.VentilatorRow] = []
+        phpp_ventilator_rows: list[component_vent.VentilatorRow] = []
         for phx_variant in phx_project.variants:
             for mech_collection in phx_variant.mech_collections:
                 for phx_ventilator in mech_collection.ventilation_devices:
@@ -365,7 +357,7 @@ class PHPPConnection:
     def write_project_opaque_surfaces(self, phx_project: project.PhxProject) -> None:
         """Write all of the opaque surfaces from a PhxProject to the PHPP 'Areas' worksheet."""
 
-        surfaces: List[areas_surface.SurfaceRow] = []
+        surfaces: list[areas_surface.SurfaceRow] = []
         for phx_variant in phx_project.variants:
             for opaque_component in phx_variant.building.opaque_components:
                 for phx_polygon in opaque_component.polygons:
@@ -382,11 +374,7 @@ class PHPPConnection:
                     )
 
         if len(surfaces) >= 100:
-            print(
-                f"Warning: {len(surfaces)} surfaces found in the model. Ensure that you have "
-                "added enough rows to the 'Areas' worksheet to handle that many surfaces. "
-                "By default the PHPP can only have 100 surfaces input."
-            )
+            pass
 
         phpp_surfaces_rows_sorted = sorted(surfaces, key=lambda x: x.phx_polygon.display_name.lower())
         self.areas.write_surfaces(phpp_surfaces_rows_sorted)
@@ -395,18 +383,14 @@ class PHPPConnection:
     def write_project_thermal_bridges(self, phx_project: project.PhxProject) -> None:
         """Write all of the thermal-bridge elements of a PhxProject to the PHPP 'Areas' worksheet."""
 
-        thermal_bridges: List[areas_thermal_bridges.ThermalBridgeRow] = []
+        thermal_bridges: list[areas_thermal_bridges.ThermalBridgeRow] = []
         for variant in phx_project.variants:
             for zone in variant.zones:
                 for phx_tb in zone.thermal_bridges:
                     thermal_bridges.append(areas_thermal_bridges.ThermalBridgeRow(self.shape.AREAS, phx_tb))
 
         if len(thermal_bridges) >= 100:
-            print(
-                f"Warning: {len(thermal_bridges)} thermal bridges found in the model. Ensure that you have "
-                "added enough rows to the 'Areas' worksheet to handle that many thermal bridges. "
-                "By default the PHPP can only have 100 thermal bridges input."
-            )
+            pass
 
         self.areas.write_thermal_bridges(thermal_bridges)
         return None
@@ -428,7 +412,7 @@ class PHPPConnection:
         window_type_phpp_ids = self.variants.get_window_type_phpp_ids()
 
         # -- Write in the window-data
-        phpp_windows: List[windows_rows.WindowRow] = []
+        phpp_windows: list[windows_rows.WindowRow] = []
         for phx_variant in phx_project.variants:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
@@ -460,11 +444,7 @@ class PHPPConnection:
                         )
 
         if len(phpp_windows) >= 150:
-            print(
-                f"Warning: {len(phpp_windows)} windows found in the model. Ensure that you have "
-                "added enough rows to the 'Windows' worksheet to handle that many windows. "
-                "By default the PHPP can only have 150 windows input."
-            )
+            pass
 
         phpp_windows_rows_sorted = sorted(phpp_windows, key=lambda x: x.phx_polygon.display_name.lower())
         self.windows.write_windows(phpp_windows_rows_sorted)
@@ -472,7 +452,7 @@ class PHPPConnection:
 
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
         def _get_ap_element_from_dict(
-            _window_name: str, _dict: Dict[str, components.PhxApertureElement]
+            _window_name: str, _dict: dict[str, components.PhxApertureElement]
         ) -> components.PhxApertureElement:
             """When reading from excel, it MIGHT come in as a float. This means
             that any windows with a numerical name (ie: '106', '205', etc) will get
@@ -499,7 +479,7 @@ class PHPPConnection:
         window_names = self.windows.get_all_window_names()
 
         # Get all the PHX Aperture objects
-        phx_aperture_dict: Dict[str, components.PhxApertureElement] = {}
+        phx_aperture_dict: dict[str, components.PhxApertureElement] = {}
         for phx_variant in phx_project.variants:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
@@ -512,7 +492,7 @@ class PHPPConnection:
         )
 
         # Write out all the data to the Shading Worksheet
-        phpp_shading_rows: List[shading_rows.ShadingRow] = []
+        phpp_shading_rows: list[shading_rows.ShadingRow] = []
         for phx_aperture_element in phx_aperture_elements_in_order:
             phpp_shading_rows.append(
                 shading_rows.ShadingRow(
@@ -534,7 +514,7 @@ class PHPPConnection:
         if self.easyPh:
             return None
 
-        phpp_vent_unit_rows: List[vent_units.VentUnitRow] = []
+        phpp_vent_unit_rows: list[vent_units.VentUnitRow] = []
         for phx_variant in phx_project.variants:
             for mech_collection in phx_variant.mech_collections:
                 for phx_ventilator in mech_collection.ventilation_devices:
@@ -556,7 +536,7 @@ class PHPPConnection:
         if self.easyPh:
             return None
 
-        phpp_vent_rooms: List[vent_space.VentSpaceRow] = []
+        phpp_vent_rooms: list[vent_space.VentSpaceRow] = []
         for phx_variant in phx_project.variants:
             for zone in phx_variant.building.zones:
                 for room in zone.spaces:
@@ -586,11 +566,7 @@ class PHPPConnection:
                     phpp_vent_rooms.append(phpp_rm)
 
         if len(phpp_vent_rooms) >= 30:
-            print(
-                f"Warning: {len(phpp_vent_rooms)} spaces found in the model. Ensure that you have "
-                "added enough rows to the 'Additional Vent' worksheet to handle that many spaces. "
-                "By default the PHPP can only have 30 spaces input."
-            )
+            pass
 
         self.addnl_vent.write_spaces(phpp_vent_rooms)
         return None
@@ -600,7 +576,7 @@ class PHPPConnection:
         if self.easyPh:
             return None
 
-        for variant in phx_project.variants:
+        for _variant in phx_project.variants:
             self.ventilation.write_ventilation_type(
                 # TODO: Get the actual type from the model someplace?
                 # TODO: How to combine Variants?
@@ -664,11 +640,7 @@ class PHPPConnection:
             # -- Tanks
             # Use only the first 2 tanks for PHPP
             if len(mech_collection.dhw_tank_devices) > 2:
-                print(
-                    f"Warning: PHPP only allows 2 tanks."
-                    f"{len(mech_collection.dhw_tank_devices)} tank"
-                    f'found in the Variant "{variant.name}"'
-                )
+                pass
 
             tank_inputs = []
             for i, phx_dhw_tank in enumerate(mech_collection.dhw_tank_devices[:2], start=1):
@@ -685,12 +657,7 @@ class PHPPConnection:
             branch_piping_inputs = []
             branch_pipe_groups = mech_collection.dhw_distribution_piping_segments_by_diam
             if len(branch_pipe_groups) > 5:
-                print(
-                    "Warning: PHPP only allows 5 groups of DHW branch piping. "
-                    f"{len(branch_pipe_groups)} piping groups "
-                    f'found in the Variant "{variant.name}". '
-                    "Using only then first 5 piping groups."
-                )
+                pass
 
             for i, phx_branch_piping in enumerate(branch_pipe_groups[:5]):
                 branch_piping_inputs.append(
@@ -707,12 +674,7 @@ class PHPPConnection:
             recirc_piping_inputs = []
             recirc_pipe_groups = mech_collection.dhw_recirc_piping_segments_by_diam
             if len(recirc_pipe_groups) > 5:
-                print(
-                    "Warning: PHPP only allows 5 groups of DHW Recirc. piping. "
-                    f"{len(recirc_pipe_groups)} piping groups "
-                    f'found in the Variant "{variant.name}". '
-                    "Using only then first 5 piping groups."
-                )
+                pass
 
             for i, phx_recirc_piping in enumerate(recirc_pipe_groups[:5]):
                 recirc_piping_inputs.append(
@@ -772,10 +734,6 @@ class PHPPConnection:
         # -- and add each one to the Variants assembly-layers section
         for i, assembly_name in enumerate(self.u_values.get_used_constructor_names(), start=0):
             if i > 25:
-                print(
-                    "WARNING: The Variants worksheet can only handle 26 different assemblies."
-                    "You will have to set up the assembly-layer Variants links manually."
-                )
                 continue
             self.variants.write_assembly_layer(assembly_name, i)
 

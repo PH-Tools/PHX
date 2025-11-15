@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Utility / cleanup functions used during tests"""
 
-from typing import List
 
-
-def xml_string_to_list(_xml_string: str) -> List[str]:
+def xml_string_to_list(_xml_string: str) -> list[str]:
     """Returns a list of the XML items, with the header and footer removed as well."""
 
     xml_string_items = _xml_string.replace("\t", "").rstrip().lstrip().split("\n")

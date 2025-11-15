@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a PHPP Areas / Thermal Bridges-Entry row"""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List
 
 from PHX.model import components
 from PHX.PHPP.phpp_localization import shape_model
@@ -28,7 +26,7 @@ class ThermalBridgeRow:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.thermal_bridge_rows.inputs, _field_name).unit
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Thermal Bridge Entry
 
         Arguments:

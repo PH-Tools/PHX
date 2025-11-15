@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a PHPP Areas / Surface-Entry row"""
@@ -6,7 +5,6 @@
 import re
 from dataclasses import dataclass
 from functools import partial
-from typing import Dict, List, Optional
 
 from PHX.model import components, geometry
 from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType
@@ -23,7 +21,7 @@ class SurfaceRow:
     shape: shape_model.Areas
     phx_polygon: geometry.PhxPolygon
     phx_component: components.PhxComponentOpaque
-    phpp_assembly_id_name: Optional[str]
+    phpp_assembly_id_name: str | None
     phpp_version: version.PHPPVersion
 
     @property
@@ -60,7 +58,7 @@ class SurfaceRow:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.surface_rows.inputs, _field_name).unit
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
 
         Arguments:
@@ -95,13 +93,13 @@ class SurfaceRow:
 
 
 def get_name_from_assembly_id(
-    _phpp_assembly_id: Optional[xl_data.xl_range_single_value],
+    _phpp_assembly_id: xl_data.xl_range_single_value | None,
 ) -> str:
     """Return the face's construction PHPP-Name (ie: "MyConst") from id-string."""
     try:
         return str(_phpp_assembly_id).split("-", 1)[1]
     except:
-        if _phpp_assembly_id == None or _phpp_assembly_id == "None":
+        if _phpp_assembly_id is None or _phpp_assembly_id == "None":
             return ""
         else:
             msg = f"Error getting construction PHPP-Name? " f"Could not split {_phpp_assembly_id} on '-'?"
@@ -115,7 +113,7 @@ class ExistingSurfaceRow:
     __slots__ = ("shape", "data", "group_type_exposure_map")
     shape: shape_model.Areas
     data: list
-    group_type_exposure_map: Dict[int, str]  # From io_areas.Areas() parent class
+    group_type_exposure_map: dict[int, str]  # From io_areas.Areas() parent class
 
     @property
     def is_empty(self) -> bool:
@@ -127,9 +125,7 @@ class ExistingSurfaceRow:
             return True
         if self.face_type == ComponentFaceType.NONE:
             return True
-        if self.face_exposure == ComponentExposureExterior.NONE:
-            return True
-        return False
+        return self.face_exposure == ComponentExposureExterior.NONE
 
     @property
     def name(self) -> str:
@@ -151,7 +147,7 @@ class ExistingSurfaceRow:
         if phpp_data in ["-", "", "None", None]:
             return 0
 
-        result = re.split(r"\D+", phpp_data, 2)
+        result = re.split(r"\D+", phpp_data, maxsplit=2)
         if not result:
             msg = (
                 f"Error getting Group-Type number? Could not find a number "

@@ -7,10 +7,7 @@ from PHX.model.project import PhxProject
 def _aperture_elements_are_equal(_xml_el: PhxApertureElement, _hbjson_el: PhxApertureElement) -> bool:
     """Don't check the Shading Factors when reading from WUFI XML."""
 
-    if _xml_el.polygons_are_equivalent(_hbjson_el):
-        return True
-    else:
-        return False
+    return bool(_xml_el.polygons_are_equivalent(_hbjson_el))
 
 
 def _apertures_are_equal(_xml_ap: PhxComponentAperture, _hbjson_ap: PhxComponentAperture) -> bool:
@@ -38,16 +35,14 @@ def _apertures_are_equal(_xml_ap: PhxComponentAperture, _hbjson_ap: PhxComponent
         assert len(_xml_ap.elements) == len(_hbjson_ap.elements)
         for xml_ap_element in _xml_ap.elements:
             assert any(
-                (
-                    _aperture_elements_are_equal(xml_ap_element, hbjson_ap_element)
-                    for hbjson_ap_element in _hbjson_ap.elements
-                )
+                _aperture_elements_are_equal(xml_ap_element, hbjson_ap_element)
+                for hbjson_ap_element in _hbjson_ap.elements
             )
 
         # -- check the Aperture Polygons
         assert len(_xml_ap.polygons) == len(_hbjson_ap.polygons)
         for this_poly in _xml_ap.polygons:
-            assert any((this_poly == other_poly for other_poly in _hbjson_ap.polygons))
+            assert any(this_poly == other_poly for other_poly in _hbjson_ap.polygons)
 
         return True
     else:
@@ -70,12 +65,12 @@ def _components_are_equal(_xml_compo: PhxComponentOpaque, _hbjson_compo: PhxComp
         # -- check the Component Apertures
         assert len(_xml_compo.apertures) == len(_hbjson_compo.apertures)
         for xml_ap in _xml_compo.apertures:
-            assert any((_apertures_are_equal(xml_ap, hbjson_ap) for hbjson_ap in _hbjson_compo.apertures))
+            assert any(_apertures_are_equal(xml_ap, hbjson_ap) for hbjson_ap in _hbjson_compo.apertures)
 
         # -- check the Component Polygons
         assert len(_xml_compo.polygons) == len(_hbjson_compo.polygons)
         for this_poly in _xml_compo.polygons:
-            assert any((this_poly == other_poly for other_poly in _hbjson_compo.polygons))
+            assert any(this_poly == other_poly for other_poly in _hbjson_compo.polygons)
 
         return True
     else:
@@ -86,7 +81,6 @@ def test_building_all_components_are_equal(
     phx_project_from_hbjson: PhxProject,
     phx_project_from_wufi_xml: PhxProject,
 ) -> None:
-    TOLERANCE = 0.01
 
     # -- Pull out the Variants
     variants_hbjson = phx_project_from_hbjson.variants
@@ -94,7 +88,7 @@ def test_building_all_components_are_equal(
 
     assert len(variants_hbjson) == len(variants_xml)
 
-    for var_hbjson, var_xml in zip(variants_hbjson, variants_xml):
+    for var_hbjson, var_xml in zip(variants_hbjson, variants_xml, strict=False):
         hbjson_all_compos = var_hbjson.building.opaque_components
         xml_all_compos = var_xml.building.opaque_components
 
@@ -103,4 +97,4 @@ def test_building_all_components_are_equal(
             # -- This checks: the component, the assembly, and the geometry
             # -- Note that when reading in from WUFI, aperture elements will NOT include any
             # -- shading factors, so we can't check those here. Use a custom equal checker instead
-            assert any((_components_are_equal(xml_component, hbjson_component) for xml_component in xml_all_compos))
+            assert any(_components_are_equal(xml_component, hbjson_component) for xml_component in xml_all_compos)

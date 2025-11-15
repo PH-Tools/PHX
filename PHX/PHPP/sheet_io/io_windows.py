@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP Windows worksheet."""
 
 from __future__ import annotations
 
-from typing import Generator, List, Optional
+from collections.abc import Generator
 
 from ph_units.unit_type import Unit
 
@@ -21,9 +20,9 @@ class Windows:
     def __init__(self, _xl: xl_app.XLConnection, shape: shape_model.Windows):
         self.xl = _xl
         self.shape = shape
-        self._header_row: Optional[int] = None
-        self._first_entry_row: Optional[int] = None
-        self._last_entry_row: Optional[int] = None
+        self._header_row: int | None = None
+        self._first_entry_row: int | None = None
+        self._last_entry_row: int | None = None
 
     @property
     def header_row(self) -> int:
@@ -60,17 +59,14 @@ class Windows:
         return f"{self.entry_range_start}:{self.entry_range_end}"
 
     @property
-    def windows_row_numbers(self) -> List[int]:
+    def windows_row_numbers(self) -> list[int]:
         """Return a list of all the window row numbers."""
         return list(range(self.first_entry_row, self.last_entry_row + 1))
 
     @property
     def used_window_row_numbers(self) -> Generator[int, None, None]:
         def has_window_data(_item) -> bool:
-            if _item == "-" or _item == "<End of designPH import!>" or _item is None:
-                return False
-            else:
-                return True
+            return not (_item == "-" or _item == "<End of designPH import!>" or _item is None)
 
         data = self.xl.get_single_column_data(
             self.shape.name,
@@ -122,7 +118,7 @@ class Windows:
             f"marker on the '{self.shape.name}' sheet, column {self.shape.window_rows.locator_col_entry}?"
         )
 
-    def find_last_entry_row(self, _start_row: Optional[int] = None) -> int:
+    def find_last_entry_row(self, _start_row: int | None = None) -> int:
         """Return the last row of the Window input section."""
         if not _start_row:
             _start_row = self.first_entry_row
@@ -179,12 +175,12 @@ class Windows:
         for item in _window_row.create_xl_items(self.shape.name, _row_num=_row_num):
             self.xl.write_xl_item(item)
 
-    def write_windows(self, _window_rows: List[WindowRow]) -> None:
+    def write_windows(self, _window_rows: list[WindowRow]) -> None:
         """Write a list of WindowRow objects to the Windows worksheet."""
         for i, window_row in enumerate(_window_rows, start=self.first_entry_row):
             self.write_single_window(i, window_row)
 
-    def get_all_window_names(self) -> List[str]:
+    def get_all_window_names(self) -> list[str]:
         """Return a list of all the window names found in the worksheet."""
 
         # -- Get all the window names from the description row
@@ -213,7 +209,7 @@ class Windows:
         )
 
         areas = []
-        for angle, area in zip(angle_data, area_data):
+        for angle, area in zip(angle_data, area_data, strict=False):
             if angle is None or area is None:
                 continue
             if abs(90 - float(angle)) < _tolerance:
@@ -237,7 +233,7 @@ class Windows:
         )
 
         areas = []
-        for angle, area in zip(angle_data, area_data):
+        for angle, area in zip(angle_data, area_data, strict=False):
             if angle is None or area is None:
                 continue
             if abs(90 - float(angle)) > _tolerance:
@@ -338,10 +334,7 @@ class Windows:
         _range = f"{col}{_row_num}"
         v = self.xl.get_data(self.shape.name, _range)
 
-        if abs(90.0 - float(v)) < _tolerance:
-            return True
-        else:
-            return False
+        return abs(90.0 - float(v)) < _tolerance
 
     def row_is_skylight(self, _row_num: int, _tolerance: float = 5.0) -> bool:
         """Return True if the row is a skylight, False otherwise."""
@@ -349,7 +342,4 @@ class Windows:
         _range = f"{col}{_row_num}"
         v = self.xl.get_data(self.shape.name, _range)
 
-        if abs(90.0 - float(v)) < _tolerance:
-            return False
-        else:
-            return True
+        return not abs(90.0 - float(v)) < _tolerance

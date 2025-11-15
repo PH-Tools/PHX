@@ -1,4 +1,4 @@
-from typing import ValuesView
+from collections.abc import ValuesView
 
 from pytest import approx
 

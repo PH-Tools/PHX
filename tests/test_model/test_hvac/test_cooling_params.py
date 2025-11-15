@@ -48,7 +48,7 @@ def test_add_PhxCoolingVentilationParams(reset_class_counters):
     assert p3.in_conditioned_space == p1.in_conditioned_space
 
     # -- Class-specific attrs
-    assert p3.single_speed == True
+    assert p3.single_speed
     assert p3.min_coil_temp == 15
     assert p3.capacity == 15
     assert p3.annual_COP == 5
@@ -109,13 +109,13 @@ def test_add_PhxCoolingRecirculationParams(reset_class_counters):
     assert p3.in_conditioned_space == p1.in_conditioned_space
 
     # -- Class-specific attrs
-    assert p3.single_speed == True
+    assert p3.single_speed
     assert p3.min_coil_temp == 15
     assert p3.capacity == 15
     assert p3.annual_COP == 5
     assert p3.total_system_perf_ratio == 0.2
     assert p3.flow_rate_m3_hr == 75
-    assert p3.flow_rate_variable == True
+    assert p3.flow_rate_variable
 
 
 # -- Dehumidification ---------------------------------------------------------
@@ -156,7 +156,7 @@ def test_add_PhxCoolingDehumidificationParams(reset_class_counters):
     # -- Class-specific attrs
     assert p3.annual_COP == 5
     assert p3.total_system_perf_ratio == 0.2
-    assert p3.useful_heat_loss == True
+    assert p3.useful_heat_loss
 
 
 # -- Panel Cooling ------------------------------------------------------------

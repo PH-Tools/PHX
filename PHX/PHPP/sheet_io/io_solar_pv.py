@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP "SolarPV" worksheet."""
@@ -6,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
+from typing import Any
 
 from ph_units.unit_type import Unit
 
@@ -24,7 +23,7 @@ class SolarPVData:
     annual_pv_energy: Unit = field(default_factory=Unit)
 
     @classmethod
-    def from_PHPP_data(cls, _data: Dict[str, Any]) -> SolarPVData:
+    def from_PHPP_data(cls, _data: dict[str, Any]) -> SolarPVData:
         """Clean up the data coming in from PHPP"""
         obj = cls()
 
@@ -43,7 +42,7 @@ class SolarPV:
         self.xl = _xl
         self.shape = _shape
 
-    def get_phpp_data(self) -> List[SolarPVData]:
+    def get_phpp_data(self) -> list[SolarPVData]:
         """Get the data from the PHPP worksheet."""
         start = f"{self.shape.columns.systems_start}{self.shape.rows.systems_start}"
         end = f"{self.shape.columns.systems_end}{self.shape.rows.systems_end}"

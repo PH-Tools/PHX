@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Fresh-Air Ventilation Utilization Schedule."""
@@ -7,7 +6,7 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass, field
-from typing import ClassVar, Union
+from typing import ClassVar
 
 
 @dataclass
@@ -18,10 +17,7 @@ class Vent_OperatingPeriod:
     def __eq__(self, other: Vent_OperatingPeriod) -> bool:
         if abs(self.period_operating_hours - other.period_operating_hours) > 0.01:
             return False
-        if abs(self.period_operation_speed - other.period_operation_speed) > 0.01:
-            return False
-        else:
-            return True
+        return not abs(self.period_operation_speed - other.period_operation_speed) > 0.01
 
     def __add__(self, other: Vent_OperatingPeriod) -> Vent_OperatingPeriod:
         new_period = Vent_OperatingPeriod()
@@ -44,10 +40,7 @@ class Vent_UtilPeriods:
             return False
         if self.basic != other.basic:
             return False
-        if self.minimum != other.minimum:
-            return False
-        else:
-            return True
+        return self.minimum == other.minimum
 
     def __add__(self, other: Vent_UtilPeriods) -> Vent_UtilPeriods:
         new_periods = Vent_UtilPeriods()
@@ -66,7 +59,7 @@ class PhxScheduleVentilation:
 
     id_num: int = field(init=False, default=0)
     name: str = "__unnamed_vent_schedule__"
-    identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
+    identifier: uuid.UUID | str = field(default_factory=uuid.uuid4)
     operating_hours: float = 24.0
     operating_days: float = 7.0
     operating_weeks: float = 52.0

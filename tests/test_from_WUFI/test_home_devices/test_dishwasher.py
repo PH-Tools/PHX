@@ -28,7 +28,7 @@ def test_create_xml_object_from_string() -> None:
     assert new_wufi_xml_obj.Comment == "default"
     assert new_wufi_xml_obj.ReferenceQuantity == 1
     assert new_wufi_xml_obj.Quantity == 2
-    assert new_wufi_xml_obj.InConditionedSpace == True
+    assert new_wufi_xml_obj.InConditionedSpace
     assert new_wufi_xml_obj.ReferenceEnergyDemandNorm == 2
     assert new_wufi_xml_obj.EnergyDemandNorm == 0.0
     assert new_wufi_xml_obj.EnergyDemandNormUse == 1.1
@@ -47,7 +47,7 @@ def test_create_phx_object_from_xml_string() -> None:
     new_phx_obj: PhxDeviceDishwasher = _PhxHomeDevice(new_wufi_xml_obj)  # type: ignore
     assert new_phx_obj.comment == "default"
     assert new_phx_obj.quantity == 2
-    assert new_phx_obj.in_conditioned_space == True
+    assert new_phx_obj.in_conditioned_space
     assert new_phx_obj.reference_energy_norm == 2
     assert new_phx_obj.energy_demand_per_use == 1.1
     assert new_phx_obj.water_connection == 2

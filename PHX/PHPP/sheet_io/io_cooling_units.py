@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP "Cooling Units" worksheet."""
@@ -6,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 from ph_units.unit_type import Unit
 
@@ -22,26 +21,26 @@ class CoolingUnitData:
     used: bool = False
     SEER: Unit = field(default_factory=Unit)
     num_units: int = 1
-    _device_type_name: Optional[str] = None
+    _device_type_name: str | None = None
     device_type: CoolingType = field(default=CoolingType.NONE)
 
     @property
-    def device_type_name(self) -> Optional[str]:
+    def device_type_name(self) -> str | None:
         return self._device_type_name
 
     @device_type_name.setter
-    def device_type_name(self, _value: Optional[str]) -> None:
+    def device_type_name(self, _value: str | None) -> None:
         if _value is None:
             self._device_type_name = None
             return
         self._device_type_name = str(_value).split("-", 1)[-1].strip()
 
     @classmethod
-    def from_PHPP_data(cls, _data: Dict[str, Any], _seer_unit: str) -> CoolingUnitData:
+    def from_PHPP_data(cls, _data: dict[str, Any], _seer_unit: str) -> CoolingUnitData:
         """Clean up the data coming in from PHPP"""
         obj = cls()
 
-        if _data.get("used", None) in ["X", "x"]:
+        if _data.get("used") in ["X", "x"]:
             obj.used = True
         else:
             return obj
@@ -132,7 +131,7 @@ class CoolingUnits:
         self.dehumidification = Dehumidification(self.xl, self.shape)
         self.panel = Panel(self.xl, self.shape)
 
-    def get_cooling_system_data(self) -> Tuple[CoolingUnitData, ...]:
+    def get_cooling_system_data(self) -> tuple[CoolingUnitData, ...]:
         return (
             self.supply_air.get_phpp_data(),
             self.recirculation_air.get_phpp_data(),

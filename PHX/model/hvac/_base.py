@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Passive House Mechanical Equipment Classes"""
@@ -9,7 +8,7 @@ import math
 import uuid
 from dataclasses import dataclass, field
 from inspect import signature
-from typing import Any, ClassVar, Optional, Union
+from typing import Any, ClassVar
 
 from PHX.model.enums.hvac import DeviceType, SystemType
 
@@ -35,7 +34,7 @@ class PhxUsageProfile:
     def space_heating(self, _in: bool) -> None:
         if _in and self.space_heating_percent == 0:
             self.space_heating_percent = 1.0
-        elif _in == False:
+        elif not _in:
             self.space_heating_percent = 0.0
 
     @property
@@ -47,7 +46,7 @@ class PhxUsageProfile:
     def dhw_heating(self, _in: bool) -> None:
         if _in and self.dhw_heating_percent == 0:
             self.dhw_heating_percent = 1.0
-        elif _in == False:
+        elif not _in:
             self.dhw_heating_percent = 0.0
 
     @property
@@ -59,7 +58,7 @@ class PhxUsageProfile:
     def cooling(self, _in: bool) -> None:
         if _in and self.cooling_percent == 0:
             self.cooling_percent = 1.0
-        elif _in == False:
+        elif not _in:
             self.cooling_percent = 0.0
 
     @property
@@ -71,7 +70,7 @@ class PhxUsageProfile:
     def ventilation(self, _in: bool) -> None:
         if _in and self.ventilation_percent == 0:
             self.ventilation_percent = 1.0
-        elif _in == False:
+        elif not _in:
             self.ventilation_percent = 0.0
 
     @property
@@ -83,7 +82,7 @@ class PhxUsageProfile:
     def humidification(self, _in: bool) -> None:
         if _in and self.humidification_percent == 0:
             self.humidification_percent = 1.0
-        elif _in == False:
+        elif not _in:
             self.humidification_percent = 0.0
 
     @property
@@ -95,7 +94,7 @@ class PhxUsageProfile:
     def dehumidification(self, _in: bool) -> None:
         if _in and self.dehumidification_percent == 0:
             self.dehumidification_percent = 1.0
-        elif _in == False:
+        elif not _in:
             self.dehumidification_percent = 0.0
 
     def __add__(self, other: PhxUsageProfile) -> PhxUsageProfile:
@@ -113,9 +112,9 @@ class PhxUsageProfile:
 class PhxMechanicalDeviceParams:
     """Base class PHX MechanicalEquipment Params"""
 
-    aux_energy: Optional[float] = None
-    aux_energy_dhw: Optional[float] = None
-    solar_fraction: Optional[float] = None
+    aux_energy: float | None = None
+    aux_energy_dhw: float | None = None
+    solar_fraction: float | None = None
     in_conditioned_space: bool = True
 
     @staticmethod
@@ -153,7 +152,7 @@ class PhxMechanicalDevice:
 
     _count: ClassVar[int] = 0
 
-    _identifier: Union[uuid.UUID, str] = field(init=False, default_factory=uuid.uuid4)
+    _identifier: uuid.UUID | str = field(init=False, default_factory=uuid.uuid4)
     id_num: int = field(init=False, default=0)
     system_type: SystemType = SystemType.ANY
     device_type: DeviceType = DeviceType.ELECTRIC
@@ -183,7 +182,7 @@ class PhxMechanicalDevice:
         return self._quantity
 
     @quantity.setter
-    def quantity(self, _in: Optional[int]) -> None:
+    def quantity(self, _in: int | None) -> None:
         if not _in:
             return
         self._quantity = int(_in)
@@ -220,7 +219,7 @@ class PhxMechanicalDevice:
         such as 'id_num' or any other init=False fields result in an AttributeError.
         """
         # fetch the constructor's signature
-        cls_fields = {field for field in signature(cls).parameters}
+        cls_fields = set(signature(cls).parameters)
 
         # split the kwargs into native ones and new ones
         native_args, new_args = {}, {}

@@ -1,29 +1,29 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions to allow the merging of HB-Faces which are used to simplify HB-Models."""
 
 import logging
-from typing import List, Sequence, Tuple, TypeVar
+from collections.abc import Sequence
+from typing import TypeVar
 
 try:
     from honeybee.aperture import Aperture
     from honeybee.face import Face
     from honeybee.shade import Shade
 except ImportError as e:
-    raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import honeybee:\n\t{e}")
 
 try:
     from ladybug_geometry.geometry2d.polygon import Polygon2D
     from ladybug_geometry.geometry3d.face import Face3D
     from ladybug_geometry.geometry3d.plane import Plane
 except ImportError as e:
-    raise ImportError("\nFailed to import ladybug_geometry:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import ladybug_geometry:\n\t{e}")
 
 try:
     from honeybee_ph_utils import polygon2d_tools
 except ImportError as e:
-    raise ImportError("\nFailed to import honeybee_ph_utils:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import honeybee_ph_utils:\n\t{e}")
 
 
 logger = logging.getLogger()
@@ -46,7 +46,7 @@ def _add_sub_face(_face: Face, _aperture: Aperture):
 
 def _check_and_add_sub_face(
     _face: Face,
-    _apertures: List[Aperture],
+    _apertures: list[Aperture],
     _tolerance: float,
     _angle_tolerance: float,
 ) -> None:
@@ -97,8 +97,8 @@ def _create_new_Face3D(_poly2d: Polygon2D, _base_plane: Plane, _ref_face: TFaceO
 
 
 def find_parent_and_child_polygons(
-    _polygons: List[Polygon2D],
-) -> Tuple[List[Polygon2D], List[Polygon2D]]:
+    _polygons: list[Polygon2D],
+) -> tuple[list[Polygon2D], list[Polygon2D]]:
     """Return a Tuple of any parent (container) and child (contained) polygons from a list of polygons."""
 
     # Initialize empty lists for parent and child surfaces
@@ -127,12 +127,12 @@ def find_parent_and_child_polygons(
     return parent_polygon, child_polygons
 
 
-def face3Ds(_faces: Sequence[TFaceOrShade]) -> List[Face3D]:
+def face3Ds(_faces: Sequence[TFaceOrShade]) -> list[Face3D]:
     """Return a list of LBT-Face3Ds from a list of HB-Faces or HB-Shades."""
     return [f.geometry for f in _faces]
 
 
-def merge_hb_faces(_faces: List[Face], _tolerance: float, _angle_tolerance_degrees: float) -> List[Face]:
+def merge_hb_faces(_faces: list[Face], _tolerance: float, _angle_tolerance_degrees: float) -> list[Face]:
     """Merge a group of HB-Faces into the fewest number of faces possible."""
 
     if not _faces:
@@ -182,7 +182,7 @@ def merge_hb_faces(_faces: List[Face], _tolerance: float, _angle_tolerance_degre
 
     # -------------------------------------------------------------------------
     # -- Add the apertures back in
-    faces_with_apertures_: List[Face] = []
+    faces_with_apertures_: list[Face] = []
     for _face in faces:
         _check_and_add_sub_face(_face, apertures, _tolerance, _angle_tolerance_degrees)
         faces_with_apertures_.append(_face)
@@ -190,7 +190,7 @@ def merge_hb_faces(_faces: List[Face], _tolerance: float, _angle_tolerance_degre
     return faces_with_apertures_
 
 
-def merge_hb_shades(_faces: List[Shade], _tolerance: float, _angle_tolerance_degrees: float) -> List[Shade]:
+def merge_hb_shades(_faces: list[Shade], _tolerance: float, _angle_tolerance_degrees: float) -> list[Shade]:
     """Merge a group of HB-Shades into the fewest number of shades possible."""
     if not _faces:
         return []

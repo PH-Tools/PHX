@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Mechanical Ventilation Devices"""
@@ -6,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import ClassVar, Optional, Union
+from typing import ClassVar, Union
 
 from PHX.model.enums.hvac import DeviceType, PhxExhaustVentType, SystemType
 from PHX.model.hvac import _base
@@ -36,7 +35,7 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._sensible_heat_recovery
 
     @sensible_heat_recovery.setter
-    def sensible_heat_recovery(self, value: Optional[float]) -> None:
+    def sensible_heat_recovery(self, value: float | None) -> None:
         if value is not None:
             self._sensible_heat_recovery = value
 
@@ -45,7 +44,7 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._latent_heat_recovery
 
     @latent_heat_recovery.setter
-    def latent_heat_recovery(self, value: Optional[float]) -> None:
+    def latent_heat_recovery(self, value: float | None) -> None:
         if value is not None:
             self._latent_heat_recovery = value
 
@@ -54,7 +53,7 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._quantity
 
     @quantity.setter
-    def quantity(self, value: Optional[int]) -> None:
+    def quantity(self, value: int | None) -> None:
         if value is not None:
             self._quantity = value
 
@@ -63,7 +62,7 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._electric_efficiency
 
     @electric_efficiency.setter
-    def electric_efficiency(self, value: Optional[float]) -> None:
+    def electric_efficiency(self, value: float | None) -> None:
         if value is not None:
             self._electric_efficiency = value
 
@@ -72,7 +71,7 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._frost_protection_reqd
 
     @frost_protection_reqd.setter
-    def frost_protection_reqd(self, value: Optional[bool]) -> None:
+    def frost_protection_reqd(self, value: bool | None) -> None:
         if value is not None:
             self._frost_protection_reqd = value
 
@@ -81,7 +80,7 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._temperature_below_defrost_used
 
     @temperature_below_defrost_used.setter
-    def temperature_below_defrost_used(self, value: Optional[float]) -> None:
+    def temperature_below_defrost_used(self, value: float | None) -> None:
         if value is not None:
             self._temperature_below_defrost_used = value
 
@@ -128,7 +127,7 @@ class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._exhaust_type
 
     @exhaust_type.setter
-    def exhaust_type(self, value: Optional[PhxExhaustVentType]) -> None:
+    def exhaust_type(self, value: PhxExhaustVentType | None) -> None:
         if value is not None:
             self._exhaust_type = value
 
@@ -137,7 +136,7 @@ class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._annual_runtime_minutes
 
     @annual_runtime_minutes.setter
-    def annual_runtime_minutes(self, value: Optional[float]) -> None:
+    def annual_runtime_minutes(self, value: float | None) -> None:
         if value is not None:
             self._annual_runtime_minutes = value
 
@@ -146,7 +145,7 @@ class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
         return self._exhaust_flow_rate_m3h
 
     @exhaust_flow_rate_m3h.setter
-    def exhaust_flow_rate_m3h(self, value: Optional[float]) -> None:
+    def exhaust_flow_rate_m3h(self, value: float | None) -> None:
         if value is not None:
             self._exhaust_flow_rate_m3h = value
 
@@ -163,7 +162,7 @@ class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
         return weighted_minutes
 
     def __add__(self, other: PhxExhaustVentilatorParams) -> PhxExhaustVentilatorParams:
-        if not self.exhaust_type == other.exhaust_type:
+        if self.exhaust_type != other.exhaust_type:
             msg = (
                 f"Error: Cannot combine PHX Exhaust Ventilation Device of type "
                 f"'{self.exhaust_type}' with device of type: '{other.exhaust_type}'"

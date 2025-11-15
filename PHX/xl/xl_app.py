@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Class for managing the Excel Application Connection and common read/write operations."""
 
 import os
 import pathlib
+from collections.abc import Callable
 from contextlib import contextmanager
-from typing import Any, Callable, Dict, List, Optional, Set, Union
+from typing import Any
 
 from PHX.xl import xl_data
 from PHX.xl.xl_typing import (
@@ -88,7 +88,7 @@ class XLConnection:
         self,
         xl_framework,
         output: Callable[[str], Any] = silent_print,
-        xl_file_path: Optional[pathlib.Path] = None,
+        xl_file_path: pathlib.Path | None = None,
     ) -> None:
         """Facade class for Excel Interop
 
@@ -107,16 +107,16 @@ class XLConnection:
         # -- when type-hinting the actual attribute though.
         self.xl: xl_Framework_Protocol = xl_framework
         self._output: Callable[[str], Any] = output
-        self.xl_file_path: Optional[pathlib.Path] = xl_file_path
+        self.xl_file_path: pathlib.Path | None = xl_file_path
 
         # A dict with sheet names as keys, and XL data as values
-        self.sheet_cache: Dict[str, xl_Sheet_Protocol] = {}
+        self.sheet_cache: dict[str, xl_Sheet_Protocol] = {}
 
-        self._wb: Optional[xl_Book_Protocol] = None
+        self._wb: xl_Book_Protocol | None = None
         self.output(f"> connected to excel doc: '{self.wb.fullname}'")
 
     @property
-    def worksheet_names(self) -> Set[str]:
+    def worksheet_names(self) -> set[str]:
         return self.get_upper_case_worksheet_names()
 
     def activate_new_workbook(self) -> xl_Book_Protocol:
@@ -130,12 +130,11 @@ class XLConnection:
         """Returns True if Excel is currently running, False if not"""
         return self.apps.count > 0
 
-    def start_excel_app(self) -> Optional[xl_app_Protocol]:
+    def start_excel_app(self) -> xl_app_Protocol | None:
         """Starts Excel Application, if it is not currently running."""
         if self.excel_running:
             return None
 
-        print("adding a new app to the self.apps....")
         new_ap = self.apps.add()
         new_ap.visible = True
 
@@ -163,7 +162,6 @@ class XLConnection:
     def get_workbook(self) -> xl_Book_Protocol:
         """Return the right Workbook, depending on the App state and user inputs."""
         if not self.excel_running:
-            print("no Excel running, staring a new Application instance.")
             self.start_excel_app()
 
         # -- If a specific file path is provided, open that one
@@ -221,7 +219,7 @@ class XLConnection:
         """Clears the content and formatting of the whole sheet."""
         self.get_sheet_by_name(_sheet_name).clear()
 
-    def create_new_worksheet(self, _sheet_name: str, before: Optional[str] = None, after: Optional[str] = None) -> None:
+    def create_new_worksheet(self, _sheet_name: str, before: str | None = None, after: str | None = None) -> None:
         """Try and add a new Worksheet to the Workbook."""
         try:
             self.wb.sheets.add(_sheet_name, before, after)
@@ -237,9 +235,9 @@ class XLConnection:
     def find_row(
         self,
         _search_item: xl_data.xl_range_single_value,
-        _data: List[xl_data.xl_range_single_value],
+        _data: list[xl_data.xl_range_single_value],
         _start: int = 0,
-    ) -> Optional[int]:
+    ) -> int | None:
         for i, _ in enumerate(_data, start=_start):
             if _search_item == _:
                 return i
@@ -247,7 +245,7 @@ class XLConnection:
 
     def get_row_num_of_value_in_column(
         self, sheet_name: str, row_start: int, row_end: int, col: str, find: str
-    ) -> Optional[int]:
+    ) -> int | None:
         """Returns the row number of the first instance of a specific value
         found within a column, or None if not found.
 
@@ -278,7 +276,7 @@ class XLConnection:
                 return row
         return None
 
-    def get_upper_case_worksheet_names(self) -> Set[str]:
+    def get_upper_case_worksheet_names(self) -> set[str]:
         """Return a set of all the worksheet names in the workbook, upper-cased.
 
         Returns:
@@ -287,7 +285,7 @@ class XLConnection:
         """
         return {sh.name.upper() for sh in self.wb.sheets}
 
-    def get_sheet_by_name(self, _sheet_name: Optional[Union[str, int]]) -> xl_Sheet_Protocol:
+    def get_sheet_by_name(self, _sheet_name: str | int | None) -> xl_Sheet_Protocol:
         """Returns an Excel Sheet with the specified name, or KeyError if not found.
 
         Arguments:
@@ -343,9 +341,9 @@ class XLConnection:
         self,
         _sheet_name: str,
         _col: str,
-        _row_start: Optional[int] = None,
-        _row_end: Optional[int] = None,
-    ) -> List[xl_data.xl_range_single_value]:
+        _row_start: int | None = None,
+        _row_end: int | None = None,
+    ) -> list[xl_data.xl_range_single_value]:
         """Return a list with the values read from a single column of the excel document.
 
         Arguments:
@@ -390,7 +388,7 @@ class XLConnection:
         group_last_cell_range = row_last_cell_range.end("left")  # same as 'Ctrl-Left'
         return xl_data.xl_chr(xl_data.xl_ord("A") + group_last_cell_range.column - 1)
 
-    def get_single_row_data(self, _sheet_name: str, _row_number: int) -> List[xl_data.xl_range_single_value]:
+    def get_single_row_data(self, _sheet_name: str, _row_number: int) -> list[xl_data.xl_range_single_value]:
         """Return all the data from a single Row in the Excel Workbook.
 
         Arguments:
@@ -479,7 +477,7 @@ class XLConnection:
         self.output(f"Reading: {_sheet_name}:{_range}")
         return self.get_sheet_by_name(_sheet_name).range(_range).value  # type: ignore
 
-    def get_data_by_columns(self, _sheet_name: str, _range_address: str) -> List[List[xl_data.xl_range_single_value]]:
+    def get_data_by_columns(self, _sheet_name: str, _range_address: str) -> list[list[xl_data.xl_range_single_value]]:
         """Returns a List of column data, each column in a list.
         ie: "A1:D12" -> [[A1, A2, ... A12], [B1, B2, ... B12], ... [D1, D2, ... D12]]
 
@@ -498,7 +496,7 @@ class XLConnection:
 
     def get_data_with_column_letters(
         self, _sheet_name: str, _range_address: str
-    ) -> Dict[str, List[xl_data.xl_range_single_value]]:
+    ) -> dict[str, list[xl_data.xl_range_single_value]]:
         """Returns a Dict of column data, key'd by the Column Letter.
         ie: "A1:D12"->{"A":[A1, A2,...A12], "B":[...], ..."D":[D1., D2,...D12]}
 
@@ -583,7 +581,7 @@ class XLConnection:
 
     def write_xl_item(
         self,
-        _xl_item: Union[xl_data.XlItem, xl_data.XLItem_List],
+        _xl_item: xl_data.XlItem | xl_data.XLItem_List,
         _transpose: bool = False,
     ) -> None:
         """Writes a single XLItem to the worksheet

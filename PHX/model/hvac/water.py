@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Water Devices"""
@@ -6,7 +5,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from PHX.model.enums.hvac import DeviceType, PhxHotWaterInputOptions, PhxHotWaterTankType, SystemType
 from PHX.model.hvac import _base
@@ -45,7 +43,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._tank_type
 
     @tank_type.setter
-    def tank_type(self, value: Optional[PhxHotWaterTankType]) -> None:
+    def tank_type(self, value: PhxHotWaterTankType | None) -> None:
         if value is not None:
             self._tank_type = value
 
@@ -54,7 +52,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._input_option
 
     @input_option.setter
-    def input_option(self, value: Optional[PhxHotWaterInputOptions]) -> None:
+    def input_option(self, value: PhxHotWaterInputOptions | None) -> None:
         if value is not None:
             self._input_option = value
 
@@ -63,7 +61,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._in_conditioned_space
 
     @in_conditioned_space.setter
-    def in_conditioned_space(self, value: Optional[bool]) -> None:
+    def in_conditioned_space(self, value: bool | None) -> None:
         if value is not None:
             self._in_conditioned_space = value
 
@@ -72,7 +70,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._solar_connection
 
     @solar_connection.setter
-    def solar_connection(self, value: Optional[bool]) -> None:
+    def solar_connection(self, value: bool | None) -> None:
         if value is not None:
             self._solar_connection = value
 
@@ -81,7 +79,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._solar_losses
 
     @solar_losses.setter
-    def solar_losses(self, value: Optional[float]) -> None:
+    def solar_losses(self, value: float | None) -> None:
         if value is not None:
             self._solar_losses = value
 
@@ -90,7 +88,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._storage_loss_rate
 
     @storage_loss_rate.setter
-    def storage_loss_rate(self, value: Optional[float]) -> None:
+    def storage_loss_rate(self, value: float | None) -> None:
         if value is not None:
             self._storage_loss_rate = value
 
@@ -99,7 +97,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._storage_capacity
 
     @storage_capacity.setter
-    def storage_capacity(self, value: Optional[float]) -> None:
+    def storage_capacity(self, value: float | None) -> None:
         if value is not None:
             self._storage_capacity = value
 
@@ -108,7 +106,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._standby_losses
 
     @standby_losses.setter
-    def standby_losses(self, value: Optional[float]) -> None:
+    def standby_losses(self, value: float | None) -> None:
         if value is not None:
             self._standby_losses = value
 
@@ -117,7 +115,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._standby_fraction
 
     @standby_fraction.setter
-    def standby_fraction(self, value: Optional[float]) -> None:
+    def standby_fraction(self, value: float | None) -> None:
         if value is not None:
             self._standby_fraction = value
 
@@ -126,7 +124,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._room_temp
 
     @room_temp.setter
-    def room_temp(self, value: Optional[float]) -> None:
+    def room_temp(self, value: float | None) -> None:
         if value is not None:
             self._room_temp = value
 
@@ -135,7 +133,7 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
         return self._water_temp
 
     @water_temp.setter
-    def water_temp(self, value: Optional[float]) -> None:
+    def water_temp(self, value: float | None) -> None:
         if value is not None:
             self._water_temp = value
 

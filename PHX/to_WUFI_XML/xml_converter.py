@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """"""
-from typing import Any, Callable, List, Optional
+from collections.abc import Callable
+from typing import Any
 
 from PHX.to_WUFI_XML import xml_schemas
 from PHX.to_WUFI_XML.xml_writables import xml_writable
@@ -15,12 +15,12 @@ class NoXMLSchemaFoundError(Exception):
             f'\n  of type "{type(_phx_object)}" using the schema name of: "{_schema_nm}"'
             f'\n  in file: "{_schema_module.__file__}". Please check the schemas.'
         )
-        super(NoXMLSchemaFoundError, self).__init__(self.message)
+        super().__init__(self.message)
 
 
 def get_PHX_object_conversion_schema(
-    _phx_object, _schema_name: Optional[str] = None
-) -> Callable[[Any], List[xml_writable]]:
+    _phx_object, _schema_name: str | None = None
+) -> Callable[[Any], list[xml_writable]]:
     """Returns the appropriate XML write schema function for the PHX-object.
 
     Arguments:
@@ -42,7 +42,7 @@ def get_PHX_object_conversion_schema(
 
     # -- Schema Name
     if _schema_name is None:
-        _schema_name = "_{}".format(_phx_object.__class__.__name__)
+        _schema_name = f"_{_phx_object.__class__.__name__}"
 
     # -- Schema Function
     schema_function = getattr(xml_schemas, _schema_name, None)
@@ -52,7 +52,7 @@ def get_PHX_object_conversion_schema(
     return schema_function
 
 
-def convert_HB_object_to_xml_writables_list(_phx_object, _schema_nm: Optional[str] = None) -> List[xml_writable]:
+def convert_HB_object_to_xml_writables_list(_phx_object, _schema_nm: str | None = None) -> list[xml_writable]:
     """Returns a list of the PHX-Object's Properties in WUFI-XML format.
 
         * _phx_object (Any): The PHX-Object to convert into XML text.

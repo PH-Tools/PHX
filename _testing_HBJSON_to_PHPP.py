@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """DEV SANDBOX: export a specified HBJSON file to a PHPP XL file."""
@@ -7,7 +6,7 @@ import pathlib
 import sys
 
 import xlwings as xw
-from rich import print
+from rich import print as rich_print
 
 from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.PHPP import phpp_app
@@ -29,8 +28,8 @@ else:
 if __name__ == "__main__":
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
-    print("[bold green]- " * 50)
-    print(f"[bold green]> Reading in the HBJSON file: ./{SOURCE_FILE}[/bold green]")
+    rich_print("[bold green]- " * 50)
+    rich_print(f"[bold green]> Reading in the HBJSON file: ./{SOURCE_FILE}[/bold green]")
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(SOURCE_FILE)
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
 
@@ -40,7 +39,7 @@ if __name__ == "__main__":
 
     # --- Connect to open instance of XL, Load the correct PHPP Shape file
     # -------------------------------------------------------------------------
-    xl = xl_app.XLConnection(xl_framework=xw, output=print)
+    xl = xl_app.XLConnection(xl_framework=xw, output=rich_print)
     phpp_conn = phpp_app.PHPPConnection(xl)
 
     try:

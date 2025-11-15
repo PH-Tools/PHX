@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP "Additional Vent" worksheet."""
 
 from __future__ import annotations
 
+from collections.abc import Collection, Sequence
 from dataclasses import dataclass, field
-from typing import Collection, Sequence
 
 from ph_units.unit_type import Unit
 
@@ -95,7 +94,7 @@ class Spaces:
 
         # -- Look for the first 'empty' (None) cell in the column
         for i, column_val in enumerate(col_data, start=_start_row):
-            if column_val == None:
+            if column_val is None:
                 return i
 
         if end_row < 10_000:
@@ -236,7 +235,7 @@ class VentUnits:
         )
 
         for i, read_value in enumerate(xl_data, start=self.section_first_entry_row):
-            if read_value == None:
+            if read_value is None:
                 return i - 1
 
         raise Exception(

@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for a single PHPP Addition Vent / Space(room)-Entry row."""
 
 from dataclasses import dataclass
 from functools import partial
-from typing import List, Tuple
 
 from PHX.model import spaces
 from PHX.model.schedules import ventilation as phx_vent_sched
@@ -33,7 +31,7 @@ class VentSpaceRow:
         "Return the right target unit for the PHPP item writing (IP | SI)"
         return getattr(self.shape.rooms.inputs, _field_name).unit
 
-    def _get_time_periods(self) -> Tuple[float, float, float]:
+    def _get_time_periods(self) -> tuple[float, float, float]:
         """Return a tuple of the high, standard and min operating periods as % values."""
         periods = self.phx_vent_pattern.operating_periods
         time_high = periods.high.period_operating_hours / 24.0
@@ -56,7 +54,7 @@ class VentSpaceRow:
         except ZeroDivisionError:
             return 0.0
 
-    def _get_speeds(self) -> Tuple[float, float, float]:
+    def _get_speeds(self) -> tuple[float, float, float]:
         """Return a tuple of the high, standard and minimum speeds as % of max"""
         speed_high = self.phx_vent_pattern.operating_periods.high.period_operation_speed
         speed_standard = self.phx_vent_pattern.operating_periods.standard.period_operation_speed
@@ -64,7 +62,7 @@ class VentSpaceRow:
 
         return speed_high, speed_standard, speed_minimum
 
-    def create_xl_items(self, _sheet_name: str, _row_num: int) -> List[xl_data.XlItem]:
+    def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
 
         Arguments:
@@ -82,7 +80,7 @@ class VentSpaceRow:
         # --
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemAddnlVent = partial(xl_data.XlItem, _sheet_name)
-        items: List[xl_data.XlItem] = [
+        items: list[xl_data.XlItem] = [
             XLItemAddnlVent(create_range("quantity"), self.phx_room_vent.quantity),
             XLItemAddnlVent(create_range("display_name"), f"'{self.phx_room_vent.display_name}"),
             XLItemAddnlVent(create_range("vent_unit_assigned"), self.phpp_row_ventilator),

@@ -1,18 +1,17 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions to create new Shade PhxComponents from HB-Model Orphaned-Shade Objects."""
 
+import logging
 import operator
 from collections import defaultdict
 from functools import reduce
-from typing import List
 
 try:
     from honeybee import model
     from honeybee.shade import Shade
 except ImportError as e:
-    raise ImportError("\nFailed to import Honeybee:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import Honeybee:\n\t{e}")
 
 try:
     from PHX.from_HBJSON import create_geometry
@@ -21,12 +20,14 @@ try:
     from PHX.model.components import PhxComponentOpaque
     from PHX.model.enums.building import ComponentColor, ComponentExposureExterior, ComponentFaceOpacity
 except ImportError as e:
-    raise ImportError("\nFailed to import PHX:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import PHX:\n\t{e}")
 
 try:
     from honeybee_ph_utils import face_tools
 except ImportError as e:
-    raise ImportError("\nFailed to import honeybee_ph_utils:\n\t{}".format(e))
+    raise ImportError(f"\nFailed to import honeybee_ph_utils:\n\t{e}")
+
+logger = logging.getLogger()
 
 
 def create_new_component_from_orphaned_shade(
@@ -79,19 +80,20 @@ def add_hb_model_shades_to_variant(
     --------
         * None
     """
+    logger.debug(f"Adding HB-Model Shades to PhxVariant: {_var.name}")
 
     # -- Group HB-Shades by their Display Name
-    hb_shade_groups: defaultdict[str, List[Shade]] = defaultdict(list)
+    hb_shade_groups: defaultdict[str, list[Shade]] = defaultdict(list)
     for hb_shade in _hb_model.orphaned_shades:
         hb_shade_groups[hb_shade.display_name].append(hb_shade)
 
     # -- Create new component(s) from the groups
-    grouped_shade_components: List[PhxComponentOpaque] = []
+    grouped_shade_components: list[PhxComponentOpaque] = []
     for hb_shade_group in hb_shade_groups.values():
         # -- Merge HB-Shade-Faces
         if _merge_faces:
             face_groups = face_tools.group_hb_faces(hb_shade_group, _tolerance, _angle_tolerance_degrees)
-            hb_shade_group: List[Shade] = []
+            hb_shade_group: list[Shade] = []
             for face_group in face_groups:
                 hb_shade_group += merge_hb_shades(face_group, _tolerance, _angle_tolerance_degrees)
 

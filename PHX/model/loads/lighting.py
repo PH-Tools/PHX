@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Lighting Load."""
@@ -16,4 +15,4 @@ class PhxLoadLighting:
 
     @property
     def unique_key(self):
-        return "{}_{:.4f}_".format(self.__class__.__name__, self.installed_w_per_m2)
+        return f"{self.__class__.__name__}_{self.installed_w_per_m2:.4f}_"

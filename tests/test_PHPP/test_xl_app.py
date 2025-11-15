@@ -40,7 +40,7 @@ def test_xl_app_get_WorkBook_fail():
     mock_xw.books = None  # type: ignore #<--------- This should cause the error
 
     with pytest.raises(Exception):
-        app = xl_app.XLConnection(xl_framework=mock_xw)
+        xl_app.XLConnection(xl_framework=mock_xw)
 
 
 # -----------------------------------------------------------------------------
@@ -50,17 +50,17 @@ def test_xl_app_get_WorkBook_fail():
 def test_xl_app_silent_mode():
     mock_xw = Mock_XL_Framework()
     app = xl_app.XLConnection(xl_framework=mock_xw)
-    assert app.wb.app.screen_updating == True
-    assert app.wb.app.display_alerts == True
+    assert app.wb.app.screen_updating
+    assert app.wb.app.display_alerts
     assert app.wb.app.calculation == "automatic"
 
     with app.in_silent_mode():
-        assert app.wb.app.screen_updating == False
-        assert app.wb.app.display_alerts == False
+        assert not app.wb.app.screen_updating
+        assert not app.wb.app.display_alerts
         assert app.wb.app.calculation == "manual"
 
-    assert app.wb.app.screen_updating == True
-    assert app.wb.app.display_alerts == True
+    assert app.wb.app.screen_updating
+    assert app.wb.app.display_alerts
     assert app.wb.app.calculation == "automatic"
 
 
@@ -69,12 +69,12 @@ def test_xl_app_unprotect_all_sheets():
     app = xl_app.XLConnection(xl_framework=mock_xw)
 
     for sheet in app.wb.sheets:
-        assert sheet.protected == True
+        assert sheet.protected
 
     app.unprotect_all_sheets()
 
     for sheet in app.wb.sheets:
-        assert sheet.protected == False
+        assert not sheet.protected
 
 
 def test_xl_app_create_new_worksheet() -> None:

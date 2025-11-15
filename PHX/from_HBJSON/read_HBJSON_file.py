@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions for importing / converting Honeybee Models into PHX Models"""
@@ -14,7 +13,6 @@ import json
 import logging
 import os
 import pathlib
-from typing import Dict
 
 from honeybee import model
 
@@ -32,10 +30,10 @@ class HBJSONModelReadError(Exception):
             f"Got a Honeybee object of type: {_in}."
         )
 
-        super(HBJSONModelReadError, self).__init__(self.message)
+        super().__init__(self.message)
 
 
-def read_hb_json_from_file(_file_address: pathlib.Path) -> Dict:
+def read_hb_json_from_file(_file_address: pathlib.Path) -> dict:
     """Read in the HBJSON file and return it as a python dictionary.
 
     Arguments:
@@ -64,7 +62,7 @@ def read_hb_json_from_file(_file_address: pathlib.Path) -> Dict:
         return data
 
 
-def convert_hbjson_dict_to_hb_model(_data: Dict) -> model.Model:
+def convert_hbjson_dict_to_hb_model(_data: dict) -> model.Model:
     """Convert an HBJSON python dictionary into an HB-Model
 
     Arguments:

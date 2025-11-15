@@ -1,51 +1,46 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Functions for importing WUFI XML file data."""
 
 import pathlib
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from lxml import etree
 
 
 @dataclass
 class Tag:
-    text: Optional[str]
+    text: str | None
     tag: str
-    attrib: Optional[Dict[str, str]]
+    attrib: dict[str, str] | None
 
 
 def _is_list_element(_child) -> bool:
-    if "count" in getattr(_child, "attrib", ""):
-        return True
-
-    # -- WUFI NONSENSE....Why the fuck don't THESE have a 'count'?
-    elif _child.tag == "PEFactorsUserDef":
-        return True
-    elif _child.tag == "CO2FactorsUserDef":
-        return True
-    return False
+    return bool(
+        "count" in getattr(_child, "attrib", "")
+        or _child.tag == "PEFactorsUserDef"
+        or _child.tag == "CO2FactorsUserDef"
+    )
 
 
-def xml_to_dict(element: etree._Element, _level: int = 0) -> Dict[Union[List, str], Any]:
+def xml_to_dict(element: etree._Element, _level: int = 0) -> dict[list | str, Any]:
     d = {}
 
     if len(element) == 0:
         # -- If its a bare element with no children, just return the text
         # -- Debug
-        tag = f"{_level * '  '} {element.tag :<35}"
-        attrib = getattr(element, "attrib", "")
-        l = len(element)
+        f"{_level * '  '} {element.tag :<35}"
+        getattr(element, "attrib", "")
+        len(element)
 
         return {element.tag: Tag(element.text, element.tag, element.attrib)}
 
     for child in element:  # type: ignore
         # -- Debug
-        tag = f"{_level * '  '} {child.tag :<35}"
-        attrib = getattr(child, "attrib", "")
-        l = len(child)
+        f"{_level * '  '} {child.tag :<35}"
+        getattr(child, "attrib", "")
+        len(child)
         # ---
 
         if len(child) == 0:
@@ -72,11 +67,11 @@ def xml_to_dict(element: etree._Element, _level: int = 0) -> Dict[Union[List, st
     return d
 
 
-def get_WUFI_XML_file_as_dict(_file_address: pathlib.Path) -> Dict[Union[str, List], Any]:
+def get_WUFI_XML_file_as_dict(_file_address: pathlib.Path) -> dict[str | list, Any]:
     """Read in the WUFI-XML file and return the data as a dictionary."""
 
     parser = etree.XMLPullParser(recover=True, encoding="utf-8")
-    with open(_file_address, mode="r", encoding="utf-8") as xml_file:
+    with open(_file_address, encoding="utf-8") as xml_file:
         # -- Read in chunks in case the file is large
         while True:
             chunk = xml_file.read(1024)
@@ -108,7 +103,7 @@ def get_WUFI_xml_file_as_str(_file_address: pathlib.Path) -> str:
     return data
 
 
-def string_to_xml_dict(xml_str: str) -> Dict:
+def string_to_xml_dict(xml_str: str) -> dict:
     """Take a string, and convert it to a dict of XML elements."""
     parser = etree.XMLParser(remove_comments=True)
     root = etree.fromstring(xml_str, parser=parser)

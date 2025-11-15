@@ -6,7 +6,7 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 def test_default_PhxHeaterBoilerFossil(reset_class_counters):
     h1 = heating.PhxHeaterBoilerFossil()
     h1.usage_profile.space_heating_percent = 1.0
-    assert h1.usage_profile.cooling == False
+    assert not h1.usage_profile.cooling
 
     coll = collection.PhxMechanicalSystemCollection()
     coll.add_new_mech_device(h1.identifier, h1)

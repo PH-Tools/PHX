@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Conversion Schemas for how to write PH/HB objects to WUFI XML"""
@@ -6,7 +5,7 @@
 import operator
 import sys
 from functools import reduce
-from typing import Dict, List, Optional, TypeVar
+from typing import TypeVar
 
 from ph_units.converter import convert
 
@@ -37,7 +36,7 @@ TOL_LEV2 = 10  # Value tolerance for rounding. ie; 9.843181919194 -> 9.843181919
 # -- PROJECT ------------------------------------------------------------------
 
 
-def _PhxProject(_wufi_project: project.PhxProject) -> List[xml_writable]:
+def _PhxProject(_wufi_project: project.PhxProject) -> list[xml_writable]:
     return [
         XML_Node("DataVersion", _wufi_project.data_version),
         XML_Node("UnitSystem", _wufi_project.unit_system),
@@ -105,7 +104,7 @@ def _PhxProject(_wufi_project: project.PhxProject) -> List[xml_writable]:
     ]
 
 
-def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
+def _PhxVariant(_variant: project.PhxVariant) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _variant.id_num),
         XML_Node("Name", _variant.name),
@@ -120,8 +119,8 @@ def _PhxVariant(_variant: project.PhxVariant) -> List[xml_writable]:
 
 
 def _Systems(
-    _collections: List[hvac.PhxMechanicalSystemCollection],
-) -> List[xml_writable]:
+    _collections: list[hvac.PhxMechanicalSystemCollection],
+) -> list[xml_writable]:
     return [
         XML_List(
             "Systems",
@@ -139,7 +138,7 @@ def _Systems(
     ]
 
 
-def _PhxDateProject(_project_data: project.PhxProjectDate) -> List[xml_writable]:
+def _PhxDateProject(_project_data: project.PhxProjectDate) -> list[xml_writable]:
     return [
         XML_Node("Year", _project_data.year),
         XML_Node("Month", _project_data.month),
@@ -149,7 +148,7 @@ def _PhxDateProject(_project_data: project.PhxProjectDate) -> List[xml_writable]
     ]
 
 
-def _PhxProjectData(_project_data: project.PhxProjectData) -> List[xml_writable]:
+def _PhxProjectData(_project_data: project.PhxProjectData) -> list[xml_writable]:
     return [
         XML_Node("Year_Construction", _project_data.year_constructed),
         XML_Node("OwnerIsClient", _project_data.owner_is_client),
@@ -182,7 +181,7 @@ def _PhxProjectData(_project_data: project.PhxProjectData) -> List[xml_writable]
 # -- BUILDING -----------------------------------------------------------------
 
 
-def _PhxBuilding(_b: building.PhxBuilding) -> List[xml_writable]:
+def _PhxBuilding(_b: building.PhxBuilding) -> list[xml_writable]:
     return [
         XML_List(
             "Components",
@@ -192,10 +191,10 @@ def _PhxBuilding(_b: building.PhxBuilding) -> List[xml_writable]:
     ]
 
 
-def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
-    def wufi_spaces(_z: building.PhxZone) -> List[spaces.PhxSpace]:
+def _PhxZone(_z: building.PhxZone) -> list[xml_writable]:
+    def wufi_spaces(_z: building.PhxZone) -> list[spaces.PhxSpace]:
         """Return a list of all the spaces in the PhxZone for reporting out to WUFI."""
-        if _z.merge_spaces_by_erv == False:
+        if not _z.merge_spaces_by_erv:
             # -- Return all the spaces in the zone with ventilation airflow
             return _z.ventilated_spaces
         else:
@@ -272,7 +271,7 @@ def _PhxZone(_z: building.PhxZone) -> List[xml_writable]:
     ]
 
 
-def _PhxThermalBridge(_tb: components.PhxComponentThermalBridge) -> List[xml_writable]:
+def _PhxThermalBridge(_tb: components.PhxComponentThermalBridge) -> list[xml_writable]:
     return [
         XML_Node("Name", _tb.display_name),
         XML_Node("Type", _tb.group_number * -1),
@@ -282,7 +281,7 @@ def _PhxThermalBridge(_tb: components.PhxComponentThermalBridge) -> List[xml_wri
     ]
 
 
-def _PhxComponentOpaque(_c: components.PhxComponentOpaque) -> List[xml_writable]:
+def _PhxComponentOpaque(_c: components.PhxComponentOpaque) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _c.id_num),
         XML_Node("Name", _c.display_name),
@@ -302,7 +301,7 @@ def _PhxComponentOpaque(_c: components.PhxComponentOpaque) -> List[xml_writable]
     ]
 
 
-def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writable]:
+def _PhxComponentAperture(_c: components.PhxComponentAperture) -> list[xml_writable]:
     # Use the shading, if set, otherwise use the Top-Frame width
     shading_reveal_distance = _c.average_shading_d_reveal or _c.window_type.frame_top.width
 
@@ -337,7 +336,7 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture) -> List[xml_writa
 
 def _PhxPhBuildingData(
     _phius_cert: certification.PhxPhiusCertification,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     # alias --
     bd = _phius_cert.ph_building_data
     cert = _phius_cert.phius_certification_settings
@@ -373,7 +372,7 @@ def _PhxPhBuildingData(
     ]
 
 
-def _InternalGainsAdditionalData(*args, **kwargs) -> List[xml_writable]:
+def _InternalGainsAdditionalData(*args, **kwargs) -> list[xml_writable]:
     return [
         XML_Node("EvaporationHeatPerPerson", 15, "unit", "W"),
         XML_Node("HeatLossFluschingWC", True),
@@ -386,7 +385,7 @@ def _InternalGainsAdditionalData(*args, **kwargs) -> List[xml_writable]:
 
 def _PhxPhiusCertification(
     _phius_cert: certification.PhxPhiusCertification,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     # No idea why this is a list in Wufi? When would there ever be more than 1? whatever...
     _temp_bldg_data_list = [_phius_cert]
 
@@ -511,7 +510,7 @@ def _PhxVentedCrawlspace(_f: ground.PhxVentedCrawlspace):
     ]
 
 
-def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
+def _PhxFoundation(_f: ground.PhxFoundation) -> list[xml_writable]:
     common_attributes = [
         XML_Node("Name", _f.display_name),
         XML_Node("SettingFloorSlabType", _f.foundation_setting_num.value),
@@ -519,7 +518,7 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
     ]
 
     if _f.foundation_type_num == FoundationType.NONE:
-        foundation_specific_attributes: List[xml_writable] = []
+        foundation_specific_attributes: list[xml_writable] = []
     else:
         foundation_schema = getattr(sys.modules[__name__], f"_{_f.__class__.__name__}")
         foundation_specific_attributes = foundation_schema(_f)
@@ -530,8 +529,8 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> List[xml_writable]:
 # -- CLIMATE ------------------------------------------------------------------
 
 
-def _PH_ClimateLocation(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
-    def _in_wufi_order(_factor_dict: dict) -> List[phx_site.PhxEnergyFactorAlias]:
+def _PH_ClimateLocation(_phx_site: phx_site.PhxSite) -> list[xml_writable]:
+    def _in_wufi_order(_factor_dict: dict) -> list[phx_site.PhxEnergyFactorAlias]:
         """Returns the PE /CO2 conversion factors in WUFI-specific order."""
         fuel_order = [
             "OIL",
@@ -676,7 +675,7 @@ def _PH_ClimateLocation(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
     ]
 
 
-def _PhxSite(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
+def _PhxSite(_phx_site: phx_site.PhxSite) -> list[xml_writable]:
     return [
         XML_Node("Selection", _phx_site.selection.value),
         # XML_Node('IDNr_DB', _climate.),
@@ -704,7 +703,7 @@ def _PhxSite(_phx_site: phx_site.PhxSite) -> List[xml_writable]:
 # -- GEOMETRY -----------------------------------------------------------------
 
 
-def _PhxGraphics3D(_graphics3D: geometry.PhxGraphics3D) -> List[xml_writable]:
+def _PhxGraphics3D(_graphics3D: geometry.PhxGraphics3D) -> list[xml_writable]:
     return [
         XML_List(
             "Vertices",
@@ -720,7 +719,7 @@ def _PhxGraphics3D(_graphics3D: geometry.PhxGraphics3D) -> List[xml_writable]:
     ]
 
 
-def _PhxPolygon(_p: geometry.PhxPolygon) -> List[xml_writable]:
+def _PhxPolygon(_p: geometry.PhxPolygon) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _p.id_num),
         XML_Node("NormalVectorX", round(_p.normal_vector.x, TOL_LEV2)),
@@ -737,7 +736,7 @@ def _PhxPolygon(_p: geometry.PhxPolygon) -> List[xml_writable]:
     ]
 
 
-def _PhxVertix(_v: geometry.PhxVertix) -> List[xml_writable]:
+def _PhxVertix(_v: geometry.PhxVertix) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _v.id_num),
         XML_Node("X", round(_v.x, TOL_LEV2)),
@@ -749,7 +748,7 @@ def _PhxVertix(_v: geometry.PhxVertix) -> List[xml_writable]:
 # -- CONSTRUCTIONS ------------------------------------------------------------
 
 
-def _PhxConstructionOpaque(_a: constructions.PhxConstructionOpaque) -> List[xml_writable]:
+def _PhxConstructionOpaque(_a: constructions.PhxConstructionOpaque) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _a.id_num),
         XML_Node("Name", _a.display_name),
@@ -769,18 +768,12 @@ def _PhxConstructionOpaque(_a: constructions.PhxConstructionOpaque) -> List[xml_
     ]
 
 
-def _PhxLayer(_l: constructions.PhxLayer) -> List[xml_writable]:
+def _PhxLayer(_l: constructions.PhxLayer) -> list[xml_writable]:
     # If there is only one row, ignore it
-    if len(_l.divisions.row_heights) == 1:
-        row_heights = []
-    else:
-        row_heights = _l.divisions.row_heights
+    row_heights = [] if len(_l.divisions.row_heights) == 1 else _l.divisions.row_heights
 
     # if there is only one column, ignore it
-    if len(_l.divisions.column_widths) == 1:
-        column_widths = []
-    else:
-        column_widths = _l.divisions.column_widths
+    column_widths = [] if len(_l.divisions.column_widths) == 1 else _l.divisions.column_widths
 
     return [
         XML_Node("Thickness", _l.thickness_m),
@@ -809,21 +802,21 @@ def _PhxLayer(_l: constructions.PhxLayer) -> List[xml_writable]:
     ]
 
 
-def _PhxLayerDivision(_d: float) -> List[xml_writable]:
+def _PhxLayerDivision(_d: float) -> list[xml_writable]:
     return [
         XML_Node("Distance", _d),
         XML_Node("ExpandingContracting", 2),
     ]
 
 
-def _MaterialIDNr(_id_num: int) -> List[xml_writable]:
+def _MaterialIDNr(_id_num: int) -> list[xml_writable]:
     return [
         XML_Node("Type", 1),
         XML_Node("IdentNr_Object", _id_num),
     ]
 
 
-def _PhxMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
+def _PhxMaterial(_m: constructions.PhxMaterial) -> list[xml_writable]:
     return [
         XML_Node("Name", _m.display_name),
         XML_Node("ThermalConductivity", _m.conductivity),
@@ -836,7 +829,7 @@ def _PhxMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
     ]
 
 
-def _PhxColor(_c: constructions.PhxColor) -> List[xml_writable]:
+def _PhxColor(_c: constructions.PhxColor) -> list[xml_writable]:
     return [
         XML_Node("Alpha", _c.alpha),
         XML_Node("Red", _c.red),
@@ -845,7 +838,7 @@ def _PhxColor(_c: constructions.PhxColor) -> List[xml_writable]:
     ]
 
 
-def _PhxExchangeMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
+def _PhxExchangeMaterial(_m: constructions.PhxMaterial) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _m.id_num),
         XML_Node("Name", _m.display_name),
@@ -858,7 +851,7 @@ def _PhxExchangeMaterial(_m: constructions.PhxMaterial) -> List[xml_writable]:
 
 def _PhxConstructionWindow(
     _wt: constructions.PhxConstructionWindow,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _wt.id_num),
         XML_Node("Name", _wt.display_name),
@@ -895,7 +888,7 @@ def _PhxConstructionWindow(
     ]
 
 
-def _PhxWindowShade(_s: shades.PhxWindowShade) -> List[xml_writable]:
+def _PhxWindowShade(_s: shades.PhxWindowShade) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _s.id_num),
         XML_Node("Name", _s.display_name),
@@ -913,7 +906,7 @@ def _PhxWindowShade(_s: shades.PhxWindowShade) -> List[xml_writable]:
 # -- VENTILATION --------------------------------------------------------------
 
 
-def _PhxSpace(_r: spaces.PhxSpace) -> List[xml_writable]:
+def _PhxSpace(_r: spaces.PhxSpace) -> list[xml_writable]:
     return [
         XML_Node("Name", _r.display_name),
         XML_Node("Type", _r.wufi_type),
@@ -942,7 +935,7 @@ def _PhxSpace(_r: spaces.PhxSpace) -> List[xml_writable]:
 
 def _UtilizationPatternVent(
     _vent_sched: ventilation.PhxScheduleVentilation,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     op_periods = _vent_sched.operating_periods
     return [
         XML_Node("Name", _vent_sched.name),
@@ -963,7 +956,7 @@ def _UtilizationPatternVent(
 # -- MECHANICAL DEVICES -------------------------------------------------------
 
 
-def _PhxDeviceVentilator(_d: hvac.PhxDeviceVentilator) -> List[xml_writable]:
+def _PhxDeviceVentilator(_d: hvac.PhxDeviceVentilator) -> list[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
@@ -983,7 +976,7 @@ def _PhxDeviceVentilator(_d: hvac.PhxDeviceVentilator) -> List[xml_writable]:
     ]
 
 
-def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> List[xml_writable]:
+def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> list[xml_writable]:
     return [
         XML_Node("Quantity", _p.quantity),
         XML_Node("HumidityRecoveryEfficiency", _p.latent_heat_recovery),
@@ -1009,7 +1002,7 @@ def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> List[xml_wr
     ]
 
 
-def _PhxExhaustVentilator(_v: hvac.AnyPhxExhaustVent) -> List[xml_writable]:
+def _PhxExhaustVentilator(_v: hvac.AnyPhxExhaustVent) -> list[xml_writable]:
     return [
         XML_Node("Name", _v.display_name),
         XML_Node("Type", _v.params.exhaust_type.value),
@@ -1018,7 +1011,7 @@ def _PhxExhaustVentilator(_v: hvac.AnyPhxExhaustVent) -> List[xml_writable]:
     ]
 
 
-def _PhxSupportiveDevice(d: hvac.PhxSupportiveDevice) -> List[xml_writable]:
+def _PhxSupportiveDevice(d: hvac.PhxSupportiveDevice) -> list[xml_writable]:
     return [
         XML_Node("Name", d.display_name),
         XML_Node("Type", d.device_type.value),
@@ -1032,7 +1025,7 @@ def _PhxSupportiveDevice(d: hvac.PhxSupportiveDevice) -> List[xml_writable]:
 # -- Elec Heating--------------------------------------------------------------
 
 
-def _PhxDeviceHeaterElec(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
+def _PhxDeviceHeaterElec(_d: hvac.PhxHeaterElectric) -> list[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
@@ -1050,7 +1043,7 @@ def _PhxDeviceHeaterElec(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
     ]
 
 
-def _DeviceHeaterElecPhParams(_p: hvac.PhxMechanicalDeviceParams) -> List[xml_writable]:
+def _DeviceHeaterElecPhParams(_p: hvac.PhxMechanicalDeviceParams) -> list[xml_writable]:
     return [
         XML_Node("AuxiliaryEnergy", _p.aux_energy),
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
@@ -1058,7 +1051,7 @@ def _DeviceHeaterElecPhParams(_p: hvac.PhxMechanicalDeviceParams) -> List[xml_wr
     ]
 
 
-def _DeviceHeaterElecDeviceParams(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
+def _DeviceHeaterElecDeviceParams(_d: hvac.PhxHeaterElectric) -> list[xml_writable]:
     _d.usage_profile.space_heating_percent
     return [
         XML_Node("CoverageWithinSystem", _d.usage_profile.dhw_heating_percent),
@@ -1067,7 +1060,7 @@ def _DeviceHeaterElecDeviceParams(_d: hvac.PhxHeaterElectric) -> List[xml_writab
     ]
 
 
-def _DeviceHeaterHeatingDeviceParams(_d: hvac.PhxHeaterElectric) -> List[xml_writable]:
+def _DeviceHeaterHeatingDeviceParams(_d: hvac.PhxHeaterElectric) -> list[xml_writable]:
     _d.usage_profile.space_heating_percent
     return [
         XML_Node("CoverageWithinSystem", _d.usage_profile.space_heating_percent),
@@ -1079,7 +1072,7 @@ def _DeviceHeaterHeatingDeviceParams(_d: hvac.PhxHeaterElectric) -> List[xml_wri
 # -- Boilers ------------------------------------------------------------------
 
 
-def _PhxDeviceHeaterBoiler(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writable]:
+def _PhxDeviceHeaterBoiler(_d: hvac.AnyPhxHeaterBoiler) -> list[xml_writable]:
     ph_params = {
         "NATURAL_GAS": "_DeviceHeaterBoilerFossilPhParams",
         "OIL": "_DeviceHeaterBoilerFossilPhParams",
@@ -1105,7 +1098,7 @@ def _PhxDeviceHeaterBoiler(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writable]:
 
 def _DeviceHeaterBoilerWoodPhParams(
     _p: hvac.PhxHeaterBoilerWoodParams,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("EnergySourceBoilerType", _p.fuel.value),
         XML_Node("MaximalBoilerPower", _p.rated_capacity),
@@ -1129,7 +1122,7 @@ def _DeviceHeaterBoilerWoodPhParams(
 
 def _DeviceHeaterBoilerFossilPhParams(
     _p: hvac.PhxHeaterBoilerFossilParams,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("EnergySourceBoilerType", _p.fuel.value),
         XML_Node("CondensingBoiler", _p.condensing),
@@ -1148,7 +1141,7 @@ def _DeviceHeaterBoilerFossilPhParams(
     ]
 
 
-def _DeviceHeaterBoilerDHWParams(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writable]:
+def _DeviceHeaterBoilerDHWParams(_d: hvac.AnyPhxHeaterBoiler) -> list[xml_writable]:
     return [
         XML_Node("CoverageWithinSystem", _d.usage_profile.dhw_heating_percent),
         XML_Node("Unit", _d.unit),
@@ -1156,7 +1149,7 @@ def _DeviceHeaterBoilerDHWParams(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writab
     ]
 
 
-def _DeviceHeaterBoilerHeatingParams(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_writable]:
+def _DeviceHeaterBoilerHeatingParams(_d: hvac.AnyPhxHeaterBoiler) -> list[xml_writable]:
     return [
         XML_Node("CoverageWithinSystem", _d.usage_profile.space_heating_percent),
         XML_Node("Unit", _d.unit),
@@ -1167,7 +1160,7 @@ def _DeviceHeaterBoilerHeatingParams(_d: hvac.AnyPhxHeaterBoiler) -> List[xml_wr
 # -- District Heat ------------------------------------------------------------
 
 
-def _PhxDeviceHeaterDistrict(_d: hvac.PhxHeaterDistrictHeat) -> List[xml_writable]:
+def _PhxDeviceHeaterDistrict(_d: hvac.PhxHeaterDistrictHeat) -> list[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
@@ -1186,7 +1179,7 @@ def _PhxDeviceHeaterDistrict(_d: hvac.PhxHeaterDistrictHeat) -> List[xml_writabl
 
 def _DeviceHeaterDistrictDeviceParams(
     _d: hvac.PhxHeaterDistrictHeat,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("CoverageWithinSystem", _d.percent_coverage),
         XML_Node("Unit", _d.unit),
@@ -1197,15 +1190,15 @@ def _DeviceHeaterDistrictDeviceParams(
 # -- Heat Pumps ---------------------------------------------------------------
 
 
-def _PhxDeviceHeaterHeatPump(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
-    param_schemas: Dict[hvac.HeatPumpType, str] = {
+def _PhxDeviceHeaterHeatPump(_d: hvac.PhxHeatPumpDevice) -> list[xml_writable]:
+    param_schemas: dict[hvac.HeatPumpType, str] = {
         hvac.PhxHeatPumpAnnualParams.hp_type: "_DeviceHeaterHeatPumpPhParamsAnnual",
         hvac.PhxHeatPumpMonthlyParams.hp_type: "_DeviceHeaterHeatPumpPhParamsMonthly",
         hvac.PhxHeatPumpHotWaterParams.hp_type: "_DeviceHeaterHeatPumpPhParamsHotWater",
         hvac.PhxHeatPumpCombinedParams.hp_type: "_DeviceHeaterHeatPumpPhParamsCombined",
     }
 
-    hp_type: Optional[hvac.HeatPumpType] = getattr(_d.params, "hp_type", None)
+    hp_type: hvac.HeatPumpType | None = getattr(_d.params, "hp_type", None)
     if not hp_type:
         return []
 
@@ -1229,7 +1222,7 @@ def _PhxDeviceHeaterHeatPump(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
 
 def _DeviceHeaterHeatPumpPhParamsAnnual(
     _p: hvac.PhxHeatPumpAnnualParams,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("AuxiliaryEnergy", _p.aux_energy),
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
@@ -1242,7 +1235,7 @@ def _DeviceHeaterHeatPumpPhParamsAnnual(
 
 def _DeviceHeaterHeatPumpPhParamsMonthly(
     _p: hvac.PhxHeatPumpMonthlyParams,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("AuxiliaryEnergy", _p.aux_energy),
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
@@ -1257,7 +1250,7 @@ def _DeviceHeaterHeatPumpPhParamsMonthly(
 
 def _DeviceHeaterHeatPumpPhParamsHotWater(
     _p: hvac.PhxHeatPumpHotWaterParams,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("AuxiliaryEnergy", _p.aux_energy),
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
@@ -1271,7 +1264,7 @@ def _DeviceHeaterHeatPumpPhParamsHotWater(
 
 def _DeviceHeaterHeatPumpPhParamsCombined(
     _p: hvac.PhxHeatPumpCombinedParams,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("AuxiliaryEnergy", _p.aux_energy),
         XML_Node("AuxiliaryEnergyDHW", _p.aux_energy_dhw),
@@ -1280,7 +1273,7 @@ def _DeviceHeaterHeatPumpPhParamsCombined(
     ]
 
 
-def _DeviceHotWaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
+def _DeviceHotWaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> list[xml_writable]:
     return [
         XML_Node("CoverageWithinSystem", _d.usage_profile.dhw_heating_percent),
         XML_Node("Unit", _d.unit),
@@ -1288,7 +1281,7 @@ def _DeviceHotWaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_
     ]
 
 
-def _DeviceHeaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
+def _DeviceHeaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> list[xml_writable]:
     return [
         XML_Node("CoverageWithinSystem", _d.usage_profile.space_heating_percent),
         XML_Node("Unit", _d.unit),
@@ -1296,7 +1289,7 @@ def _DeviceHeaterHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_wr
     ]
 
 
-def _DeviceCoolingHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_writable]:
+def _DeviceCoolingHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> list[xml_writable]:
     return [
         XML_Node("CoverageWithinSystem", _d.usage_profile.cooling_percent),
         XML_Node("Unit", _d.unit),
@@ -1304,7 +1297,7 @@ def _DeviceCoolingHeatPumpDeviceParams(_d: hvac.PhxHeatPumpDevice) -> List[xml_w
     ]
 
 
-def _PhxDeviceWaterStorage(_d: hvac.PhxHotWaterTank) -> List[xml_writable]:
+def _PhxDeviceWaterStorage(_d: hvac.PhxHotWaterTank) -> list[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
@@ -1320,7 +1313,7 @@ def _PhxDeviceWaterStorage(_d: hvac.PhxHotWaterTank) -> List[xml_writable]:
     ]
 
 
-def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
+def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> list[xml_writable]:
     return [
         XML_Node("SolarThermalStorageCapacity", _t.params.storage_capacity),
         XML_Node("StorageLossesStandby", _t.params.standby_losses),
@@ -1339,7 +1332,7 @@ def _DeviceWaterStoragePhParams(_t: hvac.PhxHotWaterTank) -> List[xml_writable]:
 # -- MECHANICAL SYSTEMS / DISTRIBUTION ----------------------------------------
 
 
-def _DistributionDHWTwig(_twg: hvac.PhxPipeElement) -> List[xml_writable]:
+def _DistributionDHWTwig(_twg: hvac.PhxPipeElement) -> list[xml_writable]:
     diameter_inches = convert(_twg.weighted_diameter_mm, "MM", "IN") or 0.0
     diameter_type = PhxHotWaterPipingInchDiameterType.nearest_key(diameter_inches)
     return [
@@ -1351,7 +1344,7 @@ def _DistributionDHWTwig(_twg: hvac.PhxPipeElement) -> List[xml_writable]:
     ]
 
 
-def _DistributionDHWBranch(_br: hvac.PhxPipeBranch) -> List[xml_writable]:
+def _DistributionDHWBranch(_br: hvac.PhxPipeBranch) -> list[xml_writable]:
     diameter_inches = convert(_br.pipe_element.weighted_diameter_mm, "MM", "IN") or 0.0
     diameter_type = PhxHotWaterPipingInchDiameterType.nearest_key(diameter_inches)
     return [
@@ -1370,7 +1363,7 @@ def _DistributionDHWBranch(_br: hvac.PhxPipeBranch) -> List[xml_writable]:
     ]
 
 
-def _DistributionDHWTrunc(_t: hvac.PhxPipeTrunk) -> List[xml_writable]:
+def _DistributionDHWTrunc(_t: hvac.PhxPipeTrunk) -> list[xml_writable]:
     diameter_inches = convert(_t.pipe_element.weighted_diameter_mm, "MM", "IN") or 0.0
     diameter_type = PhxHotWaterPipingInchDiameterType.nearest_key(diameter_inches)
     return [
@@ -1458,7 +1451,7 @@ def _DistributionHeating(_d):
     # ]
 
 
-def _PhxDuctElement(_d: hvac.PhxDuctElement) -> List[xml_writable]:
+def _PhxDuctElement(_d: hvac.PhxDuctElement) -> list[xml_writable]:
     return [
         XML_Node("Name", _d.display_name),
         XML_Node("IdentNr", _d.id_num),
@@ -1491,7 +1484,7 @@ T = TypeVar("T", bound=hvac.AnyPhxCoolingParamsType)
 class TempDistributionCooling:
     """Temporary wrapper class for WUFI format Cooling Distribution data."""
 
-    def __init__(self, _devices: List[hvac.PhxHeatPumpDevice]) -> None:
+    def __init__(self, _devices: list[hvac.PhxHeatPumpDevice]) -> None:
         # -- If there are no heat-pump systems, the input list will be empty.
         # -- Have to combine the heat-pump parameters all together for each type.
         self.ventilation_params = self.sum_params([d.params_cooling.ventilation for d in _devices])
@@ -1499,7 +1492,7 @@ class TempDistributionCooling:
         self.dehumidification_params = self.sum_params([d.params_cooling.dehumidification for d in _devices])
         self.panel_params = self.sum_params([d.params_cooling.panel for d in _devices])
 
-    def sum_params(self, _cooling_params: List[T]) -> Optional[T]:
+    def sum_params(self, _cooling_params: list[T]) -> T | None:
         """Returns a single HVAC Cooling Params, made from a list of input devices, or None if no devices input."""
         if not _cooling_params:
             return None
@@ -1517,7 +1510,7 @@ class TempDistributionCooling:
         )
 
 
-def _DistributionCooling(_clg_distr: TempDistributionCooling) -> List[xml_writable]:
+def _DistributionCooling(_clg_distr: TempDistributionCooling) -> list[xml_writable]:
     base = []
 
     # -- If its a heating system, will not have any cooling params.
@@ -1589,7 +1582,7 @@ def _PHDistribution(_c: hvac.PhxMechanicalSystemCollection):
 # -- MECHANICAL SYSTEMS / COLLECTIONS -----------------------------------------
 
 
-def _PhxZoneCoverage(_zc: hvac.PhxZoneCoverage) -> List[xml_writable]:
+def _PhxZoneCoverage(_zc: hvac.PhxZoneCoverage) -> list[xml_writable]:
     return [
         XML_Node("IdentNrZone", int(_zc.zone_num)),
         XML_Node("CoverageHeating", _zc.heating),
@@ -1602,7 +1595,7 @@ def _PhxZoneCoverage(_zc: hvac.PhxZoneCoverage) -> List[xml_writable]:
 
 def _PhxMechanicalSystemCollection(
     _hvac_collection: hvac.PhxMechanicalSystemCollection,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     devices = {
         hvac.DeviceType.VENTILATION: "_PhxDeviceVentilator",
         hvac.DeviceType.ELECTRIC: "_PhxDeviceHeaterElec",
@@ -1613,7 +1606,7 @@ def _PhxMechanicalSystemCollection(
         hvac.DeviceType.PHOTOVOLTAIC: "_PhxDevicePhotovoltaic",
     }
 
-    wufi_devices: List[hvac.AnyMechDevice] = []
+    wufi_devices: list[hvac.AnyMechDevice] = []
     wufi_devices.extend(_hvac_collection.devices)
     wufi_devices.extend(_hvac_collection.renewable_devices)
     return [
@@ -1638,7 +1631,7 @@ def _PhxMechanicalSystemCollection(
 # -- ELEC. EQUIPMENT DEVICES --------------------------------------------------
 
 
-def _PhxDeviceDishwasher(_d: elec_equip.PhxDeviceDishwasher) -> List[xml_writable]:
+def _PhxDeviceDishwasher(_d: elec_equip.PhxDeviceDishwasher) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
         XML_Node("Connection", _d.water_connection),
@@ -1647,7 +1640,7 @@ def _PhxDeviceDishwasher(_d: elec_equip.PhxDeviceDishwasher) -> List[xml_writabl
     ]
 
 
-def _PhxDeviceClothesWasher(_d: elec_equip.PhxDeviceClothesWasher) -> List[xml_writable]:
+def _PhxDeviceClothesWasher(_d: elec_equip.PhxDeviceClothesWasher) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
         XML_Node("Connection", _d.water_connection),
@@ -1657,7 +1650,7 @@ def _PhxDeviceClothesWasher(_d: elec_equip.PhxDeviceClothesWasher) -> List[xml_w
     ]
 
 
-def _PhxDeviceClothesDryer(_d: elec_equip.PhxDeviceClothesDryer) -> List[xml_writable]:
+def _PhxDeviceClothesDryer(_d: elec_equip.PhxDeviceClothesDryer) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
         XML_Node("Dryer_Choice", _d.dryer_type),
@@ -1668,32 +1661,32 @@ def _PhxDeviceClothesDryer(_d: elec_equip.PhxDeviceClothesDryer) -> List[xml_wri
     ]
 
 
-def _PhxDeviceRefrigerator(_d: elec_equip.PhxDeviceRefrigerator) -> List[xml_writable]:
+def _PhxDeviceRefrigerator(_d: elec_equip.PhxDeviceRefrigerator) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
 
 
-def _PhxDeviceFreezer(_d: elec_equip.PhxDeviceFreezer) -> List[xml_writable]:
+def _PhxDeviceFreezer(_d: elec_equip.PhxDeviceFreezer) -> list[xml_writable]:
     return [
         XML_Node("Type", 5),
     ]
 
 
-def _PhxDeviceFridgeFreezer(_d: elec_equip.PhxDeviceFridgeFreezer) -> List[xml_writable]:
+def _PhxDeviceFridgeFreezer(_d: elec_equip.PhxDeviceFridgeFreezer) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
 
 
-def _PhxDeviceCooktop(_d: elec_equip.PhxDeviceCooktop) -> List[xml_writable]:
+def _PhxDeviceCooktop(_d: elec_equip.PhxDeviceCooktop) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
         XML_Node("CookingWith", _d.cooktop_type),
     ]
 
 
-def _PhxDeviceMEL(_d: elec_equip.PhxDeviceMEL) -> List[xml_writable]:
+def _PhxDeviceMEL(_d: elec_equip.PhxDeviceMEL) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
@@ -1701,7 +1694,7 @@ def _PhxDeviceMEL(_d: elec_equip.PhxDeviceMEL) -> List[xml_writable]:
 
 def _PhxDeviceLightingInterior(
     _d: elec_equip.PhxDeviceLightingInterior,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
         XML_Node("FractionHightEfficiency", _d.frac_high_efficiency),
@@ -1710,7 +1703,7 @@ def _PhxDeviceLightingInterior(
 
 def _PhxDeviceLightingExterior(
     _d: elec_equip.PhxDeviceLightingExterior,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
         XML_Node("FractionHightEfficiency", _d.frac_high_efficiency),
@@ -1719,14 +1712,14 @@ def _PhxDeviceLightingExterior(
 
 def _PhxDeviceLightingGarage(
     _d: elec_equip.PhxDeviceLightingGarage,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
         XML_Node("FractionHightEfficiency", _d.frac_high_efficiency),
     ]
 
 
-def _PhxDeviceCustomElec(_d: elec_equip.PhxDeviceCustomElec) -> List[xml_writable]:
+def _PhxDeviceCustomElec(_d: elec_equip.PhxDeviceCustomElec) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
@@ -1734,19 +1727,19 @@ def _PhxDeviceCustomElec(_d: elec_equip.PhxDeviceCustomElec) -> List[xml_writabl
 
 def _PhxDeviceCustomLighting(
     _d: elec_equip.PhxDeviceCustomLighting,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
 
 
-def _PhxDeviceCustomMEL(_d: elec_equip.PhxDeviceCustomMEL) -> List[xml_writable]:
+def _PhxDeviceCustomMEL(_d: elec_equip.PhxDeviceCustomMEL) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
 
 
-def _PhxElevatorHydraulic(_d: elec_equip.PhxElevatorHydraulic) -> List[xml_writable]:
+def _PhxElevatorHydraulic(_d: elec_equip.PhxElevatorHydraulic) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
@@ -1754,7 +1747,7 @@ def _PhxElevatorHydraulic(_d: elec_equip.PhxElevatorHydraulic) -> List[xml_writa
 
 def _PhxElevatorGearedTraction(
     _d: elec_equip.PhxElevatorGearedTraction,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
@@ -1762,13 +1755,13 @@ def _PhxElevatorGearedTraction(
 
 def _PhxElevatorGearlessTraction(
     _d: elec_equip.PhxElevatorGearlessTraction,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
     ]
 
 
-def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> List[xml_writable]:
+def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> list[xml_writable]:
     common_attributes = [
         XML_Node("Comment", _d.comment),
         XML_Node("ReferenceQuantity", _d.reference_quantity),
@@ -1788,7 +1781,7 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> List[xml_writabl
 # -- NON-RES PROGRAM DATA -----------------------------------------------------
 
 
-def _UtilizationPattern(_p: occupancy.PhxScheduleOccupancy) -> List[xml_writable]:
+def _UtilizationPattern(_p: occupancy.PhxScheduleOccupancy) -> list[xml_writable]:
     return [
         XML_Node("IdentNr", _p.id_num),
         XML_Node("Name", _p.display_name),
@@ -1812,7 +1805,7 @@ def _UtilizationPattern(_p: occupancy.PhxScheduleOccupancy) -> List[xml_writable
     ]
 
 
-def _LoadPerson(_sp: spaces.PhxSpace) -> List[xml_writable]:
+def _LoadPerson(_sp: spaces.PhxSpace) -> list[xml_writable]:
     return [
         XML_Node("Name", _sp.display_name),
         # XML_Node("IdentNrUtilizationPattern", 1), #<---- changed
@@ -1823,7 +1816,7 @@ def _LoadPerson(_sp: spaces.PhxSpace) -> List[xml_writable]:
     ]
 
 
-def _LoadsLighting(_sp: spaces.PhxSpace) -> List[xml_writable]:
+def _LoadsLighting(_sp: spaces.PhxSpace) -> list[xml_writable]:
     return [
         XML_Node("Name", _sp.display_name),
         # -- NOTE: As per discussions with Phius we use the
@@ -1854,7 +1847,7 @@ def _LoadsLighting(_sp: spaces.PhxSpace) -> List[xml_writable]:
 
 def _PhxDevicePhotovoltaicParams(
     _p: renewable_devices.PhxDevicePhotovoltaicParams,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     return [
         XML_Node("SelectionLocation", _p.location_type),
         XML_Node("SelectionOnSiteUtilization", _p.onsite_utilization_type),
@@ -1870,7 +1863,7 @@ def _PhxDevicePhotovoltaicParams(
 
 def _PhxDevicePhotovoltaic(
     _d: renewable_devices.PhxDevicePhotovoltaic,
-) -> List[xml_writable]:
+) -> list[xml_writable]:
     use: _base.PhxUsageProfile = _d.usage_profile
     return [
         XML_Node("Name", _d.display_name),

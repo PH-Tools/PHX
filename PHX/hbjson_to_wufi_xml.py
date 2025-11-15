@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Run script to convert an HBJSON file over to WUFI XML format."""
@@ -9,7 +8,6 @@ import os
 import pathlib
 import sys
 from datetime import datetime
-from typing import List, Tuple, Union
 
 from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.to_WUFI_XML import _bug_fixes, xml_builder, xml_txt_to_file
@@ -21,7 +19,7 @@ class InputFileError(Exception):
         super().__init__(self.msg)
 
 
-def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
+def resolve_paths(_args: list[str]) -> tuple[pathlib.Path, pathlib.Path]:
     """Sort out the file input and output paths. Make the output directory if needed.
 
     Arguments:
@@ -36,7 +34,6 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
             - [3] (str): The WUFI XML Target directory path.
     """
 
-    print("> Resolving file paths...")
     src = pathlib.Path(_args[1])
     if not src.exists():
         raise InputFileError(src)
@@ -52,7 +49,7 @@ def resolve_paths(_args: List[str]) -> Tuple[pathlib.Path, pathlib.Path]:
     return src, target
 
 
-def group_components(_args: List[str]) -> bool:
+def group_components(_args: list[str]) -> bool:
     """Return the 'group_components' boolean from the sys.args Tuple.
 
     Arguments:
@@ -67,7 +64,7 @@ def group_components(_args: List[str]) -> bool:
     return _args[4].lower() == "true"
 
 
-def merge_faces(_args: List[str]) -> Union[bool, float]:
+def merge_faces(_args: list[str]) -> bool | float:
     """Return the 'merge_faces' as bool | float from the sys.args Tuple.
 
     Arguments:
@@ -87,7 +84,7 @@ def merge_faces(_args: List[str]) -> Union[bool, float]:
         return float(_args[5])
 
 
-def merge_spaces_by_erv(_args: List[str]) -> bool:
+def merge_spaces_by_erv(_args: list[str]) -> bool:
     """Return the 'merge_spaces_by_erv' boolean from the sys.args Tuple.
 
     Arguments:
@@ -102,7 +99,7 @@ def merge_spaces_by_erv(_args: List[str]) -> bool:
     return _args[6].lower() == "true"
 
 
-def merge_exhaust_vent_devices(_args: List[str]) -> bool:
+def merge_exhaust_vent_devices(_args: list[str]) -> bool:
     """Return the 'merge_exhaust_vent_devices' boolean from the sys.args Tuple.
 
     Arguments:
@@ -117,7 +114,7 @@ def merge_exhaust_vent_devices(_args: List[str]) -> bool:
     return _args[7].lower() == "true"
 
 
-def log_level(_args: List[str]) -> int:
+def log_level(_args: list[str]) -> int:
     """Return the log_level from the sys.args Tuple.
 
     Arguments:
@@ -130,7 +127,7 @@ def log_level(_args: List[str]) -> int:
         * int: The logging level.
     """
     try:
-        return int(_args[7])
+        return int(_args[8])
     except Exception:
         return 0
 
@@ -193,17 +190,24 @@ def startup_logging(_log_level: int) -> logging.Logger:
     current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(funcName)s - %(message)s")
 
-    # -- Setup the STDERR log stream-handler for stderr
-    stream_handler = logging.StreamHandler(stream=sys.stderr)
-    stream_handler.setLevel(logging.WARNING)
-    stream_handler.setFormatter(formatter)
-    logger.addHandler(stream_handler)
+    # -- Setup the STDERR log stream-handler for ERROR and CRITICAL only
+    stderr_handler = logging.StreamHandler(stream=sys.stderr)
+    stderr_handler.setLevel(logging.ERROR)  # Only ERROR and CRITICAL
+    stderr_handler.setFormatter(formatter)
+    logger.addHandler(stderr_handler)
 
-    # -- Setup the STDOUT log stream-handler for stdout
-    stream_handler = logging.StreamHandler(stream=sys.stdout)
-    stream_handler.setLevel(logging.INFO)
-    stream_handler.setFormatter(formatter)
-    logger.addHandler(stream_handler)
+    # -- Setup the STDOUT log stream-handler for WARNING, INFO, and DEBUG
+    # Use a filter to exclude ERROR and CRITICAL (which go to stderr)
+    class StdoutFilter(logging.Filter):
+        def filter(self, record):
+            return record.levelno < logging.ERROR
+
+    stdout_handler = logging.StreamHandler(stream=sys.stdout)
+    stdout_handler.setLevel(logging.INFO)
+    stdout_handler.setFormatter(formatter)
+    stdout_handler.addFilter(StdoutFilter())  # Exclude ERROR and CRITICAL
+    logger.addHandler(stdout_handler)
+    log_path = None
 
     if _log_level > 0:
         # -- Find the right path, create if needed. Clean up old logs.
@@ -215,14 +219,12 @@ def startup_logging(_log_level: int) -> logging.Logger:
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
-
-        logger.info(f"> LOGGING TO: {log_path / 'PHX.log'}")
+        logger.info(f"Logging to file: {log_path / f'PHX_{current_time}.log'}")
 
     return logger
 
 
 if __name__ == "__main__":
-    print("- " * 50)
 
     # --- Input / Output file Path
     # -------------------------------------------------------------------------
@@ -249,7 +251,7 @@ if __name__ == "__main__":
 
     # --- Generate the WUFI Project file.
     logger.info(f'> Generating the PHX-Project from the Honeybee-Model: "{hb_model}"')
-    phx_Project = create_project.convert_hb_model_to_PhxProject(
+    phx_project = create_project.convert_hb_model_to_PhxProject(
         hb_model,
         _group_components=GROUP_COMPONENTS,
         _merge_faces=MERGE_FACES,
@@ -258,12 +260,12 @@ if __name__ == "__main__":
     )
 
     # --- Apply the WUFI-Passive Cooling Bug fix (200 KW limit)
-    phx_Project = _bug_fixes.split_cooling_into_multiple_systems(phx_Project)
+    phx_project = _bug_fixes.split_cooling_into_multiple_systems(phx_project)
 
     # --- Output the WUFI Project as an XML Text File
     # -------------------------------------------------------------------------
-    logger.info(f'> Generating XML Text for the PHX-Project: "{phx_Project}"')
-    xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_Project)
+    logger.info(f'> Generating XML Text for the PHX-Project: "{phx_project}"')
+    xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
 
     logger.info(f"> Saving the XML file to: ./{TARGET_FILE_XML}")
     xml_txt_to_file.write_XML_text_file(TARGET_FILE_XML, xml_txt)

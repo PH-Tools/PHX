@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Model class for the Ventilation worksheet various input items."""
@@ -6,7 +5,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
@@ -20,8 +18,8 @@ class AreasInput:
     shape: shape_model.Areas
     input_type: str
     input_data: xl_writable
-    input_unit: Optional[str] = None
-    target_unit: Optional[str] = None
+    input_unit: str | None = None
+    target_unit: str | None = None
 
     def create_xl_item(self, _sheet_name: str, _row_num: int) -> xl_data.XlItem:
         """Returns a list of the XL Items to write for this Data item

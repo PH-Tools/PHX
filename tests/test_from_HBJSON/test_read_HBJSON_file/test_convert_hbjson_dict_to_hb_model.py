@@ -27,6 +27,7 @@ def hb_rooms_are_equal(hb_room_1, hb_room_2):
     for face1, face2 in zip(
         sorted(hb_room_1.faces, key=lambda f: f.identifier),
         sorted(hb_room_2.faces, key=lambda f: f.identifier),
+        strict=False,
     ):
         assert face1.identifier == face2.identifier
         assert face1.display_name == face2.display_name
@@ -80,5 +81,6 @@ def test_read_default_single_zone_model_no_conversion(filename, results):
     for room1, room2 in zip(
         sorted(m1.rooms, key=lambda r: r.display_name),
         sorted(m2.rooms, key=lambda r: r.display_name),
+        strict=False,
     ):
         assert hb_rooms_are_equal(room1, room2)

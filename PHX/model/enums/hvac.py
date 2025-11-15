@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Valid 'types' for Mech Equipment Options."""
@@ -99,7 +98,7 @@ class PhxHotWaterPipingInchDiameterType(Enum):
         # -- Split the fraction
         parts = str(name).split("_")
         try:
-            fraction = "{}".format(float(parts[1]) / float(parts[2]))
+            fraction = f"{float(parts[1]) / float(parts[2])}"
         except ZeroDivisionError:
             fraction = 0.0
 

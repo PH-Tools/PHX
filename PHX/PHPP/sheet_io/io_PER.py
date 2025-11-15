@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP PER Worksheet."""
 
 from __future__ import annotations
 
+from collections.abc import Collection, Sequence
 from dataclasses import dataclass, field
-from typing import Collection, Dict, List, Optional, Sequence, Tuple, Union
 
 from ph_units.unit_type import Unit
 
@@ -29,12 +28,12 @@ class BaseBlock:
         self.host = _host
         self.xl = _xl
         self.shape = _shape
-        self._phpp_data: Optional[Dict[str, List[Union[str, Unit]]]] = None
-        self._block_header_row: Optional[int] = None
-        self._block_start_row: Optional[int] = None
-        self._block_end_row: Optional[int] = None
-        self._reference_area_address: Optional[str] = None
-        self._reference_area: Optional[float] = None
+        self._phpp_data: dict[str, list[str | Unit]] | None = None
+        self._block_header_row: int | None = None
+        self._block_start_row: int | None = None
+        self._block_end_row: int | None = None
+        self._reference_area_address: str | None = None
+        self._reference_area: float | None = None
 
     @property
     def block_start_row(self) -> int:
@@ -51,7 +50,7 @@ class BaseBlock:
         return self._block_end_row
 
     @property
-    def phpp_data(self) -> Dict[str, List[Union[str, Unit]]]:
+    def phpp_data(self) -> dict[str, list[str | Unit]]:
         """Return all the Block PHPP Data as a Dict of Lists of values.
 
         -> {
@@ -160,7 +159,7 @@ class BaseBlock:
             raise FindSectionMarkerException(search_string, self.worksheet_name, self.locator_column)
         return row_number
 
-    def get_data(self) -> Dict[str, List[Union[str, Unit]]]:
+    def get_data(self) -> dict[str, list[str | Unit]]:
         """Return all the Block's data from Excel"""
         start = f"{self.locator_column}{self.block_start_row}"
         end = f"{self.column_co2_emissions}{self.block_end_row}"
@@ -168,7 +167,7 @@ class BaseBlock:
         xl_raw_data = self.xl.get_data_with_column_letters(self.worksheet_name, address)
         """
         xl_raw_data = {
-            'P': ['Electricity (HP compact unit)', 'Electricity (heat pump)', ...], 
+            'P': ['Electricity (HP compact unit)', 'Electricity (heat pump)', ...],
             'Q': [12.3, 1.9, 45.6, ...],
             ...
             'Z': [0.0, 0.0, 0.0, ...],
@@ -177,7 +176,7 @@ class BaseBlock:
 
         # ----------------------------------------------------------------------
         # -- convert the raw numeric values to Units
-        unit_dict: Dict[str, List[Union[str, Unit]]] = {}
+        unit_dict: dict[str, list[str | Unit]] = {}
 
         # -- Grab the index column data first
         unit_dict[self.locator_column] = [str(_) for _ in xl_raw_data[self.locator_column]]
@@ -192,7 +191,7 @@ class BaseBlock:
 
         return unit_dict
 
-    def get_final_energy_by_fuel_type(self) -> Dict[str, Unit]:
+    def get_final_energy_by_fuel_type(self) -> dict[str, Unit]:
         """Return the Block's Final (Site) Energy as a dict of Unit values.
 
         -> {
@@ -201,11 +200,11 @@ class BaseBlock:
             ...
             }
         """
-        use_types: List[str] = self.phpp_data[self.locator_column]  # type: ignore
-        site_energy: List[Unit] = self.phpp_data[self.column_final_energy]  # type: ignore
-        return {str(use_type): value for use_type, value in zip(use_types, site_energy)}
+        use_types: list[str] = self.phpp_data[self.locator_column]  # type: ignore
+        site_energy: list[Unit] = self.phpp_data[self.column_final_energy]  # type: ignore
+        return {str(use_type): value for use_type, value in zip(use_types, site_energy, strict=False)}
 
-    def get_primary_energy_by_fuel_type(self) -> Dict[str, Unit]:
+    def get_primary_energy_by_fuel_type(self) -> dict[str, Unit]:
         """Return the Block's Primary (Source)) Energy as a dict of values.
 
         -> {
@@ -214,9 +213,9 @@ class BaseBlock:
             ...
             }
         """
-        use_types: List[str] = self.phpp_data[self.locator_column]  # type: ignore
-        source_energy: List[Unit] = self.phpp_data[self.column_pe_energy]  # type: ignore
-        return {str(t): e for t, e in zip(use_types, source_energy)}
+        use_types: list[str] = self.phpp_data[self.locator_column]  # type: ignore
+        source_energy: list[Unit] = self.phpp_data[self.column_pe_energy]  # type: ignore
+        return {str(t): e for t, e in zip(use_types, source_energy, strict=False)}
 
 
 # -----------------------------------------------------------------------------
@@ -320,7 +319,7 @@ class PER:
         return 15
 
     @property
-    def heating_device_data(self) -> Tuple[HeatingDeviceUsage]:
+    def heating_device_data(self) -> tuple[HeatingDeviceUsage]:
         """Return a list of HeatingDeviceUsage objects."""
         if not self._heating_device_data:
             self._heating_device_data = self.get_heating_device_type_data()
@@ -328,7 +327,7 @@ class PER:
 
     def get_final_kWh_m2_by_use_type(
         self,
-    ) -> Dict[str, Dict[str, Unit]]:
+    ) -> dict[str, dict[str, Unit]]:
         """Return a Dict of all the Site (Final) Energy [kWh/m2] by use-type."""
         return {
             "heating": self.heating.get_final_energy_by_fuel_type(),
@@ -339,7 +338,7 @@ class PER:
             "energy_generation": self.energy_generation.get_final_energy_by_fuel_type(),
         }
 
-    def get_final_kWh_by_fuel_type(self) -> Dict[str, Dict[str, Unit]]:
+    def get_final_kWh_by_fuel_type(self) -> dict[str, dict[str, Unit]]:
         """Return a Dict of all the Site (Final) Energy [kWh | kBtu] by use and fuel-type.
 
         -> {
@@ -365,7 +364,7 @@ class PER:
         }
         """
         kwh_m2_data = self.get_final_kWh_m2_by_use_type()
-        d: Dict[str, Dict[str, Unit]] = {}
+        d: dict[str, dict[str, Unit]] = {}
         for use_type_name, use_type_values_by_fuel in kwh_m2_data.items():
             d[use_type_name] = {}
             energy_type = getattr(self, use_type_name)
@@ -377,7 +376,7 @@ class PER:
                     d[use_type_name][fuel_type_name] = fuel_type_values
         return d
 
-    def get_primary_kWh_m2_by_use_type(self) -> Dict[str, Dict[str, Unit]]:
+    def get_primary_kWh_m2_by_use_type(self) -> dict[str, dict[str, Unit]]:
         """Return a Dict of all the Source (Primary) Energy [kWh/m2] by use-type."""
         self.xl.get_sheet_by_name(self.shape.name).activate()
         return {
@@ -389,7 +388,7 @@ class PER:
             "energy_generation": self.energy_generation.get_primary_energy_by_fuel_type(),
         }
 
-    def get_primary_kWh_by_fuel_type(self) -> Dict[str, Dict[str, Unit]]:
+    def get_primary_kWh_by_fuel_type(self) -> dict[str, dict[str, Unit]]:
         """Return a Dict of all the Primary (Source) Energy [kWh | kBtu] by use and fuel type
 
         -> {
@@ -415,7 +414,7 @@ class PER:
         }
         """
         kwh_m2_data = self.get_primary_kWh_m2_by_use_type()
-        d: Dict[str, Dict[str, Unit]] = {}
+        d: dict[str, dict[str, Unit]] = {}
         for use_type_name, use_type_values_by_fuel in kwh_m2_data.items():
             d[use_type_name] = {}
             energy_type = getattr(self, use_type_name)
@@ -427,7 +426,7 @@ class PER:
                     d[use_type_name][fuel_type_name] = fuel_type_values
         return d
 
-    def get_heating_device_type_data(self) -> Tuple[HeatingDeviceUsage]:
+    def get_heating_device_type_data(self) -> tuple[HeatingDeviceUsage]:
         """Return a Tuple of HeatingDeviceUsage objects from the PER worksheet."""
         data = self.xl.get_data(
             self.shape.name,

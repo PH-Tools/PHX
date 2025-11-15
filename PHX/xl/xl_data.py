@@ -1,17 +1,16 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Basic datatypes and data-structures relevant for Excel read/write."""
 
 import string
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Optional, Union
 
 from ph_units import converter
 
-xl_writable = Optional[Union[str, float, int, List, Tuple]]
+xl_writable = Optional[str | float | int | list | tuple]
 xl_range_single_value = Union[str, float, int, None]
-xl_range_list1D_value = Union[List[str], List[float], List[int], List[None]]
-xl_range_list2D_value = Union[List[List[str]], List[List[float]], List[List[int]], List[List[None]]]
+xl_range_list1D_value = Union[list[str], list[float], list[int], list[None]]
+xl_range_list2D_value = Union[list[list[str]], list[list[float]], list[list[int]], list[list[None]]]
 xl_range_value = Union[xl_range_single_value, xl_range_list1D_value, xl_range_list2D_value]
 
 
@@ -57,10 +56,10 @@ class XlItem:
         sheet_name: str,
         xl_range: str,
         write_value: xl_writable,
-        input_unit: Optional[str] = None,
-        target_unit: Optional[str] = None,
-        range_color: Optional[Tuple[int, int, int]] = None,
-        font_color: Optional[Tuple[int, int, int]] = None,
+        input_unit: str | None = None,
+        target_unit: str | None = None,
+        range_color: tuple[int, int, int] | None = None,
+        font_color: tuple[int, int, int] | None = None,
     ):
         self.sheet_name = sheet_name
         self.xl_range = xl_range
@@ -98,14 +97,12 @@ class XlItem:
     @property
     def has_color(self) -> bool:
         """Return True if the Item has font or background color values."""
-        if self.font_color and self.range_color:
-            return True
-        return False
+        return bool(self.font_color and self.range_color)
 
     @property
     def value_is_iterable(self) -> bool:
         """Return True is the item's value is a List or Tuple"""
-        return isinstance(self.write_value, (List, Tuple))
+        return isinstance(self.write_value, (list, tuple))
 
     def __str__(self):
         return f"{self.__class__.__name__}({self.sheet_name}, {self.xl_range}, {self.write_value})"
@@ -132,7 +129,7 @@ class XLItem_List:
     is much faster than writing several XlItems one at a time.
     """
 
-    def __init__(self, _items: List[XlItem]):
+    def __init__(self, _items: list[XlItem]):
         self._items = _items
 
     @property
@@ -158,7 +155,7 @@ class XLItem_List:
         self._items.append(_xl_item)
 
     @property
-    def write_value(self) -> List[xl_writable]:
+    def write_value(self) -> list[xl_writable]:
         return [_.write_value for _ in self.items]
 
     @property
@@ -192,10 +189,7 @@ class XLItem_List:
     @property
     def has_color(self) -> bool:
         """Return True if any of the Items has font or background color values."""
-        for item in self.items:
-            if item.font_color or item.range_color:
-                return True
-        return False
+        return any(item.font_color or item.range_color for item in self.items)
 
     @property
     def value_is_iterable(self) -> bool:
@@ -207,8 +201,8 @@ class XLItem_List:
 
 
 def merge_xl_item_row(
-    _xl_items: List[XlItem],
-) -> Union[List[XlItem], List[XLItem_List], List[Union[XlItem, XLItem_List]]]:
+    _xl_items: list[XlItem],
+) -> list[XlItem] | list[XLItem_List] | list[XlItem | XLItem_List]:
     """Merge a List of XLItems into rows, where possible."""
 
     # -- Make sure all XLItems are on the same sheet
@@ -230,9 +224,9 @@ def merge_xl_item_row(
             item.xl_range_base = preceding_item.xl_range_base
 
     # -- Merge the items together
-    d: Dict[str, Union[XlItem, XLItem_List]] = {}
+    d: dict[str, XlItem | XLItem_List] = {}
     for item in items_sorted:
-        if item.xl_range_base not in d.keys():
+        if item.xl_range_base not in d:
             # -- Not in the dict yet, so just
             # -- add the XlItem to the dict
             d[item.xl_range_base] = item

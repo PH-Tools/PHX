@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Controller Class for the PHPP "SolarDHW" worksheet."""
@@ -7,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from functools import partial
-from typing import Any, Dict
+from typing import Any
 
 from ph_units.unit_type import Unit
 
@@ -26,7 +25,7 @@ class SolarDHWData:
     annual_heating_contribution: Unit = field(default_factory=Unit)
 
     @classmethod
-    def from_PHPP_data(cls, _data: Dict[str, Any]) -> SolarDHWData:
+    def from_PHPP_data(cls, _data: dict[str, Any]) -> SolarDHWData:
         """Clean up the data coming in from PHPP"""
         obj = cls()
 

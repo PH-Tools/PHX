@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Occupancy (People) Utilization Schedule."""
@@ -7,7 +6,7 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass, field
-from typing import ClassVar, Union
+from typing import ClassVar
 
 
 @dataclass
@@ -16,7 +15,7 @@ class PhxScheduleOccupancy:
 
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
-    identifier: Union[uuid.UUID, str] = field(default_factory=uuid.uuid4)
+    identifier: uuid.UUID | str = field(default_factory=uuid.uuid4)
     display_name: str = "__unnamed_occupancy_schedule__"
     start_hour: float = 0.0
     end_hour: float = 1.0
@@ -39,9 +38,7 @@ class PhxScheduleOccupancy:
             return False
         if abs(self.relative_utilization_factor - other.relative_utilization_factor) > TOLERANCE:
             return False
-        if self.unique_key != other.unique_key:
-            return False
-        return True
+        return self.unique_key == other.unique_key
 
     @property
     def annual_utilization_factor(self) -> float:
