@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """PHX Building Classes"""
@@ -9,7 +8,7 @@ import operator
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import reduce
-from typing import Any, ClassVar, Dict, Generator, List, NamedTuple, Optional, Sequence, Set, Union, ValuesView
+from typing import Any, ClassVar, NamedTuple, Optional, Sequence, Union, ValuesView
 
 from PHX.model import elec_equip, geometry, spaces
 from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
@@ -48,8 +47,8 @@ class PhxZone:
     attached_zone_reduction_factor: float = 1.0
     id_num: int = field(init=False, default=0)
 
-    spaces: List[spaces.PhxSpace] = field(default_factory=list)
-    _thermal_bridges: Dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
+    spaces: list[spaces.PhxSpace] = field(default_factory=list)
+    _thermal_bridges: dict[str, PhxComponentThermalBridge] = field(default_factory=dict)
 
     # TODO: see if this can be safely removed?
     # ---------------------------------------------------------
@@ -104,7 +103,7 @@ class PhxZone:
         return self._thermal_bridges.values()
 
     @property
-    def ventilated_spaces(self) -> List[spaces.PhxSpace]:
+    def ventilated_spaces(self) -> list[spaces.PhxSpace]:
         """Return a list of all the spaces in the PhxZone which have some amount of ventilation airflow."""
         return [s for s in self.spaces if s.has_ventilation_airflow]
 
@@ -125,12 +124,12 @@ class PhxZone:
     def merge_thermal_bridges(self) -> None:
         """Merge together all the Thermal Bridges in the Zone if they have the same 'unique_key' attribute."""
         # -- Group the thermal bridges by their unique key
-        unique_tbs: defaultdict[str, List[PhxComponentThermalBridge]] = defaultdict(list)
+        unique_tbs: defaultdict[str, list[PhxComponentThermalBridge]] = defaultdict(list)
         for tb in self.thermal_bridges:
             unique_tbs[tb.unique_key].append(tb)
 
         # -- Create a new merged TB from each of the groups
-        merged_tb_components: List[PhxComponentThermalBridge] = []
+        merged_tb_components: list[PhxComponentThermalBridge] = []
         for tb_group in unique_tbs.values():
             merged_tb_components.append(reduce(operator.add, tb_group))
 
@@ -145,8 +144,8 @@ class PhxBuilding:
 
     # -- Only opaque components (and shades) are stored in the _components list
     # -- as the apertures are stored in the opaque components themselves
-    _components: List[PhxComponentOpaque] = field(default_factory=list)
-    zones: List[PhxZone] = field(default_factory=list)
+    _components: list[PhxComponentOpaque] = field(default_factory=list)
+    zones: list[PhxZone] = field(default_factory=list)
 
     @property
     def weighted_net_floor_area(self) -> float:
@@ -197,7 +196,7 @@ class PhxBuilding:
             new_component_groups[c.unique_key].append(c)
 
         # -- Create new components from the group
-        grouped_opaque_components: List[PhxComponentOpaque] = []
+        grouped_opaque_components: list[PhxComponentOpaque] = []
         for component_group in new_component_groups.values():
             grouped_opaque_components.append(reduce(operator.add, component_group))
 
@@ -213,14 +212,14 @@ class PhxBuilding:
     def merge_aperture_components_by_assembly(self) -> None:
         """Merge together all the Aperture-Components in the Building if they have the same Attributes."""
         # -- Group the aperture components by their unique key / type
-        new_components: List[PhxComponentOpaque] = []
+        new_components: list[PhxComponentOpaque] = []
         for c in self.opaque_components:
             new_component_groups = defaultdict(list)
             for a in c.apertures:
                 new_component_groups[a.unique_key].append(a)
 
             # -- Create new components from the groups
-            grouped_aperture_components: List[PhxComponentAperture] = []
+            grouped_aperture_components: list[PhxComponentAperture] = []
             for component_group in new_component_groups.values():
                 grouped_aperture_components.append(reduce(operator.add, component_group))
 
@@ -237,7 +236,7 @@ class PhxBuilding:
             z.merge_thermal_bridges()
 
     @property
-    def all_components(self) -> List[Union[PhxComponentOpaque, PhxComponentAperture]]:
+    def all_components(self) -> list[Union[PhxComponentOpaque, PhxComponentAperture]]:
         """Return a list of all the Opaque and Aperture Components in the Building.
 
         Returns:
@@ -245,13 +244,13 @@ class PhxBuilding:
             * (List[Union[PhxComponentOpaque, PhxComponentAperture]]) A list of all
                 the opaque and aperture components.
         """
-        all_components: List[Union[PhxComponentOpaque, PhxComponentAperture]] = []
+        all_components: list[Union[PhxComponentOpaque, PhxComponentAperture]] = []
         all_components = [c for c in self._components]
         all_components += self.aperture_components
         return sorted(all_components, key=lambda c: c.id_num)
 
     @property
-    def aperture_components(self) -> List[PhxComponentAperture]:
+    def aperture_components(self) -> list[PhxComponentAperture]:
         """Returns a sorted list (by display name) of all the aperture components in the building.
 
         Returns:
@@ -260,7 +259,7 @@ class PhxBuilding:
         """
 
         # -- An aperture might be 'in' multiple components, so collect each unique one
-        unique_apertures: Dict[int, PhxComponentAperture] = {}
+        unique_apertures: dict[int, PhxComponentAperture] = {}
         for c in self.opaque_components:
             for ap in c.apertures:
                 unique_apertures[id(ap)] = ap
@@ -268,7 +267,7 @@ class PhxBuilding:
         return sorted((ap for ap in unique_apertures.values()), key=lambda ap: ap.display_name)
 
     @property
-    def aperture_elements(self) -> List[PhxApertureElement]:
+    def aperture_elements(self) -> list[PhxApertureElement]:
         """Returns a sorted list (by display name) of all the aperture elements in the building.
 
         Returns:
@@ -285,11 +284,11 @@ class PhxBuilding:
         """Return all of the Aperture Elements, grouped by their cardinal orientation."""
 
         class Output(NamedTuple):
-            north: List[PhxApertureElement]
-            east: List[PhxApertureElement]
-            south: List[PhxApertureElement]
-            west: List[PhxApertureElement]
-            horizontal: List[PhxApertureElement]
+            north: list[PhxApertureElement]
+            east: list[PhxApertureElement]
+            south: list[PhxApertureElement]
+            west: list[PhxApertureElement]
+            horizontal: list[PhxApertureElement]
 
         aperture_elements_by_orientation = Output([], [], [], [], [])
 
@@ -313,11 +312,11 @@ class PhxBuilding:
         return aperture_elements_by_orientation
 
     @property
-    def aperture_components_horizontal(self) -> List[PhxComponentAperture]:
+    def aperture_components_horizontal(self) -> list[PhxComponentAperture]:
         return [ap for ap in self.aperture_components]
 
     @property
-    def wall_aperture_components(self) -> List[PhxComponentAperture]:
+    def wall_aperture_components(self) -> list[PhxComponentAperture]:
         """Returns a sorted list (by display name) of all the wall aperture (window) components in the building.
 
         Returns:
@@ -325,7 +324,7 @@ class PhxBuilding:
             * (List[PhxComponentAperture]) A sorted list of all the wall aperture components.
         """
         # -- An aperture might be 'in' multiple components, so collect each unique one
-        unique_apertures: Dict[int, PhxComponentAperture] = {}
+        unique_apertures: dict[int, PhxComponentAperture] = {}
         for c in self.above_grade_wall_components:
             for ap in c.apertures:
                 unique_apertures[id(ap)] = ap
@@ -333,7 +332,7 @@ class PhxBuilding:
         return sorted((ap for ap in unique_apertures.values()), key=lambda ap: ap.display_name)
 
     @property
-    def roof_aperture_components(self) -> List[PhxComponentAperture]:
+    def roof_aperture_components(self) -> list[PhxComponentAperture]:
         """Returns a sorted list (by display name) of all the roof aperture (skylight) components in the building.
 
         Returns:
@@ -341,7 +340,7 @@ class PhxBuilding:
             * (List[PhxComponentAperture]) A sorted list of all the roof aperture components.
         """
         # -- An aperture might be 'in' multiple components, so collect each unique one
-        unique_apertures: Dict[int, PhxComponentAperture] = {}
+        unique_apertures: dict[int, PhxComponentAperture] = {}
         for c in self.roof_components:
             for ap in c.apertures:
                 unique_apertures[id(ap)] = ap
@@ -349,7 +348,7 @@ class PhxBuilding:
         return sorted((ap for ap in unique_apertures.values()), key=lambda ap: ap.display_name)
 
     @property
-    def opaque_components(self) -> List[PhxComponentOpaque]:
+    def opaque_components(self) -> list[PhxComponentOpaque]:
         """Returns a sorted list (by display name) of all the opaque non-shade components in the building.
 
         Returns:
@@ -359,7 +358,7 @@ class PhxBuilding:
         return sorted([c for c in self._components if not c.is_shade], key=lambda _: _.display_name)
 
     @property
-    def roof_components(self) -> List[PhxComponentOpaque]:
+    def roof_components(self) -> list[PhxComponentOpaque]:
         """Returns a sorted list (by display name) of all the roof components in the building.
 
         Returns:
@@ -369,7 +368,7 @@ class PhxBuilding:
         return sorted([c for c in self._components if c.is_roof], key=lambda _: _.display_name)
 
     @property
-    def above_grade_wall_components(self) -> List[PhxComponentOpaque]:
+    def above_grade_wall_components(self) -> list[PhxComponentOpaque]:
         """Returns a sorted list (by display name) of all the above grade wall components in the building.
 
         Returns:
@@ -382,7 +381,7 @@ class PhxBuilding:
         )
 
     @property
-    def shading_components(self) -> List[PhxComponentOpaque]:
+    def shading_components(self) -> list[PhxComponentOpaque]:
         """Returns a list of all the opaque shade components in the building.
 
         Returns:
@@ -392,7 +391,7 @@ class PhxBuilding:
         return sorted([c for c in self._components if c.is_shade], key=lambda _: _.display_name)
 
     @property
-    def polygon_ids(self) -> Set[int]:
+    def polygon_ids(self) -> set[int]:
         """Return a Set of all the Polygon IDs of all Polygons from all the Components in the building."""
         p_ids = set()
         for compo in self.all_components:
@@ -400,12 +399,12 @@ class PhxBuilding:
         return p_ids
 
     @property
-    def polygons(self) -> List[geometry.PhxPolygon]:
+    def polygons(self) -> list[geometry.PhxPolygon]:
         """Returns a list of all the Polygons of all the Components in the building."""
         return [poly for component in self.all_components for poly in component.polygons]
 
     @property
-    def all_spaces(self) -> List[spaces.PhxSpace]:
+    def all_spaces(self) -> list[spaces.PhxSpace]:
         """Return a list of all the Spaces in the Building."""
         return [s for z in self.zones for s in z.spaces]
 

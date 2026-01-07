@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # -*- Python Version: 3.10 -*-
 
 """Valid 'types' for Building Elements."""
@@ -32,6 +31,26 @@ class ComponentExposureExterior(Enum):
     EXTERIOR = -1
     GROUND = -2
     SURFACE = -3
+
+    @classmethod
+    def _missing_(cls, value):
+        """Allow dynamic, runtime-created pseudo-members for attached zone ids.
+
+        WUFI uses negative sentinel values for special attachments (exterior/ground/surface)
+        and positive integers for attachments to other zones. The standard Enum type does not
+        include those zone id members up front, so we create them on-demand.
+        """
+        if isinstance(value, str) and value.isdigit():
+            value = int(value)
+
+        if isinstance(value, int) and value > 0:
+            pseudo_member = object.__new__(cls)
+            pseudo_member._value_ = value
+            pseudo_member._name_ = f"ZONE_{value}"
+            cls._value2member_map_[value] = pseudo_member
+            return pseudo_member
+
+        return None
 
 
 class ComponentFaceOpacity(Enum):

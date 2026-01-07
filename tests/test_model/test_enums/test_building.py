@@ -4,7 +4,33 @@
 
 import pytest
 
-from PHX.model.enums.building import SpecificHeatCapacityType, SpecificHeatCapacityValueWhM2K
+from PHX.model.enums.building import (
+    ComponentExposureExterior,
+    SpecificHeatCapacityType,
+    SpecificHeatCapacityValueWhM2K,
+)
+
+
+class TestComponentExposureExterior:
+    def test_known_members(self):
+        assert ComponentExposureExterior.EXTERIOR.value == -1
+        assert ComponentExposureExterior.GROUND.value == -2
+        assert ComponentExposureExterior.SURFACE.value == -3
+
+    def test_zone_id_pseudo_member_from_int(self):
+        z3 = ComponentExposureExterior(3)
+        assert z3.value == 3
+        assert z3.name == "ZONE_3"
+        assert ComponentExposureExterior(3) is z3
+
+    def test_zone_id_pseudo_member_from_digit_string(self):
+        z7 = ComponentExposureExterior("7")
+        assert z7.value == 7
+        assert z7.name == "ZONE_7"
+
+    def test_unknown_negative_value_raises(self):
+        with pytest.raises(ValueError):
+            ComponentExposureExterior(-99)
 
 
 class TestSpecificHeatCapacityValueWhM2K:

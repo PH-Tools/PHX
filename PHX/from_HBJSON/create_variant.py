@@ -81,11 +81,9 @@ def add_building_from_hb_room(
     """
     logger.debug(f"Adding PhxBuilding to PhxVariant '{_variant.name}' from HB-Room: {_hb_room.display_name}")
 
-    _variant.building.add_components(
-        create_building.create_components_from_hb_room(_hb_room, _assembly_dict, _window_type_dict, _tolerance)
-    )
+    # -- Build up the Zones and add them to the building
     _variant.building.add_zones(
-        create_building.create_zones_from_hb_room(
+        create_building.create_zone_from_hb_room(
             _hb_room,
             _vent_sched_collection,
             _occ_sched_collection,
@@ -93,7 +91,12 @@ def add_building_from_hb_room(
             _merge_spaces_by_erv,
         )
     )
+    _variant.building.add_zones(create_building.create_attached_zones_from_hb_room(_hb_room))
 
+    # -- Add all the Components to the Building
+    _variant.building.add_components(
+        create_building.create_components_from_hb_room(_hb_room, _assembly_dict, _window_type_dict, _tolerance)
+    )
     if _group_components:
         _variant.building.merge_opaque_components_by_assembly()
         _variant.building.merge_aperture_components_by_assembly()

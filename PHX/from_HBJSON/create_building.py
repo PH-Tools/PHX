@@ -8,6 +8,7 @@ from honeybee import aperture, face, room
 from honeybee_energy.construction import window
 from honeybee_energy.properties.aperture import ApertureEnergyProperties
 from honeybee_energy.properties.face import FaceEnergyProperties
+from honeybee_energy_ph.boundarycondition import PhAdditionalZone
 from honeybee_energy_ph.properties.construction.opaque import OpaqueConstructionPhProperties
 from honeybee_energy_ph.properties.load.people import PeoplePhProperties
 from honeybee_ph.properties.aperture import AperturePhProperties
@@ -18,6 +19,7 @@ from PHX.from_HBJSON._type_utils import MissingEnergyPropertiesError, get_room_p
 from PHX.from_HBJSON.create_rooms import create_room_from_space
 from PHX.model import building, components, constructions
 from PHX.model.enums.building import (
+    AttachedZoneType,
     ComponentColor,
     ComponentExposureExterior,
     ComponentFaceOpacity,
@@ -25,6 +27,7 @@ from PHX.model.enums.building import (
     SpecificHeatCapacityType,
     SpecificHeatCapacityValueWhM2K,
     ThermalBridgeType,
+    ZoneType,
 )
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Lighting,
@@ -59,7 +62,19 @@ def _hb_ext_exposure_to_phx_enum(_hb_face: face.Face | aperture.Aperture) -> Com
         "Ground": ComponentExposureExterior.GROUND,
         "Surface": ComponentExposureExterior.SURFACE,
         "Adiabatic": ComponentExposureExterior.SURFACE,
+        "PhAdditionalZone": ComponentExposureExterior.SURFACE,
     }
+
+    # -- Handle the case where its an attached zone BC
+    if isinstance(_hb_face.boundary_condition, PhAdditionalZone):
+        zone_id_num = getattr(_hb_face.boundary_condition, "zone_id_num", None)
+        if zone_id_num is None:
+            return ComponentExposureExterior.SURFACE
+        try:
+            return ComponentExposureExterior(int(zone_id_num))
+        except (TypeError, ValueError):
+            return ComponentExposureExterior.SURFACE
+
     return mapping[str(_hb_face.boundary_condition)]
 
 
@@ -70,24 +85,28 @@ def _hb_int_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
             "Surface": ComponentColor.INNER_WALL,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
             "Adiabatic": ComponentColor.INNER_WALL,
+            "PhAdditionalZone": ComponentColor.INNER_WALL,
         },
         "RoofCeiling": {
             "Outdoors": ComponentColor.SLOPED_ROOF_OUTER,
             "Surface": ComponentColor.CEILING,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
             "Adiabatic": ComponentColor.CEILING,
+            "PhAdditionalZone": ComponentColor.INNER_WALL,
         },
         "Floor": {
             "Outdoors": ComponentColor.FLOOR,
             "Surface": ComponentColor.FLOOR,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
             "Adiabatic": ComponentColor.FLOOR,
+            "PhAdditionalZone": ComponentColor.INNER_WALL,
         },
         "AirBoundary": {
             "Outdoors": ComponentColor.WINDOW,
             "Surface": ComponentColor.WINDOW,
             "Ground": ComponentColor.WINDOW,
             "Adiabatic": ComponentColor.WINDOW,
+            "PhAdditionalZone": ComponentColor.INNER_WALL,
         },
     }
     return mapping[str(_hb_face.type)][str(_hb_face.boundary_condition)]
@@ -100,24 +119,28 @@ def _hb_ext_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
             "Surface": ComponentColor.INNER_WALL,
             "Ground": ComponentColor.EXT_WALL_OUTER,
             "Adiabatic": ComponentColor.INNER_WALL,
+            "PhAdditionalZone": ComponentColor.INNER_WALL,
         },
         "RoofCeiling": {
             "Outdoors": ComponentColor.SLOPED_ROOF_INNER,
             "Surface": ComponentColor.CEILING,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
             "Adiabatic": ComponentColor.CEILING,
+            "PhAdditionalZone": ComponentColor.INNER_WALL,
         },
         "Floor": {
             "Outdoors": ComponentColor.FLOOR,
             "Surface": ComponentColor.FLOOR,
             "Ground": ComponentColor.SURFACE_GROUND_CONTACT,
             "Adiabatic": ComponentColor.FLOOR,
+            "PhAdditionalZone": ComponentColor.INNER_WALL,
         },
         "AirBoundary": {
             "Outdoors": ComponentColor.WINDOW,
             "Surface": ComponentColor.WINDOW,
             "Ground": ComponentColor.WINDOW,
             "Adiabatic": ComponentColor.WINDOW,
+            "PhAdditionalZone": ComponentColor.INNER_WALL,
         },
     }
     return mapping[str(_hb_face.type)][str(_hb_face.boundary_condition)]
@@ -300,7 +323,46 @@ def create_specific_heat_capacity(_room_prop_ph: RoomPhProperties) -> tuple[Spec
     return spec_heat_type, value
 
 
-def create_zones_from_hb_room(
+def create_attached_zones_from_hb_room(_hb_room: room.Room) -> list[building.PhxZone]:
+    """Create any 'attached' zones from the Honeybee-Room's face boundary conditions."""
+    # -- Find any attached zone BCs
+    all_hb_faces: list[face.Face] = list(_hb_room.faces)
+    faces_by_additional_zone_bc = {}  # {Identifier_1234: {"bc": PhAdditionalZone, "faces": [face.Face, ...]}, ...}
+    for f in all_hb_faces:
+        if isinstance(f.boundary_condition, PhAdditionalZone):
+            if f.boundary_condition.identifier not in faces_by_additional_zone_bc:
+                faces_by_additional_zone_bc[f.boundary_condition.identifier] = {"bc": f.boundary_condition, "faces": []}
+            faces_by_additional_zone_bc[f.boundary_condition.identifier]["faces"].append(f)
+
+    # -- Make sure the PHX-Zones are created in alphabetical order by name
+    zone_identifiers_sorted_by_name = sorted(
+        faces_by_additional_zone_bc.keys(),
+        key=lambda ident: faces_by_additional_zone_bc[ident]["bc"].zone_name,
+    )
+
+    # -- Create new PHX-Zones for each attached-zone BC in the HB-Room's Faces
+    attached_zones = []
+    for k in zone_identifiers_sorted_by_name:
+        attached_zone_bc = faces_by_additional_zone_bc[k]["bc"]
+
+        # -- Build the new Zone
+        new_zone = building.PhxZone()
+        new_zone.display_name = attached_zone_bc.zone_name
+        new_zone.zone_type = ZoneType.ATTACHED
+        new_zone.attached_zone_type = AttachedZoneType.UNHEATED_SPACE
+        new_zone.attached_zone_reduction_factor = attached_zone_bc.temperature_reduction_factor
+        attached_zones.append(new_zone)
+
+        # -- Set the face BC's Id-Num. to match the new Zone-Id
+        # -- Note: this might be considered a side-effect and may be a bad way to do this...
+        hb_faces: list[face.Face] = faces_by_additional_zone_bc[k]["faces"]
+        for f in hb_faces:
+            f.boundary_condition.zone_id_num = new_zone.id_num
+
+    return attached_zones
+
+
+def create_zone_from_hb_room(
     _hb_room: room.Room,
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
@@ -324,8 +386,11 @@ def create_zones_from_hb_room(
     new_zone.id_num = building.PhxZone._count
     new_zone.display_name = _hb_room.display_name
 
+    room_prop_ph: RoomPhProperties | None = getattr(_hb_room.properties, "ph", None)
+    if room_prop_ph is None:
+        return new_zone
+
     # -- Sort the HB-Room's Spaces by their full_name
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     sorted_spaces = sorted(room_prop_ph.spaces, key=lambda sp: sp.full_name)
 
     # -- Create a new WUFI-Space (Room) for each HBPH-Space
@@ -351,12 +416,11 @@ def create_zones_from_hb_room(
     # -- Set the Zone's Occupancy based on the merged HB room
     new_zone = set_zone_occupancy(_hb_room, new_zone)
 
-    # -- Set the Zones' thermal bridges
+    # -- Set the Zone's thermal bridges
     for phx_thermal_bridge in create_thermal_bridges_from_hb_room(_hb_room):
         new_zone.add_thermal_bridges(phx_thermal_bridge)
 
     # --  Set the ICFA / TFA Override Values
-    room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     new_zone.icfa_override = room_prop_ph.ph_bldg_segment.phius_certification.icfa_override
     new_zone.tfa_override = room_prop_ph.ph_bldg_segment.phi_certification.attributes.tfa_override
 

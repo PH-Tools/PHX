@@ -43,7 +43,7 @@ class PhxElectricalDevice:
     @reference_quantity.setter
     def reference_quantity(self, value: int | None) -> None:
         if value is not None:
-            self._reference_quantity = value
+            self._reference_quantity = int(value)
 
     @property
     def reference_energy_norm(self) -> int:

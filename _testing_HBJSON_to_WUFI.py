@@ -20,11 +20,6 @@ SOURCE_FILE_NAMES = [
 SOURCE_FILES = [SOURCE_DIR / file for file in SOURCE_FILE_NAMES]
 TARGET_DIR = pathlib.Path("tests", "_test_reference_files_xml")
 
-# -- Temp
-# SOURCE_FILES = [pathlib.Path("/Users/em/Desktop/hvac_equipment_ph_test.hbjson")]
-
-# TARGET_DIR = pathlib.Path("sample")
-
 logger = logging.getLogger()
 
 
