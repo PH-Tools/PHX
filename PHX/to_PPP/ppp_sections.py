@@ -27,11 +27,13 @@ class PppFile:
     """An ordered collection of PppSections that serializes to a complete PPP file."""
 
     sections: list[PppSection] = field(default_factory=list)
-    end_marker_after: set[str] = field(default_factory=lambda: {
-        "Flaechen_Flaecheneingabe_Bauteil_Bezeichnung",
-        "Flaechen_Waermebrueckeneingabe_Bezeichnung",
-        "Fenster_Bezeichnung_Pos",
-    })
+    end_marker_after: set[str] = field(
+        default_factory=lambda: {
+            "Flaechen_Flaecheneingabe_Bauteil_Bezeichnung",
+            "Flaechen_Waermebrueckeneingabe_Bezeichnung",
+            "Fenster_Bezeichnung_Pos",
+        }
+    )
 
     def to_lines(self) -> list[str]:
         """Return all lines for the complete PPP file."""

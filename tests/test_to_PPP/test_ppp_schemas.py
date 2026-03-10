@@ -3,10 +3,6 @@
 """Tests for PPP schema functions."""
 
 from PHX.to_PPP.ppp_schemas import (
-    MAX_SURFACES,
-    MAX_THERMAL_BRIDGES,
-    MAX_WINDOWS,
-    _group_label,
     _pad_num,
     _pad_num_offset,
     _pad_text,

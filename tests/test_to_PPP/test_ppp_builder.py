@@ -9,7 +9,14 @@ import pytest
 from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.to_PPP import ppp_builder, ppp_txt_to_file
 
-EXAMPLE_HBJSON = pathlib.Path(__file__).parent.parent.parent / "docs" / "plans" / "ppp_exporter" / "honeybee-ph-example" / "example_honeybee_model.hbjson"
+EXAMPLE_HBJSON = (
+    pathlib.Path(__file__).parent.parent.parent
+    / "docs"
+    / "plans"
+    / "ppp_exporter"
+    / "honeybee-ph-example"
+    / "example_honeybee_model.hbjson"
+)
 
 
 @pytest.fixture

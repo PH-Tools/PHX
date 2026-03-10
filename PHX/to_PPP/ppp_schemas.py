@@ -12,7 +12,7 @@ from PHX.to_PPP.ppp_sections import PppSection
 
 if TYPE_CHECKING:
     from PHX.model.components import PhxApertureElement, PhxComponentOpaque, PhxComponentThermalBridge
-    from PHX.model.constructions import PhxConstructionOpaque, PhxConstructionWindow
+    from PHX.model.constructions import PhxConstructionWindow
     from PHX.model.project import PhxProject, PhxVariant
 
 # -- Slot limits
@@ -129,27 +129,28 @@ def meta_sections(_project: PhxProject, _variant: PhxVariant) -> list[PppSection
     timestamp = now.strftime("%Y-%m-%d %H:%M:%S")
 
     # pppmeta_kopf
-    kopf = PppSection("pppmeta_kopf", 5, 1, [
-        "1,4",
-        "10,1",
-        "PHX",
-        "CodenameCell=A1",
-        "",
-    ])
+    kopf = PppSection(
+        "pppmeta_kopf",
+        5,
+        1,
+        [
+            "1,4",
+            "10,1",
+            "PHX",
+            "CodenameCell=A1",
+            "",
+        ],
+    )
 
     # Nachweis
-    building_data = getattr(_variant, '_phi_building_data', None)
-    if building_data and hasattr(building_data, 'num_of_units'):
+    building_data = getattr(_variant, "_phi_building_data", None)
+    if building_data and hasattr(building_data, "num_of_units"):
         num_units = str(building_data.num_of_units or 1)
     else:
         num_units = "1"
 
-    first_name = getattr(
-        _project.project_data.owner, 'first_name', ''
-    ) or ""
-    last_name = getattr(
-        _project.project_data.owner, 'last_name', ''
-    ) or ""
+    first_name = getattr(_project.project_data.owner, "first_name", "") or ""
+    last_name = getattr(_project.project_data.owner, "last_name", "") or ""
 
     country_code = _variant.site.phpp_codes.country_code
     region = country_code.split("-")[0] if "-" in country_code else country_code
@@ -159,14 +160,10 @@ def meta_sections(_project: PhxProject, _variant: PhxVariant) -> list[PppSection
         PppSection("Nachweis_Zahl_WE", 1, 1, [num_units]),
         PppSection("Nachweis_Vorname", 1, 2, [first_name, ""]),
         PppSection("Nachweis_Nachname", 1, 2, [last_name, ""]),
-        PppSection("Nachweis_Import_Aus_DesignPH", 1, 1, [
-            f"Project data imported from PHX {timestamp}"
-        ]),
+        PppSection("Nachweis_Import_Aus_DesignPH", 1, 1, [f"Project data imported from PHX {timestamp}"]),
         PppSection("Nachweis_IWQ_Nutzung", 1, 1, ["10-Dwelling"]),
         PppSection("Klima_Region", 1, 1, [region]),
-        PppSection("Klima_Standort", 1, 1, [
-            _variant.site.phpp_codes.dataset_name or ""
-        ]),
+        PppSection("Klima_Standort", 1, 1, [_variant.site.phpp_codes.dataset_name or ""]),
     ]
 
 
@@ -246,59 +243,87 @@ def surface_sections(
     return [
         PppSection(
             "Flaechen_Flaecheneingabe_Bauteil_Bezeichnung",
-            N, 1, _pad_text(names, N),
+            N,
+            1,
+            _pad_text(names, N),
         ),
         PppSection(
             "Flaechen_Flaecheneingabe_Anzahl",
-            N1, 1, _pad_num_offset(counts, N1),
+            N1,
+            1,
+            _pad_num_offset(counts, N1),
         ),
         PppSection(
             "Flaechen_Flaecheneingabe_a",
-            N1, 1, _pad_num_offset(a_vals, N1),
+            N1,
+            1,
+            _pad_num_offset(a_vals, N1),
         ),
         PppSection(
             "Flaechen_Flaecheneingabe_b",
-            N1, 1, _pad_num_offset(b_vals, N1),
+            N1,
+            1,
+            _pad_num_offset(b_vals, N1),
         ),
         PppSection(
             "Flaechen_Flaecheneingabe_Eigene_Ermittlung",
-            N1, 1, _pad_num_offset(area_vals, N1),
+            N1,
+            1,
+            _pad_num_offset(area_vals, N1),
         ),
         PppSection(
             "Flaechen_Flaecheneingabe_eigener_Abzug",
-            N1, 1, _pad_num_offset(empty_n, N1),
+            N1,
+            1,
+            _pad_num_offset(empty_n, N1),
         ),
         PppSection(
             "Flaechen_Flaecheneingabe_Bauteilaufbau",
-            N, 1, _pad_num(assembly_refs, N),
+            N,
+            1,
+            _pad_num(assembly_refs, N),
         ),
         PppSection(
             "Flaechen_Flaecheneingabe_Nr_Bausystem",
-            N, 1, _pad_num(assembly_names, N),
+            N,
+            1,
+            _pad_num(assembly_names, N),
         ),
         PppSection(
             "Flaechen_Strahlungsbilanz_Neigung",
-            N, 1, _pad_num(tilts, N),
+            N,
+            1,
+            _pad_num(tilts, N),
         ),
         PppSection(
             "Flaechen_Strahlungsbilanz_Orientierung",
-            N, 1, _pad_num(orientations, N),
+            N,
+            1,
+            _pad_num(orientations, N),
         ),
         PppSection(
             "Flaechen_Strahlungsbilanz_Verschattungsfaktor",
-            N, 1, _pad_num(empty_n, N),
+            N,
+            1,
+            _pad_num(empty_n, N),
         ),
         PppSection(
             "Flaechen_Absorption",
-            N, 1, _pad_num(empty_n, N),
+            N,
+            1,
+            _pad_num(empty_n, N),
         ),
         PppSection(
             "Flaechen_Emission",
-            N, 1, _pad_num(empty_n, N),
+            N,
+            1,
+            _pad_num(empty_n, N),
         ),
         PppSection(
             "Flaechen_Flaecheneingabe_Zuordnung_zu_Gruppe",
-            N, 1, _pad_num(groups, N),
+            N,
+            1,
+            _pad_num(groups, N),
         ),
     ]
 
@@ -310,11 +335,9 @@ def surface_sections(
 
 def thermal_bridge_sections(_variant: PhxVariant) -> list[PppSection]:
     """Build all thermal bridge sections."""
-    tbs: list[PhxComponentThermalBridge] = [
-        tb
-        for zone in _variant.building.zones
-        for tb in zone.thermal_bridges
-    ][:MAX_THERMAL_BRIDGES]
+    tbs: list[PhxComponentThermalBridge] = [tb for zone in _variant.building.zones for tb in zone.thermal_bridges][
+        :MAX_THERMAL_BRIDGES
+    ]
     n = len(tbs)
 
     names = [tb.display_name or "-" for tb in tbs]
@@ -333,35 +356,51 @@ def thermal_bridge_sections(_variant: PhxVariant) -> list[PppSection]:
     return [
         PppSection(
             "Flaechen_Waermebrueckeneingabe_Bezeichnung",
-            TB, 1, _pad_text(names, TB),
+            TB,
+            1,
+            _pad_text(names, TB),
         ),
         PppSection(
             "Flaechen_Waermebrueckeneingabe_Anzahl",
-            TB, 1, _pad_num(counts, TB),
+            TB,
+            1,
+            _pad_num(counts, TB),
         ),
         PppSection(
             "Flaechen_Waermebrueckeneingabe_Ermittlung_Laenge",
-            TB, 1, _pad_num(lengths, TB),
+            TB,
+            1,
+            _pad_num(lengths, TB),
         ),
         PppSection(
             "Flaechen_Waermebrueckeneingabe_Abzug_Laenge",
-            TB, 1, _pad_num(deductions, TB),
+            TB,
+            1,
+            _pad_num(deductions, TB),
         ),
         PppSection(
             "Flaechen_Waermebrueckeneingabe_Psi",
-            TB, 1, _pad_num(psis, TB),
+            TB,
+            1,
+            _pad_num(psis, TB),
         ),
         PppSection(
             "Flaechen_Waermebrueckeneingabe_fRsi",
-            TB, 1, _pad_num(frsis, TB),
+            TB,
+            1,
+            _pad_num(frsis, TB),
         ),
         PppSection(
             "Flaechen_Waermebrueckeneingabe_Bausystem",
-            TB, 2, bausystem,
+            TB,
+            2,
+            bausystem,
         ),
         PppSection(
             "Flaechen_Waermebrueckeneingabe_Gruppen_Nr",
-            TB, 1, _pad_num(group_nrs, TB),
+            TB,
+            1,
+            _pad_num(group_nrs, TB),
         ),
     ]
 
@@ -504,12 +543,12 @@ def shading_sections(_variant: PhxVariant) -> list[PppSection]:
 def ventilation_sections(_variant: PhxVariant) -> list[PppSection]:
     """Build the 6 ventilation sections."""
     bd = _variant.phi_cert
-    building_data = getattr(bd, 'building_data', None)
+    building_data = getattr(bd, "building_data", None)
     n50 = ""
     room_height = ""
     net_volume = ""
     if building_data:
-        n50 = _fmt(getattr(building_data, 'airtightness_n50', None))
+        n50 = _fmt(getattr(building_data, "airtightness_n50", None))
     # Compute average room height from spaces
     total_area = 0.0
     total_volume = 0.0
@@ -528,39 +567,47 @@ def ventilation_sections(_variant: PhxVariant) -> list[PppSection]:
 
     # Try to get wind exposure from building_data
     if building_data:
-        exp = getattr(building_data, 'building_exposure_type', None)
+        exp = getattr(building_data, "building_exposure_type", None)
         if exp is not None:
             wind_map = {
                 1: "1-No screening",
                 2: "2-Moderate screening",
                 3: "3-High screening",
             }
-            if hasattr(exp, 'value'):
-                wind_protection = wind_map.get(
-                    exp.value, "2-Moderate screening"
-                )
+            if hasattr(exp, "value"):
+                wind_protection = wind_map.get(exp.value, "2-Moderate screening")
 
     return [
         PppSection(
             "Lueftung_Infiltrationsluftwechsel_Drucktestluftwechsel",
-            1, 1, [n50],
+            1,
+            1,
+            [n50],
         ),
         PppSection("Lueftung_Raumhoehe", 1, 1, [room_height]),
         PppSection(
             "Lueftung_Infiltrationsluftwechsel_Netto_Volumenstrom",
-            1, 1, [net_volume],
+            1,
+            1,
+            [net_volume],
         ),
         PppSection(
             "Lueftung_Art_Der_Lueftungsanlage",
-            1, 2, [vent_type, ""],
+            1,
+            2,
+            [vent_type, ""],
         ),
         PppSection(
             "Lueftung_Auswahl_Lueftungsgeraet",
-            1, 3, [vent_device, "", ""],
+            1,
+            3,
+            [vent_device, "", ""],
         ),
         PppSection(
             "Lueftung_Infiltration_Windschutzkoeffizient",
-            1, 2, [wind_protection, ""],
+            1,
+            2,
+            [wind_protection, ""],
         ),
     ]
 
@@ -581,12 +628,22 @@ def u_value_sections(_project: PhxProject, _assembly_map: AssemblyMap) -> list[P
         sections.append(PppSection(f"{prefix}_Flaechenanteil_2", 1, 1, [""]))
         sections.append(PppSection(f"{prefix}_Flaechenanteil_3", 1, 1, [""]))
         sections.append(PppSection(f"{prefix}_Innendaemmung", 1, 1, [""]))
-        sections.append(PppSection(
-            f"{prefix}_Waermeuebergangswiderstand", 2, 1, ["", "0.0"],
-        ))
-        sections.append(PppSection(
-            f"{prefix}_Summe_Breite_Dicke", 8, 1, [""] * 8,
-        ))
+        sections.append(
+            PppSection(
+                f"{prefix}_Waermeuebergangswiderstand",
+                2,
+                1,
+                ["", "0.0"],
+            )
+        )
+        sections.append(
+            PppSection(
+                f"{prefix}_Summe_Breite_Dicke",
+                8,
+                1,
+                [""] * 8,
+            )
+        )
         sections.append(PppSection(f"{prefix}_Teilflaechen", 8, 6, [""] * 48))
     return sections
 
@@ -620,10 +677,7 @@ def _build_frame_row(wt: PhxConstructionWindow) -> list[str]:
     # Col 2 (idx 1): empty
     # Col 3 (idx 2): psi-glazing average
     avg_psi_g = (
-        wt.frame_left.psi_glazing
-        + wt.frame_right.psi_glazing
-        + wt.frame_top.psi_glazing
-        + wt.frame_bottom.psi_glazing
+        wt.frame_left.psi_glazing + wt.frame_right.psi_glazing + wt.frame_top.psi_glazing + wt.frame_bottom.psi_glazing
     ) / 4.0
     row[2] = f"{avg_psi_g}"
 
@@ -647,10 +701,7 @@ def _build_frame_row(wt: PhxConstructionWindow) -> list[str]:
 
     # Col 44 (idx 43): psi-install average
     avg_psi_i = (
-        wt.frame_left.psi_install
-        + wt.frame_right.psi_install
-        + wt.frame_top.psi_install
-        + wt.frame_bottom.psi_install
+        wt.frame_left.psi_install + wt.frame_right.psi_install + wt.frame_top.psi_install + wt.frame_bottom.psi_install
     ) / 4.0
     row[43] = f"{avg_psi_i:f}"
 
@@ -677,11 +728,13 @@ def user_component_sections(
         return _glazing_map.get(item[0], (999, ""))[0]
 
     for key, wt in sorted(glazing_wt_by_key.items(), key=_glazing_sort_key):
-        glazing_values.extend([
-            wt.glazing_type_display_name,
-            f"{wt.glass_g_value}",
-            f"{wt.u_value_glass:f}",
-        ])
+        glazing_values.extend(
+            [
+                wt.glazing_type_display_name,
+                f"{wt.glass_g_value}",
+                f"{wt.u_value_glass:f}",
+            ]
+        )
     # Pad remaining slots
     for _ in range(MAX_USER_GLAZING - len(glazing_wt_by_key)):
         glazing_values.extend(["", "0.0", "0.000000"])
@@ -713,14 +766,14 @@ def user_component_sections(
     for asm_id, (idx, ref) in sorted_assemblies:
         asm = _project.assembly_types.get(asm_id)
         if asm:
-            assembly_values.extend([
-                asm.display_name,
-                f"{asm.u_value:f}"
-                if hasattr(asm, 'u_value') and asm.u_value
-                else "0.000000",
-                "0.150000",  # thermal capacitance default
-                "0",
-            ])
+            assembly_values.extend(
+                [
+                    asm.display_name,
+                    f"{asm.u_value:f}" if hasattr(asm, "u_value") and asm.u_value else "0.000000",
+                    "0.150000",  # thermal capacitance default
+                    "0",
+                ]
+            )
         else:
             assembly_values.extend(["", "0.000000", "0.000000", "0"])
     # Pad remaining slots
@@ -730,15 +783,21 @@ def user_component_sections(
     return [
         PppSection(
             "Komponenten_user_Verglasung",
-            MAX_USER_GLAZING, 3, glazing_values,
+            MAX_USER_GLAZING,
+            3,
+            glazing_values,
         ),
         PppSection(
             "Komponenten_user_Fensterrahmen",
-            MAX_USER_FRAMES, 44, frame_values,
+            MAX_USER_FRAMES,
+            44,
+            frame_values,
         ),
         PppSection(
             "Komponenten_user_Bauteilaufbauten",
-            MAX_USER_ASSEMBLIES, 4, assembly_values,
+            MAX_USER_ASSEMBLIES,
+            4,
+            assembly_values,
         ),
     ]
 

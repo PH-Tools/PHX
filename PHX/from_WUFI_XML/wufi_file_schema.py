@@ -180,7 +180,6 @@ class WufiPH_ClimateLocation(WufiBaseModel):
     PEFactorsUserDef: list[WufiPEFactorsUserDef] | None = None
     CO2FactorsUserDef: list[WufiCO2FactorsUserDef] | None = None
 
-
     def set_standard_pe_factors(self, PH_CertificateCriteriaNum: int) -> None:
         """Set the PE-Factors from the Standards-Library based on the PH_CertificateCriteria."""
         self.PEFactorsUserDef = []
@@ -748,7 +747,6 @@ class WufiPH_Building(WufiBaseModel):
     NonCombustibleMaterials: bool
     BuildingWindExposure: int = 1
 
-
     @field_validator("BuildingWindExposure", mode="before")
     @classmethod
     def validate_wind_exposure(cls, v: int | None):
@@ -1013,4 +1011,3 @@ class WUFIplusProject(WufiBaseModel):
         always set this to 1, no matter what.
         """
         return 1
-
