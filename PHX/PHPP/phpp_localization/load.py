@@ -44,6 +44,6 @@ def get_phpp_shape(_xl: xl_app.XLConnection, version: version.PHPPVersion) -> Ph
     shape_file_dir = pathlib.Path(__file__).parent
     phpp_shape_filepath = get_shape_filepath(version, shape_file_dir)
     _xl.output(f"Loading PHPP Shapefile: {phpp_shape_filepath}")
-    phpp_shape = PhppShape.parse_file(phpp_shape_filepath)
+    phpp_shape = PhppShape.model_validate_json(pathlib.Path(phpp_shape_filepath).read_bytes())
 
     return phpp_shape
