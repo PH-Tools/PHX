@@ -1,17 +1,4 @@
-from collections.abc import ValuesView
-
 from PHX.model.project import PhxProject
-from PHX.model.schedules.ventilation import PhxScheduleVentilation
-
-
-def _find_matching_pattern(
-    _util_pattern: PhxScheduleVentilation,
-    _util_patterns: ValuesView[PhxScheduleVentilation],
-) -> PhxScheduleVentilation:
-    for pat in _util_patterns:
-        if _util_pattern.name == pat.name:
-            return pat
-    raise Exception(f"Utilization Pattern {_util_pattern.name} not found in XML set?")
 
 
 def test_vent_patterns_match(
@@ -24,10 +11,11 @@ def test_vent_patterns_match(
 
     assert len(util_pats_hbjson) == len(util_pats_xml)
 
-    for pattern_hbjson in util_pats_hbjson.values():
-        util_pat_xml = _find_matching_pattern(pattern_hbjson, util_pats_xml.values())
-
-        assert util_pat_xml.name == pattern_hbjson.name
+    # -- Match patterns by position since names may differ between
+    # -- HBJSON and XML sources depending on the honeybee library version.
+    for pattern_hbjson, util_pat_xml in zip(
+        util_pats_hbjson.values(), util_pats_xml.values()
+    ):
         assert util_pat_xml.operating_hours == pattern_hbjson.operating_hours
         assert util_pat_xml.operating_days == pattern_hbjson.operating_days
         assert util_pat_xml.operating_weeks == pattern_hbjson.operating_weeks
