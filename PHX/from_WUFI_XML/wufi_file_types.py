@@ -7,6 +7,8 @@ from __future__ import annotations
 from typing import Any
 
 from ph_units.converter import convert
+from pydantic import GetCoreSchemaHandler
+from pydantic_core import CoreSchema, core_schema
 
 # ------------------------------------------------------------------------------
 # -- Base Unit Type Converters
@@ -18,11 +20,9 @@ class BaseConverter:
     __unit_type__ = ""
     __value_type__ = int
 
-    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
-
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_core_schema__(cls, source_type: Any, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_plain_validator_function(cls.validate)
 
     @classmethod
     def validate(cls, v: str | dict[str, Any]):
@@ -69,8 +69,8 @@ class BaseCaster:
     __value_type__ = int
 
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_core_schema__(cls, source_type: Any, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_plain_validator_function(cls.validate)
 
     @classmethod
     def validate(cls, v: str | dict[str, Any]):
@@ -171,11 +171,9 @@ class kWh_per_kWh(float):
     __unit_type__ = "WUFI_MEW"
     __value_type__ = float
 
-    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
-
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_core_schema__(cls, source_type: Any, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_plain_validator_function(cls.validate)
 
     @classmethod
     def validate(cls, v: str | dict[str, Any]) -> float | None:
@@ -240,11 +238,9 @@ class Liter(float):
     __unit_type__ = "L"
     __value_type__ = float
 
-    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
-
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_core_schema__(cls, source_type: Any, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_plain_validator_function(cls.validate)
 
     @classmethod
     def validate(cls, v: str | dict[str, Any]) -> float | None:
@@ -273,11 +269,9 @@ class DegreeC(float, BaseConverter):
 
 
 class DegreeDeltaK(float):
-    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
-
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_core_schema__(cls, source_type: Any, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_plain_validator_function(cls.validate)
 
     @classmethod
     def validate(cls, v: str | dict[str, Any]):
@@ -410,11 +404,9 @@ class WUFI_Vapor_Resistance_Factor(float):
     __unit_type__ = "WUFI_MEW"
     __value_type__ = float
 
-    # TODO: replace __get_validators__ with __get_pydantic_core_schema__
-
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_core_schema__(cls, source_type: Any, handler: GetCoreSchemaHandler) -> CoreSchema:
+        return core_schema.no_info_plain_validator_function(cls.validate)
 
     @classmethod
     def validate(cls, v: str | dict[str, Any]) -> float | None:
