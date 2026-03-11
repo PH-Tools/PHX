@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Used to run the python script in a new terminal window. 
+# Used to run the python script in a new terminal window.
 # This is needed for MacOS in order to get around the permissions issues with Rhino and Excel.
 
 exe_path=$1

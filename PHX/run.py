@@ -266,3 +266,74 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate
         stdout, stderr = _run_subprocess_from_shell(commands)
 
     return stdout, stderr
+
+
+def write_hbjson_to_ppp(
+    _hbjson_file,
+    _save_file_name,
+    _save_folder,
+    _log_level=0,
+    *args,
+    **kwargs
+):
+    # type: (str, str, str, int, list, dict) -> tuple[str, str, str, str]
+    """Read in an hbjson file and output a new PPP file in the designated location.
+
+    Arguments:
+    ---------
+        * _hbjson_file (str): File path to an HBJSON file to be read in and converted to a PHX-Model.
+        * _save_file_name (str): The PPP filename.
+        * _save_folder (str): The folder to save the new PPP file in.
+        * _log_level (int): Set the logging level for the subprocess. Default=0
+        * args (list): Additional arguments to pass to the subprocess.
+        * kwargs (dict): Additional keyword arguments to pass to the subprocess.
+
+    Returns:
+    --------
+        * tuple
+            - [0] (str): The path to the output PPP file.
+            - [1] (str): The output PPP filename.
+            - [2] (str): The stdout from the subprocess.
+            - [3] (str): The stderr from the subprocess.
+    """
+
+    # -- Specify the path to the subprocess python script to run
+    run_file_path = os.path.join(
+        hb_folders.python_package_path, "PHX", "hbjson_to_ppp.py"
+    )
+
+    # -- check the file paths
+    if not os.path.isfile(_hbjson_file):
+        raise Exception(
+            "\nNo HBJSON file found at {}?".format(_hbjson_file)
+        )
+    if not os.path.isfile(run_file_path):
+        raise Exception(
+            "\nNo Python file to run found at: {}?".format(run_file_path)
+        )
+
+    # -------------------------------------------------------------------------
+    # -- Read in the HBJSON, convert to PPP-File
+    print(
+        "Using python interpreter: '{}'".format(
+            hb_folders.python_exe_path
+        )
+    )
+    print(
+        "Running py script: '{}' Using HBJSON file: '{}'".format(
+            run_file_path, _hbjson_file
+        )
+    )
+    commands = [
+        hb_folders.python_exe_path,
+        run_file_path,
+        _hbjson_file,
+        _save_file_name,
+        _save_folder,
+        str(_log_level),
+    ]
+    stdout, stderr = _run_subprocess(commands)
+
+    # -------------------------------------------------------------------------
+    # -- return the dir and filename of the ppp created
+    return _save_folder, _save_file_name, stdout, stderr

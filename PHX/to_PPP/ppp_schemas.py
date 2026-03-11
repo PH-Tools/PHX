@@ -216,15 +216,15 @@ def surface_sections(
         b_vals.append(b)
         area_vals.append(custom)
 
-    # -- Assembly references
+    # -- Assembly references (keyed by display_name to match project.assembly_types)
     assembly_refs: list[str] = []
     assembly_names: list[str] = []
     for c in components:
-        asm_id = c.assembly.identifier if c.assembly else ""
-        if asm_id in _assembly_map:
-            idx, ref = _assembly_map[asm_id]
+        asm_name = c.assembly.display_name if c.assembly else ""
+        if asm_name in _assembly_map:
+            idx, ref = _assembly_map[asm_name]
             assembly_refs.append(ref)
-            assembly_names.append(c.assembly.display_name if c.assembly else "")
+            assembly_names.append(asm_name)
         else:
             assembly_refs.append("")
             assembly_names.append("")

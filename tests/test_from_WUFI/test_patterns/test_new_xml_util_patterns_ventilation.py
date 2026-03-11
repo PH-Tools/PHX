@@ -13,9 +13,7 @@ def test_vent_patterns_match(
 
     # -- Match patterns by position since names may differ between
     # -- HBJSON and XML sources depending on the honeybee library version.
-    for pattern_hbjson, util_pat_xml in zip(
-        util_pats_hbjson.values(), util_pats_xml.values()
-    ):
+    for pattern_hbjson, util_pat_xml in zip(util_pats_hbjson.values(), util_pats_xml.values()):
         assert util_pat_xml.operating_hours == pattern_hbjson.operating_hours
         assert util_pat_xml.operating_days == pattern_hbjson.operating_days
         assert util_pat_xml.operating_weeks == pattern_hbjson.operating_weeks

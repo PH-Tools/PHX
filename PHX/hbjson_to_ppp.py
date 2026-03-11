@@ -45,51 +45,13 @@ def resolve_paths(_args: list[str]) -> tuple[pathlib.Path, pathlib.Path]:
     return src, target
 
 
-def group_components(_args: list[str]) -> bool:
-    """Return the 'group_components' boolean from sys.argv."""
-    try:
-        return _args[4].lower() == "true"
-    except (IndexError, AttributeError):
-        return True
-
-
-def merge_faces(_args: list[str]) -> bool | float:
-    """Return the 'merge_faces' value from sys.argv."""
-    try:
-        val = _args[5].lower()
-        if val == "true":
-            return True
-        elif val == "false":
-            return False
-        else:
-            return float(val)
-    except (IndexError, AttributeError, ValueError):
-        return False
-
-
-def merge_spaces_by_erv(_args: list[str]) -> bool:
-    """Return the 'merge_spaces_by_erv' boolean from sys.argv."""
-    try:
-        return _args[6].lower() == "true"
-    except (IndexError, AttributeError):
-        return False
-
-
-def merge_exhaust_vent_devices(_args: list[str]) -> bool:
-    """Return the 'merge_exhaust_vent_devices' boolean from sys.argv."""
-    try:
-        return _args[7].lower() == "true"
-    except (IndexError, AttributeError):
-        return False
-
-
 if __name__ == "__main__":
     # --- Input / Output file paths
     SOURCE_FILE, TARGET_FILE_PPP = resolve_paths(sys.argv)
-    GROUP_COMPONENTS = group_components(sys.argv)
-    MERGE_FACES = merge_faces(sys.argv)
-    MERGE_SPACES_BY_ERV = merge_spaces_by_erv(sys.argv)
-    MERGE_EXHAUST_VENT_DEVICES = merge_exhaust_vent_devices(sys.argv)
+    GROUP_COMPONENTS = False
+    MERGE_FACES = False
+    MERGE_SPACES_BY_ERV = True
+    MERGE_EXHAUST_VENT_DEVICES = False
 
     # --- Setup logging
     logger = logging.getLogger()
