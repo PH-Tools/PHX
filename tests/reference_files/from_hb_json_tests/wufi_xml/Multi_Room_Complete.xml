@@ -11,9 +11,9 @@
 		<Date_Project>
 			<Year>2026</Year>
 			<Month>3</Month>
-			<Day>10</Day>
-			<Hour>19</Hour>
-			<Minutes>43</Minutes>
+			<Day>15</Day>
+			<Hour>15</Hour>
+			<Minutes>34</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -595,7 +595,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>27</IdentNr>
-						<Name>Room_4_1a14ccb0..Face5_Glz0</Name>
+						<Name>Room_4_c75e7df9..Face5_Glz0</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -687,7 +687,7 @@
 					</Component>
 					<Component index="6">
 						<IdentNr>44</IdentNr>
-						<Name>PhWindowConstruction_255b8ed7</Name>
+						<Name>PhWindowConstruction_6444f472</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -711,7 +711,7 @@
 					</Component>
 					<Component index="7">
 						<IdentNr>45</IdentNr>
-						<Name>Shade_ffdecdf5</Name>
+						<Name>Shade_219f9df9</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -727,7 +727,7 @@
 					</Component>
 					<Component index="8">
 						<IdentNr>46</IdentNr>
-						<Name>Shade_e4a28fee</Name>
+						<Name>Shade_ef9eee8e</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -967,51 +967,51 @@
 						</ExhaustVents>
 						<ThermalBridges count="7">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__0a7cf9f7</Name>
+								<Name>_unnamed_bldg_segment__38729111</Name>
 								<Type>-15</Type>
 								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__2d107795</Name>
+								<Name>_unnamed_bldg_segment__90915fc8</Name>
+								<Type>-15</Type>
+								<Length>19.8</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="2">
+								<Name>_unnamed_bldg_segment__9104ec51</Name>
+								<Type>-15</Type>
+								<Length>14.758048651498616</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="3">
+								<Name>_unnamed_bldg_segment__c3dbcf3c</Name>
 								<Type>-15</Type>
 								<Length>22.0</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
-							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__549563da</Name>
-								<Type>-15</Type>
-								<Length>19.8</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__7f149ef2</Name>
-								<Type>-15</Type>
-								<Length>19.8</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
 							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__c4bc77e6</Name>
+								<Name>_unnamed_bldg_segment__d3a1880f</Name>
 								<Type>-15</Type>
 								<Length>14.000714267493642</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__d3d98863</Name>
+								<Name>_unnamed_bldg_segment__e5e886c3</Name>
 								<Type>-15</Type>
 								<Length>19.799999999999997</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
 							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__ee5ee17f</Name>
+								<Name>_unnamed_bldg_segment__fc2ac40f</Name>
 								<Type>-15</Type>
-								<Length>14.758048651498616</Length>
+								<Length>19.8</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
@@ -1279,6 +1279,42 @@
 						</ZonesCoverage>
 						<Devices count="6">
 							<Device index="0">
+								<Name>432ab0a4-025e-41db-a724-c9be1f1e83b4</Name>
+								<IdentNr>1</IdentNr>
+								<SystemType>5</SystemType>
+								<TypeDevice>5</TypeDevice>
+								<UsedFor_Heating>false</UsedFor_Heating>
+								<UsedFor_DHW>true</UsedFor_DHW>
+								<UsedFor_Cooling>false</UsedFor_Cooling>
+								<UsedFor_Ventilation>false</UsedFor_Ventilation>
+								<UsedFor_Humidification>false</UsedFor_Humidification>
+								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
+								<PH_Parameters>
+									<AuxiliaryEnergy/>
+									<AuxiliaryEnergyDHW/>
+									<InConditionedSpace>true</InConditionedSpace>
+									<AnnualCOP/>
+									<TotalSystemPerformanceRatioHeatGenerator/>
+									<HPWH_EF>3.0251</HPWH_EF>
+									<HPType>5</HPType>
+								</PH_Parameters>
+								<DHW_Parameters>
+									<CoverageWithinSystem>1.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</DHW_Parameters>
+								<Heating_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Heating_Parameters>
+								<Cooling_Parameters>
+									<CoverageWithinSystem>0.0</CoverageWithinSystem>
+									<Unit>0.0</Unit>
+									<Selection>1</Selection>
+								</Cooling_Parameters>
+							</Device>
+							<Device index="1">
 								<Name>Example_Heat_Pump</Name>
 								<IdentNr>2</IdentNr>
 								<SystemType>5</SystemType>
@@ -1315,7 +1351,7 @@
 									<Selection>1</Selection>
 								</Cooling_Parameters>
 							</Device>
-							<Device index="1">
+							<Device index="2">
 								<Name>None</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
@@ -1352,7 +1388,7 @@
 									<Selection>1</Selection>
 								</Cooling_Parameters>
 							</Device>
-							<Device index="2">
+							<Device index="3">
 								<Name>Test_Unit</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>1</SystemType>
@@ -1378,7 +1414,7 @@
 									<NoSummerBypass>false</NoSummerBypass>
 								</PH_Parameters>
 							</Device>
-							<Device index="3">
+							<Device index="4">
 								<Name>_unnamed_hw_tank_</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>8</SystemType>
@@ -1402,42 +1438,6 @@
 									<AuxiliaryEnergyDHW/>
 									<InConditionedSpace>true</InConditionedSpace>
 								</PH_Parameters>
-							</Device>
-							<Device index="4">
-								<Name>a2b004e4-b565-45e9-bc56-962d01f684ae</Name>
-								<IdentNr>1</IdentNr>
-								<SystemType>5</SystemType>
-								<TypeDevice>5</TypeDevice>
-								<UsedFor_Heating>false</UsedFor_Heating>
-								<UsedFor_DHW>true</UsedFor_DHW>
-								<UsedFor_Cooling>false</UsedFor_Cooling>
-								<UsedFor_Ventilation>false</UsedFor_Ventilation>
-								<UsedFor_Humidification>false</UsedFor_Humidification>
-								<UsedFor_Dehumidification>false</UsedFor_Dehumidification>
-								<PH_Parameters>
-									<AuxiliaryEnergy/>
-									<AuxiliaryEnergyDHW/>
-									<InConditionedSpace>true</InConditionedSpace>
-									<AnnualCOP/>
-									<TotalSystemPerformanceRatioHeatGenerator/>
-									<HPWH_EF>3.0251</HPWH_EF>
-									<HPType>5</HPType>
-								</PH_Parameters>
-								<DHW_Parameters>
-									<CoverageWithinSystem>1.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</DHW_Parameters>
-								<Heating_Parameters>
-									<CoverageWithinSystem>0.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</Heating_Parameters>
-								<Cooling_Parameters>
-									<CoverageWithinSystem>0.0</CoverageWithinSystem>
-									<Unit>0.0</Unit>
-									<Selection>1</Selection>
-								</Cooling_Parameters>
 							</Device>
 							<Device index="5">
 								<Name>my_PV_system</Name>
@@ -2068,7 +2068,7 @@
 	<WindowTypes count="1">
 		<WindowType index="0">
 			<IdentNr>1</IdentNr>
-			<Name>PhWindowConstruction_255b8ed7</Name>
+			<Name>PhWindowConstruction_6444f472</Name>
 			<Uw_Detailed>true</Uw_Detailed>
 			<GlazingFrameDetailed>true</GlazingFrameDetailed>
 			<FrameFactor>0.7242364315535045</FrameFactor>

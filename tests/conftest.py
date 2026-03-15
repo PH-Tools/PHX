@@ -1,4 +1,3 @@
-import importlib
 from pathlib import Path
 
 import pytest
@@ -140,29 +139,6 @@ def _reset_phx_class_counters():
     sched_occupancy.PhxScheduleOccupancy._count = 0
 
 
-def _reload_phx_classes():
-    """reload all of the PHX model classes. This is similar to the 'reset_class_counters
-    except that it will reset all of the PHX modules back to starting position. This is
-    used for running the xml-reference-case testers, since otherwise the id-number
-    counters will not line up correctly.
-    """
-    importlib.reload(building)
-    importlib.reload(certification)
-    importlib.reload(components)
-    importlib.reload(constructions)
-    importlib.reload(elec_equip)
-    importlib.reload(geometry)
-    importlib.reload(project)
-    importlib.reload(geometry)
-    importlib.reload(schedules)
-    importlib.reload(spaces)
-    importlib.reload(shades)
-    importlib.reload(sched_ventilation)
-    importlib.reload(sched_occupancy)
-    importlib.reload(piping)
-    importlib.reload(heat_pumps)
-
-
 @pytest.fixture
 def reset_class_counters():
     """Re-set class's _count variable in order to test id-num incrementing properly"""
@@ -176,21 +152,40 @@ def reset_class_counters():
 @pytest.fixture(
     params=[
         (
-            Path("tests", "_test_reference_files_hbjson", "Default_Model_Single_Zone.hbjson"),
-            Path("tests", "_test_reference_files_xml", "Default_Model_Single_Zone.xml"),
+            Path("tests", "reference_files", "from_grasshopper_tests", "hbjson", "Default_Model_Single_Zone.hbjson"),
+            Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "Default_Model_Single_Zone.xml"),
         ),
         (
-            Path("tests", "_test_reference_files_hbjson", "Multi_Room_Complete.hbjson"),
-            Path("tests", "_test_reference_files_xml", "Multi_Room_Complete.xml"),
+            Path("tests", "reference_files", "from_grasshopper_tests", "hbjson", "Multi_Room_Complete.hbjson"),
+            Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "Multi_Room_Complete.xml"),
         ),
     ]
 )
 def to_xml_reference_cases(request):
     """Yields file-paths to reference test-cases"""
-    _reload_phx_classes()
     _reset_phx_class_counters()
     try:
         yield request.param
     finally:
-        _reload_phx_classes()
+        _reset_phx_class_counters()
+
+
+@pytest.fixture(
+    params=[
+        (
+            Path("tests", "reference_files", "from_grasshopper_tests", "hbjson", "Default_Model_Single_Zone.hbjson"),
+            Path("tests", "reference_files", "from_WUFI", "metr_json", "Default_Model_Single_Zone.json"),
+        ),
+        (
+            Path("tests", "reference_files", "from_grasshopper_tests", "hbjson", "Multi_Room_Complete.hbjson"),
+            Path("tests", "reference_files", "from_WUFI", "metr_json", "Multi_Room_Complete.json"),
+        ),
+    ]
+)
+def to_metr_json_reference_cases(request):
+    """Yields file-paths to reference test-cases for METr JSON export."""
+    _reset_phx_class_counters()
+    try:
+        yield request.param
+    finally:
         _reset_phx_class_counters()

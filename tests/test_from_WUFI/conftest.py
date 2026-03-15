@@ -15,7 +15,9 @@ def phx_project_from_hbjson() -> PhxProject:
     """A PhxProject created from an HBJSON file."""
 
     _reset_phx_class_counters()
-    SOURCE_HBJSON_FILE = Path("tests", "_test_reference_files_hbjson", "Multi_Room_Complete.hbjson")
+    SOURCE_HBJSON_FILE = Path(
+        "tests", "reference_files", "from_grasshopper_tests", "hbjson", "Multi_Room_Complete.hbjson"
+    )
     hb_json_dict = read_HBJSON_file.read_hb_json_from_file(SOURCE_HBJSON_FILE)
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
     phx_project_hbjson = create_project.convert_hb_model_to_PhxProject(
@@ -30,7 +32,7 @@ def phx_project_from_wufi_xml() -> PhxProject:
     """A PhxProject created from WUFI-XML [Multi_Room_Complete.xml]"""
 
     _reset_phx_class_counters()
-    SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "Multi_Room_Complete.xml")
+    SOURCE_XML_FILE = Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "Multi_Room_Complete.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
     wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
@@ -43,7 +45,7 @@ def phx_project_from_wufi_xml_LA_MORA() -> PhxProject:
     """A PhxProject created from WUFI-XML [_la_mora.xml]"""
 
     _reset_phx_class_counters()
-    SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "_la_mora.xml")
+    SOURCE_XML_FILE = Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "_la_mora.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
     wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
@@ -56,7 +58,7 @@ def phx_project_from_wufi_xml_RIDGEWAY() -> PhxProject:
     """A PhxProject created from WUFI-XML [_ridgeway.xml]"""
 
     _reset_phx_class_counters()
-    SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "_ridgeway.xml")
+    SOURCE_XML_FILE = Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "_ridgeway.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
     wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
@@ -69,7 +71,7 @@ def phx_project_from_wufi_xml_ARVERNE_D_NO_WIN() -> PhxProject:
     """A PhxProject created from WUFI-XML [_arverne_d_no_win.xml]"""
 
     _reset_phx_class_counters()
-    SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "_arverne_d_no_win.xml")
+    SOURCE_XML_FILE = Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "_arverne_d_no_win.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
     wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)
@@ -82,7 +84,7 @@ def phx_project_from_wufi_xml_SCHOOL() -> PhxProject:
     """A PhxProject created from WUFI-XML [School.xml]"""
 
     _reset_phx_class_counters()
-    SOURCE_XML_FILE = Path("tests", "_test_reference_files_xml", "School.xml")
+    SOURCE_XML_FILE = Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "School.xml")
     wufi_xml_data = get_WUFI_XML_file_as_dict(SOURCE_XML_FILE)
     wufi_xml_model = WUFIplusProject.model_validate(wufi_xml_data)
     phx_project = convert_WUFI_XML_to_PHX_project(wufi_xml_model)

@@ -11,9 +11,9 @@ from PHX.from_WUFI_XML.read_WUFI_XML_file import get_WUFI_XML_file_as_dict
 from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
 
-SOURCE_DIR = pathlib.Path("tests", "_test_reference_files_xml")
+SOURCE_DIR = pathlib.Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml")
 SOURCE_FILE_NAMES = ["School.xml", "_la_mora.xml", "_ridgeway.xml"]
-TARGET_DIR = pathlib.Path("tests", "_regenerated_xml")
+TARGET_DIR = pathlib.Path("tests", "reference_files", "from_WUFI", "wufi_xml")
 
 rich_print(" -" * 50)
 for xm_source_file_name in SOURCE_FILE_NAMES:
