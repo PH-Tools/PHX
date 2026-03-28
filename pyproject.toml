@@ -46,8 +46,11 @@ Homepage = "https://github.com/PH-Tools/PHX"
 
 # -- Setuptools Configuration ---
 [tool.setuptools.packages.find]
-include = ["PHX"]
+include = ["PHX*"]
 exclude = ["tests*"]
+
+[tool.setuptools.package-data]
+"PHX" = ["**/*.json"]
 
 # -- Version Bumping ---
 [tool.bumpversion]
