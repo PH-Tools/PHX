@@ -1,943 +1,35 @@
 {
-  "display_name": "Room_2", 
   "properties": {
     "energy": {
-      "hvac": {
-        "heating_limit": {
-          "type": "Autosize"
-        }, 
-        "sensible_heat_recovery": 0.0, 
-        "cooling_air_temperature": 13.0, 
-        "cooling_limit": {
-          "type": "Autosize"
-        }, 
-        "heating_air_temperature": 50.0, 
-        "latent_heat_recovery": 0.0, 
-        "properties": {
-          "revive": {
-            "equipment_collection": {
-              "equipment": [], 
-              "type": "PhiusReviveHVACEquipmentCollection"
-            }, 
-            "type": "IdealAirSystemReviveProperties"
-          }, 
-          "ref": {
-            "external_identifiers": {}, 
-            "user_data": {}, 
-            "uris": [], 
-            "image_refs": [], 
-            "identifier": "rfse2ea6668", 
-            "type": "_HBObjectWithReferences", 
-            "ref_status": "NA", 
-            "document_refs": []
-          }, 
-          "type": "IdealAirSystemProperties"
-        }, 
-        "identifier": "Room_2_50e4af18 Ideal Loads Air System", 
-        "type": "IdealAirSystem", 
-        "demand_controlled_ventilation": false, 
-        "economizer_type": "DifferentialDryBulb"
-      }, 
       "program_type": {
-        "electric_equipment": {
-          "schedule": {
-            "winter_designday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_WntrDsn", 
-            "day_schedules": [
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    18, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  0.2307553806, 
-                  0.28810717499999999, 
-                  0.2307553806
-                ], 
-                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Sun", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  1.0
-                ], 
-                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_SmrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  0.0
-                ], 
-                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_WntrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    8, 
-                    0
-                  ], 
-                  [
-                    12, 
-                    0
-                  ], 
-                  [
-                    17, 
-                    0
-                  ], 
-                  [
-                    19, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  0.2307553806, 
-                  0.38123479599999999, 
-                  0.47654349499999998, 
-                  0.33358044650000002, 
-                  0.28592609699999999, 
-                  0.2307553806
-                ], 
-                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    8, 
-                    0
-                  ], 
-                  [
-                    12, 
-                    0
-                  ], 
-                  [
-                    13, 
-                    0
-                  ], 
-                  [
-                    17, 
-                    0
-                  ], 
-                  [
-                    18, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  0.30767384079999999, 
-                  0.38123479599999999, 
-                  0.85777829100000003, 
-                  0.76246959199999997, 
-                  0.85777829100000003, 
-                  0.47654349499999998, 
-                  0.38123479599999999
-                ], 
-                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Wkdy", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }
-            ], 
-            "holiday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat", 
-            "summer_designday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_SmrDsn", 
-            "identifier": "Generic Office Equipment", 
-            "schedule_rules": [
-              {
-                "apply_tuesday": true, 
-                "apply_friday": true, 
-                "apply_sunday": false, 
-                "apply_thursday": true, 
-                "schedule_day": "OfficeMedium BLDG_EQUIP_SCH_2013_Wkdy", 
-                "start_date": [
-                  1, 
-                  1
-                ], 
-                "apply_monday": true, 
-                "apply_wednesday": true, 
-                "apply_saturday": false, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
-              }, 
-              {
-                "apply_tuesday": false, 
-                "apply_friday": false, 
-                "apply_sunday": false, 
-                "apply_thursday": false, 
-                "schedule_day": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat", 
-                "start_date": [
-                  1, 
-                  1
-                ], 
-                "apply_monday": false, 
-                "apply_wednesday": false, 
-                "apply_saturday": true, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
-              }
-            ], 
-            "type": "ScheduleRuleset", 
-            "default_day_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_Sun", 
-            "schedule_type_limit": {
-              "upper_limit": 1.0, 
-              "numeric_type": "Continuous", 
-              "identifier": "Fractional", 
-              "type": "ScheduleTypeLimit", 
-              "unit_type": "Dimensionless", 
-              "lower_limit": 0.0
-            }, 
-            "properties": {
-              "revive": {
-                "id_num": 0, 
-                "type": "ScheduleRulesetReviveProperties"
-              }, 
-              "ph": {
-                "operating_days_wk": 7.0, 
-                "operating_periods": {
-                  "collection": []
-                }, 
-                "operating_weeks_year": 52.142899999999997, 
-                "id_num": 0, 
-                "type": "ScheduleRulesetPhProperties"
-              }, 
-              "type": "ScheduleRulesetProperties"
-            }
-          }, 
-          "latent_fraction": 0.0, 
-          "radiant_fraction": 0.5, 
-          "properties": {
-            "revive": {
-              "id_num": 0, 
-              "type": "ElectricEquipmentReviveProperties"
-            }, 
-            "ph": {
-              "equipment_collection": {
-                "equipment_set": {}
-              }, 
-              "type": "ElectricEquipmentPhProperties"
-            }, 
-            "type": "ElectricEquipmentProperties"
-          }, 
-          "identifier": "Generic Office Equipment", 
-          "type": "ElectricEquipment", 
-          "watts_per_area": 10.330000000000000, 
-          "lost_fraction": 0.0
-        }, 
-        "infiltration": {
-          "identifier": "Generic Office Infiltration", 
-          "type": "Infiltration", 
-          "flow_per_exterior_area": 0.00022660000000000001, 
-          "schedule": {
-            "winter_designday_schedule": "OfficeMedium INFIL_SCH_PNNL_Sat_WntrDsn", 
-            "day_schedules": [
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  1.0
-                ], 
-                "identifier": "OfficeMedium INFIL_SCH_PNNL_Default", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    22, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  1.0, 
-                  0.25, 
-                  1.0
-                ], 
-                "identifier": "OfficeMedium INFIL_SCH_PNNL_Wkdy_SmrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    18, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  1.0, 
-                  0.25, 
-                  1.0
-                ], 
-                "identifier": "OfficeMedium INFIL_SCH_PNNL_Sat_WntrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    22, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  1.0, 
-                  0.25, 
-                  1.0
-                ], 
-                "identifier": "OfficeMedium INFIL_SCH_PNNL_Wkdy", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    18, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  1.0, 
-                  0.25, 
-                  1.0
-                ], 
-                "identifier": "OfficeMedium INFIL_SCH_PNNL_Sat", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }
-            ], 
-            "holiday_schedule": "OfficeMedium INFIL_SCH_PNNL_Default", 
-            "summer_designday_schedule": "OfficeMedium INFIL_SCH_PNNL_Wkdy_SmrDsn", 
-            "identifier": "Generic Office Infiltration", 
-            "schedule_rules": [
-              {
-                "apply_tuesday": true, 
-                "apply_friday": true, 
-                "apply_sunday": false, 
-                "apply_thursday": true, 
-                "schedule_day": "OfficeMedium INFIL_SCH_PNNL_Wkdy", 
-                "start_date": [
-                  1, 
-                  1
-                ], 
-                "apply_monday": true, 
-                "apply_wednesday": true, 
-                "apply_saturday": false, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
-              }, 
-              {
-                "apply_tuesday": false, 
-                "apply_friday": false, 
-                "apply_sunday": false, 
-                "apply_thursday": false, 
-                "schedule_day": "OfficeMedium INFIL_SCH_PNNL_Sat", 
-                "start_date": [
-                  1, 
-                  1
-                ], 
-                "apply_monday": false, 
-                "apply_wednesday": false, 
-                "apply_saturday": true, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
-              }
-            ], 
-            "type": "ScheduleRuleset", 
-            "default_day_schedule": "OfficeMedium INFIL_SCH_PNNL_Default", 
-            "schedule_type_limit": {
-              "upper_limit": 1.0, 
-              "numeric_type": "Continuous", 
-              "identifier": "Fractional", 
-              "type": "ScheduleTypeLimit", 
-              "unit_type": "Dimensionless", 
-              "lower_limit": 0.0
-            }, 
-            "properties": {
-              "revive": {
-                "id_num": 0, 
-                "type": "ScheduleRulesetReviveProperties"
-              }, 
-              "ph": {
-                "operating_days_wk": 7.0, 
-                "operating_periods": {
-                  "collection": []
-                }, 
-                "operating_weeks_year": 52.142899999999997, 
-                "id_num": 0, 
-                "type": "ScheduleRulesetPhProperties"
-              }, 
-              "type": "ScheduleRulesetProperties"
-            }
-          }
-        }, 
-        "ventilation": {
-          "identifier": "Generic Office Ventilation", 
-          "flow_per_person": 0.0023600000000000001, 
-          "type": "Ventilation", 
-          "flow_per_area": 0.00030499999999999999
-        }, 
-        "setpoint": {
-          "identifier": "Generic Office Setpoints", 
-          "heating_schedule": {
-            "winter_designday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_WntrDsn", 
-            "day_schedules": [
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  15.600000000000000
-                ], 
-                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  15.600000000000000
-                ], 
-                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default_SmrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    5, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    7, 
-                    0
-                  ], 
-                  [
-                    22, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  15.600000000000000, 
-                  17.600000000000001, 
-                  19.600000000000001, 
-                  21.0, 
-                  15.600000000000000
-                ], 
-                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_WntrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    5, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    7, 
-                    0
-                  ], 
-                  [
-                    22, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  15.600000000000000, 
-                  17.800000000000001, 
-                  20.0, 
-                  21.0, 
-                  15.600000000000000
-                ], 
-                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Wkdy", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    5, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    7, 
-                    0
-                  ], 
-                  [
-                    17, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  15.600000000000000, 
-                  17.800000000000001, 
-                  20.0, 
-                  21.0, 
-                  15.600000000000000
-                ], 
-                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Sat", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }
-            ], 
-            "holiday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
-            "summer_designday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default_SmrDsn", 
-            "identifier": "Generic Office Heating", 
-            "schedule_rules": [
-              {
-                "apply_tuesday": true, 
-                "apply_friday": true, 
-                "apply_sunday": false, 
-                "apply_thursday": true, 
-                "schedule_day": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Wkdy", 
-                "start_date": [
-                  1, 
-                  1
-                ], 
-                "apply_monday": true, 
-                "apply_wednesday": true, 
-                "apply_saturday": false, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
-              }, 
-              {
-                "apply_tuesday": false, 
-                "apply_friday": false, 
-                "apply_sunday": false, 
-                "apply_thursday": false, 
-                "schedule_day": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Sat", 
-                "start_date": [
-                  1, 
-                  1
-                ], 
-                "apply_monday": false, 
-                "apply_wednesday": false, 
-                "apply_saturday": true, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
-              }
-            ], 
-            "type": "ScheduleRuleset", 
-            "default_day_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
-            "schedule_type_limit": {
-              "upper_limit": {
-                "type": "NoLimit"
-              }, 
-              "numeric_type": "Continuous", 
-              "identifier": "Temperature", 
-              "type": "ScheduleTypeLimit", 
-              "unit_type": "Temperature", 
-              "lower_limit": -273.14999999999998
-            }, 
-            "properties": {
-              "revive": {
-                "id_num": 0, 
-                "type": "ScheduleRulesetReviveProperties"
-              }, 
-              "ph": {
-                "operating_days_wk": 7.0, 
-                "operating_periods": {
-                  "collection": []
-                }, 
-                "operating_weeks_year": 52.142899999999997, 
-                "id_num": 0, 
-                "type": "ScheduleRulesetPhProperties"
-              }, 
-              "type": "ScheduleRulesetProperties"
-            }
-          }, 
-          "cooling_schedule": {
-            "winter_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn", 
-            "day_schedules": [
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  26.699999999999999
-                ], 
-                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    5, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    7, 
-                    0
-                  ], 
-                  [
-                    22, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  26.699999999999999, 
-                  25.699999999999999, 
-                  25.0, 
-                  24.0, 
-                  26.699999999999999
-                ], 
-                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  26.699999999999999
-                ], 
-                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    5, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    7, 
-                    0
-                  ], 
-                  [
-                    22, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  26.699999999999999, 
-                  25.600000000000001, 
-                  25.0, 
-                  24.0, 
-                  26.699999999999999
-                ], 
-                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    5, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    7, 
-                    0
-                  ], 
-                  [
-                    17, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  26.699999999999999, 
-                  25.699999999999999, 
-                  25.0, 
-                  24.0, 
-                  26.699999999999999
-                ], 
-                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }
-            ], 
-            "holiday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
-            "summer_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn", 
-            "identifier": "Generic Office Cooling", 
-            "schedule_rules": [
-              {
-                "apply_tuesday": true, 
-                "apply_friday": true, 
-                "apply_sunday": false, 
-                "apply_thursday": true, 
-                "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy", 
-                "start_date": [
-                  1, 
-                  1
-                ], 
-                "apply_monday": true, 
-                "apply_wednesday": true, 
-                "apply_saturday": false, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
-              }, 
-              {
-                "apply_tuesday": false, 
-                "apply_friday": false, 
-                "apply_sunday": false, 
-                "apply_thursday": false, 
-                "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat", 
-                "start_date": [
-                  1, 
-                  1
-                ], 
-                "apply_monday": false, 
-                "apply_wednesday": false, 
-                "apply_saturday": true, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
-              }
-            ], 
-            "type": "ScheduleRuleset", 
-            "default_day_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
-            "schedule_type_limit": {
-              "upper_limit": {
-                "type": "NoLimit"
-              }, 
-              "numeric_type": "Continuous", 
-              "identifier": "Temperature", 
-              "type": "ScheduleTypeLimit", 
-              "unit_type": "Temperature", 
-              "lower_limit": -273.14999999999998
-            }, 
-            "properties": {
-              "revive": {
-                "id_num": 0, 
-                "type": "ScheduleRulesetReviveProperties"
-              }, 
-              "ph": {
-                "operating_days_wk": 7.0, 
-                "operating_periods": {
-                  "collection": []
-                }, 
-                "operating_weeks_year": 52.142899999999997, 
-                "id_num": 0, 
-                "type": "ScheduleRulesetPhProperties"
-              }, 
-              "type": "ScheduleRulesetProperties"
-            }
-          }, 
-          "type": "Setpoint"
-        }, 
         "lighting": {
-          "return_air_fraction": 0.0, 
           "schedule": {
-            "winter_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn", 
+            "properties": {
+              "ph": {
+                "operating_days_wk": 7.0, 
+                "type": "ScheduleRulesetPhProperties", 
+                "id_num": 0, 
+                "operating_periods": {
+                  "collection": []
+                }, 
+                "operating_weeks_year": 52.142899999999997
+              }, 
+              "type": "ScheduleRulesetProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ScheduleRulesetReviveProperties"
+              }
+            }, 
             "day_schedules": [
               {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ], 
-                  [
-                    6, 
-                    0
-                  ], 
-                  [
-                    18, 
-                    0
-                  ]
-                ], 
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun", 
+                "interpolate": false, 
                 "values": [
                   0.050000000000000003, 
                   0.04311628, 
                   0.050000000000000003
                 ], 
-                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  1.0
-                ], 
-                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  0.0
-                ], 
-                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
                 "times": [
                   [
                     0, 
@@ -948,22 +40,43 @@
                     0
                   ], 
                   [
-                    8, 
-                    0
-                  ], 
-                  [
-                    12, 
-                    0
-                  ], 
-                  [
-                    17, 
-                    0
-                  ], 
-                  [
-                    19, 
+                    18, 
                     0
                   ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn", 
+                "interpolate": false, 
+                "values": [
+                  1.0
                 ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn", 
+                "interpolate": false, 
+                "values": [
+                  0.0
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat", 
+                "interpolate": false, 
                 "values": [
                   0.050000000000000003, 
                   0.08623256, 
@@ -972,11 +85,49 @@
                   0.04311628, 
                   0.050000000000000003
                 ], 
-                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    8, 
+                    0
+                  ], 
+                  [
+                    12, 
+                    0
+                  ], 
+                  [
+                    17, 
+                    0
+                  ], 
+                  [
+                    19, 
+                    0
+                  ]
+                ]
               }, 
               {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy", 
+                "interpolate": false, 
+                "values": [
+                  0.050000000000000003, 
+                  0.10000000000000001, 
+                  0.08623256, 
+                  0.25869767999999999, 
+                  0.77609304000000001, 
+                  0.43116280000000001, 
+                  0.25869767999999999, 
+                  0.17246512, 
+                  0.08623256, 
+                  0.04311628
+                ], 
                 "times": [
                   [
                     0, 
@@ -1018,175 +169,123 @@
                     23, 
                     0
                   ]
-                ], 
-                "values": [
-                  0.050000000000000003, 
-                  0.10000000000000001, 
-                  0.08623256, 
-                  0.25869767999999999, 
-                  0.77609304000000001, 
-                  0.43116280000000001, 
-                  0.25869767999999999, 
-                  0.17246512, 
-                  0.08623256, 
-                  0.04311628
-                ], 
-                "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
+                ]
               }
             ], 
             "holiday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat", 
-            "summer_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn", 
-            "identifier": "Generic Office Lighting", 
+            "default_day_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun", 
+            "type": "ScheduleRuleset", 
             "schedule_rules": [
               {
                 "apply_tuesday": true, 
-                "apply_friday": true, 
                 "apply_sunday": false, 
-                "apply_thursday": true, 
-                "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy", 
+                "apply_saturday": false, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": true, 
+                "apply_friday": true, 
+                "apply_wednesday": true, 
                 "start_date": [
                   1, 
                   1
                 ], 
-                "apply_monday": true, 
-                "apply_wednesday": true, 
-                "apply_saturday": false, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
+                "apply_thursday": true, 
+                "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy"
               }, 
               {
                 "apply_tuesday": false, 
-                "apply_friday": false, 
                 "apply_sunday": false, 
-                "apply_thursday": false, 
-                "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat", 
+                "apply_saturday": true, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": false, 
+                "apply_friday": false, 
+                "apply_wednesday": false, 
                 "start_date": [
                   1, 
                   1
                 ], 
-                "apply_monday": false, 
-                "apply_wednesday": false, 
-                "apply_saturday": true, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
+                "apply_thursday": false, 
+                "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat"
               }
             ], 
-            "type": "ScheduleRuleset", 
-            "default_day_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun", 
+            "identifier": "Generic Office Lighting", 
+            "summer_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn", 
+            "winter_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn", 
             "schedule_type_limit": {
-              "upper_limit": 1.0, 
               "numeric_type": "Continuous", 
-              "identifier": "Fractional", 
               "type": "ScheduleTypeLimit", 
-              "unit_type": "Dimensionless", 
-              "lower_limit": 0.0
-            }, 
-            "properties": {
-              "revive": {
-                "id_num": 0, 
-                "type": "ScheduleRulesetReviveProperties"
-              }, 
-              "ph": {
-                "operating_days_wk": 7.0, 
-                "operating_periods": {
-                  "collection": []
-                }, 
-                "operating_weeks_year": 52.142899999999997, 
-                "id_num": 0, 
-                "type": "ScheduleRulesetPhProperties"
-              }, 
-              "type": "ScheduleRulesetProperties"
+              "identifier": "Fractional", 
+              "upper_limit": 1.0, 
+              "lower_limit": 0.0, 
+              "unit_type": "Dimensionless"
             }
           }, 
-          "radiant_fraction": 0.69999999999999996, 
           "properties": {
-            "revive": {
-              "labor_fraction": 0.40000000000000002, 
-              "lifetime_years": 25, 
-              "id_num": 0, 
-              "type": "LightingReviveProperties", 
-              "cost": 0.0
-            }, 
             "ph": {
               "target_lux_height": 0.80000000000000004, 
               "id_num": 0, 
-              "type": "LightingPhProperties", 
-              "target_lux": 300
+              "target_lux": 300, 
+              "type": "LightingPhProperties"
             }, 
-            "type": "LightingProperties"
+            "type": "LightingProperties", 
+            "revive": {
+              "lifetime_years": 25, 
+              "cost": 0.0, 
+              "type": "LightingReviveProperties", 
+              "labor_fraction": 0.40000000000000002, 
+              "id_num": 0
+            }
           }, 
-          "identifier": "Generic Office Lighting", 
-          "type": "Lighting", 
+          "radiant_fraction": 0.69999999999999996, 
           "watts_per_area": 10.550000000000001, 
+          "return_air_fraction": 0.0, 
+          "type": "Lighting", 
+          "identifier": "Generic Office Lighting", 
           "visible_fraction": 0.20000000000000001
         }, 
-        "identifier": "Generic Office Program", 
         "type": "ProgramType", 
-        "people": {
-          "people_per_area": 0.056500000000000002, 
-          "latent_fraction": {
-            "type": "Autocalculate"
-          }, 
-          "radiant_fraction": 0.29999999999999999, 
-          "activity_schedule": {
-            "day_schedules": [
-              {
-                "times": [
-                  [
-                    0, 
-                    0
-                  ]
-                ], 
-                "values": [
-                  120.0
-                ], 
-                "identifier": "Seated Adult Activity_Day Schedule", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }
-            ], 
+        "ventilation": {
+          "flow_per_person": 0.0023600000000000001, 
+          "identifier": "Generic Office Ventilation", 
+          "flow_per_area": 0.00030499999999999999, 
+          "type": "Ventilation"
+        }, 
+        "identifier": "Generic Office Program", 
+        "electric_equipment": {
+          "schedule": {
             "properties": {
-              "revive": {
-                "id_num": 0, 
-                "type": "ScheduleRulesetReviveProperties"
-              }, 
               "ph": {
                 "operating_days_wk": 7.0, 
+                "type": "ScheduleRulesetPhProperties", 
+                "id_num": 0, 
                 "operating_periods": {
                   "collection": []
                 }, 
-                "operating_weeks_year": 52.142899999999997, 
+                "operating_weeks_year": 52.142899999999997
+              }, 
+              "type": "ScheduleRulesetProperties", 
+              "revive": {
                 "id_num": 0, 
-                "type": "ScheduleRulesetPhProperties"
-              }, 
-              "type": "ScheduleRulesetProperties"
+                "type": "ScheduleRulesetReviveProperties"
+              }
             }, 
-            "identifier": "Seated Adult Activity", 
-            "type": "ScheduleRuleset", 
-            "schedule_type_limit": {
-              "upper_limit": {
-                "type": "NoLimit"
-              }, 
-              "numeric_type": "Continuous", 
-              "identifier": "Activity Level", 
-              "type": "ScheduleTypeLimit", 
-              "unit_type": "ActivityLevel", 
-              "lower_limit": 0.0
-            }, 
-            "default_day_schedule": "Seated Adult Activity_Day Schedule"
-          }, 
-          "occupancy_schedule": {
-            "winter_designday_schedule": "OfficeMedium BLDG_OCC_SCH_WntrDsn", 
             "day_schedules": [
               {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Sun", 
+                "interpolate": false, 
+                "values": [
+                  0.2307553806, 
+                  0.28810717499999999, 
+                  0.2307553806
+                ], 
                 "times": [
                   [
                     0, 
@@ -1200,17 +299,268 @@
                     18, 
                     0
                   ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_SmrDsn", 
+                "interpolate": false, 
+                "values": [
+                  1.0
                 ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_WntrDsn", 
+                "interpolate": false, 
+                "values": [
+                  0.0
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat", 
+                "interpolate": false, 
+                "values": [
+                  0.2307553806, 
+                  0.38123479599999999, 
+                  0.47654349499999998, 
+                  0.33358044650000002, 
+                  0.28592609699999999, 
+                  0.2307553806
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    8, 
+                    0
+                  ], 
+                  [
+                    12, 
+                    0
+                  ], 
+                  [
+                    17, 
+                    0
+                  ], 
+                  [
+                    19, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Wkdy", 
+                "interpolate": false, 
+                "values": [
+                  0.30767384079999999, 
+                  0.38123479599999999, 
+                  0.85777829100000003, 
+                  0.76246959199999997, 
+                  0.85777829100000003, 
+                  0.47654349499999998, 
+                  0.38123479599999999
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    8, 
+                    0
+                  ], 
+                  [
+                    12, 
+                    0
+                  ], 
+                  [
+                    13, 
+                    0
+                  ], 
+                  [
+                    17, 
+                    0
+                  ], 
+                  [
+                    18, 
+                    0
+                  ]
+                ]
+              }
+            ], 
+            "holiday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat", 
+            "default_day_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_Sun", 
+            "type": "ScheduleRuleset", 
+            "schedule_rules": [
+              {
+                "apply_tuesday": true, 
+                "apply_sunday": false, 
+                "apply_saturday": false, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": true, 
+                "apply_friday": true, 
+                "apply_wednesday": true, 
+                "start_date": [
+                  1, 
+                  1
+                ], 
+                "apply_thursday": true, 
+                "schedule_day": "OfficeMedium BLDG_EQUIP_SCH_2013_Wkdy"
+              }, 
+              {
+                "apply_tuesday": false, 
+                "apply_sunday": false, 
+                "apply_saturday": true, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": false, 
+                "apply_friday": false, 
+                "apply_wednesday": false, 
+                "start_date": [
+                  1, 
+                  1
+                ], 
+                "apply_thursday": false, 
+                "schedule_day": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat"
+              }
+            ], 
+            "identifier": "Generic Office Equipment", 
+            "summer_designday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_SmrDsn", 
+            "winter_designday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_WntrDsn", 
+            "schedule_type_limit": {
+              "numeric_type": "Continuous", 
+              "type": "ScheduleTypeLimit", 
+              "identifier": "Fractional", 
+              "upper_limit": 1.0, 
+              "lower_limit": 0.0, 
+              "unit_type": "Dimensionless"
+            }
+          }, 
+          "properties": {
+            "ph": {
+              "equipment_collection": {
+                "equipment_set": {}
+              }, 
+              "type": "ElectricEquipmentPhProperties"
+            }, 
+            "type": "ElectricEquipmentProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "ElectricEquipmentReviveProperties"
+            }
+          }, 
+          "radiant_fraction": 0.5, 
+          "watts_per_area": 10.330000000000000, 
+          "type": "ElectricEquipment", 
+          "lost_fraction": 0.0, 
+          "identifier": "Generic Office Equipment", 
+          "latent_fraction": 0.0
+        }, 
+        "people": {
+          "properties": {
+            "ph": {
+              "number_people": 0.0, 
+              "type": "PeoplePhProperties", 
+              "id_num": 0, 
+              "dwellings": {
+                "identifier": "63c42199-1b5e-4552-9b44-b1bc6266722a", 
+                "num_dwellings": 0
+              }, 
+              "number_bedrooms": 0
+            }, 
+            "type": "PeopleProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "PeopleReviveProperties"
+            }
+          }, 
+          "radiant_fraction": 0.29999999999999999, 
+          "type": "People", 
+          "people_per_area": 0.056500000000000002, 
+          "identifier": "Generic Office People", 
+          "occupancy_schedule": {
+            "properties": {
+              "ph": {
+                "operating_days_wk": 7.0, 
+                "type": "ScheduleRulesetPhProperties", 
+                "id_num": 0, 
+                "operating_periods": {
+                  "collection": []
+                }, 
+                "operating_weeks_year": 52.142899999999997
+              }, 
+              "type": "ScheduleRulesetProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ScheduleRulesetReviveProperties"
+              }
+            }, 
+            "day_schedules": [
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_OCC_SCH_Default", 
+                "interpolate": false, 
                 "values": [
                   0.0, 
                   0.050000000000000003, 
                   0.0
                 ], 
-                "identifier": "OfficeMedium BLDG_OCC_SCH_Default", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    18, 
+                    0
+                  ]
+                ]
               }, 
               {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_OCC_SCH_SmrDsn", 
+                "interpolate": false, 
+                "values": [
+                  0.0, 
+                  1.0, 
+                  0.050000000000000003
+                ], 
                 "times": [
                   [
                     0, 
@@ -1224,31 +574,37 @@
                     22, 
                     0
                   ]
-                ], 
-                "values": [
-                  0.0, 
-                  1.0, 
-                  0.050000000000000003
-                ], 
-                "identifier": "OfficeMedium BLDG_OCC_SCH_SmrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
+                ]
               }, 
               {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_OCC_SCH_WntrDsn", 
+                "interpolate": false, 
+                "values": [
+                  0.0
+                ], 
                 "times": [
                   [
                     0, 
                     0
                   ]
-                ], 
-                "values": [
-                  0.0
-                ], 
-                "identifier": "OfficeMedium BLDG_OCC_SCH_WntrDsn", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
+                ]
               }, 
               {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_OCC_SCH_Wkdy", 
+                "interpolate": false, 
+                "values": [
+                  0.0, 
+                  0.10000000000000001, 
+                  0.20000000000000001, 
+                  0.94999999999999996, 
+                  0.5, 
+                  0.94999999999999996, 
+                  0.29999999999999999, 
+                  0.10000000000000001, 
+                  0.050000000000000003
+                ], 
                 "times": [
                   [
                     0, 
@@ -1286,23 +642,20 @@
                     22, 
                     0
                   ]
-                ], 
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium BLDG_OCC_SCH_Sat", 
+                "interpolate": false, 
                 "values": [
                   0.0, 
                   0.10000000000000001, 
-                  0.20000000000000001, 
-                  0.94999999999999996, 
-                  0.5, 
-                  0.94999999999999996, 
                   0.29999999999999999, 
                   0.10000000000000001, 
-                  0.050000000000000003
+                  0.050000000000000003, 
+                  0.0
                 ], 
-                "identifier": "OfficeMedium BLDG_OCC_SCH_Wkdy", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
-              }, 
-              {
                 "times": [
                   [
                     0, 
@@ -1328,514 +681,1191 @@
                     19, 
                     0
                   ]
-                ], 
-                "values": [
-                  0.0, 
-                  0.10000000000000001, 
-                  0.29999999999999999, 
-                  0.10000000000000001, 
-                  0.050000000000000003, 
-                  0.0
-                ], 
-                "identifier": "OfficeMedium BLDG_OCC_SCH_Sat", 
-                "interpolate": false, 
-                "type": "ScheduleDay"
+                ]
               }
             ], 
             "holiday_schedule": "OfficeMedium BLDG_OCC_SCH_Default", 
-            "summer_designday_schedule": "OfficeMedium BLDG_OCC_SCH_SmrDsn", 
-            "identifier": "Generic Office Occupancy", 
+            "default_day_schedule": "OfficeMedium BLDG_OCC_SCH_Default", 
+            "type": "ScheduleRuleset", 
             "schedule_rules": [
               {
                 "apply_tuesday": true, 
-                "apply_friday": true, 
                 "apply_sunday": false, 
-                "apply_thursday": true, 
-                "schedule_day": "OfficeMedium BLDG_OCC_SCH_Wkdy", 
+                "apply_saturday": false, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": true, 
+                "apply_friday": true, 
+                "apply_wednesday": true, 
                 "start_date": [
                   1, 
                   1
                 ], 
-                "apply_monday": true, 
-                "apply_wednesday": true, 
-                "apply_saturday": false, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
+                "apply_thursday": true, 
+                "schedule_day": "OfficeMedium BLDG_OCC_SCH_Wkdy"
               }, 
               {
                 "apply_tuesday": false, 
-                "apply_friday": false, 
                 "apply_sunday": false, 
-                "apply_thursday": false, 
-                "schedule_day": "OfficeMedium BLDG_OCC_SCH_Sat", 
+                "apply_saturday": true, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": false, 
+                "apply_friday": false, 
+                "apply_wednesday": false, 
                 "start_date": [
                   1, 
                   1
                 ], 
-                "apply_monday": false, 
-                "apply_wednesday": false, 
-                "apply_saturday": true, 
-                "type": "ScheduleRuleAbridged", 
-                "end_date": [
-                  12, 
-                  31
-                ]
+                "apply_thursday": false, 
+                "schedule_day": "OfficeMedium BLDG_OCC_SCH_Sat"
               }
             ], 
-            "type": "ScheduleRuleset", 
-            "default_day_schedule": "OfficeMedium BLDG_OCC_SCH_Default", 
+            "identifier": "Generic Office Occupancy", 
+            "summer_designday_schedule": "OfficeMedium BLDG_OCC_SCH_SmrDsn", 
+            "winter_designday_schedule": "OfficeMedium BLDG_OCC_SCH_WntrDsn", 
             "schedule_type_limit": {
-              "upper_limit": 1.0, 
               "numeric_type": "Continuous", 
-              "identifier": "Fractional", 
               "type": "ScheduleTypeLimit", 
-              "unit_type": "Dimensionless", 
-              "lower_limit": 0.0
-            }, 
+              "identifier": "Fractional", 
+              "upper_limit": 1.0, 
+              "lower_limit": 0.0, 
+              "unit_type": "Dimensionless"
+            }
+          }, 
+          "latent_fraction": {
+            "type": "Autocalculate"
+          }, 
+          "activity_schedule": {
             "properties": {
-              "revive": {
-                "id_num": 0, 
-                "type": "ScheduleRulesetReviveProperties"
-              }, 
               "ph": {
                 "operating_days_wk": 7.0, 
+                "type": "ScheduleRulesetPhProperties", 
+                "id_num": 0, 
                 "operating_periods": {
                   "collection": []
                 }, 
-                "operating_weeks_year": 52.142899999999997, 
-                "id_num": 0, 
-                "type": "ScheduleRulesetPhProperties"
+                "operating_weeks_year": 52.142899999999997
               }, 
-              "type": "ScheduleRulesetProperties"
+              "type": "ScheduleRulesetProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ScheduleRulesetReviveProperties"
+              }
+            }, 
+            "day_schedules": [
+              {
+                "type": "ScheduleDay", 
+                "identifier": "Seated Adult Activity_Day Schedule", 
+                "interpolate": false, 
+                "values": [
+                  120.0
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }
+            ], 
+            "default_day_schedule": "Seated Adult Activity_Day Schedule", 
+            "type": "ScheduleRuleset", 
+            "identifier": "Seated Adult Activity", 
+            "schedule_type_limit": {
+              "numeric_type": "Continuous", 
+              "type": "ScheduleTypeLimit", 
+              "identifier": "Activity Level", 
+              "upper_limit": {
+                "type": "NoLimit"
+              }, 
+              "lower_limit": 0.0, 
+              "unit_type": "ActivityLevel"
+            }
+          }
+        }, 
+        "infiltration": {
+          "schedule": {
+            "properties": {
+              "ph": {
+                "operating_days_wk": 7.0, 
+                "type": "ScheduleRulesetPhProperties", 
+                "id_num": 0, 
+                "operating_periods": {
+                  "collection": []
+                }, 
+                "operating_weeks_year": 52.142899999999997
+              }, 
+              "type": "ScheduleRulesetProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ScheduleRulesetReviveProperties"
+              }
+            }, 
+            "day_schedules": [
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium INFIL_SCH_PNNL_Default", 
+                "interpolate": false, 
+                "values": [
+                  1.0
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium INFIL_SCH_PNNL_Wkdy_SmrDsn", 
+                "interpolate": false, 
+                "values": [
+                  1.0, 
+                  0.25, 
+                  1.0
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    22, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium INFIL_SCH_PNNL_Sat_WntrDsn", 
+                "interpolate": false, 
+                "values": [
+                  1.0, 
+                  0.25, 
+                  1.0
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    18, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium INFIL_SCH_PNNL_Wkdy", 
+                "interpolate": false, 
+                "values": [
+                  1.0, 
+                  0.25, 
+                  1.0
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    22, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium INFIL_SCH_PNNL_Sat", 
+                "interpolate": false, 
+                "values": [
+                  1.0, 
+                  0.25, 
+                  1.0
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    18, 
+                    0
+                  ]
+                ]
+              }
+            ], 
+            "holiday_schedule": "OfficeMedium INFIL_SCH_PNNL_Default", 
+            "default_day_schedule": "OfficeMedium INFIL_SCH_PNNL_Default", 
+            "type": "ScheduleRuleset", 
+            "schedule_rules": [
+              {
+                "apply_tuesday": true, 
+                "apply_sunday": false, 
+                "apply_saturday": false, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": true, 
+                "apply_friday": true, 
+                "apply_wednesday": true, 
+                "start_date": [
+                  1, 
+                  1
+                ], 
+                "apply_thursday": true, 
+                "schedule_day": "OfficeMedium INFIL_SCH_PNNL_Wkdy"
+              }, 
+              {
+                "apply_tuesday": false, 
+                "apply_sunday": false, 
+                "apply_saturday": true, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": false, 
+                "apply_friday": false, 
+                "apply_wednesday": false, 
+                "start_date": [
+                  1, 
+                  1
+                ], 
+                "apply_thursday": false, 
+                "schedule_day": "OfficeMedium INFIL_SCH_PNNL_Sat"
+              }
+            ], 
+            "identifier": "Generic Office Infiltration", 
+            "summer_designday_schedule": "OfficeMedium INFIL_SCH_PNNL_Wkdy_SmrDsn", 
+            "winter_designday_schedule": "OfficeMedium INFIL_SCH_PNNL_Sat_WntrDsn", 
+            "schedule_type_limit": {
+              "numeric_type": "Continuous", 
+              "type": "ScheduleTypeLimit", 
+              "identifier": "Fractional", 
+              "upper_limit": 1.0, 
+              "lower_limit": 0.0, 
+              "unit_type": "Dimensionless"
             }
           }, 
-          "identifier": "Generic Office People", 
-          "type": "People", 
-          "properties": {
-            "revive": {
-              "id_num": 0, 
-              "type": "PeopleReviveProperties"
-            }, 
-            "ph": {
-              "number_bedrooms": 0, 
-              "dwellings": {
-                "identifier": "21f8f725-6c87-4d47-942e-2ad290133113", 
-                "num_dwellings": 0
+          "identifier": "Generic Office Infiltration", 
+          "flow_per_exterior_area": 0.00022660000000000001, 
+          "type": "Infiltration"
+        }, 
+        "setpoint": {
+          "identifier": "Generic Office Setpoints", 
+          "heating_schedule": {
+            "properties": {
+              "ph": {
+                "operating_days_wk": 7.0, 
+                "type": "ScheduleRulesetPhProperties", 
+                "id_num": 0, 
+                "operating_periods": {
+                  "collection": []
+                }, 
+                "operating_weeks_year": 52.142899999999997
               }, 
-              "id_num": 0, 
-              "type": "PeoplePhProperties", 
-              "number_people": 0.0
+              "type": "ScheduleRulesetProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ScheduleRulesetReviveProperties"
+              }
             }, 
-            "type": "PeopleProperties"
+            "day_schedules": [
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
+                "interpolate": false, 
+                "values": [
+                  15.600000000000000
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default_SmrDsn", 
+                "interpolate": false, 
+                "values": [
+                  15.600000000000000
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_WntrDsn", 
+                "interpolate": false, 
+                "values": [
+                  15.600000000000000, 
+                  17.600000000000001, 
+                  19.600000000000001, 
+                  21.0, 
+                  15.600000000000000
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    5, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    7, 
+                    0
+                  ], 
+                  [
+                    22, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Wkdy", 
+                "interpolate": false, 
+                "values": [
+                  15.600000000000000, 
+                  17.800000000000001, 
+                  20.0, 
+                  21.0, 
+                  15.600000000000000
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    5, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    7, 
+                    0
+                  ], 
+                  [
+                    22, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Sat", 
+                "interpolate": false, 
+                "values": [
+                  15.600000000000000, 
+                  17.800000000000001, 
+                  20.0, 
+                  21.0, 
+                  15.600000000000000
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    5, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    7, 
+                    0
+                  ], 
+                  [
+                    17, 
+                    0
+                  ]
+                ]
+              }
+            ], 
+            "holiday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
+            "default_day_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
+            "type": "ScheduleRuleset", 
+            "schedule_rules": [
+              {
+                "apply_tuesday": true, 
+                "apply_sunday": false, 
+                "apply_saturday": false, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": true, 
+                "apply_friday": true, 
+                "apply_wednesday": true, 
+                "start_date": [
+                  1, 
+                  1
+                ], 
+                "apply_thursday": true, 
+                "schedule_day": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Wkdy"
+              }, 
+              {
+                "apply_tuesday": false, 
+                "apply_sunday": false, 
+                "apply_saturday": true, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": false, 
+                "apply_friday": false, 
+                "apply_wednesday": false, 
+                "start_date": [
+                  1, 
+                  1
+                ], 
+                "apply_thursday": false, 
+                "schedule_day": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Sat"
+              }
+            ], 
+            "identifier": "Generic Office Heating", 
+            "summer_designday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default_SmrDsn", 
+            "winter_designday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_WntrDsn", 
+            "schedule_type_limit": {
+              "numeric_type": "Continuous", 
+              "type": "ScheduleTypeLimit", 
+              "identifier": "Temperature", 
+              "upper_limit": {
+                "type": "NoLimit"
+              }, 
+              "lower_limit": -273.14999999999998, 
+              "unit_type": "Temperature"
+            }
+          }, 
+          "cooling_schedule": {
+            "properties": {
+              "ph": {
+                "operating_days_wk": 7.0, 
+                "type": "ScheduleRulesetPhProperties", 
+                "id_num": 0, 
+                "operating_periods": {
+                  "collection": []
+                }, 
+                "operating_weeks_year": 52.142899999999997
+              }, 
+              "type": "ScheduleRulesetProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ScheduleRulesetReviveProperties"
+              }
+            }, 
+            "day_schedules": [
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
+                "interpolate": false, 
+                "values": [
+                  26.699999999999999
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn", 
+                "interpolate": false, 
+                "values": [
+                  26.699999999999999, 
+                  25.699999999999999, 
+                  25.0, 
+                  24.0, 
+                  26.699999999999999
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    5, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    7, 
+                    0
+                  ], 
+                  [
+                    22, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn", 
+                "interpolate": false, 
+                "values": [
+                  26.699999999999999
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy", 
+                "interpolate": false, 
+                "values": [
+                  26.699999999999999, 
+                  25.600000000000001, 
+                  25.0, 
+                  24.0, 
+                  26.699999999999999
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    5, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    7, 
+                    0
+                  ], 
+                  [
+                    22, 
+                    0
+                  ]
+                ]
+              }, 
+              {
+                "type": "ScheduleDay", 
+                "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat", 
+                "interpolate": false, 
+                "values": [
+                  26.699999999999999, 
+                  25.699999999999999, 
+                  25.0, 
+                  24.0, 
+                  26.699999999999999
+                ], 
+                "times": [
+                  [
+                    0, 
+                    0
+                  ], 
+                  [
+                    5, 
+                    0
+                  ], 
+                  [
+                    6, 
+                    0
+                  ], 
+                  [
+                    7, 
+                    0
+                  ], 
+                  [
+                    17, 
+                    0
+                  ]
+                ]
+              }
+            ], 
+            "holiday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
+            "default_day_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
+            "type": "ScheduleRuleset", 
+            "schedule_rules": [
+              {
+                "apply_tuesday": true, 
+                "apply_sunday": false, 
+                "apply_saturday": false, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": true, 
+                "apply_friday": true, 
+                "apply_wednesday": true, 
+                "start_date": [
+                  1, 
+                  1
+                ], 
+                "apply_thursday": true, 
+                "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy"
+              }, 
+              {
+                "apply_tuesday": false, 
+                "apply_sunday": false, 
+                "apply_saturday": true, 
+                "end_date": [
+                  12, 
+                  31
+                ], 
+                "type": "ScheduleRuleAbridged", 
+                "apply_monday": false, 
+                "apply_friday": false, 
+                "apply_wednesday": false, 
+                "start_date": [
+                  1, 
+                  1
+                ], 
+                "apply_thursday": false, 
+                "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat"
+              }
+            ], 
+            "identifier": "Generic Office Cooling", 
+            "summer_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn", 
+            "winter_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn", 
+            "schedule_type_limit": {
+              "numeric_type": "Continuous", 
+              "type": "ScheduleTypeLimit", 
+              "identifier": "Temperature", 
+              "upper_limit": {
+                "type": "NoLimit"
+              }, 
+              "lower_limit": -273.14999999999998, 
+              "unit_type": "Temperature"
+            }
+          }, 
+          "type": "Setpoint"
+        }
+      }, 
+      "hvac": {
+        "demand_controlled_ventilation": false, 
+        "latent_heat_recovery": 0.0, 
+        "heating_air_temperature": 50.0, 
+        "properties": {
+          "type": "IdealAirSystemProperties", 
+          "revive": {
+            "equipment_collection": {
+              "equipment": [], 
+              "type": "PhiusReviveHVACEquipmentCollection"
+            }, 
+            "type": "IdealAirSystemReviveProperties"
+          }, 
+          "ref": {
+            "user_data": {}, 
+            "type": "_HBObjectWithReferences", 
+            "external_identifiers": {}, 
+            "uris": [], 
+            "identifier": "rfsc048c749", 
+            "image_refs": [], 
+            "ref_status": "NA", 
+            "document_refs": []
           }
+        }, 
+        "economizer_type": "DifferentialDryBulb", 
+        "type": "IdealAirSystem", 
+        "sensible_heat_recovery": 0.0, 
+        "identifier": "Room_2_bcc4148c Ideal Loads Air System", 
+        "cooling_air_temperature": 13.0, 
+        "heating_limit": {
+          "type": "Autosize"
+        }, 
+        "cooling_limit": {
+          "type": "Autosize"
         }
       }, 
       "type": "RoomEnergyProperties"
     }, 
-    "ph": {
-      "ph_bldg_segment": {
-        "site": {
-          "display_name": "4db45429-16a2-4b05-a7ae-bfed9b53b512", 
-          "user_data": {}, 
-          "location": {
-            "hours_from_UTC": -4, 
-            "latitude": 40.600000000000001, 
-            "display_name": "79b6554f-fddd-46c3-a104-b68401f8d23a", 
-            "longitude": -73.799999999999997, 
-            "user_data": {}, 
-            "climate_zone": 1, 
-            "site_elevation": null, 
-            "identifier": "79b6554f-fddd-46c3-a104-b68401f8d23a"
-          }, 
-          "climate": {
-            "ground": {
-              "ground_density": 2000, 
-              "ground_thermal_conductivity": 2, 
-              "display_name": "aa16a440-5a56-4fe8-9035-333007eddbcd", 
-              "user_data": {}, 
-              "flow_rate_groundwater": 0.050000000000000003, 
-              "depth_groundwater": 3, 
-              "ground_heat_capacity": 1000, 
-              "identifier": "aa16a440-5a56-4fe8-9035-333007eddbcd"
-            }, 
-            "monthly_temps": {
-              "display_name": "b6ef31b1-33ee-4069-93d6-68304e311cdd", 
-              "user_data": {}, 
-              "sky_temps": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "cbd88626-62e5-4fb5-bd94-2f4032533c94", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "cbd88626-62e5-4fb5-bd94-2f4032533c94", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }, 
-              "identifier": "b6ef31b1-33ee-4069-93d6-68304e311cdd", 
-              "air_temps": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "f2640028-9ae7-4789-879f-06810e10c2a1", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "f2640028-9ae7-4789-879f-06810e10c2a1", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }, 
-              "dewpoints": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "88062d92-c4fa-4a6d-8b73-5aff536aefe5", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "88062d92-c4fa-4a6d-8b73-5aff536aefe5", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }, 
-              "ground_temps": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "cf437562-c865-4490-85a6-b80122e5bd17", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "cf437562-c865-4490-85a6-b80122e5bd17", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }
-            }, 
-            "display_name": "New York", 
-            "user_data": {}, 
-            "summer_daily_temperature_swing": 8.0, 
-            "average_wind_speed": 4.0, 
-            "monthly_radiation": {
-              "east": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "4a23f6fc-bd93-4529-92f2-4d19276b9032", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "4a23f6fc-bd93-4529-92f2-4d19276b9032", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }, 
-              "display_name": "108690a1-b862-4bf0-aab1-8fe39107b788", 
-              "user_data": {}, 
-              "west": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "a4ff291e-7dfe-405e-9c06-290293599d7a", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "a4ff291e-7dfe-405e-9c06-290293599d7a", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }, 
-              "north": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "876b09e3-ebad-4ad7-8c3a-82c1e266fa87", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "876b09e3-ebad-4ad7-8c3a-82c1e266fa87", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }, 
-              "glob": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "15f9b10c-f2e7-4f52-8c47-f899ff6e5718", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "15f9b10c-f2e7-4f52-8c47-f899ff6e5718", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }, 
-              "identifier": "108690a1-b862-4bf0-aab1-8fe39107b788", 
-              "south": {
-                "december": 0.0, 
-                "february": 0.0, 
-                "january": 0.0, 
-                "october": 0.0, 
-                "display_name": "cdb872d2-5365-4bda-86c2-8bb648ba40de", 
-                "user_data": {}, 
-                "april": 0.0, 
-                "november": 0.0, 
-                "september": 0.0, 
-                "june": 0.0, 
-                "identifier": "cdb872d2-5365-4bda-86c2-8bb648ba40de", 
-                "may": 0.0, 
-                "august": 0.0, 
-                "july": 0.0, 
-                "march": 0.0
-              }
-            }, 
-            "identifier": "27a55d0f-882a-405c-b4ae-cb86db51efe1", 
-            "peak_loads": {
-              "heat_load_1": {
-                "sky_temp": null, 
-                "rad_west": 0.0, 
-                "rad_north": 0.0, 
-                "display_name": "b853991a-f1ee-48aa-baee-005c289ded47", 
-                "user_data": {}, 
-                "rad_south": 0.0, 
-                "temp": 0.0, 
-                "ground_temp": null, 
-                "rad_east": 0.0, 
-                "identifier": "b853991a-f1ee-48aa-baee-005c289ded47", 
-                "dewpoint": null, 
-                "rad_global": 0.0
-              }, 
-              "heat_load_2": {
-                "sky_temp": null, 
-                "rad_west": 0.0, 
-                "rad_north": 0.0, 
-                "display_name": "18db730b-3ecd-496e-b339-2881392f86c7", 
-                "user_data": {}, 
-                "rad_south": 0.0, 
-                "temp": 0.0, 
-                "ground_temp": null, 
-                "rad_east": 0.0, 
-                "identifier": "18db730b-3ecd-496e-b339-2881392f86c7", 
-                "dewpoint": null, 
-                "rad_global": 0.0
-              }, 
-              "display_name": "8d80f1df-84da-4d43-a27d-b549a5ffbfd0", 
-              "user_data": {}, 
-              "identifier": "8d80f1df-84da-4d43-a27d-b549a5ffbfd0", 
-              "cooling_load_1": {
-                "sky_temp": null, 
-                "rad_west": 0.0, 
-                "rad_north": 0.0, 
-                "display_name": "63f5c07e-4278-43bd-9064-57b36e590d38", 
-                "user_data": {}, 
-                "rad_south": 0.0, 
-                "temp": 0.0, 
-                "ground_temp": null, 
-                "rad_east": 0.0, 
-                "identifier": "63f5c07e-4278-43bd-9064-57b36e590d38", 
-                "dewpoint": null, 
-                "rad_global": 0.0
-              }, 
-              "cooling_load_2": {
-                "sky_temp": null, 
-                "rad_west": 0.0, 
-                "rad_north": 0.0, 
-                "display_name": "0fba094a-f07d-4fd1-aadc-360560b85dd6", 
-                "user_data": {}, 
-                "rad_south": 0.0, 
-                "temp": 0.0, 
-                "ground_temp": null, 
-                "rad_east": 0.0, 
-                "identifier": "0fba094a-f07d-4fd1-aadc-360560b85dd6", 
-                "dewpoint": null, 
-                "rad_global": 0.0
-              }
-            }, 
-            "station_elevation": 0.0
-          }, 
-          "phpp_library_codes": {
-            "display_name": "US0055c-New York", 
-            "user_data": {}, 
-            "dataset_name": "US0055c-New York", 
-            "country_code": "US-United States of America", 
-            "identifier": "c7c45f8f-51fa-4d60-9534-04e9dad13983", 
-            "region_code": "New York"
-          }, 
-          "identifier": "4db45429-16a2-4b05-a7ae-bfed9b53b512"
-        }, 
-        "co2e_factors": {
-          "factors": []
-        }, 
-        "num_floor_levels": 1, 
-        "display_name": "Unnamed_Bldg_Segment", 
-        "user_data": {}, 
-        "num_dwelling_units": 1, 
-        "phius_certification": {
-          "int_gains_flush_heat_loss": true, 
-          "int_gains_toilet_room_util_pat": null, 
-          "int_gains_use_school_defaults": false, 
-          "int_gains_num_toilets": 1, 
-          "int_gains_evap_per_person": 15, 
-          "building_category_type": {
-            "value": "1-RESIDENTIAL BUILDING"
-          }, 
-          "PHIUS2021_cooling_demand": 15.0, 
-          "building_use_type": {
-            "value": "1-RESIDENTIAL"
-          }, 
-          "PHIUS2021_cooling_load": 10.0, 
-          "int_gains_dhw_marginal_perf_ratio": null, 
-          "user_data": {}, 
-          "display_name": "20aa66ec-fb20-4f6b-b40f-746a3acc94a5", 
-          "building_type": {
-            "value": "1-NEW_CONSTRUCTION"
-          }, 
-          "icfa_override": null, 
-          "identifier": "20aa66ec-fb20-4f6b-b40f-746a3acc94a5", 
-          "PHIUS2021_heating_load": 10.0, 
-          "localization_selection_type": 2, 
-          "building_status": {
-            "value": "1-IN_PLANNING"
-          }, 
-          "certification_program": {
-            "value": "7-PHIUS 2021 CORE"
-          }, 
-          "PHIUS2021_heating_demand": 15.0
-        }, 
-        "non_combustible_materials": false, 
-        "phi_certification": {
-          "attributes": {
-            "primary_energy_type": "2-PER (RENEWABLE)", 
-            "occupancy_type": "1-STANDARD (ONLY FOR RESIDENTIAL BUILDINGS)", 
-            "enerphit_type": "2-ENERGY DEMAND METHOD", 
-            "building_category_type": "1-RESIDENTIAL BUILDING", 
-            "building_use_type": "10-DWELLING", 
-            "certification_class": "1-CLASSIC", 
-            "phpp_version": 9, 
-            "retrofit_type": "1-NEW BUILDING", 
-            "ihg_type": "2-STANDARD", 
-            "tfa_override": null, 
-            "certification_type": "1-PASSIVE HOUSE"
-          }, 
-          "display_name": "864122b4-a19d-44d8-9cac-c557ce5376ea", 
-          "user_data": {}, 
-          "phpp_version": 9, 
-          "identifier": "864122b4-a19d-44d8-9cac-c557ce5376ea"
-        }, 
-        "set_points": {
-          "display_name": "5da4d026-1371-4d22-9844-70f3bf9b075f", 
-          "user_data": {}, 
-          "winter": 20.0, 
-          "summer": 25.0, 
-          "identifier": "5da4d026-1371-4d22-9844-70f3bf9b075f"
-        }, 
-        "name": "Unnamed_Bldg_Segment", 
-        "source_energy_factors": {
-          "factors": []
-        }, 
-        "wind_exposure_type": {
-          "value": "1-SEVERAL_SIDES_EXPOSED_NO_SCREENING"
-        }, 
-        "identifier": "646a6ecc-c01e-4622-81f6-7d95f901ff5b", 
-        "mech_room_temp": 20.0, 
-        "thermal_bridges": {}, 
-        "summer_hrv_bypass_mode": {
-          "value": "4-ALWAYS"
-        }
-      }, 
-      "ph_foundations": [], 
-      "specific_heat_capacity_wh_m2k": null, 
-      "specific_heat_capacity": "1-LIGHTWEIGHT", 
-      "id_num": 0, 
-      "type": "RoomPhProperties", 
-      "spaces": []
-    }, 
-    "radiance": {
-      "type": "RoomRadianceProperties"
-    }, 
-    "type": "RoomProperties", 
     "doe2": {
       "type": "RoomDoe2Properties"
+    }, 
+    "ph_hvac": {
+      "hot_water_system": null, 
+      "heat_pump_systems": [], 
+      "type": "RoomPhHvacProperties", 
+      "heating_systems": [], 
+      "supportive_devices": [], 
+      "renewable_devices": [], 
+      "ventilation_system": null, 
+      "id_num": 0, 
+      "exhaust_vent_devices": []
     }, 
     "revive": {
       "id_num": 0, 
       "type": "RoomReviveProperties"
     }, 
-    "ph_hvac": {
-      "heating_systems": [], 
-      "exhaust_vent_devices": [], 
-      "supportive_devices": [], 
-      "heat_pump_systems": [], 
-      "hot_water_system": null, 
-      "ventilation_system": null, 
+    "ph": {
+      "ph_foundations": [], 
+      "specific_heat_capacity": "1-LIGHTWEIGHT", 
+      "type": "RoomPhProperties", 
+      "ph_bldg_segment": {
+        "name": "Unnamed_Bldg_Segment", 
+        "num_dwelling_units": 1, 
+        "non_combustible_materials": false, 
+        "user_data": {}, 
+        "phi_certification": {
+          "user_data": {}, 
+          "attributes": {
+            "certification_type": "1-PASSIVE HOUSE", 
+            "certification_class": "1-CLASSIC", 
+            "building_category_type": "1-RESIDENTIAL BUILDING", 
+            "occupancy_type": "1-STANDARD (ONLY FOR RESIDENTIAL BUILDINGS)", 
+            "phpp_version": 9, 
+            "ihg_type": "2-STANDARD", 
+            "building_use_type": "10-DWELLING", 
+            "primary_energy_type": "2-PER (RENEWABLE)", 
+            "enerphit_type": "2-ENERGY DEMAND METHOD", 
+            "retrofit_type": "1-NEW BUILDING", 
+            "tfa_override": null
+          }, 
+          "identifier": "a64f9caa-9db2-47ac-b759-d9d9733ff449", 
+          "display_name": "a64f9caa-9db2-47ac-b759-d9d9733ff449", 
+          "phpp_version": 9
+        }, 
+        "source_energy_factors": {
+          "factors": []
+        }, 
+        "summer_hrv_bypass_mode": {
+          "value": "4-ALWAYS"
+        }, 
+        "identifier": "f6d0f428-ab6d-4447-b27e-99dba6737f7a", 
+        "thermal_bridges": {}, 
+        "co2e_factors": {
+          "factors": []
+        }, 
+        "mech_room_temp": 20.0, 
+        "phius_certification": {
+          "PHIUS2021_cooling_load": 10.0, 
+          "PHIUS2021_heating_load": 10.0, 
+          "user_data": {}, 
+          "building_status": {
+            "value": "1-IN_PLANNING"
+          }, 
+          "int_gains_toilet_room_util_pat": null, 
+          "building_type": {
+            "value": "1-NEW_CONSTRUCTION"
+          }, 
+          "building_category_type": {
+            "value": "1-RESIDENTIAL BUILDING"
+          }, 
+          "localization_selection_type": 2, 
+          "int_gains_flush_heat_loss": true, 
+          "int_gains_dhw_marginal_perf_ratio": null, 
+          "certification_program": {
+            "value": "7-PHIUS 2021 CORE"
+          }, 
+          "identifier": "c372175f-2f5c-49ed-910d-0f477618eb00", 
+          "icfa_override": null, 
+          "int_gains_use_school_defaults": false, 
+          "display_name": "c372175f-2f5c-49ed-910d-0f477618eb00", 
+          "building_use_type": {
+            "value": "1-RESIDENTIAL"
+          }, 
+          "PHIUS2021_heating_demand": 15.0, 
+          "PHIUS2021_cooling_demand": 15.0, 
+          "int_gains_num_toilets": 1, 
+          "int_gains_evap_per_person": 15
+        }, 
+        "display_name": "Unnamed_Bldg_Segment", 
+        "set_points": {
+          "user_data": {}, 
+          "identifier": "48e58b39-ff75-4da1-aad8-d2d0bd6ed7c0", 
+          "summer": 25.0, 
+          "display_name": "48e58b39-ff75-4da1-aad8-d2d0bd6ed7c0", 
+          "winter": 20.0
+        }, 
+        "site": {
+          "location": {
+            "latitude": 40.600000000000001, 
+            "user_data": {}, 
+            "site_elevation": null, 
+            "identifier": "bc510d9f-8fa4-45f4-af89-1818e1e0cf9f", 
+            "hours_from_UTC": -4, 
+            "climate_zone": 1, 
+            "display_name": "bc510d9f-8fa4-45f4-af89-1818e1e0cf9f", 
+            "longitude": -73.799999999999997
+          }, 
+          "climate": {
+            "user_data": {}, 
+            "monthly_temps": {
+              "air_temps": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "397022c2-b153-4020-be7f-ad4eb0b9c3a4", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "397022c2-b153-4020-be7f-ad4eb0b9c3a4", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }, 
+              "user_data": {}, 
+              "identifier": "c1f1fd50-cdde-41f7-8a3a-b328de76eb90", 
+              "sky_temps": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "33831811-6758-4d9b-aad6-700503b16b96", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "33831811-6758-4d9b-aad6-700503b16b96", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }, 
+              "ground_temps": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "acc1d778-ac8f-4df1-9c4b-1ae2531041b9", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "acc1d778-ac8f-4df1-9c4b-1ae2531041b9", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }, 
+              "display_name": "c1f1fd50-cdde-41f7-8a3a-b328de76eb90", 
+              "dewpoints": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "2ca27162-84e2-492f-a3f0-d9ce911dc6ca", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "2ca27162-84e2-492f-a3f0-d9ce911dc6ca", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }
+            }, 
+            "peak_loads": {
+              "heat_load_2": {
+                "user_data": {}, 
+                "temp": 0.0, 
+                "rad_west": 0.0, 
+                "rad_global": 0.0, 
+                "identifier": "cedcfb74-fce3-42df-8fe3-93a105e229a4", 
+                "rad_east": 0.0, 
+                "ground_temp": null, 
+                "display_name": "cedcfb74-fce3-42df-8fe3-93a105e229a4", 
+                "sky_temp": null, 
+                "dewpoint": null, 
+                "rad_south": 0.0, 
+                "rad_north": 0.0
+              }, 
+              "user_data": {}, 
+              "heat_load_1": {
+                "user_data": {}, 
+                "temp": 0.0, 
+                "rad_west": 0.0, 
+                "rad_global": 0.0, 
+                "identifier": "9f079cf2-98ae-46d9-b44c-78358326892a", 
+                "rad_east": 0.0, 
+                "ground_temp": null, 
+                "display_name": "9f079cf2-98ae-46d9-b44c-78358326892a", 
+                "sky_temp": null, 
+                "dewpoint": null, 
+                "rad_south": 0.0, 
+                "rad_north": 0.0
+              }, 
+              "cooling_load_1": {
+                "user_data": {}, 
+                "temp": 0.0, 
+                "rad_west": 0.0, 
+                "rad_global": 0.0, 
+                "identifier": "f04b5939-3b02-40e8-80b2-ed53e1a38200", 
+                "rad_east": 0.0, 
+                "ground_temp": null, 
+                "display_name": "f04b5939-3b02-40e8-80b2-ed53e1a38200", 
+                "sky_temp": null, 
+                "dewpoint": null, 
+                "rad_south": 0.0, 
+                "rad_north": 0.0
+              }, 
+              "identifier": "1694565a-43fd-4b8a-984f-db42a7503acf", 
+              "display_name": "1694565a-43fd-4b8a-984f-db42a7503acf", 
+              "cooling_load_2": {
+                "user_data": {}, 
+                "temp": 0.0, 
+                "rad_west": 0.0, 
+                "rad_global": 0.0, 
+                "identifier": "2cae6afb-72b1-4794-a369-aab47a410347", 
+                "rad_east": 0.0, 
+                "ground_temp": null, 
+                "display_name": "2cae6afb-72b1-4794-a369-aab47a410347", 
+                "sky_temp": null, 
+                "dewpoint": null, 
+                "rad_south": 0.0, 
+                "rad_north": 0.0
+              }
+            }, 
+            "identifier": "1e58a31c-bc64-4844-ac8e-4ba01fb8a6ed", 
+            "ground": {
+              "user_data": {}, 
+              "ground_thermal_conductivity": 2, 
+              "ground_density": 2000, 
+              "identifier": "91650042-45c9-4e61-a64c-3cafcd25d461", 
+              "flow_rate_groundwater": 0.050000000000000003, 
+              "display_name": "91650042-45c9-4e61-a64c-3cafcd25d461", 
+              "depth_groundwater": 3, 
+              "ground_heat_capacity": 1000
+            }, 
+            "display_name": "New York", 
+            "average_wind_speed": 4.0, 
+            "monthly_radiation": {
+              "user_data": {}, 
+              "identifier": "9f4bbec3-8016-4ae6-8dc2-413ccfdbacaa", 
+              "west": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "5052e32a-683b-481f-ac98-6de557301229", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "5052e32a-683b-481f-ac98-6de557301229", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }, 
+              "north": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "8f7430e5-306a-4c47-a8e7-113bc18c105d", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "8f7430e5-306a-4c47-a8e7-113bc18c105d", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }, 
+              "display_name": "9f4bbec3-8016-4ae6-8dc2-413ccfdbacaa", 
+              "south": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "0a25370f-2a60-49e1-9395-04ff2b878e2e", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "0a25370f-2a60-49e1-9395-04ff2b878e2e", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }, 
+              "glob": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "48f2920b-bd72-4de4-8697-dd9cb5bfa347", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "48f2920b-bd72-4de4-8697-dd9cb5bfa347", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }, 
+              "east": {
+                "june": 0.0, 
+                "october": 0.0, 
+                "user_data": {}, 
+                "december": 0.0, 
+                "march": 0.0, 
+                "identifier": "6aeaeea4-9d82-496e-95f3-d9955dbfd928", 
+                "november": 0.0, 
+                "july": 0.0, 
+                "february": 0.0, 
+                "display_name": "6aeaeea4-9d82-496e-95f3-d9955dbfd928", 
+                "april": 0.0, 
+                "september": 0.0, 
+                "may": 0.0, 
+                "august": 0.0, 
+                "january": 0.0
+              }
+            }, 
+            "station_elevation": 0.0, 
+            "summer_daily_temperature_swing": 8.0
+          }, 
+          "user_data": {}, 
+          "identifier": "e835dd49-53fc-4abd-b141-d86ef03e1e1f", 
+          "phpp_library_codes": {
+            "dataset_name": "US0055c-New York", 
+            "user_data": {}, 
+            "identifier": "b358fde7-de77-4ae6-b987-4a5a2a9b94db", 
+            "region_code": "New York", 
+            "display_name": "US0055c-New York", 
+            "country_code": "US-United States of America"
+          }, 
+          "display_name": "e835dd49-53fc-4abd-b141-d86ef03e1e1f"
+        }, 
+        "wind_exposure_type": {
+          "value": "1-SEVERAL_SIDES_EXPOSED_NO_SCREENING"
+        }, 
+        "num_floor_levels": 1
+      }, 
       "id_num": 0, 
-      "type": "RoomPhHvacProperties", 
-      "renewable_devices": []
-    }
+      "specific_heat_capacity_wh_m2k": null, 
+      "spaces": []
+    }, 
+    "radiance": {
+      "type": "RoomRadianceProperties"
+    }, 
+    "type": "RoomProperties"
   }, 
-  "identifier": "Room_2_50e4af18", 
+  "type": "Room", 
+  "identifier": "Room_2_bcc4148c", 
+  "display_name": "Room_2", 
   "faces": [
     {
-      "display_name": "Room_2_50e4af18..Face0", 
+      "properties": {
+        "energy": {
+          "type": "FaceEnergyProperties"
+        }, 
+        "ph_hvac": {
+          "type": "FacePhHvacProperties"
+        }, 
+        "revive": {
+          "id_num": 0, 
+          "type": "FaceReviveProperties"
+        }, 
+        "ph": {
+          "id_num": 0, 
+          "type": "FacePhProperties"
+        }, 
+        "radiance": {
+          "type": "FaceRadianceProperties"
+        }, 
+        "type": "FaceProperties"
+      }, 
+      "type": "Face", 
+      "identifier": "Room_2_bcc4148c..Face0", 
+      "face_type": "Wall", 
+      "boundary_condition": {
+        "view_factor": {
+          "type": "Autocalculate"
+        }, 
+        "type": "Outdoors", 
+        "sun_exposure": true, 
+        "wind_exposure": true
+      }, 
       "geometry": {
         "plane": {
-          "n": [
-            0.0, 
-            1.0, 
-            0.0
-          ], 
           "o": [
             -4.0, 
             4.0, 
             1.5
           ], 
+          "type": "Plane", 
           "x": [
             -1.0, 
             0.0, 
             -2.7755575615628914e-17
           ], 
-          "type": "Plane"
+          "n": [
+            0.0, 
+            1.0, 
+            0.0
+          ]
         }, 
-        "type": "Face3D", 
         "boundary": [
           [
             5.0, 
@@ -1857,19 +1887,22 @@
             4.0, 
             3.0
           ]
-        ]
+        ], 
+        "type": "Face3D"
       }, 
-      "boundary_condition": {
-        "wind_exposure": true, 
-        "view_factor": {
-          "type": "Autocalculate"
-        }, 
-        "sun_exposure": true, 
-        "type": "Outdoors"
-      }, 
+      "display_name": "Room_2_bcc4148c..Face0"
+    }, 
+    {
       "properties": {
         "energy": {
           "type": "FaceEnergyProperties"
+        }, 
+        "ph_hvac": {
+          "type": "FacePhHvacProperties"
+        }, 
+        "revive": {
+          "id_num": 0, 
+          "type": "FaceReviveProperties"
         }, 
         "ph": {
           "id_num": 0, 
@@ -1878,41 +1911,38 @@
         "radiance": {
           "type": "FaceRadianceProperties"
         }, 
-        "type": "FaceProperties", 
-        "revive": {
-          "id_num": 0, 
-          "type": "FaceReviveProperties"
-        }, 
-        "ph_hvac": {
-          "type": "FacePhHvacProperties"
-        }
+        "type": "FaceProperties"
       }, 
-      "identifier": "Room_2_50e4af18..Face0", 
       "type": "Face", 
-      "face_type": "Wall"
-    }, 
-    {
-      "display_name": "Room_2_50e4af18..Face1", 
+      "identifier": "Room_2_bcc4148c..Face1", 
+      "face_type": "Wall", 
+      "boundary_condition": {
+        "view_factor": {
+          "type": "Autocalculate"
+        }, 
+        "type": "Outdoors", 
+        "sun_exposure": true, 
+        "wind_exposure": true
+      }, 
       "geometry": {
         "plane": {
-          "n": [
-            -1.0, 
-            0.0, 
-            0.0
-          ], 
           "o": [
             0.0, 
             0.0, 
             1.5
           ], 
+          "type": "Plane", 
           "x": [
             0.0, 
             -1.0, 
             0.0
           ], 
-          "type": "Plane"
+          "n": [
+            -1.0, 
+            0.0, 
+            0.0
+          ]
         }, 
-        "type": "Face3D", 
         "boundary": [
           [
             0.0, 
@@ -1934,19 +1964,22 @@
             0.0, 
             3.0
           ]
-        ]
+        ], 
+        "type": "Face3D"
       }, 
-      "boundary_condition": {
-        "wind_exposure": true, 
-        "view_factor": {
-          "type": "Autocalculate"
-        }, 
-        "sun_exposure": true, 
-        "type": "Outdoors"
-      }, 
+      "display_name": "Room_2_bcc4148c..Face1"
+    }, 
+    {
       "properties": {
         "energy": {
           "type": "FaceEnergyProperties"
+        }, 
+        "ph_hvac": {
+          "type": "FacePhHvacProperties"
+        }, 
+        "revive": {
+          "id_num": 0, 
+          "type": "FaceReviveProperties"
         }, 
         "ph": {
           "id_num": 0, 
@@ -1955,41 +1988,38 @@
         "radiance": {
           "type": "FaceRadianceProperties"
         }, 
-        "type": "FaceProperties", 
-        "revive": {
-          "id_num": 0, 
-          "type": "FaceReviveProperties"
-        }, 
-        "ph_hvac": {
-          "type": "FacePhHvacProperties"
-        }
+        "type": "FaceProperties"
       }, 
-      "identifier": "Room_2_50e4af18..Face1", 
       "type": "Face", 
-      "face_type": "Wall"
-    }, 
-    {
-      "display_name": "Room_2_50e4af18..Face2", 
+      "identifier": "Room_2_bcc4148c..Face2", 
+      "face_type": "Wall", 
+      "boundary_condition": {
+        "view_factor": {
+          "type": "Autocalculate"
+        }, 
+        "type": "Outdoors", 
+        "sun_exposure": true, 
+        "wind_exposure": true
+      }, 
       "geometry": {
         "plane": {
-          "n": [
-            0.0, 
-            -1.0, 
-            0.0
-          ], 
           "o": [
             0.0, 
             0.0, 
             1.5
           ], 
+          "type": "Plane", 
           "x": [
             1.0, 
             0.0, 
             -2.7755575615628914e-17
           ], 
-          "type": "Plane"
+          "n": [
+            0.0, 
+            -1.0, 
+            0.0
+          ]
         }, 
-        "type": "Face3D", 
         "boundary": [
           [
             0.0, 
@@ -2011,19 +2041,22 @@
             0.0, 
             3.0
           ]
-        ]
+        ], 
+        "type": "Face3D"
       }, 
-      "boundary_condition": {
-        "wind_exposure": true, 
-        "view_factor": {
-          "type": "Autocalculate"
-        }, 
-        "sun_exposure": true, 
-        "type": "Outdoors"
-      }, 
+      "display_name": "Room_2_bcc4148c..Face2"
+    }, 
+    {
       "properties": {
         "energy": {
           "type": "FaceEnergyProperties"
+        }, 
+        "ph_hvac": {
+          "type": "FacePhHvacProperties"
+        }, 
+        "revive": {
+          "id_num": 0, 
+          "type": "FaceReviveProperties"
         }, 
         "ph": {
           "id_num": 0, 
@@ -2032,41 +2065,38 @@
         "radiance": {
           "type": "FaceRadianceProperties"
         }, 
-        "type": "FaceProperties", 
-        "revive": {
-          "id_num": 0, 
-          "type": "FaceReviveProperties"
-        }, 
-        "ph_hvac": {
-          "type": "FacePhHvacProperties"
-        }
+        "type": "FaceProperties"
       }, 
-      "identifier": "Room_2_50e4af18..Face2", 
       "type": "Face", 
-      "face_type": "Wall"
-    }, 
-    {
-      "display_name": "Room_2_50e4af18..Face3", 
+      "identifier": "Room_2_bcc4148c..Face3", 
+      "face_type": "Wall", 
+      "boundary_condition": {
+        "view_factor": {
+          "type": "Autocalculate"
+        }, 
+        "type": "Outdoors", 
+        "sun_exposure": true, 
+        "wind_exposure": true
+      }, 
       "geometry": {
         "plane": {
-          "n": [
-            1.0, 
-            -0.0, 
-            1.1102230246251565e-16
-          ], 
           "o": [
             5.0, 
             -5.0, 
             1.5
           ], 
+          "type": "Plane", 
           "x": [
             0.0, 
             1.0, 
             0.0
           ], 
-          "type": "Plane"
+          "n": [
+            1.0, 
+            -0.0, 
+            1.1102230246251565e-16
+          ]
         }, 
-        "type": "Face3D", 
         "boundary": [
           [
             5.0, 
@@ -2088,19 +2118,22 @@
             4.0, 
             3.0
           ]
-        ]
+        ], 
+        "type": "Face3D"
       }, 
-      "boundary_condition": {
-        "wind_exposure": true, 
-        "view_factor": {
-          "type": "Autocalculate"
-        }, 
-        "sun_exposure": true, 
-        "type": "Outdoors"
-      }, 
+      "display_name": "Room_2_bcc4148c..Face3"
+    }, 
+    {
       "properties": {
         "energy": {
           "type": "FaceEnergyProperties"
+        }, 
+        "ph_hvac": {
+          "type": "FacePhHvacProperties"
+        }, 
+        "revive": {
+          "id_num": 0, 
+          "type": "FaceReviveProperties"
         }, 
         "ph": {
           "id_num": 0, 
@@ -2109,41 +2142,33 @@
         "radiance": {
           "type": "FaceRadianceProperties"
         }, 
-        "type": "FaceProperties", 
-        "revive": {
-          "id_num": 0, 
-          "type": "FaceReviveProperties"
-        }, 
-        "ph_hvac": {
-          "type": "FacePhHvacProperties"
-        }
+        "type": "FaceProperties"
       }, 
-      "identifier": "Room_2_50e4af18..Face3", 
       "type": "Face", 
-      "face_type": "Wall"
-    }, 
-    {
-      "display_name": "Room_2_50e4af18..Face4", 
+      "identifier": "Room_2_bcc4148c..Face4", 
+      "face_type": "Floor", 
+      "boundary_condition": {
+        "type": "Ground"
+      }, 
       "geometry": {
         "plane": {
+          "o": [
+            2.5, 
+            2.0, 
+            0.0
+          ], 
+          "type": "Plane", 
+          "x": [
+            0.0, 
+            1.0, 
+            0.0
+          ], 
           "n": [
             -0.0, 
             -0.0, 
             -1.0
-          ], 
-          "o": [
-            2.5, 
-            2.0, 
-            0.0
-          ], 
-          "x": [
-            0.0, 
-            1.0, 
-            0.0
-          ], 
-          "type": "Plane"
+          ]
         }, 
-        "type": "Face3D", 
         "boundary": [
           [
             5.0, 
@@ -2165,14 +2190,22 @@
             4.0, 
             0.0
           ]
-        ]
+        ], 
+        "type": "Face3D"
       }, 
-      "boundary_condition": {
-        "type": "Ground"
-      }, 
+      "display_name": "Room_2_bcc4148c..Face4"
+    }, 
+    {
       "properties": {
         "energy": {
           "type": "FaceEnergyProperties"
+        }, 
+        "ph_hvac": {
+          "type": "FacePhHvacProperties"
+        }, 
+        "revive": {
+          "id_num": 0, 
+          "type": "FaceReviveProperties"
         }, 
         "ph": {
           "id_num": 0, 
@@ -2181,41 +2214,38 @@
         "radiance": {
           "type": "FaceRadianceProperties"
         }, 
-        "type": "FaceProperties", 
-        "revive": {
-          "id_num": 0, 
-          "type": "FaceReviveProperties"
-        }, 
-        "ph_hvac": {
-          "type": "FacePhHvacProperties"
-        }
+        "type": "FaceProperties"
       }, 
-      "identifier": "Room_2_50e4af18..Face4", 
       "type": "Face", 
-      "face_type": "Floor"
-    }, 
-    {
-      "display_name": "Room_2_50e4af18..Face5", 
+      "identifier": "Room_2_bcc4148c..Face5", 
+      "face_type": "RoofCeiling", 
+      "boundary_condition": {
+        "view_factor": {
+          "type": "Autocalculate"
+        }, 
+        "type": "Outdoors", 
+        "sun_exposure": true, 
+        "wind_exposure": true
+      }, 
       "geometry": {
         "plane": {
+          "o": [
+            2.5, 
+            2.0, 
+            3.0
+          ], 
+          "type": "Plane", 
+          "x": [
+            1.0, 
+            0.0, 
+            0.0
+          ], 
           "n": [
             0.0, 
             0.0, 
             1.0
-          ], 
-          "o": [
-            2.5, 
-            2.0, 
-            3.0
-          ], 
-          "x": [
-            1.0, 
-            0.0, 
-            0.0
-          ], 
-          "type": "Plane"
+          ]
         }, 
-        "type": "Face3D", 
         "boundary": [
           [
             0.0, 
@@ -2237,40 +2267,10 @@
             4.0, 
             3.0
           ]
-        ]
+        ], 
+        "type": "Face3D"
       }, 
-      "boundary_condition": {
-        "wind_exposure": true, 
-        "view_factor": {
-          "type": "Autocalculate"
-        }, 
-        "sun_exposure": true, 
-        "type": "Outdoors"
-      }, 
-      "properties": {
-        "energy": {
-          "type": "FaceEnergyProperties"
-        }, 
-        "ph": {
-          "id_num": 0, 
-          "type": "FacePhProperties"
-        }, 
-        "radiance": {
-          "type": "FaceRadianceProperties"
-        }, 
-        "type": "FaceProperties", 
-        "revive": {
-          "id_num": 0, 
-          "type": "FaceReviveProperties"
-        }, 
-        "ph_hvac": {
-          "type": "FacePhHvacProperties"
-        }
-      }, 
-      "identifier": "Room_2_50e4af18..Face5", 
-      "type": "Face", 
-      "face_type": "RoofCeiling"
+      "display_name": "Room_2_bcc4148c..Face5"
     }
-  ], 
-  "type": "Room"
+  ]
 }
