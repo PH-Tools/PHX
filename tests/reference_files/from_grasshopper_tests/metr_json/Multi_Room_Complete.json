@@ -32,7 +32,7 @@
       3,
       28,
       16,
-      42,
+      57,
       0
     ],
     "wBkg": false
@@ -1440,7 +1440,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_866aebba",
+      "n": "PhWindowConstruction_d2bf734d",
       "detU": true,
       "detGd": true,
       "Uw": 0.8339189189189188,
@@ -3572,7 +3572,7 @@
             "id": 45,
             "idSKP": -1,
             "itv": 5,
-            "n": "Shade_41f2a887",
+            "n": "Shade_219caf38",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3714,7 +3714,7 @@
             "id": 46,
             "idSKP": -1,
             "itv": 6,
-            "n": "Shade_13bf72cf",
+            "n": "Shade_97b371d5",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3856,7 +3856,7 @@
             "id": 44,
             "idSKP": -1,
             "itv": 7,
-            "n": "PhWindowConstruction_866aebba",
+            "n": "PhWindowConstruction_d2bf734d",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4001,7 +4001,7 @@
             "id": 27,
             "idSKP": -1,
             "itv": 8,
-            "n": "Room_4_a7889cf1..Face5_Glz0",
+            "n": "Room_4_5825622f..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4478,7 +4478,7 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__333905d9",
+                "n": "_unnamed_bldg_segment__4078746e",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4490,9 +4490,9 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__67e8a794",
+                "n": "_unnamed_bldg_segment__43512e5e",
                 "typeTbZ": -15,
-                "lengthTbZ": 14.000714267493642,
+                "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -4502,7 +4502,19 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__9c8eb1bd",
+                "n": "_unnamed_bldg_segment__737ddc78",
+                "typeTbZ": -15,
+                "lengthTbZ": 22.0,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__7af202ea",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.799999999999997,
                 "psiTbZ": 0.01,
@@ -4514,31 +4526,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__be08d5d9",
-                "typeTbZ": -15,
-                "lengthTbZ": 22.0,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__cf25f9ad",
-                "typeTbZ": -15,
-                "lengthTbZ": 22.0,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__d4347e5e",
+                "n": "_unnamed_bldg_segment__bb178a9c",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4550,7 +4538,19 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__d4407a6d",
+                "n": "_unnamed_bldg_segment__de3751d9",
+                "typeTbZ": -15,
+                "lengthTbZ": 14.000714267493642,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__f1fbd358",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.758048651498616,
                 "psiTbZ": 0.01,
@@ -4668,7 +4668,7 @@
             "lDevice": [
               {
                 "info": "Heat pump",
-                "n": "1fa89f62-77a7-4781-beec-c07d527eb741",
+                "n": "1ca90784-bd0b-472a-b77c-a272a0b3d9c5",
                 "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
