@@ -31,8 +31,8 @@
       2026,
       3,
       28,
-      16,
-      42,
+      18,
+      32,
       0
     ],
     "wBkg": false
@@ -341,11 +341,11 @@
     {
       "id": 12,
       "idDB": 0,
-      "n": "Generic 50mm Insulation",
-      "tConD": 0.03,
-      "densB": 43.0,
+      "n": "Generic Acoustic Tile",
+      "tConD": 0.06,
+      "densB": 368.0,
       "poros": 0.95,
-      "hCapS": 1210.0,
+      "hCapS": 590.0,
       "difRes": 1.0,
       "refWC": 0.0,
       "freeWSat": "NaN",
@@ -381,7 +381,7 @@
       "lnWCTCond": [
         [
           0.0,
-          0.03
+          0.06
         ]
       ],
       "lRHDiffRes": [
@@ -401,11 +401,11 @@
     {
       "id": 14,
       "idDB": 0,
-      "n": "Generic HW Concrete",
-      "tConD": 1.95,
-      "densB": 2240.0,
+      "n": "Generic Ceiling Air Gap",
+      "tConD": 0.556,
+      "densB": 1.28,
       "poros": 0.95,
-      "hCapS": 900.0,
+      "hCapS": 1000.0,
       "difRes": 1.0,
       "refWC": 0.0,
       "freeWSat": "NaN",
@@ -441,7 +441,7 @@
       "lnWCTCond": [
         [
           0.0,
-          1.95
+          0.556
         ]
       ],
       "lRHDiffRes": [
@@ -460,126 +460,6 @@
     },
     {
       "id": 16,
-      "idDB": 0,
-      "n": "Generic Roof Membrane",
-      "tConD": 0.16,
-      "densB": 1120.0,
-      "poros": 0.95,
-      "hCapS": 1460.0,
-      "difRes": 1.0,
-      "refWC": 0.0,
-      "freeWSat": "NaN",
-      "wACoef": "NaN",
-      "tConSupM": "NaN",
-      "tConSupT": "NaN",
-      "typMC": "NaN",
-      "typeSA": 1,
-      "color": [
-        255,
-        255,
-        255,
-        255
-      ],
-      "lRHWC": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCSuc": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCRed": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCTCond": [
-        [
-          0.0,
-          0.16
-        ]
-      ],
-      "lRHDiffRes": [
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "lTEnth": [],
-      "lTtCond": [],
-      "RHWCGen": false,
-      "nWCSucGen": false,
-      "nWCRedGen": false,
-      "nWCtCondGen": false,
-      "TtCondGen": false
-    },
-    {
-      "id": 18,
-      "idDB": 0,
-      "n": "Generic 50mm Insulation",
-      "tConD": 0.03,
-      "densB": 43.0,
-      "poros": 0.95,
-      "hCapS": 1210.0,
-      "difRes": 1.0,
-      "refWC": 0.0,
-      "freeWSat": "NaN",
-      "wACoef": "NaN",
-      "tConSupM": "NaN",
-      "tConSupT": "NaN",
-      "typMC": "NaN",
-      "typeSA": 1,
-      "color": [
-        255,
-        255,
-        255,
-        255
-      ],
-      "lRHWC": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCSuc": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCRed": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCTCond": [
-        [
-          0.0,
-          0.03
-        ]
-      ],
-      "lRHDiffRes": [
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "lTEnth": [],
-      "lTtCond": [],
-      "RHWCGen": false,
-      "nWCSucGen": false,
-      "nWCRedGen": false,
-      "nWCtCondGen": false,
-      "TtCondGen": false
-    },
-    {
-      "id": 20,
       "idDB": 0,
       "n": "Generic LW Concrete",
       "tConD": 0.53,
@@ -639,13 +519,13 @@
       "TtCondGen": false
     },
     {
-      "id": 22,
+      "id": 18,
       "idDB": 0,
-      "n": "Generic Ceiling Air Gap",
-      "tConD": 0.556,
-      "densB": 1.28,
+      "n": "Generic Roof Membrane",
+      "tConD": 0.16,
+      "densB": 1120.0,
       "poros": 0.95,
-      "hCapS": 1000.0,
+      "hCapS": 1460.0,
       "difRes": 1.0,
       "refWC": 0.0,
       "freeWSat": "NaN",
@@ -681,7 +561,7 @@
       "lnWCTCond": [
         [
           0.0,
-          0.556
+          0.16
         ]
       ],
       "lRHDiffRes": [
@@ -699,367 +579,7 @@
       "TtCondGen": false
     },
     {
-      "id": 24,
-      "idDB": 0,
-      "n": "Generic Acoustic Tile",
-      "tConD": 0.06,
-      "densB": 368.0,
-      "poros": 0.95,
-      "hCapS": 590.0,
-      "difRes": 1.0,
-      "refWC": 0.0,
-      "freeWSat": "NaN",
-      "wACoef": "NaN",
-      "tConSupM": "NaN",
-      "tConSupT": "NaN",
-      "typMC": "NaN",
-      "typeSA": 1,
-      "color": [
-        255,
-        255,
-        255,
-        255
-      ],
-      "lRHWC": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCSuc": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCRed": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCTCond": [
-        [
-          0.0,
-          0.06
-        ]
-      ],
-      "lRHDiffRes": [
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "lTEnth": [],
-      "lTtCond": [],
-      "RHWCGen": false,
-      "nWCSucGen": false,
-      "nWCRedGen": false,
-      "nWCtCondGen": false,
-      "TtCondGen": false
-    },
-    {
-      "id": 26,
-      "idDB": 0,
-      "n": "SS_Cladding",
-      "tConD": 2.060518,
-      "densB": 999.0,
-      "poros": 0.95,
-      "hCapS": 999.0,
-      "difRes": 1.0,
-      "refWC": 0.0,
-      "freeWSat": "NaN",
-      "wACoef": "NaN",
-      "tConSupM": "NaN",
-      "tConSupT": "NaN",
-      "typMC": "NaN",
-      "typeSA": 1,
-      "color": [
-        255,
-        212,
-        182,
-        99
-      ],
-      "lRHWC": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCSuc": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCRed": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCTCond": [
-        [
-          0.0,
-          2.060518
-        ]
-      ],
-      "lRHDiffRes": [
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "lTEnth": [],
-      "lTtCond": [],
-      "RHWCGen": false,
-      "nWCSucGen": false,
-      "nWCRedGen": false,
-      "nWCtCondGen": false,
-      "TtCondGen": false
-    },
-    {
-      "id": 28,
-      "idDB": 0,
-      "n": "SS_GWB",
-      "tConD": 0.257565,
-      "densB": 999.0,
-      "poros": 0.95,
-      "hCapS": 999.0,
-      "difRes": 1.0,
-      "refWC": 0.0,
-      "freeWSat": "NaN",
-      "wACoef": "NaN",
-      "tConSupM": "NaN",
-      "tConSupT": "NaN",
-      "typMC": "NaN",
-      "typeSA": 1,
-      "color": [
-        255,
-        161,
-        161,
-        161
-      ],
-      "lRHWC": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCSuc": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCRed": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCTCond": [
-        [
-          0.0,
-          0.257565
-        ]
-      ],
-      "lRHDiffRes": [
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "lTEnth": [],
-      "lTtCond": [],
-      "RHWCGen": false,
-      "nWCSucGen": false,
-      "nWCRedGen": false,
-      "nWCtCondGen": false,
-      "TtCondGen": false
-    },
-    {
-      "id": 32,
-      "idDB": 0,
-      "n": "Steel-Stud Layer [SS_Roxul]",
-      "tConD": 0.08299769007974327,
-      "densB": 999.0,
-      "poros": 0.95,
-      "hCapS": 999.0,
-      "difRes": 1.0,
-      "refWC": 0.0,
-      "freeWSat": "NaN",
-      "wACoef": "NaN",
-      "tConSupM": "NaN",
-      "tConSupT": "NaN",
-      "typMC": "NaN",
-      "typeSA": 1,
-      "color": [
-        255,
-        85,
-        207,
-        76
-      ],
-      "lRHWC": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCSuc": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCRed": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCTCond": [
-        [
-          0.0,
-          0.08299769007974327
-        ]
-      ],
-      "lRHDiffRes": [
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "lTEnth": [],
-      "lTtCond": [],
-      "RHWCGen": false,
-      "nWCSucGen": false,
-      "nWCRedGen": false,
-      "nWCtCondGen": false,
-      "TtCondGen": false
-    },
-    {
-      "id": 30,
-      "idDB": 0,
-      "n": "SS_Roxul",
-      "tConD": 0.038833,
-      "densB": 999.0,
-      "poros": 0.95,
-      "hCapS": 999.0,
-      "difRes": 1.0,
-      "refWC": 0.0,
-      "freeWSat": "NaN",
-      "wACoef": "NaN",
-      "tConSupM": "NaN",
-      "tConSupT": "NaN",
-      "typMC": "NaN",
-      "typeSA": 1,
-      "color": [
-        255,
-        85,
-        207,
-        76
-      ],
-      "lRHWC": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCSuc": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCRed": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCTCond": [
-        [
-          0.0,
-          0.038833
-        ]
-      ],
-      "lRHDiffRes": [
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "lTEnth": [],
-      "lTtCond": [],
-      "RHWCGen": false,
-      "nWCSucGen": false,
-      "nWCRedGen": false,
-      "nWCtCondGen": false,
-      "TtCondGen": false
-    },
-    {
-      "id": 34,
-      "idDB": 0,
-      "n": "SS_GWB",
-      "tConD": 0.257565,
-      "densB": 999.0,
-      "poros": 0.95,
-      "hCapS": 999.0,
-      "difRes": 1.0,
-      "refWC": 0.0,
-      "freeWSat": "NaN",
-      "wACoef": "NaN",
-      "tConSupM": "NaN",
-      "tConSupT": "NaN",
-      "typMC": "NaN",
-      "typeSA": 1,
-      "color": [
-        255,
-        161,
-        161,
-        161
-      ],
-      "lRHWC": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCSuc": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCRed": [
-        [
-          0.0,
-          0.0
-        ]
-      ],
-      "lnWCTCond": [
-        [
-          0.0,
-          0.257565
-        ]
-      ],
-      "lRHDiffRes": [
-        [
-          0.0,
-          1.0
-        ]
-      ],
-      "lTEnth": [],
-      "lTtCond": [],
-      "RHWCGen": false,
-      "nWCSucGen": false,
-      "nWCRedGen": false,
-      "nWCtCondGen": false,
-      "TtCondGen": false
-    },
-    {
-      "id": 36,
+      "id": 20,
       "idDB": 0,
       "n": "Generic 50mm Insulation",
       "tConD": 0.03,
@@ -1119,13 +639,13 @@
       "TtCondGen": false
     },
     {
-      "id": 38,
+      "id": 22,
       "idDB": 0,
-      "n": "Generic HW Concrete",
-      "tConD": 1.95,
-      "densB": 2240.0,
+      "n": "Generic LW Concrete",
+      "tConD": 0.53,
+      "densB": 1280.0,
       "poros": 0.95,
-      "hCapS": 900.0,
+      "hCapS": 840.0,
       "difRes": 1.0,
       "refWC": 0.0,
       "freeWSat": "NaN",
@@ -1161,7 +681,7 @@
       "lnWCTCond": [
         [
           0.0,
-          1.95
+          0.53
         ]
       ],
       "lRHDiffRes": [
@@ -1179,7 +699,7 @@
       "TtCondGen": false
     },
     {
-      "id": 40,
+      "id": 24,
       "idDB": 0,
       "n": "Generic Ceiling Air Gap",
       "tConD": 0.556,
@@ -1239,7 +759,607 @@
       "TtCondGen": false
     },
     {
+      "id": 26,
+      "idDB": 0,
+      "n": "Generic Acoustic Tile",
+      "tConD": 0.06,
+      "densB": 368.0,
+      "poros": 0.95,
+      "hCapS": 590.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          0.06
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 28,
+      "idDB": 0,
+      "n": "SS_Cladding",
+      "tConD": 2.060518,
+      "densB": 999.0,
+      "poros": 0.95,
+      "hCapS": 999.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        212,
+        182,
+        99
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          2.060518
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 30,
+      "idDB": 0,
+      "n": "SS_GWB",
+      "tConD": 0.257565,
+      "densB": 999.0,
+      "poros": 0.95,
+      "hCapS": 999.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        161,
+        161,
+        161
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          0.257565
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 34,
+      "idDB": 0,
+      "n": "Steel-Stud Layer [SS_Roxul]",
+      "tConD": 0.08299769007974327,
+      "densB": 999.0,
+      "poros": 0.95,
+      "hCapS": 999.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        85,
+        207,
+        76
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          0.08299769007974327
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 32,
+      "idDB": 0,
+      "n": "SS_Roxul",
+      "tConD": 0.038833,
+      "densB": 999.0,
+      "poros": 0.95,
+      "hCapS": 999.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        85,
+        207,
+        76
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          0.038833
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 36,
+      "idDB": 0,
+      "n": "SS_GWB",
+      "tConD": 0.257565,
+      "densB": 999.0,
+      "poros": 0.95,
+      "hCapS": 999.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        161,
+        161,
+        161
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          0.257565
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 38,
+      "idDB": 0,
+      "n": "Generic 50mm Insulation",
+      "tConD": 0.03,
+      "densB": 43.0,
+      "poros": 0.95,
+      "hCapS": 1210.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          0.03
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 40,
+      "idDB": 0,
+      "n": "Generic HW Concrete",
+      "tConD": 1.95,
+      "densB": 2240.0,
+      "poros": 0.95,
+      "hCapS": 900.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          1.95
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
       "id": 42,
+      "idDB": 0,
+      "n": "Generic LW Concrete",
+      "tConD": 0.53,
+      "densB": 1280.0,
+      "poros": 0.95,
+      "hCapS": 840.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          0.53
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 44,
+      "idDB": 0,
+      "n": "Generic Ceiling Air Gap",
+      "tConD": 0.556,
+      "densB": 1.28,
+      "poros": 0.95,
+      "hCapS": 1000.0,
+      "difRes": 1.0,
+      "refWC": 0.0,
+      "freeWSat": "NaN",
+      "wACoef": "NaN",
+      "tConSupM": "NaN",
+      "tConSupT": "NaN",
+      "typMC": "NaN",
+      "typeSA": 1,
+      "color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "lRHWC": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCSuc": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCRed": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "lnWCTCond": [
+        [
+          0.0,
+          0.556
+        ]
+      ],
+      "lRHDiffRes": [
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "lTEnth": [],
+      "lTtCond": [],
+      "RHWCGen": false,
+      "nWCSucGen": false,
+      "nWCRedGen": false,
+      "nWCtCondGen": false,
+      "TtCondGen": false
+    },
+    {
+      "id": 46,
       "idDB": 0,
       "n": "Generic Acoustic Tile",
       "tConD": 0.06,
@@ -1334,19 +1454,23 @@
     {
       "id": 2,
       "idDB": 0,
-      "n": "Generic Ground Slab",
+      "n": "Generic Interior Floor",
       "orderL": 2,
       "typeGr": 2,
-      "tRes": 1.7692307692307696,
-      "tRes6946": 1.7692307692307696,
+      "tRes": 0.7018686937242659,
+      "tRes6946": 0.7018686937242659,
       "lLayer": [
         {
-          "thick": 0.05,
+          "thick": 0.02,
           "idMat": 12
         },
         {
-          "thick": 0.2,
+          "thick": 0.1,
           "idMat": 14
+        },
+        {
+          "thick": 0.1,
+          "idMat": 16
         }
       ]
     },
@@ -1361,14 +1485,10 @@
       "lLayer": [
         {
           "thick": 0.01,
-          "idMat": 16
-        },
-        {
-          "thick": 0.05,
           "idMat": 18
         },
         {
-          "thick": 0.1,
+          "thick": 0.05,
           "idMat": 20
         },
         {
@@ -1376,8 +1496,12 @@
           "idMat": 22
         },
         {
-          "thick": 0.02,
+          "thick": 0.1,
           "idMat": 24
+        },
+        {
+          "thick": 0.02,
+          "idMat": 26
         }
       ]
     },
@@ -1392,46 +1516,61 @@
       "lLayer": [
         {
           "thick": 0.0254,
-          "idMat": 26
-        },
-        {
-          "thick": 0.0254,
           "idMat": 28
         },
         {
+          "thick": 0.0254,
+          "idMat": 30
+        },
+        {
           "thick": 0.0889,
-          "idMat": 32
+          "idMat": 34
         },
         {
           "thick": 0.0254,
-          "idMat": 34
+          "idMat": 36
         }
       ]
     },
     {
       "id": 5,
       "idDB": 0,
-      "n": "Generic Underground Roof",
+      "n": "Generic Ground Slab",
       "orderL": 2,
       "typeGr": 2,
-      "tRes": 2.2824202176720165,
-      "tRes6946": 2.2824202176720165,
+      "tRes": 1.7692307692307696,
+      "tRes6946": 1.7692307692307696,
       "lLayer": [
         {
           "thick": 0.05,
-          "idMat": 36
-        },
-        {
-          "thick": 0.2,
           "idMat": 38
         },
         {
-          "thick": 0.1,
+          "thick": 0.2,
           "idMat": 40
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "idDB": 0,
+      "n": "Generic Interior Ceiling",
+      "orderL": 2,
+      "typeGr": 2,
+      "tRes": 0.7018686937242659,
+      "tRes6946": 0.7018686937242659,
+      "lLayer": [
+        {
+          "thick": 0.1,
+          "idMat": 42
+        },
+        {
+          "thick": 0.1,
+          "idMat": 44
         },
         {
           "thick": 0.02,
-          "idMat": 42
+          "idMat": 46
         }
       ]
     }
@@ -1440,7 +1579,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_866aebba",
+      "n": "PhWindowConstruction_74469de8",
       "detU": true,
       "detGd": true,
       "Uw": 0.8339189189189188,
@@ -1867,145 +2006,145 @@
             4.594756081437327
           ],
           [
-            63,
+            51,
             0.0,
             -5.5,
             5.5
           ],
           [
-            64,
+            52,
             -0.7640519817344935,
             -9.833154113253716,
             5.5
           ],
           [
-            65,
+            53,
             4.652390659832651,
             -10.788219090421832,
             5.5
           ],
           [
-            66,
+            54,
             5.416442641567144,
             -6.455064977168117,
             5.5
           ],
           [
-            69,
+            57,
             0.6813268377680135,
             -6.274441755592199,
             5.5
           ],
           [
-            70,
+            58,
             0.14106050030453293,
             -9.338444413000284,
             5.5
           ],
           [
-            71,
+            59,
             3.9710638220646373,
             -10.013777334829634,
             5.5
           ],
           [
-            72,
+            60,
             4.511330159528118,
             -6.9497746774215505,
             5.5
           ],
           [
-            76,
+            63,
             -0.7640519817344935,
             -9.833154113253716,
-            -5.5
+            0.0
           ],
           [
-            77,
+            66,
             4.652390659832651,
             -10.788219090421832,
-            -5.5
+            0.0
           ],
           [
-            82,
+            69,
             0.0,
             -5.5,
+            0.0
+          ],
+          [
+            75,
+            5.416442641567144,
+            -6.455064977168117,
+            0.0
+          ],
+          [
+            87,
+            5.416442641567144,
+            -6.455064977168117,
             -5.5
           ],
           [
             88,
-            5.416442641567144,
-            -6.455064977168117,
+            4.652390659832651,
+            -10.788219090421832,
             -5.5
           ],
           [
-            99,
-            0.0,
-            -5.5,
-            0.0
-          ],
-          [
-            100,
+            89,
             -0.7640519817344935,
             -9.833154113253716,
-            0.0
+            -5.5
           ],
           [
-            101,
-            4.652390659832651,
-            -10.788219090421832,
-            0.0
+            90,
+            0.0,
+            -5.5,
+            -5.5
           ],
           [
-            102,
-            5.416442641567144,
-            -6.455064977168117,
-            0.0
-          ],
-          [
-            105,
+            93,
             0.19101299543362338,
             -4.416711471686572,
             3.3000000000000003
           ],
           [
-            106,
+            94,
             0.0,
             -5.5,
             3.3000000000000003
           ],
           [
-            107,
+            95,
             5.416442641567144,
             -6.455064977168117,
             3.3000000000000003
           ],
           [
-            108,
+            96,
             5.6074556370007675,
             -5.371776448854688,
             3.3000000000000003
           ],
           [
-            111,
+            99,
             5.6074556370007675,
             -5.371776448854688,
             3.3000000000000003
           ],
           [
-            112,
+            100,
             5.416442641567144,
             -6.455064977168117,
             3.3000000000000003
           ],
           [
-            113,
+            101,
             12.999462339761147,
             -7.792155945203482,
             3.3000000000000003
           ],
           [
-            114,
+            102,
             13.190475335194769,
             -6.708867416890052,
             3.3000000000000003
@@ -2013,7 +2152,7 @@
         ],
         "lPoly": [
           {
-            "id": 11,
+            "id": 9,
             "areaP": 24.2,
             "incl": 0.0,
             "azimY": 0.0,
@@ -2027,17 +2166,17 @@
               1.0
             ],
             "idVert": [
-              63,
-              64,
-              65,
-              66
+              51,
+              52,
+              53,
+              54
             ],
             "idPolyI": [
-              12
+              10
             ]
           },
           {
-            "id": 12,
+            "id": 10,
             "areaP": 12.1,
             "incl": 0.0,
             "azimY": 0.0,
@@ -2051,125 +2190,15 @@
               1.0
             ],
             "idVert": [
-              69,
-              70,
-              71,
-              72
-            ],
-            "idPolyI": []
-          },
-          {
-            "id": 17,
-            "areaP": 24.2,
-            "incl": 0.0,
-            "azimY": 0.0,
-            "horW": 6.180495,
-            "perim": 19.8,
-            "hAGr": 0.0,
-            "vertH": 5.288219,
-            "nVec": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "idVert": [
-              99,
-              100,
-              101,
-              102
-            ],
-            "idPolyI": []
-          },
-          {
-            "id": 13,
-            "areaP": 30.25,
-            "incl": 90.0,
-            "azimY": 190.0,
-            "horW": 5.416443,
-            "perim": 22.0,
-            "hAGr": -2.75,
-            "vertH": 5.5,
-            "nVec": [
-              -0.1736481776669301,
-              -0.9848077530122081,
-              0.0
-            ],
-            "idVert": [
-              100,
-              76,
-              77,
-              101
-            ],
-            "idPolyI": []
-          },
-          {
-            "id": 14,
-            "areaP": 24.2,
-            "incl": 90.0,
-            "azimY": 280.0,
-            "horW": 4.333154,
-            "perim": 19.8,
-            "hAGr": -2.75,
-            "vertH": 5.5,
-            "nVec": [
-              -0.9848077530122081,
-              0.17364817766693033,
-              0.0
-            ],
-            "idVert": [
-              99,
-              82,
-              76,
-              100
+              57,
+              58,
+              59,
+              60
             ],
             "idPolyI": []
           },
           {
             "id": 15,
-            "areaP": 30.25,
-            "incl": 90.0,
-            "azimY": 10.0,
-            "horW": 5.416443,
-            "perim": 22.0,
-            "hAGr": -2.75,
-            "vertH": 5.5,
-            "nVec": [
-              0.17364817766693044,
-              0.9848077530122081,
-              0.0
-            ],
-            "idVert": [
-              102,
-              88,
-              82,
-              99
-            ],
-            "idPolyI": []
-          },
-          {
-            "id": 16,
-            "areaP": 24.2,
-            "incl": 90.0,
-            "azimY": 100.0,
-            "horW": 4.333154,
-            "perim": 19.8,
-            "hAGr": -2.75,
-            "vertH": 5.5,
-            "nVec": [
-              0.9848077530122081,
-              -0.1736481776669303,
-              0.0
-            ],
-            "idVert": [
-              101,
-              77,
-              88,
-              102
-            ],
-            "idPolyI": []
-          },
-          {
-            "id": 10,
             "areaP": 24.2,
             "incl": 180.0,
             "azimY": 0.0,
@@ -2183,32 +2212,98 @@
               -1.0
             ],
             "idVert": [
+              87,
               88,
-              77,
-              76,
-              82
+              89,
+              90
             ],
             "idPolyI": []
           },
           {
-            "id": 9,
-            "areaP": 24.2,
-            "incl": 180.0,
-            "azimY": 0.0,
-            "horW": 6.180495,
-            "perim": 19.8,
-            "hAGr": 0.0,
-            "vertH": 5.288219,
+            "id": 11,
+            "areaP": 30.25,
+            "incl": 90.0,
+            "azimY": 190.0,
+            "horW": 5.416443,
+            "perim": 22.0,
+            "hAGr": -2.75,
+            "vertH": 5.5,
             "nVec": [
-              0.0,
-              0.0,
-              -1.0
+              -0.1736481776669301,
+              -0.9848077530122081,
+              0.0
             ],
             "idVert": [
-              102,
-              101,
-              100,
-              99
+              63,
+              89,
+              88,
+              66
+            ],
+            "idPolyI": []
+          },
+          {
+            "id": 12,
+            "areaP": 24.2,
+            "incl": 90.0,
+            "azimY": 280.0,
+            "horW": 4.333154,
+            "perim": 19.8,
+            "hAGr": -2.75,
+            "vertH": 5.5,
+            "nVec": [
+              -0.9848077530122081,
+              0.17364817766693033,
+              0.0
+            ],
+            "idVert": [
+              69,
+              90,
+              89,
+              63
+            ],
+            "idPolyI": []
+          },
+          {
+            "id": 13,
+            "areaP": 30.25,
+            "incl": 90.0,
+            "azimY": 10.0,
+            "horW": 5.416443,
+            "perim": 22.0,
+            "hAGr": -2.75,
+            "vertH": 5.5,
+            "nVec": [
+              0.17364817766693044,
+              0.9848077530122081,
+              0.0
+            ],
+            "idVert": [
+              75,
+              87,
+              90,
+              69
+            ],
+            "idPolyI": []
+          },
+          {
+            "id": 14,
+            "areaP": 24.2,
+            "incl": 90.0,
+            "azimY": 100.0,
+            "horW": 4.333154,
+            "perim": 19.8,
+            "hAGr": -2.75,
+            "vertH": 5.5,
+            "nVec": [
+              0.9848077530122081,
+              -0.1736481776669303,
+              0.0
+            ],
+            "idVert": [
+              66,
+              88,
+              87,
+              75
             ],
             "idPolyI": []
           },
@@ -2227,10 +2322,10 @@
               0.0
             ],
             "idVert": [
-              64,
-              100,
-              101,
-              65
+              52,
+              63,
+              66,
+              53
             ],
             "idPolyI": [
               2
@@ -2251,10 +2346,10 @@
               0.0
             ],
             "idVert": [
+              51,
+              69,
               63,
-              99,
-              100,
-              64
+              52
             ],
             "idPolyI": [
               4
@@ -2275,10 +2370,10 @@
               0.0
             ],
             "idVert": [
-              66,
-              102,
-              99,
-              63
+              54,
+              75,
+              69,
+              51
             ],
             "idPolyI": [
               6
@@ -2299,10 +2394,10 @@
               0.0
             ],
             "idVert": [
-              65,
-              101,
-              102,
-              66
+              53,
+              66,
+              75,
+              54
             ],
             "idPolyI": [
               8
@@ -2397,7 +2492,7 @@
             "idPolyI": []
           },
           {
-            "id": 18,
+            "id": 16,
             "areaP": 6.05,
             "incl": 0.0,
             "azimY": 0.0,
@@ -2411,15 +2506,15 @@
               1.0
             ],
             "idVert": [
-              105,
-              106,
-              107,
-              108
+              93,
+              94,
+              95,
+              96
             ],
             "idPolyI": []
           },
           {
-            "id": 19,
+            "id": 17,
             "areaP": 8.47,
             "incl": 0.0,
             "azimY": 0.0,
@@ -2433,10 +2528,10 @@
               1.0
             ],
             "idVert": [
-              111,
-              112,
-              113,
-              114
+              99,
+              100,
+              101,
+              102
             ],
             "idPolyI": []
           }
@@ -2852,7 +2947,7 @@
         "overwrPB": false,
         "lComponent": [
           {
-            "id": 38,
+            "id": 32,
             "idSKP": -1,
             "itv": 0,
             "n": "FLOOR [Generic Ground Slab]",
@@ -2860,14 +2955,14 @@
             "idIC": 1,
             "idEC": -2,
             "typeC": 1,
-            "areaC": 48.4,
+            "areaC": 24.2,
             "Uph": 0.565217,
             "Uhom": 0.565217,
             "inclC": 90.0,
             "orient": 1,
             "azimN": 180.0,
             "retRes": false,
-            "idAssC": 2,
+            "idAssC": 5,
             "idWtC": -1,
             "idSolPC": -1,
             "idOverhC": -1,
@@ -2989,13 +3084,12 @@
               255
             ],
             "idPolyC": [
-              9,
-              10
+              15
             ],
             "lPartOr": []
           },
           {
-            "id": 26,
+            "id": 24,
             "idSKP": -1,
             "itv": 1,
             "n": "ROOF_CEILING [Generic Roof]",
@@ -3132,156 +3226,14 @@
               255
             ],
             "idPolyC": [
-              11
+              9
             ],
             "lPartOr": []
           },
           {
-            "id": 34,
+            "id": 38,
             "idSKP": -1,
             "itv": 2,
-            "n": "ROOF_CEILING [Generic Underground Roof]",
-            "visC": true,
-            "idIC": 1,
-            "idEC": -2,
-            "typeC": 1,
-            "areaC": 24.2,
-            "Uph": 0.438131,
-            "Uhom": 0.438131,
-            "inclC": 90.0,
-            "orient": 1,
-            "azimN": 180.0,
-            "retRes": false,
-            "idAssC": 5,
-            "idWtC": -1,
-            "idSolPC": -1,
-            "idOverhC": -1,
-            "countC": 1,
-            "OrAzim": 1,
-            "idCompInC": -1,
-            "calculAC": {
-              "res": "----",
-              "OK": false,
-              "lExpr": []
-            },
-            "selRsC": 1,
-            "Rse": 0.0,
-            "Rsi": 0.17,
-            "alfaCiC": 2.5,
-            "alfaRiC": 3.382353,
-            "alfaCeC": 99999.0,
-            "alfaReC": 0.0,
-            "eCliC": 1,
-            "idOptCliC": -1,
-            "partSolIC": "NaN",
-            "solIPaC": "NaN",
-            "emisEC": 0.9,
-            "emisIC": 0.9,
-            "airFmC": false,
-            "alfaWindBC": 4.5,
-            "alfaWinwardC": 1.6,
-            "alfaLeewardC": 0.33,
-            "shadeC": 1.0,
-            "idIsurfC": -1,
-            "partSolEC": "NaN",
-            "solEPaC": "NaN",
-            "tAbsC": -2,
-            "absEC": 0.4,
-            "selSdeC": -1,
-            "sdeC": 0.0,
-            "selSdiC": -1,
-            "sdiC": 0.0,
-            "selIniMC": 1,
-            "iniRHC": 0.8,
-            "iniTC": 20.0,
-            "lIniWcC": [],
-            "tRainLC": -1,
-            "tRainAC": -1,
-            "rainR1C": 0.0,
-            "rainR2C": 0.0,
-            "rainAC": 0.0,
-            "numC": {
-              "cHeatC": true,
-              "cMoistC": true,
-              "exclCapilC": false,
-              "exclEvC": false,
-              "exclFusC": false,
-              "incrAccurC": true,
-              "adConvC": true
-            },
-            "lMonPos": [],
-            "synchrPFC": true,
-            "lrtbFrPsi": [
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN"
-            ],
-            "depthWRevC": "NaN",
-            "distGlasC": 0.05,
-            "widthWC": "NaN",
-            "hAGrC": {
-              "sel": 6,
-              "val": [
-                null,
-                null
-              ],
-              "iV": 1
-            },
-            "retainResC": false,
-            "obstrHC": 0.0,
-            "obstrDC": 0.0,
-            "otherShadeC": 1.0,
-            "shadeSumC": 1.0,
-            "eDoorC": false,
-            "coolLTdifC": "NaN",
-            "multHTrC": "NaN",
-            "multShadeLC": "NaN",
-            "dCorShadeMC": 1.0,
-            "corShadeMC": [
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN",
-              "NaN"
-            ],
-            "typeLAf": 2,
-            "fDistrAf": "NaN",
-            "expAf": 0.65,
-            "cFlowAf": "NaN",
-            "exFAf": "NaN",
-            "cFlowCAf": "NaN",
-            "addContrAf": 1,
-            "idColorIC": 12,
-            "idColorEC": 12,
-            "colorEC": [
-              255,
-              255,
-              255,
-              255
-            ],
-            "colorIC": [
-              255,
-              255,
-              255,
-              255
-            ],
-            "idPolyC": [
-              17
-            ],
-            "lPartOr": []
-          },
-          {
-            "id": 41,
-            "idSKP": -1,
-            "itv": 3,
             "n": "WALL [Generic Exterior Wall]",
             "visC": true,
             "idIC": 1,
@@ -3424,9 +3376,9 @@
             "lPartOr": []
           },
           {
-            "id": 37,
+            "id": 35,
             "idSKP": -1,
-            "itv": 4,
+            "itv": 3,
             "n": "WALL [My New Assembly]",
             "visC": true,
             "idIC": 1,
@@ -3561,18 +3513,18 @@
               255
             ],
             "idPolyC": [
+              11,
+              12,
               13,
-              14,
-              15,
-              16
+              14
             ],
             "lPartOr": []
           },
           {
-            "id": 45,
+            "id": 42,
             "idSKP": -1,
-            "itv": 5,
-            "n": "Shade_41f2a887",
+            "itv": 4,
+            "n": "Shade_32090a3b",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3706,15 +3658,15 @@
               255
             ],
             "idPolyC": [
-              18
+              16
             ],
             "lPartOr": []
           },
           {
-            "id": 46,
+            "id": 43,
             "idSKP": -1,
-            "itv": 6,
-            "n": "Shade_13bf72cf",
+            "itv": 5,
+            "n": "Shade_429fec97",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3848,15 +3800,15 @@
               255
             ],
             "idPolyC": [
-              19
+              17
             ],
             "lPartOr": []
           },
           {
-            "id": 44,
+            "id": 41,
             "idSKP": -1,
-            "itv": 7,
-            "n": "PhWindowConstruction_866aebba",
+            "itv": 6,
+            "n": "PhWindowConstruction_74469de8",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -3998,10 +3950,10 @@
             "lPartOr": []
           },
           {
-            "id": 27,
+            "id": 25,
             "idSKP": -1,
-            "itv": 8,
-            "n": "Room_4_a7889cf1..Face5_Glz0",
+            "itv": 7,
+            "n": "Room_32_2ba9f24b..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4135,7 +4087,7 @@
               255
             ],
             "idPolyC": [
-              12
+              10
             ],
             "lPartOr": []
           }
@@ -4420,14 +4372,357 @@
                   -1
                 ]
               },
-              "nOcc": 0,
+              "nOcc": 4,
               "humSour": 2.0,
               "lPersZ": [],
               "lOffEq": [],
               "lAuxEl": [],
-              "lLight": [],
+              "lLight": [
+                {
+                  "n": "101-Room_31",
+                  "idUPat": 1,
+                  "lightTr": 1,
+                  "cLight": 1,
+                  "inTE": true,
+                  "mDet": false,
+                  "facInclW": false,
+                  "frFloorA": 1.0,
+                  "devNorth": 0.0,
+                  "roomD": 1.0,
+                  "roomW": 1.0,
+                  "roomH": 1.0,
+                  "lintelH": 1.0,
+                  "widthW": 1.0,
+                  "instLP": 13.911891558295746,
+                  "lFLoadH": 8760,
+                  "lightTrU": "NaN"
+                },
+                {
+                  "n": "102-Room_32",
+                  "idUPat": 1,
+                  "lightTr": 1,
+                  "cLight": 1,
+                  "inTE": true,
+                  "mDet": false,
+                  "facInclW": false,
+                  "frFloorA": 1.0,
+                  "devNorth": 0.0,
+                  "roomD": 1.0,
+                  "roomW": 1.0,
+                  "roomH": 1.0,
+                  "lintelH": 1.0,
+                  "widthW": 1.0,
+                  "instLP": 13.911891558295746,
+                  "lFLoadH": 8760,
+                  "lightTrU": "NaN"
+                }
+              ],
               "lProces": [],
-              "lHomeDev": []
+              "lHomeDev": [
+                {
+                  "tHdev": 7,
+                  "Com": "default",
+                  "refQ": 1,
+                  "quantity": 4,
+                  "inCondSp": true,
+                  "refUY": 1,
+                  "refUY1": 1,
+                  "refDY": 1,
+                  "refUC": 1,
+                  "enDrY": 0.2,
+                  "enDrD": 0.2,
+                  "enDY": 0.2,
+                  "enDrU": 0,
+                  "enDrU1": 0,
+                  "CEFef": 0,
+                  "wCon": 1,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12.0,
+                  "utilFact": "NaN",
+                  "capCW": 0.081383,
+                  "MEF": 2.38,
+                  "tDryer": -1,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": "NaN"
+                },
+                {
+                  "tHdev": 1,
+                  "Com": "default",
+                  "refQ": 1,
+                  "quantity": 4,
+                  "inCondSp": true,
+                  "refUY": 2,
+                  "refUY1": 2,
+                  "refDY": 2,
+                  "refUC": 2,
+                  "enDrY": 269,
+                  "enDrD": 269,
+                  "enDY": 269,
+                  "enDrU": 0,
+                  "enDrU1": 0,
+                  "CEFef": 0,
+                  "wCon": 2,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12,
+                  "utilFact": "NaN",
+                  "capCW": 0.081383,
+                  "MEF": 2.38,
+                  "tDryer": -1,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": "NaN",
+                  "refED": 7,
+                  "enDrU2": 269
+                },
+                {
+                  "tHdev": 6,
+                  "Com": "default",
+                  "refQ": 4,
+                  "quantity": 4,
+                  "inCondSp": true,
+                  "refUY": 1,
+                  "refUY1": 1,
+                  "refDY": 1,
+                  "refUC": 1,
+                  "enDrY": 1.22,
+                  "enDrD": 1.22,
+                  "enDY": 1.22,
+                  "enDrU": 0,
+                  "enDrU1": 0,
+                  "CEFef": 0,
+                  "wCon": 1,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12.0,
+                  "utilFact": "NaN",
+                  "capCW": 0.081383,
+                  "MEF": 2.38,
+                  "tDryer": -1,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": "NaN",
+                  "refED": 2,
+                  "fSize": 2
+                },
+                {
+                  "tHdev": 3,
+                  "Com": "default",
+                  "refQ": 1,
+                  "quantity": 4,
+                  "inCondSp": true,
+                  "refUY": 2,
+                  "refUY1": 2,
+                  "refDY": 2,
+                  "refUC": 2,
+                  "enDrY": 0.0,
+                  "enDrD": 0.0,
+                  "enDY": 0.0,
+                  "enDrU": 0,
+                  "enDrU1": 0,
+                  "CEFef": 3.93,
+                  "wCon": 1,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12.0,
+                  "utilFact": "NaN",
+                  "capCW": 0.081383,
+                  "MEF": 2.38,
+                  "tDryer": 5,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": "NaN",
+                  "refED": 4
+                },
+                {
+                  "tHdev": 2,
+                  "Com": "default",
+                  "refQ": 1,
+                  "quantity": 4,
+                  "inCondSp": true,
+                  "refUY": 2,
+                  "refUY1": 2,
+                  "refDY": 2,
+                  "refUC": 2,
+                  "enDrY": 120,
+                  "enDrD": 120,
+                  "enDY": 120,
+                  "enDrU": 0,
+                  "enDrU1": 0,
+                  "CEFef": 0,
+                  "wCon": 2,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12.0,
+                  "utilFact": 1.0,
+                  "capCW": 0.1274,
+                  "MEF": 2.7,
+                  "tDryer": -1,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": "NaN",
+                  "refED": 6
+                },
+                {
+                  "tHdev": 15,
+                  "Com": "default",
+                  "refQ": 6,
+                  "quantity": 4,
+                  "inCondSp": false,
+                  "refUY": 1,
+                  "refUY1": 1,
+                  "refDY": 1,
+                  "refUC": 1,
+                  "enDrY": 0.0,
+                  "enDrD": 0.0,
+                  "enDY": 0.0,
+                  "enDrU": 0,
+                  "enDrU1": 0,
+                  "CEFef": 0,
+                  "wCon": 1,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12.0,
+                  "utilFact": "NaN",
+                  "capCW": 0.081383,
+                  "MEF": 2.38,
+                  "tDryer": -1,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": 1.0
+                },
+                {
+                  "tHdev": 16,
+                  "Com": "default",
+                  "refQ": 8,
+                  "quantity": 1,
+                  "inCondSp": false,
+                  "refUY": 2,
+                  "refUY1": 2,
+                  "refDY": 2,
+                  "refUC": 2,
+                  "enDrY": 100,
+                  "enDrD": 100,
+                  "enDY": 100,
+                  "enDrU": 100,
+                  "enDrU1": 100,
+                  "CEFef": 0,
+                  "wCon": 1,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12.0,
+                  "utilFact": "NaN",
+                  "capCW": 0.081383,
+                  "MEF": 2.38,
+                  "tDryer": -1,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": 1.0
+                },
+                {
+                  "tHdev": 14,
+                  "Com": "default",
+                  "refQ": 6,
+                  "quantity": 1,
+                  "inCondSp": true,
+                  "refUY": 1,
+                  "refUY1": 1,
+                  "refDY": 1,
+                  "refUC": 1,
+                  "enDrY": 0.0,
+                  "enDrD": 0.0,
+                  "enDY": 0.0,
+                  "enDrU": 0,
+                  "enDrU1": 0,
+                  "CEFef": 0,
+                  "wCon": 1,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12.0,
+                  "utilFact": "NaN",
+                  "capCW": 0.081383,
+                  "MEF": 2.38,
+                  "tDryer": -1,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": 1.0
+                },
+                {
+                  "tHdev": 13,
+                  "Com": "default",
+                  "refQ": 3,
+                  "quantity": 4,
+                  "inCondSp": true,
+                  "refUY": 1,
+                  "refUY1": 1,
+                  "refDY": 1,
+                  "refUC": 1,
+                  "enDrY": 0.0,
+                  "enDrD": 0.0,
+                  "enDY": 0.0,
+                  "enDrU": 0,
+                  "enDrU1": 0,
+                  "CEFef": 0,
+                  "wCon": 1,
+                  "dWCapSel": 1,
+                  "dWCapPl": 12.0,
+                  "utilFact": "NaN",
+                  "capCW": 0.081383,
+                  "MEF": 2.38,
+                  "tDryer": -1,
+                  "GasCon": "NaN",
+                  "CEFGas": 2.67,
+                  "fUtilFsel": 1,
+                  "fUtilF": 1.18,
+                  "tCook": 1,
+                  "highEffic": "NaN",
+                  "freq": "NaN",
+                  "rDamp": "NaN",
+                  "fHEff": "NaN"
+                }
+              ]
             },
             "calcParZ": {
               "iniTz": 20.0,
@@ -4478,7 +4773,7 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__333905d9",
+                "n": "_unnamed_bldg_segment__30ac8c74",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4490,9 +4785,9 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__67e8a794",
+                "n": "_unnamed_bldg_segment__56f33d79",
                 "typeTbZ": -15,
-                "lengthTbZ": 14.000714267493642,
+                "lengthTbZ": 14.758048651498616,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -4502,7 +4797,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__9c8eb1bd",
+                "n": "_unnamed_bldg_segment__943f75a9",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.799999999999997,
                 "psiTbZ": 0.01,
@@ -4514,7 +4809,19 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__be08d5d9",
+                "n": "_unnamed_bldg_segment__961d9b86",
+                "typeTbZ": -15,
+                "lengthTbZ": 14.000714267493642,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__cebc77c2",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4526,19 +4833,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__cf25f9ad",
-                "typeTbZ": -15,
-                "lengthTbZ": 22.0,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__d4347e5e",
+                "n": "_unnamed_bldg_segment__d50dad49",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4550,9 +4845,9 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__d4407a6d",
+                "n": "_unnamed_bldg_segment__fb35fd96",
                 "typeTbZ": -15,
-                "lengthTbZ": 14.758048651498616,
+                "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -4564,7 +4859,7 @@
             ],
             "lRoom": [
               {
-                "n": "101-Room_3",
+                "n": "101-Room_31",
                 "tRoom": 99,
                 "quantity": 1,
                 "area": 10.89,
@@ -4576,7 +4871,7 @@
                 "idVUnit": 1
               },
               {
-                "n": "102-Room_4",
+                "n": "102-Room_32",
                 "tRoom": 99,
                 "quantity": 1,
                 "area": 10.89,
@@ -4668,7 +4963,7 @@
             "lDevice": [
               {
                 "info": "Heat pump",
-                "n": "1fa89f62-77a7-4781-beec-c07d527eb741",
+                "n": "6786efa1-f45c-447a-8ad9-3c0e8d87e4e1",
                 "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
@@ -4694,7 +4989,7 @@
                   false,
                   false,
                   false,
-                  false
+                  true
                 ],
                 "cHWCVHD": [
                   0.0,
@@ -4702,7 +4997,7 @@
                   0.0,
                   0.0,
                   0.0,
-                  0.0
+                  1.0
                 ],
                 "enSB": 1,
                 "mPowB": 10.0,
@@ -4737,8 +5032,8 @@
                 "frostPHP": false,
                 "solFCHP": "NaN",
                 "solFcHP": "NaN",
-                "aCOP": "NaN",
-                "tSysPHP": "NaN",
+                "aCOP": 2.0,
+                "tSysPHP": 0.5,
                 "acCOPHP": "NaN",
                 "athHP": [
                   "NaN",
@@ -4810,9 +5105,9 @@
                 "rCOP2HP": "NaN",
                 "aT1HP": "NaN",
                 "aT2HP": "NaN",
-                "aCOPHP": "NaN",
-                "pHGHP": "NaN",
-                "hpWHHP": "NaN",
+                "aCOPHP": 2.0,
+                "pHGHP": 0.5,
+                "hpWHHP": 3.0251,
                 "typeSC": 1,
                 "tEffSC": "NaN",
                 "k1SC": "NaN",
@@ -4913,7 +5208,7 @@
                   false
                 ],
                 "cHWCVHD": [
-                  1.0,
+                  0.75,
                   1.0,
                   0.0,
                   0.0,
@@ -5143,7 +5438,7 @@
                   false
                 ],
                 "cHWCVHD": [
-                  1.0,
+                  0.25,
                   0.0,
                   0.0,
                   0.0,
@@ -5353,7 +5648,7 @@
                 "uHWCVHD": [
                   false,
                   false,
-                  false,
+                  true,
                   false,
                   false,
                   false
@@ -5361,7 +5656,7 @@
                 "cHWCVHD": [
                   0.0,
                   0.0,
-                  0.0,
+                  1.0,
                   0.0,
                   0.0,
                   0.0
@@ -5572,7 +5867,7 @@
                   false,
                   false,
                   false,
-                  false
+                  true
                 ],
                 "cHWCVHD": [
                   0.0,
@@ -5580,7 +5875,7 @@
                   0.0,
                   0.0,
                   0.0,
-                  0.0
+                  1.0
                 ],
                 "enSB": 1,
                 "mPowB": 10.0,
@@ -6016,7 +6311,7 @@
               "cmpW": 4,
               "pmW": 2,
               "pdW": 1,
-              "hwfeW": "NaN",
+              "hwfeW": 1,
               "drecW": true,
               "sfeW": 1,
               "nbrW": 1,

@@ -14,6 +14,7 @@ from PHX.model import (
     certification,
     components,
     constructions,
+    elec_equip,
     geometry,
     phx_site,
     project,
@@ -782,8 +783,8 @@ def _zone_design_conditions() -> dict:
     }
 
 
-def _zone_loads() -> dict:
-    """Default zone loads, referencing value profiles by ID."""
+def _zone_loads(_z: building.PhxZone) -> dict:
+    """Zone loads including appliances and lighting."""
     return {
         "mLz": {"PF": 1, "PTVid": [[-1, 1, 8]], "FCid": [-1, -1]},
         "hcLz": {"PF": 1, "PTVid": [[-1, 1, 9]], "FCid": [-1, -1]},
@@ -792,14 +793,14 @@ def _zone_loads() -> dict:
         "haLz": {"PF": 1, "PTVid": [[-1, 1, 12]], "FCid": [-1, -1]},
         "cloLz": {"PF": 1, "PTVid": [[-1, 1, 13]], "FCid": [-1, -1]},
         "avLz": {"PF": 1, "PTVid": [[-1, 1, 14]], "FCid": [-1, -1]},
-        "nOcc": 0,
+        "nOcc": int(_z.res_occupant_quantity),
         "humSour": 2.0,
         "lPersZ": [],
         "lOffEq": [],
         "lAuxEl": [],
-        "lLight": [],
+        "lLight": [_LoadsLighting(sp) for sp in _z.spaces],
         "lProces": [],
-        "lHomeDev": [],
+        "lHomeDev": [_PhxElectricalDevice(d) for d in _z.elec_equipment_collection.devices],
     }
 
 
@@ -854,7 +855,7 @@ def _PhxZone(_z: building.PhxZone) -> dict:
         "indexCurvZ": -1,
         "idOptCliZ": -1,
         "desCondZ": _zone_design_conditions(),
-        "loadsZ": _zone_loads(),
+        "loadsZ": _zone_loads(_z),
         "calcParZ": _zone_calc_params(),
         "boundCondZ": {
             "tResH": 0.13,
@@ -933,6 +934,108 @@ def _PhxExhaustVentilator(_v) -> dict:
         "typeExhV": getattr(_v, "exhaust_type", 1),
         "ExhVfR": getattr(_v, "exhaust_flow_rate_m3h", 0.0),
         "runTU": getattr(_v, "annual_run_time_min", 0),
+    }
+
+
+# -- ELECTRICAL EQUIPMENT (HOME DEVICES / APPLIANCES) -------------------------
+
+
+def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
+    """Convert a PhxElectricalDevice to a METR JSON home device dict.
+
+    METR uses a flat 'super-appliance' structure (like HVAC devices): every appliance
+    has ALL keys regardless of type. Device-specific values override the defaults.
+    """
+    energy = _d.get_energy_demand()
+    dev = {
+        "tHdev": _d.device_type.value,
+        "Com": _d.comment or "default",
+        "refQ": _d.reference_quantity,
+        "quantity": _d.get_quantity(),
+        "inCondSp": _d.in_conditioned_space,
+        "refUY": _d.reference_energy_norm,
+        "refUY1": _d.reference_energy_norm,
+        "refDY": _d.reference_energy_norm,
+        "refUC": _d.reference_energy_norm,
+        "enDrY": energy,
+        "enDrD": energy,
+        "enDY": energy,
+        "enDrU": _d.energy_demand_per_use,
+        "enDrU1": _d.energy_demand_per_use,
+        "CEFef": _d.combined_energy_factor,
+        # -- Device-specific defaults (overridden below as needed)
+        "wCon": 1,
+        "dWCapSel": 1,
+        "dWCapPl": 12.0,
+        "utilFact": NaN,
+        "capCW": 0.081383,
+        "MEF": 2.38,
+        "tDryer": -1,
+        "GasCon": NaN,
+        "CEFGas": 2.67,
+        "fUtilFsel": 1,
+        "fUtilF": 1.18,
+        "tCook": 1,
+        "highEffic": NaN,
+        "freq": NaN,
+        "rDamp": NaN,
+        "fHEff": NaN,
+    }
+
+    # -- Device-specific overlays
+    if isinstance(_d, elec_equip.PhxDeviceDishwasher):
+        dev["wCon"] = _d.water_connection
+        dev["dWCapSel"] = _d.capacity_type
+        dev["dWCapPl"] = _d.capacity
+        dev["refED"] = 7  # kWh/year
+        dev["enDrU2"] = energy
+    elif isinstance(_d, elec_equip.PhxDeviceClothesWasher):
+        dev["wCon"] = _d.water_connection
+        dev["utilFact"] = _d.utilization_factor or NaN
+        dev["capCW"] = _d.capacity
+        dev["MEF"] = _d.modified_energy_factor
+        dev["refED"] = 6  # MEF/year
+    elif isinstance(_d, elec_equip.PhxDeviceClothesDryer):
+        dev["tDryer"] = _d.dryer_type
+        dev["GasCon"] = _d.gas_consumption or NaN
+        dev["CEFGas"] = _d.gas_efficiency_factor
+        dev["fUtilFsel"] = _d.field_utilization_factor_type
+        dev["fUtilF"] = _d.field_utilization_factor
+        dev["refED"] = 4  # CEF
+    elif isinstance(_d, elec_equip.PhxDeviceCooktop):
+        dev["tCook"] = _d.cooktop_type
+    elif isinstance(_d, (elec_equip.PhxDeviceFridgeFreezer, elec_equip.PhxDeviceRefrigerator, elec_equip.PhxDeviceFreezer)):
+        dev["refED"] = 2  # kWh/day
+        dev["fSize"] = 2
+    elif isinstance(_d, elec_equip.PhxDeviceLightingGarage):
+        dev["fHEff"] = _d.frac_high_efficiency or NaN
+        dev["refQ"] = 8  # METr "n.a." for garage lighting
+    elif isinstance(_d, (elec_equip.PhxDeviceLightingInterior, elec_equip.PhxDeviceLightingExterior)):
+        dev["fHEff"] = _d.frac_high_efficiency or NaN
+
+    return dev
+
+
+def _LoadsLighting(_sp: spaces.PhxSpace) -> dict:
+    """Convert a PhxSpace's lighting data to a METR JSON lighting load dict."""
+    return {
+        "n": _sp.display_name,
+        "idUPat": _sp.occupancy.schedule.id_num,
+        "lightTr": 1,
+        "cLight": 1,
+        "inTE": True,
+        "mDet": False,
+        "facInclW": False,
+        "frFloorA": 1.0,
+        "devNorth": 0.0,
+        "roomD": 1.0,
+        "roomW": 1.0,
+        "roomH": 1.0,
+        "lintelH": 1.0,
+        "widthW": 1.0,
+        "instLP": _sp.lighting.load.installed_w_per_m2,
+        "lFLoadH": round(_sp.lighting.schedule.full_load_lighting_hours, 1),
+        "lightTrU": NaN,
     }
 
 
@@ -1140,7 +1243,7 @@ def _PhxMechanicalSystemCollection(_c: hvac_collection.PhxMechanicalSystemCollec
             }
         ],
         "lDevice": [_PhxMechanicalDevice(d) for d in all_devices],
-        "distrib": _build_default_distribution(),
+        "distrib": _build_default_distribution(_c),
         "suppDev": {
             "uVal": False,
             "devCondSp": True,
@@ -1315,8 +1418,32 @@ _DEVICE_INFO_LABELS = {
 }
 
 
+def _set_device_coverage(_d, dev: dict) -> None:
+    """Set uHWCVHD (usage booleans) and cHWCVHD (coverage fractions) from usage_profile."""
+    up = getattr(_d, "usage_profile", None)
+    if up is None:
+        return
+    dev["uHWCVHD"] = [
+        up.space_heating,
+        up.cooling,
+        up.ventilation,
+        up.humidification,
+        up.dehumidification,
+        up.dhw_heating,
+    ]
+    dev["cHWCVHD"] = [
+        up.space_heating_percent,
+        up.cooling_percent,
+        up.ventilation_percent,
+        up.humidification_percent,
+        up.dehumidification_percent,
+        up.dhw_heating_percent,
+    ]
+
+
 def _overlay_ventilation(_d: hvac_ventilation.PhxDeviceVentilator, dev: dict) -> None:
     """Overlay ventilation-specific fields from a PhxDeviceVentilator."""
+    _set_device_coverage(_d, dev)
     p = _d.params
     dev["hRec"] = p.sensible_heat_recovery
     dev["hRecE"] = p.sensible_heat_recovery
@@ -1336,24 +1463,8 @@ def _overlay_ventilation(_d: hvac_ventilation.PhxDeviceVentilator, dev: dict) ->
 
 def _overlay_heat_pump(_d, dev: dict) -> None:
     """Overlay heat-pump-specific fields."""
+    _set_device_coverage(_d, dev)
     p = _d.params
-    up = _d.usage_profile
-    dev["uHWCVHD"] = [
-        up.space_heating,
-        up.cooling,
-        up.ventilation,
-        up.humidification,
-        up.dehumidification,
-        False,
-    ]
-    dev["cHWCVHD"] = [
-        up.space_heating_percent,
-        up.cooling_percent,
-        up.ventilation_percent,
-        up.humidification_percent,
-        up.dehumidification_percent,
-        0.0,
-    ]
     dev["noSByP"] = True
     dev["inCondSp"] = getattr(p, "in_conditioned_space", True)
 
@@ -1369,6 +1480,10 @@ def _overlay_heat_pump(_d, dev: dict) -> None:
     elif isinstance(_d, heat_pumps.PhxHeatPumpHotWater):
         dev["tHP"] = 5
         dev["aCOP"] = p.annual_COP or NaN
+        dev["aCOPHP"] = p.annual_COP or NaN
+        dev["tSysPHP"] = p.total_system_perf_ratio or NaN
+        dev["pHGHP"] = p.total_system_perf_ratio or NaN
+        dev["hpWHHP"] = p.annual_energy_factor or NaN
     elif isinstance(_d, heat_pumps.PhxHeatPumpCombined):
         dev["tHP"] = 2
 
@@ -1382,6 +1497,7 @@ def _overlay_heat_pump(_d, dev: dict) -> None:
 
 def _overlay_water_storage(_d: water.PhxHotWaterTank, dev: dict) -> None:
     """Overlay water-storage-specific fields."""
+    _set_device_coverage(_d, dev)
     p = _d.params
     dev["volWS"] = p.storage_capacity
     dev["lStWS"] = p.standby_losses or NaN
@@ -1397,6 +1513,7 @@ def _overlay_water_storage(_d: water.PhxHotWaterTank, dev: dict) -> None:
 
 def _overlay_photovoltaic(_d: renewable_devices.PhxDevicePhotovoltaic, dev: dict) -> None:
     """Overlay photovoltaic-specific fields."""
+    _set_device_coverage(_d, dev)
     p = _d.params
     dev["sitePV"] = p.location_type
     dev["suPV"] = p.utilization_type
@@ -1412,6 +1529,7 @@ def _overlay_photovoltaic(_d: renewable_devices.PhxDevicePhotovoltaic, dev: dict
 
 def _overlay_boiler_fossil(_d: heating.PhxHeaterBoilerFossil, dev: dict) -> None:
     """Overlay fossil boiler-specific fields."""
+    _set_device_coverage(_d, dev)
     p = _d.params
     dev["enSB"] = p.fuel.value if hasattr(p.fuel, "value") else 1
     dev["condB"] = p.condensing
@@ -1428,6 +1546,7 @@ def _overlay_boiler_fossil(_d: heating.PhxHeaterBoilerFossil, dev: dict) -> None
 
 def _overlay_boiler_wood(_d: heating.PhxHeaterBoilerWood, dev: dict) -> None:
     """Overlay wood boiler-specific fields."""
+    _set_device_coverage(_d, dev)
     p = _d.params
     dev["enSB"] = p.fuel.value if hasattr(p.fuel, "value") else 1
     dev["effbB"] = p.effic_in_basic_cycle
@@ -1511,8 +1630,9 @@ def _PhxSupportiveDevice(_d) -> dict:
     }
 
 
-def _build_default_distribution() -> dict:
-    """Default distribution parameters for HVAC system."""
+def _build_default_distribution(_c: hvac_collection.PhxMechanicalSystemCollection) -> dict:
+    """Distribution parameters for HVAC system, pulling DHW values from the collection."""
+    hw_params = _c._distribution_hw_recirculation_params
     return {
         "lRadiator": [],
         "lTab": [],
@@ -1556,7 +1676,7 @@ def _build_default_distribution() -> dict:
         "cmpW": 4,
         "pmW": 2,
         "pdW": 1,
-        "hwfeW": NaN,
+        "hwfeW": hw_params.hot_water_fixtures,
         "drecW": True,
         "sfeW": 1,
         "nbrW": 1,

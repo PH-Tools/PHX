@@ -5,7 +5,24 @@
       "Python(*)",
       "mcp__ide__executeCode",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:pypi.org)"
+      "WebFetch(domain:pypi.org)",
+      "Skill(update-config)",
+      "Skill(update-config:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/.claude/fsdeploy-hook.sh",
+            "timeout": 10,
+            "statusMessage": "Deploying to targets..."
+          }
+        ]
+      }
     ]
   }
 }

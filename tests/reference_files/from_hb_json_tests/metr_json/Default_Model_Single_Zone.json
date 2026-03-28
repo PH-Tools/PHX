@@ -31,8 +31,8 @@
       2026,
       3,
       28,
-      16,
-      42,
+      18,
+      32,
       0
     ],
     "wBkg": false
@@ -2571,7 +2571,7 @@
               "cmpW": 4,
               "pmW": 2,
               "pdW": 1,
-              "hwfeW": "NaN",
+              "hwfeW": 1,
               "drecW": true,
               "sfeW": 1,
               "nbrW": 1,
