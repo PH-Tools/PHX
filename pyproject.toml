@@ -1,3 +1,68 @@
+# -- Build System ---
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# -- Project Metadata ---
+[project]
+name = "PHX"
+version = "1.56.0"
+description = "Input / Output Passive House building energy model data."
+readme = "README.md"
+license = {text = "GPL-3.0-or-later"}
+requires-python = ">=3.10"
+authors = [{name = "PH-Tools", email = "phtools@bldgtyp.com"}]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "honeybee-core>=1.64.9",
+    "honeybee-energy>=1.116.103",
+    "honeybee-ph>=1.32.0",
+    "pydantic>=2.0",
+    "PH-units>=1.5.26",
+    "rich",
+    "xlwings",
+    "lxml",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "coverage",
+    "isort",
+    "pytest",
+    "pytest-cov",
+    "rich",
+]
+
+[project.urls]
+Homepage = "https://github.com/PH-Tools/PHX"
+
+# -- Setuptools Configuration ---
+[tool.setuptools.packages.find]
+include = ["PHX"]
+exclude = ["tests*"]
+
+# -- Version Bumping ---
+[tool.bumpversion]
+current_version = "1.56.0"
+commit = true
+tag = true
+tag_name = "v{new_version}"
+commit_message = "bump: version {current_version} -> {new_version} [skip ci]"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = "version = \"{current_version}\""
+replace = "version = \"{new_version}\""
+
+# -- Testing ---
 [tool.pytest.ini_options]
 filterwarnings = [
     "ignore",                                                   #error
@@ -5,7 +70,7 @@ filterwarnings = [
     'ignore:function ham\(\) is deprecated:DeprecationWarning',
 ]
 
-
+# -- Coverage ---
 [tool.coverage.run]
 # --- For testing...
 command_line = "-m pytest . tests"
@@ -22,6 +87,7 @@ fail_under = 100
 [tool.coverage.html]
 directory = "_coverage_html"
 
+# -- Code Formatting ---
 [tool.black]
 line-length = 120
 # Exclude Python 2.7 compatibility file
@@ -39,6 +105,7 @@ skip_gitignore = true
 # Exclude Python 2.7 compatibility file
 extend_skip = ["PHX/run.py"]
 
+# -- Linting ---
 [tool.ruff]
 line-length = 120
 target-version = "py310"
