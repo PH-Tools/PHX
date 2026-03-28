@@ -1,14 +1,13 @@
 # -*- Python Version: 3.10 -*-
 
-"""DEV SANDBOX: convert an HBJSON file over to WUFI XML format."""
+"""DEV SANDBOX: convert an HBJSON file over to METr JSON format."""
 
-import logging
 import pathlib
 
 from rich import print as rich_print
 
 from PHX.from_HBJSON import create_project, read_HBJSON_file
-from PHX.to_WUFI_XML import xml_builder, xml_txt_to_file
+from PHX.to_METr_JSON import metr_builder, metr_json_to_file
 from tests.conftest import _reset_phx_class_counters
 
 # -- For PyTest files
@@ -18,16 +17,14 @@ SOURCE_FILE_NAMES = [
     "Multi_Room_Complete.hbjson",
 ]
 SOURCE_FILES = [SOURCE_DIR / file for file in SOURCE_FILE_NAMES]
-TARGET_DIR = pathlib.Path("tests", "reference_files", "from_hb_json_tests", "wufi_xml")
-
-logger = logging.getLogger()
+TARGET_DIR = pathlib.Path("tests", "reference_files", "from_hb_json_tests", "metr_json")
 
 
-def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
+def generate_metr_json_file(_source: pathlib.Path, _target_dir: pathlib.Path):
     # -- Re-set all the PHX modules (counters)
     _reset_phx_class_counters()
 
-    target_file = pathlib.Path(_target_dir, _source.stem + ".xml")
+    target_file = pathlib.Path(_target_dir, _source.stem + ".json")
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -38,17 +35,19 @@ def generate_xml_file(_source: pathlib.Path, _target_dir: pathlib.Path):
 
     # --- Generate the PhxProject file.
     # -------------------------------------------------------------------------
+    rich_print(f"[bold]> Generating PHX Project from Honeybee Model: [{hb_model}][/bold]")
     phx_project = create_project.convert_hb_model_to_PhxProject(hb_model, _group_components=True, _merge_faces=True)
 
-    # --- Output the WUFI Project as an XML Text File
+    # --- Output the METr JSON file
     # -------------------------------------------------------------------------
-    rich_print(f"[bold]> Generating XML Text for the Honeybee Model: [{hb_model}][/bold]")
-    xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
+    rich_print(f"[bold]> Generating METr JSON for the PHX Project: [{phx_project}][/bold]")
+    metr_json_text = metr_builder.generate_metr_json_text(phx_project)
 
-    rich_print(f"[bold]> Saving the XML file to: ./{target_file}[/bold]")
-    xml_txt_to_file.write_XML_text_file(target_file, xml_txt, False)
+    rich_print(f"[bold]> Saving the METr JSON file to: ./{target_file}[/bold]")
+    metr_json_to_file.write_metr_json_file(target_file, metr_json_text)
+    rich_print(f"[bold green]> Done! ({len(metr_json_text):,} bytes)[/bold green]")
 
 
 if __name__ == "__main__":
     for source_file in SOURCE_FILES:
-        generate_xml_file(pathlib.Path(source_file), TARGET_DIR)
+        generate_metr_json_file(pathlib.Path(source_file), TARGET_DIR)

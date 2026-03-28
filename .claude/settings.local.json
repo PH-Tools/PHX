@@ -3,7 +3,9 @@
     "allow": [
       "Bash(*)",
       "Python(*)",
-      "mcp__ide__executeCode"
+      "mcp__ide__executeCode",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:pypi.org)"
     ]
   }
 }

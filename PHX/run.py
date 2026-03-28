@@ -11,6 +11,7 @@ from __future__ import division
 
 import os
 import subprocess
+import logging
 
 try:
     from typing import Any, Dict, List, Tuple, Union
@@ -21,6 +22,9 @@ try:  # import the core honeybee dependencies
     from honeybee.config import folders as hb_folders
 except ImportError as e:
     raise ImportError("\nFailed to import honeybee:\n\t{}".format(e))
+
+
+logger = logging.getLogger(__name__)
 
 
 def _run_subprocess(commands):
@@ -193,6 +197,73 @@ def convert_hbjson_to_WUFI_XML(
 
     # -------------------------------------------------------------------------
     # -- return the dir and filename of the xml created
+    return _save_folder, _save_file_name, stdout, stderr
+
+
+def convert_hbjson_to_METR_JSON(
+    _hbjson_file,
+    _save_file_name,
+    _save_folder,
+    _group_components=True,
+    _merge_faces=False,
+    _merge_spaces_by_erv=False,
+    _merge_exhaust_vent_devices=False,
+    _log_level=0,
+    *args,
+    **kwargs
+):
+    # type: (str, str, str, bool, Union[bool, float], bool, bool, int, List, Dict) -> tuple[str, str, str, str]
+    """Read in an hbjson file and output a new METr-JSON file in the designated location.
+
+    Arguments:
+    ---------
+        * _hbjson (str): File path to an HBJSON file to be read in and converted to a PHX-Model.
+        * _save_file_name (str): The METR-JSON filename.
+        * _save_folder (str): The folder to save the new METR-JSON file in.
+        * _group_components (bool): Group components by construction? Default=True
+        * _merge_faces (bool | float): Merge together faces of the same type and touching? If
+            a number is provided, it will be used as the tolerance when merging faces. Default=False
+        * _merge_spaces_by_erv (bool): Merge spaces that are connected by ERVs? Default=False
+        * _merge_exhaust_vent_devices (bool): Merge exhaust and vent devices on the same face? Default=False
+        * _log_level (int): Set the logging level for the subprocess. Default=0
+        * args (List): Additional arguments to pass to the subprocess.
+        * kwargs (Dict): Additional keyword arguments to pass to the subprocess.
+
+    Returns:
+    --------
+        * tuple
+            - [0] (str): The path to the output METR-JSON file.
+            - [1] (str): The output METR-JSON filename.
+            - [2] (str): The stdout from the subprocess.
+            - [3] (str): The stderr from the subprocess.
+    """
+    # -- Specify the path to the subprocess python script to run
+    run_file_path = os.path.join(hb_folders.python_package_path, "PHX", "hbjson_to_metr_json.py")
+
+    # -- check the file paths
+    assert os.path.isfile(_hbjson_file), "No HBJSON file found at {}.".format(_hbjson_file)
+    assert os.path.isfile(run_file_path), "No Python file to run found at: {}".format(run_file_path)
+
+    # -------------------------------------------------------------------------
+    # -- Read in the HBJSON, convert to METR JSON
+    print("Using python interpreter: '{}'".format(hb_folders.python_exe_path))
+    print("Running py script: '{}' Using HBJSON file: '{}'".format(run_file_path, _hbjson_file))
+    commands = [
+        hb_folders.python_exe_path,
+        run_file_path,
+        _hbjson_file,
+        _save_file_name,
+        _save_folder,
+        str(_group_components),
+        str(_merge_faces),
+        str(_merge_spaces_by_erv),
+        str(_merge_exhaust_vent_devices),
+        str(_log_level),
+    ]
+    stdout, stderr = _run_subprocess(commands)
+
+    # -------------------------------------------------------------------------
+    # -- return the dir and filename of the METR-JSON created
     return _save_folder, _save_file_name, stdout, stderr
 
 
