@@ -50,7 +50,7 @@ include = ["PHX*"]
 exclude = ["tests*"]
 
 [tool.setuptools.package-data]
-"PHX" = ["**/*.json"]
+"PHX" = ["**/*.json", "**/*.sh"]
 
 # -- Version Bumping ---
 [tool.bumpversion]
