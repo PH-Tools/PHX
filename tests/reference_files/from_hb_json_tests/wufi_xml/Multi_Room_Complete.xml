@@ -12,8 +12,8 @@
 			<Year>2026</Year>
 			<Month>3</Month>
 			<Day>30</Day>
-			<Hour>12</Hour>
-			<Minutes>21</Minutes>
+			<Hour>16</Hour>
+			<Minutes>0</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -569,7 +569,7 @@
 					</Component>
 					<Component index="1">
 						<IdentNr>25</IdentNr>
-						<Name>Room_4_e7a502e6..Face5_Glz0</Name>
+						<Name>Room_4_5ff1fee5..Face5_Glz0</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -644,7 +644,7 @@
 					</Component>
 					<Component index="5">
 						<IdentNr>41</IdentNr>
-						<Name>PhWindowConstruction_188acdc3</Name>
+						<Name>PhWindowConstruction_3fdc643a</Name>
 						<Visual>true</Visual>
 						<Type>2</Type>
 						<IdentNrColorI>4</IdentNrColorI>
@@ -668,7 +668,7 @@
 					</Component>
 					<Component index="6">
 						<IdentNr>42</IdentNr>
-						<Name>Shade_029ea9ce</Name>
+						<Name>Shade_03f40a60</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -684,7 +684,7 @@
 					</Component>
 					<Component index="7">
 						<IdentNr>43</IdentNr>
-						<Name>Shade_2fc39c48</Name>
+						<Name>Shade_a78fc151</Name>
 						<Visual>true</Visual>
 						<Type>1</Type>
 						<IdentNrColorI>1</IdentNrColorI>
@@ -916,63 +916,63 @@
 						</HomeDevice>
 						<ExhaustVents count="2">
 							<ExhaustVent index="0">
-								<Name>example_kitchen_hood</Name>
-								<Type>2</Type>
-								<ExhaustVolumeFlowRate unit="m³/h">509.7032388</ExhaustVolumeFlowRate>
-								<RunTimePerYear>0.0</RunTimePerYear>
-							</ExhaustVent>
-							<ExhaustVent index="1">
 								<Name>example_dryer_vent</Name>
 								<Type>1</Type>
 								<ExhaustVolumeFlowRate unit="m³/h">442800.0</ExhaustVolumeFlowRate>
-								<RunTimePerYear>0.0</RunTimePerYear>
+								<RunTimePerYear>7.625</RunTimePerYear>
+							</ExhaustVent>
+							<ExhaustVent index="1">
+								<Name>example_kitchen_hood</Name>
+								<Type>2</Type>
+								<ExhaustVolumeFlowRate unit="m³/h">509.7032388</ExhaustVolumeFlowRate>
+								<RunTimePerYear>0.08</RunTimePerYear>
 							</ExhaustVent>
 						</ExhaustVents>
 						<ThermalBridges count="7">
 							<ThermalBridge index="0">
-								<Name>_unnamed_bldg_segment__07afc61d</Name>
-								<Type>-15</Type>
-								<Length>19.8</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="1">
-								<Name>_unnamed_bldg_segment__080e096b</Name>
-								<Type>-15</Type>
-								<Length>14.758048651498616</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="2">
-								<Name>_unnamed_bldg_segment__523e7e7f</Name>
-								<Type>-15</Type>
-								<Length>19.8</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="3">
-								<Name>_unnamed_bldg_segment__7778a4a7</Name>
-								<Type>-15</Type>
-								<Length>22.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="4">
-								<Name>_unnamed_bldg_segment__ccaca3f2</Name>
-								<Type>-15</Type>
-								<Length>22.0</Length>
-								<PsiValue>0.01</PsiValue>
-								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
-							</ThermalBridge>
-							<ThermalBridge index="5">
-								<Name>_unnamed_bldg_segment__eafc7652</Name>
+								<Name>_unnamed_bldg_segment__47c39493</Name>
 								<Type>-15</Type>
 								<Length>14.000714267493642</Length>
 								<PsiValue>0.01</PsiValue>
 								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
 							</ThermalBridge>
+							<ThermalBridge index="1">
+								<Name>_unnamed_bldg_segment__67e73f72</Name>
+								<Type>-15</Type>
+								<Length>22.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="2">
+								<Name>_unnamed_bldg_segment__96a26244</Name>
+								<Type>-15</Type>
+								<Length>22.0</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="3">
+								<Name>_unnamed_bldg_segment__a1794f57</Name>
+								<Type>-15</Type>
+								<Length>14.758048651498616</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="4">
+								<Name>_unnamed_bldg_segment__bb45d9ff</Name>
+								<Type>-15</Type>
+								<Length>19.8</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
+							<ThermalBridge index="5">
+								<Name>_unnamed_bldg_segment__cd01ca90</Name>
+								<Type>-15</Type>
+								<Length>19.8</Length>
+								<PsiValue>0.01</PsiValue>
+								<IdentNrOptionalClimate>-1</IdentNrOptionalClimate>
+							</ThermalBridge>
 							<ThermalBridge index="6">
-								<Name>_unnamed_bldg_segment__f36f76ad</Name>
+								<Name>_unnamed_bldg_segment__d98b083d</Name>
 								<Type>-15</Type>
 								<Length>19.799999999999997</Length>
 								<PsiValue>0.01</PsiValue>
@@ -1204,7 +1204,7 @@
 						<OccupancySettingMethod>2</OccupancySettingMethod>
 						<NumberUnits>1</NumberUnits>
 						<CountStories>1</CountStories>
-						<EnvelopeAirtightnessCoefficient>139.42969347711337</EnvelopeAirtightnessCoefficient>
+						<EnvelopeAirtightnessCoefficient>1.46304</EnvelopeAirtightnessCoefficient>
 						<SummerHRVHumidityRecovery>2</SummerHRVHumidityRecovery>
 						<BuildingWindExposure>1</BuildingWindExposure>
 						<FoundationInterfaces count="1">
@@ -1258,7 +1258,7 @@
 						</ZonesCoverage>
 						<Devices count="6">
 							<Device index="0">
-								<Name>81ebca46-fc79-4af7-aa06-a5d219b257a1</Name>
+								<Name>5d2aab74-4002-4dcd-aa26-7a0441e243e1</Name>
 								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
@@ -1544,20 +1544,20 @@
 							<DeviceInConditionedSpace>true</DeviceInConditionedSpace>
 							<SupportiveDevices count="2">
 								<SupportiveDevice index="0">
-									<Name>Example Device</Name>
-									<Type>10</Type>
-									<Quantity>3</Quantity>
-									<InConditionedSpace>false</InConditionedSpace>
-									<NormEnergyDemand>123.0</NormEnergyDemand>
-									<PeriodOperation>6.5</PeriodOperation>
-								</SupportiveDevice>
-								<SupportiveDevice index="1">
 									<Name>Example Kitchen Fan</Name>
 									<Type>10</Type>
 									<Quantity>1</Quantity>
 									<InConditionedSpace>true</InConditionedSpace>
 									<NormEnergyDemand>500.0</NormEnergyDemand>
 									<PeriodOperation>0.08</PeriodOperation>
+								</SupportiveDevice>
+								<SupportiveDevice index="1">
+									<Name>Example Device</Name>
+									<Type>10</Type>
+									<Quantity>3</Quantity>
+									<InConditionedSpace>false</InConditionedSpace>
+									<NormEnergyDemand>123.0</NormEnergyDemand>
+									<PeriodOperation>6.5</PeriodOperation>
 								</SupportiveDevice>
 							</SupportiveDevices>
 						</PHDistribution>
@@ -2106,7 +2106,7 @@
 	<WindowTypes count="1">
 		<WindowType index="0">
 			<IdentNr>1</IdentNr>
-			<Name>PhWindowConstruction_188acdc3</Name>
+			<Name>PhWindowConstruction_3fdc643a</Name>
 			<Uw_Detailed>true</Uw_Detailed>
 			<GlazingFrameDetailed>true</GlazingFrameDetailed>
 			<FrameFactor>0.7242364315535045</FrameFactor>

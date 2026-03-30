@@ -31,8 +31,8 @@
       2026,
       3,
       30,
-      12,
-      8,
+      16,
+      0,
       0
     ],
     "wBkg": false
@@ -1579,7 +1579,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_79a62fc7",
+      "n": "PhWindowConstruction_3fdc643a",
       "detU": true,
       "detGd": true,
       "Uw": 0.8339189189189188,
@@ -2607,7 +2607,7 @@
             "tInfiltr": 1,
             "nCombMat": false,
             "n50": "NaN",
-            "tightEnv50": 139.42969347711337,
+            "tightEnv50": 1.46304,
             "volPresTest": "NaN",
             "iHeatGains": "NaN",
             "maxRDehum": 12.0,
@@ -3524,7 +3524,7 @@
             "id": 42,
             "idSKP": -1,
             "itv": 4,
-            "n": "Shade_9339a0c3",
+            "n": "Shade_03f40a60",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3666,7 +3666,7 @@
             "id": 43,
             "idSKP": -1,
             "itv": 5,
-            "n": "Shade_f67651c7",
+            "n": "Shade_a78fc151",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3808,7 +3808,7 @@
             "id": 41,
             "idSKP": -1,
             "itv": 6,
-            "n": "PhWindowConstruction_79a62fc7",
+            "n": "PhWindowConstruction_3fdc643a",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -3953,7 +3953,7 @@
             "id": 25,
             "idSKP": -1,
             "itv": 7,
-            "n": "Room_4_2a8059ae..Face5_Glz0",
+            "n": "Room_4_5ff1fee5..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4433,7 +4433,7 @@
                   "enDrD": 0.2,
                   "enDY": 0.2,
                   "enDrU": 0,
-                  "enDrU1": 0,
+                  "enDrU1": 0.2,
                   "CEFef": 0,
                   "wCon": 1,
                   "dWCapSel": 1,
@@ -4773,7 +4773,7 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__1c4e6b2b",
+                "n": "_unnamed_bldg_segment__47c39493",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.000714267493642,
                 "psiTbZ": 0.01,
@@ -4785,7 +4785,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__441ffbad",
+                "n": "_unnamed_bldg_segment__67e73f72",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4797,7 +4797,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__4cb57846",
+                "n": "_unnamed_bldg_segment__96a26244",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4809,45 +4809,45 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__5857d71b",
-                "typeTbZ": -15,
-                "lengthTbZ": 19.8,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__7e4e0a85",
-                "typeTbZ": -15,
-                "lengthTbZ": 19.8,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__b030393e",
-                "typeTbZ": -15,
-                "lengthTbZ": 19.799999999999997,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__b8eb0aeb",
+                "n": "_unnamed_bldg_segment__a1794f57",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.758048651498616,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__bb45d9ff",
+                "typeTbZ": -15,
+                "lengthTbZ": 19.8,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__cd01ca90",
+                "typeTbZ": -15,
+                "lengthTbZ": 19.8,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__d98b083d",
+                "typeTbZ": -15,
+                "lengthTbZ": 19.799999999999997,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -4864,8 +4864,8 @@
                 "quantity": 1,
                 "area": 10.89,
                 "clearH": 2.75,
-                "dVFrSup": 0.014789,
-                "dVFrEx": 0.014789,
+                "dVFrSup": 0.01,
+                "dVFrEx": 0.01,
                 "dVFiz": 0.0,
                 "idUPatV": 1,
                 "idVUnit": 1
@@ -4876,8 +4876,8 @@
                 "quantity": 1,
                 "area": 10.89,
                 "clearH": 2.75,
-                "dVFrSup": 0.014789,
-                "dVFrEx": 0.014789,
+                "dVFrSup": 0.01,
+                "dVFrEx": 0.01,
                 "dVFiz": 0.0,
                 "idUPatV": 1,
                 "idVUnit": 1
@@ -4893,19 +4893,150 @@
             "nBedR": 3,
             "lExhVent": [
               {
-                "n": "example_kitchen_hood",
-                "typeExhV": 1,
-                "ExhVfR": 0.0,
-                "runTU": 0
-              },
-              {
                 "n": "example_dryer_vent",
                 "typeExhV": 1,
-                "ExhVfR": 0.0,
-                "runTU": 0
+                "ExhVfR": 442800.0,
+                "runTU": 7.625
+              },
+              {
+                "n": "example_kitchen_hood",
+                "typeExhV": 2,
+                "ExhVfR": 509.7032388,
+                "runTU": 0.08
               }
             ],
-            "lFoundPH": [],
+            "lFoundPH": [
+              {
+                "n": "Example_Slab_On_Grade",
+                "posPerIns": 3,
+                "perInsWD": 0.3,
+                "thickPer": 0.05,
+                "condPer": 0.04,
+                "flSlabTs": 6,
+                "typFound": 3,
+                "phShiftMG": "NaN",
+                "harmFrac": "NaN",
+                "bmentACH": 0.0,
+                "bmentDepth": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "hbmentWAG": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "hcsWAG": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "crowlSVentO": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "flSArea": {
+                  "sel": 6,
+                  "val": [
+                    20.0
+                  ],
+                  "iV": 0
+                },
+                "bmentFlU": {
+                  "sel": 6,
+                  "val": [
+                    0.56522,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "slabFlU": {
+                  "sel": 6,
+                  "val": [
+                    0.56522,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "ceilCelA": {
+                  "sel": 6,
+                  "val": [
+                    null
+                  ],
+                  "iV": 0
+                },
+                "ceToUCU": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "bmentWU": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "wallUAG": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "wallUcsAG": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "flPer": {
+                  "sel": 6,
+                  "val": [
+                    18.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "bmentVol": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                },
+                "crawlFlU": {
+                  "sel": 6,
+                  "val": [
+                    0.0,
+                    null
+                  ],
+                  "iV": 0
+                }
+              }
+            ],
             "trn4108": 1,
             "dVent4108": 1,
             "nVent4108": 1,
@@ -4969,7 +5100,7 @@
             "lDevice": [
               {
                 "info": "Heat pump",
-                "n": "3c0012b5-d1c2-47ed-90e5-4f1b06c71804",
+                "n": "5d2aab74-4002-4dcd-aa26-7a0441e243e1",
                 "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
@@ -4991,19 +5122,19 @@
                 "idOptCli": -1,
                 "uHWCVHD": [
                   false,
+                  true,
                   false,
                   false,
                   false,
-                  false,
-                  true
+                  false
                 ],
                 "cHWCVHD": [
                   0.0,
+                  1.0,
                   0.0,
                   0.0,
                   0.0,
-                  0.0,
-                  1.0
+                  0.0
                 ],
                 "enSB": 1,
                 "mPowB": 10.0,
@@ -5186,7 +5317,7 @@
               {
                 "info": "Heat pump",
                 "n": "Example_Heat_Pump",
-                "id": 2,
+                "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
                 "hRec": 0.0,
@@ -5207,16 +5338,16 @@
                 "idOptCli": -1,
                 "uHWCVHD": [
                   true,
-                  true,
                   false,
+                  true,
                   false,
                   false,
                   false
                 ],
                 "cHWCVHD": [
                   0.75,
-                  1.0,
                   0.0,
+                  1.0,
                   0.0,
                   0.0,
                   0.0
@@ -5416,7 +5547,7 @@
               {
                 "info": "Heat pump",
                 "n": "None",
-                "id": 1,
+                "id": 2,
                 "typeDev": 5,
                 "typeDevDB": 5,
                 "hRec": 0.0,
@@ -5654,16 +5785,16 @@
                 "uHWCVHD": [
                   false,
                   false,
-                  true,
                   false,
+                  true,
                   false,
                   false
                 ],
                 "cHWCVHD": [
                   0.0,
                   0.0,
-                  1.0,
                   0.0,
+                  1.0,
                   0.0,
                   0.0
                 ],
@@ -5869,19 +6000,19 @@
                 "idOptCli": -1,
                 "uHWCVHD": [
                   false,
+                  true,
                   false,
                   false,
                   false,
-                  false,
-                  true
+                  false
                 ],
                 "cHWCVHD": [
                   0.0,
+                  1.0,
                   0.0,
                   0.0,
                   0.0,
-                  0.0,
-                  1.0
+                  0.0
                 ],
                 "enSB": 1,
                 "mPowB": 10.0,
@@ -6013,9 +6144,9 @@
                 "idsSC": -1,
                 "volWS": 300,
                 "lStWS": 4.0,
-                "totLWS": "NaN",
+                "totLWS": 4.0,
                 "inOptWS": 1,
-                "aHreWS": "NaN",
+                "aHreWS": 0.0,
                 "ambTWS": 20,
                 "tTWS": 60,
                 "qauntWS": 1,
@@ -6294,43 +6425,106 @@
               ],
               "ventC": false,
               "sassC": false,
-              "recC": false,
+              "recC": true,
               "rassC": false,
-              "dehumC": false,
+              "dehumC": true,
               "panelC": false,
-              "crTC": "NaN",
+              "crTC": 10.0,
               "cTC": "NaN",
-              "recfC": 0.0,
+              "recfC": 100.08,
               "mcpC": "NaN",
               "copAC": "NaN",
-              "crdC": false,
-              "mrcpC": "NaN",
-              "rcopC": "NaN",
+              "crdC": true,
+              "mrcpC": 10.0,
+              "rcopC": 2.0,
               "udhlC": false,
-              "dcopC": "NaN",
+              "dcopC": 2.0,
               "pcopC": "NaN",
               "delC": "NaN",
               "seerC": "NaN",
               "eerC": "NaN",
-              "lVentDuct": [],
+              "lVentDuct": [
+                {
+                  "n": "__unnamed_vent_duct__",
+                  "id": 3,
+                  "dDuct": 176.00000000000003,
+                  "wDuct": 0.0,
+                  "hDuct": 0.0,
+                  "lDuct": 1.1,
+                  "tIns": 27.94,
+                  "tCond": 0.04,
+                  "quantity": 1,
+                  "tDuct": 1,
+                  "ductS": 1,
+                  "isRefl": true,
+                  "lassVU": [
+                    1
+                  ]
+                },
+                {
+                  "n": "Test_Vent_System_exhaust",
+                  "id": 4,
+                  "dDuct": 176.00000000000003,
+                  "wDuct": 0.0,
+                  "hDuct": 0.0,
+                  "lDuct": 1.1,
+                  "tIns": 27.94,
+                  "tCond": 0.04,
+                  "quantity": 1,
+                  "tDuct": 2,
+                  "ductS": 1,
+                  "isRefl": true,
+                  "lassVU": [
+                    1
+                  ]
+                }
+              ],
               "tapWT": 45.0,
               "cmpW": 4,
               "pmW": 2,
-              "pdW": 1,
+              "pdW": 5,
               "hwfeW": 1,
               "drecW": true,
               "sfeW": 1,
               "nbrW": 1,
               "pinsW": true,
               "ufW": 2,
-              "lTruncW": [],
+              "lTruncW": [
+                {
+                  "n": "Test_Trunk",
+                  "id": 2,
+                  "plW": 5.5,
+                  "pmW": 6,
+                  "pdW": 7,
+                  "cUoF": 1,
+                  "drecW": true,
+                  "lBranchW": [
+                    {
+                      "n": "Test_Branch",
+                      "id": 2,
+                      "plW": 5.5,
+                      "pmW": 3,
+                      "pdW": 4,
+                      "lTwigW": [
+                        {
+                          "n": "Test_Fixture",
+                          "id": 7,
+                          "plW": 5.5,
+                          "pmW": 1,
+                          "pdW": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
               "lcpW": [
-                0.0,
+                1.1,
                 "NaN",
                 "NaN"
               ],
               "hlcW": [
-                "NaN",
+                0.18920200481210636,
                 "NaN",
                 "NaN"
               ],
@@ -6340,22 +6534,22 @@
                 "NaN"
               ],
               "dftW": [
-                60.0,
+                48.0,
                 "NaN",
                 "NaN"
               ],
               "dhcW": [
-                24.0,
+                23,
                 "NaN",
                 "NaN"
               ],
               "lpW": [
-                0.0,
+                16.5,
                 "NaN",
                 "NaN"
               ],
               "dpW": [
-                "NaN",
+                22.224999999999994,
                 "NaN",
                 "NaN"
               ],
@@ -6370,15 +6564,6 @@
               "devCondSp": true,
               "lSuppDev": [
                 {
-                  "n": "Example Kitchen Fan",
-                  "tsDev": 10,
-                  "quantity": 1,
-                  "inCondSp": true,
-                  "nEdem": 500.0,
-                  "contr": false,
-                  "poOper": 0.08
-                },
-                {
                   "n": "Example Device",
                   "tsDev": 10,
                   "quantity": 3,
@@ -6386,6 +6571,15 @@
                   "nEdem": 123.0,
                   "contr": false,
                   "poOper": 6.5
+                },
+                {
+                  "n": "Example Kitchen Fan",
+                  "tsDev": 10,
+                  "quantity": 1,
+                  "inCondSp": true,
+                  "nEdem": 500.0,
+                  "contr": false,
+                  "poOper": 0.08
                 }
               ]
             }
