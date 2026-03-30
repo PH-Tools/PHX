@@ -10,7 +10,6 @@ from PHX.model import (
     elec_equip,
     geometry,
     project,
-    schedules,
     shades,
     spaces,
 )

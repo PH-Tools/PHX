@@ -84,10 +84,7 @@ def _apertures_diff(_xml_ap: PhxComponentAperture, _hbjson_ap: PhxComponentApert
                 return mismatch
 
         if len(_xml_ap.elements) != len(_hbjson_ap.elements):
-            return (
-                "elements length mismatch: "
-                f"xml={len(_xml_ap.elements)}, hbjson={len(_hbjson_ap.elements)}"
-            )
+            return "elements length mismatch: " f"xml={len(_xml_ap.elements)}, hbjson={len(_hbjson_ap.elements)}"
         for xml_ap_element in _xml_ap.elements:
             element_diffs = [
                 _aperture_elements_diff(xml_ap_element, hbjson_ap_element) for hbjson_ap_element in _hbjson_ap.elements
@@ -99,10 +96,7 @@ def _apertures_diff(_xml_ap: PhxComponentAperture, _hbjson_ap: PhxComponentApert
                 )
 
         if len(_xml_ap.polygons) != len(_hbjson_ap.polygons):
-            return (
-                "polygon length mismatch: "
-                f"xml={len(_xml_ap.polygons)}, hbjson={len(_hbjson_ap.polygons)}"
-            )
+            return "polygon length mismatch: " f"xml={len(_xml_ap.polygons)}, hbjson={len(_hbjson_ap.polygons)}"
         for this_poly in _xml_ap.polygons:
             if not any(this_poly == other_poly for other_poly in _hbjson_ap.polygons):
                 return (
@@ -147,8 +141,7 @@ def _components_diff(_xml_compo: PhxComponentOpaque, _hbjson_compo: PhxComponent
 
         if len(_xml_compo.apertures) != len(_hbjson_compo.apertures):
             return (
-                "aperture length mismatch: "
-                f"xml={len(_xml_compo.apertures)}, hbjson={len(_hbjson_compo.apertures)}"
+                "aperture length mismatch: " f"xml={len(_xml_compo.apertures)}, hbjson={len(_hbjson_compo.apertures)}"
             )
         for xml_ap in _xml_compo.apertures:
             aperture_diffs = [_apertures_diff(xml_ap, hbjson_ap) for hbjson_ap in _hbjson_compo.apertures]
@@ -159,10 +152,7 @@ def _components_diff(_xml_compo: PhxComponentOpaque, _hbjson_compo: PhxComponent
                 )
 
         if len(_xml_compo.polygons) != len(_hbjson_compo.polygons):
-            return (
-                "polygon length mismatch: "
-                f"xml={len(_xml_compo.polygons)}, hbjson={len(_hbjson_compo.polygons)}"
-            )
+            return "polygon length mismatch: " f"xml={len(_xml_compo.polygons)}, hbjson={len(_hbjson_compo.polygons)}"
         for this_poly in _xml_compo.polygons:
             if not any(this_poly == other_poly for other_poly in _hbjson_compo.polygons):
                 return (

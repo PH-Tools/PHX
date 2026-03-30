@@ -16,6 +16,7 @@ from PHX.model import (
     constructions,
     elec_equip,
     geometry,
+    ground,
     phx_site,
     project,
     spaces,
@@ -343,6 +344,7 @@ def _build_time_profiles(_p: project.PhxProject) -> dict:
 
 
 def _PhxVariant(_v: project.PhxVariant) -> dict:
+    foundations = _v.phius_cert.ph_building_data.foundations
     return {
         "id": _v.id_num,
         "n": _v.name,
@@ -353,7 +355,7 @@ def _PhxVariant(_v: project.PhxVariant) -> dict:
         "PHIUS": _PhxPhiusCertification(_v.phius_cert),
         "DIN4108": {"selC4108": 1, "reg4108": 2},
         "cliLoc": _PhxSite(_v.site),
-        "building": _PhxBuilding(_v.building),
+        "building": _PhxBuilding(_v.building, foundations),
         "HVAC": _Systems(_v._mech_collections),
         "res": {
             "cCurv": 0,
@@ -451,7 +453,7 @@ def _PhxPolygon(_p: geometry.PhxPolygon) -> dict:
 # -- BUILDING ------------------------------------------------------------------
 
 
-def _PhxBuilding(_b: building.PhxBuilding) -> dict:
+def _PhxBuilding(_b: building.PhxBuilding, _foundations: list[ground.PhxFoundation] | None = None) -> dict:
     # -- Collect all components: opaque (incl. shades) first, then apertures.
     # -- _b._components has all opaque; _b.aperture_components has all apertures.
     all_components: list[dict] = []
@@ -491,7 +493,7 @@ def _PhxBuilding(_b: building.PhxBuilding) -> dict:
         "dPresB": 50.0,
         "overwrPB": False,
         "lComponent": all_components,
-        "lZone": [_PhxZone(z) for z in _b.zones],
+        "lZone": [_PhxZone(z, _foundations or []) for z in _b.zones],
         "lObj3D": [],
         "generB": _build_default_generB(),
         "countGenB": 0,
@@ -823,7 +825,92 @@ def _zone_calc_params() -> dict:
     }
 
 
-def _PhxZone(_z: building.PhxZone) -> dict:
+def _sel_val(_value: float | None, _sel: int = 6) -> dict:
+    """Build a standard selection/value object for foundation fields."""
+    return {"sel": _sel, "val": [_value, None], "iV": 0}
+
+
+def _PhxFoundation(_f: ground.PhxFoundation) -> dict:
+    """Convert a PhxFoundation to a METR JSON foundation dict.
+
+    METR uses a 'super-foundation' pattern: all fields are present regardless of
+    foundation type. The `typFound` field determines which fields are active.
+    """
+    # -- Common fields
+    d: dict[str, Any] = {
+        "n": _f.display_name,
+        "posPerIns": 1,
+        "perInsWD": 0.0,
+        "thickPer": 0.0,
+        "condPer": 0.04,
+        "flSlabTs": _f.foundation_setting_num.value,
+        "typFound": _f.foundation_type_num.value,
+        "phShiftMG": NaN,
+        "harmFrac": NaN,
+        "bmentACH": 0.0,
+        "bmentDepth": _sel_val(0.0),
+        "hbmentWAG": _sel_val(0.0),
+        "hcsWAG": _sel_val(0.0),
+        "crowlSVentO": _sel_val(0.0),
+        "flSArea": {"sel": 6, "val": [None], "iV": 0},
+        "bmentFlU": _sel_val(0.0),
+        "slabFlU": _sel_val(0.0),
+        "ceilCelA": {"sel": 6, "val": [None], "iV": 0},
+        "ceToUCU": _sel_val(0.0),
+        "bmentWU": _sel_val(0.0),
+        "wallUAG": _sel_val(0.0),
+        "wallUcsAG": _sel_val(0.0),
+        "flPer": _sel_val(0.0),
+        "bmentVol": _sel_val(0.0),
+        "crawlFlU": _sel_val(0.0),
+    }
+
+    # -- Type-specific overrides
+    if isinstance(_f, ground.PhxHeatedBasement):
+        d["flSArea"] = {"sel": 6, "val": [_f.floor_slab_area_m2], "iV": 0}
+        d["flPer"] = _sel_val(_f.floor_slab_exposed_perimeter_m)
+        d["bmentFlU"] = _sel_val(_f.floor_slab_u_value)
+        d["slabFlU"] = _sel_val(_f.floor_slab_u_value)
+        d["bmentDepth"] = _sel_val(_f.slab_depth_below_grade_m)
+        d["bmentWU"] = _sel_val(_f.basement_wall_u_value)
+
+    elif isinstance(_f, ground.PhxUnHeatedBasement):
+        d["bmentDepth"] = _sel_val(_f.slab_depth_below_grade_m)
+        d["hbmentWAG"] = _sel_val(_f.basement_wall_height_above_grade_m)
+        d["flSArea"] = {"sel": 6, "val": [_f.floor_ceiling_area_m2], "iV": 0}
+        d["bmentFlU"] = _sel_val(_f.floor_slab_u_value)
+        d["ceilCelA"] = {"sel": 6, "val": [_f.floor_ceiling_area_m2], "iV": 0}
+        d["ceToUCU"] = _sel_val(_f.ceiling_u_value)
+        d["bmentWU"] = _sel_val(_f.basement_wall_uValue_below_grade)
+        d["wallUAG"] = _sel_val(_f.basement_wall_uValue_above_grade)
+        d["flPer"] = _sel_val(_f.floor_slab_exposed_perimeter_m)
+        d["bmentVol"] = _sel_val(_f.basement_volume_m3)
+        d["bmentACH"] = _f.basement_ventilation_ach or 0.0
+
+    elif isinstance(_f, ground.PhxSlabOnGrade):
+        d["flSArea"] = {"sel": 6, "val": [_f.floor_slab_area_m2], "iV": 0}
+        d["slabFlU"] = _sel_val(_f.floor_slab_u_value)
+        d["bmentFlU"] = _sel_val(_f.floor_slab_u_value)
+        d["flPer"] = _sel_val(_f.floor_slab_exposed_perimeter_m)
+        d["posPerIns"] = _f.perim_insulation_position.value
+        d["perInsWD"] = _f.perim_insulation_width_or_depth_m or 0.0
+        d["thickPer"] = _f.perim_insulation_thickness_m or 0.0
+        d["condPer"] = _f.perim_insulation_conductivity or 0.04
+
+    elif isinstance(_f, ground.PhxVentedCrawlspace):
+        d["ceilCelA"] = {"sel": 6, "val": [_f.crawlspace_floor_slab_area_m2], "iV": 0}
+        d["flSArea"] = {"sel": 6, "val": [_f.crawlspace_floor_slab_area_m2], "iV": 0}
+        d["ceToUCU"] = _sel_val(_f.ceiling_above_crawlspace_u_value)
+        d["flPer"] = _sel_val(_f.crawlspace_floor_exposed_perimeter_m)
+        d["hcsWAG"] = _sel_val(_f.crawlspace_wall_height_above_grade_m)
+        d["crawlFlU"] = _sel_val(_f.crawlspace_floor_u_value)
+        d["crowlSVentO"] = _sel_val(_f.crawlspace_vent_opening_are_m2)
+        d["wallUcsAG"] = _sel_val(_f.crawlspace_wall_u_value)
+
+    return d
+
+
+def _PhxZone(_z: building.PhxZone, _foundations: list[ground.PhxFoundation] | None = None) -> dict:
     """Convert a PhxZone to a METR JSON zone dict."""
     # -- Get the spaces list for rooms
     room_list = []
@@ -879,7 +966,7 @@ def _PhxZone(_z: building.PhxZone) -> dict:
         "vsSp": NaN,
         "nBedR": _z.res_number_bedrooms,
         "lExhVent": [_PhxExhaustVentilator(v) for v in _z.exhaust_ventilator_collection.devices],
-        "lFoundPH": [],  # TODO: Phase 7 — foundations
+        "lFoundPH": [_PhxFoundation(f) for f in (_foundations or [])],
         "trn4108": 1,
         "dVent4108": 1,
         "nVent4108": 1,
