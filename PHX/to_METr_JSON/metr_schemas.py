@@ -988,8 +988,8 @@ def _PhxSpace(_sp: spaces.PhxSpace) -> dict:
         "quantity": _sp.quantity,
         "area": round(_sp.weighted_floor_area, 6),
         "clearH": round(_sp.clear_height, 6),
-        "dVFrSup": round(_sp.ventilation.load.flow_supply, 6),
-        "dVFrEx": round(_sp.ventilation.load.flow_extract, 6),
+        "dVFrSup": round(_sp.ventilation.load.flow_supply, TOL_LEV1),
+        "dVFrEx": round(_sp.ventilation.load.flow_extract, TOL_LEV1),
         "dVFiz": 0.0,
         "idUPatV": _sp.ventilation.schedule.id_num,
         "idVUnit": _sp.vent_unit_id_num,
@@ -1017,10 +1017,10 @@ def _PhxComponentThermalBridge(_tb: components.PhxComponentThermalBridge) -> dic
 def _PhxExhaustVentilator(_v) -> dict:
     """Convert a PhxExhaustVentilator to a METR JSON exhaust vent dict."""
     return {
-        "n": getattr(_v, "display_name", ""),
-        "typeExhV": getattr(_v, "exhaust_type", 1),
-        "ExhVfR": getattr(_v, "exhaust_flow_rate_m3h", 0.0),
-        "runTU": getattr(_v, "annual_run_time_min", 0),
+        "n": _v.display_name,
+        "typeExhV": _v.params.exhaust_type.value,
+        "ExhVfR": _v.params.exhaust_flow_rate_m3h,
+        "runTU": _v.params.annual_runtime_minutes,
     }
 
 

@@ -13,7 +13,7 @@
 			<Month>3</Month>
 			<Day>30</Day>
 			<Hour>14</Hour>
-			<Minutes>5</Minutes>
+			<Minutes>18</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -916,16 +916,16 @@
 						</HomeDevice>
 						<ExhaustVents count="2">
 							<ExhaustVent index="0">
-								<Name>example_dryer_vent</Name>
-								<Type>1</Type>
-								<ExhaustVolumeFlowRate unit="m³/h">442800.0</ExhaustVolumeFlowRate>
-								<RunTimePerYear>0.0</RunTimePerYear>
-							</ExhaustVent>
-							<ExhaustVent index="1">
 								<Name>example_kitchen_hood</Name>
 								<Type>2</Type>
 								<ExhaustVolumeFlowRate unit="m³/h">509.7032388</ExhaustVolumeFlowRate>
-								<RunTimePerYear>0.0</RunTimePerYear>
+								<RunTimePerYear>0.08</RunTimePerYear>
+							</ExhaustVent>
+							<ExhaustVent index="1">
+								<Name>example_dryer_vent</Name>
+								<Type>1</Type>
+								<ExhaustVolumeFlowRate unit="m³/h">442800.0</ExhaustVolumeFlowRate>
+								<RunTimePerYear>7.625</RunTimePerYear>
 							</ExhaustVent>
 						</ExhaustVents>
 						<ThermalBridges count="7">
@@ -1295,7 +1295,7 @@
 							</Device>
 							<Device index="1">
 								<Name>Example_Heat_Pump</Name>
-								<IdentNr>1</IdentNr>
+								<IdentNr>2</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>true</UsedFor_Heating>
@@ -1332,7 +1332,7 @@
 							</Device>
 							<Device index="2">
 								<Name>None</Name>
-								<IdentNr>2</IdentNr>
+								<IdentNr>1</IdentNr>
 								<SystemType>5</SystemType>
 								<TypeDevice>5</TypeDevice>
 								<UsedFor_Heating>true</UsedFor_Heating>
@@ -1544,20 +1544,20 @@
 							<DeviceInConditionedSpace>true</DeviceInConditionedSpace>
 							<SupportiveDevices count="2">
 								<SupportiveDevice index="0">
-									<Name>Example Kitchen Fan</Name>
-									<Type>10</Type>
-									<Quantity>1</Quantity>
-									<InConditionedSpace>true</InConditionedSpace>
-									<NormEnergyDemand>500.0</NormEnergyDemand>
-									<PeriodOperation>0.08</PeriodOperation>
-								</SupportiveDevice>
-								<SupportiveDevice index="1">
 									<Name>Example Device</Name>
 									<Type>10</Type>
 									<Quantity>3</Quantity>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NormEnergyDemand>123.0</NormEnergyDemand>
 									<PeriodOperation>6.5</PeriodOperation>
+								</SupportiveDevice>
+								<SupportiveDevice index="1">
+									<Name>Example Kitchen Fan</Name>
+									<Type>10</Type>
+									<Quantity>1</Quantity>
+									<InConditionedSpace>true</InConditionedSpace>
+									<NormEnergyDemand>500.0</NormEnergyDemand>
+									<PeriodOperation>0.08</PeriodOperation>
 								</SupportiveDevice>
 							</SupportiveDevices>
 						</PHDistribution>

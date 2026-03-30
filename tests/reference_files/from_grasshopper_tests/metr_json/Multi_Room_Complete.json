@@ -32,7 +32,7 @@
       3,
       30,
       14,
-      5,
+      18,
       0
     ],
     "wBkg": false
@@ -4864,8 +4864,8 @@
                 "quantity": 1,
                 "area": 10.89,
                 "clearH": 2.75,
-                "dVFrSup": 0.014789,
-                "dVFrEx": 0.014789,
+                "dVFrSup": 0.01,
+                "dVFrEx": 0.01,
                 "dVFiz": 0.0,
                 "idUPatV": 1,
                 "idVUnit": 1
@@ -4876,8 +4876,8 @@
                 "quantity": 1,
                 "area": 10.89,
                 "clearH": 2.75,
-                "dVFrSup": 0.014789,
-                "dVFrEx": 0.014789,
+                "dVFrSup": 0.01,
+                "dVFrEx": 0.01,
                 "dVFiz": 0.0,
                 "idUPatV": 1,
                 "idVUnit": 1
@@ -4895,14 +4895,14 @@
               {
                 "n": "example_dryer_vent",
                 "typeExhV": 1,
-                "ExhVfR": 0.0,
-                "runTU": 0
+                "ExhVfR": 442800.0,
+                "runTU": 7.625
               },
               {
                 "n": "example_kitchen_hood",
-                "typeExhV": 1,
-                "ExhVfR": 0.0,
-                "runTU": 0
+                "typeExhV": 2,
+                "ExhVfR": 509.7032388,
+                "runTU": 0.08
               }
             ],
             "lFoundPH": [
@@ -5317,7 +5317,7 @@
               {
                 "info": "Heat pump",
                 "n": "Example_Heat_Pump",
-                "id": 2,
+                "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
                 "hRec": 0.0,
@@ -5547,7 +5547,7 @@
               {
                 "info": "Heat pump",
                 "n": "None",
-                "id": 1,
+                "id": 2,
                 "typeDev": 5,
                 "typeDevDB": 5,
                 "hRec": 0.0,

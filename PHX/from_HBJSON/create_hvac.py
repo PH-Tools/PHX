@@ -169,6 +169,7 @@ def build_phx_exh_vent_dryer(
     obj = hvac.PhxExhaustVentilatorDryer()
     obj.display_name = _hbeph_exhaust_vent.display_name
     obj.params.exhaust_flow_rate_m3h = _hbeph_exhaust_vent.exhaust_flow_rate_m3s * 60 * 60
+    obj.params.annual_runtime_minutes = _hbeph_exhaust_vent.annual_runtime_minutes
     return obj
 
 
@@ -189,6 +190,7 @@ def build_phx_exh_vent_kitchen_vent(
     obj = hvac.PhxExhaustVentilatorRangeHood()
     obj.display_name = _hbeph_exhaust_vent.display_name
     obj.params.exhaust_flow_rate_m3h = _hbeph_exhaust_vent.exhaust_flow_rate_m3s * 60 * 60
+    obj.params.annual_runtime_minutes = _hbeph_exhaust_vent.annual_runtime_minutes
     return obj
 
 
