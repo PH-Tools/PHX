@@ -23,8 +23,9 @@ from PHX.model import (
 )
 from PHX.model.enums.hvac import DeviceType, PhxHotWaterPipingInchDiameterType
 from PHX.model.hvac import collection as hvac_collection
-from PHX.model.hvac import heat_pumps, heating, renewable_devices, water
+from PHX.model.hvac import heat_pumps, heating, renewable_devices
 from PHX.model.hvac import ventilation as hvac_ventilation
+from PHX.model.hvac import water
 from PHX.model.schedules import occupancy, ventilation
 
 TOL_LEV1 = 2  # Rounding tolerance: 9.843181919194 -> 9.84
@@ -888,9 +889,14 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> dict:
         d["bmentACH"] = _f.basement_ventilation_ach or 0.0
 
     elif isinstance(_f, ground.PhxSlabOnGrade):
+        # -- If no user-defined U-value, use sel=2 ("Detect Automatically")
+        if _f.floor_slab_u_value is None:
+            slab_u_sel = 2
+        else:
+            slab_u_sel = 6
         d["flSArea"] = {"sel": 6, "val": [_f.floor_slab_area_m2], "iV": 0}
-        d["slabFlU"] = _sel_val(_f.floor_slab_u_value)
-        d["bmentFlU"] = _sel_val(_f.floor_slab_u_value)
+        d["slabFlU"] = _sel_val(_f.floor_slab_u_value, _sel=slab_u_sel)
+        d["bmentFlU"] = _sel_val(_f.floor_slab_u_value, _sel=slab_u_sel)
         d["flPer"] = _sel_val(_f.floor_slab_exposed_perimeter_m)
         d["posPerIns"] = _f.perim_insulation_position.value
         d["perInsWD"] = _f.perim_insulation_width_or_depth_m or 0.0
@@ -1102,6 +1108,13 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
         dev["refQ"] = 8  # METr "n.a." for garage lighting
     elif isinstance(_d, (elec_equip.PhxDeviceLightingInterior, elec_equip.PhxDeviceLightingExterior)):
         dev["fHEff"] = _d.frac_high_efficiency or NaN
+    elif isinstance(_d, (elec_equip.PhxDeviceCustomLighting, elec_equip.PhxDeviceCustomMEL)):
+        dev["refQ"] = 5  # METR "User defined" reference quantity
+        dev["quantity"] = 1
+        dev["enDrU1"] = energy
+        dev["enDrY"] = 0
+        dev["enDrD"] = 0
+        dev["enDY"] = 0
 
     return dev
 
@@ -1679,6 +1692,9 @@ def _PhxMechanicalDevice(_d) -> dict:
         dev["auxEn"] = getattr(params, "aux_energy", None) or NaN
         dev["auxEnDHW"] = getattr(params, "aux_energy_dhw", None) or NaN
         dev["inCondSp"] = getattr(params, "in_conditioned_space", True)
+
+    # -- Usage profile / coverage (applies to all device types)
+    _set_device_coverage(_d, dev)
 
     # -- Device-type-specific overlays
     if isinstance(_d, hvac_ventilation.PhxDeviceVentilator):
