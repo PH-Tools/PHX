@@ -789,6 +789,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
     --------
         * None
     """
+    logger.debug(f"add_elec_equip_from_hb_room({_variant.id_num=}, {_hb_room.display_name=})")
 
     # -- Get all the PhEquipment from the HBE-Electric-Equipment
     try:
@@ -800,6 +801,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
                 zone.elec_equipment_collection.add_new_device(equip_key, phx_elec_device)
     except MissingEnergyPropertiesError:
         # No electric equipment defined, skip
+        logger.debug(f"No electric equipment defined for room: '{_hb_room.display_name}', skipping.")
         pass
 
     # -- Get all the PhEquipment from the HBE-Process-Loads
@@ -815,6 +817,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
                 zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
     except MissingEnergyPropertiesError:
         # No energy properties or process loads defined, skip
+        logger.debug(f"No process loads defined for room: '{_hb_room.display_name}', skipping.")
         pass
 
     # -- Get the PhEquipment from the HBE-Lighting, if it exists
@@ -828,6 +831,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
                     zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
     except MissingEnergyPropertiesError:
         # No energy properties or lighting defined, skip
+        logger.debug(f"No lighting defined for room: '{_hb_room.display_name}', skipping.")
         pass
 
     return None

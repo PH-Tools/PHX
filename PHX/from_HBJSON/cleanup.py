@@ -119,7 +119,13 @@ def _dup_face(_hb_face: face.Face) -> face.Face:
             original_extension = getattr(_hb_face._properties, f"_{extension_name}", None)
             if not original_extension:
                 continue
+            if not hasattr(original_extension, "__copy__"):
+                continue
+
             new_extension = original_extension.__copy__()
+            logger.debug(
+                f"Copying extension '{extension_name}' from '{_hb_face._properties}' to '{new_face._properties}'"
+            )
             setattr(new_face._properties, f"_{extension_name}", new_extension)
         except Exception as e:
             logger.debug(f"Failed to copy extension '{extension_name}': {e}")

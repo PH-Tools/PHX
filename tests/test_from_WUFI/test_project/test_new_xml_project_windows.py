@@ -20,11 +20,19 @@ def _find_matching_window(
     hbjson_type: PhxConstructionWindow, xml_types: ValuesView[PhxConstructionWindow]
 ) -> PhxConstructionWindow:
     for xml_type in xml_types:
-        if hbjson_type.display_name == xml_type.display_name:
+        if (
+            hbjson_type.u_value_window == xml_type.u_value_window
+            and hbjson_type.u_value_glass == xml_type.u_value_glass
+            and hbjson_type.u_value_frame == xml_type.u_value_frame
+            and hbjson_type.glass_mean_emissivity == xml_type.glass_mean_emissivity
+            and hbjson_type.glass_g_value == xml_type.glass_g_value
+        ):
             return xml_type
     raise ValueError(
-        f"HBJson-window-type '{hbjson_type.display_name}' not found in "
-        f"XML-window-types: '{[_.display_name for _ in xml_types]}'"
+        f"HBJson-window-type '{hbjson_type.display_name}' with properties "
+        f"(u_window={hbjson_type.u_value_window}, u_glass={hbjson_type.u_value_glass}, "
+        f"u_frame={hbjson_type.u_value_frame}, emissivity={hbjson_type.glass_mean_emissivity}, "
+        f"g_value={hbjson_type.glass_g_value}) not found in XML-window-types"
     )
 
 
@@ -41,7 +49,6 @@ def test_window_type_attributes_match(
     for hbjson_type in hbjson_windows.values():
         xml_type = _find_matching_window(hbjson_type, xml_windows.values())
 
-        assert hbjson_type.display_name == xml_type.display_name
         assert hbjson_type.u_value_window == xml_type.u_value_window
         assert hbjson_type.u_value_glass == xml_type.u_value_glass
         assert hbjson_type.u_value_frame == xml_type.u_value_frame

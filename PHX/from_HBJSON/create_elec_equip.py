@@ -2,9 +2,13 @@
 
 """Function to create new PhxElectricalDevices from Honeybee-PH-PhEquipment"""
 
+import logging
+
 from honeybee_energy_ph.load import ph_equipment
 
 from PHX.model import elec_equip
+
+logger = logging.getLogger(__name__)
 
 
 def build_phx_elec_device(
@@ -21,6 +25,8 @@ def build_phx_elec_device(
     --------
         * elec_equip.PhxElectricalEquipment: The new PhxElectricalDevice.
     """
+    logger.debug(f"build_phx_elec_device({_hbph_device.display_name=})")
+
     # -- Get the right PHX Device constructor based on the type of Honeybee-PH Equipment input
     devices = {
         "PhDishwasher": elec_equip.PhxDeviceDishwasher,
@@ -58,10 +64,12 @@ def build_phx_elec_device(
             # ... then just set copy over any non-Enum values
             try:
                 setattr(phx_device, attr_name, getattr(_hbph_device, attr_name))
-            except KeyError:
+            except KeyError as e:
+                logger.error(f"KeyError setting attribute '{attr_name}' on '{phx_device.__class__.__name__}': {e}")
                 raise
             except Exception as e:
                 msg = f"\n\tError setting attribute '{attr_name}' on '{phx_device.__class__.__name__}'?/n\t{e}"
+                logger.error(msg)
                 raise Exception(msg)
 
     return phx_device

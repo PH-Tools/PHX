@@ -3,12 +3,15 @@
 """PHX Passive House Electrical Equipment (Appliances) Classes"""
 
 import inspect
+import logging
 import sys
 import uuid
 from dataclasses import dataclass, field
 from typing import ClassVar
 
 from PHX.model.enums.elec_equip import ElectricEquipmentType
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -371,7 +374,16 @@ class PhxElectricDeviceCollection:
         --------
             * None
         """
+        replacing_existing = _key in self._devices
         self._devices[_key] = _device
+        logger.debug(
+            "Zone HomeDevice collection upsert: key='%s' replacing=%s class='%s' identifier='%s' total_devices=%s",
+            _key,
+            replacing_existing,
+            _device.__class__.__name__,
+            getattr(_device, "identifier", None),
+            len(self._devices),
+        )
 
     def __iter__(self):
         """Get each device in the PhxElectricDeviceCollection, one at a time."""

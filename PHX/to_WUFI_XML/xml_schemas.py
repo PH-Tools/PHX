@@ -2,6 +2,7 @@
 
 """Conversion Schemas for how to write PH/HB objects to WUFI XML"""
 
+import logging
 import operator
 import sys
 from functools import reduce
@@ -28,6 +29,8 @@ from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType
 from PHX.model.hvac import _base, renewable_devices
 from PHX.model.schedules import occupancy, ventilation
 from PHX.to_WUFI_XML.xml_writables import XML_List, XML_Node, XML_Object, xml_writable
+
+logger = logging.getLogger(__name__)
 
 TOL_LEV1 = 2  # Value tolerance for rounding. ie; 9.843181919194 -> 9.84
 TOL_LEV2 = 10  # Value tolerance for rounding. ie; 9.843181919194 -> 9.8431819192
@@ -211,6 +214,14 @@ def _PhxZone(_z: building.PhxZone) -> list[xml_writable]:
                 merged_spaces_.append(new_space)
             return sorted(merged_spaces_, key=lambda x: x.vent_unit_display_name)
 
+    home_devices = list(_z.elec_equipment_collection.devices)
+    logger.debug(
+        "Serializing WUFI HomeDevice list for zone='%s': count=%s devices=%s",
+        _z.display_name,
+        len(home_devices),
+        [f"{d.__class__.__name__}:{getattr(d, 'identifier', None)}" for d in home_devices],
+    )
+
     return [
         XML_Node("Name", _z.display_name),
         XML_Node("KindZone", _z.zone_type.value),
@@ -249,7 +260,7 @@ def _PhxZone(_z: building.PhxZone) -> list[xml_writable]:
             "HomeDevice",
             [
                 XML_Object("Device", d, "index", i, _schema_name="_PhxElectricalDevice")
-                for i, d in enumerate(_z.elec_equipment_collection.devices)
+                for i, d in enumerate(home_devices)
             ],
         ),
         XML_List(
@@ -1773,7 +1784,17 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> list[xml_writabl
         XML_Node("CEF_CombinedEnergyFactor", _d.combined_energy_factor),
     ]
 
-    device_schema = getattr(sys.modules[__name__], f"_{_d.__class__.__name__}")
+    device_schema_name = f"_{_d.__class__.__name__}"
+    logger.debug(
+        "Serializing WUFI HomeDevice item: class=%s identifier=%s quantity=%s energy_demand=%s schema=%s",
+        _d.__class__.__name__,
+        getattr(_d, "identifier", None),
+        _d.get_quantity(),
+        _d.get_energy_demand(),
+        device_schema_name,
+    )
+
+    device_schema = getattr(sys.modules[__name__], device_schema_name)
     appliance_specific_attributes = device_schema(_d)
     return common_attributes + appliance_specific_attributes
 

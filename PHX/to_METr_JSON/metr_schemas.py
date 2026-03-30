@@ -1004,7 +1004,9 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
         dev["refED"] = 4  # CEF
     elif isinstance(_d, elec_equip.PhxDeviceCooktop):
         dev["tCook"] = _d.cooktop_type
-    elif isinstance(_d, (elec_equip.PhxDeviceFridgeFreezer, elec_equip.PhxDeviceRefrigerator, elec_equip.PhxDeviceFreezer)):
+    elif isinstance(
+        _d, (elec_equip.PhxDeviceFridgeFreezer, elec_equip.PhxDeviceRefrigerator, elec_equip.PhxDeviceFreezer)
+    ):
         dev["refED"] = 2  # kWh/day
         dev["fSize"] = 2
     elif isinstance(_d, elec_equip.PhxDeviceLightingGarage):
