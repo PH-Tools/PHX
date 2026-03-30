@@ -21,7 +21,7 @@ from PHX.model import (
     project,
     spaces,
 )
-from PHX.model.enums.hvac import DeviceType
+from PHX.model.enums.hvac import DeviceType, PhxHotWaterPipingInchDiameterType
 from PHX.model.hvac import collection as hvac_collection
 from PHX.model.hvac import heat_pumps, heating, renewable_devices, water
 from PHX.model.hvac import ventilation as hvac_ventilation
@@ -1091,6 +1091,7 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
         dev["refED"] = 4  # CEF
     elif isinstance(_d, elec_equip.PhxDeviceCooktop):
         dev["tCook"] = _d.cooktop_type
+        dev["enDrU1"] = energy
     elif isinstance(
         _d, (elec_equip.PhxDeviceFridgeFreezer, elec_equip.PhxDeviceRefrigerator, elec_equip.PhxDeviceFreezer)
     ):
@@ -1514,19 +1515,19 @@ def _set_device_coverage(_d, dev: dict) -> None:
         return
     dev["uHWCVHD"] = [
         up.space_heating,
+        up.dhw_heating,
         up.cooling,
         up.ventilation,
         up.humidification,
         up.dehumidification,
-        up.dhw_heating,
     ]
     dev["cHWCVHD"] = [
         up.space_heating_percent,
+        up.dhw_heating_percent,
         up.cooling_percent,
         up.ventilation_percent,
         up.humidification_percent,
         up.dehumidification_percent,
-        up.dhw_heating_percent,
     ]
 
 
@@ -1589,12 +1590,12 @@ def _overlay_water_storage(_d: water.PhxHotWaterTank, dev: dict) -> None:
     _set_device_coverage(_d, dev)
     p = _d.params
     dev["volWS"] = p.storage_capacity
-    dev["lStWS"] = p.standby_losses or NaN
-    dev["totLWS"] = p.storage_loss_rate or NaN
+    dev["lStWS"] = p.standby_losses if p.standby_losses is not None else NaN
+    dev["totLWS"] = p.standby_losses if p.standby_losses is not None else NaN
     dev["inOptWS"] = p.input_option.value if hasattr(p.input_option, "value") else 1
-    dev["aHreWS"] = NaN
-    dev["ambTWS"] = p.room_temp or NaN
-    dev["tTWS"] = p.water_temp or NaN
+    dev["aHreWS"] = p.storage_loss_rate if p.storage_loss_rate is not None else NaN
+    dev["ambTWS"] = p.room_temp if p.room_temp is not None else NaN
+    dev["tTWS"] = p.water_temp if p.water_temp is not None else NaN
     dev["qauntWS"] = _d.quantity or 1
     dev["inTEnvWS"] = p.in_conditioned_space
     dev["inCondSp"] = p.in_conditioned_space
@@ -1719,6 +1720,131 @@ def _PhxSupportiveDevice(_d) -> dict:
     }
 
 
+def _diameter_enum_value(_diameter_mm: float) -> int:
+    """Convert a pipe diameter in mm to the METR/WUFI inch-diameter enum value."""
+    diameter_inches = (_diameter_mm / 25.4) if _diameter_mm else 0.0
+    return PhxHotWaterPipingInchDiameterType.nearest_key(diameter_inches).value
+
+
+def _DistributionDHWTwig(_twg) -> dict:
+    """Convert a PhxPipeElement (twig/fixture) to a METR JSON dict."""
+    return {
+        "n": _twg.display_name,
+        "id": _twg.id_num,
+        "plW": _twg.length_m,
+        "pmW": _twg.material.value,
+        "pdW": _diameter_enum_value(_twg.weighted_diameter_mm),
+    }
+
+
+def _DistributionDHWBranch(_br) -> dict:
+    """Convert a PhxPipeBranch to a METR JSON dict."""
+    return {
+        "n": _br.display_name,
+        "id": _br.id_num,
+        "plW": _br.pipe_element.length_m,
+        "pmW": _br.pipe_element.material.value,
+        "pdW": _diameter_enum_value(_br.pipe_element.weighted_diameter_mm),
+        "lTwigW": [_DistributionDHWTwig(tw) for tw in _br.fixtures],
+    }
+
+
+def _DistributionDHWTrunc(_t) -> dict:
+    """Convert a PhxPipeTrunk to a METR JSON dict."""
+    return {
+        "n": _t.display_name,
+        "id": _t.id_num,
+        "plW": _t.pipe_element.length_m,
+        "pmW": _t.pipe_element.material.value,
+        "pdW": _diameter_enum_value(_t.pipe_element.weighted_diameter_mm),
+        "cUoF": _t.multiplier,
+        "drecW": _t.demand_recirculation,
+        "lBranchW": [_DistributionDHWBranch(br) for br in _t.branches],
+    }
+
+
+def _PhxDuctElement(_d) -> dict:
+    """Convert a PhxDuctElement to a METR JSON duct dict."""
+    return {
+        "n": _d.display_name,
+        "id": _d.id_num,
+        "dDuct": _d.diameter_mm,
+        "wDuct": _d.width_mm,
+        "hDuct": _d.height_mm,
+        "lDuct": _d.length_m,
+        "tIns": _d.insulation_thickness_mm,
+        "tCond": _d.insulation_conductivity_wmk,
+        "quantity": _d.quantity,
+        "tDuct": _d.duct_type.value,
+        "ductS": _d.duct_shape,
+        "isRefl": _d.is_reflective,
+        "lassVU": list(_d.assigned_vent_unit_ids),
+    }
+
+
+def _build_cooling_distribution(_c: hvac_collection.PhxMechanicalSystemCollection) -> dict:
+    """Build cooling distribution fields from heat pump cooling params."""
+    cooling_devices = [d for d in _c.heat_pump_devices if d.usage_profile.cooling]
+
+    # -- Defaults
+    d: dict[str, Any] = {
+        "ventC": False,
+        "sassC": False,
+        "recC": False,
+        "rassC": False,
+        "dehumC": False,
+        "panelC": False,
+        "crTC": NaN,
+        "cTC": NaN,
+        "recfC": 0.0,
+        "mcpC": NaN,
+        "copAC": NaN,
+        "crdC": False,
+        "mrcpC": NaN,
+        "rcopC": NaN,
+        "udhlC": False,
+        "dcopC": NaN,
+        "pcopC": NaN,
+        "delC": NaN,
+        "seerC": NaN,
+        "eerC": NaN,
+    }
+
+    if not cooling_devices:
+        return d
+
+    # -- Combine cooling params from all cooling-capable heat pumps
+    for hp in cooling_devices:
+        pc = hp.params_cooling
+
+        if pc.ventilation.used:
+            d["ventC"] = True
+            d["sassC"] = pc.ventilation.single_speed
+            d["mcpC"] = pc.ventilation.capacity
+            d["cTC"] = pc.ventilation.min_coil_temp
+            d["copAC"] = pc.ventilation.annual_COP
+
+        if pc.recirculation.used:
+            d["recC"] = True
+            d["rassC"] = pc.recirculation.single_speed
+            d["mrcpC"] = pc.recirculation.capacity
+            d["crTC"] = pc.recirculation.min_coil_temp
+            d["rcopC"] = pc.recirculation.annual_COP
+            d["recfC"] = pc.recirculation.flow_rate_m3_hr
+            d["crdC"] = pc.recirculation.flow_rate_variable
+
+        if pc.dehumidification.used:
+            d["dehumC"] = True
+            d["udhlC"] = pc.dehumidification.useful_heat_loss
+            d["dcopC"] = pc.dehumidification.annual_COP
+
+        if pc.panel.used:
+            d["panelC"] = True
+            d["pcopC"] = pc.panel.annual_COP
+
+    return d
+
+
 def _build_default_distribution(_c: hvac_collection.PhxMechanicalSystemCollection) -> dict:
     """Distribution parameters for HVAC system, pulling DHW values from the collection."""
     hw_params = _c._distribution_hw_recirculation_params
@@ -1740,44 +1866,25 @@ def _build_default_distribution(_c: hvac_collection.PhxMechanicalSystemCollectio
         "desFTH": [NaN, NaN, NaN],
         "desSHlH": [NaN, NaN, NaN],
         "flowTCH": [False, False, False],
-        "ventC": False,
-        "sassC": False,
-        "recC": False,
-        "rassC": False,
-        "dehumC": False,
-        "panelC": False,
-        "crTC": NaN,
-        "cTC": NaN,
-        "recfC": 0.0,
-        "mcpC": NaN,
-        "copAC": NaN,
-        "crdC": False,
-        "mrcpC": NaN,
-        "rcopC": NaN,
-        "udhlC": False,
-        "dcopC": NaN,
-        "pcopC": NaN,
-        "delC": NaN,
-        "seerC": NaN,
-        "eerC": NaN,
-        "lVentDuct": [],
+        **_build_cooling_distribution(_c),
+        "lVentDuct": [_PhxDuctElement(d) for d in _c.vent_ducting],
         "tapWT": 45.0,
-        "cmpW": 4,
-        "pmW": 2,
-        "pdW": 1,
+        "cmpW": hw_params.calc_method.value,
+        "pmW": hw_params.pipe_material.value,
+        "pdW": _diameter_enum_value(hw_params.pipe_diameter),
         "hwfeW": hw_params.hot_water_fixtures,
-        "drecW": True,
+        "drecW": hw_params.demand_recirc,
         "sfeW": 1,
-        "nbrW": 1,
-        "pinsW": True,
-        "ufW": 2,
-        "lTruncW": [],
-        "lcpW": [0.0, NaN, NaN],
-        "hlcW": [NaN, NaN, NaN],
-        "trW": [20.0, NaN, NaN],
-        "dftW": [60.0, NaN, NaN],
-        "dhcW": [24.0, NaN, NaN],
-        "lpW": [0.0, NaN, NaN],
-        "dpW": [NaN, NaN, NaN],
+        "nbrW": hw_params.num_bathrooms,
+        "pinsW": hw_params.all_pipes_insulated,
+        "ufW": hw_params.units_or_floors.value,
+        "lTruncW": [_DistributionDHWTrunc(t) for t in _c.dhw_distribution_trunks],
+        "lcpW": [_c.dhw_recirc_total_length_m, NaN, NaN],
+        "hlcW": [_c.dhw_recirc_weighted_heat_loss_coeff, NaN, NaN],
+        "trW": [hw_params.air_temp, NaN, NaN],
+        "dftW": [hw_params.water_temp, NaN, NaN],
+        "dhcW": [hw_params.daily_recirc_hours, NaN, NaN],
+        "lpW": [_c.dhw_distribution_total_length_m, NaN, NaN],
+        "dpW": [_c.dhw_distribution_weighted_diameter_mm, NaN, NaN],
         "hrsW": [NaN, NaN, NaN],
     }
