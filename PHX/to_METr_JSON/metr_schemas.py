@@ -740,6 +740,14 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture, _index: int) -> d
     # -- Add surface physics defaults (use wall defaults for windows)
     result.update(_component_surface_defaults(1, _c.exposure_exterior.value))
 
+    # -- Aperture-specific overrides
+    result["depthWRevC"] = _c.install_depth
+    result["distGlasC"] = _c.average_shading_d_reveal or (_c.window_type.frame_top.width if _c.window_type else 0.05)
+    result["dCorShadeMC"] = _c.default_monthly_shading_correction_factor
+    if _c.elements:
+        result["shadeC"] = sum(e.winter_shading_factor for e in _c.elements) / len(_c.elements)
+        result["shadeSumC"] = sum(e.summer_shading_factor for e in _c.elements) / len(_c.elements)
+
     # -- Colors and polygon references
     result.update(
         {
@@ -831,11 +839,12 @@ def _sel_val(_value: float | None, _sel: int = 6) -> dict:
     return {"sel": _sel, "val": [_value, None], "iV": 0}
 
 
-def _PhxFoundation(_f: ground.PhxFoundation) -> dict:
+def _PhxFoundation(_f: ground.PhxFoundation, _zone_id: int = -1) -> dict:
     """Convert a PhxFoundation to a METR JSON foundation dict.
 
     METR uses a 'super-foundation' pattern: all fields are present regardless of
     foundation type. The `typFound` field determines which fields are active.
+    `idZrel` links the foundation to a zone for automatic U-value detection.
     """
     # -- Common fields
     d: dict[str, Any] = {
@@ -913,6 +922,7 @@ def _PhxFoundation(_f: ground.PhxFoundation) -> dict:
         d["crowlSVentO"] = _sel_val(_f.crawlspace_vent_opening_are_m2)
         d["wallUcsAG"] = _sel_val(_f.crawlspace_wall_u_value)
 
+    d["idZrel"] = _zone_id
     return d
 
 
@@ -972,7 +982,7 @@ def _PhxZone(_z: building.PhxZone, _foundations: list[ground.PhxFoundation] | No
         "vsSp": NaN,
         "nBedR": _z.res_number_bedrooms,
         "lExhVent": [_PhxExhaustVentilator(v) for v in _z.exhaust_ventilator_collection.devices],
-        "lFoundPH": [_PhxFoundation(f) for f in (_foundations or [])],
+        "lFoundPH": [_PhxFoundation(f, _z.id_num) for f in (_foundations or [])],
         "trn4108": 1,
         "dVent4108": 1,
         "nVent4108": 1,

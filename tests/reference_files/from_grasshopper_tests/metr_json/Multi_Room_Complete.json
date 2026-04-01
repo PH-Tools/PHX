@@ -29,10 +29,10 @@
     "rEmail": "",
     "date": [
       2026,
-      3,
-      30,
-      16,
-      0,
+      4,
+      1,
+      12,
+      22,
       0
     ],
     "wBkg": false
@@ -1579,7 +1579,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_3fdc643a",
+      "n": "PhWindowConstruction_185813e2",
       "detU": true,
       "detGd": true,
       "Uw": 0.8339189189189188,
@@ -3524,7 +3524,7 @@
             "id": 42,
             "idSKP": -1,
             "itv": 4,
-            "n": "Shade_03f40a60",
+            "n": "Shade_02dbc89e",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3666,7 +3666,7 @@
             "id": 43,
             "idSKP": -1,
             "itv": 5,
-            "n": "Shade_a78fc151",
+            "n": "Shade_eddae06f",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3808,7 +3808,7 @@
             "id": 41,
             "idSKP": -1,
             "itv": 6,
-            "n": "PhWindowConstruction_3fdc643a",
+            "n": "PhWindowConstruction_185813e2",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -3849,7 +3849,7 @@
             "alfaWindBC": 4.5,
             "alfaWinwardC": 1.6,
             "alfaLeewardC": 0.33,
-            "shadeC": 1.0,
+            "shadeC": 0.9769987703156366,
             "idIsurfC": -1,
             "partSolEC": "NaN",
             "solEPaC": "NaN",
@@ -3885,8 +3885,8 @@
               "NaN",
               "NaN"
             ],
-            "depthWRevC": "NaN",
-            "distGlasC": 0.05,
+            "depthWRevC": 0.1016,
+            "distGlasC": 0.1,
             "widthWC": "NaN",
             "hAGrC": {
               "sel": 6,
@@ -3900,7 +3900,7 @@
             "obstrHC": 0.0,
             "obstrDC": 0.0,
             "otherShadeC": 1.0,
-            "shadeSumC": 1.0,
+            "shadeSumC": 0.9644000913827798,
             "eDoorC": false,
             "coolLTdifC": "NaN",
             "multHTrC": "NaN",
@@ -3953,7 +3953,7 @@
             "id": 25,
             "idSKP": -1,
             "itv": 7,
-            "n": "Room_4_5ff1fee5..Face5_Glz0",
+            "n": "Room_4_98e17db6..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -3994,7 +3994,7 @@
             "alfaWindBC": 4.5,
             "alfaWinwardC": 1.6,
             "alfaLeewardC": 0.33,
-            "shadeC": 1.0,
+            "shadeC": 0.9560181139370099,
             "idIsurfC": -1,
             "partSolEC": "NaN",
             "solEPaC": "NaN",
@@ -4030,8 +4030,8 @@
               "NaN",
               "NaN"
             ],
-            "depthWRevC": "NaN",
-            "distGlasC": 0.05,
+            "depthWRevC": 0.1016,
+            "distGlasC": 0.1,
             "widthWC": "NaN",
             "hAGrC": {
               "sel": 6,
@@ -4045,7 +4045,7 @@
             "obstrHC": 0.0,
             "obstrDC": 0.0,
             "otherShadeC": 1.0,
-            "shadeSumC": 1.0,
+            "shadeSumC": 0.9813654197122775,
             "eDoorC": false,
             "coolLTdifC": "NaN",
             "multHTrC": "NaN",
@@ -4773,19 +4773,7 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__47c39493",
-                "typeTbZ": -15,
-                "lengthTbZ": 14.000714267493642,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__67e73f72",
+                "n": "_unnamed_bldg_segment__203e2b66",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4797,19 +4785,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__96a26244",
-                "typeTbZ": -15,
-                "lengthTbZ": 22.0,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__a1794f57",
+                "n": "_unnamed_bldg_segment__27861a3a",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.758048651498616,
                 "psiTbZ": 0.01,
@@ -4821,7 +4797,19 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__bb45d9ff",
+                "n": "_unnamed_bldg_segment__3ad1a69c",
+                "typeTbZ": -15,
+                "lengthTbZ": 22.0,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__7fc9c7fd",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4833,7 +4821,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__cd01ca90",
+                "n": "_unnamed_bldg_segment__a00361e8",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4845,9 +4833,21 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__d98b083d",
+                "n": "_unnamed_bldg_segment__e5e9ca73",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.799999999999997,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__ffd67648",
+                "typeTbZ": -15,
+                "lengthTbZ": 14.000714267493642,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -5034,7 +5034,8 @@
                     null
                   ],
                   "iV": 0
-                }
+                },
+                "idZrel": 1
               }
             ],
             "trn4108": 1,
@@ -5100,7 +5101,7 @@
             "lDevice": [
               {
                 "info": "Heat pump",
-                "n": "5d2aab74-4002-4dcd-aa26-7a0441e243e1",
+                "n": "0def134c-a8ec-4bef-af17-de9b968dd454",
                 "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
@@ -5317,7 +5318,7 @@
               {
                 "info": "Heat pump",
                 "n": "Example_Heat_Pump",
-                "id": 2,
+                "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
                 "hRec": 0.0,
@@ -5547,7 +5548,7 @@
               {
                 "info": "Heat pump",
                 "n": "None",
-                "id": 1,
+                "id": 2,
                 "typeDev": 5,
                 "typeDevDB": 5,
                 "hRec": 0.0,
@@ -6564,15 +6565,6 @@
               "devCondSp": true,
               "lSuppDev": [
                 {
-                  "n": "Example Kitchen Fan",
-                  "tsDev": 10,
-                  "quantity": 1,
-                  "inCondSp": true,
-                  "nEdem": 500.0,
-                  "contr": false,
-                  "poOper": 0.08
-                },
-                {
                   "n": "Example Device",
                   "tsDev": 10,
                   "quantity": 3,
@@ -6580,6 +6572,15 @@
                   "nEdem": 123.0,
                   "contr": false,
                   "poOper": 6.5
+                },
+                {
+                  "n": "Example Kitchen Fan",
+                  "tsDev": 10,
+                  "quantity": 1,
+                  "inCondSp": true,
+                  "nEdem": 500.0,
+                  "contr": false,
+                  "poOper": 0.08
                 }
               ]
             }
