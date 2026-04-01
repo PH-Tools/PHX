@@ -377,6 +377,10 @@ def build_phx_window_type_from_HB_WindowConstruction(
     # -- Window Params as per ISO-10077-1 -------------------------------------
     phx_window_type = _set_phx_window_type_u_w_value(phx_window_type, ph_frame, ph_glazing)
 
+    # -- Set the overall frame U-value to match the window U-value.
+    # -- For the grouped-window approach (frF≈1.0), Ufr ≈ Uw.
+    phx_window_type.u_value_frame = phx_window_type.u_value_window
+
     # -- Add Shading to the Window, if any -------------------------------------
     if _shade_const:
         phx_shade = _project.shade_types[_shade_const.shade_material.identifier]

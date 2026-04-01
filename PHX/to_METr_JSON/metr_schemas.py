@@ -6,7 +6,9 @@ Each function is named `_ClassName` matching the PHX class and returns a dict (o
 The converter discovers these by class name: PhxProject → _PhxProject(), etc.
 """
 
+import operator
 from datetime import datetime
+from functools import reduce
 from typing import Any
 
 from PHX.model import (
@@ -63,9 +65,9 @@ def _PhxProject(_p: project.PhxProject) -> dict:
                     all_materials[mat.id_num] = mat
 
     return {
-        "progVers": _p.program_version,
+        "progVers": "3.5.0.1",
         "SIIP": 2,
-        "calcScope": _p.scope,
+        "calcScope": 4,
         "dimVisGeom": _p.visualized_geometry,
         "projD": _PhxProjectData(_p.project_data),
         "lMaterial": [_PhxMaterial(m) for m in all_materials.values()],
@@ -184,7 +186,7 @@ def _PhxConstructionWindow(
         "idDB": 0,
         "n": _wt.display_name,
         "detU": _wt.use_detailed_uw,
-        "detGd": _wt.use_detailed_frame,
+        "detGd": False,  # Always use simplified glazing mode — PHX doesn't have detailed layer data
         "Uw": _wt.u_value_window,
         "frF": _wt.frame_factor,
         "trHem": _wt.glass_g_value,
@@ -355,7 +357,7 @@ def _PhxVariant(_v: project.PhxVariant) -> dict:
         "HaMT": _build_default_HaMT(),
         "PHIUS": _PhxPhiusCertification(_v.phius_cert),
         "DIN4108": {"selC4108": 1, "reg4108": 2},
-        "cliLoc": _PhxSite(_v.site),
+        "cliLoc": _PhxSite(_v.site, _v.phius_cert.phius_certification_criteria),
         "building": _PhxBuilding(_v.building, foundations),
         "HVAC": _Systems(_v._mech_collections),
         "res": {
@@ -551,11 +553,19 @@ def _component_surface_defaults(
     is_roof = _face_type_value == 3  # ComponentFaceType.ROOF_CEILING
     is_ground = _exposure_ext_value == -2  # ComponentExposureExterior.GROUND
 
-    if is_ground:
+    if is_ground and is_floor:
         rse = 0.0
         rsi = 0.17
         alfa_ci = 2.5
         alfa_ri = 3.382353
+        alfa_ce = 99999.0
+        alfa_re = 0.0
+    elif is_ground:
+        # Ground-contact walls: wall-type interior coefficients, ground exterior
+        rse = 0.0
+        rsi = 0.13
+        alfa_ci = 3.192308
+        alfa_ri = 4.5
         alfa_ce = 99999.0
         alfa_re = 0.0
     elif is_roof:
@@ -650,7 +660,7 @@ def _component_surface_defaults(
 
 def _PhxComponentOpaque(_c: components.PhxComponentOpaque, _index: int) -> dict:
     """Convert a PhxComponentOpaque to a METR JSON component dict."""
-    total_area = _c.get_total_gross_component_area()
+    total_area = _c.get_total_net_component_area()
 
     # -- Get U-value from assembly
     try:
@@ -721,8 +731,8 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture, _index: int) -> d
         "idEC": _c.exposure_exterior.value,
         "typeC": _c.face_opacity.value,
         "areaC": round(total_area, 6),
-        "Uph": 0.0,
-        "Uhom": 0.0,
+        "Uph": round(_c.window_type.u_value_window, 6) if _c.window_type else 0.0,
+        "Uhom": round(_c.window_type.u_value_window, 6) if _c.window_type else 0.0,
         "inclC": 90.0,
         "orient": 1,
         "azimN": 180.0,
@@ -744,9 +754,9 @@ def _PhxComponentAperture(_c: components.PhxComponentAperture, _index: int) -> d
     result["depthWRevC"] = _c.install_depth
     result["distGlasC"] = _c.average_shading_d_reveal or (_c.window_type.frame_top.width if _c.window_type else 0.05)
     result["dCorShadeMC"] = _c.default_monthly_shading_correction_factor
-    if _c.elements:
-        result["shadeC"] = sum(e.winter_shading_factor for e in _c.elements) / len(_c.elements)
-        result["shadeSumC"] = sum(e.summer_shading_factor for e in _c.elements) / len(_c.elements)
+    # -- shadeC/shadeSumC stay at 1.0 (from surface defaults). When monthly shading
+    # -- is enabled (wShade=True), METR uses dCorShadeMC instead of these simple factors.
+    # -- Setting them to non-1.0 would cause double-counting.
 
     # -- Colors and polygon references
     result.update(
@@ -806,7 +816,7 @@ def _zone_loads(_z: building.PhxZone) -> dict:
         "avLz": {"PF": 1, "PTVid": [[-1, 1, 14]], "FCid": [-1, -1]},
         "nOcc": int(_z.res_occupant_quantity),
         "humSour": 2.0,
-        "lPersZ": [],
+        "lPersZ": [_LoadsOccupancy(sp) for sp in _z.spaces],
         "lOffEq": [],
         "lAuxEl": [],
         "lLight": [_LoadsLighting(sp) for sp in _z.spaces],
@@ -926,13 +936,25 @@ def _PhxFoundation(_f: ground.PhxFoundation, _zone_id: int = -1) -> dict:
     return d
 
 
+def _metr_spaces(_z: building.PhxZone) -> list[spaces.PhxSpace]:
+    """Return the list of spaces for a zone, merging by ERV if the flag is set."""
+    if not _z.merge_spaces_by_erv:
+        return _z.ventilated_spaces
+
+    merged_spaces: list[spaces.PhxSpace] = []
+    for space_group in _z.ventilated_spaces_grouped_by_erv:
+        if len(space_group) > 1:
+            new_space = reduce(operator.add, space_group)
+        else:
+            new_space = space_group[0]
+            new_space.display_name = new_space.vent_unit_display_name
+        merged_spaces.append(new_space)
+    return sorted(merged_spaces, key=lambda x: x.vent_unit_display_name)
+
+
 def _PhxZone(_z: building.PhxZone, _foundations: list[ground.PhxFoundation] | None = None) -> dict:
     """Convert a PhxZone to a METR JSON zone dict."""
-    # -- Get the spaces list for rooms
-    room_list = []
-    for sp in _z.spaces:
-        if sp.has_ventilation_airflow:
-            room_list.append(_PhxSpace(sp))
+    room_list = [_PhxSpace(sp) for sp in _metr_spaces(_z)]
 
     return {
         "n": _z.display_name,
@@ -1111,7 +1133,7 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
     elif isinstance(
         _d, (elec_equip.PhxDeviceFridgeFreezer, elec_equip.PhxDeviceRefrigerator, elec_equip.PhxDeviceFreezer)
     ):
-        dev["refED"] = 2  # kWh/day
+        dev["refED"] = 3  # kWh/year
         dev["fSize"] = 2
     elif isinstance(_d, elec_equip.PhxDeviceLightingGarage):
         dev["fHEff"] = _d.frac_high_efficiency or NaN
@@ -1152,6 +1174,17 @@ def _LoadsLighting(_sp: spaces.PhxSpace) -> dict:
     }
 
 
+def _LoadsOccupancy(_sp: spaces.PhxSpace) -> dict:
+    """Convert a PhxSpace's occupancy data to a METR JSON persons load dict."""
+    return {
+        "n": _sp.display_name,
+        "idUPat": _sp.occupancy.schedule.id_num,
+        "actPers": 3,
+        "nOcc": _sp.peak_occupancy,
+        "flAUZone": round(_sp.weighted_floor_area, 6),
+    }
+
+
 # -- CLIMATE / LOCATION -------------------------------------------------------
 
 
@@ -1169,6 +1202,32 @@ def _pad_monthly(values: list[float], pad_to: int = 16, pad_value: Any = 0.0) ->
         result.append(0.0)
     while len(result) < pad_to:
         result.append(pad_value)
+    return result
+
+
+def _monthly_with_peak_loads(
+    monthly_12: list[float],
+    peak_loads: list[phx_site.PhxClimatePeakLoad],
+    attr: str,
+    pad_value: Any = 0.0,
+) -> list:
+    """Build a 16-element monthly array: 12 monthly values + 4 peak load values.
+
+    Positions 12-15 = [peak_heating_1, peak_heating_2, peak_cooling_1, peak_cooling_2].
+
+    Arguments:
+    ----------
+        * monthly_12: The 12 monthly values.
+        * peak_loads: List of 4 PhxClimatePeakLoad objects [htg1, htg2, clg1, clg2].
+        * attr: Attribute name to read from each peak load (e.g., "temperature_air").
+        * pad_value: Fallback value if the attribute is None.
+    """
+    result = list(monthly_12[:12]) if monthly_12 else [0.0] * 12
+    while len(result) < 12:
+        result.append(0.0)
+    for pl in peak_loads:
+        val = getattr(pl, attr, None)
+        result.append(val if val is not None else pad_value)
     return result
 
 
@@ -1195,8 +1254,15 @@ def _pe_co2_in_wufi_order(factor_dict: dict) -> list[float]:
     return [factor_dict[name].value for name in fuel_order if name in factor_dict]
 
 
-def _PhxSite(_s: phx_site.PhxSite) -> dict:
+def _PhxSite(_s: phx_site.PhxSite, _criteria: certification.PhxPhiusCertificationCriteria | None = None) -> dict:
     """Convert a PhxSite to METR JSON cliLoc dict."""
+    # -- Peak loads in METR order: [heating_1, heating_2, cooling_1, cooling_2]
+    _peaks = [
+        _s.climate.peak_heating_1,
+        _s.climate.peak_heating_2,
+        _s.climate.peak_cooling_1,
+        _s.climate.peak_cooling_2,
+    ]
     return {
         "selCli": _s.selection.value,
         "lat": _s.location.latitude if _s.location.latitude else NaN,
@@ -1225,10 +1291,10 @@ def _PhxSite(_s: phx_site.PhxSite) -> dict:
         "cDesDryT": 24.0,
         "dehumDHR": 1050.0,
         "elPrice": NaN,
-        "aHDem": 15.0,
-        "aCDem": 15.0,
-        "pHLoad": 10.0,
-        "pCLoad": 10.0,
+        "aHDem": _criteria.phius_annual_heating_demand if _criteria else 15.0,
+        "aCDem": _criteria.phius_annual_cooling_demand if _criteria else 15.0,
+        "pHLoad": _criteria.phius_peak_heating_load if _criteria else 10.0,
+        "pCLoad": _criteria.phius_peak_cooling_load if _criteria else 10.0,
         "lOptCli": [],
         "boundCond": {
             "tResH": 0.04,
@@ -1246,16 +1312,17 @@ def _PhxSite(_s: phx_site.PhxSite) -> dict:
         "gdens": _s.ground.ground_density,
         "depthGW": _s.ground.depth_groundwater,
         "flowGW": _s.ground.flow_rate_groundwater,
-        # -- Monthly arrays: TMo and radiation pad with 0.0; dewP/sky/ground pad with "NaN"
-        "TMo": _pad_monthly(_s.climate.temperature_air, pad_value=0.0),
-        "dewPMo": _pad_monthly(_s.climate.temperature_dewpoint, pad_value=NaN),
-        "skyTMo": _pad_monthly(_s.climate.temperature_sky, pad_value=NaN),
+        # -- Monthly arrays (12) + peak load values (4) = 16 elements
+        # -- Positions 12-15: [peak_heating_1, peak_heating_2, peak_cooling_1, peak_cooling_2]
+        "TMo": _monthly_with_peak_loads(_s.climate.temperature_air, _peaks, "temperature_air", 0.0),
+        "dewPMo": _monthly_with_peak_loads(_s.climate.temperature_dewpoint, _peaks, "temperature_dewpoint", NaN),
+        "skyTMo": _monthly_with_peak_loads(_s.climate.temperature_sky, _peaks, "temperature_sky", NaN),
         "gTMo": [NaN] * 16,
-        "nRadMo": _pad_monthly(_s.climate.radiation_north, pad_value=0.0),
-        "eRadMo": _pad_monthly(_s.climate.radiation_east, pad_value=0.0),
-        "sRadMo": _pad_monthly(_s.climate.radiation_south, pad_value=0.0),
-        "wRadMo": _pad_monthly(_s.climate.radiation_west, pad_value=0.0),
-        "gRadMo": _pad_monthly(_s.climate.radiation_global, pad_value=0.0),
+        "nRadMo": _monthly_with_peak_loads(_s.climate.radiation_north, _peaks, "radiation_north", 0.0),
+        "eRadMo": _monthly_with_peak_loads(_s.climate.radiation_east, _peaks, "radiation_east", 0.0),
+        "sRadMo": _monthly_with_peak_loads(_s.climate.radiation_south, _peaks, "radiation_south", 0.0),
+        "wRadMo": _monthly_with_peak_loads(_s.climate.radiation_west, _peaks, "radiation_west", 0.0),
+        "gRadMo": _monthly_with_peak_loads(_s.climate.radiation_global, _peaks, "radiation_global", 0.0),
         "pEud": _pe_co2_in_wufi_order(_s.energy_factors.pe_factors),
         "CO2ud": _pe_co2_in_wufi_order(_s.energy_factors.co2_factors),
     }
@@ -1284,7 +1351,7 @@ def _PhxPhiusCertification(_cert: certification.PhxPhiusCertification) -> dict:
                 "tOccNRes": 4,
                 "bStatus": settings.phius_building_status.value,
                 "tBState": settings.phius_building_type.value,
-                "iBGains": 1,
+                "iBGains": 2,
                 "tOccMet": bd.occupancy_setting_method,
                 "nUnits": bd.num_of_units or 1,
                 "nFloor": bd.num_of_floors or 1,
@@ -1293,7 +1360,7 @@ def _PhxPhiusCertification(_cert: certification.PhxPhiusCertification) -> dict:
                 "minTnVent": bd.setpoints.winter,
                 "airPerson": 30.582194,
                 "bmentVent": 0.5,
-                "tInfiltr": 1,
+                "tInfiltr": 2,
                 "nCombMat": bd.non_combustible_materials,
                 "n50": NaN,
                 "tightEnv50": bd.airtightness_q50,
@@ -1339,6 +1406,7 @@ def _PhxMechanicalSystemCollection(_c: hvac_collection.PhxMechanicalSystemCollec
     zc = _c.zone_coverage
     # -- Combine mechanical devices + renewable devices (PV, etc.)
     all_devices = list(_c.devices) + list(_c.renewable_devices.devices)
+    num_ventilators = sum(1 for d in all_devices if isinstance(d, hvac_ventilation.PhxDeviceVentilator))
     return {
         "n": _c.display_name,
         "typeSys": _c.sys_type_num,
@@ -1355,7 +1423,7 @@ def _PhxMechanicalSystemCollection(_c: hvac_collection.PhxMechanicalSystemCollec
                 ],
             }
         ],
-        "lDevice": [_PhxMechanicalDevice(d) for d in all_devices],
+        "lDevice": [_PhxMechanicalDevice(d, num_ventilators) for d in all_devices],
         "distrib": _build_default_distribution(_c),
         "suppDev": {
             "uVal": False,
@@ -1578,7 +1646,6 @@ def _overlay_heat_pump(_d, dev: dict) -> None:
     """Overlay heat-pump-specific fields."""
     _set_device_coverage(_d, dev)
     p = _d.params
-    dev["noSByP"] = True
     dev["inCondSp"] = getattr(p, "in_conditioned_space", True)
 
     if isinstance(_d, heat_pumps.PhxHeatPumpAnnual):
@@ -1603,7 +1670,6 @@ def _overlay_heat_pump(_d, dev: dict) -> None:
     # -- Cooling params
     if hasattr(_d, "params_cooling"):
         pc = _d.params_cooling
-        dev["capH"] = {"PF": 1, "PTVid": [[-1, 1, 15]], "FCid": [-1, -1]}
         if pc.recirculation.used or pc.ventilation.used:
             dev["capC"] = {"PF": 1, "PTVid": [[-1, 1, 16]], "FCid": [-1, -1]}
 
@@ -1675,7 +1741,7 @@ def _overlay_boiler_wood(_d: heating.PhxHeaterBoilerWood, dev: dict) -> None:
     dev["areaMRB"] = p.area_mech_room or NaN
 
 
-def _PhxMechanicalDevice(_d) -> dict:
+def _PhxMechanicalDevice(_d, _num_ventilators: int = 1) -> dict:
     """Convert a mechanical device to a METR JSON device dict.
 
     METR uses a flat ~131-key 'super-device' structure. Every device has ALL keys
@@ -1706,6 +1772,10 @@ def _PhxMechanicalDevice(_d) -> dict:
     # -- Usage profile / coverage (applies to all device types)
     _set_device_coverage(_d, dev)
 
+    # -- For ventilators, split ventilation coverage evenly across all units
+    if isinstance(_d, hvac_ventilation.PhxDeviceVentilator) and _num_ventilators > 1:
+        dev["cHWCVHD"][3] = 1.0 / _num_ventilators
+
     # -- Device-type-specific overlays
     if isinstance(_d, hvac_ventilation.PhxDeviceVentilator):
         _overlay_ventilation(_d, dev)
@@ -1727,6 +1797,13 @@ def _PhxMechanicalDevice(_d) -> dict:
         _overlay_boiler_fossil(_d, dev)
     elif isinstance(_d, heating.PhxHeaterBoilerWood):
         _overlay_boiler_wood(_d, dev)
+
+    # -- Non-ventilator devices: set noSByP=True and add capacity profile refs
+    if not isinstance(_d, hvac_ventilation.PhxDeviceVentilator):
+        dev["noSByP"] = True
+        # -- If device provides space heating, reference the heating capacity profile
+        if dev["uHWCVHD"][0]:  # space_heating = True
+            dev["capH"] = {"PF": 1, "PTVid": [[-1, 1, 15]], "FCid": [-1, -1]}
 
     return dev
 
@@ -1897,7 +1974,7 @@ def _build_default_distribution(_c: hvac_collection.PhxMechanicalSystemCollectio
         "tapWT": 45.0,
         "cmpW": hw_params.calc_method.value,
         "pmW": hw_params.pipe_material.value,
-        "pdW": _diameter_enum_value(hw_params.pipe_diameter),
+        "pdW": _diameter_enum_value(hw_params.pipe_diameter) if hw_params.calc_method.value < 4 else 1,
         "hwfeW": hw_params.hot_water_fixtures,
         "drecW": hw_params.demand_recirc,
         "sfeW": 1,

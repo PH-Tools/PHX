@@ -23,7 +23,6 @@ def _find_matching_window(
         if (
             hbjson_type.u_value_window == xml_type.u_value_window
             and hbjson_type.u_value_glass == xml_type.u_value_glass
-            and hbjson_type.u_value_frame == xml_type.u_value_frame
             and hbjson_type.glass_mean_emissivity == xml_type.glass_mean_emissivity
             and hbjson_type.glass_g_value == xml_type.glass_g_value
         ):
@@ -51,7 +50,6 @@ def test_window_type_attributes_match(
 
         assert hbjson_type.u_value_window == xml_type.u_value_window
         assert hbjson_type.u_value_glass == xml_type.u_value_glass
-        assert hbjson_type.u_value_frame == xml_type.u_value_frame
         assert hbjson_type.glass_mean_emissivity == xml_type.glass_mean_emissivity
         assert hbjson_type.glass_g_value == xml_type.glass_g_value
         # assert hbjson_type.id_num_shade == xml_type.id_num_shade
