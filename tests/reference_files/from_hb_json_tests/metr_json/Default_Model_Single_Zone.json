@@ -1,7 +1,7 @@
 {
-  "progVers": "3.2.0.1",
+  "progVers": "3.5.0.1",
   "SIIP": 2,
-  "calcScope": 3,
+  "calcScope": 4,
   "dimVisGeom": 2,
   "projD": {
     "cN": "",
@@ -31,8 +31,8 @@
       2026,
       4,
       1,
-      12,
-      23,
+      16,
+      16,
       0
     ],
     "wBkg": false
@@ -1314,7 +1314,7 @@
             "tOccNRes": 4,
             "bStatus": 1,
             "tBState": 1,
-            "iBGains": 1,
+            "iBGains": 2,
             "tOccMet": 2,
             "nUnits": 1,
             "nFloor": 1,
@@ -1323,7 +1323,7 @@
             "minTnVent": 20.0,
             "airPerson": 30.582194,
             "bmentVent": 0.5,
-            "tInfiltr": 1,
+            "tInfiltr": 2,
             "nCombMat": false,
             "n50": "NaN",
             "tightEnv50": 4.212635805588519,
@@ -2570,7 +2570,7 @@
               "tapWT": 45.0,
               "cmpW": 4,
               "pmW": 2,
-              "pdW": 5,
+              "pdW": 1,
               "hwfeW": 1,
               "drecW": true,
               "sfeW": 1,

@@ -25,9 +25,8 @@ from PHX.model import (
 )
 from PHX.model.enums.hvac import DeviceType, PhxHotWaterPipingInchDiameterType
 from PHX.model.hvac import collection as hvac_collection
-from PHX.model.hvac import heat_pumps, heating, renewable_devices
+from PHX.model.hvac import heat_pumps, heating, renewable_devices, water
 from PHX.model.hvac import ventilation as hvac_ventilation
-from PHX.model.hvac import water
 from PHX.model.schedules import occupancy, ventilation
 
 TOL_LEV1 = 2  # Rounding tolerance: 9.843181919194 -> 9.84
