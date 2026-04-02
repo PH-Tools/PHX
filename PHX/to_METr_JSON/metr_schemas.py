@@ -21,6 +21,7 @@ from PHX.model import (
     ground,
     phx_site,
     project,
+    shades,
     spaces,
 )
 from PHX.model.enums.hvac import DeviceType, PhxHotWaterPipingInchDiameterType
@@ -72,7 +73,7 @@ def _PhxProject(_p: project.PhxProject) -> dict:
         "lMaterial": [_PhxMaterial(m) for m in all_materials.values()],
         "lAssembly": [_PhxConstructionOpaque(a) for a in _p.assembly_types.values()],
         "lWindow": [_PhxConstructionWindow(w) for w in _p.window_types.values()],
-        "lSolProt": [],  # TODO: Phase 3 — solar protection types
+        "lSolProt": [_PhxWindowShade(s) for s in _p.shade_types.values()],
         "lOverhang": [],  # TODO: Phase 3 — overhangs
         "lUtilNResPH": [_UtilizationPattern(pat) for pat in _p.utilization_patterns_occupancy],
         "lUtilVentPH": [_UtilizationPatternVent(pat) for pat in _p.utilization_patterns_ventilation],
@@ -238,6 +239,25 @@ def _PhxConstructionWindow(
             _wt.frame_bottom.psi_install,
             _wt.frame_left.psi_install,
         ],
+    }
+
+
+# -- SOLAR PROTECTION / SHADING DEVICES ----------------------------------------
+
+
+def _PhxWindowShade(_s: shades.PhxWindowShade) -> dict:
+    return {
+        "id": _s.id_num,
+        "n": _s.display_name,
+        "opModeSolP": _s.operation_mode,
+        "maxRedSolP": _s.reduction_factor,
+        "eEmisSolP": _s.external_emissivity,
+        "eAbsSolP": _s.absorptivity,
+        "tResSolP": _s.thermal_resistance_supplement,
+        "tResCavSolP": _s.thermal_resistance_cavity,
+        "limRadsolP": _s.radiation_limit,
+        "exclWendSolP": _s.exclude_weekends,
+        "limDINSolP": True,
     }
 
 
