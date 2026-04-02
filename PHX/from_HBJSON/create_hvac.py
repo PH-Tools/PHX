@@ -7,9 +7,11 @@ from typing import TypeVar
 
 from honeybee_phhvac import _base, ducting, heat_pumps, heating, supportive_device, ventilation
 from honeybee_phhvac.renewable_devices import PhPhotovoltaicDevice, PhRenewableEnergyDevice
+from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import PhxSupportiveDeviceType, PhxVentDuctType
+from PHX.model.geometry import PhxLineSegment, PhxVertix
 from PHX.model.hvac.heat_pumps import AnyPhxHeatPump
 from PHX.model.hvac.heating import AnyPhxHeater
 from PHX.model.hvac.renewable_devices import AnyRenewableDevice, PhxDevicePhotovoltaic
@@ -135,11 +137,16 @@ def build_phx_duct(_hbph_duct: ducting.PhDuctElement, _vent_unit_id: int) -> hva
     )
 
     for hbph_duct_segment in _hbph_duct.segments:
+        lbt_geom: LineSegment3D = hbph_duct_segment.geometry
+        phx_geom = PhxLineSegment(
+            PhxVertix(lbt_geom.p.x, lbt_geom.p.y, lbt_geom.p.z),
+            PhxVertix(lbt_geom.p2.x, lbt_geom.p2.y, lbt_geom.p2.z),
+        )
         phx_duct.add_segment(
             hvac.PhxDuctSegment(
                 hbph_duct_segment.identifier,
                 hbph_duct_segment.display_name,
-                hbph_duct_segment.geometry,
+                phx_geom,
                 hbph_duct_segment.diameter,
                 hbph_duct_segment.height,
                 hbph_duct_segment.width,

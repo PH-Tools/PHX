@@ -1,15 +1,11 @@
-from ladybug_geometry.geometry3d.pointvector import Point3D
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
-
+from PHX.model.geometry import PhxLineSegment, PhxVertix
 from PHX.model.hvac.ducting import PhxDuctElement, PhxDuctSegment
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
 def test_Duct_Schema(reset_class_counters):
-    p1 = Point3D(0, 0, 0)
-    p2 = Point3D(0, 0, 1)
-    geom = LineSegment3D.from_end_points(p1, p2)
+    geom = PhxLineSegment(PhxVertix(0, 0, 0), PhxVertix(0, 0, 1))
 
     phx_duct_segment = PhxDuctSegment(
         identifier="test_identifier",

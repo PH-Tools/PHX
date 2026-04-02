@@ -8,9 +8,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar
 
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
-
 from PHX.model.enums.hvac import PhxVentDuctType
+from PHX.model.geometry import PhxLineSegment
 
 
 @dataclass
@@ -19,7 +18,7 @@ class PhxDuctSegment:
 
     identifier: str
     display_name: str
-    geometry: LineSegment3D
+    geometry: PhxLineSegment
     diameter_m: float
     height_m: float | None
     width_m: float | None

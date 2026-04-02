@@ -6,8 +6,6 @@ import sys
 from functools import partial
 from typing import Any
 
-from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
 from ph_units.converter import convert
 from rich import print
 
@@ -64,7 +62,7 @@ from PHX.model.enums.phius_certification import (
     PhiusCertificationProgram,
 )
 from PHX.model.enums.phx_site import SiteClimateSelection, SiteEnergyFactorSelection, SiteSelection
-from PHX.model.geometry import PhxPlane, PhxPolygon, PhxVector, PhxVertix
+from PHX.model.geometry import PhxLineSegment, PhxPlane, PhxPolygon, PhxVector, PhxVertix
 from PHX.model.ground import PhxFoundation, PhxHeatedBasement, PhxSlabOnGrade, PhxUnHeatedBasement, PhxVentedCrawlspace
 from PHX.model.hvac import (
     AnyPhxHeaterBoiler,
@@ -579,11 +577,7 @@ def _PhxDuctSegment(
 ) -> PhxDuctSegment:
     # -- WUFI doesn't keep the actual duct geometry, so we'll just make a
     # -- new Line with the same length as the original duct.
-    fake_duct_geometry = LineSegment3D.from_sdl(
-        s=Point3D(0, 0, 0),
-        d=Vector3D(1, 0, 0),
-        length=_data.DuctLength or 0.0,
-    )
+    fake_duct_geometry = PhxLineSegment.from_length(_data.DuctLength or 0.0)
 
     # -- Build the actual segment
     new_segment = PhxDuctSegment(

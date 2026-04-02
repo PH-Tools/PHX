@@ -9,14 +9,12 @@ from dataclasses import dataclass, field
 from typing import Any, ClassVar, Union
 from uuid import uuid4
 
-from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
-
 from PHX.model.enums.hvac import (
     PhxHotWaterPipingCalcMethod,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
 )
+from PHX.model.geometry import PhxLineSegment
 
 
 @dataclass
@@ -42,7 +40,7 @@ class PhxPipeSegment:
 
     identifier: str
     display_name: str
-    geometry: LineSegment3D
+    geometry: PhxLineSegment
     pipe_material: PhxHotWaterPipingMaterial
     diameter_m: float
     insulation_thickness_m: float
@@ -199,7 +197,7 @@ class PhxPipeSegment:
         return cls(
             identifier=str(uuid4()),
             display_name=display_name,
-            geometry=LineSegment3D(Point3D(0, 0, 0), Vector3D(_l, 0, 0)),
+            geometry=PhxLineSegment.from_length(_l),
             pipe_material=pipe_material,
             diameter_m=pipe_diameter_m,
             insulation_thickness_m=0.0,

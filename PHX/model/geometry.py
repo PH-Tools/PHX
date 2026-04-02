@@ -209,6 +209,11 @@ class PhxLineSegment:
             )
         )
 
+    @classmethod
+    def from_length(cls, _length: float) -> PhxLineSegment:
+        """Create a PhxLineSegment from a length value along the X-axis."""
+        return cls(PhxVertix(0, 0, 0), PhxVertix(_length, 0, 0))
+
     def __eq__(self, other: PhxLineSegment) -> bool:
         if self.vertix_1 == other.vertix_1 and self.vertix_2 == other.vertix_2:
             return True

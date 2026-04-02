@@ -3,10 +3,20 @@
 """Functions to create PHX-Service Hot Water objects from Honeybee-PH-HVAC Hot-Water"""
 
 from honeybee_phhvac import hot_water_devices, hot_water_piping
+from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
 from PHX.model import hvac
 from PHX.model.enums.hvac import PhxHotWaterPipingMaterial, PhxHotWaterTankType
+from PHX.model.geometry import PhxLineSegment, PhxVertix
 from PHX.model.hvac import piping
+
+
+def _lbt_line_to_phx(geom: LineSegment3D) -> PhxLineSegment:
+    """Convert a ladybug_geometry LineSegment3D to a PhxLineSegment."""
+    return PhxLineSegment(
+        PhxVertix(geom.p.x, geom.p.y, geom.p.z),
+        PhxVertix(geom.p2.x, geom.p2.y, geom.p2.z),
+    )
 
 # -- Storage ------------------------------------------------------------------
 
@@ -140,7 +150,7 @@ def build_phx_pipe_element(_ph_hvac_pipe: hot_water_piping.PhHvacPipeElement) ->
             piping.PhxPipeSegment(
                 segment.identifier,
                 segment.display_name,
-                segment.geometry,
+                _lbt_line_to_phx(segment.geometry),
                 PhxHotWaterPipingMaterial(segment.material.number),
                 segment.diameter_m,
                 segment.insulation_thickness_m,
@@ -173,7 +183,7 @@ def build_phx_branch_pipe(_ph_hvac_branch: hot_water_piping.PhHvacPipeBranch) ->
             piping.PhxPipeSegment(
                 segment.identifier,
                 segment.display_name,
-                segment.geometry,
+                _lbt_line_to_phx(segment.geometry),
                 PhxHotWaterPipingMaterial(segment.material.number),
                 segment.diameter_m,
                 segment.insulation_thickness_m,
@@ -212,7 +222,7 @@ def build_phx_trunk_pipe(_ph_hvac_trunk: hot_water_piping.PhHvacPipeTrunk) -> hv
             piping.PhxPipeSegment(
                 segment.identifier,
                 segment.display_name,
-                segment.geometry,
+                _lbt_line_to_phx(segment.geometry),
                 PhxHotWaterPipingMaterial(segment.material.number),
                 segment.diameter_m,
                 segment.insulation_thickness_m,
