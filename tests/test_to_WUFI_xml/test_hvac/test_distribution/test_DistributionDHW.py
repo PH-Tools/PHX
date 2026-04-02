@@ -1,6 +1,4 @@
-from ladybug_geometry.geometry3d.pointvector import Point3D
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
-
+from PHX.model.geometry import PhxLineSegment, PhxVertix
 from PHX.model.hvac.collection import PhxMechanicalSystemCollection
 from PHX.model.hvac.piping import PhxHotWaterPipingMaterial, PhxPipeBranch, PhxPipeElement, PhxPipeSegment, PhxPipeTrunk
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
@@ -8,11 +6,10 @@ from tests.test_to_WUFI_xml._utils import xml_string_to_list
 
 
 def test_add_Trunk_to_HW_System(reset_class_counters):
-    p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
     phx_pipe_segment = PhxPipeSegment(
         identifier="test-id",
         display_name="test-display-name",
-        geometry=LineSegment3D(p1, p2),
+        geometry=PhxLineSegment(PhxVertix(0, 0, 0), PhxVertix(0, 0, 1)),
         pipe_material=PhxHotWaterPipingMaterial.COPPER_K,
         diameter_m=0.0254,
         insulation_thickness_m=25.4,

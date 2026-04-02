@@ -1,15 +1,13 @@
 import pytest
-from ladybug_geometry.geometry3d.pointvector import Point3D
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
 from ph_units.converter import convert
 
 from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType
+from PHX.model.geometry import PhxLineSegment, PhxVertix
 from PHX.model.hvac.piping import PhxHotWaterPipingMaterial, PhxPipeSegment
 
 
 def test_PhxPipeSegment_to_wufi_diameter_type():
-    p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
-    geom = LineSegment3D(p1, p2)
+    geom = PhxLineSegment(PhxVertix(0, 0, 0), PhxVertix(0, 0, 1))
 
     seg = PhxPipeSegment(
         identifier="test",
@@ -29,8 +27,7 @@ def test_PhxPipeSegment_to_wufi_diameter_type():
 
 
 def test_PhxPipeSegment_heat_loss_coefficient_1():
-    p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
-    geom = LineSegment3D(p1, p2)
+    geom = PhxLineSegment(PhxVertix(0, 0, 0), PhxVertix(0, 0, 1))
 
     seg = PhxPipeSegment(
         identifier="test",
@@ -50,8 +47,7 @@ def test_PhxPipeSegment_heat_loss_coefficient_1():
 
 
 def test_PhxPipeSegment_heat_loss_coefficient_2():
-    p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
-    geom = LineSegment3D(p1, p2)
+    geom = PhxLineSegment(PhxVertix(0, 0, 0), PhxVertix(0, 0, 1))
 
     seg = PhxPipeSegment(
         identifier="test",

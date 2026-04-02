@@ -1,7 +1,6 @@
 import pytest
-from ladybug_geometry.geometry3d.pointvector import Point3D
-from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
+from PHX.model.geometry import PhxLineSegment, PhxVertix
 from PHX.model.hvac.piping import PhxHotWaterPipingMaterial, PhxPipeElement, PhxPipeSegment
 
 
@@ -16,8 +15,7 @@ def test_empty_PhxPipeElement():
 
 def test_add_single_segment_to_PhxPipeElement():
     # -- Segment
-    p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
-    geom = LineSegment3D(p1, p2)
+    geom = PhxLineSegment(PhxVertix(0, 0, 0), PhxVertix(0, 0, 1))
 
     seg = PhxPipeSegment(
         identifier="test",
@@ -45,8 +43,7 @@ def test_add_single_segment_to_PhxPipeElement():
 
 def test_add_multiple_segment_to_PhxPipeElement():
     # -- Segments
-    p1, p2 = Point3D(0, 0, 0), Point3D(0, 0, 1)
-    geom1 = LineSegment3D(p1, p2)
+    geom1 = PhxLineSegment(PhxVertix(0, 0, 0), PhxVertix(0, 0, 1))
 
     seg1 = PhxPipeSegment(
         identifier="test1",
