@@ -369,7 +369,13 @@ class PhxLayer:
     @property
     def exchange_materials(self) -> list[PhxMaterial]:
         """Returns a list of all the 'Exchange' materials (for mixed layers) in all the Division Cells."""
-        return list({m for m in self.division_materials if m != self.material})
+        seen: set[int] = set()
+        result: list[PhxMaterial] = []
+        for m in self.division_materials:
+            if m != self.material and id(m) not in seen:
+                seen.add(id(m))
+                result.append(m)
+        return result
 
     @property
     def division_material_id_numbers(self) -> list[int]:
@@ -439,7 +445,35 @@ class PhxConstructionOpaque:
 
     @property
     def r_value(self) -> float:
-        return sum(layer.layer_resistance for layer in self.layers)
+        # Snapshot layer.materials once to avoid redundant _update_material_percentages() calls.
+        # The materials list order defines section indices: [base, exchange_1, exchange_2, ...].
+        layer_materials = [layer.materials for layer in self.layers]
+
+        if not any(len(mats) > 1 for mats in layer_materials):
+            return sum(layer.layer_resistance for layer in self.layers)
+
+        # ISO 6946 parallel-path method: area-weighted average of per-section U-values.
+        percentages = next(
+            ([m.percentage_of_assembly for m in mats] for mats in layer_materials if len(mats) > 1),
+            [1.0],
+        )
+
+        section_r_values = []
+        for i in range(len(percentages)):
+            total_r = 0.0
+            for layer, mats in zip(self.layers, layer_materials):
+                mat = mats[i] if i < len(mats) else mats[0]
+                try:
+                    total_r += layer.thickness_m / mat.conductivity
+                except ZeroDivisionError:
+                    pass
+            section_r_values.append(total_r)
+
+        u_parallel = sum(pct / r for pct, r in zip(percentages, section_r_values) if r > 0)
+        try:
+            return 1.0 / u_parallel
+        except ZeroDivisionError:
+            return 0.0
 
     @property
     def u_value(self) -> float:
