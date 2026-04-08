@@ -6,9 +6,41 @@ import pytest
 
 from PHX.model.enums.building import (
     ComponentExposureExterior,
+    ComponentFaceType,
     SpecificHeatCapacityType,
     SpecificHeatCapacityValueWhM2K,
 )
+
+
+class TestComponentFaceType:
+    def test_air_boundary_is_distinct_from_roof_ceiling(self):
+        assert ComponentFaceType.AIR_BOUNDARY is not ComponentFaceType.ROOF_CEILING
+
+    def test_air_boundary_value(self):
+        assert ComponentFaceType.AIR_BOUNDARY.value == 7
+
+    def test_air_boundary_name(self):
+        assert ComponentFaceType.AIR_BOUNDARY.name == "AIR_BOUNDARY"
+
+    def test_air_boundary_in_iteration(self):
+        names = {m.name for m in ComponentFaceType}
+        assert "AIR_BOUNDARY" in names
+
+    def test_all_values_unique(self):
+        values = [m.value for m in ComponentFaceType]
+        assert len(values) == len(set(values))
+
+    def test_existing_values_unchanged(self):
+        assert ComponentFaceType.NONE.value == 0
+        assert ComponentFaceType.WALL.value == 1
+        assert ComponentFaceType.FLOOR.value == 2
+        assert ComponentFaceType.ROOF_CEILING.value == 3
+        assert ComponentFaceType.WINDOW.value == 4
+        assert ComponentFaceType.ADIABATIC.value == 5
+        assert ComponentFaceType.CUSTOM.value == 6
+
+    def test_lookup_by_value_7(self):
+        assert ComponentFaceType(7) is ComponentFaceType.AIR_BOUNDARY
 
 
 class TestComponentExposureExterior:

@@ -24,6 +24,7 @@ from PHX.model import (
     shades,
     spaces,
 )
+from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType
 from PHX.model.enums.hvac import DeviceType, PhxHotWaterPipingInchDiameterType
 from PHX.model.hvac import collection as hvac_collection
 from PHX.model.hvac import heat_pumps, heating, renewable_devices, water
@@ -568,9 +569,9 @@ def _component_surface_defaults(
     These are hygrothermal defaults not relevant to static PH modeling.
     """
     # Rsi/Rse depend on component type and exposure
-    is_floor = _face_type_value == 2  # ComponentFaceType.FLOOR
-    is_roof = _face_type_value == 3  # ComponentFaceType.ROOF_CEILING
-    is_ground = _exposure_ext_value == -2  # ComponentExposureExterior.GROUND
+    is_floor = _face_type_value == ComponentFaceType.FLOOR.value
+    is_roof = _face_type_value == ComponentFaceType.ROOF_CEILING.value
+    is_ground = _exposure_ext_value == ComponentExposureExterior.GROUND.value
 
     if is_ground and is_floor:
         rse = 0.0

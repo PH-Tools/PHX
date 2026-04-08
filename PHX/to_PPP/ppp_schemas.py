@@ -66,6 +66,8 @@ def _group_label(component: PhxComponentOpaque) -> str:
         return "11-Floor slab / Basement ceiling"
     elif component.face_type == ComponentFaceType.ROOF_CEILING:
         return "10-Roof/Ceiling - Ambient"
+    elif component.face_type == ComponentFaceType.AIR_BOUNDARY:
+        return "12-Air Boundary"
     else:
         return "12-"
 
