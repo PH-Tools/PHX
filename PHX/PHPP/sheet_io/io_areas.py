@@ -346,6 +346,60 @@ class Areas:
         xl_item = _phpp_model_obj.create_xl_item(self.shape.name, input_row)
         self.xl.write_xl_item(xl_item)
 
+    def write_custom_group_summaries(
+        self,
+        _groups: set[tuple[int, str, str]],
+    ) -> None:
+        """Write temp zone letters and descriptions for custom groups in the summary section.
+
+        WHY: Custom groups (12-14) are used for non-standard face-type + exposure
+        combinations (e.g., floor over open air, wall adjacent to unconditioned zone).
+        PHPP needs the summary row populated so it routes the group's UA to the correct
+        transmission loss column (R112 for ambient "A", R113 for ground "B").
+
+        Takes a set of (group_number, temp_zone_letter, description) tuples and writes
+        them all in a single pass over the summary section, avoiding repeated Excel reads.
+        """
+        if not _groups:
+            return
+
+        groups_to_write = {group_num: (letter, desc) for group_num, letter, desc in _groups}
+
+        zone_group_numbers = self.xl.get_single_column_data(
+            self.shape.name,
+            self.shape.summary_rows.group_number,
+            1,
+            30,
+        )
+
+        for i, val in enumerate(zone_group_numbers, start=1):
+            try:
+                num = int(val)
+            except (TypeError, ValueError):
+                continue
+
+            if num not in groups_to_write:
+                continue
+
+            letter, desc = groups_to_write.pop(num)
+            self.xl.write_xl_item(
+                xl_data.XlItem(
+                    self.shape.name,
+                    f"{self.shape.summary_rows.temp_zones}{i}",
+                    letter,
+                )
+            )
+            self.xl.write_xl_item(
+                xl_data.XlItem(
+                    self.shape.name,
+                    f"{self.shape.summary_rows.area_type}{i}",
+                    desc,
+                )
+            )
+
+            if not groups_to_write:
+                return
+
     def get_group_type_exposures(self) -> dict[int, str]:
         """Return the group type exposures dictionary from the PHPP Areas worksheet."""
         zone_type_letters = self.xl.get_single_column_data(

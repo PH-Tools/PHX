@@ -33,22 +33,55 @@ class SurfaceRow:
             return "{}-"
 
     @property
-    def phpp_group_number(self) -> str:
-        """Return the correct PHPP 'Group Number' depending on the exposure and type."""
+    def phpp_group_number_int(self) -> int:
+        """Return the raw PHPP group number as an integer, based on face type and exposure.
 
-        if self.phx_component.exposure_exterior == ComponentExposureExterior.SURFACE:
-            return self.phpp_group_number_format.format(18)
-        elif self.phx_component.face_type == ComponentFaceType.WALL:
-            if self.phx_component.exposure_exterior == ComponentExposureExterior.EXTERIOR:
-                return self.phpp_group_number_format.format(8)
+        PHPP groups 1-11 and 18 are built-in with fixed temperature zones.
+        Groups 12-14 are custom groups for non-standard exposure combinations:
+          - 12: ambient-exposed custom (wall/floor over uncond. zone, or floor over open air)
+          - 13: attached-zone custom (floor over unconditioned garage/cellar)
+          - 14: underground custom (buried roof in earth-sheltered design)
+
+        WHY: Previously all floors mapped to group 11 (ground-contact) regardless
+        of their actual boundary condition, misallocating ~5 W/K between PHPP R112
+        (ambient losses) and R113 (ground losses) for any model with exposed floors.
+        See PHX_BUG_REPORT_floor_group_type.md for details.
+        """
+        exposure = self.phx_component.exposure_exterior
+        face_type = self.phx_component.face_type
+
+        if exposure == ComponentExposureExterior.SURFACE:
+            return 18
+
+        elif face_type == ComponentFaceType.WALL:
+            if exposure == ComponentExposureExterior.EXTERIOR:
+                return 8
+            elif exposure == ComponentExposureExterior.GROUND:
+                return 9
             else:
-                return self.phpp_group_number_format.format(9)
-        elif self.phx_component.face_type == ComponentFaceType.FLOOR:
-            return self.phpp_group_number_format.format(11)
-        elif self.phx_component.face_type == ComponentFaceType.ROOF_CEILING:
-            return self.phpp_group_number_format.format(10)
+                return 12
+
+        elif face_type == ComponentFaceType.FLOOR:
+            if exposure == ComponentExposureExterior.GROUND:
+                return 11
+            elif exposure == ComponentExposureExterior.EXTERIOR:
+                return 12
+            else:
+                return 13
+
+        elif face_type == ComponentFaceType.ROOF_CEILING:
+            if exposure == ComponentExposureExterior.GROUND:
+                return 14
+            else:
+                return 10
+
         else:
-            return self.phpp_group_number_format.format(12)
+            return 12
+
+    @property
+    def phpp_group_number(self) -> str:
+        """Return the PHPP group number as a version-formatted string (e.g. '12-' for v10, '12' for v9)."""
+        return self.phpp_group_number_format.format(self.phpp_group_number_int)
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""

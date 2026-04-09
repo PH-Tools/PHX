@@ -2,7 +2,6 @@
 
 """Controller for managing the PHPP Connection."""
 
-
 from PHX.model import building, certification, components, project
 from PHX.model.hvac.collection import NoDeviceFoundError
 from PHX.PHPP import phpp_localization, sheet_io
@@ -33,6 +32,15 @@ from PHX.xl.xl_typing import xl_Sheet_Protocol
 
 class PHPPConnection:
     """Interface for a PHPP Excel Document."""
+
+    # -- Map of custom PHPP group numbers to their temperature zone letter and label.
+    # WHY: Custom groups 12-14 need their temp zone set in the PHPP summary section
+    # so losses are routed to the correct column. "A" = ambient (R112), "B" = ground (R113).
+    _CUSTOM_GROUP_CONFIG: dict[int, tuple[str, str]] = {
+        12: ("A", "Exposed / attached zone (ambient)"),
+        13: ("A", "Floor over uncond. zone"),
+        14: ("B", "Underground roof / ceiling"),
+    }
 
     def __init__(self, _xl: xl_app.XLConnection):
         # -- Setup the Excel connection and facade object.
@@ -378,7 +386,29 @@ class PHPPConnection:
 
         phpp_surfaces_rows_sorted = sorted(surfaces, key=lambda x: x.phx_polygon.display_name.lower())
         self.areas.write_surfaces(phpp_surfaces_rows_sorted)
+
+        # -- Configure summary rows for any custom groups that were used.
+        # WHY: Custom groups 12-14 need their temperature zone letter set in the
+        # PHPP summary section so losses are routed to the correct column (R112/R113).
+        self.areas.write_custom_group_summaries(self._collect_custom_groups(phpp_surfaces_rows_sorted))
+
         return None
+
+    @staticmethod
+    def _collect_custom_groups(
+        _surfaces: list[areas_surface.SurfaceRow],
+    ) -> set[tuple[int, str, str]]:
+        """Return {(group_num, temp_zone_letter, description)} for all custom groups in use.
+
+        WHY: Custom groups 12-14 require their summary rows to be configured with
+        the correct temperature zone letter so PHPP routes UA to the right loss column.
+        """
+        used: set[tuple[int, str, str]] = set()
+        for surface in _surfaces:
+            if config := PHPPConnection._CUSTOM_GROUP_CONFIG.get(surface.phpp_group_number_int):
+                letter, desc = config
+                used.add((surface.phpp_group_number_int, letter, desc))
+        return used
 
     def write_project_thermal_bridges(self, phx_project: project.PhxProject) -> None:
         """Write all of the thermal-bridge elements of a PhxProject to the PHPP 'Areas' worksheet."""
