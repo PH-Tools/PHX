@@ -18,6 +18,7 @@ def _lbt_line_to_phx(geom: LineSegment3D) -> PhxLineSegment:
         PhxVertix(geom.p2.x, geom.p2.y, geom.p2.z),
     )
 
+
 # -- Storage ------------------------------------------------------------------
 
 

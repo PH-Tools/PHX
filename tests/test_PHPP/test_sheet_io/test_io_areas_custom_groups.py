@@ -20,7 +20,6 @@ from PHX.PHPP.phpp_app import PHPPConnection
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model import areas_surface, version
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------

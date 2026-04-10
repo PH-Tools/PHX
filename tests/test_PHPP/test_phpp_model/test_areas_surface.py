@@ -15,7 +15,6 @@ from PHX.model import components, geometry
 from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType
 from PHX.PHPP.phpp_model import areas_surface, version
 
-
 # ---------------------------------------------------------------------------
 # Helpers — lightweight stubs so we can test phpp_group_number in isolation
 # ---------------------------------------------------------------------------
@@ -50,10 +49,10 @@ def _make_component(
 
 def _make_shape():
     """Load the real EN v10.6 shape so we get correct column/format data."""
-    from PHX.PHPP.phpp_localization import shape_model
-
     import json
     from pathlib import Path
+
+    from PHX.PHPP.phpp_localization import shape_model
 
     json_path = Path(__file__).resolve().parents[3] / "PHX" / "PHPP" / "phpp_localization" / "EN_10_6.json"
     with open(json_path) as f:

@@ -8,7 +8,12 @@ import uuid
 import warnings
 from collections.abc import Generator, Iterable
 from dataclasses import dataclass, field
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
+
+from PHX.model.assembly_pathways import identify_heat_flow_pathways
+
+if TYPE_CHECKING:
+    from PHX.model.assembly_pathways import PhxHeatFlowPathway
 
 # -----------------------------------------------------------------------------
 # Materials
@@ -444,36 +449,27 @@ class PhxConstructionOpaque:
         self._identifier = str(_in)
 
     @property
+    def heat_flow_pathways(self) -> list[PhxHeatFlowPathway]:
+        """Return the unique heat-flow pathways through this assembly.
+
+        Each pathway represents a vertical slice with a unique material sequence
+        across all layers. See :mod:`PHX.model.assembly_pathways` for details.
+        """
+
+        return identify_heat_flow_pathways(self.layers)
+
+    @property
     def r_value(self) -> float:
-        # Snapshot layer.materials once to avoid redundant _update_material_percentages() calls.
-        # The materials list order defines section indices: [base, exchange_1, exchange_2, ...].
-        layer_materials = [layer.materials for layer in self.layers]
-
-        if not any(len(mats) > 1 for mats in layer_materials):
-            return sum(layer.layer_resistance for layer in self.layers)
-
-        # ISO 6946 parallel-path method: area-weighted average of per-section U-values.
-        percentages = next(
-            ([m.percentage_of_assembly for m in mats] for mats in layer_materials if len(mats) > 1),
-            [1.0],
-        )
-
-        section_r_values = []
-        for i in range(len(percentages)):
-            total_r = 0.0
-            for layer, mats in zip(self.layers, layer_materials):
-                mat = mats[i] if i < len(mats) else mats[0]
-                try:
-                    total_r += layer.thickness_m / mat.conductivity
-                except ZeroDivisionError:
-                    pass
-            section_r_values.append(total_r)
-
-        u_parallel = sum(pct / r for pct, r in zip(percentages, section_r_values) if r > 0)
-        try:
-            return 1.0 / u_parallel
-        except ZeroDivisionError:
+        if not self.layers:
             return 0.0
+
+        pathways = self.heat_flow_pathways
+        if not pathways:
+            return 0.0
+
+        from PHX.model.assembly_pathways import compute_r_value_from_pathways
+
+        return compute_r_value_from_pathways(pathways, self.layers)
 
     @property
     def u_value(self) -> float:
