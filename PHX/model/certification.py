@@ -11,7 +11,7 @@ from typing import ClassVar
 from PHX.model import ground
 from PHX.model.enums import phi_certification_phpp_9, phius_certification
 from PHX.model.enums.building import WindExposureType
-from PHX.model.enums.hvac import PhxSummerBypassMode
+from PHX.model.enums.hvac import PhxNighttimeVentilationControl, PhxSummerBypassMode
 
 
 @dataclass
@@ -24,6 +24,55 @@ class PhxSetpoints:
         if abs(self.winter - other.winter) > TOLERANCE:
             return False
         return not abs(self.summer - other.summer) > TOLERANCE
+
+
+@dataclass
+class PhxSummerVentilation:
+    ventilation_system_ach: float | None = None
+    summer_bypass_mode: PhxSummerBypassMode = PhxSummerBypassMode.ALWAYS
+    daytime_extract_system_ach: float = 0.0
+    daytime_extract_system_fan_power_wh_m3: float = 0.0
+    daytime_window_ach: float = 0.0
+    nighttime_extract_system_ach: float = 0.0
+    nighttime_extract_system_fan_power_wh_m3: float = 0.0
+    nighttime_extract_system_heat_fraction: float = 0.0
+    nighttime_extract_system_control: PhxNighttimeVentilationControl = (
+        PhxNighttimeVentilationControl.TEMPERATURE_CONTROLLED
+    )
+    nighttime_window_ach: float = 0.0
+    nighttime_minimum_indoor_temp_C: float = 0.0
+
+    def __eq__(self, other: PhxSummerVentilation) -> bool:
+        TOLERANCE = 0.001
+        if not isinstance(other, PhxSummerVentilation):
+            return NotImplemented
+        if self.ventilation_system_ach is None and other.ventilation_system_ach is None:
+            pass
+        elif self.ventilation_system_ach is None or other.ventilation_system_ach is None:
+            return False
+        elif abs(self.ventilation_system_ach - other.ventilation_system_ach) > TOLERANCE:
+            return False
+        if self.summer_bypass_mode != other.summer_bypass_mode:
+            return False
+        if abs(self.daytime_extract_system_ach - other.daytime_extract_system_ach) > TOLERANCE:
+            return False
+        if abs(self.daytime_extract_system_fan_power_wh_m3 - other.daytime_extract_system_fan_power_wh_m3) > TOLERANCE:
+            return False
+        if abs(self.daytime_window_ach - other.daytime_window_ach) > TOLERANCE:
+            return False
+        if abs(self.nighttime_extract_system_ach - other.nighttime_extract_system_ach) > TOLERANCE:
+            return False
+        if abs(
+            self.nighttime_extract_system_fan_power_wh_m3 - other.nighttime_extract_system_fan_power_wh_m3
+        ) > TOLERANCE:
+            return False
+        if abs(self.nighttime_extract_system_heat_fraction - other.nighttime_extract_system_heat_fraction) > TOLERANCE:
+            return False
+        if self.nighttime_extract_system_control != other.nighttime_extract_system_control:
+            return False
+        if abs(self.nighttime_window_ach - other.nighttime_window_ach) > TOLERANCE:
+            return False
+        return not abs(self.nighttime_minimum_indoor_temp_C - other.nighttime_minimum_indoor_temp_C) > TOLERANCE
 
 
 @dataclass
@@ -43,7 +92,7 @@ class PhxPhBuildingData:
     non_combustible_materials: bool = False
     foundations: list[ground.PhxFoundation] = field(default_factory=list)
     building_exposure_type: WindExposureType = WindExposureType.SEVERAL_SIDES_EXPOSED_NO_SCREENING
-    summer_hrv_bypass_mode: PhxSummerBypassMode = PhxSummerBypassMode.ALWAYS
+    summer_ventilation: PhxSummerVentilation = field(default_factory=PhxSummerVentilation)
 
     def __post_init__(self) -> None:
         self.__class__._count += 1
@@ -78,7 +127,7 @@ class PhxPhBuildingData:
             return False
         if self.foundations != other.foundations:
             return False
-        return self.summer_hrv_bypass_mode == other.summer_hrv_bypass_mode
+        return self.summer_ventilation == other.summer_ventilation
 
 
 # -----------------------------------------------------------------------------

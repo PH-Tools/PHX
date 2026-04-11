@@ -1135,7 +1135,7 @@ def _PhxPhBuildingData(_data: wufi_xml.WufiPH_Building, _phx_building: PhxBuildi
     phx_obj.mech_room_temp = _data.MechanicalRoomTemperature
     phx_obj.non_combustible_materials = _data.NonCombustibleMaterials
     phx_obj.building_exposure_type = WindExposureType(_data.BuildingWindExposure)
-    phx_obj.summer_hrv_bypass_mode = hvac_enums.PhxSummerBypassMode(_data.SummerHRVHumidityRecovery)
+    phx_obj.summer_ventilation.summer_bypass_mode = hvac_enums.PhxSummerBypassMode(_data.SummerHRVHumidityRecovery)
 
     # -- Figure out the air-tightness values based on the XML, but if the values
     # -- are not present, figure them out from the PHX-Building.

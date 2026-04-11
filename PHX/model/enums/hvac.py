@@ -161,3 +161,8 @@ class PhxSummerBypassMode(Enum):
     TEMP_CONTROLLED = 2
     ENTHALPY_CONTROLLED = 3
     ALWAYS = 4
+
+
+class PhxNighttimeVentilationControl(Enum):
+    TEMPERATURE_CONTROLLED = 1
+    HUMIDITY_CONTROLLED = 2

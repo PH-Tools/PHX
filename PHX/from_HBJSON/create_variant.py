@@ -319,8 +319,23 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     ph_bldg.non_combustible_materials = hbph_bldg_seg.non_combustible_materials
 
     # ------------------------------------------------------------------------------------------------------------------
-    # -- Summer HRV Bypass mode
-    ph_bldg.summer_hrv_bypass_mode = hvac.PhxSummerBypassMode(hbph_bldg_seg.summer_hrv_bypass_mode.number)
+    # -- Summer Ventilation
+    hbph_sv = hbph_bldg_seg.summer_ventilation
+    ph_bldg.summer_ventilation.summer_bypass_mode = hvac.PhxSummerBypassMode(hbph_sv.summer_bypass_mode.number)
+    ph_bldg.summer_ventilation.ventilation_system_ach = hbph_sv.ventilation_system_ach
+    ph_bldg.summer_ventilation.daytime_extract_system_ach = hbph_sv.daytime_extract_system_ach
+    ph_bldg.summer_ventilation.daytime_extract_system_fan_power_wh_m3 = hbph_sv.daytime_extract_system_fan_power_wh_m3
+    ph_bldg.summer_ventilation.daytime_window_ach = hbph_sv.daytime_window_ach
+    ph_bldg.summer_ventilation.nighttime_extract_system_ach = hbph_sv.nighttime_extract_system_ach
+    ph_bldg.summer_ventilation.nighttime_extract_system_fan_power_wh_m3 = (
+        hbph_sv.nighttime_extract_system_fan_power_wh_m3
+    )
+    ph_bldg.summer_ventilation.nighttime_extract_system_heat_fraction = hbph_sv.nighttime_extract_system_heat_fraction
+    ph_bldg.summer_ventilation.nighttime_extract_system_control = hvac.PhxNighttimeVentilationControl(
+        hbph_sv.nighttime_extract_system_control.number
+    )
+    ph_bldg.summer_ventilation.nighttime_window_ach = hbph_sv.nighttime_window_ach
+    ph_bldg.summer_ventilation.nighttime_minimum_indoor_temp_C = hbph_sv.nighttime_minimum_indoor_temp_C
 
     # ------------------------------------------------------------------------------------------------------------------
     # -- Wind Exposure

@@ -362,7 +362,7 @@ def _PhxPhBuildingData(
         XML_Node("NumberUnits", bd.num_of_units),
         XML_Node("CountStories", bd.num_of_floors),
         XML_Node("EnvelopeAirtightnessCoefficient", bd.airtightness_q50),
-        XML_Node("SummerHRVHumidityRecovery", bd.summer_hrv_bypass_mode.value),
+        XML_Node("SummerHRVHumidityRecovery", bd.summer_ventilation.summer_bypass_mode.value),
         XML_Node("BuildingWindExposure", bd.building_exposure_type.value),
         XML_List(
             "FoundationInterfaces",

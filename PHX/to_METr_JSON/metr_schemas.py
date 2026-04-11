@@ -1394,7 +1394,7 @@ def _PhxPhiusCertification(_cert: certification.PhxPhiusCertification) -> dict:
                 "consDHW60": NaN,
                 "cWaterT": NaN,
                 "aContrSys": 1,
-                "sumHRec": bd.summer_hrv_bypass_mode.value,
+                "sumHRec": bd.summer_ventilation.summer_bypass_mode.value,
                 "bWindExp": bd.building_exposure_type.value,
                 "windSCoef": NaN,
                 "windExp": NaN,
