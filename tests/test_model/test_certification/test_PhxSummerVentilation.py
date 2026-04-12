@@ -1,6 +1,4 @@
-import pytest
-
-from PHX.model.certification import PhxSummerVentilation, PhxPhBuildingData
+from PHX.model.certification import PhxPhBuildingData, PhxSummerVentilation
 from PHX.model.enums.hvac import PhxNighttimeVentilationControl, PhxSummerBypassMode
 
 

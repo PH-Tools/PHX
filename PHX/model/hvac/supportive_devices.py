@@ -16,6 +16,7 @@ class PhxSupportiveDeviceParams(_base.PhxMechanicalDeviceParams):
     in_conditioned_space: bool = True
     norm_energy_demand_W: float = 1.0
     annual_period_operation_khrs: float = 8.760
+    ihg_utilization_factor: float = 1.0
 
     def __add__(self, other: PhxSupportiveDeviceParams) -> PhxSupportiveDeviceParams:
         base = super().__add__(other)
@@ -25,11 +26,19 @@ class PhxSupportiveDeviceParams(_base.PhxMechanicalDeviceParams):
         # -- Merge the energy usage and hours of operation
         total_kilohours = self.annual_period_operation_khrs + other.annual_period_operation_khrs
         new_obj.annual_period_operation_khrs = total_kilohours
-        total_watt_kilohours = (
-            self.norm_energy_demand_W * self.annual_period_operation_khrs
-            + other.norm_energy_demand_W * other.annual_period_operation_khrs
-        )
-        new_obj.norm_energy_demand_W = total_watt_kilohours / total_kilohours
+        energy_self = self.norm_energy_demand_W * self.annual_period_operation_khrs
+        energy_other = other.norm_energy_demand_W * other.annual_period_operation_khrs
+        total_energy = energy_self + energy_other
+        new_obj.norm_energy_demand_W = total_energy / total_kilohours
+
+        # -- Energy-weighted average of IHG utilization factor
+        if total_energy > 0:
+            new_obj.ihg_utilization_factor = (
+                energy_self * self.ihg_utilization_factor + energy_other * other.ihg_utilization_factor
+            ) / total_energy
+        else:
+            new_obj.ihg_utilization_factor = (self.ihg_utilization_factor + other.ihg_utilization_factor) / 2
+
         return new_obj
 
 

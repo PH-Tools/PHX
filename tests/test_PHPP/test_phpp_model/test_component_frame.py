@@ -12,13 +12,10 @@ from PHX.PHPP.phpp_localization.shape_model import (
 )
 from PHX.PHPP.phpp_model.component_frame import FrameRow
 
-
 # -- Helpers ------------------------------------------------------------------
 
 
-def _make_frames_shape(
-    psi_g_columns: dict[str, str], psi_i_columns: dict[str, str] | None = None
-) -> ComponentsFrames:
+def _make_frames_shape(psi_g_columns: dict[str, str], psi_i_columns: dict[str, str] | None = None) -> ComponentsFrames:
     """Build a minimal ComponentsFrames shape with specified psi_g column mappings."""
     psi_i = psi_i_columns or {"left": "IY", "right": "IZ", "bottom": "JA", "top": "JB"}
     return ComponentsFrames(

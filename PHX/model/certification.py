@@ -48,9 +48,11 @@ class PhxSummerVentilation:
             return NotImplemented
         if self.ventilation_system_ach is None and other.ventilation_system_ach is None:
             pass
-        elif self.ventilation_system_ach is None or other.ventilation_system_ach is None:
-            return False
-        elif abs(self.ventilation_system_ach - other.ventilation_system_ach) > TOLERANCE:
+        elif (
+            self.ventilation_system_ach is None
+            or other.ventilation_system_ach is None
+            or abs(self.ventilation_system_ach - other.ventilation_system_ach) > TOLERANCE
+        ):
             return False
         if self.summer_bypass_mode != other.summer_bypass_mode:
             return False
@@ -62,9 +64,10 @@ class PhxSummerVentilation:
             return False
         if abs(self.nighttime_extract_system_ach - other.nighttime_extract_system_ach) > TOLERANCE:
             return False
-        if abs(
-            self.nighttime_extract_system_fan_power_wh_m3 - other.nighttime_extract_system_fan_power_wh_m3
-        ) > TOLERANCE:
+        if (
+            abs(self.nighttime_extract_system_fan_power_wh_m3 - other.nighttime_extract_system_fan_power_wh_m3)
+            > TOLERANCE
+        ):
             return False
         if abs(self.nighttime_extract_system_heat_fraction - other.nighttime_extract_system_heat_fraction) > TOLERANCE:
             return False

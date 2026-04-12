@@ -499,6 +499,7 @@ def build_phx_supportive_device(
     phx_device.params.in_conditioned_space = _hbph_supportive_device.in_conditioned_space
     phx_device.params.norm_energy_demand_W = _hbph_supportive_device.norm_energy_demand_W
     phx_device.params.annual_period_operation_khrs = _hbph_supportive_device.annual_period_operation_khrs
+    phx_device.params.ihg_utilization_factor = _hbph_supportive_device.ihg_utilization_factor
 
     return phx_device
 
