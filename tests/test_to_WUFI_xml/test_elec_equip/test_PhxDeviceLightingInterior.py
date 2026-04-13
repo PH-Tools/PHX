@@ -15,6 +15,7 @@ def test_default_PhxDeviceLightingInterior(reset_class_counters):
         "<EnergyDemandNorm>100.0</EnergyDemandNorm>",
         "<EnergyDemandNormUse>100.0</EnergyDemandNormUse>",
         "<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>",
+        "<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>",
         "<Type>14</Type>",
         "<FractionHightEfficiency>1.0</FractionHightEfficiency>",
     ]

@@ -15,6 +15,7 @@ def test_default_PhxDeviceCooktop(reset_class_counters):
         "<EnergyDemandNorm>100.0</EnergyDemandNorm>",
         "<EnergyDemandNormUse>100.0</EnergyDemandNormUse>",
         "<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>",
+        "<IHG_UtilizationFactor>0.5</IHG_UtilizationFactor>",
         "<Type>7</Type>",
         "<CookingWith>1</CookingWith>",
     ]

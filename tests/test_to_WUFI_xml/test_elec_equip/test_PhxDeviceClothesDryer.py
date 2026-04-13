@@ -15,6 +15,7 @@ def test_default_PhxDeviceClothesDryer(reset_class_counters):
         "<EnergyDemandNorm>100.0</EnergyDemandNorm>",
         "<EnergyDemandNormUse>100.0</EnergyDemandNormUse>",
         "<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>",
+        "<IHG_UtilizationFactor>0.7</IHG_UtilizationFactor>",
         "<Type>3</Type>",
         "<Dryer_Choice>4</Dryer_Choice>",
         "<GasConsumption>0.0</GasConsumption>",

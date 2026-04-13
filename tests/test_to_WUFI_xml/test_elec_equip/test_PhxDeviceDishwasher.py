@@ -15,6 +15,7 @@ def test_default_PhxDeviceDishwasher(reset_class_counters):
         "<EnergyDemandNorm>100.0</EnergyDemandNorm>",
         "<EnergyDemandNormUse>100.0</EnergyDemandNormUse>",
         "<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>",
+        "<IHG_UtilizationFactor>0.3</IHG_UtilizationFactor>",
         "<Type>1</Type>",
         "<Connection>1</Connection>",
         "<DishwasherCapacityPreselection>1</DishwasherCapacityPreselection>",

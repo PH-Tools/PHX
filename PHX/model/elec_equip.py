@@ -32,6 +32,7 @@ class PhxElectricalDevice:
     energy_demand: float | None = 100.0
     energy_demand_per_use: float | None = 100.0
     combined_energy_factor: float | None = 0.0
+    ihg_utilization_factor: float = 1.0
 
     device_type: ElectricEquipmentType = field(default=ElectricEquipmentType.CUSTOM)
 
@@ -87,6 +88,7 @@ class PhxDeviceDishwasher(PhxElectricalDevice):
         self.display_name = "Kitchen Dishwasher"
         self.capacity: float | None = 1.0
         self.device_type = ElectricEquipmentType.DISHWASHER
+        self.ihg_utilization_factor = 0.30
 
     @property
     def water_connection(self) -> int | None:
@@ -117,6 +119,7 @@ class PhxDeviceClothesWasher(PhxElectricalDevice):
         self.modified_energy_factor: float | None = 2.38
         self.utilization_factor: float | None = 1.0
         self.device_type = ElectricEquipmentType.CLOTHES_WASHER
+        self.ihg_utilization_factor = 0.30
 
     @property
     def water_connection(self) -> int | None:
@@ -139,6 +142,7 @@ class PhxDeviceClothesDryer(PhxElectricalDevice):
         self.gas_efficiency_factor: float | None = 2.67
         self.field_utilization_factor: float | None = 1.18
         self.device_type = ElectricEquipmentType.CLOTHES_DRYER
+        self.ihg_utilization_factor = 0.70
 
     @property
     def dryer_type(self) -> int:
@@ -186,6 +190,7 @@ class PhxDeviceCooktop(PhxElectricalDevice):
         self.display_name = "Kitchen cooking"
         self._cooktop_type: int = 1  # Electric
         self.device_type = ElectricEquipmentType.COOKING
+        self.ihg_utilization_factor = 0.50
 
     @property
     def cooktop_type(self) -> int:

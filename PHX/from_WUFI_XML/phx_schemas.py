@@ -1764,6 +1764,8 @@ def _PhxHomeDevice(_data: wufi_xml.WufiHomeDevice) -> PhxElectricalDevice:
     phx_obj.energy_demand = _data.EnergyDemandNorm
     phx_obj.energy_demand_per_use = _data.EnergyDemandNormUse
     phx_obj.combined_energy_factor = _data.CEF_CombinedEnergyFactor
+    if _data.IHG_UtilizationFactor is not None:
+        phx_obj.ihg_utilization_factor = _data.IHG_UtilizationFactor
 
     return phx_obj
 

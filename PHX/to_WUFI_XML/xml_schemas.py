@@ -1782,6 +1782,7 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> list[xml_writabl
         XML_Node("EnergyDemandNorm", _d.get_energy_demand()),
         XML_Node("EnergyDemandNormUse", _d.energy_demand_per_use),
         XML_Node("CEF_CombinedEnergyFactor", _d.combined_energy_factor),
+        XML_Node("IHG_UtilizationFactor", _d.ihg_utilization_factor),
     ]
 
     device_schema_name = f"_{_d.__class__.__name__}"

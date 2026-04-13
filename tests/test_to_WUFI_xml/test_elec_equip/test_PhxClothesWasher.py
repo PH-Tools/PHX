@@ -15,6 +15,7 @@ def test_default_PhxDeviceClothesWasher(reset_class_counters):
         "<EnergyDemandNorm>100.0</EnergyDemandNorm>",
         "<EnergyDemandNormUse>100.0</EnergyDemandNormUse>",
         "<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>",
+        "<IHG_UtilizationFactor>0.3</IHG_UtilizationFactor>",
         "<Type>2</Type>",
         "<Connection>1</Connection>",
         "<UtilizationFactor>1.0</UtilizationFactor>",

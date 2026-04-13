@@ -15,5 +15,6 @@ def test_default_PhxDeviceCustomLighting(reset_class_counters):
         "<EnergyDemandNorm>100.0</EnergyDemandNorm>",
         "<EnergyDemandNormUse>100.0</EnergyDemandNormUse>",
         "<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>",
+        "<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>",
         "<Type>17</Type>",
     ]

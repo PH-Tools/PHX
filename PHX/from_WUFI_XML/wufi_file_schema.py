@@ -338,6 +338,7 @@ class WufiHomeDevice(WufiBaseModel):
     EnergyDemandNorm: wufi_unit.kWh | None = None
     EnergyDemandNormUse: wufi_unit.kWh | None = None
     CEF_CombinedEnergyFactor: wufi_unit._Percentage | None = None
+    IHG_UtilizationFactor: wufi_unit._Float | None = None
     Type: int
 
     # -- Cook-tops
