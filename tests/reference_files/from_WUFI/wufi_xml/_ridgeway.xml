@@ -49935,6 +49935,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>260.0</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>0.3</IHG_UtilizationFactor>
 								<Type>1</Type>
 								<Connection>1</Connection>
 								<DishwasherCapacityPreselection>1</DishwasherCapacityPreselection>
@@ -49949,6 +49950,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>0.2</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.2</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>0.5</IHG_UtilizationFactor>
 								<Type>7</Type>
 								<CookingWith>1</CookingWith>
 							</Device>
@@ -49961,6 +49963,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>336.0</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.9333</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>6</Type>
 							</Device>
 							<Device index="3">
@@ -49972,6 +49975,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>0.0</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>3.93</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>0.7</IHG_UtilizationFactor>
 								<Type>3</Type>
 								<Dryer_Choice>5</Dryer_Choice>
 								<GasConsumption>0.0</GasConsumption>
@@ -49988,6 +49992,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>150.0</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>0.3</IHG_UtilizationFactor>
 								<Type>2</Type>
 								<Connection>1</Connection>
 								<UtilizationFactor>1.0</UtilizationFactor>
@@ -50003,6 +50008,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>4142.1988</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>18</Type>
 							</Device>
 							<Device index="6">
@@ -50014,6 +50020,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>4550.0</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>11</Type>
 							</Device>
 							<Device index="7">
@@ -50025,6 +50032,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>78163.472</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>18</Type>
 							</Device>
 							<Device index="8">
@@ -50036,6 +50044,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>4263.0</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>17</Type>
 							</Device>
 							<Device index="9">
@@ -50047,6 +50056,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 								<EnergyDemandNorm>74738.0</EnergyDemandNorm>
 								<EnergyDemandNormUse>0.0</EnergyDemandNormUse>
 								<CEF_CombinedEnergyFactor>0.0</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>17</Type>
 							</Device>
 						</HomeDevice>

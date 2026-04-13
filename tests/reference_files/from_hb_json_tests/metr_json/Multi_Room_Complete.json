@@ -30,9 +30,9 @@
     "date": [
       2026,
       4,
-      12,
-      10,
-      35,
+      13,
+      11,
+      26,
       0
     ],
     "wBkg": false
@@ -1579,7 +1579,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_7d6d16e6",
+      "n": "PhWindowConstruction_84942b35",
       "detU": true,
       "detGd": false,
       "Uw": 0.8339189189189188,
@@ -3524,7 +3524,7 @@
             "id": 42,
             "idSKP": -1,
             "itv": 4,
-            "n": "Shade_4db95526",
+            "n": "Shade_802e2368",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3666,7 +3666,7 @@
             "id": 43,
             "idSKP": -1,
             "itv": 5,
-            "n": "Shade_c8308f91",
+            "n": "Shade_865ef9be",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3808,7 +3808,7 @@
             "id": 41,
             "idSKP": -1,
             "itv": 6,
-            "n": "PhWindowConstruction_7d6d16e6",
+            "n": "PhWindowConstruction_84942b35",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -3953,7 +3953,7 @@
             "id": 25,
             "idSKP": -1,
             "itv": 7,
-            "n": "Room_4_8c9b0bb8..Face5_Glz0",
+            "n": "Room_8_42bb8b13..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4376,14 +4376,14 @@
               "humSour": 2.0,
               "lPersZ": [
                 {
-                  "n": "101-Room_3",
+                  "n": "101-Room_7",
                   "idUPat": 1,
                   "actPers": 3,
                   "nOcc": 0.0,
                   "flAUZone": 10.89
                 },
                 {
-                  "n": "102-Room_4",
+                  "n": "102-Room_8",
                   "idUPat": 1,
                   "actPers": 3,
                   "nOcc": 0.0,
@@ -4394,7 +4394,7 @@
               "lAuxEl": [],
               "lLight": [
                 {
-                  "n": "101-Room_3",
+                  "n": "101-Room_7",
                   "idUPat": 1,
                   "lightTr": 1,
                   "cLight": 1,
@@ -4413,7 +4413,7 @@
                   "lightTrU": "NaN"
                 },
                 {
-                  "n": "102-Room_4",
+                  "n": "102-Room_8",
                   "idUPat": 1,
                   "lightTr": 1,
                   "cLight": 1,
@@ -4788,7 +4788,31 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__197a2a8c",
+                "n": "_unnamed_bldg_segment__61305ac1",
+                "typeTbZ": -15,
+                "lengthTbZ": 19.8,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__86a5b859",
+                "typeTbZ": -15,
+                "lengthTbZ": 19.799999999999997,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__8a5f9b60",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.000714267493642,
                 "psiTbZ": 0.01,
@@ -4800,7 +4824,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__679efbcd",
+                "n": "_unnamed_bldg_segment__8c816df9",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4812,7 +4836,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__9853a1d8",
+                "n": "_unnamed_bldg_segment__a35c4f9d",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4824,7 +4848,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__b2d1465d",
+                "n": "_unnamed_bldg_segment__f7217024",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4836,33 +4860,9 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__b8926561",
+                "n": "_unnamed_bldg_segment__fe0ad849",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.758048651498616,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__ca6779ae",
-                "typeTbZ": -15,
-                "lengthTbZ": 19.8,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__e26d301e",
-                "typeTbZ": -15,
-                "lengthTbZ": 19.799999999999997,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -4874,7 +4874,7 @@
             ],
             "lRoom": [
               {
-                "n": "101-Room_3",
+                "n": "101-Room_7",
                 "tRoom": 99,
                 "quantity": 1,
                 "area": 10.89,
@@ -4886,7 +4886,7 @@
                 "idVUnit": 1
               },
               {
-                "n": "102-Room_4",
+                "n": "102-Room_8",
                 "tRoom": 99,
                 "quantity": 1,
                 "area": 10.89,
@@ -5114,6 +5114,208 @@
               }
             ],
             "lDevice": [
+              {
+                "info": "Heat pump",
+                "n": "76fbf579-bdbf-4672-aae7-eac6e7a19061",
+                "id": 1,
+                "typeDev": 5,
+                "typeDevDB": 5,
+                "hRec": 0.0,
+                "hRecE": 0.0,
+                "mRec": 0.0,
+                "mRecE": 0.0,
+                "mRecV": 0.0,
+                "elEffV": "NaN",
+                "frostPV": false,
+                "quantV": 1,
+                "sHXeffV": 0.0,
+                "defrTV": "NaN",
+                "defrAV": false,
+                "inCondSpV": true,
+                "noSByP": true,
+                "calcEMV": {},
+                "uOptCli": false,
+                "idOptCli": -1,
+                "uHWCVHD": [
+                  false,
+                  true,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "cHWCVHD": [
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "enSB": 1,
+                "mPowB": 10.0,
+                "solFrB": "NaN",
+                "condB": false,
+                "eff30B": "NaN",
+                "effNOB": "NaN",
+                "rTm30B": "NaN",
+                "t7055B": "NaN",
+                "t5545B": "NaN",
+                "t3528B": "NaN",
+                "hl70B": "NaN",
+                "effbB": "NaN",
+                "effcB": "NaN",
+                "hrelcB": "NaN",
+                "tOnOfB": "NaN",
+                "uHbcB": "NaN",
+                "avPowB": "NaN",
+                "demCycB": "NaN",
+                "psRunB": "NaN",
+                "nTrPB": false,
+                "ccB": false,
+                "areaMRB": "NaN",
+                "tHP": 5,
+                "hLscHP": "NaN",
+                "tStdHP": "NaN",
+                "fAdExHP": "NaN",
+                "eHRHP": "NaN",
+                "elEfHP": "NaN",
+                "efSHXHP": "NaN",
+                "pHP": 1,
+                "frostPHP": false,
+                "solFCHP": "NaN",
+                "solFcHP": "NaN",
+                "aCOP": 2.0,
+                "tSysPHP": 0.5,
+                "acCOPHP": "NaN",
+                "athHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "powhHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "cophHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "aatWHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "powWHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "powrWHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "copsWHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "copsrWHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "atsHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "powsHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "copsHP": [
+                  "NaN",
+                  "NaN",
+                  "NaN",
+                  "NaN"
+                ],
+                "rCOP1HP": "NaN",
+                "rCOP2HP": "NaN",
+                "aT1HP": "NaN",
+                "aT2HP": "NaN",
+                "aCOPHP": 2.0,
+                "pHGHP": 0.5,
+                "hpWHHP": 3.0251,
+                "typeSC": 1,
+                "tEffSC": "NaN",
+                "k1SC": "NaN",
+                "k2SC": "NaN",
+                "tCapSC": "NaN",
+                "kdirSC": "NaN",
+                "kdfuSC": "NaN",
+                "tYieldSC": "NaN",
+                "areaASC": "NaN",
+                "auxEnSC": "NaN",
+                "areaSC": "NaN",
+                "devNSC": 180.0,
+                "inclSC": 30.0,
+                "hccfSC": "NaN",
+                "hsoSC": 0.0,
+                "hdsoSC": "NaN",
+                "arfSC": 1.0,
+                "priorSC": true,
+                "idsSC": -1,
+                "volWS": 1000.0,
+                "lStWS": "NaN",
+                "totLWS": "NaN",
+                "inOptWS": 1,
+                "aHreWS": "NaN",
+                "ambTWS": "NaN",
+                "tTWS": "NaN",
+                "qauntWS": 1,
+                "inTEnvWS": true,
+                "eCarrDH": 3,
+                "solFrDH": 0.0,
+                "uFTrSDH": "NaN",
+                "perfHG": "NaN",
+                "pEF": "NaN",
+                "eCO2": "NaN",
+                "inTEnvUD": true,
+                "acCOPu": "NaN",
+                "sitePV": 1,
+                "suPV": 1,
+                "ouPV": 1,
+                "aSizePV": "NaN",
+                "renEnPV": "NaN",
+                "sUtilPV": 1.0,
+                "sUtilPVro": 1.0,
+                "tDW": 36.1111,
+                "efDW": 0.45,
+                "plDW": 22.86,
+                "pWFDW": 1,
+                "locDW": 1,
+                "pfDW": 1.0,
+                "fFDW": 1.0,
+                "auxEn": "NaN",
+                "auxEnDHW": "NaN",
+                "inCondSp": true,
+                "auxEncsSC": true
+              },
               {
                 "info": "Heat pump",
                 "n": "Example_Heat_Pump",
@@ -5979,208 +6181,6 @@
                 "auxEncsSC": true
               },
               {
-                "info": "Heat pump",
-                "n": "fdcaa3f7-4035-40d8-9324-e2628d24fbdc",
-                "id": 1,
-                "typeDev": 5,
-                "typeDevDB": 5,
-                "hRec": 0.0,
-                "hRecE": 0.0,
-                "mRec": 0.0,
-                "mRecE": 0.0,
-                "mRecV": 0.0,
-                "elEffV": "NaN",
-                "frostPV": false,
-                "quantV": 1,
-                "sHXeffV": 0.0,
-                "defrTV": "NaN",
-                "defrAV": false,
-                "inCondSpV": true,
-                "noSByP": true,
-                "calcEMV": {},
-                "uOptCli": false,
-                "idOptCli": -1,
-                "uHWCVHD": [
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false
-                ],
-                "cHWCVHD": [
-                  0.0,
-                  1.0,
-                  0.0,
-                  0.0,
-                  0.0,
-                  0.0
-                ],
-                "enSB": 1,
-                "mPowB": 10.0,
-                "solFrB": "NaN",
-                "condB": false,
-                "eff30B": "NaN",
-                "effNOB": "NaN",
-                "rTm30B": "NaN",
-                "t7055B": "NaN",
-                "t5545B": "NaN",
-                "t3528B": "NaN",
-                "hl70B": "NaN",
-                "effbB": "NaN",
-                "effcB": "NaN",
-                "hrelcB": "NaN",
-                "tOnOfB": "NaN",
-                "uHbcB": "NaN",
-                "avPowB": "NaN",
-                "demCycB": "NaN",
-                "psRunB": "NaN",
-                "nTrPB": false,
-                "ccB": false,
-                "areaMRB": "NaN",
-                "tHP": 5,
-                "hLscHP": "NaN",
-                "tStdHP": "NaN",
-                "fAdExHP": "NaN",
-                "eHRHP": "NaN",
-                "elEfHP": "NaN",
-                "efSHXHP": "NaN",
-                "pHP": 1,
-                "frostPHP": false,
-                "solFCHP": "NaN",
-                "solFcHP": "NaN",
-                "aCOP": 2.0,
-                "tSysPHP": 0.5,
-                "acCOPHP": "NaN",
-                "athHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "powhHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "cophHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "aatWHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "powWHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "powrWHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "copsWHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "copsrWHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "atsHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "powsHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "copsHP": [
-                  "NaN",
-                  "NaN",
-                  "NaN",
-                  "NaN"
-                ],
-                "rCOP1HP": "NaN",
-                "rCOP2HP": "NaN",
-                "aT1HP": "NaN",
-                "aT2HP": "NaN",
-                "aCOPHP": 2.0,
-                "pHGHP": 0.5,
-                "hpWHHP": 3.0251,
-                "typeSC": 1,
-                "tEffSC": "NaN",
-                "k1SC": "NaN",
-                "k2SC": "NaN",
-                "tCapSC": "NaN",
-                "kdirSC": "NaN",
-                "kdfuSC": "NaN",
-                "tYieldSC": "NaN",
-                "areaASC": "NaN",
-                "auxEnSC": "NaN",
-                "areaSC": "NaN",
-                "devNSC": 180.0,
-                "inclSC": 30.0,
-                "hccfSC": "NaN",
-                "hsoSC": 0.0,
-                "hdsoSC": "NaN",
-                "arfSC": 1.0,
-                "priorSC": true,
-                "idsSC": -1,
-                "volWS": 1000.0,
-                "lStWS": "NaN",
-                "totLWS": "NaN",
-                "inOptWS": 1,
-                "aHreWS": "NaN",
-                "ambTWS": "NaN",
-                "tTWS": "NaN",
-                "qauntWS": 1,
-                "inTEnvWS": true,
-                "eCarrDH": 3,
-                "solFrDH": 0.0,
-                "uFTrSDH": "NaN",
-                "perfHG": "NaN",
-                "pEF": "NaN",
-                "eCO2": "NaN",
-                "inTEnvUD": true,
-                "acCOPu": "NaN",
-                "sitePV": 1,
-                "suPV": 1,
-                "ouPV": 1,
-                "aSizePV": "NaN",
-                "renEnPV": "NaN",
-                "sUtilPV": 1.0,
-                "sUtilPVro": 1.0,
-                "tDW": 36.1111,
-                "efDW": 0.45,
-                "plDW": 22.86,
-                "pWFDW": 1,
-                "locDW": 1,
-                "pfDW": 1.0,
-                "fFDW": 1.0,
-                "auxEn": "NaN",
-                "auxEnDHW": "NaN",
-                "inCondSp": true,
-                "auxEncsSC": true
-              },
-              {
                 "info": "Photovoltaic / RES",
                 "n": "my_PV_system",
                 "id": 1,
@@ -6566,15 +6566,6 @@
               "devCondSp": true,
               "lSuppDev": [
                 {
-                  "n": "Example Device",
-                  "tsDev": 10,
-                  "quantity": 3,
-                  "inCondSp": false,
-                  "nEdem": 123.0,
-                  "contr": false,
-                  "poOper": 6.5
-                },
-                {
                   "n": "Example Kitchen Fan",
                   "tsDev": 10,
                   "quantity": 1,
@@ -6582,6 +6573,15 @@
                   "nEdem": 500.0,
                   "contr": false,
                   "poOper": 0.08
+                },
+                {
+                  "n": "Example Device",
+                  "tsDev": 10,
+                  "quantity": 3,
+                  "inCondSp": false,
+                  "nEdem": 123.0,
+                  "contr": false,
+                  "poOper": 6.5
                 }
               ]
             }

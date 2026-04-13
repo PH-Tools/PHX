@@ -29613,6 +29613,7 @@
 								<EnergyDemandNorm>269.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>0.3</IHG_UtilizationFactor>
 								<Type>1</Type>
 								<Connection>1</Connection>
 								<DishwasherCapacityPreselection>1</DishwasherCapacityPreselection>
@@ -29627,6 +29628,7 @@
 								<EnergyDemandNorm>0.2</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>0.5</IHG_UtilizationFactor>
 								<Type>7</Type>
 								<CookingWith>1</CookingWith>
 							</Device>
@@ -29639,6 +29641,7 @@
 								<EnergyDemandNorm>1.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>6</Type>
 							</Device>
 							<Device index="3">
@@ -29650,6 +29653,7 @@
 								<EnergyDemandNorm>0.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor>3.93</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>0.7</IHG_UtilizationFactor>
 								<Type>3</Type>
 								<Dryer_Choice>5</Dryer_Choice>
 								<GasConsumption/>
@@ -29666,6 +29670,7 @@
 								<EnergyDemandNorm>120.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>0.3</IHG_UtilizationFactor>
 								<Type>2</Type>
 								<Connection>1</Connection>
 								<UtilizationFactor/>
@@ -29681,6 +29686,7 @@
 								<EnergyDemandNorm>68494.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>17</Type>
 							</Device>
 							<Device index="6">
@@ -29692,6 +29698,7 @@
 								<EnergyDemandNorm>2757.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>17</Type>
 							</Device>
 							<Device index="7">
@@ -29703,6 +29710,7 @@
 								<EnergyDemandNorm>62167.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>18</Type>
 							</Device>
 						</HomeDevice>
@@ -60551,6 +60559,7 @@
 								<EnergyDemandNorm>269.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>0.3</IHG_UtilizationFactor>
 								<Type>1</Type>
 								<Connection>1</Connection>
 								<DishwasherCapacityPreselection>1</DishwasherCapacityPreselection>
@@ -60565,6 +60574,7 @@
 								<EnergyDemandNorm>0.2</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>0.5</IHG_UtilizationFactor>
 								<Type>7</Type>
 								<CookingWith>1</CookingWith>
 							</Device>
@@ -60577,6 +60587,7 @@
 								<EnergyDemandNorm>1.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>6</Type>
 							</Device>
 							<Device index="3">
@@ -60588,6 +60599,7 @@
 								<EnergyDemandNorm>0.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor>3.93</CEF_CombinedEnergyFactor>
+								<IHG_UtilizationFactor>0.7</IHG_UtilizationFactor>
 								<Type>3</Type>
 								<Dryer_Choice>5</Dryer_Choice>
 								<GasConsumption/>
@@ -60604,6 +60616,7 @@
 								<EnergyDemandNorm>120.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>0.3</IHG_UtilizationFactor>
 								<Type>2</Type>
 								<Connection>1</Connection>
 								<UtilizationFactor/>
@@ -60619,6 +60632,7 @@
 								<EnergyDemandNorm>68494.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>17</Type>
 							</Device>
 							<Device index="6">
@@ -60630,6 +60644,7 @@
 								<EnergyDemandNorm>2757.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>17</Type>
 							</Device>
 							<Device index="7">
@@ -60641,6 +60656,7 @@
 								<EnergyDemandNorm>62167.0</EnergyDemandNorm>
 								<EnergyDemandNormUse/>
 								<CEF_CombinedEnergyFactor/>
+								<IHG_UtilizationFactor>1.0</IHG_UtilizationFactor>
 								<Type>18</Type>
 							</Device>
 						</HomeDevice>
