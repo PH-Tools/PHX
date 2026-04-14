@@ -88,7 +88,6 @@ class PhxPhBuildingData:
     occupancy_setting_method: int = 2  # Design
     airtightness_q50: float = 1.0  # m3/hr-m2-envelope
     airtightness_n50: float = 1.0  # ach
-    wind_coefficient_e: float = 0.07
     wind_coefficient_f: float = 15
     setpoints: PhxSetpoints = field(default_factory=PhxSetpoints)
     mech_room_temp: float = 20.0
@@ -131,6 +130,19 @@ class PhxPhBuildingData:
         if self.foundations != other.foundations:
             return False
         return self.summer_ventilation == other.summer_ventilation
+
+    @property
+    def wind_coefficient_e(self) -> float:
+        """Wind pressure coefficient E, used for calculating infiltration due to wind pressure."""
+        match self.building_exposure_type:
+            case WindExposureType.SEVERAL_SIDES_EXPOSED_NO_SCREENING:
+                return 0.1
+            case WindExposureType.SEVERAL_SIDES_EXPOSED_MODERATE_SCREENING:
+                return 0.07
+            case WindExposureType.SEVERAL_SIDES_EXPOSED_HIGH_SCREENING:
+                return 0.04
+            case _:
+                return 0.1
 
 
 # -----------------------------------------------------------------------------
