@@ -1,2 +1,6 @@
 nav:
   - Overview: index.md
+  - Reference:
+    - PHX Model Reference: reference/phx-model-reference.md
+    - WUFI XML Schema: reference/wufi-xml-schema.md
+    - PHPP Field Mapping: reference/phpp-field-mapping.md

@@ -21,4 +21,4 @@ pip install PHX
 
 - [Source Code](https://github.com/PH-Tools/PHX)
 - [PyPI](https://pypi.org/project/PHX/)
-- [Model Reference](../reference/phx-model-reference.md)
+- [Model Reference](reference/phx-model-reference.md)
