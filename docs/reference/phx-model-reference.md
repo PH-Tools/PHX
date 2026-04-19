@@ -1,6 +1,6 @@
 # PHX Model Reference
 
-PHX (Passive House Exchange) is an in-memory intermediate representation of Passive House building data. Models are created from source formats (HBJSON, WUFI XML) and consumed by exporters (WUFI XML, PHPP, PPP). PHX models are never serialized directly.
+PHX (Passive House Exchange) is an in-memory intermediate representation of Passive House building data. Models are created from source formats (HBJSON, WUFI XML) and consumed by exporters (WUFI XML, PHPP, PPP, METr JSON). PHX models are never serialized directly.
 
 ---
 
@@ -130,7 +130,7 @@ PhxProject
 | `model/certification.py` | `PhxPhiCertification`, `PhxPhiCertificationSettings`, `PhxPhiusCertification`, `PhxPhiusCertificationCriteria`, `PhxPhiusCertificationSettings`, `PhxPhBuildingData`, `PhxSetpoints`, `PhxSummerVentilation` | Passive house certification data |
 | `model/elec_equip.py` | `PhxElectricalDevice` (base), `PhxElectricDeviceCollection`, + device subclasses (see below) | Household electrical devices |
 | `model/ground.py` | `PhxFoundation` (base), `PhxHeatedBasement`, `PhxUnHeatedBasement`, `PhxSlabOnGrade`, `PhxVentedCrawlspace` | Ground/foundation models |
-| `model/phx_site.py` | `PhxSite`, `PhxLocation`, `PhxClimate`, `PhxClimatePeakLoad`, `PhxGround`, `PhxPEFactor`, `PhxCO2Factor`, `PhxSiteEnergyFactors`, `PhxPHPPCodes` | Location and climate data |
+| `model/phx_site.py` | `PhxSite`, `PhxLocation`, `PhxClimate`, `PhxClimatePeakLoad`, `PhxClimateIterOutput`, `PhxGround`, `PhxPEFactor`, `PhxCO2Factor`, `PhxSiteEnergyFactors`, `PhxPHPPCodes` | Location and climate data |
 | `model/shades.py` | `PhxWindowShade` | Window shading devices |
 | `model/utilization_patterns.py` | `UtilizationPatternCollection_Ventilation`, `UtilizationPatternCollection_Occupancy`, `UtilizationPatternCollection_Lighting` | Schedule collections |
 | `model/enums/` | Various enums | `building.py`, `hvac.py`, `elec_equip.py`, `foundations.py`, `phx_site.py`, `phi_certification_phpp_9.py`, `phi_certification_phpp_10.py`, `phius_certification.py` |
