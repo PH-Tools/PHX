@@ -10,7 +10,7 @@ A Python library that converts building energy model data between [Honeybee](htt
 
 - [`docs/dev/architecture.md`](docs/dev/architecture.md) — Data flow, full package/module map
 - [`docs/reference/phx-model-reference.md`](docs/reference/phx-model-reference.md) — PHX object graph, design patterns, Honeybee→PHX concept mappings
-- [`context/exporter-patterns.md`](context/exporter-patterns.md) — How each exporter works, patterns for adding new ones
+- [`docs/dev/exporter-patterns.md`](docs/dev/exporter-patterns.md) — How each exporter/importer works, patterns for adding new ones
 
 ## Development
 
