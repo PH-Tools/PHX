@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 # -- Project Metadata ---
 [project]
 name = "PHX"
-version = "1.56.39"
+version = "1.56.40"
 description = "Input / Output Passive House building energy model data."
 readme = "README.md"
 license = {text = "GPL-3.0-or-later"}
@@ -54,7 +54,7 @@ exclude = ["tests*"]
 
 # -- Version Bumping ---
 [tool.bumpversion]
-current_version = "1.56.39"
+current_version = "1.56.40"
 commit = true
 tag = true
 tag_name = "v{new_version}"
