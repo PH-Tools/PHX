@@ -1,3 +1,10 @@
+---
+title: Export / Import Patterns
+card_title: IO
+card_description: "Temporary text...."
+card_index: "02"
+---
+
 # PHX Exporter & Importer Patterns
 
 Guide for understanding existing exporters/importers and adding new ones.
