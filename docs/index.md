@@ -1,3 +1,13 @@
+---
+title: PHX
+subtitle: "Passive House Exchange — format conversion between Honeybee-PH, PHPP, and WUFI-Passive."
+version: "1.50.0"
+pills:
+  - "v1.50.0 — latest"
+  - "WUFI · PHPP · Phius"
+  - "Python 3.10+"
+---
+
 # PHX
 
 Passive House Exchange — format conversion between [Honeybee-PH](../honeybee-ph/), PHPP, and WUFI-Passive.

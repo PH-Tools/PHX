@@ -1,3 +1,10 @@
+---
+title: Architecture
+card_title: Developer Guide
+card_description: "Architecture decisions, exporter/importer patterns, and the conventions for extending PHX."
+card_index: "01"
+---
+
 # PHX Architecture
 
 ## Data Flow
