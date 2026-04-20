@@ -33,7 +33,7 @@ WUFI-Passive XML files are the primary data exchange format for Passive House en
       </p>
       <div class="ph-fetch-callout__url">
         <span class="ph-method">GET</span>
-        <span>https://docs.passivehousetools.com/reference/wufi-xml-schema</span>
+        <span>https://docs.passivehousetools.com/llm/phx/reference/wufi-xml-schema.md</span>
       </div>
     </div>
   </div>
@@ -169,6 +169,16 @@ The `UsedFor_*` boolean fields further distinguish purpose (heating, DHW, coolin
 | Ducts | 74,450–75,300 | ~900 lines |
 | Assemblies | 75,600–76,400 | ~800 lines |
 | WindowTypes | 76,400–78,200 | ~1,800 lines |
+
+### Navigating Efficiently
+
+For files over 50,000 lines:
+
+1. **grep first** — `grep -n "SearchTerm" model.xml` to find line numbers
+2. **Read targeted ranges** — once you know a device is at line 73200, read lines 73190–73260 to get the full element
+3. **Use XML element names** — searching for `<HeatRecovery>` or `<InsulationThickness>` is often faster than searching for device names
+4. **Assemblies and WindowTypes are near the end** — typically the last 2,000–3,000 lines of the file
+5. **Devices are clustered** — all devices for a system are sequential, so once you find one, the others are nearby
 
 ---
 
@@ -328,6 +338,8 @@ WUFI-Passive XML stores all values in SI units regardless of the project's displ
 | CFM | m³/h | × 1.69901 | `CFM × 1.69901 = m³/h` |
 | W/cfm | Wh/m³ | ÷ 1.69901 | `(W/cfm) / 1.69901 = Wh/m³` |
 
+The factor 1.69901 appears in both airflow and electric efficiency conversions because both involve cubic feet per minute to cubic meters per hour. To verify a W/cfm value, multiply the XML Wh/m³ value by 1.69901 and see if you recover the expected W/cfm.
+
 ### Thermal Performance
 
 | From (IP) | To (SI/XML) | Factor |
@@ -346,6 +358,8 @@ WUFI-Passive XML stores all values in SI units regardless of the project's displ
 | Btu/hr·ft² | W/m² | × 3.1546 |
 | W/m² | Btu/hr·ft² | × 0.31700 |
 
+The demand (kBtu/ft²·yr → kWh/m²·yr) and load (Btu/hr·ft² → W/m²) conversions use the same factor because they are dimensionally equivalent for the area-normalized quantities WUFI uses.
+
 ### Length / Thickness
 
 | From (IP) | To (SI/XML) | Factor |
@@ -363,6 +377,8 @@ Common duct insulation thicknesses: 1" = 25.4 mm, 1.5" = 38.1 mm, 1.875" = 47.62
 | R/inch (hr-ft²-F/Btu-in) | W/mK | `k = 0.14423 / (R_per_inch)` |
 | W/mK | R/inch | `R_per_inch = 0.14423 / k` |
 
+Example: Composite duct insulation at R-6.5/inch → k = 0.14423 / 6.5 = 0.02219 W/mK.
+
 ### Temperature
 
 | From (IP) | To (SI/XML) | Formula |
@@ -379,11 +395,28 @@ Common duct insulation thicknesses: 1" = 25.4 mm, 1.5" = 38.1 mm, 1.875" = 47.62
 
 ### Common Verification Patterns
 
-- **ERV heat recovery**: `<HeatRecovery>0.857</HeatRecovery>` — dimensionless fraction. Compare directly against datasheet SRE/ATRE.
-- **ERV electric efficiency**: `<ElectricEfficiency>0.3337</ElectricEfficiency>` (Wh/m³) → `0.3337 × 1.69901 = 0.567 W/cfm`
-- **Duct insulation**: `<InsulationThickness>47.625</InsulationThickness>` (mm) = 1.875". `<ThermalConductivity>0.02219</ThermalConductivity>` → R/inch = 0.14423/0.02219 = 6.5
-- **Certification target**: `<AnnualHeatingDemand>11.357</AnnualHeatingDemand>` (kWh/m²) → `11.357 × 0.31700 = 3.60 kBtu/ft²`
-- **Thermal bridge psi**: `<PsiValue>0.4344</PsiValue>` (W/mK) → `0.4344 / 1.7307 = 0.251 Btu/hr-ft-F`
+**ERV/HRV heat recovery:**
+XML: `<HeatRecovery>0.857</HeatRecovery>` — dimensionless fraction (0–1). No conversion needed. Compare directly against datasheet SRE/ATRE values.
+
+**ERV/HRV electric efficiency:**
+XML: `<ElectricEfficiency>0.333723600693</ElectricEfficiency>` (Wh/m³).
+To verify against a W/cfm spec: `0.3337 × 1.69901 = 0.567 W/cfm`.
+
+**Duct insulation:**
+XML: `<InsulationThickness>47.625</InsulationThickness>` (mm) and `<ThermalConductivity>0.02219</ThermalConductivity>` (W/mK).
+To verify: 47.625 mm = 1.875 inches. k = 0.02219 → R/inch = 0.14423 / 0.02219 = 6.5.
+
+**Certification target:**
+XML: `<AnnualHeatingDemand>11.357</AnnualHeatingDemand>` (kWh/m²).
+To verify against kBtu/ft²: `11.357 × 0.31700 = 3.60 kBtu/ft²`.
+
+**Thermal bridge psi:**
+XML: `<PsiValue>0.4344</PsiValue>` (W/mK).
+To verify against Btu/hr-ft-F: `0.4344 / 1.7307 = 0.251 Btu/hr-ft-F`.
+
+**Window reveal depth:**
+XML: `<DepthWindowReveal>0.15875</DepthWindowReveal>` (m).
+To verify: `0.15875 / 0.0254 = 6.25 inches`.
 
 ---
 

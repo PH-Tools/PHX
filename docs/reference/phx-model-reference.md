@@ -217,6 +217,12 @@ Constructions/windows/shades live in project-level dicts; components reference t
 ### Piping Hierarchy
 DHW piping uses a three-level hierarchy: `PhxPipeTrunk` → `PhxPipeBranch` → `PhxPipeElement` (fixtures). Each `PhxPipeElement` contains `PhxPipeSegment` objects. Recirculation piping is stored separately as flat `PhxPipeElement` entries.
 
+### `unique_key` Property
+Classes that may be grouped by construction or type expose a `unique_key` property. Components with the same `unique_key` can be merged via `__add__`. For example, `PhxComponentOpaque` instances sharing the same assembly identifier have the same `unique_key` and can be combined into a single component.
+
+### Enum Runtime Extension
+Some enums use `_missing_()` to handle unknown values at runtime rather than raising. For example, `ComponentExposureExterior` returns a fallback member for unrecognized integer values from WUFI XML imports. This prevents deserialization failures on non-standard model files.
+
 ---
 
 ## Honeybee to PHX Concept Mapping
@@ -281,6 +287,18 @@ def reset_class_counters():
 
 When adding a new model class with `_count`, add it to `_reset_phx_class_counters()` in `conftest.py`.
 
+### Module Reload (End-to-End Tests)
+
+For reference-case tests that compare full XML output, modules must be reloaded (not just counters reset) to guarantee clean state:
+
+```python
+importlib.reload(building)
+importlib.reload(components)
+# ... all model modules
+```
+
+Add new modules to `_reload_phx_classes()` in `conftest.py` if needed for reference-case tests.
+
 ### Test Organization
 
 Tests mirror the source structure under `tests/`:
@@ -302,3 +320,58 @@ Tests mirror the source structure under `tests/`:
 4. Test `__add__` if the class supports merging
 5. Test `unique_key` if the class supports grouping
 6. For new HVAC device types, test both standalone creation and addition to `PhxMechanicalSystemCollection`
+
+### Common Test Patterns
+
+**Unit test (model class):**
+```python
+def test_blank_project(reset_class_counters):
+    proj = project.PhxProject()
+    assert str(proj)
+    assert not proj.assembly_types
+    assert not proj.variants
+```
+
+**Property / behavior test:**
+```python
+def test_component_face_type(reset_class_counters):
+    comp = PhxComponentOpaque()
+    comp.face_type = ComponentFaceType.WALL
+    comp.exposure_exterior = ComponentExposureExterior.EXTERIOR
+    assert comp.is_above_grade_wall is True
+```
+
+**Merge / addition test:**
+```python
+def test_space_addition(reset_class_counters):
+    space_a = PhxSpace()
+    space_a.floor_area = 100.0
+    space_b = PhxSpace()
+    space_b.floor_area = 50.0
+    merged = space_a + space_b
+    assert merged.floor_area == 150.0
+```
+
+**End-to-end reference case:**
+```python
+def test_xml_output(to_xml_reference_cases):
+    hbjson_file, xml_file = to_xml_reference_cases
+    hb_json_dict = read_HBJSON_file.read_hb_json_from_file(hbjson_file)
+    hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
+    phx_project = create_project.convert_hb_model_to_PhxProject(hb_model)
+    xml_txt = xml_builder.generate_WUFI_XML_from_object(phx_project)
+    expected = read_WUFI_XML_file.get_WUFI_xml_file_as_str(xml_file)
+    assert xml_txt == expected
+```
+
+**Geometry fixture:**
+```python
+@pytest.fixture
+def polygon_1x1x0():  # 1m x 1m square at z=0
+    p = PhxPolygon("no_name", 100.0, PhxVertix(1,1,0), PhxVector(0,0,1), plane)
+    p.add_vertix(PhxVertix(0,0,0))
+    p.add_vertix(PhxVertix(0,1,0))
+    p.add_vertix(PhxVertix(1,1,0))
+    p.add_vertix(PhxVertix(1,0,0))
+    return p
+```
