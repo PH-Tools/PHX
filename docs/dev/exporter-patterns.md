@@ -3,6 +3,11 @@ title: Export / Import Patterns
 card_title: IO
 card_description: "Temporary text...."
 card_index: "02"
+llm_purpose: "Patterns and conventions for PHX exporters (to WUFI XML, PHPP, PPP) and importers (from HBJSON, WUFI XML)"
+llm_use_when: "Before writing or modifying an exporter/importer, or debugging data conversion between formats"
+llm_related:
+  - "reference/phx-model-reference.md"
+  - "dev/architecture.md"
 ---
 
 # PHX Exporter & Importer Patterns

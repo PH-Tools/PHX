@@ -1,3 +1,12 @@
+---
+title: PHX Model Reference
+llm_purpose: "Complete object graph, module map, design patterns, and testing conventions for the PHX in-memory data model"
+llm_use_when: "Before navigating, modifying, extending, or testing any PHX model class"
+llm_related:
+  - "reference/wufi-xml-schema.md"
+  - "dev/architecture.md"
+---
+
 # PHX Model Reference
 
 PHX (Passive House Exchange) is an in-memory intermediate representation of Passive House building data. Models are created from source formats (HBJSON, WUFI XML) and consumed by exporters (WUFI XML, PHPP, PPP, METr JSON). PHX models are never serialized directly.

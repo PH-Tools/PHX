@@ -1,3 +1,12 @@
+---
+title: PHPP Field Mapping
+llm_purpose: "Cell-level locator map for reading and writing PHPP 10.6 Excel worksheets via PHX"
+llm_use_when: "Before reading, writing, or debugging PHX PHPP export — locating worksheet cells and understanding the locator pattern"
+llm_related:
+  - "reference/phx-model-reference.md"
+  - "dev/exporter-patterns.md"
+---
+
 # PHPP Field Mapping Reference
 
 Localization map for **PHPP 10.6 (English)**. This document describes how PHX locates and reads/writes cells in each PHPP worksheet.

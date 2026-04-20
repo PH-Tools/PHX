@@ -3,6 +3,11 @@ title: Architecture
 card_title: Developer Guide
 card_description: "Architecture decisions, exporter/importer patterns, and the conventions for extending PHX."
 card_index: "01"
+llm_purpose: "High-level architecture of PHX — module layout, data flow between importers/exporters, and key design decisions"
+llm_use_when: "Before making structural changes to PHX, adding a new importer/exporter, or understanding how data flows through the system"
+llm_related:
+  - "reference/phx-model-reference.md"
+  - "dev/exporter-patterns.md"
 ---
 
 # PHX Architecture

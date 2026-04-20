@@ -1,3 +1,15 @@
+---
+title: WUFI XML Schema
+card_title: Reference
+card_description: "Schema maps, field dictionaries, and unit conversions for WUFI-Passive XML, PHX model, and PHPP."
+card_index: "01"
+llm_purpose: "Authoritative field mapping for all WUFI-Passive XML elements — structure map, UI-to-XML dictionary, and SI/IP unit conversions"
+llm_use_when: "Before parsing, generating, validating, verifying, or modifying any WUFI-Passive XML file"
+llm_related:
+  - "reference/phx-model-reference.md"
+  - "dev/exporter-patterns.md"
+---
+
 # WUFI-Passive XML Schema Reference
 
 WUFI-Passive XML files are the primary data exchange format for Passive House energy models. They can be 30,000–100,000+ lines and contain the complete building model: geometry, constructions, windows, HVAC, DHW, renewables, and certification parameters.
