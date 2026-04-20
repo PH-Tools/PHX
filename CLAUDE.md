@@ -39,3 +39,8 @@ python -m pytest tests/
 - `honeybee-core`, `honeybee-energy`, `honeybee-ph` — Honeybee model classes + PH extensions
 - `pydantic>=2.0` — WUFI XML schema parsing (`from_WUFI_XML/`)
 - `PH-units` — Unit conversion | `xlwings` — Excel/PHPP | `lxml` — XML parsing | `rich` — Console output
+
+## Docs
+- This package has auto-generated docs which are collected and displayed by the 'ph-docs' hub. For reference, please review `docs/.instructions.md`.
+- Anytime a new class, module, method or function is added or updated - review the docs and be sure that it is properly included in the `docs/nav.yml` file.
+- All docstrings must conform to the `ph-docs` format outlined in `docs/.instructions.md`
