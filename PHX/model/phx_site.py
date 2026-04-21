@@ -13,6 +13,16 @@ from PHX.model.enums.phx_site import SiteClimateSelection, SiteEnergyFactorSelec
 
 @dataclass
 class PhxGround:
+    """Soil and groundwater thermal properties for ground heat loss calculations.
+
+    Attributes:
+        ground_thermal_conductivity (float): Soil thermal conductivity in W/(mK). Default: 2.0.
+        ground_heat_capacity (float): Soil volumetric heat capacity in J/(kgK). Default: 1000.0.
+        ground_density (float): Soil density in kg/m3. Default: 2000.0.
+        depth_groundwater (float): Depth to groundwater table in m. Default: 3.0.
+        flow_rate_groundwater (float): Groundwater flow rate in m/day. Default: 0.05.
+    """
+
     ground_thermal_conductivity: float = 2.0
     ground_heat_capacity: float = 1000.0
     ground_density: float = 2000.0
@@ -32,7 +42,15 @@ class PhxGround:
 
 @dataclass
 class PhxPEFactor:
-    """Conversion Factors for Site-Energy->Primary-Energy"""
+    """Primary energy (PE) conversion factor for a single fuel type.
+
+    Converts site energy to primary energy for PH certification calculations.
+
+    Attributes:
+        value (float): PE conversion factor. Default: 0.0.
+        unit (str): Unit label (e.g. "kWh/kWh"). Default: "".
+        fuel_name (str): Fuel type identifier (e.g. "ELECTRICITY_MIX"). Default: "".
+    """
 
     value: float = 0.0
     unit: str = ""
@@ -47,7 +65,15 @@ class PhxPEFactor:
 
 @dataclass
 class PhxCO2Factor:
-    """Conversion Factors for Site->CO2"""
+    """CO2 emission factor for a single fuel type.
+
+    Converts site energy consumption to CO2 emissions for PH certification calculations.
+
+    Attributes:
+        value (float): CO2 emission factor. Default: 0.0.
+        unit (str): Unit label (e.g. "g/kWh"). Default: "".
+        fuel_name (str): Fuel type identifier (e.g. "NATURAL_GAS"). Default: "".
+    """
 
     value: float = 0.0
     unit: str = ""
@@ -65,6 +91,20 @@ PhxEnergyFactorAlias = Union[PhxPEFactor, PhxCO2Factor]
 
 @dataclass
 class PhxSiteEnergyFactors:
+    """Collection of primary energy (PE) and CO2 conversion factors for the site.
+
+    Initialized with PHI default PE and CO2 factors for standard fuel types.
+    The selection field controls whether standard or user-defined factors are used.
+
+    Attributes:
+        selection_pe_co2_factor (SiteEnergyFactorSelection): Factor dataset source selection.
+            Default: USER_DEFINED.
+        pe_factors (dict[str, PhxEnergyFactorAlias]): PE factors keyed by fuel name.
+            Default: PHI standard values (populated in __post_init__).
+        co2_factors (dict[str, PhxEnergyFactorAlias]): CO2 factors keyed by fuel name.
+            Default: PHI standard values (populated in __post_init__).
+    """
+
     selection_pe_co2_factor: SiteEnergyFactorSelection = SiteEnergyFactorSelection.USER_DEFINED
     pe_factors: dict[str, PhxEnergyFactorAlias] = field(default_factory=dict)
     co2_factors: dict[str, PhxEnergyFactorAlias] = field(default_factory=dict)
@@ -117,7 +157,15 @@ class PhxSiteEnergyFactors:
 
 @dataclass
 class PhxLocation:
-    """The physical location of the building."""
+    """Geographic coordinates and site metadata for the building location.
+
+    Attributes:
+        latitude (float): Site latitude in decimal degrees. Default: 40.6.
+        longitude (float): Site longitude in decimal degrees. Default: -73.8.
+        site_elevation (float | None): Site elevation above sea level in m. Default: None.
+        climate_zone (int): ASHRAE climate zone number. Default: 1.
+        hours_from_UTC (int): UTC offset in hours. Default: -4.
+    """
 
     latitude: float = 40.6
     longitude: float = -73.8
@@ -138,6 +186,23 @@ class PhxLocation:
 
 @dataclass
 class PhxClimatePeakLoad:
+    """Climate conditions at a single peak-load design point (heating or cooling).
+
+    Stores the outdoor air temperature, directional solar radiation, and optional
+    dewpoint/sky/ground temperatures used for peak heating or cooling load calculations.
+
+    Attributes:
+        temperature_air (float | None): Outdoor air temperature in deg. C. Default: 0.0.
+        radiation_north (float | None): North-facing solar radiation in W/m2. Default: 0.0.
+        radiation_east (float | None): East-facing solar radiation in W/m2. Default: 0.0.
+        radiation_south (float | None): South-facing solar radiation in W/m2. Default: 0.0.
+        radiation_west (float | None): West-facing solar radiation in W/m2. Default: 0.0.
+        radiation_global (float | None): Global horizontal solar radiation in W/m2. Default: 0.0.
+        temperature_dewpoint (float | None): Outdoor dewpoint temperature in deg. C. Default: None.
+        temperature_sky (float | None): Effective sky temperature in deg. C. Default: None.
+        temperature_ground (float | None): Ground surface temperature in deg. C. Default: None.
+    """
+
     temperature_air: float | None = 0.0
     radiation_north: float | None = 0.0
     radiation_east: float | None = 0.0
@@ -182,7 +247,20 @@ class PhxClimatePeakLoad:
 
 @dataclass
 class PhxClimateIterOutput:
-    """Wrapper class for organizing output of the 'PhxClimate.monthly_values' property."""
+    """Single month of climate data yielded by PhxClimate.monthly_values.
+
+    Attributes:
+        month_name (str): Three-letter month abbreviation (e.g. "JAN").
+        month_hours (float): Number of hours in the month.
+        temperature_air (float): Monthly average outdoor air temperature in deg. C.
+        temperature_dewpoint (float): Monthly average dewpoint temperature in deg. C.
+        temperature_sky (float): Monthly average effective sky temperature in deg. C.
+        radiation_north (float): Monthly north-facing solar radiation in kWh/m2.
+        radiation_east (float): Monthly east-facing solar radiation in kWh/m2.
+        radiation_south (float): Monthly south-facing solar radiation in kWh/m2.
+        radiation_west (float): Monthly west-facing solar radiation in kWh/m2.
+        radiation_global (float): Monthly global horizontal solar radiation in kWh/m2.
+    """
 
     month_name: str
     month_hours: float
@@ -198,7 +276,33 @@ class PhxClimateIterOutput:
 
 @dataclass
 class PhxClimate:
-    """Monthly Climate Date for the building location."""
+    """Monthly climate dataset for the building location.
+
+    Stores 12-month arrays of temperature and solar radiation data, plus
+    peak heating/cooling design-day conditions used in the PH energy balance.
+
+    Attributes:
+        station_elevation (float): Weather station elevation above sea level in m. Default: 3.0.
+        selection (SiteClimateSelection): Climate data source selection. Default: USER_DEFINED.
+        daily_temp_swing (float): Average daily temperature swing in K. Default: 8.0.
+        avg_wind_speed (float): Average annual wind speed in m/s. Default: 4.0.
+        temperature_air (list[float]): Monthly average outdoor air temperatures in deg. C. Default: [].
+        temperature_dewpoint (list[float]): Monthly average dewpoint temperatures in deg. C. Default: [].
+        temperature_sky (list[float]): Monthly average effective sky temperatures in deg. C. Default: [].
+        radiation_north (list[float]): Monthly north-facing solar radiation in kWh/m2. Default: [].
+        radiation_east (list[float]): Monthly east-facing solar radiation in kWh/m2. Default: [].
+        radiation_south (list[float]): Monthly south-facing solar radiation in kWh/m2. Default: [].
+        radiation_west (list[float]): Monthly west-facing solar radiation in kWh/m2. Default: [].
+        radiation_global (list[float]): Monthly global horizontal solar radiation in kWh/m2. Default: [].
+        peak_heating_1 (PhxClimatePeakLoad): First peak heating design-day conditions.
+            Default: PhxClimatePeakLoad().
+        peak_heating_2 (PhxClimatePeakLoad): Second peak heating design-day conditions.
+            Default: PhxClimatePeakLoad().
+        peak_cooling_1 (PhxClimatePeakLoad): First peak cooling design-day conditions.
+            Default: PhxClimatePeakLoad().
+        peak_cooling_2 (PhxClimatePeakLoad): Second peak cooling design-day conditions.
+            Default: PhxClimatePeakLoad().
+    """
 
     station_elevation: float = 3.0
     selection: SiteClimateSelection = SiteClimateSelection.USER_DEFINED
@@ -310,6 +414,17 @@ class PhxClimate:
 
 @dataclass
 class PhxPHPPCodes:
+    """PHPP climate dataset selection codes for country, region, and dataset.
+
+    These codes map to the PHPP climate database entries and are used when
+    writing climate data to the PHPP Excel file.
+
+    Attributes:
+        country_code (str): PHPP country identifier string. Default: "US-United States of America".
+        region_code (str): PHPP region/state name. Default: "New York".
+        dataset_name (str): PHPP climate dataset name. Default: "US0055b-New York".
+    """
+
     country_code: str = "US-United States of America"
     region_code: str = "New York"
     dataset_name = "US0055b-New York"
@@ -324,7 +439,24 @@ class PhxPHPPCodes:
 
 @dataclass
 class PhxSite:
-    """The climate and location date for the building's site."""
+    """Top-level container for a building's site location, climate, and energy factors.
+
+    Groups geographic coordinates, monthly climate data, PHPP dataset codes,
+    ground thermal properties, and PE/CO2 conversion factors.
+
+    Attributes:
+        display_name (str): Human-readable site/city name. Default: "New York".
+        source (str): Provenance label for the climate data source. Default: "__unknown__".
+        selection (SiteSelection): Site data source selection mode. Default: USER_DEFINED.
+        location (PhxLocation): Geographic coordinates and elevation. Default: PhxLocation().
+        climate (PhxClimate): Monthly climate dataset and peak-load conditions.
+            Default: PhxClimate().
+        phpp_codes (PhxPHPPCodes): PHPP climate database selection codes.
+            Default: PhxPHPPCodes().
+        ground (PhxGround): Soil and groundwater thermal properties. Default: PhxGround().
+        energy_factors (PhxSiteEnergyFactors): PE and CO2 conversion factor sets.
+            Default: PhxSiteEnergyFactors().
+    """
 
     display_name: str = "New York"
 

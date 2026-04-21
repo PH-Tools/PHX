@@ -1,6 +1,6 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Passive House Renewable Energy (PV) Device classes"""
+"""PHX renewable energy device classes (photovoltaic systems)."""
 
 from __future__ import annotations
 
@@ -12,7 +12,21 @@ from PHX.model.hvac import _base
 
 @dataclass
 class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
-    """PV System Parameters"""
+    """Performance parameters for a photovoltaic (PV) system.
+
+    Attributes:
+        location_type (int): PV mounting location classification. Default: 1.
+        onsite_utilization_type (int): On-site utilization category. Default: 2.
+        utilization_type (int): Utilization strategy identifier. Default: 1.
+        array_size (float): Total PV array area (m2). Default: 0.0.
+        photovoltaic_renewable_energy (float): Annual PV generation (kWh/a). Default: 0.0.
+        onsite_utilization_factor (float): Fraction of generation used on-site (0.0-1.0).
+            Default: 1.0.
+        auxiliary_energy (float): Auxiliary energy consumption (kWh/a). Default: 0.0.
+        auxiliary_energy_DHW (float): Auxiliary energy allocated to DHW (kWh/a). Default: 0.0.
+        in_conditioned_space (bool): True if inverter/equipment is inside the thermal envelope.
+            Default: False.
+    """
 
     _location_type: int = 1
     _onsite_utilization_type: int = 2
@@ -122,7 +136,13 @@ class PhxDevicePhotovoltaicParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxDevicePhotovoltaic(_base.PhxMechanicalDevice):
-    """PV Panel Systems."""
+    """A photovoltaic panel system (PV array with inverter).
+
+    Attributes:
+        system_type (SystemType): Always SystemType.PHOTOVOLTAIC.
+        device_type (DeviceType): Always DeviceType.PHOTOVOLTAIC.
+        params (PhxDevicePhotovoltaicParams): PV system performance parameters.
+    """
 
     system_type: SystemType = field(init=False, default=SystemType.PHOTOVOLTAIC)
     device_type: DeviceType = field(init=False, default=DeviceType.PHOTOVOLTAIC)

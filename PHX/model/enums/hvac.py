@@ -6,6 +6,15 @@ from enum import Enum
 
 
 class PhxFuelType(Enum):
+    """Fuel type for combustion-based heating equipment.
+
+    Values:
+        NATURAL_GAS: Natural gas fuel.
+        OIL: Fuel oil.
+        WOOD_LOG: Wood log fuel.
+        WOOD_PELLET: Wood pellet fuel.
+    """
+
     NATURAL_GAS = 1
     OIL = 2
     WOOD_LOG = 3
@@ -22,6 +31,20 @@ class PhxFuelType(Enum):
 
 
 class SystemType(Enum):
+    """Classification of mechanical system types in the energy model.
+
+    Values:
+        ANY: Matches any system type (wildcard).
+        VENTILATION: Mechanical ventilation system (HRV/ERV).
+        ELECTRIC: Direct electric heating system.
+        BOILER: Combustion boiler system.
+        DISTRICT_HEAT: District heating connection.
+        HEAT_PUMP: Heat pump system.
+        USER_DEFINED: User-specified custom system.
+        WATER_STORAGE: Hot water storage tank system.
+        PHOTOVOLTAIC: Photovoltaic solar panel system.
+    """
+
     ANY = 0
     VENTILATION = 1
     ELECTRIC = 2
@@ -34,6 +57,18 @@ class SystemType(Enum):
 
 
 class DeviceType(Enum):
+    """Classification of individual HVAC device types.
+
+    Values:
+        VENTILATION: Ventilation unit (HRV/ERV).
+        ELECTRIC: Direct electric heating device.
+        BOILER: Combustion boiler device.
+        DISTRICT_HEAT: District heating device.
+        HEAT_PUMP: Heat pump device.
+        WATER_STORAGE: Hot water storage tank.
+        PHOTOVOLTAIC: Photovoltaic panel array.
+    """
+
     VENTILATION = 1
     ELECTRIC = 2
     BOILER = 3
@@ -44,6 +79,15 @@ class DeviceType(Enum):
 
 
 class HeatPumpType(Enum):
+    """Heat pump performance data entry method.
+
+    Values:
+        COMBINED: Combined heating and cooling heat pump.
+        ANNUAL: Annual average COP performance data.
+        RATED_MONTHLY: Monthly rated COP performance data.
+        HOT_WATER: Dedicated domestic hot water heat pump.
+    """
+
     COMBINED = 2
     ANNUAL = 3
     RATED_MONTHLY = 4
@@ -51,6 +95,16 @@ class HeatPumpType(Enum):
 
 
 class CoolingType(Enum):
+    """Classification of active cooling delivery methods.
+
+    Values:
+        NONE: No active cooling.
+        VENTILATION: Cooling via the ventilation supply air.
+        RECIRCULATION: Cooling via recirculated air.
+        DEHUMIDIFICATION: Cooling via dehumidification.
+        PANEL: Cooling via radiant panels.
+    """
+
     NONE = 0
     VENTILATION = 1
     RECIRCULATION = 2
@@ -59,6 +113,15 @@ class CoolingType(Enum):
 
 
 class PhxHotWaterPipingCalcMethod(Enum):
+    """Calculation method for hot water distribution piping losses.
+
+    Values:
+        SIMPLIFIED_INDIVIDUAL_PIPES: Simplified method specifying individual pipe runs.
+        SIMPLIFIED_HOT_WATER_CALCULATOR: Simplified method using the hot water calculator.
+        HOT_WATER_PIPING_UNIT_METHOD: Detailed method based on per-unit piping lengths.
+        HOT_WATER_PIPING_FLOOR_METHOD: Detailed method based on per-floor piping lengths.
+    """
+
     SIMPLIFIED_INDIVIDUAL_PIPES = 1
     SIMPLIFIED_HOT_WATER_CALCULATOR = 2
     HOT_WATER_PIPING_UNIT_METHOD = 3
@@ -66,6 +129,19 @@ class PhxHotWaterPipingCalcMethod(Enum):
 
 
 class PhxHotWaterPipingMaterial(Enum):
+    """Material type for hot water distribution piping.
+
+    Values:
+        COPPER_M: Copper pipe, Type M (thin wall).
+        COPPER_L: Copper pipe, Type L (medium wall).
+        COPPER_K: Copper pipe, Type K (thick wall).
+        CPVC_CTS_SDR: CPVC pipe, CTS SDR rating.
+        CPVC_SCH_40: CPVC pipe, Schedule 40.
+        PEX: Cross-linked polyethylene (PEX) pipe.
+        PE: Polyethylene (PE) pipe.
+        PEX_CTS_SDR: PEX pipe, CTS SDR rating.
+    """
+
     COPPER_M = 1
     COPPER_L = 2
     COPPER_K = 3
@@ -77,6 +153,22 @@ class PhxHotWaterPipingMaterial(Enum):
 
 
 class PhxHotWaterPipingInchDiameterType(Enum):
+    """Nominal pipe diameter in inches for hot water piping.
+
+    Member names encode the diameter as ``_W_N_D_IN`` where W is the whole
+    number, N is the numerator, and D is the denominator of the fractional inch.
+
+    Values:
+        _0_3_8_IN: 3/8 inch diameter.
+        _0_1_2_IN: 1/2 inch diameter.
+        _0_5_8_IN: 5/8 inch diameter.
+        _0_3_4_IN: 3/4 inch diameter.
+        _1_0_0_IN: 1 inch diameter.
+        _1_1_4_IN: 1-1/4 inch diameter.
+        _1_1_2_IN: 1-1/2 inch diameter.
+        _2_0_0_IN: 2 inch diameter.
+    """
+
     _0_3_8_IN = 1
     _0_1_2_IN = 2
     _0_5_8_IN = 3
@@ -112,12 +204,28 @@ class PhxHotWaterPipingInchDiameterType(Enum):
 
 
 class PhxHotWaterInputOptions(Enum):
+    """Input method for hot water storage tank loss specification.
+
+    Values:
+        SPEC_TOTAL_LOSSES: Specify total storage losses directly.
+        SPEC_STANDBY_LOSSES: Specify standby losses from the tank data sheet.
+        TOTAL_LOSSES: Use calculated total losses.
+    """
+
     SPEC_TOTAL_LOSSES = 1
     SPEC_STANDBY_LOSSES = 2
     TOTAL_LOSSES = 3
 
 
 class PhxHotWaterTankType(Enum):
+    """Hot water storage tank usage classification.
+
+    Values:
+        NONE: No storage tank.
+        DHW_AND_HEATING: Tank serves both domestic hot water and space heating.
+        DHW_ONLY: Tank serves domestic hot water only.
+    """
+
     NONE = 0
     DHW_AND_HEATING = 1
     DHW_ONLY = 2
@@ -134,22 +242,53 @@ class PhxHotWaterTankType(Enum):
 
 
 class PhxHotWaterSelectionUnitsOrFloors(Enum):
+    """Selection basis for hot water piping calculation scope.
+
+    Values:
+        PH_CASE: Use the PH case default (number of dwelling units).
+        USER_DETERMINED: User specifies the number of units or floors.
+    """
+
     PH_CASE = 1
     USER_DETERMINED = 2
 
 
 class PhxExhaustVentType(Enum):
+    """Type of dedicated exhaust ventilation device.
+
+    Values:
+        DRYER: Clothes dryer exhaust.
+        KITCHEN_HOOD: Kitchen range hood exhaust.
+        USER_DEFINED: User-specified exhaust device.
+    """
+
     DRYER = 1
     KITCHEN_HOOD = 2
     USER_DEFINED = 3
 
 
 class PhxVentDuctType(Enum):
+    """Ventilation duct direction classification.
+
+    Values:
+        SUPPLY: Supply air duct (outdoor air to rooms).
+        EXHAUST: Exhaust air duct (rooms to outdoors).
+    """
+
     SUPPLY = 1
     EXHAUST = 2
 
 
 class PhxSupportiveDeviceType(Enum):
+    """Type of supportive (auxiliary) mechanical device.
+
+    Values:
+        HEAT_CIRCULATING_PUMP: Circulation pump for the heating loop.
+        DHW_CIRCULATING_PUMP: Recirculation pump for the DHW loop.
+        DHW_STORAGE_LOAD_PUMP: Pump loading the DHW storage tank.
+        OTHER: Other auxiliary device.
+    """
+
     HEAT_CIRCULATING_PUMP = 4
     DHW_CIRCULATING_PUMP = 6
     DHW_STORAGE_LOAD_PUMP = 7
@@ -157,6 +296,15 @@ class PhxSupportiveDeviceType(Enum):
 
 
 class PhxSummerBypassMode(Enum):
+    """Summer bypass mode for the heat recovery ventilator.
+
+    Values:
+        NONE: No summer bypass.
+        TEMP_CONTROLLED: Bypass activated by temperature differential.
+        ENTHALPY_CONTROLLED: Bypass activated by enthalpy differential.
+        ALWAYS: Bypass always active in summer.
+    """
+
     NONE = 1
     TEMP_CONTROLLED = 2
     ENTHALPY_CONTROLLED = 3
@@ -164,5 +312,12 @@ class PhxSummerBypassMode(Enum):
 
 
 class PhxNighttimeVentilationControl(Enum):
+    """Control strategy for nighttime ventilation cooling.
+
+    Values:
+        TEMPERATURE_CONTROLLED: Nighttime ventilation activated by temperature.
+        HUMIDITY_CONTROLLED: Nighttime ventilation activated by humidity.
+    """
+
     TEMPERATURE_CONTROLLED = 1
     HUMIDITY_CONTROLLED = 2

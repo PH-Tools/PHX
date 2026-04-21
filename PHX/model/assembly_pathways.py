@@ -24,12 +24,17 @@ if TYPE_CHECKING:
 
 @dataclass
 class PhxHeatFlowPathway:
-    """A single vertical heat-flow pathway through an assembly.
+    """A single vertical heat-flow pathway through an opaque assembly.
+
+    Represents one unique material-sequence slice through a multi-layer construction,
+    as identified by the ISO 6946 upper-bound method. Each pathway has an ordered list
+    of materials (one per layer) and a percentage of the total assembly width it occupies.
 
     Attributes:
-        materials: Ordered list of PhxMaterial references, one per layer
-                   (same order as PhxConstructionOpaque.layers).
-        percentage: Fraction of the total assembly width occupied by this pathway (0.0–1.0).
+        materials (list[PhxMaterial]): Ordered list of PhxMaterial references, one per layer
+            (same order as PhxConstructionOpaque.layers). Default: [].
+        percentage (float): Fraction of the total assembly width occupied by this pathway
+            (0.0-1.0). Default: 0.0.
     """
 
     materials: list[PhxMaterial] = field(default_factory=list)
@@ -118,13 +123,20 @@ def _material_at_position(layer: PhxLayer, position: float, boundaries: list[flo
 
 
 def identify_heat_flow_pathways(layers: list[PhxLayer]) -> list[PhxHeatFlowPathway]:
-    """Identify unique heat-flow pathways through a stack of layers.
+    """Identify unique heat-flow pathways through a stack of assembly layers.
 
-    Each pathway is a vertical slice with a unique material sequence. Slices with
-    identical material sequences are merged and their widths summed.
+    Builds a merged column grid from all layers' division grids, then walks each
+    sub-column to determine its material sequence. Slices with identical material
+    sequences are merged and their widths summed into a single pathway.
 
-    Returns a list of PhxHeatFlowPathway sorted by descending percentage.
-    Returns an empty list for empty input.
+    Arguments:
+    ----------
+        * layers (list[PhxLayer]): The ordered layer stack of an opaque construction.
+
+    Returns:
+    --------
+        * list[PhxHeatFlowPathway]: Unique pathways sorted by descending percentage.
+            Empty list for empty input.
     """
     if not layers:
         return []
@@ -172,10 +184,20 @@ def identify_heat_flow_pathways(layers: list[PhxLayer]) -> list[PhxHeatFlowPathw
 def compute_r_value_from_pathways(pathways: list[PhxHeatFlowPathway], layers: list[PhxLayer]) -> float:
     """Compute ISO 6946 upper-bound R-value from identified heat-flow pathways.
 
-    For each pathway: R_i = sum(layer.thickness_m / material.conductivity) per layer.
-    Upper bound: R = 1 / sum(pct_i / R_i).
+    For each pathway: R_i = sum(thickness / conductivity) across all layers.
+    Upper-bound R-value: R = 1 / sum(pct_i / R_i). Layers with zero conductivity
+    are skipped.
 
-    Returns 0.0 for empty input. Skips layers with zero conductivity.
+    Arguments:
+    ----------
+        * pathways (list[PhxHeatFlowPathway]): The unique pathways identified by
+            identify_heat_flow_pathways().
+        * layers (list[PhxLayer]): The ordered layer stack (must match the layer
+            order used when identifying pathways).
+
+    Returns:
+    --------
+        * float: The ISO 6946 upper-bound R-value [m2K/W]. Returns 0.0 for empty input.
     """
     if not pathways or not layers:
         return 0.0

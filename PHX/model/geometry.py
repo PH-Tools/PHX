@@ -11,6 +11,8 @@ from typing import ClassVar
 
 
 class PolygonEdgeError(Exception):
+    """Raised when a PhxPolygonRectangular edge cannot be constructed due to missing vertices."""
+
     def __init__(self, _polygon: PhxPolygonRectangular, _segment_name: str):
         self.msg = (
             f"Error: Cannot create PhxPolygonRectangle {_polygon}"
@@ -21,7 +23,14 @@ class PolygonEdgeError(Exception):
 
 @dataclass
 class PhxVertix2D:
-    """A 2D vertix."""
+    """A 2D vertex point used for planar geometry operations.
+
+    Automatically assigns a unique sequential ID on creation via a class-level counter.
+
+    Attributes:
+        x (float): The X coordinate.
+        y (float): The Y coordinate.
+    """
 
     _count: ClassVar[int] = 0
 
@@ -34,6 +43,16 @@ class PhxVertix2D:
         return abs(self.x - other.x) < TOLERANCE and abs(self.y - other.y) < TOLERANCE and self.id_num == other.id_num
 
     def is_equivalent(self, other: PhxVertix) -> bool:
+        """Check coordinate equivalence with another vertex, ignoring ID.
+
+        Arguments:
+        ----------
+            * other (PhxVertix): The vertex to compare against.
+
+        Returns:
+        --------
+            * bool: True if X and Y coordinates are within tolerance (0.001).
+        """
         TOLERANCE = 0.001
         return abs(self.x - other.x) < TOLERANCE and abs(self.y - other.y) < TOLERANCE
 
@@ -52,6 +71,16 @@ class PhxVertix2D:
 
 @dataclass
 class PhxVertix:
+    """A 3D vertex point used as the fundamental geometric primitive in PHX.
+
+    Automatically assigns a unique sequential ID on creation via a class-level counter.
+
+    Attributes:
+        x (float): The X coordinate. Default: 0.0.
+        y (float): The Y coordinate. Default: 0.0.
+        z (float): The Z coordinate. Default: 0.0.
+    """
+
     _count: ClassVar[int] = 0
 
     id_num: int = field(init=False, default=0)
@@ -69,6 +98,16 @@ class PhxVertix:
         )
 
     def is_equivalent(self, other: PhxVertix) -> bool:
+        """Check coordinate equivalence with another vertex, ignoring ID.
+
+        Arguments:
+        ----------
+            * other (PhxVertix): The vertex to compare against.
+
+        Returns:
+        --------
+            * bool: True if X, Y, and Z coordinates are all within tolerance (0.001).
+        """
         TOLERANCE = 0.001
         return (
             abs(self.x - other.x) < TOLERANCE
@@ -95,6 +134,14 @@ class PhxVertix:
 
 @dataclass
 class PhxVector:
+    """A 3D vector used for normals, directions, and geometric operations.
+
+    Attributes:
+        x (float): The X component.
+        y (float): The Y component.
+        z (float): The Z component.
+    """
+
     x: float
     y: float
     z: float
@@ -105,6 +152,12 @@ class PhxVector:
         return cls(_end_pt.x - _start_pt.x, _end_pt.y - _start_pt.y, _end_pt.z - _start_pt.z)
 
     def scale(self, _factor: float) -> None:
+        """Scale this vector in-place by a scalar factor.
+
+        Arguments:
+        ----------
+            * _factor (float): The scalar multiplier.
+        """
         self.x = self.x * _factor
         self.y = self.y * _factor
         self.z = self.z * _factor
@@ -114,7 +167,17 @@ class PhxVector:
         return self.x * other.x + self.y * other.y + self.z * other.z
 
     def rotate_around(self, _axis: PhxVector, _angle_deg: float) -> PhxVector:
-        """Rotate this vector around an axis by an angle in radians."""
+        """Rotate this vector around an axis by an angle in degrees using Rodrigues' rotation formula.
+
+        Arguments:
+        ----------
+            * _axis (PhxVector): The unit axis of rotation.
+            * _angle_deg (float): The rotation angle in degrees.
+
+        Returns:
+        --------
+            * PhxVector: A new rotated vector.
+        """
         _cos = math.cos(math.radians(_angle_deg))
         _sin = math.sin(math.radians(_angle_deg))
         _x = (
@@ -153,6 +216,17 @@ class PhxVector:
 
 @dataclass
 class PhxPlane:
+    """A 3D plane defined by an origin point, a normal vector, and local X/Y axes.
+
+    Used for coordinate system transformations between 3D world space and 2D plane space.
+
+    Attributes:
+        normal_vector (PhxVector): The plane's surface normal.
+        origin (PhxVertix): The plane's origin point in 3D space.
+        x (PhxVector): The plane's local X-axis direction.
+        y (PhxVector): The plane's local Y-axis direction.
+    """
+
     normal_vector: PhxVector
     origin: PhxVertix
     x: PhxVector
@@ -160,6 +234,7 @@ class PhxPlane:
 
     @property
     def normal(self) -> PhxVector:
+        """The plane's surface normal vector."""
         return self.normal_vector
 
     def __eq__(self, other: PhxPlane) -> bool:
@@ -196,11 +271,19 @@ class PhxPlane:
 
 @dataclass
 class PhxLineSegment:
+    """A 3D line segment defined by two endpoint vertices.
+
+    Attributes:
+        vertix_1 (PhxVertix): The first endpoint.
+        vertix_2 (PhxVertix): The second endpoint.
+    """
+
     vertix_1: PhxVertix
     vertix_2: PhxVertix
 
     @property
     def length(self) -> float:
+        """The Euclidean length of the segment."""
         return abs(
             math.sqrt(
                 (self.vertix_2.x - self.vertix_1.x) ** 2
@@ -222,7 +305,16 @@ class PhxLineSegment:
 
 @dataclass
 class PhxPolygon:
-    """A Polygon surface defined by 3 or more vertices."""
+    """A 3D polygon surface defined by 3 or more coplanar vertices.
+
+    Automatically assigns a unique sequential ID on creation via a class-level counter.
+    Area and center are lazily computed from vertex geometry when first accessed.
+
+    Attributes:
+        normal_vector (PhxVector): The polygon's outward-facing surface normal.
+        plane (PhxPlane): The plane on which the polygon lies, used for area calculations.
+        child_polygon_ids (list[int]): IDs of child polygons (e.g., window openings in a wall).
+    """
 
     _count: ClassVar[int] = 0
 
@@ -253,6 +345,7 @@ class PhxPolygon:
 
     @property
     def area(self) -> float:
+        """The polygon area, lazily computed from vertices using the shoelace formula."""
         if not self._area:
             self._area = self.calculate_area()
         return self._area
@@ -264,6 +357,7 @@ class PhxPolygon:
 
     @property
     def center(self) -> PhxVertix:
+        """The polygon centroid, lazily computed as the average of all vertex positions."""
         if not self._center:
             self._center = self.calculate_center()
         return self._center
@@ -279,6 +373,7 @@ class PhxPolygon:
 
     @property
     def display_name(self) -> str:
+        """The polygon's display name, falling back to its numeric ID if unset."""
         if not self._display_name:
             return str(self.id_num)
         else:
@@ -290,10 +385,12 @@ class PhxPolygon:
 
     @property
     def vertices(self) -> list[PhxVertix]:
+        """The ordered list of vertices defining this polygon's boundary."""
         return self._vertices
 
     @property
     def vertices_id_numbers(self) -> list[int]:
+        """The ID numbers of all vertices in order."""
         return [v.id_num for v in self.vertices]
 
     @property
@@ -325,11 +422,13 @@ class PhxPolygon:
 
     @property
     def is_horizontal(self, tolerance: float = 0.0001) -> bool:
+        """True if the polygon faces up or down (normal within tolerance of vertical)."""
         a = self.angle_from_horizontal
         return bool(abs(a) < tolerance or abs(180 - abs(a)) < tolerance)
 
     @property
     def is_vertical(self, tolerance: float = 0.0001) -> bool:
+        """True if the polygon's normal is perpendicular to the vertical axis."""
         a = self.angle_from_horizontal
         return abs(90 - abs(a)) < tolerance
 
@@ -371,9 +470,21 @@ class PhxPolygon:
         return angle
 
     def add_vertix(self, _phx_vertix: PhxVertix) -> None:
+        """Append a vertex to this polygon's boundary.
+
+        Arguments:
+        ----------
+            * _phx_vertix (PhxVertix): The vertex to add.
+        """
         self.vertices.append(_phx_vertix)
 
     def add_child_poly_id(self, _child_ids: Collection[int] | int) -> None:
+        """Register one or more child polygon IDs (e.g., window openings within a wall polygon).
+
+        Arguments:
+        ----------
+            * _child_ids (Collection[int] | int): A single ID or collection of child polygon IDs.
+        """
         if not isinstance(_child_ids, Collection):
             _child_ids = (_child_ids,)
 
@@ -414,7 +525,12 @@ class PhxPolygon:
         return center
 
     def scale(self, _scale_factor: float = 1.0) -> None:
-        """Scale the polygon by the given factor."""
+        """Scale the polygon in-place about its centroid by the given factor.
+
+        Arguments:
+        ----------
+            * _scale_factor (float): The scale multiplier. Default: 1.0.
+        """
         for vertex in self.vertices:
             vertex.x -= self.center.x
             vertex.y -= self.center.y
@@ -438,7 +554,18 @@ class PhxPolygon:
 
 @dataclass
 class PhxPolygonRectangular(PhxPolygon):
-    """A Polygon with additional geometric attributes for rectangular surfaces."""
+    """A rectangular polygon with named corner vertices and edge accessors.
+
+    Extends PhxPolygon with explicit upper-left, lower-left, lower-right, and upper-right
+    corner vertices. Corners are ordered counter-clockwise starting from upper-left when
+    viewed from outside the surface. Provides width/height properties and edge line segments.
+
+    Attributes:
+        vertix_upper_left (PhxVertix | None): The upper-left corner vertex. Default: None.
+        vertix_lower_left (PhxVertix | None): The lower-left corner vertex. Default: None.
+        vertix_lower_right (PhxVertix | None): The lower-right corner vertex. Default: None.
+        vertix_upper_right (PhxVertix | None): The upper-right corner vertex. Default: None.
+    """
 
     vertix_upper_left: PhxVertix | None = field(init=False, default=None)
     vertix_lower_left: PhxVertix | None = field(init=False, default=None)
@@ -485,10 +612,12 @@ class PhxPolygonRectangular(PhxPolygon):
 
     @property
     def width(self) -> float:
+        """The width of the rectangular polygon (top edge length)."""
         return self.edge_top.length
 
     @property
     def height(self) -> float:
+        """The height of the rectangular polygon (left edge length)."""
         return self.edge_left.length
 
     def add_vertix(self, _phx_vertix: PhxVertix) -> None:
@@ -518,6 +647,14 @@ class PhxPolygonRectangular(PhxPolygon):
 
 @dataclass
 class PhxGraphics3D:
+    """A collection of 3D polygons representing the geometry of a building component.
+
+    Provides methods for adding, querying, and accessing the polygons and their vertices.
+
+    Attributes:
+        polygons (list[PhxPolygon]): The polygons in this collection. Default: [].
+    """
+
     polygons: list[PhxPolygon] = field(default_factory=list)
 
     @property

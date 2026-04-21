@@ -11,6 +11,18 @@ from typing import ClassVar
 
 @dataclass
 class Vent_OperatingPeriod:
+    """A single ventilation operating period with duration and fan speed.
+
+    Represents one time block within a ventilation schedule at a specific
+    fraction of peak design airflow.
+
+    Attributes:
+        period_operating_hours (float): Duration of this operating period in hours
+            per day. Default: 0.0.
+        period_operation_speed (float): Fan speed as a fraction of peak design
+            airflow (0.0-1.0). Default: 0.0.
+    """
+
     period_operating_hours: float = 0.0  # hours/period
     period_operation_speed: float = 0.0  # % of peak design airflow
 
@@ -28,6 +40,23 @@ class Vent_OperatingPeriod:
 
 @dataclass
 class Vent_UtilPeriods:
+    """Collection of four ventilation operating periods at descending speed levels.
+
+    PH ventilation schedules subdivide each day into four speed tiers
+    (high, standard, basic, minimum) whose operating hours should sum
+    to the total daily ventilation hours.
+
+    Attributes:
+        high (Vent_OperatingPeriod): High-speed operating period.
+            Default: empty Vent_OperatingPeriod.
+        standard (Vent_OperatingPeriod): Standard-speed operating period.
+            Default: empty Vent_OperatingPeriod.
+        basic (Vent_OperatingPeriod): Basic (reduced) speed operating period.
+            Default: empty Vent_OperatingPeriod.
+        minimum (Vent_OperatingPeriod): Minimum-speed operating period.
+            Default: empty Vent_OperatingPeriod.
+    """
+
     high: Vent_OperatingPeriod = field(default_factory=Vent_OperatingPeriod)
     standard: Vent_OperatingPeriod = field(default_factory=Vent_OperatingPeriod)
     basic: Vent_OperatingPeriod = field(default_factory=Vent_OperatingPeriod)
@@ -53,7 +82,23 @@ class Vent_UtilPeriods:
 
 @dataclass
 class PhxScheduleVentilation:
-    """A PHX Schedule for the Ventilation."""
+    """Fresh-air ventilation utilization schedule with multi-speed operating periods.
+
+    Defines the weekly and annual operating pattern for mechanical ventilation,
+    including four speed-tier operating periods (high/standard/basic/minimum)
+    and a holiday adjustment.
+
+    Attributes:
+        id_num (int): Auto-incremented instance counter, assigned in __post_init__.
+        name (str): Human-readable schedule name. Default: "__unnamed_vent_schedule__".
+        identifier (uuid.UUID | str): Unique identifier. Default: auto-generated UUID4.
+        operating_hours (float): Daily ventilation operating hours. Default: 24.0.
+        operating_days (float): Ventilation operating days per week. Default: 7.0.
+        operating_weeks (float): Ventilation operating weeks per year. Default: 52.0.
+        operating_periods (Vent_UtilPeriods): The four speed-tier operating periods.
+            Default: empty Vent_UtilPeriods.
+        holiday_days (float): Number of non-operating holiday days per year. Default: 0.0.
+    """
 
     _count: ClassVar[int] = 0
 
@@ -71,8 +116,15 @@ class PhxScheduleVentilation:
         self.id_num = self.__class__._count
 
     def force_max_utilization_hours(self, _max_hours: float = 24.0, _tol: int = 2) -> None:
-        """Ensure that the total utilization hours never exceed target (default=24).
-        Will adjust the minimum daily_op_sched as needed.
+        """Clamp total daily operating hours to a maximum by adjusting the high-speed period.
+
+        Sums the standard, basic, and minimum period hours and sets the high-speed
+        period to the remaining hours up to the target maximum.
+
+        Arguments:
+        ----------
+            * _max_hours (float): Maximum allowed total daily hours. Default: 24.0.
+            * _tol (int): Rounding precision (decimal places). Default: 2.
         """
 
         b = round(self.operating_periods.standard.period_operating_hours, _tol)

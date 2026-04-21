@@ -1,6 +1,11 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Mechanical Collection Classes."""
+"""PHX mechanical system collection classes.
+
+Provides typed collections for organizing all HVAC devices (heating,
+cooling, ventilation, DHW), distribution (piping, ducting), supportive
+devices (pumps), and renewable energy devices (PV) within a project.
+"""
 
 from __future__ import annotations
 
@@ -52,7 +57,17 @@ class NoRenewableDeviceUnitFoundError(Exception):
 
 @dataclass
 class PhxZoneCoverage:
-    """Percentage of the building load-type covered by the subsystem."""
+    """Percentage of each building load type covered by a mechanical subsystem for a given zone.
+
+    Attributes:
+        zone_num (int): Zone number this coverage applies to. Default: 1.
+        heating (float): Fraction of heating demand covered (0.0-1.0). Default: 1.0.
+        cooling (float): Fraction of cooling demand covered (0.0-1.0). Default: 1.0.
+        ventilation (float): Fraction of ventilation demand covered (0.0-1.0). Default: 1.0.
+        humidification (float): Fraction of humidification demand covered (0.0-1.0). Default: 1.0.
+        dehumidification (float): Fraction of dehumidification demand covered (0.0-1.0).
+            Default: 1.0.
+    """
 
     zone_num: int = 1
     heating: float = 1.0
@@ -70,7 +85,15 @@ AnyMechDevice = Union[AnyPhxVentilation, AnyPhxHeater, AnyPhxHeatPump, AnyWaterT
 
 @dataclass
 class PhxRenewableDeviceCollection:
-    """A Collection of PHX Renewable Energy Devices."""
+    """A keyed collection of PHX renewable energy devices (PV systems).
+
+    Supports lookup by key or id, merging duplicate devices by identifier,
+    and iteration over all contained devices.
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number.
+        display_name (str): Collection label. Default: "Renewable Energy Device Collection".
+    """
 
     _count: ClassVar[int] = 0
 
@@ -84,6 +107,7 @@ class PhxRenewableDeviceCollection:
 
     @property
     def devices(self) -> list[AnyRenewableDevice]:
+        """All renewable energy devices in the collection."""
         return list(self._devices.values())
 
     @property
@@ -186,7 +210,15 @@ class PhxRenewableDeviceCollection:
 
 @dataclass
 class PhxSupportiveDeviceCollection:
-    """A Collection of PHX Supportive Devices."""
+    """A keyed collection of PHX supportive (auxiliary energy) devices.
+
+    Groups devices by type: heat circulating pumps, DHW circulating pumps,
+    DHW storage load pumps, and other devices.
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number.
+        display_name (str): Collection label. Default: "Supportive Device Collection".
+    """
 
     _count: ClassVar[int] = 0
 
@@ -200,26 +232,27 @@ class PhxSupportiveDeviceCollection:
 
     @property
     def devices(self) -> list[PhxSupportiveDevice]:
+        """All supportive devices in the collection."""
         return list(self._devices.values())
 
     @property
     def heat_circulating_pumps(self) -> list[PhxSupportiveDevice]:
-        """Return a List of all the Kitchen Hood devices"""
+        """Return all heat-distribution circulating pump devices."""
         return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.HEAT_CIRCULATING_PUMP]
 
     @property
     def dhw_circulating_pumps(self) -> list[PhxSupportiveDevice]:
-        """Return a List of all the Kitchen Hood devices"""
+        """Return all DHW recirculation pump devices."""
         return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.DHW_CIRCULATING_PUMP]
 
     @property
     def dhw_storage_pumps(self) -> list[PhxSupportiveDevice]:
-        """Return a List of all the Kitchen Hood devices"""
+        """Return all DHW storage load pump devices."""
         return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.DHW_STORAGE_LOAD_PUMP]
 
     @property
     def other_devices(self) -> list[PhxSupportiveDevice]:
-        """Return a List of all the Kitchen Hood devices"""
+        """Return all supportive devices not classified as pumps."""
         return [d for d in self.devices if d.device_type == PhxSupportiveDeviceType.OTHER]
 
     def clear_all_devices(self) -> None:
@@ -326,7 +359,15 @@ class PhxSupportiveDeviceCollection:
 
 @dataclass
 class PhxExhaustVentilatorCollection:
-    """A Collection of PHX Exhaust Ventilation Devices."""
+    """A keyed collection of PHX point-exhaust ventilation devices.
+
+    Groups devices by type: kitchen hoods, dryers, and user-defined exhaust.
+    Supports merging devices of the same type via reduce.
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number.
+        display_name (str): Collection label. Default: "Exhaust Ventilator Collection".
+    """
 
     _count: ClassVar[int] = 0
 
@@ -340,6 +381,7 @@ class PhxExhaustVentilatorCollection:
 
     @property
     def devices(self) -> list[AnyPhxExhaustVent]:
+        """All exhaust ventilation devices in the collection."""
         return list(self._devices.values())
 
     @property
@@ -454,7 +496,21 @@ class PhxExhaustVentilatorCollection:
 
 @dataclass
 class PhxMechanicalSystemCollection:
-    """A Collection of all the mechanical devices (heating, cooling, etc) and distribution in the project"""
+    """The top-level collection of all mechanical devices and distribution for a project variant.
+
+    Holds heating, cooling, ventilation, and DHW devices alongside their
+    distribution systems (piping trunks, recirculation piping, ducting),
+    supportive devices (pumps), and renewable energy devices (PV).
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number.
+        display_name (str): System label. Default: "Ideal Air System".
+        sys_type_num (int): System type number. Default: 1.
+        sys_type_str (str): System type description. Default: "User defined (ideal system)".
+        zone_coverage (PhxZoneCoverage): Per-zone load coverage fractions.
+        supportive_devices (PhxSupportiveDeviceCollection): Auxiliary device collection.
+        renewable_devices (PhxRenewableDeviceCollection): Renewable energy device collection.
+    """
 
     _count: ClassVar[int] = 0
 
@@ -563,9 +619,7 @@ class PhxMechanicalSystemCollection:
     #  -- Distribution Piping
 
     def add_distribution_piping(self, _p: hvac.PhxPipeTrunk) -> None:
-        """Add a new DHW Trunc-Pipe to the System.
-        Note that all piping must be in a: Trunc > Branch > Fixture config.
-        """
+        """Add a DHW trunk pipe to the system. All piping must follow Trunk > Branch > Fixture hierarchy."""
         self._distribution_piping_trunks[_p.identifier] = _p
 
     def add_recirc_piping(self, _p: hvac.PhxPipeElement) -> None:
@@ -596,6 +650,7 @@ class PhxMechanicalSystemCollection:
 
     @property
     def dhw_distribution_trunks(self) -> list[hvac.PhxPipeTrunk]:
+        """All DHW trunk pipes, sorted by display name."""
         return sorted(self._distribution_piping_trunks.values(), key=lambda p: p.display_name)
 
     @property
@@ -654,6 +709,7 @@ class PhxMechanicalSystemCollection:
 
     @property
     def dhw_recirc_total_length_m(self) -> float:
+        """Total length of all DHW recirculation piping (m)."""
         return sum(_.length_m for _ in self.dhw_recirc_piping)
 
     @property
@@ -669,6 +725,7 @@ class PhxMechanicalSystemCollection:
 
     @property
     def dhw_distribution_total_length_m(self) -> float:
+        """Total length of all DHW distribution piping segments (m)."""
         return sum(_.length_m for _ in self.dhw_distribution_piping_segments)
 
     @property
@@ -686,6 +743,7 @@ class PhxMechanicalSystemCollection:
     #  -- Distribution Ducting
 
     def add_vent_ducting(self, _d: hvac.PhxDuctElement) -> None:
+        """Add a ventilation duct element to the system."""
         self._distribution_ducting[_d.identifier] = _d
 
     @property

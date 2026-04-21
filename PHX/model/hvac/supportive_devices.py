@@ -1,6 +1,11 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Aux-Energy . Supportive Extra Devices."""
+"""PHX supportive (auxiliary energy) device classes.
+
+Represents circulating pumps, storage load pumps, and other auxiliary
+electrical devices that contribute to the building's total energy demand
+and internal heat gains.
+"""
 
 from __future__ import annotations
 
@@ -13,6 +18,19 @@ from PHX.model.hvac import _base
 
 @dataclass
 class PhxSupportiveDeviceParams(_base.PhxMechanicalDeviceParams):
+    """Parameters for a supportive (auxiliary energy) device.
+
+    When devices are merged via __add__, energy demand is calculated as
+    the time-weighted average and IHG utilization factor is energy-weighted.
+
+    Attributes:
+        in_conditioned_space (bool): True if device is inside the thermal envelope. Default: True.
+        norm_energy_demand_W (float): Nominal power consumption (W). Default: 1.0.
+        annual_period_operation_khrs (float): Annual operating period (kilo-hours). Default: 8.760.
+        ihg_utilization_factor (float): Internal heat gains utilization factor (0.0-1.0).
+            Default: 1.0.
+    """
+
     in_conditioned_space: bool = True
     norm_energy_demand_W: float = 1.0
     annual_period_operation_khrs: float = 8.760
@@ -44,6 +62,19 @@ class PhxSupportiveDeviceParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxSupportiveDevice(_base.PhxMechanicalDevice):
+    """A supportive device such as a circulating pump or auxiliary electrical load.
+
+    Examples include heat-distribution circulating pumps, DHW recirculation
+    pumps, DHW storage load pumps, and other auxiliary devices.
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number.
+        display_name (str): Human-readable label. Default: "__unnamed_device__".
+        device_type (PhxSupportiveDeviceType): Device classification. Default: OTHER.
+        quantity (int): Number of identical devices. Default: 1.
+        params (PhxSupportiveDeviceParams): Supportive device parameters.
+    """
+
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
 

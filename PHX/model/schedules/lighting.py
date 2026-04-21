@@ -11,7 +11,23 @@ from typing import ClassVar
 
 @dataclass
 class PhxScheduleLighting:
-    """A PHX Schedule for the Lighting."""
+    """Lighting utilization schedule defining daily operating hours and annual utilization.
+
+    Defines when and how intensely lighting is used via a daily operating period
+    (start/end hour) and an annual utilization pattern (days per year and a
+    relative utilization factor within those days).
+
+    Attributes:
+        id_num (int): Auto-incremented instance counter, assigned in __post_init__.
+        identifier (uuid.UUID | str): Unique identifier. Default: auto-generated UUID4.
+        display_name (str): Human-readable schedule name.
+            Default: "__unnamed_lighting_schedule__".
+        start_hour (float): Daily operating period start hour (0-24). Default: 0.0.
+        end_hour (float): Daily operating period end hour (0-24). Default: 1.0.
+        annual_utilization_days (float): Number of lit days per year. Default: 0.0.
+        relative_utilization_factor (float): Fractional utilization within the operating
+            period, relative to the annual_utilization_days. Default: 0.0.
+    """
 
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
@@ -24,6 +40,19 @@ class PhxScheduleLighting:
 
     @classmethod
     def from_annual_operating_hours(cls, _annual_operating_hours: float) -> PhxScheduleLighting:
+        """Create a lighting schedule from total annual operating hours.
+
+        Distributes the daily hours symmetrically around noon and sets
+        365 annual utilization days at full utilization.
+
+        Arguments:
+        ----------
+            * _annual_operating_hours (float): Total lighting operating hours per year.
+
+        Returns:
+        --------
+            * PhxScheduleLighting: A new schedule configured for the given annual hours.
+        """
         new_schedule = cls()
         hours_per_day = _annual_operating_hours / 365
         new_schedule.start_hour = 12 - (hours_per_day / 2)
@@ -88,4 +117,5 @@ class PhxScheduleLighting:
 
     @property
     def full_load_lighting_hours(self) -> float:
+        """Return the annual full-load lighting hours, clamped to 0-8760."""
         return max(0, min(8760, self.annual_operating_hours))

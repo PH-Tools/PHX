@@ -1,6 +1,6 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Passive House Electrical Equipment (Appliances) Classes"""
+"""PHX Passive House electrical equipment (appliance) classes for energy demand and IHG calculations."""
 
 import inspect
 import logging
@@ -16,7 +16,24 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class PhxElectricalDevice:
-    """Base class for PHX Electrical Equipment (dishwashers, laundry, lighting, etc.)"""
+    """Base class for all PHX electrical equipment (dishwashers, laundry, lighting, etc.).
+
+    Subclassed by device-specific types that set appropriate defaults for device_type,
+    energy demand, and internal heat gain (IHG) utilization factors. Used by the WUFI
+    and PHPP exporters to write appliance-level energy demand and IHG contributions.
+
+    Attributes:
+        identifier (uuid.UUID | str): Unique identifier for the device.
+        display_name (str | None): User-facing name for the device. Default: "_unnamed_equipment_".
+        comment (str | None): Optional descriptive comment. Default: "".
+        in_conditioned_space (bool | None): Whether the device is inside the thermal envelope. Default: True.
+        energy_demand (float | None): Annual energy demand [kWh/a]. Default: 100.0.
+        energy_demand_per_use (float | None): Energy demand per use cycle [kWh/use]. Default: 100.0.
+        combined_energy_factor (float | None): Combined energy factor for the device. Default: 0.0.
+        ihg_utilization_factor (float): Fraction of energy demand that becomes internal heat gain (0.0-1.0).
+            Default: 1.0.
+        device_type (ElectricEquipmentType): The equipment type enum. Default: CUSTOM.
+    """
 
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
@@ -42,6 +59,7 @@ class PhxElectricalDevice:
 
     @property
     def reference_quantity(self) -> int:
+        """The reference quantity used for energy-demand normalization."""
         return self._reference_quantity
 
     @reference_quantity.setter
@@ -51,6 +69,7 @@ class PhxElectricalDevice:
 
     @property
     def reference_energy_norm(self) -> int:
+        """The reference energy normalization standard for the device."""
         return self._reference_energy_norm
 
     @reference_energy_norm.setter
@@ -60,6 +79,7 @@ class PhxElectricalDevice:
 
     @property
     def quantity(self) -> int:
+        """The number of this device in the zone."""
         return self._quantity
 
     @quantity.setter
@@ -81,6 +101,12 @@ class PhxElectricalDevice:
 
 
 class PhxDeviceDishwasher(PhxElectricalDevice):
+    """A kitchen dishwasher appliance.
+
+    Attributes:
+        capacity (float | None): Rated capacity of the dishwasher [place settings]. Default: 1.0.
+    """
+
     def __init__(self) -> None:
         super().__init__()
         self._water_connection: int = 1  # DHW Connection
@@ -92,6 +118,7 @@ class PhxDeviceDishwasher(PhxElectricalDevice):
 
     @property
     def water_connection(self) -> int | None:
+        """The DHW connection type for the dishwasher."""
         return self._water_connection
 
     @water_connection.setter
@@ -101,6 +128,7 @@ class PhxDeviceDishwasher(PhxElectricalDevice):
 
     @property
     def capacity_type(self) -> int | None:
+        """The capacity type classification for the dishwasher."""
         return self._capacity_type
 
     @capacity_type.setter
@@ -110,6 +138,15 @@ class PhxDeviceDishwasher(PhxElectricalDevice):
 
 
 class PhxDeviceClothesWasher(PhxElectricalDevice):
+    """A clothes washing machine appliance.
+
+    Attributes:
+        capacity (float | None): Drum capacity [m3]. Default: 0.0814.
+        modified_energy_factor (float | None): Modified Energy Factor (MEF) per DOE test procedure.
+            Default: 2.38.
+        utilization_factor (float | None): Usage utilization factor. Default: 1.0.
+    """
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "Laundry - washer"
@@ -123,6 +160,7 @@ class PhxDeviceClothesWasher(PhxElectricalDevice):
 
     @property
     def water_connection(self) -> int | None:
+        """The DHW connection type for the clothes washer."""
         return self._water_connection
 
     @water_connection.setter
@@ -132,6 +170,14 @@ class PhxDeviceClothesWasher(PhxElectricalDevice):
 
 
 class PhxDeviceClothesDryer(PhxElectricalDevice):
+    """A clothes dryer appliance (electric or gas).
+
+    Attributes:
+        gas_consumption (float | None): Annual gas consumption [kWh]. Default: 0.0.
+        gas_efficiency_factor (float | None): Gas energy efficiency factor. Default: 2.67.
+        field_utilization_factor (float | None): Field utilization factor for in-situ performance. Default: 1.18.
+    """
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "Laundry - dryer"
@@ -146,6 +192,7 @@ class PhxDeviceClothesDryer(PhxElectricalDevice):
 
     @property
     def dryer_type(self) -> int:
+        """The dryer type classification (e.g., 4 = condensation dryer)."""
         return self._dryer_type
 
     @dryer_type.setter
@@ -155,6 +202,7 @@ class PhxDeviceClothesDryer(PhxElectricalDevice):
 
     @property
     def field_utilization_factor_type(self) -> int | None:
+        """The field utilization factor type (e.g., 1 = timer)."""
         return self._field_utilization_factor_type
 
     @field_utilization_factor_type.setter
@@ -164,6 +212,8 @@ class PhxDeviceClothesDryer(PhxElectricalDevice):
 
 
 class PhxDeviceRefrigerator(PhxElectricalDevice):
+    """A standalone kitchen refrigerator (no freezer compartment)."""
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "Kitchen refrigerator"
@@ -171,6 +221,8 @@ class PhxDeviceRefrigerator(PhxElectricalDevice):
 
 
 class PhxDeviceFreezer(PhxElectricalDevice):
+    """A standalone kitchen freezer."""
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "kitchen freezer"
@@ -178,6 +230,8 @@ class PhxDeviceFreezer(PhxElectricalDevice):
 
 
 class PhxDeviceFridgeFreezer(PhxElectricalDevice):
+    """A combined refrigerator/freezer unit."""
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "Kitchen fridge/freeze combo"
@@ -185,6 +239,8 @@ class PhxDeviceFridgeFreezer(PhxElectricalDevice):
 
 
 class PhxDeviceCooktop(PhxElectricalDevice):
+    """A kitchen cooktop appliance (electric or gas)."""
+
     def __init__(self):
         super().__init__()
         self.display_name = "Kitchen cooking"
@@ -194,6 +250,7 @@ class PhxDeviceCooktop(PhxElectricalDevice):
 
     @property
     def cooktop_type(self) -> int:
+        """The cooktop fuel type (e.g., 1 = electric)."""
         return self._cooktop_type
 
     @cooktop_type.setter
@@ -203,6 +260,8 @@ class PhxDeviceCooktop(PhxElectricalDevice):
 
 
 class PhxDeviceMEL(PhxElectricalDevice):
+    """Miscellaneous electrical loads (MEL) per the Phius protocol."""
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ MELS"
@@ -210,6 +269,12 @@ class PhxDeviceMEL(PhxElectricalDevice):
 
 
 class PhxDeviceLightingInterior(PhxElectricalDevice):
+    """Interior lighting per the Phius protocol.
+
+    Attributes:
+        frac_high_efficiency (float | None): Fraction of high-efficiency luminaires (0.0-1.0). Default: 1.0.
+    """
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Interior Lighting"
@@ -218,6 +283,12 @@ class PhxDeviceLightingInterior(PhxElectricalDevice):
 
 
 class PhxDeviceLightingExterior(PhxElectricalDevice):
+    """Exterior lighting per the Phius protocol (outside the thermal envelope).
+
+    Attributes:
+        frac_high_efficiency (float | None): Fraction of high-efficiency luminaires (0.0-1.0). Default: 1.0.
+    """
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Exterior Lighting"
@@ -227,6 +298,12 @@ class PhxDeviceLightingExterior(PhxElectricalDevice):
 
 
 class PhxDeviceLightingGarage(PhxElectricalDevice):
+    """Garage lighting per the Phius protocol (outside the thermal envelope).
+
+    Attributes:
+        frac_high_efficiency (float | None): Fraction of high-efficiency luminaires (0.0-1.0). Default: 1.0.
+    """
+
     def __init__(self) -> None:
         super().__init__()
         self.display_name = "PHIUS+ Garage Lighting"
@@ -236,6 +313,8 @@ class PhxDeviceLightingGarage(PhxElectricalDevice):
 
 
 class PhxDeviceCustomElec(PhxElectricalDevice):
+    """A user-defined custom electrical device."""
+
     def __init__(self) -> None:
         self.display_name = "User defined"
         super().__init__()
@@ -243,7 +322,11 @@ class PhxDeviceCustomElec(PhxElectricalDevice):
 
 
 class PhxDeviceCustomLighting(PhxElectricalDevice):
-    """Override so that WUFI output quantity shows up as 1"""
+    """A user-defined custom lighting device.
+
+    Overrides get_energy_demand to multiply by quantity and get_quantity to always
+    return 1, so WUFI output shows the total demand on a single line item.
+    """
 
     def __init__(self) -> None:
         self.display_name = "User defined - lighting"
@@ -260,7 +343,11 @@ class PhxDeviceCustomLighting(PhxElectricalDevice):
 
 
 class PhxDeviceCustomMEL(PhxElectricalDevice):
-    """Override so that WUFI output quantity shows up as 1"""
+    """A user-defined custom miscellaneous electrical load (MEL).
+
+    Overrides get_energy_demand to multiply by quantity and get_quantity to always
+    return 1, so WUFI output shows the total demand on a single line item.
+    """
 
     def __init__(self) -> None:
         self.display_name = "User defined - Misc electrical loads"
@@ -277,6 +364,8 @@ class PhxDeviceCustomMEL(PhxElectricalDevice):
 
 
 class PhxElevatorHydraulic(PhxElectricalDevice):
+    """A hydraulic elevator, modeled as a custom electrical device for energy demand."""
+
     def __init__(self) -> None:
         self.display_name = "User defined - Misc electrical loads"
         super().__init__()
@@ -292,6 +381,8 @@ class PhxElevatorHydraulic(PhxElectricalDevice):
 
 
 class PhxElevatorGearedTraction(PhxElectricalDevice):
+    """A geared-traction elevator, modeled as a custom electrical device for energy demand."""
+
     def __init__(self) -> None:
         self.display_name = "User defined - Misc electrical loads"
         super().__init__()
@@ -307,6 +398,8 @@ class PhxElevatorGearedTraction(PhxElectricalDevice):
 
 
 class PhxElevatorGearlessTraction(PhxElectricalDevice):
+    """A gearless-traction elevator, modeled as a custom electrical device for energy demand."""
+
     def __init__(self) -> None:
         self.display_name = "User defined - Misc electrical loads"
         super().__init__()
@@ -348,7 +441,10 @@ def get_device_type_map() -> dict[ElectricEquipmentType, type[PhxElectricalDevic
 
 @dataclass
 class PhxElectricDeviceCollection:
-    """A collection of all the PhxElectricalDevices (laundry, lighting, etc.) in the Zone"""
+    """A collection of all the PhxElectricalDevices (laundry, lighting, etc.) in a Zone.
+
+    Stores devices by key and provides sorted iteration and key-based lookup.
+    """
 
     _devices: dict = field(default_factory=dict)
 
@@ -364,6 +460,16 @@ class PhxElectricDeviceCollection:
         return _device_key in self._devices
 
     def get_equipment_by_key(self, _key: str) -> PhxElectricalDevice | None:
+        """Return the device matching the given key, or None if not found.
+
+        Arguments:
+        ----------
+            * _key (str): The lookup key for the device.
+
+        Returns:
+        --------
+            * PhxElectricalDevice | None: The matching device, or None.
+        """
         return self._devices.get(_key, None)
 
     def add_new_device(self, _key: str, _device: PhxElectricalDevice) -> None:

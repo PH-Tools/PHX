@@ -1,6 +1,12 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Water Piping Distribution Objects."""
+"""PHX DHW piping distribution objects.
+
+Hierarchical piping model: Trunk > Branch > Fixture (twig). Each level is
+composed of PhxPipeElement objects, which contain one or more PhxPipeSegment
+objects representing individual pipe runs with geometry, diameter, and
+insulation properties.
+"""
 
 from __future__ import annotations
 
@@ -19,6 +25,24 @@ from PHX.model.geometry import PhxLineSegment
 
 @dataclass
 class PhxRecirculationParameters:
+    """Global DHW recirculation piping parameters used by the simplified PHPP method.
+
+    Attributes:
+        calc_method (PhxHotWaterPipingCalcMethod): Piping calculation method.
+            Default: HOT_WATER_PIPING_FLOOR_METHOD.
+        pipe_material (PhxHotWaterPipingMaterial): Pipe material type. Default: COPPER_L.
+        demand_recirc (bool): True if demand-based recirculation is used. Default: True.
+        num_bathrooms (int): Number of bathrooms served. Default: 1.
+        hot_water_fixtures (int): Number of hot water fixtures. Default: 1.
+        all_pipes_insulated (bool): True if all piping is insulated. Default: True.
+        units_or_floors (PhxHotWaterSelectionUnitsOrFloors): Selection basis.
+            Default: USER_DETERMINED.
+        pipe_diameter (float): Pipe diameter for simplified method (mm). Default: 25.4.
+        air_temp (float): Ambient air temperature around piping (C). Default: 20.0.
+        water_temp (float): Hot water temperature (C). Default: 60.0.
+        daily_recirc_hours (float): Daily recirculation pump runtime (hours). Default: 0.0.
+    """
+
     calc_method: PhxHotWaterPipingCalcMethod = field(default=PhxHotWaterPipingCalcMethod.HOT_WATER_PIPING_FLOOR_METHOD)
     pipe_material: PhxHotWaterPipingMaterial = field(default=PhxHotWaterPipingMaterial.COPPER_L)
     demand_recirc: bool = True
@@ -36,7 +60,26 @@ class PhxRecirculationParameters:
 
 @dataclass
 class PhxPipeSegment:
-    """An individual Pipe Segment."""
+    """An individual pipe segment with geometry, material, diameter, and insulation properties.
+
+    Heat-loss coefficients are calculated iteratively using the PHPP DHW
+    worksheet algorithm, accounting for pipe diameter, insulation thickness,
+    conductivity, and surface emissivity.
+
+    Attributes:
+        identifier (str): Unique segment identifier.
+        display_name (str): Human-readable label.
+        geometry (PhxLineSegment): 3D line geometry defining the pipe run.
+        pipe_material (PhxHotWaterPipingMaterial): Pipe material type.
+        diameter_m (float): Inner pipe diameter (m).
+        insulation_thickness_m (float): Insulation thickness (m).
+        insulation_conductivity (float): Insulation thermal conductivity (W/mK).
+        insulation_reflective (bool): True if insulation has a reflective surface.
+        insulation_quality (Any): Insulation quality classification.
+        daily_period (float): Daily operating period (hours).
+        water_temp_c (float): Hot water temperature (C). Default: 60.0.
+        pipe_wall_thickness_m (float): Pipe wall thickness (m). Default: 0.00225.
+    """
 
     identifier: str
     display_name: str
@@ -53,10 +96,12 @@ class PhxPipeSegment:
 
     @property
     def diameter_mm(self) -> float:
+        """Inner pipe diameter converted to millimeters."""
         return self.diameter_m * 1000
 
     @property
     def diameter_inner_m(self) -> float:
+        """Inner pipe diameter (m), alias for diameter_m."""
         return self.diameter_m
 
     @property
@@ -66,10 +111,12 @@ class PhxPipeSegment:
 
     @property
     def diameter_with_insulation_m(self) -> float:
+        """Total outer diameter including pipe wall and insulation (m)."""
         return self.diameter_outer_m + (2 * self.insulation_thickness_m)
 
     @property
     def length_m(self) -> float:
+        """Segment length derived from the line geometry (m)."""
         return self.geometry.length
 
     @property
@@ -210,7 +257,16 @@ class PhxPipeSegment:
 
 @dataclass
 class PhxPipeElement:
-    """A Pipe Element / Run made of one or more PhxPipeSegments."""
+    """A pipe element (run) composed of one or more PhxPipeSegment objects.
+
+    Aggregate properties (length, diameter, heat-loss coefficient) are
+    length-weighted across all contained segments.
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number.
+        identifier (str): Unique element identifier (UUID).
+        display_name (str): Human-readable label. Default: "_unnamed_pipe_element_".
+    """
 
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
@@ -255,6 +311,7 @@ class PhxPipeElement:
 
     @property
     def material(self) -> PhxHotWaterPipingMaterial:
+        """Return the single pipe material shared by all segments. Raises ValueError if mixed."""
         if not self.segments:
             return PhxHotWaterPipingMaterial.COPPER_K
 
@@ -269,15 +326,30 @@ class PhxPipeElement:
 
     @property
     def demand_recirculation(self) -> bool:
+        """Always False for standard pipe elements (overridden in trunk)."""
         return False
 
     def add_segment(self, _s: PhxPipeSegment) -> None:
+        """Add a pipe segment to this element.
+
+        Arguments:
+        ----------
+            * _s (PhxPipeSegment): The pipe segment to add.
+        """
         self._segments[_s.identifier] = _s
 
 
 @dataclass
 class PhxPipeBranch:
-    """A Pipe Branch made of one or more Fixture-pipes (PhxPipeElement)."""
+    """A DHW pipe branch connecting a trunk to one or more fixture twigs.
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number.
+        identifier (str): Unique branch identifier (UUID).
+        display_name (str): Human-readable label. Default: "_unnamed_pipe_branch_".
+        pipe_element (PhxPipeElement): The branch pipe run itself.
+        fixtures (list[PhxPipeElement]): Fixture/twig pipe elements off this branch.
+    """
 
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
@@ -291,12 +363,23 @@ class PhxPipeBranch:
         self.id_num = PhxPipeBranch._count
 
     def add_fixture(self, _f: PhxPipeElement) -> None:
+        """Append a fixture (twig) pipe element to this branch."""
         self.fixtures.append(_f)
 
 
 @dataclass
 class PhxPipeTrunk:
-    """A Pipe Trunk made of one or more Pipe Branches (PhxPipeBranch)."""
+    """A DHW pipe trunk (riser/main) serving one or more branches.
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number.
+        identifier (str): Unique trunk identifier (UUID).
+        display_name (str): Human-readable label. Default: "_unnamed_pipe_trunk_".
+        multiplier (int): Number of identical trunks represented. Default: 1.
+        demand_recirculation (bool): True if trunk uses demand-based recirculation. Default: False.
+        pipe_element (PhxPipeElement): The trunk pipe run itself.
+        branches (list[PhxPipeBranch]): Branch pipes off this trunk.
+    """
 
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
@@ -312,6 +395,7 @@ class PhxPipeTrunk:
         self.id_num = PhxPipeTrunk._count
 
     def add_branch(self, _b: PhxPipeBranch) -> None:
+        """Append a branch pipe to this trunk."""
         self.branches.append(_b)
 
 

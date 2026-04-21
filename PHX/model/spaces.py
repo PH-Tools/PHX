@@ -1,6 +1,6 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Space (Room) Class"""
+"""PHX Space (Room) classes and utilities for Passive House zone ventilation grouping."""
 
 from __future__ import annotations
 
@@ -13,7 +13,17 @@ from PHX.model.programs.ventilation import PhxProgramVentilation
 
 
 def area_weighted_clear_height(space_a: PhxSpace, space_b: PhxSpace) -> float:
-    """Returns the area-weighted clear-height of two spaces."""
+    """Return the area-weighted average clear height of two spaces.
+
+    Arguments:
+    ----------
+        * space_a (PhxSpace): The first space.
+        * space_b (PhxSpace): The second space.
+
+    Returns:
+    --------
+        * float: The weighted average clear height (m). Returns 0.0 if the combined floor area is zero.
+    """
     try:
         weighted_height_a = space_a.clear_height * space_a.floor_area
         weighted_height_b = space_b.clear_height * space_b.floor_area
@@ -24,7 +34,20 @@ def area_weighted_clear_height(space_a: PhxSpace, space_b: PhxSpace) -> float:
 
 
 def spaces_are_not_addable(space_a: PhxSpace, space_v: PhxSpace) -> bool:
-    """Returns True if space_a can safely be added to space_b."""
+    """Return True if the two spaces cannot be merged.
+
+    Spaces are incompatible for addition when they differ in WUFI space type
+    or are served by different ventilation units.
+
+    Arguments:
+    ----------
+        * space_a (PhxSpace): The first space.
+        * space_v (PhxSpace): The second space.
+
+    Returns:
+    --------
+        * bool: True if the spaces differ in wufi_type or vent_unit_id_num.
+    """
     return any(
         (
             space_a.wufi_type != space_v.wufi_type,
@@ -35,6 +58,31 @@ def spaces_are_not_addable(space_a: PhxSpace, space_v: PhxSpace) -> bool:
 
 @dataclass
 class PhxSpace:
+    """A single ventilation space (room) within a PHX zone.
+
+    Represents one room-level entry in the WUFI-Passive / PHPP model. Each space
+    carries its own geometry (floor area, volume, clear height), a WUFI space-type
+    classification, and references to ventilation, occupancy, and lighting programs.
+    Spaces that share the same WUFI type and ventilation unit can be merged via
+    addition for Phius grouped-space reporting.
+
+    Attributes:
+        id_num (int): Auto-incrementing identifier assigned on creation.
+        display_name (str): Human-readable space name. Default: 'Unnamed_Space'.
+        wufi_type (int): WUFI-Passive space-type code (e.g. 1=Living, 2=Kitchen). Default: 99 (User Determined).
+        quantity (int): Number of identical spaces this entry represents. Default: 1.
+        floor_area (float): Gross floor area of the space (m2). Default: 0.0.
+        weighted_floor_area (float): iCFA/TFA-weighted floor area (m2). Default: 0.0.
+        net_volume (float): Net interior volume of the space (m3). Default: 0.0.
+        clear_height (float): Average floor-to-ceiling clear height (m). Default: 2.5.
+        vent_unit_id_num (int): ID number of the assigned ventilation unit (ERV/HRV). Default: 0.
+        vent_unit_display_name (str): Display name of the assigned ventilation unit. Default: ''.
+        ventilation (PhxProgramVentilation): Ventilation program with airflow loads and schedules.
+        occupancy (PhxProgramOccupancy): Occupancy program with people density and schedules.
+        lighting (PhxProgramLighting): Lighting program with installed power and schedules.
+        electric_equipment (None): Placeholder for future electric equipment program. Default: None.
+    """
+
     _count: ClassVar[int] = 0
 
     id_num: int = field(init=False, default=0)

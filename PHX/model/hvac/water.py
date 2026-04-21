@@ -1,6 +1,6 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Water Devices"""
+"""PHX domestic hot water (DHW) storage tank device classes."""
 
 from __future__ import annotations
 
@@ -12,6 +12,8 @@ from PHX.model.hvac import _base
 
 @dataclass
 class PhxHotWaterDevice(_base.PhxMechanicalDevice):
+    """Base class for all PHX DHW devices. Automatically sets dhw_heating usage on init."""
+
     def __post_init__(self):
         super().__post_init__()
         self.usage_profile.dhw_heating = True
@@ -22,6 +24,23 @@ class PhxHotWaterDevice(_base.PhxMechanicalDevice):
 
 @dataclass
 class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
+    """Performance and geometry parameters for a DHW storage tank.
+
+    Attributes:
+        display_name (str): Human-readable label. Default: "_unnamed_PHX_hw_tank_".
+        tank_type (PhxHotWaterTankType): Tank classification. Default: NONE.
+        input_option (PhxHotWaterInputOptions): Loss input method. Default: SPEC_TOTAL_LOSSES.
+        in_conditioned_space (bool): True if the tank is inside the thermal envelope. Default: True.
+        solar_connection (bool): True if tank has a solar thermal connection. Default: False.
+        solar_losses (float): Solar loop heat losses (W/K). Default: 0.0.
+        storage_loss_rate (float): Tank storage heat loss rate (W). Default: 0.0.
+        storage_capacity (float): Tank volume (liters). Default: 0.0.
+        standby_losses (float): Standby heat loss coefficient (W/K). Default: 4.0.
+        standby_fraction (float): Standby loss fraction (0.0-1.0). Default: 0.30.
+        room_temp (float): Ambient room temperature around the tank (C). Default: 20.0.
+        water_temp (float): Stored water temperature (C). Default: 60.0.
+    """
+
     # -- Device Params
     display_name: str = "_unnamed_PHX_hw_tank_"
 
@@ -162,6 +181,14 @@ class PhxHotWaterTankParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxHotWaterTank(PhxHotWaterDevice):
+    """A DHW storage tank with standby and solar loss parameters.
+
+    Attributes:
+        system_type (SystemType): Always SystemType.WATER_STORAGE.
+        device_type (DeviceType): Always DeviceType.WATER_STORAGE.
+        params (PhxHotWaterTankParams): Tank performance parameters.
+    """
+
     system_type: SystemType = field(init=False, default=SystemType.WATER_STORAGE)
     device_type: DeviceType = field(init=False, default=DeviceType.WATER_STORAGE)
     params: PhxHotWaterTankParams = field(default_factory=PhxHotWaterTankParams)

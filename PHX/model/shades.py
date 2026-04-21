@@ -1,6 +1,6 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Window Shades."""
+"""PHX Window Shade devices for solar gain reduction and overheating control."""
 
 from __future__ import annotations
 
@@ -11,6 +11,23 @@ from typing import ClassVar
 
 @dataclass
 class PhxWindowShade:
+    """A window shading device used for solar gain reduction and overheating control.
+
+    Each shade carries a reduction factor (0.0 = fully shaded, 1.0 = no shading)
+    and supplementary radiative/thermal properties used by the WUFI shading calculation.
+
+    Attributes:
+        display_name (str): User-facing name for the shading device. Default: "__unnamed_shade__".
+        operation_mode (int): Shade operation mode (1 = reduce overheating). Default: 1.
+        reduction_factor (float): Solar reduction factor applied when shade is active (0.0-1.0). Default: 1.0.
+        external_emissivity (float): Long-wave emissivity of the exterior shade surface. Default: 0.8.
+        absorptivity (float): Short-wave absorptivity of the shade surface. Default: 0.0.
+        thermal_resistance_supplement (float): Additional thermal resistance from the shade [m2K/W]. Default: 0.0.
+        thermal_resistance_cavity (float): Thermal resistance of the cavity behind the shade [m2K/W]. Default: 0.0.
+        radiation_limit (float): Solar radiation threshold for shade activation [W/m2]. Default: 1000.0.
+        exclude_weekends (bool): If True, shade is inactive on weekends. Default: False.
+    """
+
     _count: ClassVar[int] = 0
 
     _identifier: uuid.UUID | str = field(init=False, default_factory=uuid.uuid4)
@@ -33,6 +50,7 @@ class PhxWindowShade:
 
     @property
     def identifier(self) -> str:
+        """The unique string identifier for this shading device."""
         return str(self._identifier)
 
     @identifier.setter

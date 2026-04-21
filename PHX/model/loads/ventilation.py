@@ -9,7 +9,13 @@ from dataclasses import dataclass
 
 @dataclass
 class PhxLoadVentilation:
-    """A PHX Load for the Ventilation."""
+    """Ventilation load defining the fresh-air supply, extract, and transfer airflow rates for a PHX zone or space.
+
+    Attributes:
+        flow_supply (float): Supply airflow rate (m3/h). Default: 0.0.
+        flow_extract (float): Extract airflow rate (m3/h). Default: 0.0.
+        flow_transfer (float): Transfer airflow rate (m3/h). Default: 0.0.
+    """
 
     flow_supply: float = 0.0
     flow_extract: float = 0.0
@@ -17,7 +23,7 @@ class PhxLoadVentilation:
 
     @property
     def total_airflow(self) -> float:
-        """Returns the total airflow for the ventilation load."""
+        """Return the combined supply, extract, and transfer airflow."""
         return self.flow_supply + self.flow_extract + self.flow_transfer
 
     def __add__(self, other: PhxLoadVentilation) -> PhxLoadVentilation:

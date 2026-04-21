@@ -21,6 +21,15 @@ if TYPE_CHECKING:
 
 @dataclass
 class PhxColor:
+    """An ARGB color value used for material display in WUFI-Passive.
+
+    Attributes:
+        alpha (int): Alpha (opacity) channel. Default: 255.
+        red (int): Red channel. Default: 255.
+        green (int): Green channel. Default: 255.
+        blue (int): Blue channel. Default: 255.
+    """
+
     # Default color is white
     alpha: int = 255
     red: int = 255
@@ -30,6 +39,24 @@ class PhxColor:
 
 @dataclass
 class PhxMaterial:
+    """A single building material with thermal, hygric, and display properties.
+
+    Used as the base unit within PhxLayer to define assembly constructions.
+    Thermal conductivity (W/mK) and thickness drive R-value calculations.
+
+    Attributes:
+        id_num (int): Auto-incremented identifier.
+        display_name (str): Human-readable material name. Default: "".
+        conductivity (float): Thermal conductivity in W/mK. Default: 0.0.
+        density (float): Material density in kg/m3. Default: 0.0.
+        porosity (float): Volumetric porosity fraction. Default: 0.95.
+        heat_capacity (float): Specific heat capacity in J/kgK. Default: 0.0.
+        water_vapor_resistance (float): Water vapor diffusion resistance factor (mu). Default: 1.0.
+        reference_water (float): Reference water content in kg/m3. Default: 0.0.
+        percentage_of_assembly (float): Fraction of the layer area occupied by this material. Default: 1.0.
+        argb_color (PhxColor): Display color for the material. Default: white.
+    """
+
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
 
@@ -75,7 +102,14 @@ class PhxMaterial:
 
 @dataclass
 class PhxLayerDivisionCell:
-    """A single cell aty a column/row in a PhxLayerDivisionGrid, with a specific material."""
+    """A single cell at a column/row position in a PhxLayerDivisionGrid, holding one material.
+
+    Attributes:
+        row (int): Row index in the division grid.
+        column (int): Column index in the division grid.
+        material (PhxMaterial): The material assigned to this cell.
+        expanding_contracting (int): Expansion/contraction behavior flag. Default: 2 (Exp./Contr.).
+    """
 
     row: int
     column: int
@@ -95,7 +129,10 @@ class PhxLayerDivisionCell:
 
 @dataclass
 class PhxLayerDivisionGrid:
-    """A grid of PhxLayerDivisionCells to support 'mixed' materials.
+    """A grid of PhxLayerDivisionCells to support 'mixed' materials in a single layer.
+
+    Used to model inhomogeneous layers (e.g., wood studs with insulation fill) by
+    subdividing the layer cross-section into a grid of cells, each with its own material.
 
     The Cell grid is ordered from top-left to bottom-right:
 
@@ -104,6 +141,10 @@ class PhxLayerDivisionGrid:
     | R0 | 0,0 | 1,0 | 2,0 | ...
     | R1 | 0,1 | 1,1 | 2,1 | ...
     | R2 | 0,2 | 1,2 | 2,2 | ...
+
+    Attributes:
+        is_a_steel_stud_cavity (bool): If True, the layer represents a steel-stud cavity
+            (equivalence checking skips division comparison). Default: False.
     """
 
     _row_heights: list[float] = field(default_factory=list)
@@ -248,9 +289,15 @@ class PhxLayerDivisionGrid:
 
 @dataclass
 class PhxLayer:
-    """A single layer in a PhxConstructionOpaque.
+    """A single layer in a PhxConstructionOpaque assembly.
 
-    This layer may be a single material or a grid of multiple materials.
+    A layer has a thickness and either a single homogeneous material or a division grid
+    of multiple materials (for mixed/inhomogeneous layers such as stud cavities with
+    insulation between framing members).
+
+    Attributes:
+        thickness_m (float): Layer thickness in meters. Default: 0.0.
+        divisions (PhxLayerDivisionGrid): Grid of material subdivisions for mixed layers. Default: empty grid.
     """
 
     thickness_m: float = 0.0
@@ -425,6 +472,20 @@ class PhxLayer:
 
 @dataclass
 class PhxConstructionOpaque:
+    """An opaque assembly construction (wall, roof, or floor) composed of ordered material layers.
+
+    Layers are stacked from outside to inside by default. The assembly's U-value and R-value
+    are computed from the constituent layers and their heat-flow pathways (accounting for
+    mixed/inhomogeneous layers).
+
+    Attributes:
+        id_num (int): Auto-incremented identifier.
+        display_name (str): Human-readable construction name. Default: "".
+        layer_order (int): Layer stacking direction. Default: 2 (outside to inside).
+        grid_kind (int): Grid resolution for mixed-material layers. Default: 2 (medium).
+        layers (list[PhxLayer]): Ordered list of material layers in the assembly. Default: [].
+    """
+
     _count: ClassVar[int] = 0
 
     _identifier: uuid.UUID | str = field(init=False, default_factory=uuid.uuid4)
@@ -460,6 +521,7 @@ class PhxConstructionOpaque:
 
     @property
     def r_value(self) -> float:
+        """Total thermal resistance of the assembly in m2K/W, computed from heat-flow pathways."""
         if not self.layers:
             return 0.0
 
@@ -473,6 +535,7 @@ class PhxConstructionOpaque:
 
     @property
     def u_value(self) -> float:
+        """Total thermal transmittance (U-value) of the assembly in W/m2K."""
         try:
             return 1 / self.r_value
         except ZeroDivisionError:
@@ -501,6 +564,18 @@ class PhxConstructionOpaque:
 
 @dataclass
 class PhxWindowFrameElement:
+    """A single frame edge element (top, bottom, left, or right) of a window construction.
+
+    Stores the frame width, U-value, and psi-values for the glazing-edge and installation
+    thermal bridges along this frame edge.
+
+    Attributes:
+        width (float): Frame face width in meters. Default: 0.1.
+        u_value (float): Frame thermal transmittance in W/m2K. Default: 1.0.
+        psi_glazing (float): Linear thermal transmittance at the glazing-to-frame edge in W/mK. Default: 0.0.
+        psi_install (float): Linear thermal transmittance at the frame-to-wall installation edge in W/mK. Default: 0.0.
+    """
+
     width: float = 0.1  # m
     u_value: float = 1.0  # W/m2k
     psi_glazing: float = 0.00  # W/mk
@@ -519,6 +594,30 @@ class PhxWindowFrameElement:
 
 @dataclass
 class PhxConstructionWindow:
+    """A window construction defining glazing, frame, and overall thermal properties.
+
+    Supports both simplified (single U-value) and detailed (per-edge frame elements with
+    psi-values) window modeling. Frame elements are defined for each edge: top, right,
+    bottom, left. The glass g-value (SHGC) and emissivity characterize solar and
+    radiative performance.
+
+    Attributes:
+        id_num (int): Auto-incremented identifier.
+        display_name (str): Human-readable window type name. Default: "".
+        use_detailed_uw (bool): If True, compute Uw from component values rather than using a single input. Default: True.
+        use_detailed_frame (bool): If True, use per-edge frame elements. Default: True.
+        u_value_window (float): Overall window U-value (Uw) in W/m2K. Default: 1.0.
+        u_value_glass (float): Center-of-glass U-value (Ug) in W/m2K. Default: 1.0.
+        u_value_frame (float): Frame U-value (Uf) in W/m2K. Default: 1.0.
+        frame_top (PhxWindowFrameElement): Top frame edge element. Default: PhxWindowFrameElement().
+        frame_right (PhxWindowFrameElement): Right frame edge element. Default: PhxWindowFrameElement().
+        frame_bottom (PhxWindowFrameElement): Bottom frame edge element. Default: PhxWindowFrameElement().
+        frame_left (PhxWindowFrameElement): Left frame edge element. Default: PhxWindowFrameElement().
+        frame_factor (float): Glazing fraction (glass area / total window area). Default: 0.75.
+        glass_mean_emissivity (float): Mean emissivity of the glazing unit. Default: 0.1.
+        glass_g_value (float): Solar heat gain coefficient (SHGC / g-value) of the glazing. Default: 0.4.
+    """
+
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
     _identifier: uuid.UUID | str = field(init=False, default_factory=uuid.uuid4)

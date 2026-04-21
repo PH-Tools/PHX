@@ -1,6 +1,12 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Collection class for Organizing Space Schedules as Utilization Patterns."""
+"""Collections for organizing PH space schedules as utilization patterns.
+
+Utilization patterns define time-varying schedules (ventilation, occupancy, lighting) that
+are assigned to PH spaces. Each collection maps pattern identifiers to schedule objects,
+supporting lookup by UUID key or integer id-num. These collections are stored on a
+PhxProject and referenced by PhxSpace objects.
+"""
 
 from __future__ import annotations
 
@@ -14,6 +20,16 @@ from PHX.model.schedules import lighting, occupancy, ventilation
 
 @dataclass
 class UtilizationPatternCollection_Ventilation:
+    """Collection of ventilation utilization patterns for PH spaces.
+
+    Stores PhxScheduleVentilation objects keyed by their identifier (str or UUID).
+    Supports dict-style access, iteration over pattern values, and lookup by integer id-num.
+
+    Attributes:
+        patterns (dict[str | uuid.UUID, PhxScheduleVentilation]): Ventilation schedule
+            patterns keyed by identifier.
+    """
+
     patterns: dict[str | uuid.UUID, ventilation.PhxScheduleVentilation] = field(init=False, default_factory=dict)
 
     def __getitem__(self, key) -> ventilation.PhxScheduleVentilation:
@@ -81,6 +97,16 @@ class UtilizationPatternCollection_Ventilation:
 
 @dataclass
 class UtilizationPatternCollection_Occupancy:
+    """Collection of occupancy utilization patterns for PH spaces.
+
+    Stores PhxScheduleOccupancy objects keyed by their identifier (str or UUID).
+    Supports dict-style access, iteration over pattern values, and lookup by integer id-num.
+
+    Attributes:
+        patterns (dict[str | uuid.UUID, PhxScheduleOccupancy]): Occupancy schedule
+            patterns keyed by identifier.
+    """
+
     patterns: dict[str | uuid.UUID, occupancy.PhxScheduleOccupancy] = field(init=False, default_factory=dict)
 
     def __getitem__(self, key) -> occupancy.PhxScheduleOccupancy:
@@ -148,6 +174,16 @@ class UtilizationPatternCollection_Occupancy:
 
 @dataclass
 class UtilizationPatternCollection_Lighting:
+    """Collection of lighting utilization patterns for PH spaces.
+
+    Stores PhxScheduleLighting objects keyed by their identifier (str or UUID).
+    Supports dict-style access, iteration over pattern values, and lookup by integer id-num.
+
+    Attributes:
+        patterns (dict[str | uuid.UUID, PhxScheduleLighting]): Lighting schedule
+            patterns keyed by identifier.
+    """
+
     patterns: dict[str | uuid.UUID, lighting.PhxScheduleLighting] = field(init=False, default_factory=dict)
 
     def __getitem__(self, key) -> lighting.PhxScheduleLighting:

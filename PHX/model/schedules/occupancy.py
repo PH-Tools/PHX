@@ -11,7 +11,23 @@ from typing import ClassVar
 
 @dataclass
 class PhxScheduleOccupancy:
-    """A PHX Schedule for the Occupancy (People)."""
+    """Occupancy utilization schedule defining daily operating hours and annual utilization.
+
+    Defines when and how intensely a space is occupied via a daily operating
+    period (start/end hour) and an annual utilization pattern (days per year
+    and a relative utilization factor within those days).
+
+    Attributes:
+        id_num (int): Auto-incremented instance counter, assigned in __post_init__.
+        identifier (uuid.UUID | str): Unique identifier. Default: auto-generated UUID4.
+        display_name (str): Human-readable schedule name.
+            Default: "__unnamed_occupancy_schedule__".
+        start_hour (float): Daily operating period start hour (0-24). Default: 0.0.
+        end_hour (float): Daily operating period end hour (0-24). Default: 1.0.
+        annual_utilization_days (float): Number of occupied days per year. Default: 0.0.
+        relative_utilization_factor (float): Fractional utilization within the operating
+            period, relative to the annual_utilization_days. Default: 0.0.
+    """
 
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)

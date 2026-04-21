@@ -1,6 +1,11 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Passive House Mechanical Equipment Classes"""
+"""PHX Passive House Mechanical Equipment base classes.
+
+Provides the base device, params, and usage-profile dataclasses that all
+specific HVAC device types (ventilation, heating, cooling, DHW, PV, etc.)
+inherit from.
+"""
 
 from __future__ import annotations
 
@@ -15,7 +20,20 @@ from PHX.model.enums.hvac import DeviceType, SystemType
 
 @dataclass
 class PhxUsageProfile:
-    """Is the device used to provide..."""
+    """Flags indicating which building loads a mechanical device serves and its percent coverage.
+
+    Each load type has a float percent (0.0-1.0) and a bool convenience
+    property. Setting the bool to True defaults the percent to 1.0 if it
+    was previously 0.0.
+
+    Attributes:
+        space_heating_percent (float): Fraction of space heating demand covered. Default: 0.0.
+        dhw_heating_percent (float): Fraction of DHW demand covered. Default: 0.0.
+        cooling_percent (float): Fraction of cooling demand covered. Default: 0.0.
+        ventilation_percent (float): Fraction of ventilation demand covered. Default: 0.0.
+        humidification_percent (float): Fraction of humidification demand covered. Default: 0.0.
+        dehumidification_percent (float): Fraction of dehumidification demand covered. Default: 0.0.
+    """
 
     # -- Percent of total energy demand covered by this device
     space_heating_percent: float = 0.0
@@ -110,7 +128,17 @@ class PhxUsageProfile:
 
 @dataclass
 class PhxMechanicalDeviceParams:
-    """Base class PHX MechanicalEquipment Params"""
+    """Base parameter set shared by all PHX mechanical devices.
+
+    Subclassed by each device type to add device-specific parameters
+    (e.g., COP, fuel type, recovery efficiency).
+
+    Attributes:
+        aux_energy (float | None): Auxiliary electricity consumption (kWh). Default: None.
+        aux_energy_dhw (float | None): Auxiliary electricity for DHW (kWh). Default: None.
+        solar_fraction (float | None): Solar thermal fraction (0.0-1.0). Default: None.
+        in_conditioned_space (bool): True if the device is inside the thermal envelope. Default: True.
+    """
 
     aux_energy: float | None = None
     aux_energy_dhw: float | None = None
@@ -119,6 +147,7 @@ class PhxMechanicalDeviceParams:
 
     @staticmethod
     def safe_add(attr_1, attr_2):
+        """Add two optional numeric values, returning None only if both are falsy."""
         if not attr_1 and not attr_2:
             return None
         elif not attr_1 and attr_2:
@@ -145,9 +174,23 @@ class PhxMechanicalDeviceParams:
 
 @dataclass
 class PhxMechanicalDevice:
-    """Base class for PHX Mechanical Devices (heaters, tanks, ventilators, etc...)
+    """Base class for all PHX mechanical devices (heaters, tanks, ventilators, heat pumps, etc.).
 
-    This equipment will be part of a PhxMechanicalSubSystem along with distribution.
+    Each device carries a usage profile describing which loads it serves and
+    a params object holding device-specific performance data. Devices are
+    collected into a PhxMechanicalSystemCollection alongside distribution
+    (piping, ducting).
+
+    Attributes:
+        id_num (int): Auto-incrementing instance number (set in __post_init__).
+        system_type (SystemType): High-level system category (ventilation, boiler, heat pump, etc.).
+            Default: SystemType.ANY.
+        device_type (DeviceType): Specific device classification. Default: DeviceType.ELECTRIC.
+        display_name (str): Human-readable label. Default: "_unnamed_equipment_".
+        unit (float): Device sizing / capacity value. Default: 0.0.
+        percent_coverage (float): Fraction of total load served (0.0-1.0). Default: 0.0.
+        usage_profile (PhxUsageProfile): Load coverage flags and percentages.
+        params (PhxMechanicalDeviceParams): Device performance parameters.
     """
 
     _count: ClassVar[int] = 0

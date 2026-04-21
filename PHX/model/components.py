@@ -18,7 +18,14 @@ from PHX.model.enums.building import (
 
 
 class PhxComponentBase:
-    """Base class with id_num counter for Opaque and Aperture Components"""
+    """Base class with auto-incrementing ID counter for all PHX building components.
+
+    Provides a unique ``id_num`` to every Opaque, Aperture, and Thermal Bridge
+    component created during a session.
+
+    Attributes:
+        _count (ClassVar[int]): Session-level counter shared across all subclasses.
+    """
 
     _count: ClassVar[int] = 0
 
@@ -35,7 +42,36 @@ class PhxComponentBase:
 
 
 class PhxComponentOpaque(PhxComponentBase):
-    """Opaque surface components (wall, roof, floor)."""
+    """An opaque building-envelope surface (wall, roof, or floor).
+
+    Groups one or more polygons that share the same assembly construction,
+    exposure conditions, and face type. May host child aperture components
+    (windows/doors) that punch through the opaque area.
+
+    Attributes:
+        display_name (str): User-facing name for this component. Default: "".
+        face_type (ComponentFaceType): Surface orientation category (wall, roof, floor).
+            Default: ComponentFaceType.WALL.
+        face_opacity (ComponentFaceOpacity): Opacity classification.
+            Default: ComponentFaceOpacity.OPAQUE.
+        color_interior (ComponentColor): Interior-side display color.
+            Default: ComponentColor.EXT_WALL_INNER.
+        color_exterior (ComponentColor): Exterior-side display color.
+            Default: ComponentColor.EXT_WALL_INNER.
+        exposure_exterior (ComponentExposureExterior): Exterior boundary condition
+            (exterior air, ground, etc.). Default: ComponentExposureExterior.EXTERIOR.
+        exposure_interior (int): Interior zone attachment number. Default: 1.
+        interior_attachment_id (int): ID of the adjacent interior zone, or -1 if none.
+            Default: -1.
+        assembly (PhxConstructionOpaque): The opaque construction assembly assigned
+            to this component. Default: new PhxConstructionOpaque().
+        assembly_type_id_num (int): ID reference to the assembly type, or -1 if unset.
+            Default: -1.
+        apertures (list[PhxComponentAperture]): Child aperture components hosted on
+            this surface. Default: [].
+        polygons (list[PhxPolygon]): Geometry polygons defining this component's area.
+            Default: [].
+    """
 
     def __init__(self):
         super().__init__()
@@ -83,6 +119,7 @@ class PhxComponentOpaque(PhxComponentBase):
 
     @property
     def u_value(self) -> float:
+        """Whole-assembly U-value (W/m2K) from the assigned opaque construction."""
         return self.assembly.u_value
 
     @property
@@ -100,36 +137,42 @@ class PhxComponentOpaque(PhxComponentBase):
 
     @property
     def is_shade(self) -> bool:
+        """True if this component is an opaque shading element (no interior zone attachment)."""
         if self.face_opacity != ComponentFaceOpacity.OPAQUE:
             return False
         return self.exposure_interior == -1
 
     @property
     def is_above_grade_wall(self) -> bool:
+        """True if this component is a wall exposed to exterior air (above grade)."""
         if self.face_type != ComponentFaceType.WALL:
             return False
         return self.exposure_exterior == ComponentExposureExterior.EXTERIOR
 
     @property
     def is_below_grade_wall(self) -> bool:
+        """True if this component is a wall exposed to ground (below grade)."""
         if self.face_type != ComponentFaceType.WALL:
             return False
         return self.exposure_exterior == ComponentExposureExterior.GROUND
 
     @property
     def is_above_grade_floor(self) -> bool:
+        """True if this component is a floor exposed to exterior air (e.g. cantilever)."""
         if self.face_type != ComponentFaceType.FLOOR:
             return False
         return self.exposure_exterior == ComponentExposureExterior.EXTERIOR
 
     @property
     def is_below_grade_floor(self) -> bool:
+        """True if this component is a floor exposed to ground (slab-on-grade or basement)."""
         if self.face_type != ComponentFaceType.FLOOR:
             return False
         return self.exposure_exterior == ComponentExposureExterior.GROUND
 
     @property
     def is_roof(self) -> bool:
+        """True if this component is a roof or ceiling surface."""
         return self.face_type == ComponentFaceType.ROOF_CEILING
 
     def add_polygons(self, _input: Collection[geometry.PhxPolygon] | geometry.PhxPolygon) -> None:
@@ -288,19 +331,24 @@ class PhxComponentOpaque(PhxComponentBase):
 
 
 class PhxApertureShadingDimensions(PhxComponentBase):
-    """PHPP old-style shading dimensions data.
+    """PHPP old-style shading dimensions for an aperture element.
 
-    ### Horizon Objects:
-    - d_hori = Distance away from glass
-    - h_hori = Height of the shading from glass bottom edge
+    Stores horizon, reveal, and overhang geometry used by PHPP's simplified
+    shading factor calculation. All distances are in meters.
 
-    ### Shading to the sides (reveal):
-    - d_reveal = Reveal distance 'over' from glass
-    - o_reveal = Reveal depth from glass
-
-    ### Overhand Shading:
-    - d_over = Overhang height 'up' from glass top edge
-    - o_over = Overhang depth from glass
+    Attributes:
+        d_hori (float | None): Vertical distance from the glass bottom edge to the
+            top of the horizon shading object. Default: None.
+        h_hori (float | None): Horizontal distance from the glass to the horizon
+            shading object. Default: None.
+        d_reveal (float | None): Lateral reveal distance from the glass edge.
+            Default: None.
+        o_reveal (float | None): Reveal depth (perpendicular to the glass plane).
+            Default: None.
+        d_over (float | None): Vertical distance from the glass top edge up to the
+            overhang. Default: None.
+        o_over (float | None): Overhang depth (perpendicular to the glass plane).
+            Default: None.
     """
 
     def __init__(self) -> None:
@@ -320,7 +368,24 @@ class PhxApertureShadingDimensions(PhxComponentBase):
 
 
 class PhxApertureElement(PhxComponentBase):
-    """A single sash / element of an Aperture Component."""
+    """A single sash or glazing unit within an aperture component.
+
+    Each aperture (window/door) contains one or more elements representing
+    individual panes or operable sashes. The element carries its own polygon
+    geometry, shading factors, and PHPP-style shading dimensions.
+
+    Attributes:
+        host (PhxComponentAperture): The parent aperture component that owns this element.
+        display_name (str): User-facing name. Default: "".
+        polygon (PhxPolygonRectangular | PhxPolygon | None): The element's planar
+            geometry. None if not yet assigned. Default: None.
+        winter_shading_factor (float): External shading reduction factor for the
+            heating season (0-1). Default: 0.75.
+        summer_shading_factor (float): External shading reduction factor for the
+            cooling season (0-1). Default: 0.75.
+        shading_dimensions (PhxApertureShadingDimensions): PHPP-style horizon, reveal,
+            and overhang dimensions. Default: new PhxApertureShadingDimensions().
+    """
 
     def __init__(self, _host: PhxComponentAperture):
         super().__init__()
@@ -341,6 +406,7 @@ class PhxApertureElement(PhxComponentBase):
 
     @property
     def width(self) -> float:
+        """Width of the element's polygon, or perimeter/4 as fallback for non-rectangular shapes."""
         if not self.polygon:
             return 0.0
 
@@ -351,6 +417,7 @@ class PhxApertureElement(PhxComponentBase):
 
     @property
     def height(self) -> float:
+        """Height of the element's polygon, or perimeter/4 as fallback for non-rectangular shapes."""
         if not self.polygon:
             return 0.0
 
@@ -427,7 +494,35 @@ class PhxApertureElement(PhxComponentBase):
 
 
 class PhxComponentAperture(PhxComponentBase):
-    """An Aperture (window, door) component with one or more 'element' (sash)."""
+    """A transparent building-envelope component (window or door) with one or more sash elements.
+
+    An aperture is always hosted on a parent ``PhxComponentOpaque`` surface. It
+    references a ``PhxConstructionWindow`` for frame/glazing properties and contains
+    one or more ``PhxApertureElement`` objects representing individual sashes or
+    fixed panes.
+
+    Attributes:
+        host (PhxComponentOpaque): The parent opaque component this aperture is installed in.
+        display_name (str): User-facing name. Default: "".
+        face_type (ComponentFaceType): Surface type classification.
+            Default: ComponentFaceType.WINDOW.
+        face_opacity (ComponentFaceOpacity): Opacity classification.
+            Default: ComponentFaceOpacity.TRANSPARENT.
+        color_interior (ComponentColor): Interior-side display color.
+            Default: ComponentColor.WINDOW.
+        color_exterior (ComponentColor): Exterior-side display color.
+            Default: ComponentColor.WINDOW.
+        exposure_interior (int): Interior zone attachment number. Default: 1.
+        exposure_exterior (ComponentExposureExterior): Exterior boundary condition.
+            Default: ComponentExposureExterior.EXTERIOR.
+        interior_attachment_id (int): ID of the adjacent interior zone, or -1 if none.
+            Default: -1.
+        window_type (PhxConstructionWindow): Window construction (frame and glazing
+            properties). Default: new PhxConstructionWindow().
+        variant_type_name (str): Name key used to group apertures by window-type variant.
+            Default: "_unnamed_type_".
+        elements (list[PhxApertureElement]): Child sash/pane elements. Default: [].
+    """
 
     def __init__(self, _host: PhxComponentOpaque) -> None:
         super().__init__()
@@ -492,12 +587,14 @@ class PhxComponentAperture(PhxComponentBase):
 
     @property
     def window_type_id_num(self) -> int:
+        """ID number of the assigned window construction type."""
         return self.window_type.id_num
 
     @property
     def polygons(
         self,
     ) -> list[geometry.PhxPolygonRectangular | geometry.PhxPolygon]:
+        """Collected polygons from all child elements that have geometry assigned."""
         return [e.polygon for e in self.elements if e.polygon]
 
     @property
@@ -617,7 +714,24 @@ class PhxComponentAperture(PhxComponentBase):
 
 
 class PhxComponentThermalBridge(PhxComponentBase):
-    """A single Thermal Bridge Element."""
+    """A linear thermal bridge element in the building envelope.
+
+    Represents a single thermal bridge with its psi-value (W/mK), length, and
+    temperature factor (fRsi). Thermal bridges are grouped by type (ambient,
+    perimeter, floor slab, etc.) for PHPP/WUFI reporting. Merging two bridges
+    via ``+`` produces a length-weighted average psi-value.
+
+    Attributes:
+        identifier (str | None): Unique string identifier. Default: "".
+        quantity (float | None): Number of identical bridges (multiplier). Default: 0.0.
+        group_type (ThermalBridgeType | None): Classification category for PH reporting.
+            Default: ThermalBridgeType.AMBIENT.
+        display_name (str | None): User-facing name. Default: "".
+        psi_value (float | None): Linear thermal transmittance in W/mK. Default: 0.1.
+        fRsi_value (float | None): Temperature factor at the interior surface (0-1).
+            Default: 0.75.
+        length (float | None): Length of the thermal bridge in meters. Default: 0.0.
+    """
 
     def __init__(self):
         super().__init__()
@@ -659,6 +773,7 @@ class PhxComponentThermalBridge(PhxComponentBase):
 
     @property
     def group_number(self) -> int:
+        """Integer group number from the thermal bridge type, or 15 (default) if unset."""
         if self.group_type:
             return self.group_type.value
         else:

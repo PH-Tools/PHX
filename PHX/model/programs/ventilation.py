@@ -12,7 +12,19 @@ from PHX.model.schedules import ventilation as vent_schedules
 
 @dataclass
 class PhxProgramVentilation:
-    """A PHX Program for the Fresh-Air Ventilation with a load and schedule."""
+    """Ventilation program pairing fresh-air airflow rates with a utilization schedule.
+
+    Combines a PhxLoadVentilation (supply/extract/transfer airflow rates) with a
+    PhxScheduleVentilation (operating periods at various speed levels) to define
+    the complete ventilation profile for a PHX zone or space.
+
+    Attributes:
+        display_name (str): Human-readable program name. Default: "Unnamed_Ventilation_Program".
+        load (PhxLoadVentilation): The ventilation airflow rate load.
+            Default: empty PhxLoadVentilation.
+        schedule (PhxScheduleVentilation): The ventilation utilization schedule with
+            operating periods. Default: empty PhxScheduleVentilation.
+    """
 
     display_name: str = "Unnamed_Ventilation_Program"
     load: vent_loads.PhxLoadVentilation = field(default_factory=vent_loads.PhxLoadVentilation)
@@ -20,5 +32,5 @@ class PhxProgramVentilation:
 
     @property
     def has_ventilation_airflow(self) -> bool:
-        """Returns True if the load has any amount of ventilation airflow."""
+        """Return True if the load has any non-zero ventilation airflow."""
         return self.load.total_airflow > 0.0

@@ -1,6 +1,10 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Mechanical Cooling Devices and Parameters."""
+"""PHX cooling parameter classes for heat pump cooling modes.
+
+Defines parameter sets for each cooling distribution strategy: supply-air
+ventilation, recirculation, dehumidification, and radiant panel.
+"""
 
 from __future__ import annotations
 
@@ -14,6 +18,16 @@ from PHX.model.hvac import _base
 
 @dataclass
 class PhxCoolingVentilationParams(_base.PhxMechanicalDeviceParams):
+    """Parameters for cooling via the ventilation supply air (cooling coil in AHU).
+
+    Attributes:
+        used (bool): True if this cooling mode is active. Default: False.
+        single_speed (bool): True if the unit is single-speed. Default: False.
+        min_coil_temp (float): Minimum cooling coil surface temperature (C). Default: 12.
+        capacity (float): Cooling capacity (kW). Default: 10.
+        annual_COP (float): Annual coefficient of performance (W/W). Default: 4.
+    """
+
     used: bool = False
     single_speed: bool = False
     min_coil_temp: float = 12  # C
@@ -22,6 +36,7 @@ class PhxCoolingVentilationParams(_base.PhxMechanicalDeviceParams):
 
     @property
     def total_system_perf_ratio(self):
+        """Reciprocal of annual COP (kW-input / kW-cooling)."""
         return 1 / self.annual_COP
 
     def __add__(self, other: PhxCoolingVentilationParams) -> PhxCoolingVentilationParams:
@@ -40,6 +55,18 @@ class PhxCoolingVentilationParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
+    """Parameters for cooling via recirculated air (fan coil, mini-split, etc.).
+
+    Attributes:
+        used (bool): True if this cooling mode is active. Default: False.
+        single_speed (bool): True if the unit is single-speed. Default: False.
+        min_coil_temp (float): Minimum cooling coil surface temperature (C). Default: 12.
+        capacity (float): Cooling capacity (kW). Default: 10.
+        annual_COP (float): Annual coefficient of performance (W/W). Default: 4.
+        flow_rate_m3_hr (float): Recirculation air flow rate (m3/h). Default: 100.
+        flow_rate_variable (bool): True if the flow rate is variable-speed. Default: True.
+    """
+
     used: bool = False
     single_speed: bool = False
     min_coil_temp: float = 12  # C
@@ -50,6 +77,7 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
 
     @property
     def total_system_perf_ratio(self):
+        """Reciprocal of annual COP (kW-input / kW-cooling)."""
         return 1 / self.annual_COP
 
     def __add__(self, other: PhxCoolingRecirculationParams) -> PhxCoolingRecirculationParams:
@@ -70,12 +98,21 @@ class PhxCoolingRecirculationParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
+    """Parameters for active dehumidification cooling.
+
+    Attributes:
+        used (bool): True if this cooling mode is active. Default: False.
+        annual_COP (float): Annual coefficient of performance (W/W). Default: 4.
+        useful_heat_loss (bool): True if rejected heat is recovered. Default: False.
+    """
+
     used: bool = False
     annual_COP: float = 4  # W/W
     useful_heat_loss: bool = False
 
     @property
     def total_system_perf_ratio(self):
+        """Reciprocal of annual COP (kW-input / kW-cooling)."""
         return 1 / self.annual_COP
 
     def __add__(self, other: PhxCoolingDehumidificationParams) -> PhxCoolingDehumidificationParams:
@@ -92,11 +129,19 @@ class PhxCoolingDehumidificationParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxCoolingPanelParams(_base.PhxMechanicalDeviceParams):
+    """Parameters for radiant cooling panel distribution.
+
+    Attributes:
+        used (bool): True if this cooling mode is active. Default: False.
+        annual_COP (float): Annual coefficient of performance (W/W). Default: 4.
+    """
+
     used: bool = False
     annual_COP: float = 4  # W/W
 
     @property
     def total_system_perf_ratio(self):
+        """Reciprocal of annual COP (kW-input / kW-cooling)."""
         return 1 / self.annual_COP
 
     def __add__(self, other: PhxCoolingPanelParams) -> PhxCoolingPanelParams:
@@ -122,6 +167,18 @@ AnyPhxCoolingParamsType = Union[
 
 @dataclass
 class PhxCoolingParams:
+    """Collection of cooling parameters across all four distribution strategies.
+
+    A heat pump device holds one PhxCoolingParams instance. Each sub-param
+    has a `used` flag; if none are active, the collection is falsy.
+
+    Attributes:
+        ventilation (PhxCoolingVentilationParams): Supply-air cooling parameters.
+        recirculation (PhxCoolingRecirculationParams): Recirculated-air cooling parameters.
+        dehumidification (PhxCoolingDehumidificationParams): Active dehumidification parameters.
+        panel (PhxCoolingPanelParams): Radiant cooling panel parameters.
+    """
+
     ventilation: PhxCoolingVentilationParams = field(default_factory=PhxCoolingVentilationParams)
     recirculation: PhxCoolingRecirculationParams = field(default_factory=PhxCoolingRecirculationParams)
     dehumidification: PhxCoolingDehumidificationParams = field(default_factory=PhxCoolingDehumidificationParams)

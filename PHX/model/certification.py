@@ -16,6 +16,13 @@ from PHX.model.enums.hvac import PhxNighttimeVentilationControl, PhxSummerBypass
 
 @dataclass
 class PhxSetpoints:
+    """Indoor temperature setpoints for heating and cooling seasons.
+
+    Attributes:
+        winter (float): Heating-season indoor air temperature setpoint in deg. C. Default: 20.0.
+        summer (float): Cooling-season indoor air temperature setpoint in deg. C. Default: 25.0.
+    """
+
     winter: float = 20.0  # deg. C
     summer: float = 25.0  # deg. C
 
@@ -28,6 +35,31 @@ class PhxSetpoints:
 
 @dataclass
 class PhxSummerVentilation:
+    """Summer ventilation strategy parameters for overheating prevention.
+
+    Configures daytime and nighttime ventilation rates, fan power, and control
+    modes used in the PH energy balance summer cooling calculation.
+
+    Attributes:
+        ventilation_system_ach (float | None): Mechanical ventilation air change rate in ACH. Default: None.
+        summer_bypass_mode (PhxSummerBypassMode): HRV/ERV summer bypass operating mode. Default: ALWAYS.
+        daytime_extract_system_ach (float): Daytime exhaust ventilation air change rate in ACH. Default: 0.0.
+        daytime_extract_system_fan_power_wh_m3 (float): Daytime exhaust fan specific power in Wh/m3.
+            Default: 0.0.
+        daytime_window_ach (float): Daytime natural ventilation via windows in ACH. Default: 0.0.
+        nighttime_extract_system_ach (float): Nighttime exhaust ventilation air change rate in ACH.
+            Default: 0.0.
+        nighttime_extract_system_fan_power_wh_m3 (float): Nighttime exhaust fan specific power in Wh/m3.
+            Default: 0.0.
+        nighttime_extract_system_heat_fraction (float): Fraction of nighttime exhaust heat recovered.
+            Default: 0.0.
+        nighttime_extract_system_control (PhxNighttimeVentilationControl): Nighttime ventilation control
+            strategy. Default: TEMPERATURE_CONTROLLED.
+        nighttime_window_ach (float): Nighttime natural ventilation via windows in ACH. Default: 0.0.
+        nighttime_minimum_indoor_temp_C (float): Minimum indoor temperature threshold for nighttime
+            ventilation in deg. C. Default: 0.0.
+    """
+
     ventilation_system_ach: float | None = None
     summer_bypass_mode: PhxSummerBypassMode = PhxSummerBypassMode.ALWAYS
     daytime_extract_system_ach: float = 0.0
@@ -80,6 +112,31 @@ class PhxSummerVentilation:
 
 @dataclass
 class PhxPhBuildingData:
+    """General building-level data used by both PHI and Phius certification paths.
+
+    Stores airtightness metrics, occupancy parameters, setpoints, mechanical room
+    conditions, foundation elements, wind exposure, and summer ventilation strategy.
+
+    Attributes:
+        id_num (int): Auto-incrementing instance identifier (set in __post_init__).
+        num_of_units (int | None): Number of dwelling units in the building. Default: 1.
+        num_of_floors (int | None): Number of above-grade stories. Default: 1.
+        occupancy_setting_method (int): Occupancy calculation method (1=Standard, 2=Design). Default: 2.
+        airtightness_q50 (float): Envelope airtightness at 50 Pa in m3/(hr-m2). Default: 1.0.
+        airtightness_n50 (float): Volume-based airtightness at 50 Pa in ACH. Default: 1.0.
+        wind_coefficient_f (float): Wind shielding coefficient f for infiltration calculation. Default: 15.
+        setpoints (PhxSetpoints): Indoor temperature setpoints for heating and cooling. Default: PhxSetpoints().
+        mech_room_temp (float): Mechanical room temperature in deg. C. Default: 20.0.
+        non_combustible_materials (bool): Whether the building uses only non-combustible materials.
+            Default: False.
+        foundations (list[PhxFoundation]): Collection of foundation elements for ground heat loss.
+            Default: [].
+        building_exposure_type (WindExposureType): Wind exposure classification for infiltration.
+            Default: SEVERAL_SIDES_EXPOSED_NO_SCREENING.
+        summer_ventilation (PhxSummerVentilation): Summer ventilation strategy configuration.
+            Default: PhxSummerVentilation().
+    """
+
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
 
@@ -101,6 +158,16 @@ class PhxPhBuildingData:
         self.id_num = self.__class__._count
 
     def add_foundation(self, _input: ground.PhxFoundation | None) -> None:
+        """Append a foundation element to this building's foundation collection.
+
+        Arguments:
+        ----------
+            * _input (PhxFoundation | None): The foundation to add. None values are ignored.
+
+        Returns:
+        --------
+            * None
+        """
         if not _input:
             return
         self.foundations.append(_input)
@@ -148,6 +215,19 @@ class PhxPhBuildingData:
 # -----------------------------------------------------------------------------
 @dataclass
 class PhxPhiusCertificationCriteria:
+    """Phius certification performance target thresholds.
+
+    Stores the annual demand and peak load limits that the building must
+    meet for Phius certification.
+
+    Attributes:
+        ph_selection_target_data (int): Target data selection mode. Default: 2.
+        phius_annual_heating_demand (float): Annual heating demand limit in kWh/(m2a). Default: 15.0.
+        phius_annual_cooling_demand (float): Annual cooling demand limit in kWh/(m2a). Default: 15.0.
+        phius_peak_heating_load (float): Peak heating load limit in W/m2. Default: 10.0.
+        phius_peak_cooling_load (float): Peak cooling load limit in W/m2. Default: 10.0.
+    """
+
     ph_selection_target_data: int = 2
 
     phius_annual_heating_demand: float = 15.0
@@ -168,6 +248,21 @@ class PhxPhiusCertificationCriteria:
 
 @dataclass
 class PhxPhiusCertificationSettings:
+    """Phius certification program and building classification settings.
+
+    Attributes:
+        phius_building_certification_program (PhiusCertificationProgram): Phius program version
+            (e.g. CORE, ZERO). Default: PHIUS_2021_CORE.
+        phius_building_category_type (PhiusCertificationBuildingCategoryType): Residential vs.
+            non-residential classification. Default: RESIDENTIAL_BUILDING.
+        phius_building_use_type (PhiusCertificationBuildingUseType): Building use type.
+            Default: RESIDENTIAL.
+        phius_building_status (PhiusCertificationBuildingStatus): Project phase status.
+            Default: IN_PLANNING.
+        phius_building_type (PhiusCertificationBuildingType): New construction vs. retrofit.
+            Default: NEW_CONSTRUCTION.
+    """
+
     phius_building_certification_program = phius_certification.PhiusCertificationProgram.PHIUS_2021_CORE
     phius_building_category_type = phius_certification.PhiusCertificationBuildingCategoryType.RESIDENTIAL_BUILDING
     phius_building_use_type = phius_certification.PhiusCertificationBuildingUseType.RESIDENTIAL
@@ -188,6 +283,22 @@ class PhxPhiusCertificationSettings:
 
 @dataclass
 class PhxPhiusCertification:
+    """Top-level container for all Phius certification data.
+
+    Groups the performance criteria, program settings, building-level PH data,
+    and shading configuration for a Phius-certified project.
+
+    Attributes:
+        phius_certification_criteria (PhxPhiusCertificationCriteria): Performance target thresholds.
+            Default: PhxPhiusCertificationCriteria().
+        phius_certification_settings (PhxPhiusCertificationSettings): Program and building classification.
+            Default: PhxPhiusCertificationSettings().
+        ph_building_data (PhxPhBuildingData): General building data (airtightness, foundations, etc.).
+            Default: PhxPhBuildingData().
+        use_monthly_shading (bool): Whether to use monthly shading factors instead of annual.
+            Default: True.
+    """
+
     phius_certification_criteria: PhxPhiusCertificationCriteria = field(default_factory=PhxPhiusCertificationCriteria)
     phius_certification_settings: PhxPhiusCertificationSettings = field(default_factory=PhxPhiusCertificationSettings)
 
@@ -208,6 +319,29 @@ class PhxPhiusCertification:
 # -----------------------------------------------------------------------------
 @dataclass
 class PhxPhiCertificationSettings:
+    """PHI (Passive House Institute) certification program settings for PHPP 9+.
+
+    Configures the building category, use type, internal heat gains profile,
+    certification class, primary energy type, and EnerPHit/retrofit settings.
+
+    Attributes:
+        phi_building_category_type (Enum): Residential vs. non-residential classification.
+            Default: RESIDENTIAL_BUILDING.
+        phi_building_use_type (Enum): Building use type (dwelling, office, etc.).
+            Default: DWELLING.
+        phi_building_ihg_type (Enum): Internal heat gains profile type. Default: STANDARD.
+        phi_building_occupancy_type (Enum): Occupancy density profile. Default: STANDARD.
+        phi_certification_type (Enum): Certification target (Passive House, EnerPHit, etc.).
+            Default: PASSIVE_HOUSE.
+        phi_certification_class (Enum): Certification class (Classic, Plus, Premium).
+            Default: CLASSIC.
+        phi_pe_type (Enum): Primary energy evaluation type (PER or PE). Default: PER.
+        phi_enerphit_type (Enum): EnerPHit compliance method (by demand or by component).
+            Default: BY_DEMAND.
+        phi_retrofit_type (Enum): Retrofit classification (new building, retrofit, step-by-step).
+            Default: NEW_BUILDING.
+    """
+
     phi_building_category_type: Enum = phi_certification_phpp_9.PhiCertBuildingCategoryType.RESIDENTIAL_BUILDING
     phi_building_use_type: Enum = phi_certification_phpp_9.PhiCertBuildingUseType.DWELLING
     phi_building_ihg_type: Enum = phi_certification_phpp_9.PhiCertIHGType.STANDARD
@@ -241,6 +375,14 @@ class PhxPhiCertificationSettings:
 
 @dataclass
 class PhxPhiCertification:
+    """Top-level container for PHI (Passive House Institute) certification data.
+
+    Attributes:
+        phi_certification_settings (PhxPhiCertificationSettings): PHI program and building settings.
+            Default: PhxPhiCertificationSettings().
+        version (int): PHPP version number (e.g. 9, 10). Default: 9.
+    """
+
     phi_certification_settings: PhxPhiCertificationSettings = field(default_factory=PhxPhiCertificationSettings)
     version: int = 9
 

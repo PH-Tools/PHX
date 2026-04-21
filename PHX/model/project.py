@@ -26,6 +26,18 @@ from PHX.model.utilization_patterns import (
 
 @dataclass
 class WufiPlugin:
+    """WUFI-Passive plugin configuration for a variant.
+
+    Controls whether a WUFI plugin DLL is loaded when the project is opened
+    in WUFI-Passive.
+
+    Attributes:
+        insert_plugin (bool): Whether to insert the plugin on load.
+            Default: False.
+        name_dll (Any | None): Name of the plugin DLL file. Default: None.
+        status_plugin (Any | None): Plugin status flag. Default: None.
+    """
+
     insert_plugin: bool = False
     name_dll: Any | None = None
     status_plugin: Any | None = None
@@ -33,6 +45,25 @@ class WufiPlugin:
 
 @dataclass
 class PhxVariant:
+    """A single design variant within a PHX project.
+
+    Each variant holds one building model, certification settings (PHI and Phius),
+    site/climate data, and one or more mechanical system collections. In WUFI-Passive,
+    variants appear as separate tabs allowing side-by-side comparison of design options.
+
+    A default mechanical collection is created automatically on initialization.
+
+    Attributes:
+        id_num (int): Auto-incrementing variant identifier.
+        name (str | None): Display name. Default: "unnamed_variant".
+        remarks (str | None): Free-text notes. Default: None.
+        plugin (WufiPlugin | None): WUFI plugin configuration.
+        building (PhxBuilding): The building geometry and zone data.
+        phius_cert (PhxPhiusCertification): Phius certification settings.
+        phi_cert (PhxPhiCertification): PHI certification settings.
+        site (PhxSite): Site location, climate, and energy factor data.
+    """
+
     _count: ClassVar[int] = 0
     id_num: int = field(init=False, default=0)
     name: str | None = "unnamed_variant"
@@ -174,6 +205,18 @@ class PhxVariant:
 
 @dataclass
 class ProjectData_Agent:
+    """Contact information for a project stakeholder (customer, owner, designer, etc.).
+
+    Attributes:
+        name (str | None): Full name. Default: None.
+        street (str | None): Street address. Default: None.
+        city (str | None): City name. Default: None.
+        post_code (str | None): Postal / ZIP code. Default: None.
+        telephone (str | None): Phone number. Default: None.
+        email (str | None): Email address. Default: None.
+        license_number (str | None): Professional license number. Default: None.
+    """
+
     name: str | None = None
     street: str | None = None
     city: str | None = None
@@ -185,6 +228,16 @@ class ProjectData_Agent:
 
 @dataclass
 class PhxProjectDate:
+    """Timestamp for a PHX project, defaulting to the current date and time.
+
+    Attributes:
+        year (int): Four-digit year.
+        month (int): Month (1-12).
+        day (int): Day of month (1-31).
+        hour (int): Hour (0-23).
+        minutes (int): Minutes (0-59).
+    """
+
     year: int = datetime.now().year
     month: int = datetime.now().month
     day: int = datetime.now().day
@@ -194,6 +247,20 @@ class PhxProjectDate:
 
 @dataclass
 class PhxProjectData:
+    """Project-level metadata including stakeholder contacts and dates.
+
+    Attributes:
+        customer (ProjectData_Agent): Customer / client contact information.
+        building (ProjectData_Agent): Building address and contact.
+        owner (ProjectData_Agent): Building owner contact information.
+        designer (ProjectData_Agent): Project designer / architect contact.
+        project_date (PhxProjectDate): Project creation timestamp.
+        owner_is_client (bool): Whether the owner is also the client.
+            Default: False.
+        year_constructed (int): Year the building was constructed. Default: 0.
+        image (bool | None): Whether an image is attached. Default: None.
+    """
+
     customer: ProjectData_Agent = field(default_factory=ProjectData_Agent)
     building: ProjectData_Agent = field(default_factory=ProjectData_Agent)
     owner: ProjectData_Agent = field(default_factory=ProjectData_Agent)
@@ -207,6 +274,35 @@ class PhxProjectData:
 
 @dataclass
 class PhxProject:
+    """Top-level PHX project container.
+
+    Holds the project-wide collections of construction assemblies, window types,
+    shade types, utilization pattern schedules, and one or more design variants.
+    This is the root object for any PHX model.
+
+    Attributes:
+        name (str): Project display name. Default: "unnamed_project".
+        assembly_types (dict[str, PhxConstructionOpaque]): Opaque construction
+            assemblies keyed by identifier.
+        window_types (dict[str, PhxConstructionWindow]): Window constructions
+            keyed by identifier.
+        shade_types (dict[str, PhxWindowShade]): Window shade definitions
+            keyed by identifier.
+        utilization_patterns_ventilation (UtilizationPatternCollection_Ventilation):
+            Project-level ventilation schedule collection.
+        utilization_patterns_occupancy (UtilizationPatternCollection_Occupancy):
+            Project-level occupancy schedule collection.
+        utilization_patterns_lighting (UtilizationPatternCollection_Lighting):
+            Project-level lighting schedule collection.
+        variants (list[PhxVariant]): Design variants in this project.
+        project_data (PhxProjectData): Project metadata and stakeholder contacts.
+        data_version (int): WUFI data format version. Default: 48.
+        unit_system (int): Unit system (1 = SI). Default: 1.
+        program_version (str): WUFI program version string. Default: "3.2.0.1".
+        scope (int): Project scope flag. Default: 3.
+        visualized_geometry (int): Geometry visualization mode. Default: 2.
+    """
+
     name: str = "unnamed_project"
     assembly_types: dict[str, PhxConstructionOpaque] = field(default_factory=dict)
     window_types: dict[str, PhxConstructionWindow] = field(default_factory=dict)

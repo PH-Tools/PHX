@@ -26,6 +26,43 @@ from PHX.model.programs import occupancy
 
 @dataclass
 class PhxZone:
+    """A single thermal zone within a PHX building model.
+
+    Represents a conditioned or unconditioned zone with its own volume, floor area,
+    occupancy, and collection of spaces. Zones contain thermal bridges, electrical
+    equipment, and exhaust ventilators. In WUFI, zones may be simulated or attached
+    (unconditioned) with a reduction factor.
+
+    Attributes:
+        display_name (str): The zone display name. Default: "".
+        volume_gross_mode (WufiVolumeGrossMode): Method for determining gross volume.
+            Default: FROM_VISUALIZED_COMPONENTS.
+        volume_gross (float): Gross zone volume in m3. Default: 0.0.
+        volume_net_mode (WufiVolumeNetMode): Method for determining net volume.
+            Default: USER_DEFINED.
+        volume_net (float): Net zone volume in m3. Default: 0.0.
+        weighted_floor_area_mode (WufiWeightedFloorAreaMode): Method for determining weighted floor area.
+            Default: USER_DEFINED.
+        weighted_net_floor_area (float): Weighted net floor area (TFA/iCFA) in m2. Default: 0.0.
+        clearance_height (float): Interior clear height in meters. Default: 2.5.
+        res_occupant_quantity (float): Number of residential occupants. Default: 0.0.
+        res_number_bedrooms (int): Number of bedrooms (residential). Default: 0.
+        res_number_dwellings (int): Number of dwelling units (residential). Default: 0.
+        specific_heat_capacity (SpecificHeatCapacityType): Thermal mass classification.
+            Default: LIGHTWEIGHT.
+        specific_heat_capacity_wh_m2k (int): Specific heat capacity in Wh/m2K. Default: 60.
+        zone_type (ZoneType): Whether the zone is simulated or non-simulated. Default: SIMULATED.
+        attached_zone_reduction_factor (float): Temperature reduction factor for attached zones. Default: 1.0.
+        spaces (list[PhxSpace]): The collection of spaces within the zone.
+        occupancy (Optional[PhxProgramOccupancy]): Occupancy program data, if any.
+        lighting (Any): Lighting data, if any.
+        elec_equipment_collection (PhxElectricDeviceCollection): Collection of electrical devices.
+        exhaust_ventilator_collection (PhxExhaustVentilatorCollection): Collection of exhaust ventilators.
+        tfa_override (Optional[float]): User override for TFA (Treated Floor Area) in m2.
+        icfa_override (Optional[float]): User override for iCFA (interior Conditioned Floor Area) in m2.
+        merge_spaces_by_erv (bool): If True, spaces are merged by ERV assignment during XML export. Default: False.
+    """
+
     _count: ClassVar[int] = 0
     display_name: str = ""
     volume_gross_mode: WufiVolumeGrossMode = WufiVolumeGrossMode.FROM_VISUALIZED_COMPONENTS
@@ -140,7 +177,16 @@ class PhxZone:
 
 @dataclass
 class PhxBuilding:
-    """PHX Building Class"""
+    """The building-level container within a PHX project variant.
+
+    Holds all envelope components (opaque, aperture, shading) and thermal zones. Opaque
+    components store their apertures internally, so only opaque and shade components are
+    stored directly. Provides methods for merging components by assembly, querying areas,
+    and accessing all geometry.
+
+    Attributes:
+        zones (list[PhxZone]): The thermal zones in the building.
+    """
 
     # -- Only opaque components (and shades) are stored in the _components list
     # -- as the apertures are stored in the opaque components themselves
@@ -313,6 +359,7 @@ class PhxBuilding:
 
     @property
     def aperture_components_horizontal(self) -> list[PhxComponentAperture]:
+        """Return all aperture components in the building (currently unfiltered)."""
         return [ap for ap in self.aperture_components]
 
     @property

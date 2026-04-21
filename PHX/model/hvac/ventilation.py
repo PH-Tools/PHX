@@ -1,6 +1,10 @@
 # -*- Python Version: 3.10 -*-
 
-"""PHX Mechanical Ventilation Devices"""
+"""PHX mechanical ventilation device classes.
+
+Includes balanced ventilation (HRV/ERV) devices and point-exhaust
+ventilators (range hoods, dryers, user-defined).
+"""
 
 from __future__ import annotations
 
@@ -13,6 +17,8 @@ from PHX.model.hvac import _base
 
 @dataclass
 class PhxDeviceVentilation(_base.PhxMechanicalDevice):
+    """Base class for all PHX balanced ventilation devices (HRV/ERV)."""
+
     def __post_init__(self):
         super().__post_init__()
         self.usage_profile.ventilation = True
@@ -23,6 +29,18 @@ class PhxDeviceVentilation(_base.PhxMechanicalDevice):
 
 @dataclass
 class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
+    """Performance parameters for a balanced ventilation unit (HRV/ERV).
+
+    Attributes:
+        sensible_heat_recovery (float): Sensible heat recovery efficiency (0.0-1.0). Default: 0.0.
+        latent_heat_recovery (float): Latent (moisture) recovery efficiency (0.0-1.0). Default: 0.0.
+        quantity (int): Number of identical ventilation units. Default: 1.
+        electric_efficiency (float): Specific fan power / electric efficiency (Wh/m3). Default: 0.55.
+        frost_protection_reqd (bool): Whether frost/defrost protection is required. Default: True.
+        temperature_below_defrost_used (float): Outdoor temp (C) below which defrost activates.
+            Default: -5.0.
+    """
+
     _sensible_heat_recovery: float = 0.0
     _latent_heat_recovery: float = 0.0
     _quantity: int = 1
@@ -100,6 +118,14 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
 
 @dataclass
 class PhxDeviceVentilator(PhxDeviceVentilation):
+    """A balanced ventilation unit (HRV or ERV) with sensible/latent recovery.
+
+    Attributes:
+        system_type (SystemType): Always SystemType.VENTILATION.
+        device_type (DeviceType): Always DeviceType.VENTILATION.
+        params (PhxDeviceVentilatorParams): HRV/ERV performance parameters.
+    """
+
     system_type: SystemType = field(init=False, default=SystemType.VENTILATION)
     device_type: DeviceType = field(init=False, default=DeviceType.VENTILATION)
     params: PhxDeviceVentilatorParams = field(default_factory=PhxDeviceVentilatorParams)
@@ -118,6 +144,14 @@ class PhxDeviceVentilator(PhxDeviceVentilation):
 
 @dataclass
 class PhxExhaustVentilatorParams(_base.PhxMechanicalDeviceParams):
+    """Performance parameters for a point-exhaust ventilator (range hood, dryer, etc.).
+
+    Attributes:
+        exhaust_type (PhxExhaustVentType): Category of exhaust device. Default: KITCHEN_HOOD.
+        annual_runtime_minutes (float): Total annual operating time (minutes). Default: 0.0.
+        exhaust_flow_rate_m3h (float): Exhaust air flow rate (m3/h). Default: 0.0.
+    """
+
     _exhaust_type: PhxExhaustVentType = PhxExhaustVentType.KITCHEN_HOOD
     _annual_runtime_minutes: float = 0.0
     _exhaust_flow_rate_m3h: float = 0.0
@@ -202,6 +236,14 @@ class PhxExhaustVentilatorBase(_base.PhxMechanicalDevice):
 
 @dataclass
 class PhxExhaustVentilatorRangeHood(PhxExhaustVentilatorBase):
+    """A kitchen range-hood exhaust ventilator.
+
+    Attributes:
+        system_type (SystemType): Always SystemType.VENTILATION.
+        device_type (DeviceType): Always DeviceType.VENTILATION.
+        params (PhxExhaustVentilatorParams): Exhaust parameters (type set to KITCHEN_HOOD).
+    """
+
     system_type: SystemType = field(init=False, default=SystemType.VENTILATION)
     device_type: DeviceType = field(init=False, default=DeviceType.VENTILATION)
     params: PhxExhaustVentilatorParams = field(default_factory=PhxExhaustVentilatorParams)
@@ -224,6 +266,14 @@ class PhxExhaustVentilatorRangeHood(PhxExhaustVentilatorBase):
 
 @dataclass
 class PhxExhaustVentilatorDryer(PhxExhaustVentilatorBase):
+    """A clothes-dryer exhaust ventilator.
+
+    Attributes:
+        system_type (SystemType): Always SystemType.VENTILATION.
+        device_type (DeviceType): Always DeviceType.VENTILATION.
+        params (PhxExhaustVentilatorParams): Exhaust parameters (type set to DRYER).
+    """
+
     system_type: SystemType = field(init=False, default=SystemType.VENTILATION)
     device_type: DeviceType = field(init=False, default=DeviceType.VENTILATION)
     params: PhxExhaustVentilatorParams = field(default_factory=PhxExhaustVentilatorParams)
@@ -245,6 +295,14 @@ class PhxExhaustVentilatorDryer(PhxExhaustVentilatorBase):
 
 @dataclass
 class PhxExhaustVentilatorUserDefined(PhxExhaustVentilatorBase):
+    """A user-defined point-exhaust ventilator.
+
+    Attributes:
+        system_type (SystemType): Always SystemType.VENTILATION.
+        device_type (DeviceType): Always DeviceType.VENTILATION.
+        params (PhxExhaustVentilatorParams): Exhaust parameters (type set to USER_DEFINED).
+    """
+
     system_type: SystemType = field(init=False, default=SystemType.VENTILATION)
     device_type: DeviceType = field(init=False, default=DeviceType.VENTILATION)
     params: PhxExhaustVentilatorParams = field(default_factory=PhxExhaustVentilatorParams)
