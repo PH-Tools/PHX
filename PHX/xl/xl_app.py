@@ -24,18 +24,24 @@ from PHX.xl.xl_typing import (
 
 
 class ReadRowsError(Exception):
+    """Raised when the row_start value exceeds row_end in an Excel range read."""
+
     def __init__(self, row_start, row_end):
         self.msg = f"Error: row_start should be less than " f"row_end. Got {row_start}, {row_end}"
         super().__init__(self.msg)
 
 
 class NoActiveExcelRunningError(Exception):
+    """Raised when no active instance of Excel is found running."""
+
     def __init__(self):
         self.msg = "\n\tError: No active instance of Excel running?" "\n\tPlease open Excel and try again."
         super().__init__(self.msg)
 
 
 class ReadMultipleColumnsError(Exception):
+    """Raised when read_multiple_columns is called with identical start and end columns."""
+
     def __init__(self, _c1, _c2):
         self.msg = (
             f'\n\tError: Cannot use "read_multiple_columns()" with _col_start={_c1}'
@@ -45,6 +51,8 @@ class ReadMultipleColumnsError(Exception):
 
 
 class WriteValueError(Exception):
+    """Raised when writing a value to an Excel cell fails."""
+
     def __init__(self, _value, _range, _worksheet, _e):
         self.msg = (
             f"\n\n\tSomething went wrong trying to write the value: '{_value}' to the "
@@ -56,6 +64,8 @@ class WriteValueError(Exception):
 
 
 class XlReadException(Exception):
+    """Raised when get_single_data_item is called with a multi-cell range."""
+
     def __init__(self, _range: str):
         self.msg = (
             f"\n\tError: 'get_single_data_item()' can only be used on a"
@@ -65,6 +75,8 @@ class XlReadException(Exception):
 
 
 class NoSuchFileError(Exception):
+    """Raised when the specified Excel file cannot be found on disk."""
+
     def __init__(self, _file: pathlib.Path):
         self.msg = f"\n\tError: Cannot locate the file \n{_file}?"
         super().__init__(self.msg)

@@ -13,8 +13,12 @@ def write_metr_json_file(
 
     Arguments:
     ----------
-        * _file_path: The target file path.
-        * _json_text: The JSON text to write.
+        * _file_path (str | pathlib.Path): The target file path.
+        * _json_text (str): The JSON text to write.
+
+    Returns:
+    --------
+        * None
     """
     file_path = pathlib.Path(_file_path)
     file_path.write_text(_json_text, encoding="utf-8")

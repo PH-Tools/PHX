@@ -14,6 +14,8 @@ from PHX.to_METr_JSON import metr_builder, metr_json_to_file
 
 
 class InputFileError(Exception):
+    """Raised when the specified HBJSON source file cannot be found."""
+
     def __init__(self, path) -> None:
         self.msg = f"\nError: Cannot find HBJSON file: {path}"
         super().__init__(self.msg)

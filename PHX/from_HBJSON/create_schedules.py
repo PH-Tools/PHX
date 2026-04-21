@@ -364,6 +364,19 @@ def add_all_HB_Model_occupancy_schedules_to_PHX_Project(_project: project.PhxPro
 
 
 def add_all_HB_Model_lighting_schedules_to_PHX_Project(_project: project.PhxProject, _hb_model: model.Model) -> None:
+    """Add all the Room's Lighting Schedules to the project's Collection.
+
+    Arguments:
+    ----------
+        * _project (project.PhxProject): The PHX-Project to add the new
+            Lighting Schedules to.
+        * _hb_model (model.Model): The Honeybee Model to build the
+            new Lighting Schedules from.
+
+    Returns:
+    --------
+        * None
+    """
     for hb_room in _hb_model.rooms:
         try:
             lighting_schedule = get_lighting_schedule(hb_room)

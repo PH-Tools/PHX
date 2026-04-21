@@ -504,21 +504,25 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
 
 
 def check_room_has_spaces(_hb_room: room.Room) -> None:
+    """Verify that an HB Room has at least one PH Space defined (currently a no-op check)."""
     rm_prop_ph: RoomPhProperties = _hb_room.properties.ph
     if len(rm_prop_ph.spaces) == 0:
         pass
 
 
 def merge_foundations(_hb_rooms: list[room.Room]) -> dict[str, PhFoundation]:
-    """
+    """Return unique PH foundations from a list of HB Rooms, grouped by identifier.
+
+    WUFI-Passive only supports up to 3 foundation types per building segment.
+    Logs a warning if more than 3 are found.
 
     Arguments:
     ----------
-        *
+        * _hb_rooms (list[room.Room]): The HB Rooms to collect foundations from.
 
     Returns:
     --------
-        *
+        * (dict[str, PhFoundation]): Unique foundations keyed by identifier.
     """
 
     # -- Group by Identifier

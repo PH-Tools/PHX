@@ -56,6 +56,8 @@ class CoolingUnitData:
 
 
 class SupplyAir:
+    """Reads supply-air cooling unit data from the PHPP 'Cooling Units' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape
@@ -73,6 +75,8 @@ class SupplyAir:
 
 
 class RecirculationAir:
+    """Reads recirculation-air cooling unit data from the PHPP 'Cooling Units' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape
@@ -90,6 +94,8 @@ class RecirculationAir:
 
 
 class Dehumidification:
+    """Reads dehumidification cooling unit data from the PHPP 'Cooling Units' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape
@@ -105,6 +111,8 @@ class Dehumidification:
 
 
 class Panel:
+    """Reads panel cooling unit data from the PHPP 'Cooling Units' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.CoolingUnits) -> None:
         self.xl = _xl
         self.shape = _shape

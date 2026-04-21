@@ -11,6 +11,14 @@ from PHX.model import geometry
 
 
 class InvalidRectangularFaceError(Exception):
+    """Raised when a face cannot be converted to a PhxPolygonRectangular.
+
+    Occurs when the face has fewer than 4 vertices after removing colinear points.
+
+    Attributes:
+        msg (str): Description of the error including the face name and vertex count.
+    """
+
     def __init__(self, _hb_face: aperture.Aperture | face.Face | shade.Shade):
         self.msg = (
             f"Error: Cannot create a PhxPolygonRectangular for the"
@@ -24,7 +32,7 @@ class InvalidRectangularFaceError(Exception):
 
 
 def create_PhxVertix_from_lbt_Point3D(_lbt_Point3D: Point3D) -> geometry.PhxVertix:
-    """Returns a new PhxVertix object with attributes based on an LBT-Point3D."""
+    """Return a new PhxVertix with x, y, z coordinates from an LBT-Point3D."""
     return geometry.PhxVertix(_lbt_Point3D.x, _lbt_Point3D.y, _lbt_Point3D.z)
 
 

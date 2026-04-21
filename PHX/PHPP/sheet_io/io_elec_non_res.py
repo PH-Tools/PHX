@@ -12,6 +12,8 @@ from PHX.xl import xl_app, xl_data
 
 
 class Lighting:
+    """Reads and writes lighting data in the PHPP 'Electricity non-res' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.ElecNonRes) -> None:
         self.xl = _xl
         self.shape = _shape

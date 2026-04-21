@@ -4,6 +4,8 @@
 
 
 class FindSectionMarkerException(Exception):
+    """Raised when a section marker string cannot be found in a worksheet column."""
+
     def __init__(self, search_string, _sheet_name, _col_letter):
         """Raises when the IO controller cannot find the reference marker in a column."""
         self.msg = (
@@ -14,6 +16,8 @@ class FindSectionMarkerException(Exception):
 
 
 class PerReferenceAreaException(Exception):
+    """Raised when the PER reference area (TFA or footprint) cannot be found."""
+
     def __init__(self, _sheet_name, _search_address):
         """Raises when the PER reference area (TFA / Footprint) is missing."""
         self.msg = (
@@ -24,6 +28,8 @@ class PerReferenceAreaException(Exception):
 
 
 class ReadDataException(Exception):
+    """Raised when a value cannot be read from a PHPP worksheet cell."""
+
     def __init__(self, _sheet_name, _read_address):
         """Raised when there is an error reading a value from Excel."""
         self.msg = f"\n\tError: Cannot read the value from '{_sheet_name}' " f"worksheet at location '{_read_address}'?"
@@ -31,6 +37,8 @@ class ReadDataException(Exception):
 
 
 class PHPPDataMissingException(Exception):
+    """Raised when a required PHPP field returns None."""
+
     def __init__(self, _sheet_name, _read_address):
         """Raised when there a required field returns 'None'."""
         self.msg = (

@@ -11,6 +11,8 @@ from PHX.xl import xl_data
 
 @dataclass
 class ExistingLightingRow:
+    """Wraps a single row of existing lighting data read from the PHPP 'Electricity non-res' worksheet."""
+
     shape: shape_model.ElecNonRes
     data: list
 

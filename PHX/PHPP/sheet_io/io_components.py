@@ -18,6 +18,8 @@ from PHX.xl.xl_data import col_offset
 
 @dataclass
 class ExistingGlazingTypeData:
+    """Stores name, g-value, and U-value for an existing PHPP glazing type."""
+
     name: str
     g_value: Unit
     u_value: Unit
@@ -28,6 +30,8 @@ class ExistingGlazingTypeData:
 
 
 class Glazings:
+    """Reads and writes glazing component data in the PHPP 'Components' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
@@ -186,6 +190,8 @@ class Glazings:
 
 
 class Frames:
+    """Reads and writes frame component data in the PHPP 'Components' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
@@ -340,6 +346,8 @@ class Frames:
 
 
 class Ventilators:
+    """Reads and writes ventilator component data in the PHPP 'Components' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape

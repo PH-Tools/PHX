@@ -99,7 +99,19 @@ def _create_new_Face3D(_poly2d: Polygon2D, _base_plane: Plane, _ref_face: TFaceO
 def find_parent_and_child_polygons(
     _polygons: list[Polygon2D],
 ) -> tuple[list[Polygon2D], list[Polygon2D]]:
-    """Return a Tuple of any parent (container) and child (contained) polygons from a list of polygons."""
+    """Separate polygons into parents (containers) and children (contained).
+
+    Used to detect surfaces with holes — a large parent polygon containing
+    one or more smaller child polygons.
+
+    Arguments:
+    ----------
+        * _polygons (list[Polygon2D]): The 2D polygons to classify.
+
+    Returns:
+    --------
+        * (tuple[list[Polygon2D], list[Polygon2D]]): A tuple of (parent, child) polygon lists.
+    """
 
     # Initialize empty lists for parent and child surfaces
     parent_polygon = []
@@ -133,7 +145,21 @@ def face3Ds(_faces: Sequence[TFaceOrShade]) -> list[Face3D]:
 
 
 def merge_hb_faces(_faces: list[Face], _tolerance: float, _angle_tolerance_degrees: float) -> list[Face]:
-    """Merge a group of HB-Faces into the fewest number of faces possible."""
+    """Merge a group of co-planar HB Faces into the fewest number of faces possible.
+
+    Preserves apertures (windows/doors) by removing them before the merge and
+    re-adding them to the resulting faces. Handles surfaces with holes (punched geometry).
+
+    Arguments:
+    ----------
+        * _faces (list[Face]): The HB Faces to merge (must be co-planar).
+        * _tolerance (float): Distance tolerance for polygon merging.
+        * _angle_tolerance_degrees (float): Angle tolerance in degrees.
+
+    Returns:
+    --------
+        * (list[Face]): The merged HB Faces with apertures restored.
+    """
 
     if not _faces:
         logger.debug("No faces in group. Skipping merge.")
@@ -191,7 +217,18 @@ def merge_hb_faces(_faces: list[Face], _tolerance: float, _angle_tolerance_degre
 
 
 def merge_hb_shades(_faces: list[Shade], _tolerance: float, _angle_tolerance_degrees: float) -> list[Shade]:
-    """Merge a group of HB-Shades into the fewest number of shades possible."""
+    """Merge a group of co-planar HB Shades into the fewest number of shades possible.
+
+    Arguments:
+    ----------
+        * _faces (list[Shade]): The HB Shades to merge (must be co-planar).
+        * _tolerance (float): Distance tolerance for polygon merging.
+        * _angle_tolerance_degrees (float): Angle tolerance in degrees.
+
+    Returns:
+    --------
+        * (list[Shade]): The merged HB Shades.
+    """
     if not _faces:
         return []
 

@@ -256,6 +256,7 @@ def build_phx_exhaust_vent_device(
 def build_phx_heating_electric(
     _hbeph_heater: heating.PhHeatingSystem,
 ) -> hvac.PhxHeaterElectric:
+    """Return a new PHX electric heater from an HBPH heating system."""
     phx_obj = hvac.PhxHeaterElectric()
     phx_obj = _transfer_attributes(_hbeph_heater, phx_obj)
     phx_obj.usage_profile.space_heating_percent = _hbeph_heater.percent_coverage
@@ -265,6 +266,7 @@ def build_phx_heating_electric(
 def build_phx_heating_fossil_boiler(
     _hbeph_heater: heating.PhHeatingSystem,
 ) -> hvac.PhxHeaterBoilerFossil:
+    """Return a new PHX fossil boiler heater from an HBPH heating system."""
     phx_obj = hvac.PhxHeaterBoilerFossil()
     phx_obj = _transfer_attributes(_hbeph_heater, phx_obj)
     phx_obj.usage_profile.space_heating_percent = _hbeph_heater.percent_coverage
@@ -274,6 +276,7 @@ def build_phx_heating_fossil_boiler(
 def build_phx_heating_wood_boiler(
     _hbeph_heater: heating.PhHeatingSystem,
 ) -> hvac.PhxHeaterBoilerWood:
+    """Return a new PHX wood boiler heater from an HBPH heating system."""
     phx_obj = hvac.PhxHeaterBoilerWood()
     phx_obj = _transfer_attributes(_hbeph_heater, phx_obj)
     phx_obj.usage_profile.space_heating_percent = _hbeph_heater.percent_coverage
@@ -283,6 +286,7 @@ def build_phx_heating_wood_boiler(
 def build_phx_heating_district(
     _hbeph_heater: heating.PhHeatingSystem,
 ) -> hvac.PhxHeaterDistrictHeat:
+    """Return a new PHX district heat device from an HBPH heating system."""
     phx_obj = hvac.PhxHeaterDistrictHeat()
     phx_obj = _transfer_attributes(_hbeph_heater, phx_obj)
     phx_obj.usage_profile.space_heating_percent = _hbeph_heater.percent_coverage
@@ -320,7 +324,7 @@ def build_phx_heating_sys(_htg_sys: heating.PhHeatingSystem) -> hvac.PhxHeatingD
 
 
 def hbph_heat_pump_has_cooling(_hbph_heat_pump: heat_pumps.PhHeatPumpSystem) -> bool:
-    """Return True if the input Honeybee-PH Heat-Pump System has any type of cooling enabled."""
+    """Return True if the HBPH heat pump has any cooling mode enabled (vent, recirc, dehumid, or panel)."""
     return any(
         [
             _hbph_heat_pump.cooling_params.ventilation.used,

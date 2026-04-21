@@ -248,7 +248,16 @@ def add_phi_certification_from_hb_room(_variant: project.PhxVariant, _hb_room: r
 
 
 def get_infiltration_at_50Pa(_flow_per_exterior_area_at_4Pa: float) -> float:
-    """Calculate the Infiltration at 50Pa from the Flow per Exterior Area."""
+    """Calculate infiltration at 50Pa (m3/h/m2) from the flow per exterior area at 4Pa.
+
+    Arguments:
+    ----------
+        * _flow_per_exterior_area_at_4Pa (float): Airflow in m3/s per m2 at 4Pa.
+
+    Returns:
+    --------
+        * (float): Infiltration rate in m3/h per m2 at 50Pa.
+    """
     C_qa = RoomEnergyProperties.solve_norm_area_flow_coefficient(
         flow_per_exterior_area=_flow_per_exterior_area_at_4Pa,
         flow_exponent=0.65,
@@ -701,12 +710,12 @@ def add_shw_storage_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
 
 
 def add_shw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
-    """
+    """Add DHW heater devices from the HB Room's hot-water system to the PHX Variant.
 
     Arguments:
     ----------
-        *_variant (project.PhxVariant): The PHX Variant to add the PHX DHW Heaters to.
-        _hb_room (room.Room): The Honeybee room to get the DHW Heater data from.
+        * _variant (project.PhxVariant): The PHX Variant to add the PHX DHW Heaters to.
+        * _hb_room (room.Room): The Honeybee room to get the DHW Heater data from.
 
     Returns:
     --------
@@ -733,7 +742,7 @@ def add_shw_heaters_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.R
 
 
 def shw_recirc_temp(_recirc_temps: set[float]):
-    """Get the DHW recirculation temperature."""
+    """Return the DHW recirculation temperature, defaulting to 60.0C if ambiguous."""
     if len(_recirc_temps) == 0:
         return 60.0
     elif len(_recirc_temps) == 1:
@@ -743,7 +752,7 @@ def shw_recirc_temp(_recirc_temps: set[float]):
 
 
 def shw_recirc_hours(_recirc_temps: set[int]) -> int:
-    """Get the number of hours that the DHW recirculation is active."""
+    """Return the daily DHW recirculation hours, defaulting to 24 if ambiguous."""
     if len(_recirc_temps) == 0:
         return 24
     elif len(_recirc_temps) == 1:
@@ -753,6 +762,17 @@ def shw_recirc_hours(_recirc_temps: set[int]) -> int:
 
 
 def add_shw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
+    """Add DHW distribution and recirculation piping from the HB Room to the PHX Variant.
+
+    Arguments:
+    ----------
+        * _variant (project.PhxVariant): The PHX Variant to add piping to.
+        * _hb_room (room.Room): The Honeybee Room to get the DHW piping from.
+
+    Returns:
+    --------
+        * None
+    """
     phx_mech_sys = _variant.default_mech_collection
     phx_recirc_temps: set[float] = set()
     phx_recirc_hours: set[int] = set()
@@ -857,6 +877,18 @@ def add_supportive_devices_from_hb_room(
     _hb_room: room.Room,
     _merge_devices: bool = True,
 ) -> None:
+    """Add supportive mechanical devices (pumps, fans) from the HB Room to the PHX Variant.
+
+    Arguments:
+    ----------
+        * _variant (project.PhxVariant): The PHX Variant to add devices to.
+        * _hb_room (room.Room): The Honeybee Room to get device data from.
+        * _merge_devices (bool): Default=True. Merge duplicate supportive devices.
+
+    Returns:
+    --------
+        * None
+    """
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for hbph_space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
@@ -884,6 +916,18 @@ def add_renewable_devices_from_hb_room(
     _hb_room: room.Room,
     _merge_devices: bool = True,
 ) -> None:
+    """Add renewable energy devices (PV, etc.) from the HB Room to the PHX Variant.
+
+    Arguments:
+    ----------
+        * _variant (project.PhxVariant): The PHX Variant to add devices to.
+        * _hb_room (room.Room): The Honeybee Room to get device data from.
+        * _merge_devices (bool): Default=True. Merge duplicate renewable devices.
+
+    Returns:
+    --------
+        * None
+    """
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for hbph_space in room_prop_ph.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same

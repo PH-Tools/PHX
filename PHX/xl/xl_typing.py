@@ -9,22 +9,30 @@ from PHX.xl import xl_data
 
 
 class xl_Range_Font:
+    """Protocol defining the interface for an Excel range font object."""
+
     def __init__(self):
         self.color: tuple[int, ...] | None
 
 
 class xl_RangeColumns_Protocol:
+    """Protocol defining the interface for an Excel range columns collection."""
+
     def __init__(self): ...
 
     def __len__(self) -> int: ...
 
 
 class xl_CellRange_Protocol:
+    """Protocol defining the interface for a single Excel cell range."""
+
     def __init__(self):
         self.address: str
 
 
 class xl_Range_Protocol:
+    """Protocol defining the interface for an Excel range object."""
+
     def __init__(self):
         self.value: xl_data.xl_range_value
         self.color: tuple[int, ...] | None
@@ -46,6 +54,8 @@ class xl_Range_Protocol:
 
 
 class xl_API_Protocol:
+    """Protocol defining the interface for an Excel sheet's native API object."""
+
     def __init__(self, sheet):
         self.sheet: xl_Sheet_Protocol = sheet
         self.rows: dict
@@ -61,6 +71,8 @@ class xl_API_Protocol:
 
 
 class xl_Sheet_Protocol:
+    """Protocol defining the interface for an Excel worksheet object."""
+
     def __init__(self, name="Sheet1"):
         self.api = xl_API_Protocol(self)
         self.protected = True
@@ -89,6 +101,8 @@ class xl_Sheet_Protocol:
 
 
 class xl_Sheets_Protocol:
+    """Protocol defining the interface for a collection of Excel worksheets."""
+
     def __init__(self):
         self.storage: dict[str, xl_Sheet_Protocol] = {}
 
@@ -119,6 +133,8 @@ class xl_Sheets_Protocol:
 
 
 class xl_Book_Protocol:
+    """Protocol defining the interface for an Excel workbook object."""
+
     def __init__(self):
         self.name: str = ""
         self.fullname: str = ""
@@ -127,6 +143,8 @@ class xl_Book_Protocol:
 
 
 class xl_Books_Protocol:
+    """Protocol defining the interface for a collection of Excel workbooks."""
+
     def __init__(self):
         self.active = xl_Book_Protocol()
         self.count: int = 1
@@ -137,6 +155,8 @@ class xl_Books_Protocol:
 
 
 class xl_app_Protocol:
+    """Protocol defining the interface for an Excel application instance."""
+
     def __init__(self):
         self.screen_updating: bool = True
         self.display_alerts: bool = True
@@ -148,6 +168,8 @@ class xl_app_Protocol:
 
 
 class xl_apps_Protocol:
+    """Protocol defining the interface for a collection of Excel application instances."""
+
     def __init__(self):
         self.count: int = 1
 
@@ -155,6 +177,8 @@ class xl_apps_Protocol:
 
 
 class xl_Framework_Protocol:
+    """Protocol defining the interface for the Excel interop framework (e.g., xlwings)."""
+
     def __init__(self):
         self.books: xl_Books_Protocol  # Mac
         self.Books: xl_Books_Protocol  # PC

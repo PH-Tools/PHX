@@ -14,13 +14,16 @@ def create_phx_foundation_from_hbph(
 ) -> ground.PhxFoundation:
     """Return a new PhxFoundation object with attributes based on a source HBPH-Foundation.
 
+    Maps the HBPH foundation type to the corresponding PHX foundation class, copies
+    all public attributes, and converts any enum values by number.
+
     Arguments:
     ----------
-        *
+        * _hbph_foundation (PhFoundation): The Honeybee-PH Foundation to convert.
 
     Returns:
     --------
-        * (PhxFoundation)
+        * (ground.PhxFoundation): A new PHX Foundation with attributes from the HBPH source.
     """
 
     phx_foundation_type_map: dict[str, ground.PhxFoundationTypes] = {

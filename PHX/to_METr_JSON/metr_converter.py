@@ -9,6 +9,12 @@ from PHX.to_METr_JSON import metr_schemas
 
 
 class NoMETrSchemaFoundError(Exception):
+    """Raised when no METr JSON schema is found for a given PHX object.
+
+    Attributes:
+        message (str): Detailed error describing the missing schema, object type, and module searched.
+    """
+
     def __init__(self, _schema_module, _phx_object, _schema_nm):
         self.message = (
             f'\n  Error: Cannot find a METr JSON schema for the object: "{_phx_object}"'

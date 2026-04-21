@@ -18,6 +18,12 @@ logger = logging.getLogger()
 
 
 class MissingPropertiesError(Exception):
+    """Raised when a Ladybug Tools object is missing its .properties attribute.
+
+    Attributes:
+        message (str): Description of the error including the object reference.
+    """
+
     def __init__(self, _lbt_obj):
         self.message = (
             f'Error: LBT Object "{_lbt_obj}" does not have a .properties attribute?\n'
@@ -48,7 +54,16 @@ def sort_hb_rooms_by_bldg_segment(_hb_rooms: tuple[Room]) -> list[list[Room]]:
 def hb_team_member_to_phx_agent(
     _hb_team_member: ProjectTeamMember,
 ) -> ProjectData_Agent:
-    """Return a new PHX ProjectData_Agent with data based on a HB ProjectTeamMember."""
+    """Return a new PHX ProjectData_Agent with data based on a HB ProjectTeamMember.
+
+    Arguments:
+    ----------
+        * _hb_team_member (ProjectTeamMember): The Honeybee-PH team member to convert.
+
+    Returns:
+    --------
+        * (ProjectData_Agent): A new PHX agent with contact info from the HB team member.
+    """
     return ProjectData_Agent(
         _hb_team_member.name,
         _hb_team_member.street,
@@ -71,7 +86,16 @@ def get_project_data_from_hb_model(_hb_model: model.Model) -> PhxProjectData:
 
 
 def get_hb_apertures(_hb_model: model.Model) -> list[Aperture]:
-    """Return a list of all the HB Apertures in the Model."""
+    """Return a flat list of all HB Apertures from every room/face in the Model.
+
+    Arguments:
+    ----------
+        * _hb_model (model.Model): The Honeybee Model to extract apertures from.
+
+    Returns:
+    --------
+        * (list[Aperture]): All apertures found across all rooms and faces.
+    """
     return [aperture for room in _hb_model.rooms for face in room.faces for aperture in face.apertures]
 
 

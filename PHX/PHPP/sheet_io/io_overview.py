@@ -12,6 +12,8 @@ from PHX.xl.xl_app import XLConnection
 
 
 class OverviewBasicData:
+    """Reads basic project data (dwellings, occupants, name) from the PHPP 'Overview' worksheet."""
+
     def __init__(self, _host, _xl: XLConnection, _shape: shp.OverviewBasicData):
         self.host = _host
         self.xl = _xl
@@ -62,6 +64,8 @@ class OverviewBasicData:
 
 
 class OverviewVentilation:
+    """Reads ventilation data (Vn50) from the PHPP 'Overview' worksheet."""
+
     def __init__(self, _host, _xl: XLConnection, _shape: shp.OverviewVentilation) -> None:
         self.host = _host
         self.xl = _xl

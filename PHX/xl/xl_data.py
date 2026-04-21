@@ -203,7 +203,7 @@ class XLItem_List:
 def merge_xl_item_row(
     _xl_items: list[XlItem],
 ) -> list[XlItem] | list[XLItem_List] | list[XlItem | XLItem_List]:
-    """Merge a List of XLItems into rows, where possible."""
+    """Merge a list of same-row XlItems into XLItem_List groups for faster batch writing."""
 
     # -- Make sure all XLItems are on the same sheet
     if len({item.sheet_name for item in _xl_items}) != 1:

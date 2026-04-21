@@ -6,6 +6,15 @@ from PHX.model import project
 def convert_WUFI_XML_to_PHX_project(
     _wufi_xml_project: WUFIplusProject,
 ) -> project.PhxProject:
-    """Convert a WUFI-XML-Project object over to a PHX-Project."""
+    """Convert a WUFI-XML Pydantic project schema into a PHX-Project model.
+
+    Arguments:
+    ----------
+        * _wufi_xml_project (WUFIplusProject): The parsed WUFI-XML project.
+
+    Returns:
+    --------
+        * (project.PhxProject): A new PHX project with all data from the WUFI file.
+    """
     phx_project = _PhxProject(_wufi_xml_project)
     return phx_project

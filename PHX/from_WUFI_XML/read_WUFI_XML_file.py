@@ -11,6 +11,14 @@ from lxml import etree
 
 @dataclass
 class Tag:
+    """A parsed XML element with its text content, tag name, and attributes.
+
+    Attributes:
+        text (str | None): The text content of the XML element.
+        tag (str): The XML tag name.
+        attrib (dict[str, str] | None): The XML element's attributes (e.g. unit="M").
+    """
+
     text: str | None
     tag: str
     attrib: dict[str, str] | None
@@ -25,6 +33,7 @@ def _is_list_element(_child) -> bool:
 
 
 def xml_to_dict(element: etree._Element, _level: int = 0) -> dict[list | str, Any]:
+    """Recursively convert an lxml Element tree into a nested dict of Tag objects and lists."""
     d = {}
 
     if len(element) == 0:
@@ -68,7 +77,16 @@ def xml_to_dict(element: etree._Element, _level: int = 0) -> dict[list | str, An
 
 
 def get_WUFI_XML_file_as_dict(_file_address: pathlib.Path) -> dict[str | list, Any]:
-    """Read in the WUFI-XML file and return the data as a dictionary."""
+    """Read in a WUFI-XML file and return the data as a nested dictionary of Tag objects.
+
+    Arguments:
+    ----------
+        * _file_address (pathlib.Path): Path to the WUFI-XML file.
+
+    Returns:
+    --------
+        * (dict): Nested dictionary representing the XML structure.
+    """
 
     parser = etree.XMLPullParser(recover=True, encoding="utf-8")
     with open(_file_address, encoding="utf-8") as xml_file:

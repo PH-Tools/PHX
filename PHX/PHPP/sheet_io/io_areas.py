@@ -52,6 +52,8 @@ class AreasInputLocation:
 
 
 class Surfaces:
+    """Reads and writes surface data to the PHPP 'Areas' worksheet."""
+
     def __init__(
         self,
         _xl: xl_app.XLConnection,
@@ -234,6 +236,8 @@ class Surfaces:
 
 
 class ThermalBridges:
+    """Reads and writes thermal bridge data to the PHPP 'Areas' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Areas) -> None:
         self.xl = _xl
         self.shape = _shape

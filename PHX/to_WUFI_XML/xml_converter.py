@@ -9,6 +9,12 @@ from PHX.to_WUFI_XML.xml_writables import xml_writable
 
 
 class NoXMLSchemaFoundError(Exception):
+    """Raised when no XML write schema is found for a given PHX object.
+
+    Attributes:
+        message (str): Detailed error describing the missing schema, object type, and module searched.
+    """
+
     def __init__(self, _schema_module, _phx_object, _schema_nm):
         self.message = (
             f'\n  Error: Cannot find an XML write schema for the object: "{_phx_object}"'

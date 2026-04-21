@@ -12,6 +12,8 @@ from PHX.to_PPP import ppp_builder, ppp_txt_to_file
 
 
 class InputFileError(Exception):
+    """Raised when the specified HBJSON source file cannot be found."""
+
     def __init__(self, path) -> None:
         self.msg = f"\nError: Cannot find HBJSON file: {path}"
         super().__init__(self.msg)

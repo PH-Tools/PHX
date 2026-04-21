@@ -16,6 +16,7 @@ from PHX.xl.xl_data import col_offset, xl_writable
 
 
 class Spaces:
+    """Reads and writes ventilation space data in the PHPP 'Additional Vent' worksheet."""
 
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent) -> None:
         self.xl = _xl
@@ -147,6 +148,8 @@ class VentilatorDeviceUsage:
 
 
 class VentUnits:
+    """Reads and writes ventilation unit data in the PHPP 'Additional Vent' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent):
         self.xl = _xl
         self.shape = _shape
@@ -304,6 +307,8 @@ class VentUnits:
 
 
 class VentDucts:
+    """Reads and writes ventilation duct data in the PHPP 'Additional Vent' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.AddnlVent) -> None:
         self.xl = _xl
         self.shape = _shape

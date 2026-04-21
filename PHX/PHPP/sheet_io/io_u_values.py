@@ -18,6 +18,8 @@ from PHX.xl.xl_data import col_offset
 
 
 class NoEmptyConstructorError(Exception):
+    """Raised when no empty constructor slots remain in the PHPP 'U-Values' worksheet."""
+
     def __init__(self):
         """Raises if there are no empty COnstructors in the worksheet."""
         self.msg = "No empty constructors found. Please remove some constructors and try again."
@@ -26,6 +28,8 @@ class NoEmptyConstructorError(Exception):
 
 @dataclass
 class ExistingAssemblyData:
+    """Stores name, U-value, R-value, and exposure data for an existing PHPP assembly."""
+
     name: str
     u_value: Unit
     r_value: Unit

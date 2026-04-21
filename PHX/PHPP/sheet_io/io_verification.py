@@ -87,6 +87,8 @@ class TeamMemberData:
 
 
 class Verification:
+    """Reads and writes data to the PHPP 'Verification' worksheet."""
+
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Verification):
         self.xl = _xl
         self.shape = _shape

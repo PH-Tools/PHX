@@ -37,6 +37,7 @@ from PHX.model.utilization_patterns import (
 
 
 def _hb_face_opacity_to_phx_enum(_hb_face: face.Face) -> ComponentFaceOpacity:
+    """Return the PHX ComponentFaceOpacity enum for a Honeybee Face type."""
     mapping = {
         "Wall": ComponentFaceOpacity.OPAQUE,
         "RoofCeiling": ComponentFaceOpacity.OPAQUE,
@@ -47,6 +48,7 @@ def _hb_face_opacity_to_phx_enum(_hb_face: face.Face) -> ComponentFaceOpacity:
 
 
 def _hb_face_type_to_phx_enum(_hb_face: face.Face) -> ComponentFaceType:
+    """Return the PHX ComponentFaceType enum for a Honeybee Face type."""
     mapping = {
         "Wall": ComponentFaceType.WALL,
         "Floor": ComponentFaceType.FLOOR,
@@ -57,6 +59,7 @@ def _hb_face_type_to_phx_enum(_hb_face: face.Face) -> ComponentFaceType:
 
 
 def _hb_ext_exposure_to_phx_enum(_hb_face: face.Face | aperture.Aperture) -> ComponentExposureExterior:
+    """Return the PHX exterior exposure enum for a Honeybee Face boundary condition."""
     mapping = {
         "Outdoors": ComponentExposureExterior.EXTERIOR,
         "Ground": ComponentExposureExterior.GROUND,
@@ -79,6 +82,7 @@ def _hb_ext_exposure_to_phx_enum(_hb_face: face.Face | aperture.Aperture) -> Com
 
 
 def _hb_int_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
+    """Return the PHX interior color enum based on the face type and boundary condition."""
     mapping = {
         "Wall": {
             "Outdoors": ComponentColor.EXT_WALL_OUTER,
@@ -113,6 +117,7 @@ def _hb_int_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
 
 
 def _hb_ext_color_to_phx_enum(_hb_face: face.Face) -> ComponentColor:
+    """Return the PHX exterior color enum based on the face type and boundary condition."""
     mapping = {
         "Wall": {
             "Outdoors": ComponentColor.EXT_WALL_OUTER,
@@ -298,7 +303,7 @@ def create_components_from_hb_room(
 
 
 def set_zone_occupancy(_hb_room: room.Room, zone: building.PhxZone) -> building.PhxZone:
-    """Set the Zone's Residential Occupancy values."""
+    """Set the Zone's residential occupancy values from the HB Room's people properties."""
     # -- Type Aliases
     try:
         hb_people = get_room_people(_hb_room)
@@ -315,6 +320,7 @@ def set_zone_occupancy(_hb_room: room.Room, zone: building.PhxZone) -> building.
 
 
 def create_specific_heat_capacity(_room_prop_ph: RoomPhProperties) -> tuple[SpecificHeatCapacityType, int]:
+    """Return the specific heat capacity type and value (Wh/m2K) from PH room properties."""
     spec_heat_type = SpecificHeatCapacityType(_room_prop_ph.specific_heat_capacity.number)
     try:
         value = SpecificHeatCapacityValueWhM2K[spec_heat_type.name].value
@@ -324,7 +330,16 @@ def create_specific_heat_capacity(_room_prop_ph: RoomPhProperties) -> tuple[Spec
 
 
 def create_attached_zones_from_hb_room(_hb_room: room.Room) -> list[building.PhxZone]:
-    """Create any 'attached' zones from the Honeybee-Room's face boundary conditions."""
+    """Create PHX zones for any PhAdditionalZone boundary conditions on the HB Room's faces.
+
+    Arguments:
+    ----------
+        * _hb_room (room.Room): The Honeybee Room to scan for attached-zone BCs.
+
+    Returns:
+    --------
+        * (list[building.PhxZone]): New PHX zones, one per unique attached-zone BC.
+    """
     # -- Find any attached zone BCs
     all_hb_faces: list[face.Face] = list(_hb_room.faces)
     faces_by_additional_zone_bc = {}  # {Identifier_1234: {"bc": PhAdditionalZone, "faces": [face.Face, ...]}, ...}
