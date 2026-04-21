@@ -7,3 +7,150 @@ nav:
     - PHX Model Reference: reference/phx-model-reference.md
     - WUFI XML Schema: reference/wufi-xml-schema.md
     - PHPP Field Mapping: reference/phpp-field-mapping.md
+  - API Reference:
+    - Model:
+      - project: api/model/project.md
+      - building: api/model/building.md
+      - spaces: api/model/spaces.md
+      - components: api/model/components.md
+      - geometry: api/model/geometry.md
+      - constructions: api/model/constructions.md
+      - ground: api/model/ground.md
+      - shades: api/model/shades.md
+      - elec_equip: api/model/elec_equip.md
+      - certification: api/model/certification.md
+      - phx_site: api/model/phx_site.md
+      - assembly_pathways: api/model/assembly_pathways.md
+      - utilization_patterns: api/model/utilization_patterns.md
+      - Enums:
+        - building: api/model/enums/building.md
+        - hvac: api/model/enums/hvac.md
+        - foundations: api/model/enums/foundations.md
+        - elec_equip: api/model/enums/elec_equip.md
+        - phx_site: api/model/enums/phx_site.md
+        - phi_certification_phpp_9: api/model/enums/phi_certification_phpp_9.md
+        - phi_certification_phpp_10: api/model/enums/phi_certification_phpp_10.md
+        - phius_certification: api/model/enums/phius_certification.md
+      - HVAC:
+        - base: api/model/hvac/base.md
+        - collection: api/model/hvac/collection.md
+        - ventilation: api/model/hvac/ventilation.md
+        - heating: api/model/hvac/heating.md
+        - heat_pumps: api/model/hvac/heat_pumps.md
+        - water: api/model/hvac/water.md
+        - cooling_params: api/model/hvac/cooling_params.md
+        - renewable_devices: api/model/hvac/renewable_devices.md
+        - piping: api/model/hvac/piping.md
+        - ducting: api/model/hvac/ducting.md
+        - supportive_devices: api/model/hvac/supportive_devices.md
+      - Loads:
+        - occupancy: api/model/loads/occupancy.md
+        - lighting: api/model/loads/lighting.md
+        - ventilation: api/model/loads/ventilation.md
+      - Programs:
+        - occupancy: api/model/programs/occupancy.md
+        - lighting: api/model/programs/lighting.md
+        - ventilation: api/model/programs/ventilation.md
+      - Schedules:
+        - occupancy: api/model/schedules/occupancy.md
+        - lighting: api/model/schedules/lighting.md
+        - ventilation: api/model/schedules/ventilation.md
+    - from_HBJSON:
+      - read_HBJSON_file: api/from_HBJSON/read_HBJSON_file.md
+      - create_project: api/from_HBJSON/create_project.md
+      - create_variant: api/from_HBJSON/create_variant.md
+      - create_building: api/from_HBJSON/create_building.md
+      - create_rooms: api/from_HBJSON/create_rooms.md
+      - create_assemblies: api/from_HBJSON/create_assemblies.md
+      - create_geometry: api/from_HBJSON/create_geometry.md
+      - create_schedules: api/from_HBJSON/create_schedules.md
+      - create_shades: api/from_HBJSON/create_shades.md
+      - create_hvac: api/from_HBJSON/create_hvac.md
+      - create_foundations: api/from_HBJSON/create_foundations.md
+      - create_elec_equip: api/from_HBJSON/create_elec_equip.md
+      - create_shw_devices: api/from_HBJSON/create_shw_devices.md
+      - cleanup: api/from_HBJSON/cleanup.md
+      - cleanup_merge_faces: api/from_HBJSON/cleanup_merge_faces.md
+    - from_WUFI_XML:
+      - read_WUFI_XML_file: api/from_WUFI_XML/read_WUFI_XML_file.md
+      - phx_converter: api/from_WUFI_XML/phx_converter.md
+      - phx_schemas: api/from_WUFI_XML/phx_schemas.md
+      - wufi_file_schema: api/from_WUFI_XML/wufi_file_schema.md
+      - wufi_file_types: api/from_WUFI_XML/wufi_file_types.md
+    - to_WUFI_XML:
+      - xml_txt_to_file: api/to_WUFI_XML/xml_txt_to_file.md
+      - xml_builder: api/to_WUFI_XML/xml_builder.md
+      - xml_converter: api/to_WUFI_XML/xml_converter.md
+      - xml_schemas: api/to_WUFI_XML/xml_schemas.md
+      - xml_writables: api/to_WUFI_XML/xml_writables.md
+    - to_PPP:
+      - ppp_txt_to_file: api/to_PPP/ppp_txt_to_file.md
+      - ppp_builder: api/to_PPP/ppp_builder.md
+      - ppp_schemas: api/to_PPP/ppp_schemas.md
+      - ppp_sections: api/to_PPP/ppp_sections.md
+    - to_METr_JSON:
+      - metr_json_to_file: api/to_METr_JSON/metr_json_to_file.md
+      - metr_builder: api/to_METr_JSON/metr_builder.md
+      - metr_converter: api/to_METr_JSON/metr_converter.md
+      - metr_schemas: api/to_METr_JSON/metr_schemas.md
+    - PHPP:
+      - phpp_app: api/PHPP/phpp_app.md
+      - Localization:
+        - load: api/PHPP/phpp_localization/load.md
+        - shape_model: api/PHPP/phpp_localization/shape_model.md
+      - Model:
+        - version: api/PHPP/phpp_model/version.md
+        - climate_entry: api/PHPP/phpp_model/climate_entry.md
+        - areas_data: api/PHPP/phpp_model/areas_data.md
+        - areas_surface: api/PHPP/phpp_model/areas_surface.md
+        - areas_thermal_bridges: api/PHPP/phpp_model/areas_thermal_bridges.md
+        - windows_rows: api/PHPP/phpp_model/windows_rows.md
+        - component_glazing: api/PHPP/phpp_model/component_glazing.md
+        - component_frame: api/PHPP/phpp_model/component_frame.md
+        - component_vent: api/PHPP/phpp_model/component_vent.md
+        - shading_rows: api/PHPP/phpp_model/shading_rows.md
+        - vent_space: api/PHPP/phpp_model/vent_space.md
+        - vent_ducts: api/PHPP/phpp_model/vent_ducts.md
+        - vent_units: api/PHPP/phpp_model/vent_units.md
+        - ventilation_data: api/PHPP/phpp_model/ventilation_data.md
+        - hot_water_tank: api/PHPP/phpp_model/hot_water_tank.md
+        - hot_water_piping: api/PHPP/phpp_model/hot_water_piping.md
+        - uvalues_constructor: api/PHPP/phpp_model/uvalues_constructor.md
+        - electricity_item: api/PHPP/phpp_model/electricity_item.md
+        - elec_non_res: api/PHPP/phpp_model/elec_non_res.md
+        - verification_data: api/PHPP/phpp_model/verification_data.md
+      - Sheet I/O:
+        - io_exceptions: api/PHPP/sheet_io/io_exceptions.md
+        - io_overview: api/PHPP/sheet_io/io_overview.md
+        - io_areas: api/PHPP/sheet_io/io_areas.md
+        - io_climate: api/PHPP/sheet_io/io_climate.md
+        - io_windows: api/PHPP/sheet_io/io_windows.md
+        - io_components: api/PHPP/sheet_io/io_components.md
+        - io_u_values: api/PHPP/sheet_io/io_u_values.md
+        - io_shading: api/PHPP/sheet_io/io_shading.md
+        - io_ventilation: api/PHPP/sheet_io/io_ventilation.md
+        - io_addnl_vent: api/PHPP/sheet_io/io_addnl_vent.md
+        - io_hot_water: api/PHPP/sheet_io/io_hot_water.md
+        - io_solar_dhw: api/PHPP/sheet_io/io_solar_dhw.md
+        - io_solar_pv: api/PHPP/sheet_io/io_solar_pv.md
+        - io_electricity: api/PHPP/sheet_io/io_electricity.md
+        - io_elec_non_res: api/PHPP/sheet_io/io_elec_non_res.md
+        - io_heating_demand: api/PHPP/sheet_io/io_heating_demand.md
+        - io_heating_peak_load: api/PHPP/sheet_io/io_heating_peak_load.md
+        - io_cooling_demand: api/PHPP/sheet_io/io_cooling_demand.md
+        - io_cooling_peak_load: api/PHPP/sheet_io/io_cooling_peak_load.md
+        - io_cooling_units: api/PHPP/sheet_io/io_cooling_units.md
+        - io_PER: api/PHPP/sheet_io/io_PER.md
+        - io_variants: api/PHPP/sheet_io/io_variants.md
+        - io_ihg_non_res: api/PHPP/sheet_io/io_ihg_non_res.md
+        - io_use_non_res: api/PHPP/sheet_io/io_use_non_res.md
+        - io_verification: api/PHPP/sheet_io/io_verification.md
+    - xl:
+      - xl_app: api/xl/xl_app.md
+      - xl_data: api/xl/xl_data.md
+      - xl_typing: api/xl/xl_typing.md
+    - Scripts:
+      - hbjson_to_wufi_xml: api/hbjson_to_wufi_xml.md
+      - hbjson_to_phpp: api/hbjson_to_phpp.md
+      - hbjson_to_ppp: api/hbjson_to_ppp.md
+      - hbjson_to_metr_json: api/hbjson_to_metr_json.md

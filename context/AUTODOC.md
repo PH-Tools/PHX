@@ -30,9 +30,11 @@ Generate developer-friendly API reference documentation for PH-Tools Python libr
 
 ---
 
-## 2. Critical Constraint: Python 2.7 / IronPython Compatibility
+## 2. Critical Constraint: Python Version Compatibility
 
-All three spoke libraries (honeybee-ph, PHX, honeybee-REVIVE) **MUST remain Python 2.7 compatible** because they run inside the IronPython 2.7 interpreter in Rhino/Grasshopper. This means:
+### honeybee-ph and honeybee-REVIVE: Python 2.7 / IronPython
+
+These two spoke libraries **MUST remain Python 2.7 compatible** because they run inside the IronPython 2.7 interpreter in Rhino/Grasshopper. This means:
 
 - **NO** modern type annotations in function signatures (`def foo(x: int) -> str:`)
 - **NO** f-strings, walrus operators, dataclasses, or any Python 3.x syntax
@@ -46,7 +48,18 @@ except ImportError:
     pass  # IronPython 2.7
 ```
 
-**The generator script itself runs in Python 3.x** (in the hub's CI environment). It parses Python 2.7-compatible source files using Python 3's `ast` module (which accepts 2.7 syntax as a subset) and extracts `# type:` comments via regex.
+### PHX: Python 3.10+
+
+PHX is a **Python 3.10+ library** that does NOT run inside Rhino/Grasshopper. It uses modern Python features:
+
+- **`@dataclass`** for most model classes (attributes are class-level fields, not `__init__` assignments)
+- **Modern type annotations**: `def foo(x: int) -> str:`, `str | None`, `list[str]`
+- **`from __future__ import annotations`** (PEP 604 unions, PEP 585 generics)
+- **No `# type:` comments** — type information comes from annotations directly
+
+The generator must handle both styles. For PHX, it reads types from `ast.FunctionDef.returns`, `ast.arg.annotation`, and dataclass field annotations instead of `# type:` regex. The docstring *structure* (Attributes, Arguments, Returns, Values sections) is identical across all spokes.
+
+**The generator script itself runs in Python 3.x** (in the hub's CI environment). It parses source files using Python 3's `ast` module — for honeybee-ph/REVIVE it extracts `# type:` comments via regex; for PHX it reads annotation nodes directly.
 
 ---
 
@@ -437,9 +450,11 @@ Add a floor segment to this space.
 
 This section defines the **target docstring format** that spoke libraries should adopt. The generator will work with ANY docstring (including missing ones), but richer docstrings produce better documentation.
 
-### 7.1 Python 2.7 Compatibility Rules
+### 7.1 Python Version Rules
 
-All code in spoke libraries MUST remain Python 2.7 / IronPython compatible:
+#### honeybee-ph / honeybee-REVIVE: Python 2.7
+
+All code in these spoke libraries MUST remain Python 2.7 / IronPython compatible:
 
 ```python
 # YES — type comments (mypy PEP 484 style)
@@ -452,6 +467,31 @@ self.name = ""  # type: str
 # NO — modern annotations (Python 3.x only, DO NOT USE)
 def method(self, arg1: str, arg2: int) -> bool:  # FORBIDDEN
 ```
+
+#### PHX: Python 3.10+
+
+PHX uses modern Python and `@dataclass`. Types come from annotations, not comments:
+
+```python
+# YES — modern annotations (PHX is Python 3.10+)
+def method(self, arg1: str, arg2: int) -> bool:
+
+# YES — dataclass field annotations
+@dataclass
+class PhxSpace:
+    display_name: str = "Unnamed_Space"
+    floor_area: float = 0.0
+    geometry: PhxPolygon3D | None = None
+
+# YES — PEP 604 unions
+def get_name(self) -> str | None:
+
+# NO — # type: comments (not needed in PHX)
+def method(self, arg1, arg2):
+    # type: (str, int) -> bool  # UNNECESSARY — use annotations instead
+```
+
+The generator reads types from `ast` annotation nodes for PHX, not `# type:` regex. The docstring **structure** is identical to honeybee-ph — only the type source differs.
 
 ### 7.2 Module Docstring
 
@@ -498,6 +538,36 @@ class SpaceFloorSegment(_base._Base):
   - Include default values where meaningful.
 - The class docstring should NOT document methods or properties (those have their own docstrings).
 
+#### PHX Dataclass Variant
+
+For PHX `@dataclass` classes, the `Attributes:` section documents the dataclass fields. The type comes from the field annotation, so the docstring type should match:
+
+```python
+@dataclass
+class PhxSpace:
+    """A Passive House space representing an occupiable floor area within a zone.
+
+    Each space carries its own ventilation, occupancy, and lighting programs.
+    Spaces are grouped into PhxZones, which belong to a PhxBuilding.
+
+    Attributes:
+        display_name (str): Human-readable name for this space.
+            Default: "Unnamed_Space".
+        wufi_type (int): WUFI space-use type code. Default: 99 (User Determined).
+        quantity (int): Number of identical spaces this object represents.
+            Default: 1.
+        floor_area (float): Gross floor area in m². Default: 0.0.
+        weighted_floor_area (float): Floor area weighted by iCFA/TFA factor
+            in m². Default: 0.0.
+        clear_height (float): Room clear height in m. Default: 2.5.
+        ventilation (PhxProgramVentilation): Ventilation program for this space.
+        occupancy (PhxProgramOccupancy): Occupancy program for this space.
+        lighting (PhxProgramLighting): Lighting program for this space.
+    """
+```
+
+The same rules apply: summary line, optional extended description, `Attributes:` section with `name (Type): Description.` entries. Private fields (prefixed with `_`) are excluded.
+
 ### 7.4 Property Docstring
 
 ```python
@@ -541,9 +611,12 @@ def add_floor_segment(self, segment):
   - The `----------` underline and `*` bullets match existing honeybee-ph conventions.
 - **`Returns:` section**: Required if return type is non-obvious.
   - Format: `* Type: Description.` or just `* None`
-- The `# type:` comment is the **machine-readable** type source. The docstring `(Type)` annotations are the **human-readable** confirmation. Both should agree.
+- For honeybee-ph/REVIVE: The `# type:` comment is the **machine-readable** type source. The docstring `(Type)` annotations are the **human-readable** confirmation. Both should agree.
+- For PHX: The function **annotation** is the machine-readable type source (no `# type:` comment needed). The docstring `(Type)` should match the annotation.
 
-### 7.6 Enum/CustomEnum Docstring
+### 7.6 Enum Docstring
+
+#### honeybee-ph / honeybee-REVIVE (`CustomEnum`)
 
 ```python
 class PhFoundationType(enumerables.CustomEnum):
@@ -557,6 +630,33 @@ class PhFoundationType(enumerables.CustomEnum):
         5-NONE: No foundation modeled.
     """
     allowed = [...]
+```
+
+#### PHX (standard `Enum`)
+
+PHX uses Python's built-in `Enum`. The `Values:` section documents member names and meanings:
+
+```python
+class ComponentFaceType(Enum):
+    """Classification of building component face orientations.
+
+    Used to determine how a surface is categorized in the energy model
+    (wall, floor, roof/ceiling, etc.).
+
+    Values:
+        NONE: Unclassified face type.
+        WALL: Vertical wall surface.
+        FLOOR: Horizontal floor surface.
+        ROOF_CEILING: Horizontal or sloped ceiling/roof surface.
+        WINDOW: Transparent glazed surface.
+        ADIABATIC: Surface with no heat flow (adjacent to identical condition).
+        CUSTOM: User-defined face type.
+        AIR_BOUNDARY: Virtual boundary between zones (no physical surface).
+    """
+    NONE = 0
+    WALL = 1
+    FLOOR = 2
+    ...
 ```
 
 **Rules:**
@@ -841,11 +941,62 @@ The exact mapping should be configurable in `libraries.yml` under `autodoc`.
 - `honeybee_phhvac/properties/` — Same
 - Any `_internal` or `_util` modules
 
-### PHX (future)
+### PHX
 
-**Source paths**: `PHX`
+**Source paths**: `PHX`  
+**Python version**: 3.10+ (uses `@dataclass`, modern annotations, `from __future__ import annotations`)
 
-Focus on the data model classes (`PHX/model/`) and the public conversion API.
+**Include (PHX/model/)**:
+- `project.py` — `PhxVariant`, `PhxProject`, `PhxProjectData`, `ProjectData_Agent`, `WufiPlugin`
+- `building.py` — `PhxBuilding`, `PhxZone`
+- `spaces.py` — `PhxSpace`, module-level functions
+- `components.py` — `PhxComponentOpaque`, `PhxComponentAperture`, `PhxApertureElement`, `PhxComponentThermalBridge`
+- `geometry.py` — `PhxPolygon3D`, `PhxPolygonRectangular`, `PhxVertix2D`, `PhxLineSegment`, `PhxGraphics3D`
+- `constructions.py` — `PhxMaterial`, `PhxConstructionOpaque`, `PhxConstructionWindow`, `PhxLayer`, `PhxColor`
+- `ground.py` — All foundation types + factory
+- `shades.py` — `PhxWindowShade`
+- `elec_equip.py` — All electrical device types
+- `certification.py` — `PhxPhiCertification`, `PhxPhiusCertification`, `PhxSetpoints`, `PhxSummerVentilation`
+- `phx_site.py` — `PhxSite`, `PhxClimate`, `PhxGround`, `PhxPEFactor`, `PhxCO2Factor`
+- `assembly_pathways.py` — `PhxHeatFlowPathway`, pathway functions
+- `utilization_patterns.py` — `UtilizationPatternCollection` classes
+
+**Include (PHX/model/enums/)**:
+- All 8 enum modules (standard Python `Enum`, not `CustomEnum`)
+
+**Include (PHX/model/hvac/)**:
+- `_base.py` — `PhxMechanicalDevice`, `PhxMechanicalDeviceParams`, `PhxUsageProfile`
+- All equipment classes: ventilation, heating, heat pumps, water, cooling, renewable, piping, ducting, supportive
+- `collection.py` — `PhxMechanicalSystemCollection`
+
+**Include (PHX/model/loads/, programs/, schedules/)**:
+- All load, program, and schedule classes (3 files each)
+
+**Include (PHX/from_HBJSON/)**:
+- All `create_*.py` conversion functions, cleanup modules, entry points
+
+**Include (PHX/from_WUFI_XML/, to_WUFI_XML/, to_PPP/, to_METr_JSON/)**:
+- All public builder, converter, and schema modules
+
+**Include (PHX/PHPP/)**:
+- `phpp_app.py` — `PHPPConnection`
+- `phpp_model/` — All PHPP data model classes
+- `sheet_io/` — All sheet I/O classes
+- `phpp_localization/` — Localization classes
+
+**Include (PHX/xl/)**:
+- `xl_app.py`, `xl_data.py`, `xl_typing.py`
+
+**Exclude**:
+- `run.py` — Python 2.7 shim for Grasshopper (excluded from formatting)
+- `__init__.py` files that are pure imports
+- Private modules (`_*`) except `_base.py` files
+
+**Docstring differences from honeybee-ph** (due to Python 3.10+):
+- Types come from annotations, not `# type:` comments
+- For `@dataclass` classes, the `Attributes:` section documents dataclass fields
+- Standard `Enum` subclasses use `Values:` section (same format as `CustomEnum`)
+- The docstring section structure (`Attributes:`, `Arguments:`, `Returns:`, `Values:`) is identical
 
 ### honeybee-REVIVE (future)
 

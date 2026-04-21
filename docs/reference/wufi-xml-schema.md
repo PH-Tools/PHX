@@ -57,6 +57,37 @@ WUFI-Passive XML files are the primary data exchange format for Passive House en
 
 Format version 3.x, Data Version 48+. Section order is consistent across projects; line numbers vary by project size.
 
+### Top-Level Overview
+
+```mermaid
+graph TD
+    ROOT["WUFIplusProject"]
+    ROOT --> META["Metadata\nDataVersion · UnitSystem\nProjectData · ClimateLocation"]
+    ROOT --> SCHED["UtilizationPatterns\n(NonRes + Ventilation)"]
+    ROOT --> Z["Zones"]
+    ROOT --> PHD["PassivehouseData"]
+    ROOT --> HVAC["HVAC"]
+    ROOT --> ASM["Assemblies"]
+    ROOT --> WT["WindowTypes"]
+
+    Z --> COMP["Components\n(opaque + aperture)"]
+    Z --> RM["Rooms\n(ventilation spaces)"]
+    Z --> TB["ThermalBridges"]
+
+    PHD --> CERT["Certification Targets\n(demands + loads)"]
+    PHD --> PHB["PH_Buildings"]
+
+    HVAC --> SYS["Systems"]
+    SYS --> DEV["Devices\n(ERV · HP · PV)"]
+    SYS --> DIST["PHDistribution"]
+    DIST --> DHW["DistributionDHW\n(piping tree)"]
+    DIST --> DUCTS["DistributionVentilation\n(duct runs)"]
+```
+
+### Detailed Element Trees
+
+#### Root & Metadata
+
 ```
 WUFIplusProject
 ├── DataVersion
@@ -64,97 +95,127 @@ WUFIplusProject
 ├── DaylightSavingTime
 ├── ProjectData (project name, dates, agents)
 ├── Graphics3D (3D viewport state — skip)
-├── ClimateLocation (weather file, site data)
-├── UtilizationPatterns_NonRes (schedule collections)
-├── UtilizationPatterns_Ventilation (ventilation schedule collections)
-├── Zones
-│   └── Zone
-│       ├── Name, Volume, FloorArea
-│       ├── Components (opaque + aperture surfaces)
-│       │   └── Component
-│       │       ├── IdentNr, Name, Type (1=opaque, 2=aperture)
-│       │       ├── IdentNrAssembly (links to Assembly)
-│       │       ├── IdentNrWindowType (links to WindowType, apertures only)
-│       │       ├── DepthWindowReveal (apertures only)
-│       │       └── DefaultCorrectionShadingMonth (apertures only)
-│       ├── Rooms (ventilation spaces)
-│       │   └── Room
-│       │       ├── Name (matches ventilation device name)
-│       │       ├── DesignVolumeFlowRateSupply [m³/h]
-│       │       └── DesignVolumeFlowRateExhaust [m³/h]
-│       ├── ThermalBridges
-│       │   └── ThermalBridge
-│       │       ├── Name, PsiValue [W/mK], Length [m]
-│       │       └── Type
-│       ├── InternalGainsData
-│       └── GroundFloor / Foundation data
-├── PassivehouseData
-│   ├── PH_CertificateCriteria
-│   ├── AnnualHeatingDemand [kWh/m²a]
-│   ├── AnnualCoolingDemand [kWh/m²a]
-│   ├── PeakHeatingLoad [W/m²]
-│   ├── PeakCoolingLoad [W/m²]
-│   ├── PH_Buildings
-│   │   └── PH_Building (building data, airtightness, occupancy)
-│   └── UseWUFIMeanMonthShading (true/false)
-├── HVAC
-│   └── Systems
-│       └── System
-│           ├── Name, Type, IdentNr
-│           ├── ZonesCoverage
-│           ├── Devices
-│           │   └── Device
-│           │       ├── Name, IdentNr
-│           │       ├── SystemType (1=ventilation, 2=heating, 5=HP, 10=PV)
-│           │       ├── TypeDevice
-│           │       ├── UsedFor_Heating/DHW/Cooling/Ventilation
-│           │       ├── HeatRecovery (ventilation devices)
-│           │       ├── MoistureRecovery (ventilation devices)
-│           │       └── PH_Parameters
-│           │           ├── ElectricEfficiency [Wh/m³] (ventilation)
-│           │           ├── HumidityRecoveryEfficiency (ventilation)
-│           │           ├── Quantity (ventilation)
-│           │           ├── RatedCOP1, RatedCOP2 (heat pumps)
-│           │           ├── AnnualCOP (DHW heat pumps)
-│           │           ├── HPWH_EF (DHW heat pumps)
-│           │           ├── ArraySizePV [kW] (PV)
-│           │           └── PhotovoltaicRenewableEnergy [kWh/yr] (PV)
-│           └── PHDistribution
-│               ├── DistributionDHW
-│               │   └── Truncs > Trunc > Branches > Branch > Twigs
-│               │       (piping lengths, materials, diameters)
-│               └── DistributionVentilation
-│                   └── Ducts
-│                       └── Duct
-│                           ├── Name
-│                           ├── DuctLength [m]
-│                           ├── InsulationThickness [mm]
-│                           ├── ThermalConductivity [W/mK]
-│                           ├── DuctType (1=supply, 2=extract)
-│                           ├── DuctShape (1=round, 2=rectangular)
-│                           └── AssignedVentUnits
-├── Assemblies
-│   └── Assembly
-│       ├── Name, IdentNr
-│       ├── Order_Layers (2=outside-to-inside)
-│       └── Layers
-│           └── Layer
-│               ├── Thickness [m]
-│               └── Material
-│                   ├── Name, ThermalConductivity [W/mK]
-│                   ├── BulkDensity [kg/m³]
-│                   └── HeatCapacity [J/kgK]
-└── WindowTypes
-    └── WindowType
-        ├── Name, IdentNr
-        ├── FrameFactor (glass fraction, 0-1)
-        ├── U_Value [W/m²K] (overall)
-        ├── U_Value_Glazing [W/m²K]
-        ├── g_Value / SHGC_Hemispherical
-        ├── Frame_Width_{Left,Right,Top,Bottom} [m]
-        ├── Frame_U_{Left,Right,Top,Bottom} [W/m²K]
-        ├── Frame_Psi_{Left,Right,Top,Bottom} [W/mK]
-        └── Glazing_Psi_{Left,Right,Top,Bottom} [W/mK]
+└── ClimateLocation (weather file, site data)
+```
+
+#### Schedules
+
+```
+UtilizationPatterns_NonRes (schedule collections)
+UtilizationPatterns_Ventilation (ventilation schedule collections)
+```
+
+#### Zones
+
+```
+Zones
+└── Zone
+    ├── Name, Volume, FloorArea
+    ├── Components (opaque + aperture surfaces)
+    │   └── Component
+    │       ├── IdentNr, Name, Type (1=opaque, 2=aperture)
+    │       ├── IdentNrAssembly (links to Assembly)
+    │       ├── IdentNrWindowType (links to WindowType, apertures only)
+    │       ├── DepthWindowReveal (apertures only)
+    │       └── DefaultCorrectionShadingMonth (apertures only)
+    ├── Rooms (ventilation spaces)
+    │   └── Room
+    │       ├── Name (matches ventilation device name)
+    │       ├── DesignVolumeFlowRateSupply [m³/h]
+    │       └── DesignVolumeFlowRateExhaust [m³/h]
+    ├── ThermalBridges
+    │   └── ThermalBridge
+    │       ├── Name, PsiValue [W/mK], Length [m]
+    │       └── Type
+    ├── InternalGainsData
+    └── GroundFloor / Foundation data
+```
+
+#### PassivehouseData
+
+```
+PassivehouseData
+├── PH_CertificateCriteria
+├── AnnualHeatingDemand [kWh/m²a]
+├── AnnualCoolingDemand [kWh/m²a]
+├── PeakHeatingLoad [W/m²]
+├── PeakCoolingLoad [W/m²]
+├── PH_Buildings
+│   └── PH_Building (building data, airtightness, occupancy)
+└── UseWUFIMeanMonthShading (true/false)
+```
+
+#### HVAC
+
+```
+HVAC
+└── Systems
+    └── System
+        ├── Name, Type, IdentNr
+        ├── ZonesCoverage
+        ├── Devices
+        │   └── Device
+        │       ├── Name, IdentNr
+        │       ├── SystemType (1=ventilation, 2=heating, 5=HP, 10=PV)
+        │       ├── TypeDevice
+        │       ├── UsedFor_Heating/DHW/Cooling/Ventilation
+        │       ├── HeatRecovery (ventilation devices)
+        │       ├── MoistureRecovery (ventilation devices)
+        │       └── PH_Parameters
+        │           ├── ElectricEfficiency [Wh/m³] (ventilation)
+        │           ├── HumidityRecoveryEfficiency (ventilation)
+        │           ├── Quantity (ventilation)
+        │           ├── RatedCOP1, RatedCOP2 (heat pumps)
+        │           ├── AnnualCOP (DHW heat pumps)
+        │           ├── HPWH_EF (DHW heat pumps)
+        │           ├── ArraySizePV [kW] (PV)
+        │           └── PhotovoltaicRenewableEnergy [kWh/yr] (PV)
+        └── PHDistribution
+            ├── DistributionDHW
+            │   └── Truncs > Trunc > Branches > Branch > Twigs
+            │       (piping lengths, materials, diameters)
+            └── DistributionVentilation
+                └── Ducts
+                    └── Duct
+                        ├── Name
+                        ├── DuctLength [m]
+                        ├── InsulationThickness [mm]
+                        ├── ThermalConductivity [W/mK]
+                        ├── DuctType (1=supply, 2=extract)
+                        ├── DuctShape (1=round, 2=rectangular)
+                        └── AssignedVentUnits
+```
+
+#### Assemblies
+
+```
+Assemblies
+└── Assembly
+    ├── Name, IdentNr
+    ├── Order_Layers (2=outside-to-inside)
+    └── Layers
+        └── Layer
+            ├── Thickness [m]
+            └── Material
+                ├── Name, ThermalConductivity [W/mK]
+                ├── BulkDensity [kg/m³]
+                └── HeatCapacity [J/kgK]
+```
+
+#### WindowTypes
+
+```
+WindowTypes
+└── WindowType
+    ├── Name, IdentNr
+    ├── FrameFactor (glass fraction, 0-1)
+    ├── U_Value [W/m²K] (overall)
+    ├── U_Value_Glazing [W/m²K]
+    ├── g_Value / SHGC_Hemispherical
+    ├── Frame_Width_{Left,Right,Top,Bottom} [m]
+    ├── Frame_U_{Left,Right,Top,Bottom} [W/m²K]
+    ├── Frame_Psi_{Left,Right,Top,Bottom} [W/mK]
+    └── Glazing_Psi_{Left,Right,Top,Bottom} [W/mK]
 ```
 
 ### Device Type Identification
