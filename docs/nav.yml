@@ -31,7 +31,7 @@ nav:
         - phi_certification_phpp_10: api/model/enums/phi_certification_phpp_10.md
         - phius_certification: api/model/enums/phius_certification.md
       - HVAC:
-        - base: api/model/hvac/base.md
+        - _base: api/model/hvac/_base.md
         - collection: api/model/hvac/collection.md
         - ventilation: api/model/hvac/ventilation.md
         - heating: api/model/hvac/heating.md
