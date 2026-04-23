@@ -1,5 +1,10 @@
 ---
 title: PHX Model Reference
+description: "Complete object graph, module map, design patterns, and testing conventions for the PHX in-memory data model."
+ref_meta:
+  schema_version: "PHX 1.x"
+  maintainer: "bldgtyp"
+  source: "PHX / docs"
 llm_purpose: "Complete object graph, module map, design patterns, and testing conventions for the PHX in-memory data model"
 llm_use_when: "Before navigating, modifying, extending, or testing any PHX model class"
 llm_related:

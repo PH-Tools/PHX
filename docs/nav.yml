@@ -1,5 +1,4 @@
 nav:
-  - Overview: index.md
   - Developer:
     - Architecture: dev/architecture.md
     - Exporter & Importer Patterns: dev/exporter-patterns.md

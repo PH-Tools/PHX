@@ -1,5 +1,10 @@
 ---
 title: PHPP Field Mapping
+description: "Cell-level locator map for reading and writing PHPP 10.6 Excel worksheets via PHX."
+ref_meta:
+  schema_version: "PHPP 10.6"
+  maintainer: "bldgtyp"
+  source: "PHX / docs"
 llm_purpose: "Cell-level locator map for reading and writing PHPP 10.6 Excel worksheets via PHX"
 llm_use_when: "Before reading, writing, or debugging PHX PHPP export — locating worksheet cells and understanding the locator pattern"
 llm_related:
