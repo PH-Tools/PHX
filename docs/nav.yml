@@ -1,4 +1,8 @@
 nav:
+  - Getting Started:
+    - Overview: getting-started.md
+  - Packages:
+    - Overview: packages.md
   - Developer:
     - Architecture: dev/architecture.md
     - Exporter & Importer Patterns: dev/exporter-patterns.md
