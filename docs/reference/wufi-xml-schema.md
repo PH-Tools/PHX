@@ -28,42 +28,58 @@ Format version 3.x, Data Version 48+. Section order is consistent across project
 
 ### Top-Level Overview
 
+The XML has two structural tiers: **root-level sections** shared across all variants, and **per-variant data** containing the building model. Assemblies, WindowTypes, and SolarProtectionTypes are root-level type libraries — components inside each variant reference them by `IdentNr`.
+
+#### Document Root
+
 ```mermaid
-graph TD
-    ROOT["WUFIplusProject"]
-    ROOT --> META["Root Metadata\nDataVersion, UnitSystem\nProgramVersion, Scope"]
-    ROOT --> PD["ProjectData\nDates, agents, addresses"]
-    ROOT --> SCHED["Schedules\nUtilisationPatternsVentilation\nUtilizationPatternsPH"]
-    ROOT --> VAR["Variants"]
-    ROOT --> ASM["Assemblies"]
-    ROOT --> WT["WindowTypes"]
-    ROOT --> SPT["SolarProtectionTypes"]
+graph LR
+    ROOT["WUFIplusProject"]:::root
 
-    VAR --> V["Variant"]
-    V --> G3D["Graphics_3D\n(vertices + polygons)"]
-    V --> BLDG["Building"]
-    V --> CLIM["ClimateLocation"]
-    V --> PHD["PassivehouseData"]
-    V --> HVAC["HVAC"]
+    ROOT --> META["Root Metadata"]:::meta
+    ROOT --> PD["ProjectData"]:::meta
+    ROOT --> SCHED["Schedules"]:::meta
+    ROOT --> ASM["Assemblies"]:::lib
+    ROOT --> WT["WindowTypes"]:::lib
+    ROOT --> SPT["SolarProtectionTypes"]:::lib
+    ROOT --> VAR["Variants › Variant"]:::variant
 
-    BLDG --> COMP["Components\n(opaque + aperture + shade)"]
-    BLDG --> Z["Zones"]
+    classDef root fill:#2d3748,color:#e2e8f0,stroke:#4a5568,font-weight:bold
+    classDef meta fill:#edf2f7,color:#2d3748,stroke:#a0aec0
+    classDef lib fill:#fefcbf,color:#744210,stroke:#d69e2e
+    classDef variant fill:#bee3f8,color:#2a4365,stroke:#3182ce,stroke-width:2px,font-weight:bold
+```
 
-    Z --> RM["RoomsVentilation\n(ventilation spaces)"]
-    Z --> TB["ThermalBridges"]
-    Z --> HD["HomeDevice\n(electrical equipment)"]
-    Z --> EV["ExhaustVents"]
+#### Inside a Variant
 
-    PHD --> CERT["Certification Targets\n(demands + loads)"]
-    PHD --> PHB["PH_Buildings\n(airtightness, occupancy,\nfoundations, setpoints)"]
+Each Variant contains five branches. Note that Components and Zones are **siblings** under Building, not nested.
 
-    HVAC --> SYS["Systems"]
-    SYS --> DEV["Devices\n(ERV, HP, PV, Tank)"]
-    SYS --> DIST["PHDistribution"]
-    DIST --> DHW["DistributionDHW\n(piping tree)"]
-    DIST --> CLG["DistributionCooling"]
-    DIST --> DUCTS["DistributionVentilation\n(duct runs)"]
-    DIST --> SUP["SupportiveDevices"]
+```mermaid
+graph LR
+    V["Variant"]:::variant
+
+    V --> G3D["Graphics_3D"]:::geo
+    V --> BLDG["Building"]:::env
+    V --> CLIM["ClimateLocation"]:::clim
+    V --> PHD["PassivehouseData"]:::cert
+    V --> HVAC_["HVAC"]:::mech
+
+    BLDG --> COMP["Components\nopaque · aperture · shade"]:::env
+    BLDG --> Z["Zones\nrooms · TBs · equipment"]:::env
+
+    PHD --> TARG["Certification Targets"]:::cert
+    PHD --> PHB["PH_Buildings\nairtightness · foundations"]:::cert
+
+    HVAC_ --> SYS["Systems"]:::mech
+    SYS --> DEV["Devices\nERV · HP · PV · Tank"]:::mech
+    SYS --> DIST["PHDistribution\nDHW · cooling · ducts"]:::mech
+
+    classDef variant fill:#bee3f8,color:#2a4365,stroke:#3182ce,stroke-width:2px,font-weight:bold
+    classDef geo fill:#e2e8f0,color:#2d3748,stroke:#a0aec0
+    classDef env fill:#c6f6d5,color:#22543d,stroke:#48bb78
+    classDef clim fill:#e2e8f0,color:#2d3748,stroke:#a0aec0
+    classDef cert fill:#e9d8fd,color:#44337a,stroke:#9f7aea
+    classDef mech fill:#fed7e2,color:#702459,stroke:#ed64a6
 ```
 
 ### Detailed Element Trees
