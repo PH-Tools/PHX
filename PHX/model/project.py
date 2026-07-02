@@ -10,7 +10,12 @@ from typing import Any, ClassVar
 
 from PHX.model.building import PhxBuilding, PhxZone
 from PHX.model.certification import PhxPhiCertification, PhxPhiusCertification
-from PHX.model.constructions import PhxConstructionOpaque, PhxConstructionWindow
+from PHX.model.constructions import (
+    PHPP_DEFAULT_FRAME_SOLAR_ABSORPTANCE,
+    PHPP_DEFAULT_FRAME_THERMAL_EMISSIVITY,
+    PhxConstructionOpaque,
+    PhxConstructionWindow,
+)
 from PHX.model.geometry import PhxGraphics3D
 from PHX.model.hvac import PhxMechanicalDevice
 from PHX.model.hvac.collection import NoDeviceFoundError, PhxMechanicalSystemCollection
@@ -150,6 +155,40 @@ class PhxVariant:
     def get_total_gross_envelope_area(self) -> float:
         """Returns the total gross envelope area of the variant.building"""
         return self.building.get_total_gross_envelope_area()
+
+    def _area_weighted_frame_radiation_property(self, _attr_name: str, _default: float) -> float:
+        """Return the frame-area-weighted average of a per-frame radiation property.
+
+        Iterates every frame-element (top/right/bottom/left) of every sash of every
+        aperture in the variant, weighting the named property (``solar_absorptance``
+        or ``thermal_emissivity``) by that frame-element's exterior area. PHPP carries
+        a single project-wide value for each ("Radiation balance window frames",
+        Areas!AI40 / AJ40), so this collapses the per-frame PHX data to that one value.
+
+        Falls back to ``_default`` (the PHPP default) when the variant has no framed
+        aperture area to weight against.
+        """
+        total_weighted_value = 0.0
+        total_area = 0.0
+        for aperture in self.building.aperture_components:
+            for element in aperture.elements:
+                for frame_element, frame_area in element.frame_element_areas:
+                    total_weighted_value += getattr(frame_element, _attr_name) * frame_area
+                    total_area += frame_area
+
+        if total_area == 0.0:
+            return _default
+        return total_weighted_value / total_area
+
+    @property
+    def window_frame_solar_absorptance(self) -> float:
+        """Frame-area-weighted exterior solar absorptance across all apertures (PHPP Areas!AI40)."""
+        return self._area_weighted_frame_radiation_property("solar_absorptance", PHPP_DEFAULT_FRAME_SOLAR_ABSORPTANCE)
+
+    @property
+    def window_frame_thermal_emissivity(self) -> float:
+        """Frame-area-weighted exterior thermal emissivity across all apertures (PHPP Areas!AJ40)."""
+        return self._area_weighted_frame_radiation_property("thermal_emissivity", PHPP_DEFAULT_FRAME_THERMAL_EMISSIVITY)
 
     def add_mechanical_collection(self, _mech_collection: PhxMechanicalSystemCollection) -> None:
         """Add a new mechanical collection to the variant."""

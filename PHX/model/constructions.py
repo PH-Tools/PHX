@@ -18,6 +18,12 @@ if TYPE_CHECKING:
 PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE = 0.6
 PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY = 0.9
 
+# -- PHPP window-frame "Radiation balance" defaults (Areas!AI40 / AJ40).
+# -- These differ from the opaque-surface defaults above and match the PHPP
+# -- window-frame defaults (NOT the honeybee-energy opaque defaults).
+PHPP_DEFAULT_FRAME_SOLAR_ABSORPTANCE = 0.25
+PHPP_DEFAULT_FRAME_THERMAL_EMISSIVITY = 0.6
+
 # -----------------------------------------------------------------------------
 # Materials
 
@@ -583,12 +589,20 @@ class PhxWindowFrameElement:
         u_value (float): Frame thermal transmittance in W/m2K. Default: 1.0.
         psi_glazing (float): Linear thermal transmittance at the glazing-to-frame edge in W/mK. Default: 0.0.
         psi_install (float): Linear thermal transmittance at the frame-to-wall installation edge in W/mK. Default: 0.0.
+        solar_absorptance (float): Exterior-face short-wave absorptance of the frame, used
+            (area-weighted across all frames) for the PHPP "Radiation balance window frames"
+            input Areas!AI40. Default: 0.25.
+        thermal_emissivity (float): Exterior-face long-wave emissivity of the frame, used
+            (area-weighted across all frames) for the PHPP "Radiation balance window frames"
+            input Areas!AJ40. Default: 0.6.
     """
 
     width: float = 0.1  # m
     u_value: float = 1.0  # W/m2k
     psi_glazing: float = 0.00  # W/mk
     psi_install: float = 0.00  # W/mk
+    solar_absorptance: float = PHPP_DEFAULT_FRAME_SOLAR_ABSORPTANCE
+    thermal_emissivity: float = PHPP_DEFAULT_FRAME_THERMAL_EMISSIVITY
 
     @classmethod
     def from_total_u_value(cls, _total_u_value: float) -> PhxWindowFrameElement:

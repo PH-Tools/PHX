@@ -473,6 +473,7 @@ def create_thermal_bridges_from_hb_room(
         phx_tb.psi_value = thermal_bridge.psi_value
         phx_tb.fRsi_value = thermal_bridge.fRsi_value
         phx_tb.length = thermal_bridge.length
+        phx_tb.is_interior_pipe = thermal_bridge.is_interior_pipe
         phx_thermal_bridges.append(phx_tb)
 
     return phx_thermal_bridges

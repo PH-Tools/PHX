@@ -326,21 +326,29 @@ def _set_phx_window_type_frames(
         _phx_window_type.frame_top.width = _hbph_frame.top.width
         _phx_window_type.frame_top.psi_glazing = _hbph_frame.top.psi_glazing
         _phx_window_type.frame_top.psi_install = _hbph_frame.top.psi_install
+        _phx_window_type.frame_top.solar_absorptance = _hbph_frame.top.solar_absorptance
+        _phx_window_type.frame_top.thermal_emissivity = _hbph_frame.top.thermal_emissivity
 
         _phx_window_type.frame_right.u_value = _hbph_frame.right.u_factor
         _phx_window_type.frame_right.width = _hbph_frame.right.width
         _phx_window_type.frame_right.psi_glazing = _hbph_frame.right.psi_glazing
         _phx_window_type.frame_right.psi_install = _hbph_frame.right.psi_install
+        _phx_window_type.frame_right.solar_absorptance = _hbph_frame.right.solar_absorptance
+        _phx_window_type.frame_right.thermal_emissivity = _hbph_frame.right.thermal_emissivity
 
         _phx_window_type.frame_bottom.u_value = _hbph_frame.bottom.u_factor
         _phx_window_type.frame_bottom.width = _hbph_frame.bottom.width
         _phx_window_type.frame_bottom.psi_glazing = _hbph_frame.bottom.psi_glazing
         _phx_window_type.frame_bottom.psi_install = _hbph_frame.bottom.psi_install
+        _phx_window_type.frame_bottom.solar_absorptance = _hbph_frame.bottom.solar_absorptance
+        _phx_window_type.frame_bottom.thermal_emissivity = _hbph_frame.bottom.thermal_emissivity
 
         _phx_window_type.frame_left.u_value = _hbph_frame.left.u_factor
         _phx_window_type.frame_left.width = _hbph_frame.left.width
         _phx_window_type.frame_left.psi_glazing = _hbph_frame.left.psi_glazing
         _phx_window_type.frame_left.psi_install = _hbph_frame.left.psi_install
+        _phx_window_type.frame_left.solar_absorptance = _hbph_frame.left.solar_absorptance
+        _phx_window_type.frame_left.thermal_emissivity = _hbph_frame.left.thermal_emissivity
     return _phx_window_type
 
 

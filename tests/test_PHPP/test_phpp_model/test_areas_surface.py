@@ -221,3 +221,32 @@ class TestVersionFormatting:
         """v9 format for the new group 12 should also be bare: '12'."""
         row = _surface_row(shape, phpp_v9, ComponentFaceType.FLOOR, ComponentExposureExterior.EXTERIOR)
         assert row.phpp_group_number == "12"
+
+
+# ===========================================================================
+# Group 6: Surface radiation properties (absorptivity AI / emissivity AJ)
+# ===========================================================================
+
+
+class TestSurfaceRadiationProperties:
+    """The exported absorptivity/emissivity come from the assigned assembly, not hardcoded."""
+
+    def _write_value_for(self, row: areas_surface.SurfaceRow, field_name: str, row_num: int = 10):
+        col = getattr(row.shape.surface_rows.inputs, field_name).column
+        for item in row.create_xl_items("Areas", _row_num=row_num):
+            if item.xl_range == f"{col}{row_num}":
+                return item.write_value
+        raise AssertionError(f"No XlItem written for field '{field_name}'")
+
+    def test_absorptivity_and_emissivity_come_from_assembly(self, shape, phpp_v10):
+        row = _surface_row(shape, phpp_v10, ComponentFaceType.WALL, ComponentExposureExterior.EXTERIOR)
+        row.phx_component.assembly.exterior_solar_absorptance = 0.7
+        row.phx_component.assembly.exterior_thermal_emissivity = 0.85
+
+        assert self._write_value_for(row, "absorptivity") == 0.7
+        assert self._write_value_for(row, "emissivity") == 0.85
+
+    def test_shading_left_at_phpp_default(self, shape, phpp_v10):
+        """Shading (AH) has no upstream data source yet — stays at the 0.5 PHPP default."""
+        row = _surface_row(shape, phpp_v10, ComponentFaceType.WALL, ComponentExposureExterior.EXTERIOR)
+        assert self._write_value_for(row, "shading") == 0.5

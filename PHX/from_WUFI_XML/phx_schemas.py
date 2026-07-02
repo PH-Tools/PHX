@@ -1010,6 +1010,7 @@ def _PhxComponentThermalBridge(
     phx_obj.group_type = ThermalBridgeType(_data.Type * -1)
     phx_obj.length = _data.Length
     phx_obj.psi_value = _data.PsiValue
+    phx_obj.is_interior_pipe = bool(_data.IsInteriorPipe)
 
     return phx_obj
 

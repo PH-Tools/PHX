@@ -32,3 +32,16 @@ def test_PhxComponentOpaque_writes_non_default_assembly_radiation_properties(res
     assert '<EmissionExtern unit="-">0.82</EmissionExtern>' in result
     assert '<KindAbsorption choice="User defined">-2</KindAbsorption>' in result
     assert '<Absorption unit="-">0.35</Absorption>' in result
+
+
+def test_PhxComponentThermalBridge_default_omits_interior_pipe_node(reset_class_counters):
+    tb = components.PhxComponentThermalBridge()
+    result = generate_WUFI_XML_from_object(tb, _header="", _schema_name="_PhxThermalBridge")
+    assert "IsInteriorPipe" not in result
+
+
+def test_PhxComponentThermalBridge_writes_interior_pipe_node_when_flagged(reset_class_counters):
+    tb = components.PhxComponentThermalBridge()
+    tb.is_interior_pipe = True
+    result = generate_WUFI_XML_from_object(tb, _header="", _schema_name="_PhxThermalBridge")
+    assert "<IsInteriorPipe>true</IsInteriorPipe>" in result

@@ -403,6 +403,7 @@ class WufiThermalBridge(WufiBaseModel):
     Length: wufi_unit.M | None = None
     PsiValue: wufi_unit.Watts_per_MK | None = None
     IdentNrOptionalClimate: int
+    IsInteriorPipe: bool | None = None
 
 
 class WufiZone(WufiBaseModel):

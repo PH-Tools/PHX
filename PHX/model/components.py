@@ -427,32 +427,37 @@ class PhxApertureElement(PhxComponentBase):
             return self.polygon.perimeter_length() / 4
 
     @property
+    def frame_element_areas(self) -> list[tuple[constructions.PhxWindowFrameElement, float]]:
+        """Return the (frame-element, area) pairs for the four sides of the Aperture Element.
+
+        The corner squares are assigned to the top/bottom edges (the left/right edges
+        are shortened by the top and bottom frame-widths), matching the convention used
+        by ``frame_area``. Returns an empty list if the element has no polygon geometry.
+        """
+        if not self.polygon:
+            return []
+
+        # -- Get the frame elements and widths
+        window_type = self.host.window_type
+        frame_w_top = window_type.frame_top.width
+        frame_w_bottom = window_type.frame_bottom.width
+
+        # -- Get the frame lengths (remove the top/bottom frame width from the sides)
+        frame_l_side = self.height - (frame_w_top + frame_w_bottom)
+        return [
+            (window_type.frame_top, self.width * frame_w_top),
+            (window_type.frame_bottom, self.width * frame_w_bottom),
+            (window_type.frame_left, frame_l_side * window_type.frame_left.width),
+            (window_type.frame_right, frame_l_side * window_type.frame_right.width),
+        ]
+
+    @property
     def frame_area(self) -> float:
         """Return the area of the frame in the Aperture Element."""
         if not self.polygon:
             return 1.0
 
-        # -- Get the frame widths
-        window_type = self.host.window_type
-        frame_w_top = window_type.frame_top.width
-        frame_w_bottom = window_type.frame_bottom.width
-        frame_w_left = window_type.frame_left.width
-        frame_w_right = window_type.frame_right.width
-
-        # -- Get the frame lengths (remove the top/bottom frame width from the sides)
-        frame_l_top = self.width
-        frame_l_bottom = self.width
-        frame_l_left = self.height - self.height / self.height * (frame_w_top + frame_w_bottom)
-        frame_l_right = self.height - self.height / self.height * (frame_w_top + frame_w_bottom)
-        # -- Calc. the frame area
-        frame_area = (
-            +(frame_l_top * frame_w_top)
-            + (frame_l_bottom * frame_w_bottom)
-            + (frame_l_left * frame_w_left)
-            + (frame_l_right * frame_w_right)
-        )
-
-        return frame_area
+        return sum(area for _, area in self.frame_element_areas)
 
     @property
     def frame_factor(self) -> float:
@@ -731,6 +736,10 @@ class PhxComponentThermalBridge(PhxComponentBase):
         fRsi_value (float | None): Temperature factor at the interior surface (0-1).
             Default: 0.75.
         length (float | None): Length of the thermal bridge in meters. Default: 0.0.
+        is_interior_pipe (bool): Marks a PHPP "Areas row 145" thermal bridge (interior
+            drain/vent pipes vented through the roof). Included in envelope heat loss but
+            excluded from the TB radiative/convective conductance corrections and TB solar
+            gain. Default: False.
     """
 
     def __init__(self):
@@ -743,6 +752,7 @@ class PhxComponentThermalBridge(PhxComponentBase):
         self._psi_value: float | None = 0.1
         self._fRsi_value: float | None = 0.75
         self._length: float | None = 0.0
+        self.is_interior_pipe: bool = False
 
     @property
     def identifier(self) -> str | None:
@@ -818,7 +828,7 @@ class PhxComponentThermalBridge(PhxComponentBase):
     @property
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
-        return f"{self.group_number}-{self.psi_value :.4f}-{self.display_name}"
+        return f"{self.group_number}-{self.psi_value :.4f}-{self.display_name}-{self.is_interior_pipe}"
 
     def __add__(self, other: PhxComponentThermalBridge) -> PhxComponentThermalBridge:
         """Merge with another Component into a single new Component.
@@ -838,6 +848,7 @@ class PhxComponentThermalBridge(PhxComponentBase):
         new_compo.display_name = self.display_name
         new_compo.group_type = self.group_type
         new_compo.fRsi_value = self.fRsi_value
+        new_compo.is_interior_pipe = self.is_interior_pipe
         new_compo.quantity = 1
 
         # -- Calculate the new length
@@ -861,6 +872,7 @@ class PhxComponentThermalBridge(PhxComponentBase):
         return not (
             self.group_type != other.group_type
             or self.display_name != other.display_name
+            or self.is_interior_pipe != other.is_interior_pipe
             or abs((self.psi_value or 0) - (other.psi_value or 0)) > TOLERANCE
             or abs((self.fRsi_value or 0) - (other.fRsi_value or 0)) > TOLERANCE
             or abs((self.length or 0) - (other.length or 0)) > TOLERANCE

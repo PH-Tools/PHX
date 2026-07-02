@@ -283,13 +283,18 @@ def _PhxZone(_z: building.PhxZone) -> list[xml_writable]:
 
 
 def _PhxThermalBridge(_tb: components.PhxComponentThermalBridge) -> list[xml_writable]:
-    return [
+    xml_items: list[xml_writable] = [
         XML_Node("Name", _tb.display_name),
         XML_Node("Type", _tb.group_number * -1),
         XML_Node("Length", _tb.length),
         XML_Node("PsiValue", _tb.psi_value),
         XML_Node("IdentNrOptionalClimate", -1),
     ]
+    # -- PHX-specific extension node (WUFI-Passive has no native equivalent). Only
+    # -- written when flagged, so default models stay byte-identical.
+    if _tb.is_interior_pipe:
+        xml_items.append(XML_Node("IsInteriorPipe", _tb.is_interior_pipe))
+    return xml_items
 
 
 def _PhxComponentOpaque(_c: components.PhxComponentOpaque) -> list[xml_writable]:

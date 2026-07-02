@@ -129,6 +129,36 @@ def test_add_two_PhxComponentThermalBridge_different_quantities() -> None:
     assert thermal_bridge_c.psi_value == 0.01
 
 
+def test_PhxComponentThermalBridge_default_is_interior_pipe() -> None:
+    thermal_bridge = PhxComponentThermalBridge()
+    assert thermal_bridge.is_interior_pipe is False
+
+
+def test_PhxComponentThermalBridge_not_equal_different_is_interior_pipe() -> None:
+    thermal_bridge_a = PhxComponentThermalBridge()
+    thermal_bridge_b = PhxComponentThermalBridge()
+
+    thermal_bridge_b.is_interior_pipe = True
+
+    assert thermal_bridge_a != thermal_bridge_b
+    assert thermal_bridge_a.unique_key != thermal_bridge_b.unique_key
+
+
+def test_add_two_PhxComponentThermalBridge_carries_is_interior_pipe() -> None:
+    thermal_bridge_a = PhxComponentThermalBridge()
+    thermal_bridge_b = PhxComponentThermalBridge()
+
+    thermal_bridge_a.is_interior_pipe = True
+    thermal_bridge_a.quantity = 1
+    thermal_bridge_a.length = 1
+    thermal_bridge_b.is_interior_pipe = True
+    thermal_bridge_b.quantity = 1
+    thermal_bridge_b.length = 1
+
+    thermal_bridge_c = thermal_bridge_a + thermal_bridge_b
+    assert thermal_bridge_c.is_interior_pipe is True
+
+
 def test_merge_multiple_thermal_bridges() -> None:
     thermal_bridge_a = PhxComponentThermalBridge()
     thermal_bridge_b = PhxComponentThermalBridge()

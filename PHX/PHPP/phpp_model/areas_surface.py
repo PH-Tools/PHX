@@ -119,9 +119,12 @@ class SurfaceRow:
             XLItemAreas(create_range("assembly_id"), self.phpp_assembly_id_name),
             XLItemAreas(create_range("orientation"), self.phx_polygon.cardinal_orientation_angle),
             XLItemAreas(create_range("angle"), self.phx_polygon.angle_from_horizontal),
+            # -- No upstream data source for per-surface opaque shading yet, leave as PHPP default.
             XLItemAreas(create_range("shading"), 0.5),
-            XLItemAreas(create_range("absorptivity"), 0.6),
-            XLItemAreas(create_range("emissivity"), 0.9),
+            # -- Absorptivity (AI) / Emissivity (AJ) come from the assigned assembly's
+            # -- exterior-face radiation properties (populated from the outermost material).
+            XLItemAreas(create_range("absorptivity"), self.phx_component.assembly.exterior_solar_absorptance),
+            XLItemAreas(create_range("emissivity"), self.phx_component.assembly.exterior_thermal_emissivity),
         ]
 
 
