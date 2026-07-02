@@ -293,7 +293,7 @@ def _PhxThermalBridge(_tb: components.PhxComponentThermalBridge) -> list[xml_wri
 
 
 def _PhxComponentOpaque(_c: components.PhxComponentOpaque) -> list[xml_writable]:
-    return [
+    xml_items: list[xml_writable] = [
         XML_Node("IdentNr", _c.id_num),
         XML_Node("Name", _c.display_name),
         XML_Node("Visual", True),
@@ -310,6 +310,12 @@ def _PhxComponentOpaque(_c: components.PhxComponentOpaque) -> list[xml_writable]
             [XML_Node("IdentNr", n, "index", i) for i, n in enumerate(_c.polygon_ids)],
         ),
     ]
+    if _c.assembly.exterior_thermal_emissivity != constructions.PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY:
+        xml_items.append(XML_Node("EmissionExtern", _c.assembly.exterior_thermal_emissivity, "unit", "-"))
+    if _c.assembly.exterior_solar_absorptance != constructions.PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE:
+        xml_items.append(XML_Node("KindAbsorption", -2, "choice", "User defined"))
+        xml_items.append(XML_Node("Absorption", _c.assembly.exterior_solar_absorptance, "unit", "-"))
+    return xml_items
 
 
 def _PhxComponentAperture(_c: components.PhxComponentAperture) -> list[xml_writable]:
@@ -988,7 +994,7 @@ def _PhxDeviceVentilator(_d: hvac.PhxDeviceVentilator) -> list[xml_writable]:
 
 
 def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> list[xml_writable]:
-    return [
+    xml_items: list[xml_writable] = [
         XML_Node("Quantity", _p.quantity),
         XML_Node("HumidityRecoveryEfficiency", _p.latent_heat_recovery),
         XML_Node("ElectricEfficiency", _p.electric_efficiency),
@@ -997,7 +1003,6 @@ def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> list[xml_wr
         XML_Node("TemperatureBelowDefrostUsed", int(_p.temperature_below_defrost_used)),
         XML_Node("InConditionedSpace", _p.in_conditioned_space),
         XML_Node("NoSummerBypass", False),
-        # XML_Node("SubsoilHeatExchangeEfficiency", _p.),
         # XML_Node("VolumeFlowRateFrom", "unit","m³/h", _p.),
         # XML_Node("VolumeFlowRateTo", "unit","m³/h", _p.),
         # XML_Node("Maximum_VOS", _p.),
@@ -1011,6 +1016,11 @@ def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> list[xml_wr
         # XML_Node("AuxiliaryEnergy", _p.),
         # XML_Node("AuxiliaryEnergyDHW", _p.),
     ]
+    if _p.subsoil_heat_exchange_efficiency is not None:
+        xml_items.append(XML_Node("SubsoilHeatExchangeEfficiency", _p.subsoil_heat_exchange_efficiency, "unit", "-"))
+    if _p.preheated_intake_temperature_c is not None:
+        xml_items.append(XML_Node("PreheatedIntakeTemperature", _p.preheated_intake_temperature_c, "unit", "C"))
+    return xml_items
 
 
 def _PhxExhaustVentilator(_v: hvac.AnyPhxExhaustVent) -> list[xml_writable]:

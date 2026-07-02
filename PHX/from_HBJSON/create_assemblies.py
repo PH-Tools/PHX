@@ -27,6 +27,35 @@ from PHX.model import constructions, project, shades
 logger = logging.getLogger(__name__)
 
 
+def _get_material_attr_or_default(_hb_material, _attr_name: str, _default: float) -> float:
+    """Return a Honeybee material attribute value, falling back only when the attribute is absent."""
+    if hasattr(_hb_material, _attr_name):
+        return getattr(_hb_material, _attr_name)
+    return _default
+
+
+def _set_opaque_assembly_exterior_radiation_properties(
+    _phx_assembly: constructions.PhxConstructionOpaque,
+    _hb_materials: list[EnergyMaterial | EnergyMaterialNoMass],
+) -> None:
+    """Set PHPP exterior radiation properties from the outermost Honeybee material layer."""
+    if not _hb_materials:
+        return None
+
+    exterior_material = _hb_materials[0]
+    _phx_assembly.exterior_solar_absorptance = _get_material_attr_or_default(
+        exterior_material,
+        "solar_absorptance",
+        constructions.PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE,
+    )
+    _phx_assembly.exterior_thermal_emissivity = _get_material_attr_or_default(
+        exterior_material,
+        "thermal_absorptance",
+        constructions.PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY,
+    )
+    return None
+
+
 def _conductivity_from_r_value(_r_value: float, _thickness: float) -> float:
     """Returns a material conductivity value (W/mk), given a known r-value (M2K/W) and thickness (M).
 
@@ -262,6 +291,7 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
                 new_assembly.id_num = constructions.PhxConstructionOpaque._count
                 new_assembly.display_name = hb_const.display_name
                 new_assembly.layers = [build_layer_from_hb_material(mat) for mat in materials]
+                _set_opaque_assembly_exterior_radiation_properties(new_assembly, materials)
                 # -- Add the assembly to the Project
                 _project.add_assembly_type(new_assembly, hb_const.identifier)
 

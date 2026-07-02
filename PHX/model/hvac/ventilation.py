@@ -39,6 +39,10 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         frost_protection_reqd (bool): Whether frost/defrost protection is required. Default: True.
         temperature_below_defrost_used (float): Outdoor temp (C) below which defrost activates.
             Default: -5.0.
+        subsoil_heat_exchange_efficiency (float | None): PHPP Addl Vent X97 ground-loop effectiveness coefficient.
+            Default: None (no subsoil heat exchanger).
+        preheated_intake_temperature_c (float | None): PHPP Addl Vent G20 intake-air temperature after the
+            ground loop, in C. Default: None (no subsoil heat exchanger).
     """
 
     _sensible_heat_recovery: float = 0.0
@@ -47,6 +51,8 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
     _electric_efficiency: float = 0.55
     _frost_protection_reqd: bool = True
     _temperature_below_defrost_used: float = -5.0
+    _subsoil_heat_exchange_efficiency: float | None = None
+    _preheated_intake_temperature_c: float | None = None
 
     @property
     def sensible_heat_recovery(self) -> float:
@@ -102,6 +108,30 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         if value is not None:
             self._temperature_below_defrost_used = value
 
+    @property
+    def subsoil_heat_exchange_efficiency(self) -> float | None:
+        return self._subsoil_heat_exchange_efficiency
+
+    @subsoil_heat_exchange_efficiency.setter
+    def subsoil_heat_exchange_efficiency(self, value: float | None) -> None:
+        self._subsoil_heat_exchange_efficiency = value
+
+    @property
+    def preheated_intake_temperature_c(self) -> float | None:
+        return self._preheated_intake_temperature_c
+
+    @preheated_intake_temperature_c.setter
+    def preheated_intake_temperature_c(self, value: float | None) -> None:
+        self._preheated_intake_temperature_c = value
+
+    @staticmethod
+    def _merge_optional_average(value_a: float | None, value_b: float | None) -> float | None:
+        if value_a is None:
+            return value_b
+        if value_b is None:
+            return value_a
+        return (value_a + value_b) / 2
+
     def __add__(self, other: PhxDeviceVentilatorParams) -> PhxDeviceVentilatorParams:
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
@@ -113,6 +143,14 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
         new_obj.temperature_below_defrost_used = (
             self.temperature_below_defrost_used + other.temperature_below_defrost_used
         ) / 2
+        new_obj.subsoil_heat_exchange_efficiency = self._merge_optional_average(
+            self.subsoil_heat_exchange_efficiency,
+            other.subsoil_heat_exchange_efficiency,
+        )
+        new_obj.preheated_intake_temperature_c = self._merge_optional_average(
+            self.preheated_intake_temperature_c,
+            other.preheated_intake_temperature_c,
+        )
         return new_obj
 
 

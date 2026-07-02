@@ -256,16 +256,16 @@ wheels = [
 
 [[package]]
 name = "honeybee-ph"
-version = "1.32.9"
+version = "1.33.21"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "honeybee-core" },
     { name = "honeybee-energy" },
     { name = "ph-units" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/d2/2a927a1d0c2a09481b34aac9dc4e9a811a8c72199c525f568192317a93f5/honeybee_ph-1.32.9.tar.gz", hash = "sha256:11cc6ef6df40532cf7b74830c0c1f719d46864209ff53f6da4beaee0406681ac", size = 129174, upload-time = "2026-03-30T15:59:03.648Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/2e/0b54241ead0114ce6c0de2a10a4979cad946a15a9b8cb6ab0f6d2fc156bf/honeybee_ph-1.33.21.tar.gz", hash = "sha256:b73e325d2dce9880883d070ce9e229228e6d86f0f824aef9da1f6dcee5175d93", size = 144169, upload-time = "2026-07-02T17:00:32.398Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e8/0f/ef53370305ac88a4a6e608a4996ec73bb3800f72967aa70ad702ea0a6c0f/honeybee_ph-1.32.9-py3-none-any.whl", hash = "sha256:cbe9d9b7fc294b3267884d829566410d585de892484cbc67a063e6693e3bb9c9", size = 180061, upload-time = "2026-03-30T15:59:02.321Z" },
+    { url = "https://files.pythonhosted.org/packages/ac/b0/0b51ce53fd2280a7cee0181bdbdba19bf08558b7e8dd9b4a306ac298d76e/honeybee_ph-1.33.21-py3-none-any.whl", hash = "sha256:41fcea24c4e6a8921fd4c8aa608467cef5495624bda80cf55c6b977055b5b087", size = 196072, upload-time = "2026-07-02T17:00:31.024Z" },
 ]
 
 [[package]]
@@ -525,7 +525,7 @@ wheels = [
 
 [[package]]
 name = "phx"
-version = "1.56.23"
+version = "1.56.51"
 source = { editable = "." }
 dependencies = [
     { name = "honeybee-core" },
@@ -554,7 +554,7 @@ requires-dist = [
     { name = "coverage", marker = "extra == 'dev'" },
     { name = "honeybee-core", specifier = ">=1.64.9" },
     { name = "honeybee-energy", specifier = ">=1.116.103" },
-    { name = "honeybee-ph", specifier = ">=1.32.0" },
+    { name = "honeybee-ph", specifier = ">=1.33.21" },
     { name = "isort", marker = "extra == 'dev'" },
     { name = "lxml" },
     { name = "ph-units", specifier = ">=1.5.26" },

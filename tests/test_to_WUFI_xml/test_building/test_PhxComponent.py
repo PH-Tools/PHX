@@ -20,3 +20,15 @@ def test_default_PhxProject(reset_class_counters):
         "<IdentNrWindowType>-1</IdentNrWindowType>",
         '<IdentNrPolygons count="0"/>',
     ]
+
+
+def test_PhxComponentOpaque_writes_non_default_assembly_radiation_properties(reset_class_counters):
+    c1 = components.PhxComponentOpaque()
+    c1.assembly.exterior_solar_absorptance = 0.35
+    c1.assembly.exterior_thermal_emissivity = 0.82
+
+    result = generate_WUFI_XML_from_object(c1, _header="")
+
+    assert '<EmissionExtern unit="-">0.82</EmissionExtern>' in result
+    assert '<KindAbsorption choice="User defined">-2</KindAbsorption>' in result
+    assert '<Absorption unit="-">0.35</Absorption>' in result

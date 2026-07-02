@@ -16,6 +16,8 @@ def test_add_default_PhxVentilatorParams(reset_class_counters):
     assert p3.electric_efficiency == p1.electric_efficiency
     assert p3.frost_protection_reqd == p1.frost_protection_reqd
     assert p3.temperature_below_defrost_used == p1.temperature_below_defrost_used
+    assert p3.subsoil_heat_exchange_efficiency is None
+    assert p3.preheated_intake_temperature_c is None
 
 
 def test_add_mixed_PhxVentilatorParams(reset_class_counters):
@@ -43,6 +45,29 @@ def test_add_mixed_PhxVentilatorParams(reset_class_counters):
     assert p3.electric_efficiency == 3
     assert p3.frost_protection_reqd
     assert p3.temperature_below_defrost_used == 0.0
+
+
+def test_default_PhxVentilatorParams_subsoil_heat_exchange_is_unset(reset_class_counters):
+    params = ventilation.PhxDeviceVentilatorParams()
+
+    assert params.subsoil_heat_exchange_efficiency is None
+    assert params.preheated_intake_temperature_c is None
+
+
+def test_add_mixed_PhxVentilatorParams_preserves_subsoil_heat_exchange(reset_class_counters):
+    p1 = ventilation.PhxDeviceVentilatorParams(
+        _subsoil_heat_exchange_efficiency=0.3,
+        _preheated_intake_temperature_c=8.0,
+    )
+    p2 = ventilation.PhxDeviceVentilatorParams(
+        _subsoil_heat_exchange_efficiency=0.3,
+        _preheated_intake_temperature_c=8.0,
+    )
+
+    p3 = p1 + p2
+
+    assert p3.subsoil_heat_exchange_efficiency == 0.3
+    assert p3.preheated_intake_temperature_c == 8.0
 
 
 def test_default_PhxVentilator(reset_class_counters):

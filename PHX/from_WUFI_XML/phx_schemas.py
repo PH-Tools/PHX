@@ -14,6 +14,8 @@ from PHX.model.building import PhxBuilding, PhxZone
 from PHX.model.certification import PhxPhBuildingData, PhxPhiusCertification
 from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
 from PHX.model.constructions import (
+    PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE,
+    PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY,
     PhxColor,
     PhxConstructionOpaque,
     PhxConstructionWindow,
@@ -988,6 +990,12 @@ def _PhxComponentOpaque(
         if phx_obj.assembly_type_id_num != -1:
             # -- -1 indicates a shade component without an assembly type
             phx_obj.assembly = _assembly_types[str(_data.IdentNrAssembly)]
+            phx_obj.assembly.exterior_solar_absorptance = (
+                _data.Absorption if _data.Absorption is not None else PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE
+            )
+            phx_obj.assembly.exterior_thermal_emissivity = (
+                _data.EmissionExtern if _data.EmissionExtern is not None else PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY
+            )
 
     return phx_obj
 
@@ -1501,6 +1509,8 @@ def _PhxDevice_Ventilation(_data: wufi_xml.WufiDevice) -> PhxDeviceVentilator:
         phx_obj.params.electric_efficiency = _data.PH_Parameters.ElectricEfficiency or 0.0
         phx_obj.params.frost_protection_reqd = _data.PH_Parameters.FrostProtection
         phx_obj.params.temperature_below_defrost_used = _data.PH_Parameters.TemperatureBelowDefrostUsed or 0.0
+        phx_obj.params.subsoil_heat_exchange_efficiency = _data.PH_Parameters.SubsoilHeatExchangeEfficiency
+        phx_obj.params.preheated_intake_temperature_c = _data.PH_Parameters.PreheatedIntakeTemperature
 
     return phx_obj
 

@@ -15,6 +15,9 @@ from PHX.model.assembly_pathways import identify_heat_flow_pathways
 if TYPE_CHECKING:
     from PHX.model.assembly_pathways import PhxHeatFlowPathway
 
+PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE = 0.6
+PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY = 0.9
+
 # -----------------------------------------------------------------------------
 # Materials
 
@@ -483,6 +486,10 @@ class PhxConstructionOpaque:
         display_name (str): Human-readable construction name. Default: "".
         layer_order (int): Layer stacking direction. Default: 2 (outside to inside).
         grid_kind (int): Grid resolution for mixed-material layers. Default: 2 (medium).
+        exterior_solar_absorptance (float): Exterior-face short-wave absorptance for PHPP Areas AI.
+            Default: 0.6.
+        exterior_thermal_emissivity (float): Exterior-face long-wave emissivity for PHPP Areas AJ.
+            Default: 0.9.
         layers (list[PhxLayer]): Ordered list of material layers in the assembly. Default: [].
     """
 
@@ -493,6 +500,8 @@ class PhxConstructionOpaque:
     display_name: str = ""
     layer_order: int = 2  # Outside to Inside
     grid_kind: int = 2  # Medium
+    exterior_solar_absorptance: float = PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE
+    exterior_thermal_emissivity: float = PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY
     layers: list[PhxLayer] = field(default_factory=list)
 
     def __post_init__(self) -> None:

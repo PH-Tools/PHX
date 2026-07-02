@@ -385,6 +385,10 @@ class WufiComponent(WufiBaseModel):
     IdentNrAssembly: int | None = None
     IdentNrWindowType: int | None = None
     IdentNrPolygons: list[WufiIdentNrPolygons]
+    EmissionExtern: wufi_unit._Percentage | None = None
+    EmissionIntern: wufi_unit._Percentage | None = None
+    KindAbsorption: int | None = None
+    Absorption: wufi_unit._Percentage | None = None
 
     # Window-Specific Attributes
     DepthWindowReveal: wufi_unit.M | None = None
@@ -582,6 +586,8 @@ class WufiPH_Parameters(WufiBaseModel):
     FrostProtection: bool | None = None
     TemperatureBelowDefrostUsed: wufi_unit.DegreeC | None = None
     NoSummerBypass: bool | None = None
+    SubsoilHeatExchangeEfficiency: wufi_unit._Percentage | None = None
+    PreheatedIntakeTemperature: wufi_unit.DegreeC | None = None
 
     # -- HP Water Heater
     HPWH_EF: wufi_unit._Percentage | None = None
