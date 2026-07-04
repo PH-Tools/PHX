@@ -11,16 +11,13 @@ from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
 
 
-@dataclass
+@dataclass(slots=True)
 class FrameRow:
     """A single Areas/Surface entry row."""
 
-    __slots__ = (
-        "shape",
-        "phx_construction",
-    )
     shape: shape_model.Components
     phx_construction: constructions.PhxConstructionWindow
+    psi_value_weights: dict[str, float] | None = None
 
     def _create_range(self, _field_name: str, _row_num: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -42,21 +39,27 @@ class FrameRow:
         _field_names: list[str],
         _values: list[float],
         _input_unit: str,
+        _weights: list[float] | None = None,
     ) -> list[xl_data.XlItem]:
         """Build XlItems for psi fields, averaging values that share a column.
 
         When multiple per-side psi values map to the same PHPP column (e.g. PHPP 10.x
         has a single psi-glazing column for all four sides), write one item with the
-        average. When columns differ (PHPP 9.x), write individual items.
+        weighted average. When columns differ (PHPP 9.x), write individual items.
         """
-        groups: defaultdict[str, list[tuple[str, float]]] = defaultdict(list)
-        for field_name, value in zip(_field_names, _values):
+        weights = _weights or [1.0] * len(_values)
+        groups: defaultdict[str, list[tuple[str, float, float]]] = defaultdict(list)
+        for field_name, value, weight in zip(_field_names, _values, weights, strict=True):
             col = self._get_column(field_name)
-            groups[col].append((field_name, value))
+            groups[col].append((field_name, value, weight))
 
         items: list[xl_data.XlItem] = []
         for col, entries in groups.items():
-            avg_value = sum(v for _, v in entries) / len(entries)
+            total_weight = sum(weight for _, _, weight in entries)
+            if total_weight == 0.0:
+                avg_value = sum(value for _, value, _ in entries) / len(entries)
+            else:
+                avg_value = sum(value * weight for _, value, weight in entries) / total_weight
             first_field = entries[0][0]
             items.append(
                 xl_data.XlItem(
@@ -150,6 +153,12 @@ class FrameRow:
                     self.phx_construction.frame_top.psi_glazing,
                 ],
                 "W/MK",
+                [
+                    (self.psi_value_weights or {}).get("psi_g_left", 1.0),
+                    (self.psi_value_weights or {}).get("psi_g_right", 1.0),
+                    (self.psi_value_weights or {}).get("psi_g_bottom", 1.0),
+                    (self.psi_value_weights or {}).get("psi_g_top", 1.0),
+                ],
             )
         )
 
@@ -166,6 +175,12 @@ class FrameRow:
                     self.phx_construction.frame_top.psi_install,
                 ],
                 "W/MK",
+                [
+                    (self.psi_value_weights or {}).get("psi_i_left", 1.0),
+                    (self.psi_value_weights or {}).get("psi_i_right", 1.0),
+                    (self.psi_value_weights or {}).get("psi_i_bottom", 1.0),
+                    (self.psi_value_weights or {}).get("psi_i_top", 1.0),
+                ],
             )
         )
 

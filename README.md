@@ -27,7 +27,7 @@ This library is designed to be used as part of the [Honeybee-PH plugin](https://
 # More Information:
 
 For more information on the use of these tools, check out the the Passive House Tools website:
-http://www.PassiveHouseTools.com
+https://passivehousetools.com/
 
 ![Tests](https://github.com/PH-Tools/PHX/actions/workflows/ci.yml/badge.svg)
-![versions](https://img.shields.io/pypi/pyversions/pybadges.svg)
+![versions](https://img.shields.io/pypi/pyversions/PHX.svg)

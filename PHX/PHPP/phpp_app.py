@@ -318,9 +318,52 @@ class PHPPConnection:
         self.u_values.write_constructor_blocks(construction_blocks)
         return None
 
+    @staticmethod
+    def _collect_window_psi_g_lengths(phx_project: project.PhxProject) -> dict[str, dict[str, float]]:
+        """Collect installed glazing-edge lengths by window construction.
+
+        PHPP 10 has a single psi-g input per frame type, while PHX can carry one
+        value per side. Weight the collapsed value by the glazing-edge lengths
+        used by ISO 10077-1: left/right use clear glazing height; top/bottom use
+        clear glazing width.
+        """
+        empty_weights = {
+            "psi_g_left": 0.0,
+            "psi_g_right": 0.0,
+            "psi_g_bottom": 0.0,
+            "psi_g_top": 0.0,
+        }
+        lengths_by_construction = {wt.identifier: empty_weights.copy() for wt in phx_project.window_types.values()}
+
+        for phx_variant in phx_project.variants:
+            for aperture in phx_variant.building.aperture_components:
+                window_type = aperture.window_type
+                weights = lengths_by_construction.setdefault(window_type.identifier, empty_weights.copy())
+
+                for element in aperture.elements:
+                    if not element.polygon:
+                        continue
+
+                    horizontal_glazing_edge = max(
+                        0.0,
+                        element.width - window_type.frame_left.width - window_type.frame_right.width,
+                    )
+                    vertical_glazing_edge = max(
+                        0.0,
+                        element.height - window_type.frame_top.width - window_type.frame_bottom.width,
+                    )
+
+                    weights["psi_g_left"] += vertical_glazing_edge
+                    weights["psi_g_right"] += vertical_glazing_edge
+                    weights["psi_g_bottom"] += horizontal_glazing_edge
+                    weights["psi_g_top"] += horizontal_glazing_edge
+
+        return lengths_by_construction
+
     def write_project_window_components(self, phx_project: project.PhxProject) -> None:
         """Write all of the frame and glass constructions from a PhxProject to the PHPP 'Components' worksheet."""
 
+        psi_g_lengths_by_construction = self._collect_window_psi_g_lengths(phx_project)
         glazing_component_rows: list[component_glazing.GlazingRow] = []
         frame_component_rows: list[component_frame.FrameRow] = []
         for phx_construction in phx_project.window_types.values():
@@ -328,7 +371,11 @@ class PHPPConnection:
                 component_glazing.GlazingRow(shape=self.shape.COMPONENTS, phx_construction=phx_construction)
             )
             frame_component_rows.append(
-                component_frame.FrameRow(shape=self.shape.COMPONENTS, phx_construction=phx_construction)
+                component_frame.FrameRow(
+                    shape=self.shape.COMPONENTS,
+                    phx_construction=phx_construction,
+                    psi_value_weights=psi_g_lengths_by_construction.get(phx_construction.identifier),
+                )
             )
         self.components.write_glazings(glazing_component_rows)
         self.components.write_frames(frame_component_rows)

@@ -106,6 +106,27 @@ class TestPsiGlazingSameColumn:
         assert len(psi_g_items) == 1, f"Expected 1 psi_g item for same-column, got {len(psi_g_items)}"
         assert psi_g_items[0]._write_value == pytest.approx(expected_avg)
 
+    def test_non_uniform_values_with_weights_writes_weighted_average(self, reset_class_counters):
+        """When four psi_g values map to the same column, use supplied side-length weights."""
+        shape = _make_components_shape(_make_frames_shape(self.SAME_COL))
+        con = _make_construction(psi_g={"left": 0.005, "right": 0.014, "bottom": 0.001, "top": 0.005})
+        row = FrameRow(
+            shape=shape,
+            phx_construction=con,
+            psi_value_weights={
+                "psi_g_left": 2.0,
+                "psi_g_right": 2.0,
+                "psi_g_bottom": 10.0,
+                "psi_g_top": 10.0,
+            },
+        )
+        xl_items = row.create_xl_items("Components", 10)
+
+        psi_g_items = _items_for_column_range(xl_items, "IR")
+        expected_avg = ((0.005 * 2.0) + (0.014 * 2.0) + (0.001 * 10.0) + (0.005 * 10.0)) / 24.0
+        assert len(psi_g_items) == 1, f"Expected 1 psi_g item for same-column, got {len(psi_g_items)}"
+        assert psi_g_items[0]._write_value == pytest.approx(expected_avg)
+
 
 class TestPsiGlazingDifferentColumns:
     """PHPP 9.x: each psi_g field maps to a different column."""
