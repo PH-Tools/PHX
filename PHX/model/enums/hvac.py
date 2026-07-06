@@ -152,6 +152,14 @@ class PhxHotWaterPipingMaterial(Enum):
     PEX_CTS_SDR = 8
 
 
+class PhxHowWaterPipingInsulationQuality(Enum):
+    """The quality-level of the pipe insulation at mounting/fixing/junction points."""
+
+    NONE = 1
+    MODERATE = 2
+    GOOD = 3
+
+
 class PhxHotWaterPipingInchDiameterType(Enum):
     """Nominal pipe diameter in inches for hot water piping.
 

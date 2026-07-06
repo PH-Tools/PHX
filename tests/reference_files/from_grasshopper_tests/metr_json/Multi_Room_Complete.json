@@ -29,10 +29,10 @@
     "rEmail": "",
     "date": [
       2026,
-      4,
-      22,
       7,
-      32,
+      6,
+      9,
+      21,
       0
     ],
     "wBkg": false
@@ -1579,7 +1579,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_93f4b229",
+      "n": "PhWindowConstruction_177094e6",
       "detU": true,
       "detGd": false,
       "Uw": 0.8339189189189188,
@@ -3524,7 +3524,7 @@
             "id": 42,
             "idSKP": -1,
             "itv": 4,
-            "n": "Shade_576d9ecb",
+            "n": "Shade_15840d78",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3666,7 +3666,7 @@
             "id": 43,
             "idSKP": -1,
             "itv": 5,
-            "n": "Shade_f4522f46",
+            "n": "Shade_2f0dbd51",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3808,7 +3808,7 @@
             "id": 41,
             "idSKP": -1,
             "itv": 6,
-            "n": "PhWindowConstruction_93f4b229",
+            "n": "PhWindowConstruction_177094e6",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -3953,7 +3953,7 @@
             "id": 25,
             "idSKP": -1,
             "itv": 7,
-            "n": "Room_4_9633157d..Face5_Glz0",
+            "n": "Room_4_a75c2001..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4788,7 +4788,7 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__00f752fd",
+                "n": "_unnamed_bldg_segment__06e179ac",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4800,7 +4800,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__43f258cf",
+                "n": "_unnamed_bldg_segment__0fbf7744",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4812,7 +4812,19 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__70749197",
+                "n": "_unnamed_bldg_segment__39647012",
+                "typeTbZ": -15,
+                "lengthTbZ": 22.0,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__51a35c45",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.799999999999997,
                 "psiTbZ": 0.01,
@@ -4824,19 +4836,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__ac27301f",
-                "typeTbZ": -15,
-                "lengthTbZ": 22.0,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__c3a2e945",
+                "n": "_unnamed_bldg_segment__561328ed",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4848,7 +4848,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__f72942a4",
+                "n": "_unnamed_bldg_segment__8a64ec62",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.000714267493642,
                 "psiTbZ": 0.01,
@@ -4860,7 +4860,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__ffc830d8",
+                "n": "_unnamed_bldg_segment__ed98504f",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.758048651498616,
                 "psiTbZ": 0.01,
@@ -4908,16 +4908,16 @@
             "nBedR": 3,
             "lExhVent": [
               {
-                "n": "example_kitchen_hood",
-                "typeExhV": 2,
-                "ExhVfR": 509.7032388,
-                "runTU": 0.08
-              },
-              {
                 "n": "example_dryer_vent",
                 "typeExhV": 1,
                 "ExhVfR": 442800.0,
                 "runTU": 7.625
+              },
+              {
+                "n": "example_kitchen_hood",
+                "typeExhV": 2,
+                "ExhVfR": 509.7032388,
+                "runTU": 0.08
               }
             ],
             "lFoundPH": [
@@ -5116,7 +5116,7 @@
             "lDevice": [
               {
                 "info": "Heat pump",
-                "n": "4a602d0d-086e-4f95-a2e1-5483dfa2da3e",
+                "n": "7223230b-4af6-49f0-8228-c82775f0e21d",
                 "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
@@ -6566,15 +6566,6 @@
               "devCondSp": true,
               "lSuppDev": [
                 {
-                  "n": "Example Kitchen Fan",
-                  "tsDev": 10,
-                  "quantity": 1,
-                  "inCondSp": true,
-                  "nEdem": 500.0,
-                  "contr": false,
-                  "poOper": 0.08
-                },
-                {
                   "n": "Example Device",
                   "tsDev": 10,
                   "quantity": 3,
@@ -6582,6 +6573,15 @@
                   "nEdem": 123.0,
                   "contr": false,
                   "poOper": 6.5
+                },
+                {
+                  "n": "Example Kitchen Fan",
+                  "tsDev": 10,
+                  "quantity": 1,
+                  "inCondSp": true,
+                  "nEdem": 500.0,
+                  "contr": false,
+                  "poOper": 0.08
                 }
               ]
             }

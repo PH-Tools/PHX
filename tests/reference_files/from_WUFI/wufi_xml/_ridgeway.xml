@@ -40131,6 +40131,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="18">760</IdentNr>
 							<IdentNr index="19">766</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="1">
 						<IdentNr>2408</IdentNr>
@@ -40148,6 +40150,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="0">842</IdentNr>
 							<IdentNr index="1">843</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="2">
 						<IdentNr>2415</IdentNr>
@@ -40171,6 +40175,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="6">839</IdentNr>
 							<IdentNr index="7">840</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="3">
 						<IdentNr>2416</IdentNr>
@@ -40188,6 +40194,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="0">830</IdentNr>
 							<IdentNr index="1">831</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="4">
 						<IdentNr>2417</IdentNr>
@@ -40205,6 +40213,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="0">804</IdentNr>
 							<IdentNr index="1">797</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="5">
 						<IdentNr>2419</IdentNr>
@@ -40223,6 +40233,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="1">806</IdentNr>
 							<IdentNr index="2">807</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="6">
 						<IdentNr>2422</IdentNr>
@@ -40242,6 +40254,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="2">18</IdentNr>
 							<IdentNr index="3">19</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="7">
 						<IdentNr>2440</IdentNr>
@@ -40276,6 +40290,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="17">828</IdentNr>
 							<IdentNr index="18">829</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="8">
 						<IdentNr>2454</IdentNr>
@@ -40306,6 +40322,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="13">14</IdentNr>
 							<IdentNr index="14">15</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="9">
 						<IdentNr>2456</IdentNr>
@@ -40324,6 +40342,8 @@ https://airtable.com/shr0OvkasxXJlqLHj
 							<IdentNr index="1">809</IdentNr>
 							<IdentNr index="2">810</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="10">
 						<IdentNr>2802</IdentNr>
@@ -50463,6 +50483,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<TemperatureBelowDefrostUsed>-3</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
+									<SubsoilHeatExchangeEfficiency unit="-">0.0</SubsoilHeatExchangeEfficiency>
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
@@ -50489,6 +50510,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<TemperatureBelowDefrostUsed>-3</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
+									<SubsoilHeatExchangeEfficiency unit="-">0.0</SubsoilHeatExchangeEfficiency>
 								</PH_Parameters>
 							</Device>
 							<Device index="2">
@@ -50627,6 +50649,7 @@ https://airtable.com/shr0OvkasxXJlqLHj
 									<TemperatureBelowDefrostUsed>-3</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
+									<SubsoilHeatExchangeEfficiency unit="-">0.0</SubsoilHeatExchangeEfficiency>
 								</PH_Parameters>
 							</Device>
 						</Devices>

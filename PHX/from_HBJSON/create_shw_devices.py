@@ -6,7 +6,7 @@ from honeybee_phhvac import hot_water_devices, hot_water_piping
 from ladybug_geometry.geometry3d.polyline import LineSegment3D
 
 from PHX.model import hvac
-from PHX.model.enums.hvac import PhxHotWaterPipingMaterial, PhxHotWaterTankType
+from PHX.model.enums.hvac import PhxHotWaterPipingMaterial, PhxHotWaterTankType, PhxHowWaterPipingInsulationQuality
 from PHX.model.geometry import PhxLineSegment, PhxVertix
 from PHX.model.hvac import piping
 
@@ -157,7 +157,7 @@ def build_phx_pipe_element(_ph_hvac_pipe: hot_water_piping.PhHvacPipeElement) ->
                 segment.insulation_thickness_m,
                 segment.insulation_conductivity,
                 segment.insulation_reflective,
-                segment.insulation_quality,
+                PhxHowWaterPipingInsulationQuality(segment.insulation_quality.number),
                 segment.daily_period,
                 segment.water_temp_c,
             )
@@ -190,7 +190,7 @@ def build_phx_branch_pipe(_ph_hvac_branch: hot_water_piping.PhHvacPipeBranch) ->
                 segment.insulation_thickness_m,
                 segment.insulation_conductivity,
                 segment.insulation_reflective,
-                segment.insulation_quality,
+                PhxHowWaterPipingInsulationQuality(segment.insulation_quality.number),
                 segment.daily_period,
                 segment.water_temp_c,
             )
@@ -229,7 +229,7 @@ def build_phx_trunk_pipe(_ph_hvac_trunk: hot_water_piping.PhHvacPipeTrunk) -> hv
                 segment.insulation_thickness_m,
                 segment.insulation_conductivity,
                 segment.insulation_reflective,
-                segment.insulation_quality,
+                PhxHowWaterPipingInsulationQuality(segment.insulation_quality.number),
                 segment.daily_period,
                 segment.water_temp_c,
             )

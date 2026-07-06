@@ -5425,6 +5425,8 @@ Instant DHW
 							<IdentNr index="16">10000061</IdentNr>
 							<IdentNr index="17">10000062</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="2">
 						<IdentNr>4</IdentNr>
@@ -5441,6 +5443,8 @@ Instant DHW
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000047</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="3">
 						<IdentNr>7</IdentNr>
@@ -5457,6 +5461,8 @@ Instant DHW
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000060</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="4">
 						<IdentNr>8</IdentNr>
@@ -5579,6 +5585,8 @@ Instant DHW
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000141</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="7">
 						<IdentNr>11</IdentNr>
@@ -5595,6 +5603,8 @@ Instant DHW
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000142</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="8">
 						<IdentNr>12</IdentNr>

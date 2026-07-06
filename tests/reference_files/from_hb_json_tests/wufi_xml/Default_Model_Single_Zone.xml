@@ -10,10 +10,10 @@
 		<OwnerIsClient>false</OwnerIsClient>
 		<Date_Project>
 			<Year>2026</Year>
-			<Month>4</Month>
-			<Day>22</Day>
-			<Hour>7</Hour>
-			<Minutes>33</Minutes>
+			<Month>7</Month>
+			<Day>6</Day>
+			<Hour>9</Hour>
+			<Minutes>25</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -221,6 +221,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">5</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.7</Absorption>
 					</Component>
 					<Component index="1">
 						<IdentNr>6</IdentNr>
@@ -237,6 +239,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">6</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.65</Absorption>
 					</Component>
 					<Component index="2">
 						<IdentNr>9</IdentNr>
@@ -256,6 +260,8 @@
 							<IdentNr index="2">3</IdentNr>
 							<IdentNr index="3">4</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.65</Absorption>
 					</Component>
 				</Components>
 				<Zones count="1">

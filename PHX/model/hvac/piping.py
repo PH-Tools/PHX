@@ -12,13 +12,14 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from typing import Any, ClassVar, Union
+from typing import ClassVar, Union
 from uuid import uuid4
 
 from PHX.model.enums.hvac import (
     PhxHotWaterPipingCalcMethod,
     PhxHotWaterPipingMaterial,
     PhxHotWaterSelectionUnitsOrFloors,
+    PhxHowWaterPipingInsulationQuality,
 )
 from PHX.model.geometry import PhxLineSegment
 
@@ -75,7 +76,7 @@ class PhxPipeSegment:
         insulation_thickness_m (float): Insulation thickness (m).
         insulation_conductivity (float): Insulation thermal conductivity (W/mK).
         insulation_reflective (bool): True if insulation has a reflective surface.
-        insulation_quality (Any): Insulation quality classification.
+        insulation_quality (PhxHowWaterPipingInsulationQuality): Insulation quality classification.
         daily_period (float): Daily operating period (hours).
         water_temp_c (float): Hot water temperature (C). Default: 60.0.
         pipe_wall_thickness_m (float): Pipe wall thickness (m). Default: 0.00225.
@@ -89,7 +90,7 @@ class PhxPipeSegment:
     insulation_thickness_m: float
     insulation_conductivity: float  # W/mk
     insulation_reflective: bool
-    insulation_quality: Any
+    insulation_quality: PhxHowWaterPipingInsulationQuality
     daily_period: float
     water_temp_c: float = 60.0
     pipe_wall_thickness_m: float = 0.00225
@@ -250,7 +251,7 @@ class PhxPipeSegment:
             insulation_thickness_m=0.0,
             insulation_conductivity=0.0,
             insulation_reflective=False,
-            insulation_quality=None,
+            insulation_quality=PhxHowWaterPipingInsulationQuality.MODERATE,
             daily_period=24,
         )
 

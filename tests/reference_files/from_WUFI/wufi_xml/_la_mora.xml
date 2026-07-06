@@ -27793,6 +27793,8 @@
 							<IdentNr index="16">10000219</IdentNr>
 							<IdentNr index="17">10000188</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="1">
 						<IdentNr>2</IdentNr>
@@ -27810,6 +27812,8 @@
 							<IdentNr index="0">10000906</IdentNr>
 							<IdentNr index="1">10000891</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="2">
 						<IdentNr>3</IdentNr>
@@ -27867,6 +27871,8 @@
 							<IdentNr index="40">10000636</IdentNr>
 							<IdentNr index="41">10000638</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="3">
 						<IdentNr>6</IdentNr>
@@ -27883,6 +27889,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000570</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="4">
 						<IdentNr>7</IdentNr>
@@ -27899,6 +27907,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000198</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="5">
 						<IdentNr>8</IdentNr>
@@ -27924,6 +27934,8 @@
 							<IdentNr index="8">10000909</IdentNr>
 							<IdentNr index="9">10000734</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="6">
 						<IdentNr>9</IdentNr>
@@ -27945,6 +27957,8 @@
 							<IdentNr index="4">10000739</IdentNr>
 							<IdentNr index="5">10000735</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="7">
 						<IdentNr>10</IdentNr>
@@ -27961,6 +27975,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000577</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="8">
 						<IdentNr>11</IdentNr>
@@ -28103,6 +28119,8 @@
 							<IdentNr index="3">10000893</IdentNr>
 							<IdentNr index="4">10000894</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="10">
 						<IdentNr>14</IdentNr>
@@ -28205,6 +28223,8 @@
 							<IdentNr index="0">10000900</IdentNr>
 							<IdentNr index="1">10000895</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="16">
 						<IdentNr>20</IdentNr>
@@ -28221,6 +28241,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000905</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="17">
 						<IdentNr>21</IdentNr>
@@ -28255,6 +28277,8 @@
 							<IdentNr index="1">10000197</IdentNr>
 							<IdentNr index="2">10000199</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="19">
 						<IdentNr>23</IdentNr>
@@ -28295,6 +28319,8 @@
 							<IdentNr index="23">10000215</IdentNr>
 							<IdentNr index="24">10000637</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="20">
 						<IdentNr>26</IdentNr>
@@ -28312,6 +28338,8 @@
 							<IdentNr index="0">10000217</IdentNr>
 							<IdentNr index="1">10000426</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="21">
 						<IdentNr>27</IdentNr>
@@ -28328,6 +28356,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000425</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="22">
 						<IdentNr>30</IdentNr>
@@ -28344,6 +28374,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000579</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="23">
 						<IdentNr>40</IdentNr>
@@ -28360,6 +28392,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000773</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="24">
 						<IdentNr>41</IdentNr>
@@ -28376,6 +28410,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000799</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="25">
 						<IdentNr>43</IdentNr>
@@ -28392,6 +28428,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000817</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="26">
 						<IdentNr>44</IdentNr>
@@ -28408,6 +28446,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000005</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="27">
 						<IdentNr>45</IdentNr>
@@ -28425,6 +28465,8 @@
 							<IdentNr index="0">10000024</IdentNr>
 							<IdentNr index="1">10000025</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="28">
 						<IdentNr>46</IdentNr>
@@ -28444,6 +28486,8 @@
 							<IdentNr index="2">10000267</IdentNr>
 							<IdentNr index="3">10000231</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="29">
 						<IdentNr>47</IdentNr>
@@ -28461,6 +28505,8 @@
 							<IdentNr index="0">10000144</IdentNr>
 							<IdentNr index="1">10000266</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="30">
 						<IdentNr>116</IdentNr>
@@ -30166,6 +30212,7 @@
 									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
+									<SubsoilHeatExchangeEfficiency unit="-">0.0</SubsoilHeatExchangeEfficiency>
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
@@ -30192,6 +30239,7 @@
 									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
+									<SubsoilHeatExchangeEfficiency unit="-">0.0</SubsoilHeatExchangeEfficiency>
 								</PH_Parameters>
 							</Device>
 							<Device index="2">
@@ -58739,6 +58787,8 @@
 							<IdentNr index="16">10000219</IdentNr>
 							<IdentNr index="17">10000188</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="1">
 						<IdentNr>2</IdentNr>
@@ -58756,6 +58806,8 @@
 							<IdentNr index="0">10000906</IdentNr>
 							<IdentNr index="1">10000891</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="2">
 						<IdentNr>3</IdentNr>
@@ -58813,6 +58865,8 @@
 							<IdentNr index="40">10000636</IdentNr>
 							<IdentNr index="41">10000638</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="3">
 						<IdentNr>6</IdentNr>
@@ -58829,6 +58883,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000570</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="4">
 						<IdentNr>7</IdentNr>
@@ -58845,6 +58901,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000198</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="5">
 						<IdentNr>8</IdentNr>
@@ -58870,6 +58928,8 @@
 							<IdentNr index="8">10000909</IdentNr>
 							<IdentNr index="9">10000734</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="6">
 						<IdentNr>9</IdentNr>
@@ -58891,6 +58951,8 @@
 							<IdentNr index="4">10000739</IdentNr>
 							<IdentNr index="5">10000735</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="7">
 						<IdentNr>10</IdentNr>
@@ -58907,6 +58969,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000577</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="8">
 						<IdentNr>11</IdentNr>
@@ -59049,6 +59113,8 @@
 							<IdentNr index="3">10000893</IdentNr>
 							<IdentNr index="4">10000894</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="10">
 						<IdentNr>14</IdentNr>
@@ -59151,6 +59217,8 @@
 							<IdentNr index="0">10000900</IdentNr>
 							<IdentNr index="1">10000895</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="16">
 						<IdentNr>20</IdentNr>
@@ -59167,6 +59235,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000905</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="17">
 						<IdentNr>21</IdentNr>
@@ -59201,6 +59271,8 @@
 							<IdentNr index="1">10000197</IdentNr>
 							<IdentNr index="2">10000199</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="19">
 						<IdentNr>23</IdentNr>
@@ -59241,6 +59313,8 @@
 							<IdentNr index="23">10000215</IdentNr>
 							<IdentNr index="24">10000637</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="20">
 						<IdentNr>26</IdentNr>
@@ -59258,6 +59332,8 @@
 							<IdentNr index="0">10000217</IdentNr>
 							<IdentNr index="1">10000426</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="21">
 						<IdentNr>27</IdentNr>
@@ -59274,6 +59350,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000425</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="22">
 						<IdentNr>30</IdentNr>
@@ -59290,6 +59368,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000579</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="23">
 						<IdentNr>40</IdentNr>
@@ -59306,6 +59386,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000773</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="24">
 						<IdentNr>41</IdentNr>
@@ -59322,6 +59404,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000799</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="25">
 						<IdentNr>43</IdentNr>
@@ -59338,6 +59422,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000817</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="26">
 						<IdentNr>44</IdentNr>
@@ -59354,6 +59440,8 @@
 						<IdentNrPolygons count="1">
 							<IdentNr index="0">10000005</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="27">
 						<IdentNr>45</IdentNr>
@@ -59371,6 +59459,8 @@
 							<IdentNr index="0">10000024</IdentNr>
 							<IdentNr index="1">10000025</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="28">
 						<IdentNr>46</IdentNr>
@@ -59390,6 +59480,8 @@
 							<IdentNr index="2">10000267</IdentNr>
 							<IdentNr index="3">10000231</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="29">
 						<IdentNr>47</IdentNr>
@@ -59407,6 +59499,8 @@
 							<IdentNr index="0">10000144</IdentNr>
 							<IdentNr index="1">10000266</IdentNr>
 						</IdentNrPolygons>
+						<KindAbsorption choice="User defined">-2</KindAbsorption>
+						<Absorption unit="-">0.4</Absorption>
 					</Component>
 					<Component index="30">
 						<IdentNr>1459</IdentNr>
@@ -61112,6 +61206,7 @@
 									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
+									<SubsoilHeatExchangeEfficiency unit="-">0.0</SubsoilHeatExchangeEfficiency>
 								</PH_Parameters>
 							</Device>
 							<Device index="1">
@@ -61138,6 +61233,7 @@
 									<TemperatureBelowDefrostUsed>-5</TemperatureBelowDefrostUsed>
 									<InConditionedSpace>false</InConditionedSpace>
 									<NoSummerBypass>false</NoSummerBypass>
+									<SubsoilHeatExchangeEfficiency unit="-">0.0</SubsoilHeatExchangeEfficiency>
 								</PH_Parameters>
 							</Device>
 							<Device index="2">
