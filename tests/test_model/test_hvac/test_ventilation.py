@@ -70,6 +70,21 @@ def test_add_mixed_PhxVentilatorParams_preserves_subsoil_heat_exchange(reset_cla
     assert p3.preheated_intake_temperature_c == 8.0
 
 
+def test_default_PhxVentilatorParams_sys_type_is_balanced(reset_class_counters):
+    params = ventilation.PhxDeviceVentilatorParams()
+
+    assert params.sys_type == 1
+
+
+def test_add_PhxVentilatorParams_preserves_sys_type(reset_class_counters):
+    p1 = ventilation.PhxDeviceVentilatorParams(_sys_type=2)
+    p2 = ventilation.PhxDeviceVentilatorParams(_sys_type=2)
+
+    p3 = p1 + p2
+
+    assert p3.sys_type == 2
+
+
 def test_default_PhxVentilator(reset_class_counters):
     p1 = ventilation.PhxDeviceVentilator()
     p2 = ventilation.PhxDeviceVentilator()

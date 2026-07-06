@@ -43,6 +43,9 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
             Default: None (no subsoil heat exchanger).
         preheated_intake_temperature_c (float | None): PHPP Addl Vent G20 intake-air temperature after the
             ground loop, in C. Default: None (no subsoil heat exchanger).
+        sys_type (int): PHPP Ventilation!K12 fresh-air system type (1 = Balanced PH ventilation with HR,
+            2 = Extract air, 3 = Window ventilation). Mirrors honeybee-ph's
+            `PhVentilationSystem.sys_type`. Default: 1 (balanced).
     """
 
     _sensible_heat_recovery: float = 0.0
@@ -53,6 +56,7 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
     _temperature_below_defrost_used: float = -5.0
     _subsoil_heat_exchange_efficiency: float | None = None
     _preheated_intake_temperature_c: float | None = None
+    _sys_type: int = 1
 
     @property
     def sensible_heat_recovery(self) -> float:
@@ -124,6 +128,15 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
     def preheated_intake_temperature_c(self, value: float | None) -> None:
         self._preheated_intake_temperature_c = value
 
+    @property
+    def sys_type(self) -> int:
+        return self._sys_type
+
+    @sys_type.setter
+    def sys_type(self, value: int | None) -> None:
+        if value is not None:
+            self._sys_type = value
+
     @staticmethod
     def _merge_optional_average(value_a: float | None, value_b: float | None) -> float | None:
         if value_a is None:
@@ -151,6 +164,14 @@ class PhxDeviceVentilatorParams(_base.PhxMechanicalDeviceParams):
             self.preheated_intake_temperature_c,
             other.preheated_intake_temperature_c,
         )
+        # -- sys_type is a discrete PHPP K12 category, not an averageable quantity.
+        # -- Preserve self's value; warn if the two devices disagree.
+        if self.sys_type != other.sys_type:
+            print(
+                f"Warning: Merging ventilators with differing sys_type "
+                f"({self.sys_type} != {other.sys_type}). Keeping {self.sys_type}."
+            )
+        new_obj.sys_type = self.sys_type
         return new_obj
 
 

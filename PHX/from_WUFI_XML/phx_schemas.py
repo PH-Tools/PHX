@@ -1512,6 +1512,8 @@ def _PhxDevice_Ventilation(_data: wufi_xml.WufiDevice) -> PhxDeviceVentilator:
         phx_obj.params.temperature_below_defrost_used = _data.PH_Parameters.TemperatureBelowDefrostUsed or 0.0
         phx_obj.params.subsoil_heat_exchange_efficiency = _data.PH_Parameters.SubsoilHeatExchangeEfficiency
         phx_obj.params.preheated_intake_temperature_c = _data.PH_Parameters.PreheatedIntakeTemperature
+        # -- Default to 1 (balanced) when the PHX-extension node is absent.
+        phx_obj.params.sys_type = _data.PH_Parameters.SystemTypeVentilation or 1
 
     return phx_obj
 

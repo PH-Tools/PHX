@@ -589,6 +589,7 @@ class WufiPH_Parameters(WufiBaseModel):
     NoSummerBypass: bool | None = None
     SubsoilHeatExchangeEfficiency: wufi_unit._Percentage | None = None
     PreheatedIntakeTemperature: wufi_unit.DegreeC | None = None
+    SystemTypeVentilation: int | None = None
 
     # -- HP Water Heater
     HPWH_EF: wufi_unit._Percentage | None = None

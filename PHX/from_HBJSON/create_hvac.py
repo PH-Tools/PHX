@@ -94,6 +94,9 @@ def build_phx_ventilator(
     phx_vent = _transfer_attributes(_hbeph_vent_sys, phx_vent)
     phx_vent = _transfer_attributes(_hbeph_vent_sys.ventilation_unit, phx_vent)
 
+    # -- Carry the PHPP K12 fresh-air system-type from the hb-ph system (not the unit).
+    phx_vent.params.sys_type = _hbeph_vent_sys.sys_type
+
     # -- Sort out the Display name to use
     if not _hbeph_vent_sys.ventilation_unit:
         ventilator_name = _default_ventilator_name(0.0, 0.0)

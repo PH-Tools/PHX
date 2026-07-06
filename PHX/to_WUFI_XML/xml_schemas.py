@@ -1025,6 +1025,10 @@ def _DeviceVentilatorPhParams(_p: hvac.PhxDeviceVentilatorParams) -> list[xml_wr
         xml_items.append(XML_Node("SubsoilHeatExchangeEfficiency", _p.subsoil_heat_exchange_efficiency, "unit", "-"))
     if _p.preheated_intake_temperature_c is not None:
         xml_items.append(XML_Node("PreheatedIntakeTemperature", _p.preheated_intake_temperature_c, "unit", "C"))
+    # -- PHX-extension node for the PHPP K12 fresh-air type. Omitted for the default
+    # -- (1 = balanced) so existing WUFI models are unaffected.
+    if _p.sys_type != 1:
+        xml_items.append(XML_Node("SystemTypeVentilation", _p.sys_type))
     return xml_items
 
 
