@@ -100,6 +100,35 @@ class TestPhxSupportiveDeviceParamsIHGFactor:
         assert merged.ihg_utilization_factor == pytest.approx(0.5)
 
 
+# ---------------------------------------------------------------------------
+# --- IHG Usage Profile (PHPP season/block)
+# ---------------------------------------------------------------------------
+
+
+class TestPhxSupportiveDeviceParamsIHGUsageProfile:
+    def test_default_ihg_usage_profile(self, reset_class_counters):
+        params = PhxSupportiveDeviceParams()
+        assert params.ihg_usage_profile == 1
+
+    def test_set_ihg_usage_profile(self, reset_class_counters):
+        params = PhxSupportiveDeviceParams(ihg_usage_profile=2)
+        assert params.ihg_usage_profile == 2
+
+    def test_add_params_same_profile_preserves_it(self, reset_class_counters):
+        """Merging two same-profile params keeps that profile."""
+        p1 = PhxSupportiveDeviceParams(norm_energy_demand_W=100, ihg_usage_profile=2)
+        p2 = PhxSupportiveDeviceParams(norm_energy_demand_W=50, ihg_usage_profile=2)
+        merged = p1 + p2
+        assert merged.ihg_usage_profile == 2
+
+    def test_add_params_different_profile_raises(self, reset_class_counters):
+        """Same-identifier devices must share a profile; a mismatch is corrupt data."""
+        p1 = PhxSupportiveDeviceParams(ihg_usage_profile=2)
+        p2 = PhxSupportiveDeviceParams(ihg_usage_profile=1)
+        with pytest.raises(ValueError):
+            _ = p1 + p2
+
+
 class TestPhxSupportiveDeviceIHGFactor:
     def test_device_default_ihg_utilization_factor(self, reset_class_counters):
         device = PhxSupportiveDevice()
