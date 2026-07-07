@@ -29,17 +29,32 @@ class PhxSupportiveDeviceParams(_base.PhxMechanicalDeviceParams):
         annual_period_operation_khrs (float): Annual operating period (kilo-hours). Default: 8.760.
         ihg_utilization_factor (float): Internal heat gains utilization factor (0.0-1.0).
             Default: 1.0.
+        ihg_usage_profile (int): PHPP season/block the device's IHG lands in
+            (1=all-year, 2=winter, 3=summer, 4=none/DHW). Carried verbatim from the
+            Honeybee-PH ``PhSupportiveDevice`` so downstream tools (OpenPH) can route
+            the device into the correct Aux-Electricity worksheet block. Default: 1.
     """
 
     in_conditioned_space: bool = True
     norm_energy_demand_W: float = 1.0
     annual_period_operation_khrs: float = 8.760
     ihg_utilization_factor: float = 1.0
+    ihg_usage_profile: int = 1
 
     def __add__(self, other: PhxSupportiveDeviceParams) -> PhxSupportiveDeviceParams:
         base = super().__add__(other)
         new_obj = self.__class__(**vars(base))
         new_obj.in_conditioned_space = any([self.in_conditioned_space, other.in_conditioned_space])
+
+        # -- Devices only merge when they share an identifier (same logical device),
+        # -- so their IHG season/block must match; a mismatch is corrupt data. Raise
+        # -- loudly, matching PhxSupportiveDevice.__add__'s raise on device_type.
+        if self.ihg_usage_profile != other.ihg_usage_profile:
+            raise ValueError(
+                "Cannot merge supportive devices with different ihg_usage_profile: "
+                f"{self.ihg_usage_profile} and {other.ihg_usage_profile}."
+            )
+        new_obj.ihg_usage_profile = self.ihg_usage_profile
 
         # -- Merge the energy usage and hours of operation
         total_kilohours = self.annual_period_operation_khrs + other.annual_period_operation_khrs
