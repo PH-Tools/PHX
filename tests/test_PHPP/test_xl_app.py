@@ -312,7 +312,38 @@ def test_xl_app_write_list_of_ints():
     xl_item = xl_data.XlItem("Sheet1", "A1", [1, 2, 3, 4])
     app.write_xl_item(xl_item)
 
-    assert app.get_sheet_by_name("Sheet1").range("A1").value == [1, 2, 3, 4]
+    # -- On macOS the raw-write path targets the full block address, with the
+    # -- values pre-shaped to a 2D row (ints as floats - see 'prepare_raw_write').
+    assert app.get_sheet_by_name("Sheet1").range("A1:D1").value == [[1.0, 2.0, 3.0, 4.0]]
+
+
+def test_write_raw_path_guards():
+    """Items that rely on '.value' converter behavior must stay off the raw path."""
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    assert app._use_raw_write(xl_data.XlItem("Sheet1", "A1", 42))
+    assert app._use_raw_write(xl_data.XlItem("Sheet1", "A1", [1, 2, 3]))
+    # -- colored items: the color-write offsets anchor to the converter's range
+    assert not app._use_raw_write(
+        xl_data.XlItem("Sheet1", "A1", 42, range_color=(1, 2, 3), font_color=(4, 5, 6))
+    )
+    # -- multi-cell addresses use '.value' scalar-broadcast (ie: block clears)
+    assert not app._use_raw_write(xl_data.XlItem("Sheet1", "A1:D10", None))
+    # -- empty lists are silently skipped by the converter - keep that behavior
+    assert not app._use_raw_write(xl_data.XlItem("Sheet1", "A1", []))
+
+
+def test_write_colored_item_takes_legacy_path_and_colors_cells():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    xl_item = xl_data.XlItem("Sheet1", "A1", 42, range_color=(1, 2, 3), font_color=(4, 5, 6))
+    app.write_xl_item(xl_item)
+
+    _range = app.get_sheet_by_name("Sheet1").range("A1")
+    assert _range.value == 42
+    assert _range.color == (1, 2, 3)
 
 
 def test_xl_app_write_raise_Attribute_error():

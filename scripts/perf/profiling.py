@@ -165,6 +165,7 @@ class OpCounter:
         "range.value.get",
         "range.value.set",
         "range.raw_value.get",
+        "range.raw_value.set",
         "range.end",
         "range.color.set",
         "range.font.color.set",

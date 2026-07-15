@@ -43,6 +43,15 @@ class xl_Range_Protocol:
         self.column: int
         self.rows: str
 
+    @property
+    def raw_value(self) -> Any:
+        """The range's value, bypassing the converter layer (maps onto 'value' here)."""
+        return self.value
+
+    @raw_value.setter
+    def raw_value(self, _value: Any) -> None:
+        self.value = _value
+
     def end(self, *args, **kwargs) -> "xl_Range_Protocol":
         return xl_Range_Protocol()
 

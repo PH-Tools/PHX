@@ -2,8 +2,10 @@
 
 """Basic datatypes and data-structures relevant for Excel read/write."""
 
+import datetime
+import math
 import string
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 from ph_units import converter
 
@@ -229,6 +231,81 @@ def _expand_to_xl_items(_row: list) -> list[XlItem]:
         else:
             items.append(entry)
     return items
+
+
+def _as_raw_write_element(_value: Any) -> Any:
+    """Return a single value in the form the raw (converter-less) write path expects.
+
+    Reproduces xlwings' macOS 'prepare_xl_data_element' for the types PHX writes:
+    'None' and NaN become '' (which clears the cell), ints become floats
+    (appscript packs large ints as SInt64, which Excel silently ignores - xlwings
+    GH #227), and dates become datetimes. Strings, floats and bools pass through.
+    """
+    if _value is None:
+        return ""
+    if isinstance(_value, bool):  # -- must be tested before int
+        return _value
+    if isinstance(_value, int):
+        return float(_value)
+    if isinstance(_value, float) and math.isnan(_value):
+        return ""
+    if isinstance(_value, datetime.datetime):
+        return _value.replace(tzinfo=None)
+    if isinstance(_value, datetime.date):
+        return datetime.datetime(_value.year, _value.month, _value.day)
+    return _value
+
+
+def prepare_raw_write(
+    _xl_item: Union[XlItem, XLItem_List], _transpose: bool = False
+) -> tuple[str, Any]:
+    """Return the (full-range-address, raw-shaped-data) for a 'raw_value' write.
+
+    The xlwings '.value' converter costs ~5x per write on macOS (one extra
+    AppleEvent layer per op). Writing through 'range.raw_value' skips it, but
+    then the shaping the converter normally does must happen here in Python:
+    values are cleaned ('_as_raw_write_element'), 1D lists become one 2D row,
+    transposition is applied, and the target address is expanded from the
+    anchor cell to the full block extent (the converter does this by resizing
+    the range - computing the address is free, resizing is not).
+
+    Arguments:
+    ----------
+        * _xl_item: (XlItem | XLItem_List) The item to write. Must have a
+            single-cell anchor 'xl_range' (ie: "L41", not "L41:N41").
+        * _transpose: (bool) Transpose the value before writing (lists write
+            down the column instead of across the row). Default=False.
+
+    Returns:
+    --------
+        * (tuple[str, Any]): The full target range address and the write-ready
+            data: a scalar for single-cell writes, or a shape-matching 2D list.
+    """
+    value = _xl_item.write_value
+
+    if not isinstance(value, (list, tuple)):
+        return _xl_item.xl_range, _as_raw_write_element(value)
+
+    if value and isinstance(value[0], (list, tuple)):
+        rows_2d = [list(row) for row in value]
+    else:
+        rows_2d = [list(value)]
+
+    if _transpose:
+        rows_2d = [list(row) for row in zip(*rows_2d)]
+
+    n_cols = len(rows_2d[0])
+    if any(len(row) != n_cols for row in rows_2d):
+        raise ValueError(f"Cannot raw-write a ragged 2D value to '{_xl_item.xl_range}': {rows_2d}")
+
+    rows_2d = [[_as_raw_write_element(v) for v in row] for row in rows_2d]
+
+    if len(rows_2d) == 1 and n_cols == 1:
+        return _xl_item.xl_range, rows_2d[0][0]
+
+    end_col = xl_chr(_xl_item.xl_col_number + n_cols - 1)
+    end_row = _xl_item.xl_row_number + len(rows_2d) - 1
+    return f"{_xl_item.xl_range}:{end_col}{end_row}", rows_2d
 
 
 def merge_xl_item_rows(_rows: list[list[XlItem]]) -> list[Union[XlItem, XLItem_List]]:

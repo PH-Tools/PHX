@@ -138,6 +138,40 @@ def decompose_write(
     return cells
 
 
+def decompose_raw_write(
+    _range_span: tuple[int, int, int, int],
+    _value: Any,
+) -> dict[tuple[int, int], Any]:
+    """Map a 'raw_value' write onto per-cell entries.
+
+    Mirrors the appscript 'value.set' semantics the raw path hits on macOS:
+    a scalar broadcasts to every cell in the range, and a 2D list must match
+    the range's shape exactly (the converter's anchor-expansion has already
+    happened Python-side). Anything else is a bug in the raw-write shim, so
+    it raises instead of guessing.
+    """
+    col_1, row_1, col_2, row_2 = _range_span
+    n_rows, n_cols = row_2 - row_1 + 1, col_2 - col_1 + 1
+    cells: dict[tuple[int, int], Any] = {}
+
+    if isinstance(_value, (list, tuple)):
+        if not (_value and isinstance(_value[0], (list, tuple))):
+            raise ValueError(f"raw_value writes must be a scalar or a 2D list, got: {_value!r}")
+        if len(_value) != n_rows or any(len(row) != n_cols for row in _value):
+            raise ValueError(f"raw_value 2D shape {_value!r} does not match the {n_rows}x{n_cols} range.")
+        for row_offset, row_values in enumerate(_value):
+            for col_offset, value in enumerate(row_values):
+                cells[(col_1 + col_offset, row_1 + row_offset)] = normalize_value(value)
+        return cells
+
+    if _value is None:
+        raise ValueError("raw_value writes must not contain None (the shim converts None to '').")
+    for row in range(row_1, row_2 + 1):
+        for col in range(col_1, col_2 + 1):
+            cells[(col, row)] = normalize_value(_value)
+    return cells
+
+
 # -----------------------------------------------------------------------------
 # -- The fake xlwings object graph
 
@@ -245,6 +279,9 @@ class FakeRange:
         if name == "value":
             written = decompose_write(self.span, value, self.transpose)
             self.sheet.write_cells(written)
+            return
+        if name == "raw_value":
+            self.sheet.write_cells(decompose_raw_write(self.span, value))
             return
         if name == "color":
             for col, row in self.iter_cells():

@@ -103,6 +103,14 @@ class Recording:
             self.golden_writes.setdefault(sheet, {})[addr] = self._jsonable(sheet, addr, cell_value)
             self._written.add((sheet, addr))
 
+    def record_raw_write(self, sheet: str, span: tuple[int, int, int, int], value: Any) -> None:
+        from tests.test_xl_replay.fake_xl_framework import decompose_raw_write
+
+        for (col, row), cell_value in decompose_raw_write(span, value).items():
+            addr = cell_name(col, row)
+            self.golden_writes.setdefault(sheet, {})[addr] = self._jsonable(sheet, addr, cell_value)
+            self._written.add((sheet, addr))
+
     def record_color(self, sheet: str, span: tuple[int, int, int, int], color: Any, slot: int) -> None:
         col_1, row_1, col_2, row_2 = span
         for row in range(row_1, row_2 + 1):
@@ -197,6 +205,12 @@ class RecRange(_Rec):
         if name == "value":
             rec.record_write(sheet, span, value, transpose)
             raw.value = value
+            return
+        if name == "raw_value":
+            # -- raw writes are pre-shaped Python-side (xl_data.prepare_raw_write),
+            # -- so their cell decomposition is exact - safe to record.
+            rec.record_raw_write(sheet, span, value)
+            raw.raw_value = value
             return
         if name == "color":
             rec.record_color(sheet, span, value, slot=0)

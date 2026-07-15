@@ -100,7 +100,8 @@ def test_counting_proxy_counts_write_events():
     conn, counter = _proxied_connection()
     conn.write_xl_item(xl_data.XlItem("Sheet1", "A1", 42))
 
-    assert counter.counts[("range.value.set", "Sheet1")] == 1
+    # -- plain data writes go through the raw (converter-less) path on macOS
+    assert counter.counts[("range.raw_value.set", "Sheet1")] == 1
     assert counter.total_round_trips() >= 1
     # -- ...and the underlying write actually landed.
     assert conn.get_sheet_by_name("Sheet1").range("A1").value == 42
@@ -188,5 +189,5 @@ def test_counting_proxy_report_shape():
 
     assert report["total_round_trips"] >= 1
     ops = {row["op"] for row in report["by_op"]}
-    assert "range.value.set" in ops
+    assert "range.raw_value.set" in ops
     assert any(row["sheet"] == "Sheet1" for row in report["round_trips_by_sheet"])

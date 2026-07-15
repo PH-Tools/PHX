@@ -651,6 +651,30 @@ class XLConnection:
             else:
                 sheet.api.unprotect()
 
+    def _use_raw_write(self, _xl_item: xl_data.XlItem | xl_data.XLItem_List) -> bool:
+        """Return True if the item can be written through the fast 'raw_value' path.
+
+        On macOS the xlwings '.value' converter layer adds ~5x per write (and
+        far more on 2D blocks) on top of the AppleEvent cost, so plain data
+        writes go through 'range.raw_value' with the shaping done Python-side
+        ('xl_data.prepare_raw_write'). Items that rely on converter behavior
+        stay on the '.value' path: colored items (the color-write offsets are
+        anchored to the converter's range), multi-cell target addresses
+        (which use '.value' scalar-broadcast, ie: block-clears), and empty
+        lists (which the converter silently skips). On Windows the COM
+        backend expects different raw shapes - it keeps '.value' throughout.
+        """
+        if self.os_is_windows:
+            return False
+        if _xl_item.has_color:
+            return False
+        if ":" in _xl_item.xl_range:
+            return False
+        value = _xl_item.write_value
+        if isinstance(value, (list, tuple)) and not value:
+            return False
+        return True
+
     def write_xl_item(
         self,
         _xl_item: xl_data.XlItem | xl_data.XLItem_List,
@@ -671,6 +695,12 @@ class XLConnection:
 
         try:
             xl_sheet = self.get_sheet_by_name(_xl_item.sheet_name)
+
+            if self._use_raw_write(_xl_item):
+                address, raw_data = xl_data.prepare_raw_write(_xl_item, _transpose)
+                xl_sheet.range(address).raw_value = raw_data
+                return
+
             xl_range = xl_sheet.range(_xl_item.xl_range).options(transpose=_transpose)
             xl_range.value = _xl_item.write_value  # type: ignore
 
