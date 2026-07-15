@@ -320,17 +320,17 @@ class Areas:
 
     def write_thermal_bridges(self, _tbs: list[areas_thermal_bridges.ThermalBridgeRow]) -> None:
         """Write all of the the thermal bridge data to the PHPP Areas worksheet."""
-
-        for i, tb in enumerate(_tbs, start=self.thermal_bridges.section_first_entry_row):
-            for item in tb.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+        start = self.thermal_bridges.section_first_entry_row
+        row_items = [tb.create_xl_items(self.shape.name, _row_num=i) for i, tb in enumerate(_tbs, start=start)]
+        for item in xl_data.merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)
 
     def write_surfaces(self, _surfaces: list[areas_surface.SurfaceRow]) -> None:
         """Write all of the the surface data to the PHPP Areas worksheet."""
         start = self.surfaces.section_first_entry_row
-        for i, surface in enumerate(_surfaces, start=start):
-            for item in surface.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+        row_items = [srf.create_xl_items(self.shape.name, _row_num=i) for i, srf in enumerate(_surfaces, start=start)]
+        for item in xl_data.merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)
 
     def _create_input_location_object(self, _phpp_model_obj: areas_data.AreasInput) -> AreasInputLocation:
         """Create and setup the AreasInputLocation object with the correct data."""
