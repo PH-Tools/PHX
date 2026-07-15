@@ -115,17 +115,31 @@ def test_counting_proxy_counts_read_events_per_sheet():
     assert counter.counts[("range.value.get", "Sheet1")] == 2
 
 
-def test_counting_proxy_counts_cell_loop_inside_facade_method():
-    """The whole point of the deep layer: catch per-row loops inside one facade call."""
+def test_counting_proxy_counts_block_search_as_single_read():
+    """T1.1 regression guard: the column search must be ONE block read, not a per-row loop."""
     conn, counter = _proxied_connection()
-    for row in range(1, 6):
-        conn.write_xl_item(xl_data.XlItem("Sheet1", f"A{row}", f"val-{row}"))
+    conn.get_sheet_by_name("Sheet1").range("A1:A5").value = ["v1", "v2", "v3", "v4", None]
     counter.counts.clear()
 
-    found_row = conn.get_row_num_of_value_in_column("Sheet1", 1, 5, "A", "val-4")
+    found_row = conn.get_row_num_of_value_in_column("Sheet1", 1, 5, "A", "v4")
     assert found_row == 4
-    # -- One facade call, but FOUR low-level value reads (rows 1..4).
-    assert counter.counts[("range.value.get", "Sheet1")] == 4
+    assert counter.counts[("range.value.get", "Sheet1")] == 1
+
+
+def test_counting_proxy_counts_cell_loop_in_block_read_fallback():
+    """The deep layer still catches per-row loops: the xlwings-#1924 fallback
+    (short block read -> per-cell scan) fires one read per row scanned."""
+    conn, counter = _proxied_connection()
+    sheet = conn.get_sheet_by_name("Sheet1")
+    sheet.range("A1:A5").value = ["v1", "v2"]  # short: simulates dropped error cells
+    for row in range(1, 6):
+        sheet.range(f"A{row}").value = f"v-{row}"
+    counter.counts.clear()
+
+    found_row = conn.get_row_num_of_value_in_column("Sheet1", 1, 5, "A", "v-4")
+    assert found_row == 4
+    # -- One block read + four per-cell fallback reads (rows 1..4).
+    assert counter.counts[("range.value.get", "Sheet1")] == 5
 
 
 def test_counting_proxy_counts_app_toggles_and_calculate():

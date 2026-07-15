@@ -143,6 +143,67 @@ def test_xl_app_get_sheet_by_name():
 
 
 # -----------------------------------------------------------------------------
+# Searching
+
+
+def test_get_row_num_of_value_in_column_block_read():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    sheet = app.get_sheet_by_name("Sheet1")
+    sheet.range("A1:A5").value = ["a", "b", "c", None, "e"]
+
+    assert app.get_row_num_of_value_in_column("Sheet1", 1, 5, "A", "c") == 3
+    assert app.get_row_num_of_value_in_column("Sheet1", 1, 5, "A", None) == 4  # blank-cell search
+    assert app.get_row_num_of_value_in_column("Sheet1", 1, 5, "A", "zzz") is None
+
+
+def test_get_row_num_of_value_in_column_respects_row_start_offset():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    sheet = app.get_sheet_by_name("Sheet1")
+    sheet.range("A10:A12").value = ["x", "y", "target"]
+
+    assert app.get_row_num_of_value_in_column("Sheet1", 10, 12, "A", "target") == 12
+
+
+def test_get_row_num_of_value_in_column_single_row_range():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    sheet = app.get_sheet_by_name("Sheet1")
+    sheet.range("A3:A3").value = "target"  # single-cell reads return a scalar
+
+    assert app.get_row_num_of_value_in_column("Sheet1", 3, 3, "A", "target") == 3
+    assert app.get_row_num_of_value_in_column("Sheet1", 3, 3, "A", "other") is None
+
+
+def test_get_row_num_of_value_in_column_bad_rows_raises_error():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    with pytest.raises(xl_app.ReadRowsError):
+        app.get_row_num_of_value_in_column("Sheet1", 5, 1, "A", "x")
+
+
+def test_get_row_num_of_value_in_column_falls_back_when_block_read_drops_cells():
+    """xlwings #1924: macOS block reads can silently drop error cells, shifting
+    positions. A short list must trigger the per-cell fallback scan."""
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    sheet = app.get_sheet_by_name("Sheet1")
+    sheet.range("A1:A3").value = ["a", "target"]  # short: simulates a dropped error cell
+    for row, value in enumerate(["a", "#REF!", "target"], start=1):
+        sheet.range(f"A{row}").value = value
+
+    # -- The naive scan of the short block would return row 2; the per-cell
+    # -- fallback must find the true row 3.
+    assert app.get_row_num_of_value_in_column("Sheet1", 1, 3, "A", "target") == 3
+
+
+# -----------------------------------------------------------------------------
 # Writing
 
 

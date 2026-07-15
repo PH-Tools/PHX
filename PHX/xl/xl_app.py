@@ -290,9 +290,22 @@ class XLConnection:
         if row_start > row_end:
             raise ReadRowsError(row_start, row_end)
 
-        row: int = row_start
         sh: xl_Sheet_Protocol = self.get_sheet_by_name(sheet_name)
 
+        # -- Read the whole column-segment in ONE block read and scan it in
+        # -- Python, instead of one interop round trip per row.
+        data = sh.range(f"{col}{row_start}:{col}{row_end}").value
+        if not isinstance(data, list):
+            data = [data]  # single-row ranges come back as a scalar
+
+        if len(data) == (row_end - row_start + 1):
+            return self.find_row(find, data, row_start)
+
+        # -- Positional integrity guard: on macOS, xlwings can silently drop
+        # -- error-cells (#REF etc.) from a block read (xlwings issue #1924),
+        # -- which would shift every row position after the error. If the list
+        # -- came back short, fall back to the slow-but-safe per-cell scan.
+        row: int = row_start
         while row <= row_end:
             if sh.range(f"{col}{row}").value != find:
                 row += 1
