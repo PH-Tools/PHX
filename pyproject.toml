@@ -36,6 +36,7 @@ dev = [
     "black",
     "coverage",
     "isort",
+    "openpyxl",
     "pytest",
     "pytest-cov",
     "rich",
@@ -67,6 +68,12 @@ replace = "version = \"{new_version}\""
 
 # -- Testing ---
 [tool.pytest.ini_options]
+# -- 'live_excel' tests drive a real Excel application: manual-invocation only.
+# -- They are deselected by default so CI and casual 'pytest' runs never touch Excel.
+addopts = '-m "not live_excel"'
+markers = [
+    "live_excel: requires a live Microsoft Excel application (manual runs only: pytest -m live_excel)",
+]
 filterwarnings = [
     "ignore",                                                   #error
     "ignore::UserWarning",
