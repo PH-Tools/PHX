@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "timestamp": "2026-07-14T22:24:02",
+    "platform": "Darwin",
+    "platform_release": "25.5.0",
+    "machine": "arm64",
+    "python": "3.10.11",
+    "excel_version": "16.110.3",
+    "excel_build_check": "OK (16.110.3 >= 16.102.2)",
+    "macos_version": "26.5.1",
+    "xlwings_version": "0.34.0"
+  },
+  "config": {
+    "n": 100,
+    "block": 1000
+  },
+  "results": {
+    "appscript": {
+      "write_cell": {
+        "n": 100,
+        "total_s": 1.9693,
+        "mean_ms": 19.693,
+        "median_ms": 16.693,
+        "p95_ms": 19.92,
+        "max_ms": 182.078
+      },
+      "read_cell": {
+        "n": 100,
+        "total_s": 1.6666,
+        "mean_ms": 16.666,
+        "median_ms": 16.66,
+        "p95_ms": 18.35,
+        "max_ms": 20.382
+      },
+      "write_block": {
+        "n": 1,
+        "total_s": 0.0196,
+        "mean_ms": 19.621,
+        "median_ms": 19.621,
+        "p95_ms": 19.621,
+        "max_ms": 19.621
+      },
+      "read_block": {
+        "n": 1,
+        "total_s": 0.0416,
+        "mean_ms": 41.597,
+        "median_ms": 41.597,
+        "p95_ms": 41.597,
+        "max_ms": 41.597
+      },
+      "end_call": {
+        "n": 20,
+        "total_s": 0.6558,
+        "mean_ms": 32.791,
+        "median_ms": 33.341,
+        "p95_ms": 34.692,
+        "max_ms": 36.137
+      }
+    }
+  }
+}

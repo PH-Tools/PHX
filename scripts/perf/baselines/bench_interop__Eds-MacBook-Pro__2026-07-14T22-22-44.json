@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "timestamp": "2026-07-14T22:22:44",
+    "platform": "Darwin",
+    "platform_release": "25.5.0",
+    "machine": "arm64",
+    "python": "3.10.11",
+    "excel_version": "16.110.3",
+    "excel_build_check": "OK (16.110.3 >= 16.102.2)",
+    "macos_version": "26.5.1",
+    "xlwings_version": "0.34.0"
+  },
+  "config": {
+    "n": 100,
+    "block": 1000
+  },
+  "results": {
+    "xlwings": {
+      "write_cell": {
+        "n": 100,
+        "total_s": 9.4762,
+        "mean_ms": 94.762,
+        "median_ms": 83.529,
+        "p95_ms": 98.611,
+        "max_ms": 1045.756
+      },
+      "read_cell": {
+        "n": 100,
+        "total_s": 8.4056,
+        "mean_ms": 84.056,
+        "median_ms": 83.434,
+        "p95_ms": 85.26,
+        "max_ms": 121.316
+      },
+      "write_block": {
+        "n": 1,
+        "total_s": 0.9563,
+        "mean_ms": 956.314,
+        "median_ms": 956.314,
+        "p95_ms": 956.314,
+        "max_ms": 956.314
+      },
+      "read_block": {
+        "n": 1,
+        "total_s": 0.1024,
+        "mean_ms": 102.351,
+        "median_ms": 102.351,
+        "p95_ms": 102.351,
+        "max_ms": 102.351
+      },
+      "end_call": {
+        "n": 20,
+        "total_s": 1.9928,
+        "mean_ms": 99.638,
+        "median_ms": 100.062,
+        "p95_ms": 100.974,
+        "max_ms": 101.802
+      }
+    },
+    "xlwings-raw": {
+      "write_cell": {
+        "n": 100,
+        "total_s": 1.6679,
+        "mean_ms": 16.679,
+        "median_ms": 16.637,
+        "p95_ms": 17.212,
+        "max_ms": 26.42
+      },
+      "read_cell": {
+        "n": 100,
+        "total_s": 1.7523,
+        "mean_ms": 17.523,
+        "median_ms": 16.712,
+        "p95_ms": 19.247,
+        "max_ms": 45.097
+      },
+      "write_block": {
+        "n": 1,
+        "total_s": 0.0186,
+        "mean_ms": 18.605,
+        "median_ms": 18.605,
+        "p95_ms": 18.605,
+        "max_ms": 18.605
+      },
+      "read_block": {
+        "n": 1,
+        "total_s": 0.0384,
+        "mean_ms": 38.393,
+        "median_ms": 38.393,
+        "p95_ms": 38.393,
+        "max_ms": 38.393
+      },
+      "end_call": {
+        "n": 20,
+        "total_s": 1.9931,
+        "mean_ms": 99.654,
+        "median_ms": 100.038,
+        "p95_ms": 100.931,
+        "max_ms": 101.012
+      }
+    },
+    "appscript": {
+      "write_cell": {
+        "n": 100,
+        "total_s": 1.6846,
+        "mean_ms": 16.846,
+        "median_ms": 16.732,
+        "p95_ms": 19.452,
+        "max_ms": 36.558
+      },
+      "read_cell": {
+        "n": 100,
+        "total_s": 1.6666,
+        "mean_ms": 16.666,
+        "median_ms": 16.673,
+        "p95_ms": 19.372,
+        "max_ms": 26.491
+      },
+      "write_block": {
+        "error": "AttributeError(\"'Property' object has no attribute 'byname'\")"
+      },
+      "read_block": {
+        "error": "AttributeError(\"'Property' object has no attribute 'byname'\")"
+      },
+      "end_call": {
+        "n": 20,
+        "total_s": 0.6666,
+        "mean_ms": 33.33,
+        "median_ms": 33.351,
+        "p95_ms": 34.678,
+        "max_ms": 36.703
+      }
+    }
+  }
+}
