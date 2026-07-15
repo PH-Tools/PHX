@@ -30,9 +30,9 @@
     "date": [
       2026,
       7,
-      6,
-      23,
-      39,
+      14,
+      21,
+      44,
       0
     ],
     "wBkg": false
@@ -1579,7 +1579,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_7ad3ef72",
+      "n": "PhWindowConstruction_162483a3",
       "detU": true,
       "detGd": false,
       "Uw": 0.8339189189189188,
@@ -3524,7 +3524,7 @@
             "id": 42,
             "idSKP": -1,
             "itv": 4,
-            "n": "Shade_5a88320c",
+            "n": "Shade_82f6c2c4",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3666,7 +3666,7 @@
             "id": 43,
             "idSKP": -1,
             "itv": 5,
-            "n": "Shade_42334ccd",
+            "n": "Shade_f0b39686",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3808,7 +3808,7 @@
             "id": 41,
             "idSKP": -1,
             "itv": 6,
-            "n": "PhWindowConstruction_7ad3ef72",
+            "n": "PhWindowConstruction_162483a3",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -3953,7 +3953,7 @@
             "id": 25,
             "idSKP": -1,
             "itv": 7,
-            "n": "Room_4_40c5540c..Face5_Glz0",
+            "n": "Room_4_9f077719..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4788,43 +4788,7 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__12a31680",
-                "typeTbZ": -15,
-                "lengthTbZ": 22.0,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__1b2701e5",
-                "typeTbZ": -15,
-                "lengthTbZ": 14.758048651498616,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__216d3ef2",
-                "typeTbZ": -15,
-                "lengthTbZ": 14.000714267493642,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__2604ac64",
+                "n": "_unnamed_bldg_segment__296638bd",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.799999999999997,
                 "psiTbZ": 0.01,
@@ -4836,7 +4800,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__7da72473",
+                "n": "_unnamed_bldg_segment__4c47f98d",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4848,7 +4812,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__9725ce5f",
+                "n": "_unnamed_bldg_segment__6b44f385",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4860,7 +4824,43 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__de42f58a",
+                "n": "_unnamed_bldg_segment__8a7f2546",
+                "typeTbZ": -15,
+                "lengthTbZ": 14.758048651498616,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__97620025",
+                "typeTbZ": -15,
+                "lengthTbZ": 22.0,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__bca8a700",
+                "typeTbZ": -15,
+                "lengthTbZ": 14.000714267493642,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__d01592d9",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -5980,7 +5980,7 @@
               },
               {
                 "info": "Heat pump",
-                "n": "e4d957a8-fd17-489d-97ac-41f3158e1c95",
+                "n": "dc3e7417-66ea-46ca-8c2a-e0714aae186c",
                 "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
