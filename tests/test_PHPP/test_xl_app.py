@@ -9,8 +9,8 @@ class Mock_XL_Framework(xl_typing.xl_Framework_Protocol):
     def __init__(self):
         self.books = xl_typing.xl_Books_Protocol()
         self.books.active.sheets.storage = {
-            "Sheet1": xl_typing.xl_Sheet_Protocol(),
-            "Sheet2": xl_typing.xl_Sheet_Protocol(),
+            "Sheet1": xl_typing.xl_Sheet_Protocol(name="Sheet1"),
+            "Sheet2": xl_typing.xl_Sheet_Protocol(name="Sheet2"),
         }
         self.apps = xl_typing.xl_apps_Protocol()
 
@@ -103,6 +103,33 @@ def test_xl_app_create_new_worksheet_already_in_raises_ValueError() -> None:
     app.create_new_worksheet(new_sheet_name)  # Add again
     assert new_sheet_name in app.wb.sheets
     assert len(app.wb.sheets) == 3  # only added the sheet once
+
+
+def test_xl_app_worksheet_names_are_cached():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    assert app.worksheet_names == {"SHEET1", "SHEET2"}
+
+    # -- A sheet added behind the facade's back is NOT seen (the cache is only
+    # -- invalidated by the facade's own sheet-mutating methods).
+    app.wb.sheets.storage["Sneaky"] = xl_typing.xl_Sheet_Protocol(name="Sneaky")
+    assert app.worksheet_names == {"SHEET1", "SHEET2"}
+
+    # -- The uncached primitive still reads live.
+    assert "SNEAKY" in app.get_upper_case_worksheet_names()
+
+
+def test_xl_app_create_new_worksheet_invalidates_names_cache():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    assert app.worksheet_names == {"SHEET1", "SHEET2"}  # prime the cache
+    app.create_new_worksheet("A New Sheet")
+    assert "A NEW SHEET" in app.worksheet_names
+
+    # -- ...and the new sheet is immediately usable through the facade.
+    assert app.get_sheet_by_name("A New Sheet") is not None
 
 
 def test_xl_app_get_sheet_by_name():

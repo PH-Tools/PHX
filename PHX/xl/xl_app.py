@@ -124,17 +124,28 @@ class XLConnection:
         # A dict with sheet names as keys, and XL data as values
         self.sheet_cache: dict[str, xl_Sheet_Protocol] = {}
 
+        # -- Cache of the workbook's upper-cased sheet names. Reading sheet names
+        # -- from a live workbook costs one interop round trip PER SHEET, and
+        # -- 'get_sheet_by_name' checks the names on every call - so without this
+        # -- cache the name-reads dominate an entire export (~97% of all round
+        # -- trips). Invalidated whenever the sheet collection changes.
+        self._worksheet_names_cache: set[str] | None = None
+
         self._wb: xl_Book_Protocol | None = None
         self.output(f"> connected to excel doc: '{self.wb.fullname}'")
 
     @property
     def worksheet_names(self) -> set[str]:
-        return self.get_upper_case_worksheet_names()
+        """Cached set of the Workbook's worksheet names, upper-cased."""
+        if self._worksheet_names_cache is None:
+            self._worksheet_names_cache = self.get_upper_case_worksheet_names()
+        return self._worksheet_names_cache
 
     def activate_new_workbook(self) -> xl_Book_Protocol:
         """Create a new blank workbook and set as the 'Active' book. Returns the new book."""
         new_book = self.books.add()
         self._wb = new_book
+        self._worksheet_names_cache = None
         return new_book
 
     @property
@@ -236,6 +247,7 @@ class XLConnection:
         try:
             self.wb.sheets.add(_sheet_name, before, after)
             self.sheet_cache[_sheet_name] = self.wb.sheets[_sheet_name]
+            self._worksheet_names_cache = None
             self.output(f"Adding '{_sheet_name}' to Workbook")
         except ValueError:
             self.output(f"Worksheet '{_sheet_name}' already in Workbook.")

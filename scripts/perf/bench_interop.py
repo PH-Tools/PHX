@@ -124,10 +124,10 @@ def run_appscript(sheet, n: int, block: int) -> dict[str, Any]:
         return api.cells[f"E{i + 1}"].value.get()
 
     def write_block(_: int):
-        api.ranges[f"G1:G{block}"].value.set([[float(i)] for i in range(block)])
+        api.cells[f"G1:G{block}"].value.set([[float(i)] for i in range(block)])
 
     def read_block(_: int):
-        return api.ranges[f"G1:G{block}"].value.get()
+        return api.cells[f"G1:G{block}"].value.get()
 
     def end_call(_: int):
         return api.cells["E1048576"].get_end(direction=k.toward_the_top).first_row_index.get()

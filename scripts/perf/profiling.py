@@ -293,14 +293,13 @@ class SheetProxy(_Wrapped):
     @property
     def _sheet_name(self) -> str:
         # -- Lazy + cached: reading '.name' is itself a live round trip, so only
-        # -- do it once per proxy (and count it when we do).
+        # -- do it once per proxy. NOT counted - it is the proxy's own labeling
+        # -- overhead, not something the production code path does.
         cached = object.__getattribute__(self, "_name_cache")
         if cached is not None:
             return cached
-        counter = object.__getattribute__(self, "_counter")
         try:
             name = str(object.__getattribute__(self, "_raw").name)
-            counter.hit("sheet.name.get", "-")
         except Exception:
             name = "?"
         object.__setattr__(self, "_name_cache", name)

@@ -138,6 +138,18 @@ def test_counting_proxy_counts_app_toggles_and_calculate():
     assert counter.counts[("app.calculate", "-")] == 1
 
 
+def test_sheet_name_reads_do_not_scale_with_facade_calls():
+    """Regression guard for the Tier-1 worksheet-names cache: before the cache,
+    every 'get_sheet_by_name' call re-read ALL sheet names live (~97% of an
+    export's round trips). One sweep of the workbook is the allowed maximum."""
+    conn, counter = _proxied_connection()
+    for i in range(50):
+        conn.write_xl_item(xl_data.XlItem("Sheet1", f"A{i + 1}", i))
+
+    name_reads = sum(n for (op, _), n in counter.counts.items() if op == "sheet.name.get")
+    assert name_reads <= 2  # the mock workbook has 2 sheets: one full sweep, ever
+
+
 def test_counting_proxy_report_shape():
     conn, counter = _proxied_connection()
     conn.write_xl_item(xl_data.XlItem("Sheet1", "A1", 1))

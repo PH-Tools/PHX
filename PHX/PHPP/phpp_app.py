@@ -80,7 +80,7 @@ class PHPPConnection:
     def get_data_worksheet(self) -> xl_Sheet_Protocol:
         """Return the 'Data' worksheet from the active PHPP file, support English, German, Spanish."""
         valid_data_worksheet_names = ["DATA", "DATEN", "DATOS"]
-        worksheet_names = self.xl.get_upper_case_worksheet_names()
+        worksheet_names = self.xl.worksheet_names
         for worksheet_name in valid_data_worksheet_names:
             if worksheet_name in worksheet_names:
                 return self.xl.get_sheet_by_name(worksheet_name)
@@ -169,7 +169,7 @@ class PHPPConnection:
     def is_easyPh(self) -> bool:
         """Return True if the active PHPP file is an 'easyPH' file."""
         name = self.shape.EASY_PH.name.upper()
-        return name in self.xl.get_upper_case_worksheet_names()
+        return name in self.xl.worksheet_names
 
     def phpp_version_equals_phx_phi_cert_version(self, _phx_variant: project.PhxVariant) -> bool:
         """Return True if the PHX PHI Certification Version and the PHPP Version match."""
