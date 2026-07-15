@@ -69,7 +69,11 @@ if __name__ == "__main__":
     # --- Command line arguments
     # -------------------------------------------------------------------------
     SOURCE_FILE = pathlib.Path(str(sys.argv[1])).resolve()
-    ACTIVATE_VARIANTS = pathlib.Path(sys.argv[2]).resolve()
+    # -- The callers pass different argv layouts: 'run.py' on macOS gives
+    # -- [hbjson, activate_variants], on Windows [hbjson, site_packages, activate_variants].
+    # -- Scan the trailing args for the flag. (Was previously parsed as a pathlib.Path,
+    # -- so the old '== "True"' check could never pass and variants never activated.)
+    ACTIVATE_VARIANTS = any(str(arg).strip().lower() == "true" for arg in sys.argv[2:])
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -92,4 +96,4 @@ if __name__ == "__main__":
 
     with phpp_conn.xl.in_silent_mode():
         phpp_conn.xl.unprotect_all_sheets()
-        write_phx_project_to_phpp(phpp_conn, phx_project, activate_variants=(ACTIVATE_VARIANTS == "True"))
+        write_phx_project_to_phpp(phpp_conn, phx_project, activate_variants=ACTIVATE_VARIANTS)
