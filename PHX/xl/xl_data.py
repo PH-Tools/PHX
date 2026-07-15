@@ -2,8 +2,10 @@
 
 """Basic datatypes and data-structures relevant for Excel read/write."""
 
+import datetime
+import math
 import string
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 from ph_units import converter
 
@@ -72,7 +74,9 @@ class XlItem:
 
     @property
     def xl_row_number(self) -> int:
-        return int([_ for _ in self.xl_range if _.isdigit()][0])
+        # -- Note: was previously int(first-digit-char), so 'L41' gave 4 and
+        # -- 'L41' vs 'L48' compared as the same row in merge_xl_item_row.
+        return int("".join(_ for _ in self.xl_range if _.isdigit()))
 
     @property
     def xl_col_number(self) -> int:
@@ -198,6 +202,179 @@ class XLItem_List:
 
     def __len__(self) -> int:
         return len(self._items)
+
+
+def _group_width(_group: Union[XlItem, XLItem_List]) -> int:
+    """Return the number of columns a merged row-group spans."""
+    if isinstance(_group, XLItem_List):
+        return len(_group)
+    if _group.value_is_iterable:
+        return len(_group.write_value)  # type: ignore
+    return 1
+
+
+def _group_row_values(_group: Union[XlItem, XLItem_List]) -> list:
+    """Return a merged row-group's (unit-converted) values as a flat list."""
+    if isinstance(_group, XLItem_List):
+        return list(_group.write_value)
+    if _group.value_is_iterable:
+        return list(_group.write_value)  # type: ignore
+    return [_group.write_value]
+
+
+def _expand_to_xl_items(_row: list) -> list[XlItem]:
+    """Flatten any XLItem_List entries in a row back to their base XlItems."""
+    items: list[XlItem] = []
+    for entry in _row:
+        if isinstance(entry, XLItem_List):
+            items.extend(entry.items)
+        else:
+            items.append(entry)
+    return items
+
+
+def _as_raw_write_element(_value: Any) -> Any:
+    """Return a single value in the form the raw (converter-less) write path expects.
+
+    Reproduces xlwings' macOS 'prepare_xl_data_element' for the types PHX writes:
+    'None' and NaN become '' (which clears the cell), ints become floats
+    (appscript packs large ints as SInt64, which Excel silently ignores - xlwings
+    GH #227), and dates become datetimes. Strings, floats and bools pass through.
+    """
+    if _value is None:
+        return ""
+    if isinstance(_value, bool):  # -- must be tested before int
+        return _value
+    if isinstance(_value, int):
+        return float(_value)
+    if isinstance(_value, float) and math.isnan(_value):
+        return ""
+    if isinstance(_value, datetime.datetime):
+        return _value.replace(tzinfo=None)
+    if isinstance(_value, datetime.date):
+        return datetime.datetime(_value.year, _value.month, _value.day)
+    return _value
+
+
+def prepare_raw_write(
+    _xl_item: Union[XlItem, XLItem_List], _transpose: bool = False
+) -> tuple[str, Any]:
+    """Return the (full-range-address, raw-shaped-data) for a 'raw_value' write.
+
+    The xlwings '.value' converter costs ~5x per write on macOS (one extra
+    AppleEvent layer per op). Writing through 'range.raw_value' skips it, but
+    then the shaping the converter normally does must happen here in Python:
+    values are cleaned ('_as_raw_write_element'), 1D lists become one 2D row,
+    transposition is applied, and the target address is expanded from the
+    anchor cell to the full block extent (the converter does this by resizing
+    the range - computing the address is free, resizing is not).
+
+    Arguments:
+    ----------
+        * _xl_item: (XlItem | XLItem_List) The item to write. Must have a
+            single-cell anchor 'xl_range' (ie: "L41", not "L41:N41").
+        * _transpose: (bool) Transpose the value before writing (lists write
+            down the column instead of across the row). Default=False.
+
+    Returns:
+    --------
+        * (tuple[str, Any]): The full target range address and the write-ready
+            data: a scalar for single-cell writes, or a shape-matching 2D list.
+    """
+    value = _xl_item.write_value
+
+    if not isinstance(value, (list, tuple)):
+        return _xl_item.xl_range, _as_raw_write_element(value)
+
+    if value and isinstance(value[0], (list, tuple)):
+        rows_2d = [list(row) for row in value]
+    else:
+        rows_2d = [list(value)]
+
+    if _transpose:
+        rows_2d = [list(row) for row in zip(*rows_2d)]
+
+    n_cols = len(rows_2d[0])
+    if any(len(row) != n_cols for row in rows_2d):
+        raise ValueError(f"Cannot raw-write a ragged 2D value to '{_xl_item.xl_range}': {rows_2d}")
+
+    rows_2d = [[_as_raw_write_element(v) for v in row] for row in rows_2d]
+
+    if len(rows_2d) == 1 and n_cols == 1:
+        return _xl_item.xl_range, rows_2d[0][0]
+
+    end_col = xl_chr(_xl_item.xl_col_number + n_cols - 1)
+    end_row = _xl_item.xl_row_number + len(rows_2d) - 1
+    return f"{_xl_item.xl_range}:{end_col}{end_row}", rows_2d
+
+
+def merge_xl_item_rows(_rows: list[list[XlItem]]) -> list[Union[XlItem, XLItem_List]]:
+    """Merge per-row XlItems for CONSECUTIVE rows into 2D block XlItems.
+
+    This is the section-level batcher: each input row is first merged into
+    contiguous column-groups ('merge_xl_item_row'), and when every row shares
+    the same column layout and the rows are consecutive, each column-group is
+    stacked across the rows into a single 2D-valued XlItem — one write for the
+    whole section instead of one write per cell (or per row).
+
+    ie: rows at L41.. and L42.. each with groups (L:N), (T) become two XlItems:
+    'L41'=[[...],[...]] and 'T41'=[[...],[...]].
+
+    Items with font/range colors are never merged into blocks — they are
+    returned as individual XlItems (the color-write path is per-cell).
+    If the rows are not uniform or not consecutive, falls back to returning
+    the per-row merged groups unchanged.
+
+    Arguments:
+    ----------
+        * _rows: (list[list[XlItem]]) One list of XlItems per (single) row.
+            Rows must be in top-to-bottom order. XLItem_List entries are
+            accepted and re-flattened.
+
+    Returns:
+    --------
+        * (list[XlItem | XLItem_List]): Items ready for 'write_xl_item()'.
+    """
+    rows = [_expand_to_xl_items(row) for row in _rows if row]
+    if not rows:
+        return []
+
+    passthrough: list[XlItem] = [item for row in rows for item in row if item.has_color]
+    plain_rows = [[item for item in row if not item.has_color] for row in rows]
+
+    merged_rows = [merge_xl_item_row(row) if row else [] for row in plain_rows]
+
+    def _fallback() -> list[Union[XlItem, XLItem_List]]:
+        return [group for row in merged_rows for group in row] + passthrough
+
+    # -- Every row must be on one sheet, on one row, with one column layout,
+    # -- and the rows must be consecutive - otherwise write per-row as before.
+    signatures = set()
+    row_numbers = []
+    for row_groups in merged_rows:
+        if not row_groups:
+            return _fallback()
+        if len({group.sheet_name for group in row_groups}) != 1:
+            return _fallback()
+        if len({group.xl_row_number for group in row_groups}) != 1:
+            return _fallback()
+        signatures.add(tuple((group.xl_col_number, _group_width(group)) for group in row_groups))
+        row_numbers.append(row_groups[0].xl_row_number)
+
+    is_consecutive = row_numbers == list(range(row_numbers[0], row_numbers[0] + len(row_numbers)))
+    if len(signatures) != 1 or not is_consecutive:
+        return _fallback()
+
+    # -- Stack each column-group across all the rows into one 2D-valued XlItem.
+    # -- Values are already unit-converted here, so the block item carries none.
+    sheet_name = merged_rows[0][0].sheet_name
+    start_row = row_numbers[0]
+    blocks: list[Union[XlItem, XLItem_List]] = []
+    for group_i, first_row_group in enumerate(merged_rows[0]):
+        values_2d = [_group_row_values(row_groups[group_i]) for row_groups in merged_rows]
+        blocks.append(XlItem(sheet_name, f"{first_row_group.xl_col_alpha}{start_row}", values_2d))
+
+    return blocks + passthrough
 
 
 def merge_xl_item_row(

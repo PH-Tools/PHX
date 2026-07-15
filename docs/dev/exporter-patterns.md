@@ -162,6 +162,8 @@ metr_json_to_file.write_metr_json_file(target_path, metr_text)
 
 3. **PHPP data models** (`phpp_model/`) are dataclasses that generate `XlItem` objects. `XlItem` (defined in `PHX/xl/xl_data.py`) carries a sheet name, cell address, write value, optional SI/IP unit conversion, and optional cell/font color.
 
+   **Write batching:** interop round trips are expensive (especially on macOS), so section row-writers do not write cell-by-cell. `xl_data.merge_xl_item_rows()` merges each row's `XlItem`s into contiguous column-groups and stacks uniform consecutive rows into 2D-valued block items — one interop write per section column-group. Colored items and irregular rows fall back to per-item writes. Any change to this write path must keep the record/replay invariant green (`tests/test_xl_replay/`): the final written cell-state must match the recorded golden exactly.
+
 4. **Localization** (`phpp_localization/`) provides shape-file JSON that maps logical field names to cell addresses for a given PHPP version. Currently ships with **English-only** shape files for PHPP v9 (9.6A, 9.7IP) and v10 (10.3, 10.4A, 10.4IP, 10.6, 10.6IP). The version detection code recognizes German (DE) and Spanish (ES) worksheet names for navigation, but no DE/ES shape files are provided.
 
 5. **`PHPPConnection` exposes 20 `write_*` methods** — 17 functional write operations plus 3 non-residential stubs (`write_non_res_utilization_profiles`, `write_non_res_space_lighting`, `write_non_res_IHG`).

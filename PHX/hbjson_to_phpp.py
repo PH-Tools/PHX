@@ -5,17 +5,75 @@
 import pathlib
 import sys
 
-import xlwings as xw
-
 from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.PHPP import phpp_app
-from PHX.xl import xl_app
+
+
+def write_phx_project_to_phpp(
+    phpp_conn: "phpp_app.PHPPConnection", phx_project, activate_variants: bool = False
+) -> None:
+    """Write a complete PhxProject to an open PHPP document.
+
+    This is the canonical PHPP write sequence. It is used by the command-line
+    export (below) and by the performance-profiling harness in 'scripts/perf/'
+    so that profiled runs always execute the exact production sequence.
+
+    Note: the caller is responsible for wrapping this in 'xl.in_silent_mode()'
+    and for un-protecting the sheets first.
+
+    Arguments:
+    ----------
+        * phpp_conn (phpp_app.PHPPConnection): An open PHPP connection.
+        * phx_project (PhxProject): The PhxProject to write to the PHPP.
+        * activate_variants (bool): Set True to activate the PHPP 'Variants'
+            inputs after writing. Default=False.
+
+    Returns:
+    --------
+        * None
+    """
+    phpp_conn.write_certification_config(phx_project)
+    phpp_conn.write_climate_data(phx_project)
+    # Note: have to re-calc after Climate is set to avoid having any 'errors' in
+    # PHPP cells. Errors will cause XLWings to silently skip the cell, resulting in
+    # erroneous counts when locating write rows (ie: Ventilation Components)
+    phpp_conn.calculate()
+    phpp_conn.write_project_constructions(phx_project)
+    phpp_conn.write_project_tfa(phx_project)
+    phpp_conn.write_project_opaque_surfaces(phx_project)
+    phpp_conn.write_project_thermal_bridges(phx_project)
+    phpp_conn.write_project_window_components(phx_project)
+    phpp_conn.write_project_window_surfaces(phx_project)
+    phpp_conn.write_project_window_shading(phx_project)
+    phpp_conn.write_project_ventilation_components(phx_project)
+    phpp_conn.write_project_ventilators(phx_project)
+    phpp_conn.write_project_spaces(phx_project)
+    phpp_conn.write_project_ventilation_type(phx_project)
+    phpp_conn.write_project_airtightness(phx_project)
+    phpp_conn.write_project_volume(phx_project)
+    phpp_conn.write_project_hot_water(phx_project)
+    phpp_conn.write_project_res_elec_appliances(phx_project)
+
+    if activate_variants:
+        phpp_conn.activate_variant_assemblies()
+        phpp_conn.activate_variant_windows()
+        phpp_conn.activate_variant_ventilation()
+        phpp_conn.activate_variant_additional_vent()
+
 
 if __name__ == "__main__":
+    import xlwings as xw
+
+    from PHX.xl import xl_app
+
     # --- Command line arguments
     # -------------------------------------------------------------------------
     SOURCE_FILE = pathlib.Path(str(sys.argv[1])).resolve()
-    ACTIVATE_VARIANTS = pathlib.Path(sys.argv[2]).resolve()
+    # -- The callers pass different argv layouts: 'run.py' on macOS gives
+    # -- [hbjson, activate_variants], on Windows [hbjson, site_packages, activate_variants].
+    # -- Scan the trailing args for the flag. (Was previously parsed as a pathlib.Path,
+    # -- so the old '== "True"' check could never pass and variants never activated.)
+    ACTIVATE_VARIANTS = any(str(arg).strip().lower() == "true" for arg in sys.argv[2:])
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -38,30 +96,4 @@ if __name__ == "__main__":
 
     with phpp_conn.xl.in_silent_mode():
         phpp_conn.xl.unprotect_all_sheets()
-        phpp_conn.write_certification_config(phx_project)
-        phpp_conn.write_climate_data(phx_project)
-        # Note: have to re-calc after Climate is set to avoid having any 'errors' in
-        # PHPP cells. Errors will cause XLWings to silently skip the cell, resulting in
-        # erroneous counts when locating write rows (ie: Ventilation Components)
-        phpp_conn.calculate()
-        phpp_conn.write_project_constructions(phx_project)
-        phpp_conn.write_project_tfa(phx_project)
-        phpp_conn.write_project_opaque_surfaces(phx_project)
-        phpp_conn.write_project_thermal_bridges(phx_project)
-        phpp_conn.write_project_window_components(phx_project)
-        phpp_conn.write_project_window_surfaces(phx_project)
-        phpp_conn.write_project_window_shading(phx_project)
-        phpp_conn.write_project_ventilation_components(phx_project)
-        phpp_conn.write_project_ventilators(phx_project)
-        phpp_conn.write_project_spaces(phx_project)
-        phpp_conn.write_project_ventilation_type(phx_project)
-        phpp_conn.write_project_airtightness(phx_project)
-        phpp_conn.write_project_volume(phx_project)
-        phpp_conn.write_project_hot_water(phx_project)
-        phpp_conn.write_project_res_elec_appliances(phx_project)
-
-        if ACTIVATE_VARIANTS == "True":
-            phpp_conn.activate_variant_assemblies()
-            phpp_conn.activate_variant_windows()
-            phpp_conn.activate_variant_ventilation()
-            phpp_conn.activate_variant_additional_vent()
+        write_phx_project_to_phpp(phpp_conn, phx_project, activate_variants=ACTIVATE_VARIANTS)

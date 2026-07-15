@@ -13,7 +13,7 @@ from PHX.PHPP.phpp_model.component_frame import FrameRow
 from PHX.PHPP.phpp_model.component_glazing import GlazingRow
 from PHX.PHPP.phpp_model.component_vent import VentilatorRow
 from PHX.xl import xl_app
-from PHX.xl.xl_data import col_offset
+from PHX.xl.xl_data import col_offset, merge_xl_item_rows
 
 
 @dataclass
@@ -518,8 +518,12 @@ class Components:
 
     def write_glazings(self, _glazing_rows: list[GlazingRow]) -> None:
         """Write a list of GlazingRow objects to the PHPP "Components" worksheet."""
-        for i, glazing_row in enumerate(_glazing_rows, start=self.glazings.section_first_entry_row):
-            self.write_single_glazing(i, glazing_row)
+        start = self.glazings.section_first_entry_row
+        row_items = [
+            row.create_xl_items(self.shape.name, _row_num=i) for i, row in enumerate(_glazing_rows, start=start)
+        ]
+        for item in merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)
 
     def write_single_frame(self, _row_num: int, _frame_row: FrameRow) -> str:
         """Write a single FrameRow object to the PHPP "Components" worksheet.
@@ -535,8 +539,9 @@ class Components:
     def write_frames(self, _frame_row: list[FrameRow]) -> None:
         """Write a list of FrameRow objects to the PHPP "Components" worksheet."""
         start = self.frames.section_first_entry_row
-        for i, frame_row in enumerate(_frame_row, start=start):
-            self.write_single_frame(i, frame_row)
+        row_items = [row.create_xl_items(self.shape.name, _row_num=i) for i, row in enumerate(_frame_row, start=start)]
+        for item in merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)
 
     def write_single_ventilator(self, _row_num: int, _ventilator_row: VentilatorRow) -> str:
         """Write a single VentilatorRow object to the PHPP "Components" worksheet.
@@ -552,5 +557,6 @@ class Components:
     def write_ventilators(self, _ventilator_row: list[VentilatorRow]) -> None:
         """Write a list of VentilatorRow objects to the PHPP "Components" worksheet."""
         start = self.ventilators.section_first_entry_row
-        for i, ventilator_row in enumerate(_ventilator_row, start):
-            self.write_single_ventilator(i, ventilator_row)
+        row_items = [row.create_xl_items(self.shape.name, _row_num=i) for i, row in enumerate(_ventilator_row, start)]
+        for item in merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)

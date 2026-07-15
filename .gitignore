@@ -1,5 +1,6 @@
 # Ed's custom
 plans/
+scripts/perf/config.local.json
 .gitignore
 .gitattributes
 _old/

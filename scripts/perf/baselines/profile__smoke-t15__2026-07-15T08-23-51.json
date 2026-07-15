@@ -1,0 +1,440 @@
+{
+  "meta": {
+    "timestamp": "2026-07-15T08:23:51",
+    "platform": "Darwin",
+    "platform_release": "25.5.0",
+    "machine": "arm64",
+    "python": "3.10.11",
+    "excel_version": "16.110.3",
+    "excel_build_check": "OK (16.110.3 >= 16.102.2)",
+    "macos_version": "26.5.1",
+    "xlwings_version": "0.34.0",
+    "hbjson": "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/plans/20260714/excel-interop-refactor/test_files/Single_Zone.hbjson",
+    "phpp_template": "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/plans/20260714/excel-interop-refactor/test_files/PHPP_EN_V10.6_Empty.xlsx"
+  },
+  "wall_time_s": 23.6,
+  "facade": {
+    "total_facade_calls": 847,
+    "total_recorded_s": 25.365,
+    "by_method": [
+      {
+        "method": "write_xl_item",
+        "calls": 382,
+        "total_s": 17.4599,
+        "mean_ms": 45.71,
+        "max_ms": 1080.89
+      },
+      {
+        "method": "get_single_column_data",
+        "calls": 29,
+        "total_s": 2.7311,
+        "mean_ms": 94.18,
+        "max_ms": 164.01
+      },
+      {
+        "method": "unprotect_all_sheets",
+        "calls": 1,
+        "total_s": 1.8972,
+        "mean_ms": 1897.22,
+        "max_ms": 1897.22
+      },
+      {
+        "method": "get_upper_case_worksheet_names",
+        "calls": 1,
+        "total_s": 0.7279,
+        "mean_ms": 727.87,
+        "max_ms": 727.87
+      },
+      {
+        "method": "get_single_row_data",
+        "calls": 1,
+        "total_s": 0.5528,
+        "mean_ms": 552.82,
+        "max_ms": 552.82
+      },
+      {
+        "method": "get_multiple_column_data",
+        "calls": 2,
+        "total_s": 0.5202,
+        "mean_ms": 260.1,
+        "max_ms": 293.5
+      },
+      {
+        "method": "get_last_used_column_in_row",
+        "calls": 1,
+        "total_s": 0.4685,
+        "mean_ms": 468.53,
+        "max_ms": 468.53
+      },
+      {
+        "method": "calculate",
+        "calls": 2,
+        "total_s": 0.3656,
+        "mean_ms": 182.78,
+        "max_ms": 258.68
+      },
+      {
+        "method": "get_row_num_of_value_in_column",
+        "calls": 3,
+        "total_s": 0.3195,
+        "mean_ms": 106.5,
+        "max_ms": 109.89
+      },
+      {
+        "method": "get_data",
+        "calls": 3,
+        "total_s": 0.2751,
+        "mean_ms": 91.69,
+        "max_ms": 152.49
+      },
+      {
+        "method": "get_sheet_by_name",
+        "calls": 422,
+        "total_s": 0.0476,
+        "mean_ms": 0.11,
+        "max_ms": 3.84
+      }
+    ],
+    "hot_spots_top20": [
+      {
+        "method": "unprotect_all_sheets",
+        "detail": "",
+        "duration_ms": 1897.22
+      },
+      {
+        "method": "write_xl_item",
+        "detail": "U-Values:R15",
+        "duration_ms": 1080.89
+      },
+      {
+        "method": "get_upper_case_worksheet_names",
+        "detail": "",
+        "duration_ms": 727.87
+      },
+      {
+        "method": "get_single_row_data",
+        "detail": "_sheet_name=Data, _row_number=5",
+        "duration_ms": 552.82
+      },
+      {
+        "method": "get_last_used_column_in_row",
+        "detail": "_sheet_name=Data, _row=5",
+        "duration_ms": 468.53
+      },
+      {
+        "method": "get_multiple_column_data",
+        "detail": "_sheet_name=U-Values, _col_start=L, _col_end=M, _row_start=1, _row_end=1730",
+        "duration_ms": 293.5
+      },
+      {
+        "method": "calculate",
+        "detail": "",
+        "duration_ms": 258.68
+      },
+      {
+        "method": "get_multiple_column_data",
+        "detail": "_sheet_name=Variants, _col_start=B, _col_end=C, _row_start=603, _row_end=809",
+        "duration_ms": 226.71
+      },
+      {
+        "method": "get_single_column_data",
+        "detail": "_sheet_name=Areas, _col=K, _row_start=143, _row_end=168",
+        "duration_ms": 164.01
+      },
+      {
+        "method": "get_data",
+        "detail": "_sheet_name=U-Values, _range=Q29",
+        "duration_ms": 152.49
+      },
+      {
+        "method": "get_single_column_data",
+        "detail": "_sheet_name=Areas, _col=M, _row_start=1, _row_end=200",
+        "duration_ms": 137.8
+      },
+      {
+        "method": "get_single_column_data",
+        "detail": "_sheet_name=Variants, _col=B, _row_start=1, _row_end=501",
+        "duration_ms": 123.86
+      },
+      {
+        "method": "write_xl_item",
+        "detail": "U-Values:M598:M599",
+        "duration_ms": 115.35
+      },
+      {
+        "method": "write_xl_item",
+        "detail": "U-Values:L13:R20",
+        "duration_ms": 113.12
+      },
+      {
+        "method": "get_single_column_data",
+        "detail": "_sheet_name=Ventilation, _col=I, _row_start=1, _row_end=200",
+        "duration_ms": 112.16
+      },
+      {
+        "method": "get_row_num_of_value_in_column",
+        "detail": "sheet_name=U-Values, row_start=1, row_end=1730, col=L, find=Generic Roof",
+        "duration_ms": 109.89
+      },
+      {
+        "method": "write_xl_item",
+        "detail": "U-Values:M955:M956",
+        "duration_ms": 109.13
+      },
+      {
+        "method": "get_row_num_of_value_in_column",
+        "detail": "sheet_name=U-Values, row_start=1, row_end=1730, col=L, find=Generic Ground Slab",
+        "duration_ms": 108.32
+      },
+      {
+        "method": "get_single_column_data",
+        "detail": "_sheet_name=Addl vent, _col=C, _row_start=50, _row_end=200",
+        "duration_ms": 107.38
+      },
+      {
+        "method": "calculate",
+        "detail": "",
+        "duration_ms": 106.87
+      }
+    ]
+  },
+  "framework_events": {
+    "total_round_trips": 516,
+    "by_op": [
+      {
+        "op": "sheet.range.construct",
+        "count": 422,
+        "is_round_trip": false
+      },
+      {
+        "op": "range.raw_value.set",
+        "count": 262,
+        "is_round_trip": true
+      },
+      {
+        "op": "range.value.set",
+        "count": 120,
+        "is_round_trip": true
+      },
+      {
+        "op": "sheet.name.get",
+        "count": 44,
+        "is_round_trip": true
+      },
+      {
+        "op": "sheet.api",
+        "count": 42,
+        "is_round_trip": true
+      },
+      {
+        "op": "range.value.get",
+        "count": 38,
+        "is_round_trip": true
+      },
+      {
+        "op": "app.toggle.set",
+        "count": 6,
+        "is_round_trip": true
+      },
+      {
+        "op": "app.calculate",
+        "count": 2,
+        "is_round_trip": true
+      },
+      {
+        "op": "framework.Range.construct",
+        "count": 2,
+        "is_round_trip": false
+      },
+      {
+        "op": "book.open",
+        "count": 1,
+        "is_round_trip": true
+      },
+      {
+        "op": "range.last_cell",
+        "count": 1,
+        "is_round_trip": false
+      },
+      {
+        "op": "range.end",
+        "count": 1,
+        "is_round_trip": true
+      }
+    ],
+    "round_trips_by_sheet": [
+      {
+        "sheet": "U-values",
+        "round_trips": 233
+      },
+      {
+        "sheet": "Climate",
+        "round_trips": 139
+      },
+      {
+        "sheet": "-",
+        "round_trips": 53
+      },
+      {
+        "sheet": "Areas",
+        "round_trips": 14
+      },
+      {
+        "sheet": "Ventilation",
+        "round_trips": 13
+      },
+      {
+        "sheet": "Electricity",
+        "round_trips": 8
+      },
+      {
+        "sheet": "Variants",
+        "round_trips": 5
+      },
+      {
+        "sheet": "Components",
+        "round_trips": 5
+      },
+      {
+        "sheet": "Addl vent",
+        "round_trips": 5
+      },
+      {
+        "sheet": "Data",
+        "round_trips": 4
+      },
+      {
+        "sheet": "Windows",
+        "round_trips": 4
+      },
+      {
+        "sheet": "Shading",
+        "round_trips": 2
+      },
+      {
+        "sheet": "Brief instructions",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Verification",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Overview",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Check",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Comparison",
+        "round_trips": 1
+      },
+      {
+        "sheet": "PHeco",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Moni",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Ground",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Addl vent 2",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Annual heating",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Heating",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Heating load",
+        "round_trips": 1
+      },
+      {
+        "sheet": "SummVent",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Summer",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Cooling",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Cooling units",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Cooling load",
+        "round_trips": 1
+      },
+      {
+        "sheet": "DHW+Distribution",
+        "round_trips": 1
+      },
+      {
+        "sheet": "SolarDHW",
+        "round_trips": 1
+      },
+      {
+        "sheet": "PV",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Use non-res",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Electricity non-res",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Aux Electricity",
+        "round_trips": 1
+      },
+      {
+        "sheet": "IHG",
+        "round_trips": 1
+      },
+      {
+        "sheet": "IHG non-res",
+        "round_trips": 1
+      },
+      {
+        "sheet": "PER",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Compact",
+        "round_trips": 1
+      },
+      {
+        "sheet": "HP",
+        "round_trips": 1
+      },
+      {
+        "sheet": "HP Ground",
+        "round_trips": 1
+      },
+      {
+        "sheet": "Boiler",
+        "round_trips": 1
+      },
+      {
+        "sheet": "District heating",
+        "round_trips": 1
+      }
+    ]
+  }
+}

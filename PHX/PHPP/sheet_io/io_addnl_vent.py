@@ -389,22 +389,29 @@ class AddnlVent:
         if not self.spaces.section_first_entry_row:
             self.spaces.section_first_entry_row = self.spaces.find_section_first_entry_row()
 
-        for i, space in enumerate(_spaces, start=self.spaces.section_first_entry_row):
-            for item in space.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+        start = self.spaces.section_first_entry_row
+        row_items = [space.create_xl_items(self.shape.name, _row_num=i) for i, space in enumerate(_spaces, start=start)]
+        for item in xl_data.merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)
 
     def write_vent_units(self, _vent_units: list[vent_units.VentUnitRow]) -> None:
-        for i, vent_unit in enumerate(_vent_units, start=self.vent_units.section_first_entry_row):
-            for item in vent_unit.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+        start = self.vent_units.section_first_entry_row
+        row_items = [
+            unit.create_xl_items(self.shape.name, _row_num=i) for i, unit in enumerate(_vent_units, start=start)
+        ]
+        for item in xl_data.merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)
 
     def write_vent_ducts(self, _vent_ducts: list) -> None:
         if not self.vent_ducts.section_first_entry_row:
             self.vent_ducts.section_first_entry_row = self.vent_ducts.find_section_first_entry_row()
 
-        for i, vent_duct in enumerate(_vent_ducts, start=self.vent_ducts.section_first_entry_row):
-            for item in vent_duct.create_xl_items(self.shape.name, _row_num=i):
-                self.xl.write_xl_item(item)
+        start = self.vent_ducts.section_first_entry_row
+        row_items = [
+            duct.create_xl_items(self.shape.name, _row_num=i) for i, duct in enumerate(_vent_ducts, start=start)
+        ]
+        for item in xl_data.merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)
 
     def activate_variants(self, variants_worksheet_name: str, vent_unit_range: str) -> None:
         """Link the Vent unit to the Variants worksheet."""

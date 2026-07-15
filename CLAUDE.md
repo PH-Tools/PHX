@@ -34,6 +34,8 @@ python -m pytest tests/
 - `reset_class_counters` fixture resets all `_count` ClassVars for predictable ID numbering
 - `to_xml_reference_cases` parametrizes end-to-end (HBJSON input → expected XML output) comparisons
 - Reference files in `tests/reference_files/` (organized by source: `from_grasshopper_tests/`, `from_hb_json_tests/`, `from_WUFI/`)
+- `live_excel`-marked tests drive a real Excel app and are deselected by default (run manually: `pytest -m live_excel`)
+- `tests/test_xl_replay/` — record/replay invariant for the PHPP write path: any change to *how* cells are written must reproduce the recorded golden cell-state exactly (re-record with `scripts/perf/record_replay_fixture.py` only when the intended output legitimately changes)
 
 ### Key Dependencies
 - `honeybee-core`, `honeybee-energy`, `honeybee-ph` — Honeybee model classes + PH extensions

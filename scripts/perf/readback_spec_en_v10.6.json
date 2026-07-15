@@ -1,0 +1,195 @@
+{
+  "phpp_version": "EN 10.6",
+  "notes": [
+    "Key result-cell spec for readback_verify.py, PHPP EN v10.6 (SI).",
+    "Verification labels sit in column G (rows ~30-60); result values sit in column I on the same row.",
+    "Block geometry (header strings, entry columns) comes from PHX/PHPP/phpp_localization/EN_10_6.json.",
+    "Counts/sums for entry blocks are heuristics — validate against a real filled model during the T0.5 golden capture and adjust here as needed.",
+    "Empty-template baseline (PHPP_EN_V10.6_Empty.xlsx): all counts/sums read 0 EXCEPT components_glazing_count=10 and components_frame_count=49 — the template ships with example glazings (slots 90ud-99ud) and example frames (51ud-99ud). Compare mode diffs two extracts, so this constant baseline cancels out."
+  ],
+  "entries": [
+    {
+      "name": "verification_treated_floor_area_m2",
+      "kind": "locator_cell",
+      "sheet": "Verification",
+      "locator_col": "G",
+      "locator_string": "Treated floor area",
+      "value_col": "I",
+      "row_start": 20,
+      "row_end": 80
+    },
+    {
+      "name": "verification_specific_heating_demand",
+      "kind": "locator_cell",
+      "sheet": "Verification",
+      "locator_col": "G",
+      "locator_string": "Heating demand",
+      "value_col": "I",
+      "row_start": 20,
+      "row_end": 80
+    },
+    {
+      "name": "verification_specific_heating_load",
+      "kind": "locator_cell",
+      "sheet": "Verification",
+      "locator_col": "G",
+      "locator_string": "Heating load",
+      "value_col": "I",
+      "row_start": 20,
+      "row_end": 80
+    },
+    {
+      "name": "verification_overheating_frequency_pct",
+      "kind": "locator_cell",
+      "sheet": "Verification",
+      "locator_col": "G",
+      "locator_string": "Frequency of overheating",
+      "value_col": "I",
+      "row_start": 20,
+      "row_end": 80
+    },
+    {
+      "name": "verification_n50_ach",
+      "kind": "locator_cell",
+      "sheet": "Verification",
+      "locator_col": "G",
+      "locator_string": "Pressurisation test result n50",
+      "value_col": "I",
+      "row_start": 20,
+      "row_end": 80
+    },
+    {
+      "name": "verification_specific_pe_demand",
+      "kind": "locator_cell",
+      "sheet": "Verification",
+      "locator_col": "G",
+      "locator_string": "PE demand",
+      "value_col": "I",
+      "row_start": 20,
+      "row_end": 80
+    },
+    {
+      "name": "verification_specific_per_demand",
+      "kind": "locator_cell",
+      "sheet": "Verification",
+      "locator_col": "G",
+      "locator_string": "PER demand",
+      "value_col": "I",
+      "row_start": 20,
+      "row_end": 80
+    },
+    {
+      "name": "areas_surface_count",
+      "kind": "block_count",
+      "sheet": "Areas",
+      "header_col": "K",
+      "header_string": "Area input",
+      "value_col": "L",
+      "filter_col": "K",
+      "filter_kind": "numeric",
+      "max_rows": 700,
+      "stop_col": "K",
+      "stop_string": "Thermal bridge input"
+    },
+    {
+      "name": "areas_surface_area_sum_m2",
+      "kind": "block_sum",
+      "sheet": "Areas",
+      "header_col": "K",
+      "header_string": "Area input",
+      "value_col": "T",
+      "filter_col": "K",
+      "filter_kind": "numeric",
+      "max_rows": 700,
+      "stop_col": "K",
+      "stop_string": "Thermal bridge input"
+    },
+    {
+      "name": "areas_thermal_bridge_count",
+      "kind": "block_count",
+      "sheet": "Areas",
+      "header_col": "K",
+      "header_string": "Thermal bridge input",
+      "value_col": "L",
+      "filter_col": "K",
+      "filter_kind": "numeric",
+      "max_rows": 400
+    },
+    {
+      "name": "windows_row_count",
+      "kind": "block_count",
+      "sheet": "Windows",
+      "header_col": "L",
+      "header_string": "Windows and entrance doors",
+      "value_col": "L",
+      "numeric_only": true,
+      "max_rows": 600
+    },
+    {
+      "name": "windows_area_sum_m2",
+      "kind": "block_sum",
+      "sheet": "Windows",
+      "header_col": "L",
+      "header_string": "Windows and entrance doors",
+      "value_col": "AW",
+      "max_rows": 600
+    },
+    {
+      "name": "components_glazing_count",
+      "kind": "block_count",
+      "sheet": "Components",
+      "start_row": 13,
+      "value_col": "II",
+      "filter_col": "IH",
+      "filter_kind": "contains",
+      "filter_value": "ud",
+      "max_rows": 200
+    },
+    {
+      "name": "components_frame_count",
+      "kind": "block_count",
+      "sheet": "Components",
+      "start_row": 13,
+      "value_col": "IP",
+      "filter_col": "IO",
+      "filter_kind": "contains",
+      "filter_value": "ud",
+      "max_rows": 200
+    },
+    {
+      "name": "addnl_vent_room_count",
+      "kind": "block_count",
+      "sheet": "Addl vent",
+      "header_col": "C",
+      "header_string": "Room",
+      "match": "exact",
+      "value_col": "D",
+      "numeric_only": true,
+      "max_rows": 400,
+      "stop_col": "C",
+      "stop_string": "Venti-"
+    },
+    {
+      "name": "addnl_vent_room_vsup_sum_m3h",
+      "kind": "block_sum",
+      "sheet": "Addl vent",
+      "header_col": "C",
+      "header_string": "Room",
+      "match": "exact",
+      "value_col": "J",
+      "max_rows": 400,
+      "stop_col": "C",
+      "stop_string": "Venti-"
+    },
+    {
+      "name": "addnl_vent_unit_count",
+      "kind": "block_count",
+      "sheet": "Addl vent",
+      "header_col": "C",
+      "header_string": "Venti-",
+      "value_col": "D",
+      "numeric_only": true,
+      "max_rows": 200
+    }
+  ]
+}

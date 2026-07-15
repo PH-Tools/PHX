@@ -11,7 +11,7 @@ from ph_units.unit_type import Unit
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model.windows_rows import WindowRow, get_name_from_glazing_id
 from PHX.xl import xl_app
-from PHX.xl.xl_data import XlItem, col_offset
+from PHX.xl.xl_data import XlItem, col_offset, merge_xl_item_rows
 
 
 class Windows:
@@ -177,8 +177,12 @@ class Windows:
 
     def write_windows(self, _window_rows: list[WindowRow]) -> None:
         """Write a list of WindowRow objects to the Windows worksheet."""
-        for i, window_row in enumerate(_window_rows, start=self.first_entry_row):
-            self.write_single_window(i, window_row)
+        start = self.first_entry_row
+        row_items = [
+            row.create_xl_items(self.shape.name, _row_num=i) for i, row in enumerate(_window_rows, start=start)
+        ]
+        for item in merge_xl_item_rows(row_items):
+            self.xl.write_xl_item(item)
 
     def get_all_window_names(self) -> list[str]:
         """Return a list of all the window names found in the worksheet."""
