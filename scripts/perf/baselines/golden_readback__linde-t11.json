@@ -1,0 +1,35 @@
+{
+  "source": "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/plans/20260714/excel-interop-refactor/scratch/PHPP_EN_V10.6_Empty__linde-t11__20260714-234808.xlsx",
+  "meta": {
+    "timestamp": "2026-07-14T23:48:07",
+    "platform": "Darwin",
+    "platform_release": "25.5.0",
+    "machine": "arm64",
+    "python": "3.10.11",
+    "excel_version": "16.110.3",
+    "excel_build_check": "OK (16.110.3 >= 16.102.2)",
+    "macos_version": "26.5.1",
+    "xlwings_version": "0.34.0",
+    "hbjson": "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/plans/20260714/excel-interop-refactor/test_files/Linde_Home.hbjson",
+    "phpp_template": "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/plans/20260714/excel-interop-refactor/test_files/PHPP_EN_V10.6_Empty.xlsx"
+  },
+  "values": {
+    "verification_treated_floor_area_m2": 308.0163597724995,
+    "verification_specific_heating_demand": 77.33677495292507,
+    "verification_specific_heating_load": 56.3466253569694,
+    "verification_overheating_frequency_pct": 21.913420114996804,
+    "verification_n50_ach": 3.972422308839985,
+    "verification_specific_pe_demand": 20.000698741989545,
+    "verification_specific_per_demand": 8.594705858008796,
+    "areas_surface_count": 94,
+    "areas_surface_area_sum_m2": 1114.4070446832166,
+    "areas_thermal_bridge_count": 5,
+    "windows_row_count": 50,
+    "windows_area_sum_m2": 80.0855487905964,
+    "components_glazing_count": 60,
+    "components_frame_count": 99,
+    "addnl_vent_room_count": 27,
+    "addnl_vent_room_vsup_sum_m3h": 467.77959540489996,
+    "addnl_vent_unit_count": 2
+  }
+}
