@@ -11,12 +11,23 @@ def test_opaque_assembly_uses_exterior_material_radiation_properties(reset_class
     hb_face = hb_model.rooms[0].faces[0]
     hb_construction = hb_face.properties.energy.construction
     exterior_material = hb_construction.materials[0]
+
+    # -- NOTE: this material is a shared honeybee-energy lib singleton - mutating
+    # -- it without restoring pollutes every model loaded later in the test run.
+    original_solar = exterior_material.solar_absorptance
+    original_thermal = exterior_material.thermal_absorptance
     exterior_material.unlock()
-    exterior_material.solar_absorptance = 0.35
-    exterior_material.thermal_absorptance = 0.82
+    try:
+        exterior_material.solar_absorptance = 0.35
+        exterior_material.thermal_absorptance = 0.82
 
-    phx_project = create_project.convert_hb_model_to_PhxProject(hb_model, _group_components=True)
-    phx_assembly = phx_project.assembly_types[hb_construction.identifier]
+        phx_project = create_project.convert_hb_model_to_PhxProject(hb_model, _group_components=True)
+        phx_assembly = phx_project.assembly_types[hb_construction.identifier]
 
-    assert phx_assembly.exterior_solar_absorptance == 0.35
-    assert phx_assembly.exterior_thermal_emissivity == 0.82
+        assert phx_assembly.exterior_solar_absorptance == 0.35
+        assert phx_assembly.exterior_thermal_emissivity == 0.82
+    finally:
+        exterior_material.unlock()  # the conversion may have re-locked it
+        exterior_material.solar_absorptance = original_solar
+        exterior_material.thermal_absorptance = original_thermal
+        exterior_material.lock()

@@ -91,6 +91,28 @@ def make_scratch_copy(template: pathlib.Path, scratch_dir: pathlib.Path, label: 
     return target
 
 
+def preopen_workbook_macos(_path: pathlib.Path, _timeout_s: int = 90) -> None:
+    """Open a workbook via LaunchServices ('open -a') and wait until Excel has it.
+
+    On macOS, a freshly-launched Excel can silently refuse an automation-initiated
+    'books.open()' (sandbox file-access: error -1728 'object does not exist').
+    Opening via LaunchServices counts as user-initiated, so it always succeeds;
+    xlwings' 'books.open()' then simply attaches to the already-open workbook.
+    """
+    import time
+
+    if platform.system() != "Darwin":
+        return
+    subprocess.run(["open", "-a", "Microsoft Excel", str(_path)], check=True)
+    probe = 'with timeout of 8 seconds\ntell application "Microsoft Excel" to get name of every workbook\nend timeout'
+    for _ in range(_timeout_s):
+        result = subprocess.run(["osascript", "-e", probe], capture_output=True, text=True, timeout=20)
+        if _path.name in result.stdout:
+            return
+        time.sleep(1)
+    raise TimeoutError(f"Excel did not open '{_path.name}' within {_timeout_s}s.")
+
+
 def get_excel_version_macos() -> str | None:
     """Return the installed Excel version string (macOS only), or None."""
     if platform.system() != "Darwin":

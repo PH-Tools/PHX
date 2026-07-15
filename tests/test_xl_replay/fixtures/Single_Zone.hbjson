@@ -1,0 +1,3782 @@
+{
+  "type": "Model", 
+  "units": "Meters", 
+  "properties": {
+    "energy": {
+      "type": "ModelEnergyProperties", 
+      "schedule_type_limits": [
+        {
+          "type": "ScheduleTypeLimit", 
+          "numeric_type": "Continuous", 
+          "lower_limit": 0.0, 
+          "unit_type": "ActivityLevel", 
+          "identifier": "Activity Level", 
+          "upper_limit": {
+            "type": "NoLimit"
+          }
+        }, 
+        {
+          "type": "ScheduleTypeLimit", 
+          "numeric_type": "Continuous", 
+          "lower_limit": -273.14999999999998, 
+          "unit_type": "Temperature", 
+          "identifier": "Temperature", 
+          "upper_limit": {
+            "type": "NoLimit"
+          }
+        }, 
+        {
+          "type": "ScheduleTypeLimit", 
+          "numeric_type": "Continuous", 
+          "lower_limit": 0.0, 
+          "unit_type": "Dimensionless", 
+          "identifier": "Fractional", 
+          "upper_limit": 1.0
+        }
+      ], 
+      "global_construction_set": {
+        "type": "GlobalConstructionSet", 
+        "air_boundary_construction": "Generic Air Boundary", 
+        "door_set": {
+          "type": "DoorConstructionSetAbridged", 
+          "interior_glass_construction": "Generic Single Pane", 
+          "overhead_construction": "Generic Exterior Door", 
+          "exterior_glass_construction": "Generic Double Pane", 
+          "exterior_construction": "Generic Exterior Door", 
+          "interior_construction": "Generic Interior Door"
+        }, 
+        "floor_set": {
+          "interior_construction": "Generic Interior Floor", 
+          "ground_construction": "Generic Ground Slab", 
+          "type": "FloorConstructionSetAbridged", 
+          "exterior_construction": "Generic Exposed Floor"
+        }, 
+        "shade_construction": "Generic Shade", 
+        "roof_ceiling_set": {
+          "interior_construction": "Generic Interior Ceiling", 
+          "ground_construction": "Generic Underground Roof", 
+          "type": "RoofCeilingConstructionSetAbridged", 
+          "exterior_construction": "Generic Roof"
+        }, 
+        "wall_set": {
+          "interior_construction": "Generic Interior Wall", 
+          "ground_construction": "Generic Underground Wall", 
+          "type": "WallConstructionSetAbridged", 
+          "exterior_construction": "Generic Exterior Wall"
+        }, 
+        "constructions": [
+          {
+            "is_specular": false, 
+            "type": "ShadeConstruction", 
+            "properties": {
+              "type": "ShadeConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ShadeConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs6a088818", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "identifier": "Generic Context", 
+            "visible_reflectance": 0.20000000000000001, 
+            "solar_reflectance": 0.20000000000000001
+          }, 
+          {
+            "identifier": "Generic Interior Door", 
+            "materials": [
+              "Generic 25mm Wood"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs81f8e6eb", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Underground Roof", 
+            "materials": [
+              "Generic 50mm Insulation", 
+              "Generic HW Concrete", 
+              "Generic Ceiling Air Gap", 
+              "Generic Acoustic Tile"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsad7de4ce", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Double Pane", 
+            "materials": [
+              "Generic Low-e Glass", 
+              "Generic Window Air Gap", 
+              "Generic Clear Glass"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "WindowConstructionPhProperties"
+              }, 
+              "type": "WindowConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "WindowConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsfbde0f1b", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "WindowConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Single Pane", 
+            "materials": [
+              "Generic Clear Glass"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "WindowConstructionPhProperties"
+              }, 
+              "type": "WindowConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "WindowConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs5bf9db91", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "WindowConstructionAbridged"
+          }, 
+          {
+            "is_specular": false, 
+            "type": "ShadeConstruction", 
+            "properties": {
+              "type": "ShadeConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ShadeConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs7d90b2dd", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "identifier": "Generic Shade", 
+            "visible_reflectance": 0.34999999999999998, 
+            "solar_reflectance": 0.34999999999999998
+          }, 
+          {
+            "identifier": "Generic Exposed Floor", 
+            "materials": [
+              "Generic Painted Metal", 
+              "Generic Ceiling Air Gap", 
+              "Generic 50mm Insulation", 
+              "Generic LW Concrete"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsb490291a", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Exterior Door", 
+            "materials": [
+              "Generic Painted Metal", 
+              "Generic 25mm Insulation", 
+              "Generic Painted Metal"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs235642eb", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "type": "AirBoundaryConstructionAbridged", 
+            "air_mixing_per_area": 0.10000000000000001, 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "AirBoundaryConstructionPhProperties"
+              }, 
+              "type": "AirBoundaryConstructionProperties"
+            }, 
+            "air_mixing_schedule": "Always On", 
+            "identifier": "Generic Air Boundary"
+          }, 
+          {
+            "identifier": "Generic Exterior Wall", 
+            "materials": [
+              "Generic Brick", 
+              "Generic LW Concrete", 
+              "Generic 50mm Insulation", 
+              "Generic Wall Air Gap", 
+              "Generic Gypsum Board"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs47a19d3e", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Roof", 
+            "materials": [
+              "Generic Roof Membrane", 
+              "Generic 50mm Insulation", 
+              "Generic LW Concrete", 
+              "Generic Ceiling Air Gap", 
+              "Generic Acoustic Tile"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs28fd1035", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Ground Slab", 
+            "materials": [
+              "Generic 50mm Insulation", 
+              "Generic HW Concrete"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs80d50d0e", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Interior Wall", 
+            "materials": [
+              "Generic Gypsum Board", 
+              "Generic Wall Air Gap", 
+              "Generic Gypsum Board"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs461d33aa", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Underground Wall", 
+            "materials": [
+              "Generic 50mm Insulation", 
+              "Generic HW Concrete", 
+              "Generic Wall Air Gap", 
+              "Generic Gypsum Board"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsa8a43a53", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Interior Ceiling", 
+            "materials": [
+              "Generic LW Concrete", 
+              "Generic Ceiling Air Gap", 
+              "Generic Acoustic Tile"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfse6528d10", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }, 
+          {
+            "identifier": "Generic Interior Floor", 
+            "materials": [
+              "Generic Acoustic Tile", 
+              "Generic Ceiling Air Gap", 
+              "Generic LW Concrete"
+            ], 
+            "properties": {
+              "ph": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionPhProperties"
+              }, 
+              "type": "OpaqueConstructionProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "OpaqueConstructionReviveProperties"
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs17b69429", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "type": "OpaqueConstructionAbridged"
+          }
+        ], 
+        "aperture_set": {
+          "type": "ApertureConstructionSetAbridged", 
+          "window_construction": "Generic Double Pane", 
+          "operable_construction": "Generic Double Pane", 
+          "interior_construction": "Generic Single Pane", 
+          "skylight_construction": "Generic Double Pane"
+        }, 
+        "materials": [
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsa0c355d5", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumSmooth", 
+            "thickness": 0.025399999999999999, 
+            "conductivity": 0.14999999999999999, 
+            "specific_heat": 1630.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic 25mm Wood", 
+            "type": "EnergyMaterial", 
+            "density": 608.0, 
+            "solar_absorptance": 0.5, 
+            "visible_absorptance": 0.5
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs6925713d", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumRough", 
+            "thickness": 0.10000000000000001, 
+            "conductivity": 0.53000000000000003, 
+            "specific_heat": 840.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic LW Concrete", 
+            "type": "EnergyMaterial", 
+            "density": 1280.0, 
+            "solar_absorptance": 0.80000000000000004, 
+            "visible_absorptance": 0.80000000000000004
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs6eb731fb", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "Smooth", 
+            "thickness": 0.10000000000000001, 
+            "conductivity": 0.66700000000000004, 
+            "specific_heat": 1000.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic Wall Air Gap", 
+            "type": "EnergyMaterial", 
+            "density": 1.2800000000000000, 
+            "solar_absorptance": 0.69999999999999996, 
+            "visible_absorptance": 0.69999999999999996
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsf557263a", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "Smooth", 
+            "thickness": 0.0015, 
+            "conductivity": 45.0, 
+            "specific_heat": 410.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic Painted Metal", 
+            "type": "EnergyMaterial", 
+            "density": 7690.0, 
+            "solar_absorptance": 0.5, 
+            "visible_absorptance": 0.5
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsda7bf132", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumSmooth", 
+            "thickness": 0.012699999999999999, 
+            "conductivity": 0.16, 
+            "specific_heat": 1090.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic Gypsum Board", 
+            "type": "EnergyMaterial", 
+            "density": 800.0, 
+            "solar_absorptance": 0.5, 
+            "visible_absorptance": 0.5
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs9000ce94", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumRough", 
+            "thickness": 0.050000000000000003, 
+            "conductivity": 0.029999999999999999, 
+            "specific_heat": 1210.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic 50mm Insulation", 
+            "type": "EnergyMaterial", 
+            "density": 43.0, 
+            "solar_absorptance": 0.69999999999999996, 
+            "visible_absorptance": 0.69999999999999996
+          }, 
+          {
+            "type": "EnergyWindowMaterialGlazing", 
+            "solar_reflectance_back": 0.35999999999999999, 
+            "thickness": 0.0060000000000000001, 
+            "visible_reflectance_back": 0.20999999999999999, 
+            "infrared_transmittance": 0.0, 
+            "conductivity": 1.0, 
+            "solar_reflectance": 0.35999999999999999, 
+            "emissivity_back": 0.047, 
+            "dirt_correction": 1.0, 
+            "identifier": "Generic Low-e Glass", 
+            "properties": {
+              "type": "EnergyWindowMaterialGlazingsProperties", 
+              "revive": {
+                "type": "EnergyWindowMaterialGlazingReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsced0aca4", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "solar_diffusing": false, 
+            "visible_reflectance": 0.20999999999999999, 
+            "emissivity": 0.83999999999999997, 
+            "solar_transmittance": 0.45000000000000001, 
+            "visible_transmittance": 0.70999999999999996
+          }, 
+          {
+            "identifier": "Generic Window Air Gap", 
+            "thickness": 0.012699999999999999, 
+            "gas_type": "Air", 
+            "type": "EnergyWindowMaterialGas", 
+            "properties": {
+              "type": "EnergyWindowMaterialGasProperties", 
+              "revive": {
+                "type": "EnergyWindowMaterialGasReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsbe3f29a2", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfs73027134", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumSmooth", 
+            "thickness": 0.02, 
+            "conductivity": 0.059999999999999998, 
+            "specific_heat": 590.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic Acoustic Tile", 
+            "type": "EnergyMaterial", 
+            "density": 368.0, 
+            "solar_absorptance": 0.20000000000000001, 
+            "visible_absorptance": 0.20000000000000001
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsc4c25ce2", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "Smooth", 
+            "thickness": 0.10000000000000001, 
+            "conductivity": 0.55600000000000005, 
+            "specific_heat": 1000.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic Ceiling Air Gap", 
+            "type": "EnergyMaterial", 
+            "density": 1.2800000000000000, 
+            "solar_absorptance": 0.69999999999999996, 
+            "visible_absorptance": 0.69999999999999996
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsd69d56c2", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumRough", 
+            "thickness": 0.10000000000000001, 
+            "conductivity": 0.90000000000000002, 
+            "specific_heat": 790.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic Brick", 
+            "type": "EnergyMaterial", 
+            "density": 1920.0, 
+            "solar_absorptance": 0.65000000000000002, 
+            "visible_absorptance": 0.65000000000000002
+          }, 
+          {
+            "type": "EnergyWindowMaterialGlazing", 
+            "solar_reflectance_back": 0.070000000000000007, 
+            "thickness": 0.0060000000000000001, 
+            "visible_reflectance_back": 0.080000000000000002, 
+            "infrared_transmittance": 0.0, 
+            "conductivity": 1.0, 
+            "solar_reflectance": 0.070000000000000007, 
+            "emissivity_back": 0.83999999999999997, 
+            "dirt_correction": 1.0, 
+            "identifier": "Generic Clear Glass", 
+            "properties": {
+              "type": "EnergyWindowMaterialGlazingsProperties", 
+              "revive": {
+                "type": "EnergyWindowMaterialGlazingReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsf9c56fd7", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "solar_diffusing": false, 
+            "visible_reflectance": 0.080000000000000002, 
+            "emissivity": 0.83999999999999997, 
+            "solar_transmittance": 0.77000000000000002, 
+            "visible_transmittance": 0.88
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsee2300eb", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumRough", 
+            "thickness": 0.20000000000000001, 
+            "conductivity": 1.9500000000000000, 
+            "specific_heat": 900.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic HW Concrete", 
+            "type": "EnergyMaterial", 
+            "density": 2240.0, 
+            "solar_absorptance": 0.80000000000000004, 
+            "visible_absorptance": 0.80000000000000004
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsc469113f", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumRough", 
+            "thickness": 0.01, 
+            "conductivity": 0.16, 
+            "specific_heat": 1460.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic Roof Membrane", 
+            "type": "EnergyMaterial", 
+            "density": 1120.0, 
+            "solar_absorptance": 0.65000000000000002, 
+            "visible_absorptance": 0.65000000000000002
+          }, 
+          {
+            "properties": {
+              "ph": {
+                "user_data": {}, 
+                "id_num": 0, 
+                "divisions": {
+                  "row_heights": [], 
+                  "cells": [], 
+                  "steel_stud_spacing_mm": null, 
+                  "column_widths": []
+                }
+              }, 
+              "type": "EnergyMaterialProperties", 
+              "revive": {
+                "type": "EnergyMaterialReviveProperties", 
+                "kg_CO2_per_m2": {
+                  "value": 0.0, 
+                  "unit": "KG/M2"
+                }, 
+                "cost_per_m2": {
+                  "value": 0.0, 
+                  "unit": "COST/M2"
+                }, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }, 
+              "ref": {
+                "type": "_HBObjectWithReferences", 
+                "ref_status": "NA", 
+                "identifier": "rfsba191e11", 
+                "user_data": {}, 
+                "image_refs": [], 
+                "uris": [], 
+                "document_refs": [], 
+                "external_identifiers": {}
+              }
+            }, 
+            "roughness": "MediumRough", 
+            "thickness": 0.025000000000000001, 
+            "conductivity": 0.029999999999999999, 
+            "specific_heat": 1210.0, 
+            "thermal_absorptance": 0.90000000000000002, 
+            "identifier": "Generic 25mm Insulation", 
+            "type": "EnergyMaterial", 
+            "density": 43.0, 
+            "solar_absorptance": 0.69999999999999996, 
+            "visible_absorptance": 0.69999999999999996
+          }
+        ], 
+        "context_construction": "Generic Context"
+      }, 
+      "shws": [], 
+      "program_types": [
+        {
+          "type": "ProgramTypeAbridged", 
+          "infiltration": {
+            "flow_per_exterior_area": 0.00022660000000000001, 
+            "identifier": "Generic Office Infiltration", 
+            "schedule": "Generic Office Infiltration", 
+            "type": "InfiltrationAbridged"
+          }, 
+          "electric_equipment": {
+            "type": "ElectricEquipmentAbridged", 
+            "schedule": "Generic Office Equipment", 
+            "properties": {
+              "ph": {
+                "equipment_collection": {
+                  "equipment_set": {}
+                }, 
+                "type": "ElectricEquipmentPhProperties"
+              }, 
+              "type": "ElectricEquipmentProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "ElectricEquipmentReviveProperties"
+              }
+            }, 
+            "identifier": "Generic Office Equipment", 
+            "radiant_fraction": 0.5, 
+            "latent_fraction": 0.0, 
+            "watts_per_area": 10.330000000000000, 
+            "lost_fraction": 0.0
+          }, 
+          "ventilation": {
+            "flow_per_person": 0.0023600000000000001, 
+            "flow_per_area": 0.00030499999999999999, 
+            "identifier": "Generic Office Ventilation", 
+            "type": "VentilationAbridged"
+          }, 
+          "identifier": "Generic Office Program", 
+          "lighting": {
+            "type": "LightingAbridged", 
+            "visible_fraction": 0.20000000000000001, 
+            "schedule": "Generic Office Lighting", 
+            "properties": {
+              "ph": {
+                "target_lux_height": 0.80000000000000004, 
+                "target_lux": 300, 
+                "id_num": 0, 
+                "type": "LightingPhProperties"
+              }, 
+              "type": "LightingProperties", 
+              "revive": {
+                "type": "LightingReviveProperties", 
+                "cost": 0.0, 
+                "labor_fraction": 0.40000000000000002, 
+                "id_num": 0, 
+                "lifetime_years": 25
+              }
+            }, 
+            "return_air_fraction": 0.0, 
+            "identifier": "Generic Office Lighting", 
+            "radiant_fraction": 0.69999999999999996, 
+            "watts_per_area": 10.550000000000001
+          }, 
+          "people": {
+            "type": "PeopleAbridged", 
+            "occupancy_schedule": "Generic Office Occupancy", 
+            "properties": {
+              "ph": {
+                "type": "PeoplePhProperties", 
+                "dwellings": {
+                  "identifier": "c190964c-4b5a-458e-b669-2dea2651cf88", 
+                  "num_dwellings": 0
+                }, 
+                "number_bedrooms": 0, 
+                "id_num": 0, 
+                "number_people": 0.0
+              }, 
+              "type": "PeopleProperties", 
+              "revive": {
+                "id_num": 0, 
+                "type": "PeopleReviveProperties"
+              }
+            }, 
+            "identifier": "Generic Office People", 
+            "people_per_area": 0.056500000000000002, 
+            "radiant_fraction": 0.29999999999999999, 
+            "latent_fraction": {
+              "type": "Autocalculate"
+            }, 
+            "activity_schedule": "Seated Adult Activity"
+          }, 
+          "setpoint": {
+            "cooling_schedule": "Generic Office Cooling", 
+            "identifier": "Generic Office Setpoints", 
+            "heating_schedule": "Generic Office Heating", 
+            "type": "SetpointAbridged"
+          }
+        }
+      ], 
+      "constructions": [], 
+      "construction_sets": [], 
+      "schedules": [
+        {
+          "type": "ScheduleRulesetAbridged", 
+          "winter_designday_schedule": "OfficeMedium INFIL_SCH_PNNL_Sat_WntrDsn", 
+          "properties": {
+            "ph": {
+              "type": "ScheduleRulesetPhProperties", 
+              "operating_days_wk": 7.0, 
+              "id_num": 0, 
+              "operating_periods": {
+                "collection": []
+              }, 
+              "operating_weeks_year": 52.142899999999997
+            }, 
+            "type": "ScheduleRulesetProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "ScheduleRulesetReviveProperties"
+            }
+          }, 
+          "summer_designday_schedule": "OfficeMedium INFIL_SCH_PNNL_Wkdy_SmrDsn", 
+          "identifier": "Generic Office Infiltration", 
+          "default_day_schedule": "OfficeMedium INFIL_SCH_PNNL_Default", 
+          "holiday_schedule": "OfficeMedium INFIL_SCH_PNNL_Default", 
+          "schedule_type_limit": "Fractional", 
+          "day_schedules": [
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium INFIL_SCH_PNNL_Default", 
+              "values": [
+                1.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium INFIL_SCH_PNNL_Wkdy_SmrDsn", 
+              "values": [
+                1.0, 
+                0.25, 
+                1.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium INFIL_SCH_PNNL_Sat_WntrDsn", 
+              "values": [
+                1.0, 
+                0.25, 
+                1.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  18, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium INFIL_SCH_PNNL_Wkdy", 
+              "values": [
+                1.0, 
+                0.25, 
+                1.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium INFIL_SCH_PNNL_Sat", 
+              "values": [
+                1.0, 
+                0.25, 
+                1.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  18, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }
+          ], 
+          "schedule_rules": [
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium INFIL_SCH_PNNL_Wkdy", 
+              "apply_sunday": false, 
+              "apply_thursday": true, 
+              "apply_friday": true, 
+              "apply_tuesday": true, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": false, 
+              "apply_monday": true, 
+              "apply_wednesday": true
+            }, 
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium INFIL_SCH_PNNL_Sat", 
+              "apply_sunday": false, 
+              "apply_thursday": false, 
+              "apply_friday": false, 
+              "apply_tuesday": false, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": true, 
+              "apply_monday": false, 
+              "apply_wednesday": false
+            }
+          ]
+        }, 
+        {
+          "type": "ScheduleRulesetAbridged", 
+          "properties": {
+            "ph": {
+              "type": "ScheduleRulesetPhProperties", 
+              "operating_days_wk": 7.0, 
+              "id_num": 0, 
+              "operating_periods": {
+                "collection": []
+              }, 
+              "operating_weeks_year": 52.142899999999997
+            }, 
+            "type": "ScheduleRulesetProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "ScheduleRulesetReviveProperties"
+            }
+          }, 
+          "identifier": "Seated Adult Activity", 
+          "default_day_schedule": "Seated Adult Activity_Day Schedule", 
+          "schedule_type_limit": "Activity Level", 
+          "day_schedules": [
+            {
+              "type": "ScheduleDay", 
+              "identifier": "Seated Adult Activity_Day Schedule", 
+              "values": [
+                120.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }
+          ]
+        }, 
+        {
+          "type": "ScheduleRulesetAbridged", 
+          "winter_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn", 
+          "properties": {
+            "ph": {
+              "type": "ScheduleRulesetPhProperties", 
+              "operating_days_wk": 7.0, 
+              "id_num": 0, 
+              "operating_periods": {
+                "collection": []
+              }, 
+              "operating_weeks_year": 52.142899999999997
+            }, 
+            "type": "ScheduleRulesetProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "ScheduleRulesetReviveProperties"
+            }
+          }, 
+          "summer_designday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn", 
+          "identifier": "Generic Office Cooling", 
+          "default_day_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
+          "holiday_schedule": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
+          "schedule_type_limit": "Temperature", 
+          "day_schedules": [
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default", 
+              "values": [
+                26.699999999999999
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_SmrDsn", 
+              "values": [
+                26.699999999999999, 
+                25.699999999999999, 
+                25.0, 
+                24.0, 
+                26.699999999999999
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  5, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  7, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Default_WntrDsn", 
+              "values": [
+                26.699999999999999
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy", 
+              "values": [
+                26.699999999999999, 
+                25.600000000000001, 
+                25.0, 
+                24.0, 
+                26.699999999999999
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  5, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  7, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat", 
+              "values": [
+                26.699999999999999, 
+                25.699999999999999, 
+                25.0, 
+                24.0, 
+                26.699999999999999
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  5, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  7, 
+                  0
+                ], 
+                [
+                  17, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }
+          ], 
+          "schedule_rules": [
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Wkdy", 
+              "apply_sunday": false, 
+              "apply_thursday": true, 
+              "apply_friday": true, 
+              "apply_tuesday": true, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": false, 
+              "apply_monday": true, 
+              "apply_wednesday": true
+            }, 
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium CLGSETP_SCH_YES_OPTIMUM_Sat", 
+              "apply_sunday": false, 
+              "apply_thursday": false, 
+              "apply_friday": false, 
+              "apply_tuesday": false, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": true, 
+              "apply_monday": false, 
+              "apply_wednesday": false
+            }
+          ]
+        }, 
+        {
+          "type": "ScheduleRulesetAbridged", 
+          "winter_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn", 
+          "properties": {
+            "ph": {
+              "type": "ScheduleRulesetPhProperties", 
+              "operating_days_wk": 7.0, 
+              "id_num": 0, 
+              "operating_periods": {
+                "collection": []
+              }, 
+              "operating_weeks_year": 52.142899999999997
+            }, 
+            "type": "ScheduleRulesetProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "ScheduleRulesetReviveProperties"
+            }
+          }, 
+          "summer_designday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn", 
+          "identifier": "Generic Office Lighting", 
+          "default_day_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun", 
+          "holiday_schedule": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat", 
+          "schedule_type_limit": "Fractional", 
+          "day_schedules": [
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sun", 
+              "values": [
+                0.050000000000000003, 
+                0.04311628, 
+                0.050000000000000003
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  18, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_SmrDsn", 
+              "values": [
+                1.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_WntrDsn", 
+              "values": [
+                0.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat", 
+              "values": [
+                0.050000000000000003, 
+                0.08623256, 
+                0.25869767999999999, 
+                0.12934883999999999, 
+                0.04311628, 
+                0.050000000000000003
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  8, 
+                  0
+                ], 
+                [
+                  12, 
+                  0
+                ], 
+                [
+                  17, 
+                  0
+                ], 
+                [
+                  19, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy", 
+              "values": [
+                0.050000000000000003, 
+                0.10000000000000001, 
+                0.08623256, 
+                0.25869767999999999, 
+                0.77609304000000001, 
+                0.43116280000000001, 
+                0.25869767999999999, 
+                0.17246512, 
+                0.08623256, 
+                0.04311628
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  5, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  7, 
+                  0
+                ], 
+                [
+                  8, 
+                  0
+                ], 
+                [
+                  17, 
+                  0
+                ], 
+                [
+                  18, 
+                  0
+                ], 
+                [
+                  20, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ], 
+                [
+                  23, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }
+          ], 
+          "schedule_rules": [
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Wkdy", 
+              "apply_sunday": false, 
+              "apply_thursday": true, 
+              "apply_friday": true, 
+              "apply_tuesday": true, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": false, 
+              "apply_monday": true, 
+              "apply_wednesday": true
+            }, 
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium BLDG_LIGHT_SCH_2013_Sat", 
+              "apply_sunday": false, 
+              "apply_thursday": false, 
+              "apply_friday": false, 
+              "apply_tuesday": false, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": true, 
+              "apply_monday": false, 
+              "apply_wednesday": false
+            }
+          ]
+        }, 
+        {
+          "type": "ScheduleRulesetAbridged", 
+          "winter_designday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_WntrDsn", 
+          "properties": {
+            "ph": {
+              "type": "ScheduleRulesetPhProperties", 
+              "operating_days_wk": 7.0, 
+              "id_num": 0, 
+              "operating_periods": {
+                "collection": []
+              }, 
+              "operating_weeks_year": 52.142899999999997
+            }, 
+            "type": "ScheduleRulesetProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "ScheduleRulesetReviveProperties"
+            }
+          }, 
+          "summer_designday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default_SmrDsn", 
+          "identifier": "Generic Office Heating", 
+          "default_day_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
+          "holiday_schedule": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
+          "schedule_type_limit": "Temperature", 
+          "day_schedules": [
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default", 
+              "values": [
+                15.600000000000000
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Default_SmrDsn", 
+              "values": [
+                15.600000000000000
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_WntrDsn", 
+              "values": [
+                15.600000000000000, 
+                17.600000000000001, 
+                19.600000000000001, 
+                21.0, 
+                15.600000000000000
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  5, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  7, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Wkdy", 
+              "values": [
+                15.600000000000000, 
+                17.800000000000001, 
+                20.0, 
+                21.0, 
+                15.600000000000000
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  5, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  7, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Sat", 
+              "values": [
+                15.600000000000000, 
+                17.800000000000001, 
+                20.0, 
+                21.0, 
+                15.600000000000000
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  5, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  7, 
+                  0
+                ], 
+                [
+                  17, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }
+          ], 
+          "schedule_rules": [
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Wkdy", 
+              "apply_sunday": false, 
+              "apply_thursday": true, 
+              "apply_friday": true, 
+              "apply_tuesday": true, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": false, 
+              "apply_monday": true, 
+              "apply_wednesday": true
+            }, 
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium HTGSETP_SCH_YES_OPTIMUM_Sat", 
+              "apply_sunday": false, 
+              "apply_thursday": false, 
+              "apply_friday": false, 
+              "apply_tuesday": false, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": true, 
+              "apply_monday": false, 
+              "apply_wednesday": false
+            }
+          ]
+        }, 
+        {
+          "type": "ScheduleRulesetAbridged", 
+          "winter_designday_schedule": "OfficeMedium BLDG_OCC_SCH_WntrDsn", 
+          "properties": {
+            "ph": {
+              "type": "ScheduleRulesetPhProperties", 
+              "operating_days_wk": 7.0, 
+              "id_num": 0, 
+              "operating_periods": {
+                "collection": []
+              }, 
+              "operating_weeks_year": 52.142899999999997
+            }, 
+            "type": "ScheduleRulesetProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "ScheduleRulesetReviveProperties"
+            }
+          }, 
+          "summer_designday_schedule": "OfficeMedium BLDG_OCC_SCH_SmrDsn", 
+          "identifier": "Generic Office Occupancy", 
+          "default_day_schedule": "OfficeMedium BLDG_OCC_SCH_Default", 
+          "holiday_schedule": "OfficeMedium BLDG_OCC_SCH_Default", 
+          "schedule_type_limit": "Fractional", 
+          "day_schedules": [
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_OCC_SCH_Default", 
+              "values": [
+                0.0, 
+                0.050000000000000003, 
+                0.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  18, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_OCC_SCH_SmrDsn", 
+              "values": [
+                0.0, 
+                1.0, 
+                0.050000000000000003
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_OCC_SCH_WntrDsn", 
+              "values": [
+                0.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_OCC_SCH_Wkdy", 
+              "values": [
+                0.0, 
+                0.10000000000000001, 
+                0.20000000000000001, 
+                0.94999999999999996, 
+                0.5, 
+                0.94999999999999996, 
+                0.29999999999999999, 
+                0.10000000000000001, 
+                0.050000000000000003
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  7, 
+                  0
+                ], 
+                [
+                  8, 
+                  0
+                ], 
+                [
+                  12, 
+                  0
+                ], 
+                [
+                  13, 
+                  0
+                ], 
+                [
+                  17, 
+                  0
+                ], 
+                [
+                  18, 
+                  0
+                ], 
+                [
+                  22, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_OCC_SCH_Sat", 
+              "values": [
+                0.0, 
+                0.10000000000000001, 
+                0.29999999999999999, 
+                0.10000000000000001, 
+                0.050000000000000003, 
+                0.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  8, 
+                  0
+                ], 
+                [
+                  12, 
+                  0
+                ], 
+                [
+                  17, 
+                  0
+                ], 
+                [
+                  19, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }
+          ], 
+          "schedule_rules": [
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium BLDG_OCC_SCH_Wkdy", 
+              "apply_sunday": false, 
+              "apply_thursday": true, 
+              "apply_friday": true, 
+              "apply_tuesday": true, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": false, 
+              "apply_monday": true, 
+              "apply_wednesday": true
+            }, 
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium BLDG_OCC_SCH_Sat", 
+              "apply_sunday": false, 
+              "apply_thursday": false, 
+              "apply_friday": false, 
+              "apply_tuesday": false, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": true, 
+              "apply_monday": false, 
+              "apply_wednesday": false
+            }
+          ]
+        }, 
+        {
+          "type": "ScheduleRulesetAbridged", 
+          "winter_designday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_WntrDsn", 
+          "properties": {
+            "ph": {
+              "type": "ScheduleRulesetPhProperties", 
+              "operating_days_wk": 7.0, 
+              "id_num": 0, 
+              "operating_periods": {
+                "collection": []
+              }, 
+              "operating_weeks_year": 52.142899999999997
+            }, 
+            "type": "ScheduleRulesetProperties", 
+            "revive": {
+              "id_num": 0, 
+              "type": "ScheduleRulesetReviveProperties"
+            }
+          }, 
+          "summer_designday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_SmrDsn", 
+          "identifier": "Generic Office Equipment", 
+          "default_day_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_Sun", 
+          "holiday_schedule": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat", 
+          "schedule_type_limit": "Fractional", 
+          "day_schedules": [
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Sun", 
+              "values": [
+                0.2307553806, 
+                0.28810717499999999, 
+                0.2307553806
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  18, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_SmrDsn", 
+              "values": [
+                1.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_WntrDsn", 
+              "values": [
+                0.0
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat", 
+              "values": [
+                0.2307553806, 
+                0.38123479599999999, 
+                0.47654349499999998, 
+                0.33358044650000002, 
+                0.28592609699999999, 
+                0.2307553806
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  8, 
+                  0
+                ], 
+                [
+                  12, 
+                  0
+                ], 
+                [
+                  17, 
+                  0
+                ], 
+                [
+                  19, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }, 
+            {
+              "type": "ScheduleDay", 
+              "identifier": "OfficeMedium BLDG_EQUIP_SCH_2013_Wkdy", 
+              "values": [
+                0.30767384079999999, 
+                0.38123479599999999, 
+                0.85777829100000003, 
+                0.76246959199999997, 
+                0.85777829100000003, 
+                0.47654349499999998, 
+                0.38123479599999999
+              ], 
+              "times": [
+                [
+                  0, 
+                  0
+                ], 
+                [
+                  6, 
+                  0
+                ], 
+                [
+                  8, 
+                  0
+                ], 
+                [
+                  12, 
+                  0
+                ], 
+                [
+                  13, 
+                  0
+                ], 
+                [
+                  17, 
+                  0
+                ], 
+                [
+                  18, 
+                  0
+                ]
+              ], 
+              "interpolate": false
+            }
+          ], 
+          "schedule_rules": [
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium BLDG_EQUIP_SCH_2013_Wkdy", 
+              "apply_sunday": false, 
+              "apply_thursday": true, 
+              "apply_friday": true, 
+              "apply_tuesday": true, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": false, 
+              "apply_monday": true, 
+              "apply_wednesday": true
+            }, 
+            {
+              "type": "ScheduleRuleAbridged", 
+              "end_date": [
+                12, 
+                31
+              ], 
+              "schedule_day": "OfficeMedium BLDG_EQUIP_SCH_2013_Sat", 
+              "apply_sunday": false, 
+              "apply_thursday": false, 
+              "apply_friday": false, 
+              "apply_tuesday": false, 
+              "start_date": [
+                1, 
+                1
+              ], 
+              "apply_saturday": true, 
+              "apply_monday": false, 
+              "apply_wednesday": false
+            }
+          ]
+        }
+      ], 
+      "ventilation_simulation_control": {
+        "type": "VentilationSimulationControl", 
+        "aspect_ratio": 1.0, 
+        "long_axis_angle": 0.0, 
+        "building_type": "LowRise", 
+        "reference_temperature": 20.0, 
+        "reference_pressure": 101325.0, 
+        "vent_control_type": "SingleZone", 
+        "reference_humidity_ratio": 0.0
+      }, 
+      "materials": [], 
+      "hvacs": [
+        {
+          "type": "IdealAirSystemAbridged", 
+          "cooling_limit": {
+            "type": "Autosize"
+          }, 
+          "properties": {
+            "type": "IdealAirSystemProperties", 
+            "revive": {
+              "equipment_collection": {
+                "equipment": [], 
+                "type": "PhiusReviveHVACEquipmentCollection"
+              }, 
+              "type": "IdealAirSystemReviveProperties"
+            }, 
+            "ref": {
+              "type": "_HBObjectWithReferences", 
+              "ref_status": "NA", 
+              "identifier": "rfsadf34b3f", 
+              "user_data": {}, 
+              "image_refs": [], 
+              "uris": [], 
+              "document_refs": [], 
+              "external_identifiers": {}
+            }
+          }, 
+          "heating_air_temperature": 50.0, 
+          "identifier": "Room_1_19d18ee0 Ideal Loads Air System", 
+          "economizer_type": "DifferentialDryBulb", 
+          "cooling_air_temperature": 13.0, 
+          "heating_limit": {
+            "type": "Autosize"
+          }, 
+          "sensible_heat_recovery": 0.0, 
+          "latent_heat_recovery": 0.0, 
+          "demand_controlled_ventilation": false
+        }
+      ], 
+      "electric_load_center": {
+        "inverter_dc_to_ac_size_ratio": 1.1000000000000001, 
+        "inverter_efficiency": 0.95999999999999996, 
+        "type": "ElectricLoadCenter"
+      }
+    }, 
+    "revive": {
+      "grid_region": {
+        "region_name": "", 
+        "filepath": "", 
+        "description": "", 
+        "region_code": ""
+      }, 
+      "type": "ModelRevivePropertiesAbridged", 
+      "co2_measures": {}, 
+      "fuels": {
+        "ELECTRICITY": {
+          "type": "Fuel", 
+          "sale_price_per_kwh": 0.13200000000000001, 
+          "annual_base_price": 200.0, 
+          "purchase_price_per_kwh": 0.17984, 
+          "fuel_type": "ELECTRICITY"
+        }, 
+        "NATURAL_GAS": {
+          "type": "Fuel", 
+          "sale_price_per_kwh": 0.0, 
+          "annual_base_price": 200.0, 
+          "purchase_price_per_kwh": 0.047100000000000003, 
+          "fuel_type": "NATURAL_GAS"
+        }
+      }, 
+      "national_emissions_factors": {
+        "GDP_million_USD": 0.0, 
+        "us_trading_rank": 0, 
+        "type": "NationalEmissionsFactors", 
+        "country_name": "", 
+        "CO2_MT": 0.0, 
+        "kg_CO2_per_USD": 0.0
+      }, 
+      "analysis_duration": 50, 
+      "envelope_labor_cost_fraction": 0.40000000000000002, 
+      "id_num": 0
+    }, 
+    "radiance": {
+      "modifiers": [], 
+      "global_modifier_set": {
+        "type": "GlobalModifierSet", 
+        "door_set": {
+          "type": "DoorModifierSetAbridged", 
+          "exterior_glass_modifier": "generic_exterior_window_vis_0.64", 
+          "interior_glass_modifier": "generic_interior_window_vis_0.88", 
+          "overhead_modifier": "generic_opaque_door_0.50", 
+          "exterior_modifier": "generic_opaque_door_0.50", 
+          "interior_modifier": "generic_opaque_door_0.50"
+        }, 
+        "floor_set": {
+          "type": "FloorModifierSetAbridged", 
+          "exterior_modifier": "generic_floor_0.20", 
+          "interior_modifier": "generic_floor_0.20"
+        }, 
+        "shade_set": {
+          "type": "ShadeModifierSetAbridged", 
+          "exterior_modifier": "generic_exterior_shade_0.35", 
+          "interior_modifier": "generic_interior_shade_0.50"
+        }, 
+        "air_boundary_modifier": "air_boundary", 
+        "roof_ceiling_set": {
+          "type": "RoofCeilingModifierSetAbridged", 
+          "exterior_modifier": "generic_ceiling_0.80", 
+          "interior_modifier": "generic_ceiling_0.80"
+        }, 
+        "wall_set": {
+          "type": "WallModifierSetAbridged", 
+          "exterior_modifier": "generic_wall_0.50", 
+          "interior_modifier": "generic_wall_0.50"
+        }, 
+        "aperture_set": {
+          "type": "ApertureModifierSetAbridged", 
+          "skylight_modifier": "generic_exterior_window_vis_0.64", 
+          "operable_modifier": "generic_exterior_window_vis_0.64", 
+          "interior_modifier": "generic_interior_window_vis_0.88", 
+          "window_modifier": "generic_exterior_window_vis_0.64"
+        }, 
+        "modifiers": [
+          {
+            "g_reflectance": 0.5, 
+            "roughness": 0.0, 
+            "dependencies": [], 
+            "r_reflectance": 0.5, 
+            "type": "Plastic", 
+            "identifier": "generic_wall_0.50", 
+            "specularity": 0.0, 
+            "b_reflectance": 0.5, 
+            "modifier": null
+          }, 
+          {
+            "g_reflectance": 0.80000000000000004, 
+            "roughness": 0.0, 
+            "dependencies": [], 
+            "r_reflectance": 0.80000000000000004, 
+            "type": "Plastic", 
+            "identifier": "generic_ceiling_0.80", 
+            "specularity": 0.0, 
+            "b_reflectance": 0.80000000000000004, 
+            "modifier": null
+          }, 
+          {
+            "modifier": null, 
+            "b_reflectance": 1.0, 
+            "g_reflectance": 1.0, 
+            "r_reflectance": 1.0, 
+            "identifier": "air_boundary", 
+            "specularity": 0.0, 
+            "roughness": 0.0, 
+            "transmitted_spec": 1.0, 
+            "dependencies": [], 
+            "transmitted_diff": 1.0, 
+            "type": "Trans"
+          }, 
+          {
+            "g_reflectance": 0.20000000000000001, 
+            "roughness": 0.0, 
+            "dependencies": [], 
+            "r_reflectance": 0.20000000000000001, 
+            "type": "Plastic", 
+            "identifier": "generic_floor_0.20", 
+            "specularity": 0.0, 
+            "b_reflectance": 0.20000000000000001, 
+            "modifier": null
+          }, 
+          {
+            "g_transmissivity": 0.95841543286105957, 
+            "modifier": null, 
+            "refraction_index": null, 
+            "r_transmissivity": 0.95841543286105957, 
+            "dependencies": [], 
+            "b_transmissivity": 0.95841543286105957, 
+            "type": "Glass", 
+            "identifier": "generic_interior_window_vis_0.88"
+          }, 
+          {
+            "g_reflectance": 0.5, 
+            "roughness": 0.0, 
+            "dependencies": [], 
+            "r_reflectance": 0.5, 
+            "type": "Plastic", 
+            "identifier": "generic_opaque_door_0.50", 
+            "specularity": 0.0, 
+            "b_reflectance": 0.5, 
+            "modifier": null
+          }, 
+          {
+            "g_transmissivity": 0.69757618153843315, 
+            "modifier": null, 
+            "refraction_index": null, 
+            "r_transmissivity": 0.69757618153843315, 
+            "dependencies": [], 
+            "b_transmissivity": 0.69757618153843315, 
+            "type": "Glass", 
+            "identifier": "generic_exterior_window_vis_0.64"
+          }, 
+          {
+            "g_reflectance": 0.34999999999999998, 
+            "roughness": 0.0, 
+            "dependencies": [], 
+            "r_reflectance": 0.34999999999999998, 
+            "type": "Plastic", 
+            "identifier": "generic_exterior_shade_0.35", 
+            "specularity": 0.0, 
+            "b_reflectance": 0.34999999999999998, 
+            "modifier": null
+          }, 
+          {
+            "g_reflectance": 0.5, 
+            "roughness": 0.0, 
+            "dependencies": [], 
+            "r_reflectance": 0.5, 
+            "type": "Plastic", 
+            "identifier": "generic_interior_shade_0.50", 
+            "specularity": 0.0, 
+            "b_reflectance": 0.5, 
+            "modifier": null
+          }, 
+          {
+            "g_reflectance": 0.20000000000000001, 
+            "roughness": 0.0, 
+            "dependencies": [], 
+            "r_reflectance": 0.20000000000000001, 
+            "type": "Plastic", 
+            "identifier": "generic_context_0.20", 
+            "specularity": 0.0, 
+            "b_reflectance": 0.20000000000000001, 
+            "modifier": null
+          }
+        ], 
+        "context_modifier": "generic_context_0.20"
+      }, 
+      "modifier_sets": [], 
+      "type": "ModelRadianceProperties"
+    }, 
+    "type": "ModelProperties", 
+    "ph_hvac": {
+      "type": "ModelPhHvacProperties"
+    }, 
+    "ph": {
+      "team": {
+        "customer": {
+          "display_name": "68c539f1-4141-4d84-b963-b953527fa8b4", 
+          "city": null, 
+          "identifier": "68c539f1-4141-4d84-b963-b953527fa8b4", 
+          "user_data": {}, 
+          "name": null, 
+          "license_number": null, 
+          "post_code": null, 
+          "street": null, 
+          "telephone": null, 
+          "email": null
+        }, 
+        "display_name": "007740cb-3f16-400b-a6aa-ecd3959da224", 
+        "identifier": "007740cb-3f16-400b-a6aa-ecd3959da224", 
+        "user_data": {}, 
+        "building": {
+          "display_name": "d6a46d19-6aeb-42a2-a605-e5f61fd364b5", 
+          "city": null, 
+          "identifier": "d6a46d19-6aeb-42a2-a605-e5f61fd364b5", 
+          "user_data": {}, 
+          "name": null, 
+          "license_number": null, 
+          "post_code": null, 
+          "street": null, 
+          "telephone": null, 
+          "email": null
+        }, 
+        "owner": {
+          "display_name": "011922ec-c063-4ae6-95fb-6527f4684f50", 
+          "city": null, 
+          "identifier": "011922ec-c063-4ae6-95fb-6527f4684f50", 
+          "user_data": {}, 
+          "name": null, 
+          "license_number": null, 
+          "post_code": null, 
+          "street": null, 
+          "telephone": null, 
+          "email": null
+        }, 
+        "designer": {
+          "display_name": "f351d4c4-84d0-4e86-a150-5e01e795f148", 
+          "city": null, 
+          "identifier": "f351d4c4-84d0-4e86-a150-5e01e795f148", 
+          "user_data": {}, 
+          "name": null, 
+          "license_number": null, 
+          "post_code": null, 
+          "street": null, 
+          "telephone": null, 
+          "email": null
+        }
+      }, 
+      "bldg_segments": [
+        {
+          "phi_certification": {
+            "phpp_version": 9, 
+            "attributes": {
+              "certification_class": "1-CLASSIC", 
+              "phpp_version": 9, 
+              "enerphit_type": "2-ENERGY DEMAND METHOD", 
+              "retrofit_type": "1-NEW BUILDING", 
+              "building_use_type": "10-DWELLING", 
+              "ihg_type": "2-STANDARD", 
+              "primary_energy_type": "2-PER (RENEWABLE)", 
+              "occupancy_type": "1-STANDARD (ONLY FOR RESIDENTIAL BUILDINGS)", 
+              "building_category_type": "1-RESIDENTIAL BUILDING", 
+              "tfa_override": null, 
+              "certification_type": "1-PASSIVE HOUSE"
+            }, 
+            "display_name": "8c406d0f-f202-47b1-b500-1e726fe86930", 
+            "identifier": "8c406d0f-f202-47b1-b500-1e726fe86930", 
+            "user_data": {}
+          }, 
+          "set_points": {
+            "summer": 25.0, 
+            "display_name": "f879e773-6ae7-4c4a-b4c2-d5ce3e9b85b4", 
+            "winter": 20.0, 
+            "identifier": "f879e773-6ae7-4c4a-b4c2-d5ce3e9b85b4", 
+            "user_data": {}
+          }, 
+          "display_name": "Unnamed_Bldg_Segment", 
+          "source_energy_factors": {
+            "factors": []
+          }, 
+          "summer_ventilation": {
+            "ventilation_system_ach": null, 
+            "nighttime_extract_system_heat_fraction": 0.0, 
+            "summer_bypass_mode": {
+              "value": "4-ALWAYS"
+            }, 
+            "daytime_extract_system_fan_power_wh_m3": 0.0, 
+            "nighttime_window_ach": 0.0, 
+            "display_name": "f12cd979-1163-4963-b7c8-d097a9be85dd", 
+            "nighttime_extract_system_ach": 0.0, 
+            "identifier": "f12cd979-1163-4963-b7c8-d097a9be85dd", 
+            "user_data": {}, 
+            "nighttime_extract_system_control": {
+              "value": "1-TEMPERATURE_CONTROLLED"
+            }, 
+            "daytime_extract_system_ach": 0.0, 
+            "nighttime_extract_system_fan_power_wh_m3": 0.0, 
+            "daytime_window_ach": 0.0, 
+            "nighttime_minimum_indoor_temp_C": 0.0
+          }, 
+          "identifier": "494a31a0-b806-4874-92fb-48814f67d21a", 
+          "user_data": {}, 
+          "co2e_factors": {
+            "factors": []
+          }, 
+          "phius_certification": {
+            "building_status": {
+              "value": "1-IN_PLANNING"
+            }, 
+            "int_gains_flush_heat_loss": true, 
+            "PHIUS2021_heating_load": 10.0, 
+            "int_gains_toilet_room_util_pat": null, 
+            "PHIUS2021_heating_demand": 15.0, 
+            "int_gains_num_toilets": 1, 
+            "display_name": "59793c9f-e7b3-4d26-a8fe-7373ada09af3", 
+            "building_type": {
+              "value": "1-NEW_CONSTRUCTION"
+            }, 
+            "certification_program": {
+              "value": "7-PHIUS 2021 CORE"
+            }, 
+            "building_use_type": {
+              "value": "1-RESIDENTIAL"
+            }, 
+            "int_gains_evap_per_person": 15, 
+            "PHIUS2021_cooling_load": 10.0, 
+            "identifier": "59793c9f-e7b3-4d26-a8fe-7373ada09af3", 
+            "user_data": {}, 
+            "localization_selection_type": 2, 
+            "int_gains_use_school_defaults": false, 
+            "icfa_override": null, 
+            "int_gains_dhw_marginal_perf_ratio": null, 
+            "PHIUS2021_cooling_demand": 15.0, 
+            "building_category_type": {
+              "value": "1-RESIDENTIAL BUILDING"
+            }
+          }, 
+          "name": "Unnamed_Bldg_Segment", 
+          "thermal_bridges": {}, 
+          "wind_exposure_type": {
+            "value": "1-SEVERAL_SIDES_EXPOSED_NO_SCREENING"
+          }, 
+          "num_floor_levels": 1, 
+          "site": {
+            "display_name": "f48a6cc3-6dea-492b-8c4c-582878f928c2", 
+            "location": {
+              "hours_from_UTC": -4, 
+              "display_name": "d3276fd4-bb9b-40bf-bcfc-e8b32c48dfff", 
+              "climate_zone": 1, 
+              "longitude": -73.799999999999997, 
+              "identifier": "d3276fd4-bb9b-40bf-bcfc-e8b32c48dfff", 
+              "user_data": {}, 
+              "latitude": 40.600000000000001, 
+              "site_elevation": null
+            }, 
+            "identifier": "f48a6cc3-6dea-492b-8c4c-582878f928c2", 
+            "user_data": {}, 
+            "phpp_library_codes": {
+              "region_code": "New York", 
+              "dataset_name": "US0055c-New York", 
+              "display_name": "US0055c-New York", 
+              "identifier": "c243374d-829b-46f6-a2fa-37de37ba75f7", 
+              "user_data": {}, 
+              "country_code": "US-United States of America"
+            }, 
+            "climate": {
+              "station_elevation": 0.0, 
+              "display_name": "New York", 
+              "peak_loads": {
+                "heat_load_1": {
+                  "rad_east": 0.0, 
+                  "display_name": "dbcda452-4b84-4655-b4a8-60fbec84c11d", 
+                  "rad_south": 0.0, 
+                  "identifier": "dbcda452-4b84-4655-b4a8-60fbec84c11d", 
+                  "user_data": {}, 
+                  "dewpoint": null, 
+                  "rad_west": 0.0, 
+                  "sky_temp": null, 
+                  "rad_north": 0.0, 
+                  "rad_global": 0.0, 
+                  "ground_temp": null, 
+                  "temp": 0.0
+                }, 
+                "cooling_load_2": {
+                  "rad_east": 0.0, 
+                  "display_name": "ba8f7b47-2cdd-456e-9a78-a16c38247727", 
+                  "rad_south": 0.0, 
+                  "identifier": "ba8f7b47-2cdd-456e-9a78-a16c38247727", 
+                  "user_data": {}, 
+                  "dewpoint": null, 
+                  "rad_west": 0.0, 
+                  "sky_temp": null, 
+                  "rad_north": 0.0, 
+                  "rad_global": 0.0, 
+                  "ground_temp": null, 
+                  "temp": 0.0
+                }, 
+                "display_name": "a18ef513-b8f9-4578-8bd4-1c37e7ea84ae", 
+                "identifier": "a18ef513-b8f9-4578-8bd4-1c37e7ea84ae", 
+                "user_data": {}, 
+                "heat_load_2": {
+                  "rad_east": 0.0, 
+                  "display_name": "26115993-955d-4680-b2a9-7aa472842501", 
+                  "rad_south": 0.0, 
+                  "identifier": "26115993-955d-4680-b2a9-7aa472842501", 
+                  "user_data": {}, 
+                  "dewpoint": null, 
+                  "rad_west": 0.0, 
+                  "sky_temp": null, 
+                  "rad_north": 0.0, 
+                  "rad_global": 0.0, 
+                  "ground_temp": null, 
+                  "temp": 0.0
+                }, 
+                "cooling_load_1": {
+                  "rad_east": 0.0, 
+                  "display_name": "2c2293d8-419d-4906-8e06-c9f13e67286f", 
+                  "rad_south": 0.0, 
+                  "identifier": "2c2293d8-419d-4906-8e06-c9f13e67286f", 
+                  "user_data": {}, 
+                  "dewpoint": null, 
+                  "rad_west": 0.0, 
+                  "sky_temp": null, 
+                  "rad_north": 0.0, 
+                  "rad_global": 0.0, 
+                  "ground_temp": null, 
+                  "temp": 0.0
+                }
+              }, 
+              "identifier": "d215eeb6-2be0-4000-bc0f-5572d94922b7", 
+              "monthly_temps": {
+                "display_name": "df763483-d522-4eb9-9c49-aaa03dd50d14", 
+                "identifier": "df763483-d522-4eb9-9c49-aaa03dd50d14", 
+                "dewpoints": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "adb670f8-be80-4830-b7f6-cb6f7d46754b", 
+                  "june": 0.0, 
+                  "identifier": "adb670f8-be80-4830-b7f6-cb6f7d46754b", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }, 
+                "user_data": {}, 
+                "sky_temps": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "620bba95-3412-4a8f-878f-3a38576eeedc", 
+                  "june": 0.0, 
+                  "identifier": "620bba95-3412-4a8f-878f-3a38576eeedc", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }, 
+                "ground_temps": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "c979b2ac-c0e8-46f6-a457-c59f2c142611", 
+                  "june": 0.0, 
+                  "identifier": "c979b2ac-c0e8-46f6-a457-c59f2c142611", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }, 
+                "air_temps": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "40b4a300-998a-4f0f-b55b-50368c771b72", 
+                  "june": 0.0, 
+                  "identifier": "40b4a300-998a-4f0f-b55b-50368c771b72", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }
+              }, 
+              "user_data": {}, 
+              "monthly_radiation": {
+                "display_name": "80c5c6e6-7617-4568-888b-4587a22e63ba", 
+                "south": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "1a866e61-af70-4696-a07d-0cfb24880769", 
+                  "june": 0.0, 
+                  "identifier": "1a866e61-af70-4696-a07d-0cfb24880769", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }, 
+                "identifier": "80c5c6e6-7617-4568-888b-4587a22e63ba", 
+                "west": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "2918b41f-f3e6-4168-b29f-821cdd853715", 
+                  "june": 0.0, 
+                  "identifier": "2918b41f-f3e6-4168-b29f-821cdd853715", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }, 
+                "user_data": {}, 
+                "north": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "a484f592-142c-4e7e-8ff7-e4cd3c21bf5b", 
+                  "june": 0.0, 
+                  "identifier": "a484f592-142c-4e7e-8ff7-e4cd3c21bf5b", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }, 
+                "east": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "de3f46a4-ac01-4c37-a0e7-57a42c05b9fa", 
+                  "june": 0.0, 
+                  "identifier": "de3f46a4-ac01-4c37-a0e7-57a42c05b9fa", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }, 
+                "glob": {
+                  "march": 0.0, 
+                  "february": 0.0, 
+                  "july": 0.0, 
+                  "display_name": "85c8f504-fe67-446e-8421-599f5394d58b", 
+                  "june": 0.0, 
+                  "identifier": "85c8f504-fe67-446e-8421-599f5394d58b", 
+                  "august": 0.0, 
+                  "user_data": {}, 
+                  "october": 0.0, 
+                  "january": 0.0, 
+                  "september": 0.0, 
+                  "november": 0.0, 
+                  "april": 0.0, 
+                  "december": 0.0, 
+                  "may": 0.0
+                }
+              }, 
+              "ground": {
+                "ground_thermal_conductivity": 2, 
+                "depth_groundwater": 3, 
+                "ground_heat_capacity": 1000, 
+                "display_name": "d9fdb6bf-0036-4b40-a1ff-0c094d6f57b5", 
+                "identifier": "d9fdb6bf-0036-4b40-a1ff-0c094d6f57b5", 
+                "user_data": {}, 
+                "flow_rate_groundwater": 0.050000000000000003, 
+                "ground_density": 2000
+              }, 
+              "summer_daily_temperature_swing": 8.0, 
+              "average_wind_speed": 4.0
+            }
+          }, 
+          "mech_room_temp": 20.0, 
+          "non_combustible_materials": false, 
+          "num_dwelling_units": 1
+        }
+      ], 
+      "id_num": 0, 
+      "type": "ModelPhPropertiesAbridged"
+    }, 
+    "doe2": {
+      "type": "ModelDoe2Properties"
+    }
+  }, 
+  "display_name": "unnamed", 
+  "version": "2.1.2", 
+  "identifier": "unnamed_721ad5e0", 
+  "rooms": [
+    {
+      "type": "Room", 
+      "faces": [
+        {
+          "type": "Face", 
+          "boundary_condition": {
+            "sun_exposure": true, 
+            "wind_exposure": true, 
+            "type": "Outdoors", 
+            "view_factor": {
+              "type": "Autocalculate"
+            }
+          }, 
+          "properties": {
+            "energy": {
+              "type": "FaceEnergyPropertiesAbridged"
+            }, 
+            "revive": {
+              "id_num": 0, 
+              "type": "FaceRevivePropertiesAbridged"
+            }, 
+            "radiance": {
+              "type": "FaceRadiancePropertiesAbridged"
+            }, 
+            "type": "FacePropertiesAbridged", 
+            "ph_hvac": {
+              "type": "FacePhHvacPropertiesAbridged"
+            }, 
+            "ph": {
+              "id_num": 0, 
+              "type": "FacePhPropertiesAbridged"
+            }
+          }, 
+          "display_name": "Room_1_19d18ee0..Face0", 
+          "identifier": "Room_1_19d18ee0..Face0", 
+          "face_type": "Wall", 
+          "geometry": {
+            "plane": {
+              "x": [
+                -1.0, 
+                0.0, 
+                -2.7755575615628914e-17
+              ], 
+              "type": "Plane", 
+              "n": [
+                0.0, 
+                1.0, 
+                0.0
+              ], 
+              "o": [
+                -4.0, 
+                4.0, 
+                1.5
+              ]
+            }, 
+            "boundary": [
+              [
+                5.0, 
+                4.0, 
+                3.0
+              ], 
+              [
+                5.0, 
+                4.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                4.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                4.0, 
+                3.0
+              ]
+            ], 
+            "type": "Face3D"
+          }
+        }, 
+        {
+          "type": "Face", 
+          "boundary_condition": {
+            "sun_exposure": true, 
+            "wind_exposure": true, 
+            "type": "Outdoors", 
+            "view_factor": {
+              "type": "Autocalculate"
+            }
+          }, 
+          "properties": {
+            "energy": {
+              "type": "FaceEnergyPropertiesAbridged"
+            }, 
+            "revive": {
+              "id_num": 0, 
+              "type": "FaceRevivePropertiesAbridged"
+            }, 
+            "radiance": {
+              "type": "FaceRadiancePropertiesAbridged"
+            }, 
+            "type": "FacePropertiesAbridged", 
+            "ph_hvac": {
+              "type": "FacePhHvacPropertiesAbridged"
+            }, 
+            "ph": {
+              "id_num": 0, 
+              "type": "FacePhPropertiesAbridged"
+            }
+          }, 
+          "display_name": "Room_1_19d18ee0..Face1", 
+          "identifier": "Room_1_19d18ee0..Face1", 
+          "face_type": "Wall", 
+          "geometry": {
+            "plane": {
+              "x": [
+                0.0, 
+                -1.0, 
+                0.0
+              ], 
+              "type": "Plane", 
+              "n": [
+                -1.0, 
+                0.0, 
+                0.0
+              ], 
+              "o": [
+                0.0, 
+                0.0, 
+                1.5
+              ]
+            }, 
+            "boundary": [
+              [
+                0.0, 
+                4.0, 
+                3.0
+              ], 
+              [
+                0.0, 
+                4.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                3.0
+              ]
+            ], 
+            "type": "Face3D"
+          }
+        }, 
+        {
+          "type": "Face", 
+          "boundary_condition": {
+            "sun_exposure": true, 
+            "wind_exposure": true, 
+            "type": "Outdoors", 
+            "view_factor": {
+              "type": "Autocalculate"
+            }
+          }, 
+          "properties": {
+            "energy": {
+              "type": "FaceEnergyPropertiesAbridged"
+            }, 
+            "revive": {
+              "id_num": 0, 
+              "type": "FaceRevivePropertiesAbridged"
+            }, 
+            "radiance": {
+              "type": "FaceRadiancePropertiesAbridged"
+            }, 
+            "type": "FacePropertiesAbridged", 
+            "ph_hvac": {
+              "type": "FacePhHvacPropertiesAbridged"
+            }, 
+            "ph": {
+              "id_num": 0, 
+              "type": "FacePhPropertiesAbridged"
+            }
+          }, 
+          "display_name": "Room_1_19d18ee0..Face2", 
+          "identifier": "Room_1_19d18ee0..Face2", 
+          "face_type": "Wall", 
+          "geometry": {
+            "plane": {
+              "x": [
+                1.0, 
+                0.0, 
+                -2.7755575615628914e-17
+              ], 
+              "type": "Plane", 
+              "n": [
+                0.0, 
+                -1.0, 
+                0.0
+              ], 
+              "o": [
+                0.0, 
+                0.0, 
+                1.5
+              ]
+            }, 
+            "boundary": [
+              [
+                0.0, 
+                0.0, 
+                3.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                5.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                5.0, 
+                0.0, 
+                3.0
+              ]
+            ], 
+            "type": "Face3D"
+          }
+        }, 
+        {
+          "type": "Face", 
+          "boundary_condition": {
+            "sun_exposure": true, 
+            "wind_exposure": true, 
+            "type": "Outdoors", 
+            "view_factor": {
+              "type": "Autocalculate"
+            }
+          }, 
+          "properties": {
+            "energy": {
+              "type": "FaceEnergyPropertiesAbridged"
+            }, 
+            "revive": {
+              "id_num": 0, 
+              "type": "FaceRevivePropertiesAbridged"
+            }, 
+            "radiance": {
+              "type": "FaceRadiancePropertiesAbridged"
+            }, 
+            "type": "FacePropertiesAbridged", 
+            "ph_hvac": {
+              "type": "FacePhHvacPropertiesAbridged"
+            }, 
+            "ph": {
+              "id_num": 0, 
+              "type": "FacePhPropertiesAbridged"
+            }
+          }, 
+          "display_name": "Room_1_19d18ee0..Face3", 
+          "identifier": "Room_1_19d18ee0..Face3", 
+          "face_type": "Wall", 
+          "geometry": {
+            "plane": {
+              "x": [
+                0.0, 
+                1.0, 
+                0.0
+              ], 
+              "type": "Plane", 
+              "n": [
+                1.0, 
+                -0.0, 
+                1.1102230246251565e-16
+              ], 
+              "o": [
+                5.0, 
+                -5.0, 
+                1.5
+              ]
+            }, 
+            "boundary": [
+              [
+                5.0, 
+                0.0, 
+                3.0
+              ], 
+              [
+                5.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                5.0, 
+                4.0, 
+                0.0
+              ], 
+              [
+                5.0, 
+                4.0, 
+                3.0
+              ]
+            ], 
+            "type": "Face3D"
+          }
+        }, 
+        {
+          "type": "Face", 
+          "boundary_condition": {
+            "type": "Ground"
+          }, 
+          "properties": {
+            "energy": {
+              "type": "FaceEnergyPropertiesAbridged"
+            }, 
+            "revive": {
+              "id_num": 0, 
+              "type": "FaceRevivePropertiesAbridged"
+            }, 
+            "radiance": {
+              "type": "FaceRadiancePropertiesAbridged"
+            }, 
+            "type": "FacePropertiesAbridged", 
+            "ph_hvac": {
+              "type": "FacePhHvacPropertiesAbridged"
+            }, 
+            "ph": {
+              "id_num": 0, 
+              "type": "FacePhPropertiesAbridged"
+            }
+          }, 
+          "display_name": "Room_1_19d18ee0..Face4", 
+          "identifier": "Room_1_19d18ee0..Face4", 
+          "face_type": "Floor", 
+          "geometry": {
+            "plane": {
+              "x": [
+                0.0, 
+                1.0, 
+                0.0
+              ], 
+              "type": "Plane", 
+              "n": [
+                -0.0, 
+                -0.0, 
+                -1.0
+              ], 
+              "o": [
+                2.5, 
+                2.0, 
+                0.0
+              ]
+            }, 
+            "boundary": [
+              [
+                5.0, 
+                4.0, 
+                0.0
+              ], 
+              [
+                5.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                0.0
+              ], 
+              [
+                0.0, 
+                4.0, 
+                0.0
+              ]
+            ], 
+            "type": "Face3D"
+          }
+        }, 
+        {
+          "type": "Face", 
+          "boundary_condition": {
+            "sun_exposure": true, 
+            "wind_exposure": true, 
+            "type": "Outdoors", 
+            "view_factor": {
+              "type": "Autocalculate"
+            }
+          }, 
+          "properties": {
+            "energy": {
+              "type": "FaceEnergyPropertiesAbridged"
+            }, 
+            "revive": {
+              "id_num": 0, 
+              "type": "FaceRevivePropertiesAbridged"
+            }, 
+            "radiance": {
+              "type": "FaceRadiancePropertiesAbridged"
+            }, 
+            "type": "FacePropertiesAbridged", 
+            "ph_hvac": {
+              "type": "FacePhHvacPropertiesAbridged"
+            }, 
+            "ph": {
+              "id_num": 0, 
+              "type": "FacePhPropertiesAbridged"
+            }
+          }, 
+          "display_name": "Room_1_19d18ee0..Face5", 
+          "identifier": "Room_1_19d18ee0..Face5", 
+          "face_type": "RoofCeiling", 
+          "geometry": {
+            "plane": {
+              "x": [
+                1.0, 
+                0.0, 
+                0.0
+              ], 
+              "type": "Plane", 
+              "n": [
+                0.0, 
+                0.0, 
+                1.0
+              ], 
+              "o": [
+                2.5, 
+                2.0, 
+                3.0
+              ]
+            }, 
+            "boundary": [
+              [
+                0.0, 
+                4.0, 
+                3.0
+              ], 
+              [
+                0.0, 
+                0.0, 
+                3.0
+              ], 
+              [
+                5.0, 
+                0.0, 
+                3.0
+              ], 
+              [
+                5.0, 
+                4.0, 
+                3.0
+              ]
+            ], 
+            "type": "Face3D"
+          }
+        }
+      ], 
+      "properties": {
+        "energy": {
+          "hvac": "Room_1_19d18ee0 Ideal Loads Air System", 
+          "program_type": "Generic Office Program", 
+          "type": "RoomEnergyPropertiesAbridged"
+        }, 
+        "revive": {
+          "type": "RoomRevivePropertiesAbridged"
+        }, 
+        "radiance": {
+          "type": "RoomRadiancePropertiesAbridged"
+        }, 
+        "type": "RoomPropertiesAbridged", 
+        "ph_hvac": {
+          "type": "RoomPhHvacPropertiesAbridged", 
+          "supportive_devices": [], 
+          "heat_pump_systems": [], 
+          "renewable_devices": [], 
+          "hot_water_system": null, 
+          "heating_systems": [], 
+          "exhaust_vent_devices": [], 
+          "ventilation_system": null, 
+          "id_num": 0
+        }, 
+        "ph": {
+          "type": "RoomPhPropertiesAbridged", 
+          "specific_heat_capacity_wh_m2k": null, 
+          "ph_bldg_segment_id": "494a31a0-b806-4874-92fb-48814f67d21a", 
+          "specific_heat_capacity": "1-LIGHTWEIGHT", 
+          "ph_foundations": [], 
+          "spaces": []
+        }, 
+        "doe2": {
+          "type": "RoomDoe2Properties"
+        }
+      }, 
+      "display_name": "Room_1", 
+      "identifier": "Room_1_19d18ee0"
+    }
+  ], 
+  "angle_tolerance": 1.0, 
+  "tolerance": 0.001
+}

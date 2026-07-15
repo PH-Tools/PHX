@@ -67,6 +67,7 @@ def main() -> int:
     # -- NEVER open the template itself: work on a scratch copy.
     scratch_copy = perf_paths.make_scratch_copy(phpp_template, scratch_dir, args.label)
     print(f"Scratch copy: {scratch_copy}")
+    perf_paths.preopen_workbook_macos(scratch_copy)
 
     import xlwings as xw
 
