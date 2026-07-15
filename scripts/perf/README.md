@@ -25,8 +25,20 @@ live Excel.
 | `bench_interop.py` | T0.2 | Per-op latency: xlwings vs xlwings `raw_value` vs raw appscript, on a scratch workbook. Also records the Excel build check (T0.1). |
 | `profile_export.py` | T0.3 / T0.5 | Full HBJSON→PHPP export on a scratch copy of the template, instrumented with the H1 profiler. `--deep` adds low-level round-trip counting; `--golden` saves + captures the H2 golden read-back. |
 | `readback_verify.py` | H2 | Extract key PHPP result cells → JSON (`extract`), and diff two extracts with tolerance (`compare`). Default backend is openpyxl on a *saved* file — no live Excel needed. |
+| `record_replay_fixture.py` | §2 record/replay | Records a live export into the replay fixture (`tests/test_xl_replay/fixtures/`) that drives the CI invariant test. Re-run whenever the intended write-output legitimately changes (record with known-good code!). |
 | `profiling.py` | H1 | Library: `ProfiledXLConnection` (facade-method timing) + `CountingFrameworkProxy` (low-level event counts). |
-| `perf_paths.py` | — | Path/config resolution, scratch-copy helper, environment metadata (T0.1). |
+| `perf_paths.py` | — | Path/config resolution, scratch-copy helper, environment metadata (T0.1), and `preopen_workbook_macos()`. |
+
+**macOS note:** a freshly-launched Excel silently rejects automation-initiated
+`books.open()` (sandbox error −1728) and can wedge an AppleEvent indefinitely when idle
+and book-less. All live scripts therefore pre-open the scratch copy via LaunchServices
+(`perf_paths.preopen_workbook_macos`) before attaching. If a script hangs at 0% CPU:
+force-quit Excel, relaunch, re-run.
+
+> **Status (2026-07-15):** Tier 0 + most of Tier 1 are DONE — measured results and the
+> remaining-lever list live in `plans/20260714/excel-interop-refactor/06_tier0-tier1-results-and-next-steps.md`.
+> The session below remains the template for re-benchmarking (e.g. after OS/Excel updates)
+> and for verifying future batching work (T1.5 etc.).
 
 ## Typical Tier-0 session
 
