@@ -131,8 +131,22 @@ class XLConnection:
         # -- trips). Invalidated whenever the sheet collection changes.
         self._worksheet_names_cache: set[str] | None = None
 
+        # -- Cache of column-reads: {SHEET-NAME: {(col, row_start, row_end): values}}.
+        # -- The section-locating reads hit the same few columns over and over
+        # -- (62 call sites). Invalidation is conservative - any write to a sheet
+        # -- drops that sheet's cached columns, and any recalculation drops the
+        # -- whole cache (a recalc can change formula-cells on EVERY sheet).
+        self._column_data_cache: dict[str, dict[tuple[str, int | None, int | None], Any]] = {}
+
         self._wb: xl_Book_Protocol | None = None
         self.output(f"> connected to excel doc: '{self.wb.fullname}'")
+
+    def _invalidate_column_cache(self, _sheet_name: str | None = None) -> None:
+        """Drop cached column-reads for one sheet, or for all sheets if None."""
+        if _sheet_name is None:
+            self._column_data_cache.clear()
+        else:
+            self._column_data_cache.pop(str(_sheet_name).upper(), None)
 
     @property
     def worksheet_names(self) -> set[str]:
@@ -146,6 +160,7 @@ class XLConnection:
         new_book = self.books.add()
         self._wb = new_book
         self._worksheet_names_cache = None
+        self._invalidate_column_cache()
         return new_book
 
     @property
@@ -228,18 +243,22 @@ class XLConnection:
             * _sheet_name: (str) The name of the worksheet
             * _range: (str) The cell range to write to (ie: "A1") or a set of ranges (ie: "A1:B4")
         """
+        self._invalidate_column_cache(_sheet_name)
         self.get_sheet_by_name(_sheet_name).range(_range).value = None
 
     def clear_sheet_contents(self, _sheet_name: str) -> None:
         """Clears the content of the whole sheet but leaves the formatting."""
+        self._invalidate_column_cache(_sheet_name)
         self.get_sheet_by_name(_sheet_name).clear_contents()
 
     def clear_sheet_formats(self, _sheet_name: str) -> None:
         """Clears the format of the whole sheet but leaves the content."""
+        self._invalidate_column_cache(_sheet_name)
         self.get_sheet_by_name(_sheet_name).clear_formats()
 
     def clear_sheet_all(self, _sheet_name: str) -> None:
         """Clears the content and formatting of the whole sheet."""
+        self._invalidate_column_cache(_sheet_name)
         self.get_sheet_by_name(_sheet_name).clear()
 
     def create_new_worksheet(self, _sheet_name: str, before: str | None = None, after: str | None = None) -> None:
@@ -251,6 +270,7 @@ class XLConnection:
             self.output(f"Adding '{_sheet_name}' to Workbook")
         except ValueError:
             self.output(f"Worksheet '{_sheet_name}' already in Workbook.")
+        self._invalidate_column_cache(_sheet_name)
 
         # -- Clear the new sheet
         new_sheet = self.get_sheet_by_name(_sheet_name)
@@ -392,7 +412,18 @@ class XLConnection:
         Returns:
         --------
             (List[xl_range_value]): The data from Excel worksheet, as a list.
+
+        Note: results are memoized per (col, row_start, row_end) span. The cache
+        for a sheet is dropped on any write to that sheet; the whole cache is
+        dropped on 'calculate()' (see '_invalidate_column_cache').
         """
+
+        sheet_column_cache = self._column_data_cache.setdefault(str(_sheet_name).upper(), {})
+        cache_key = (_col, _row_start, _row_end)
+        if cache_key in sheet_column_cache:
+            cached = sheet_column_cache[cache_key]
+            # -- return a copy so callers can't mutate the cached data
+            return list(cached) if isinstance(cached, list) else cached
 
         if not _row_start:
             _row_start = 1
@@ -404,7 +435,9 @@ class XLConnection:
 
         sheet = self.get_sheet_by_name(_sheet_name)
         col_range = sheet.range(f"{address}")
-        return col_range.value  # type: ignore
+        data = col_range.value
+        sheet_column_cache[cache_key] = list(data) if isinstance(data, list) else data
+        return data  # type: ignore
 
     def get_last_used_column_in_row(self, _sheet_name: str, _row: int) -> str:
         """Return the column letter of the last cell in a column with a value in it.
@@ -589,7 +622,9 @@ class XLConnection:
             self.wb.app.screen_updating = True
             self.wb.app.display_alerts = True
             self.wb.app.calculation = "automatic"
-            self.wb.app.calculate()
+            # -- Use the facade 'calculate()' (not 'wb.app.calculate()') so the
+            # -- column-read cache is invalidated along with the recalc.
+            self.calculate()
 
     def output(self, _input):
         """Used to set the output method. Default is None (silent).
@@ -632,6 +667,7 @@ class XLConnection:
         """
 
         self.output(f"Writing: {_xl_item.sheet_name}:{_xl_item.xl_range}={_xl_item.write_value}")
+        self._invalidate_column_cache(_xl_item.sheet_name)
 
         try:
             xl_sheet = self.get_sheet_by_name(_xl_item.sheet_name)
@@ -656,4 +692,7 @@ class XLConnection:
 
     def calculate(self) -> None:
         """Recalculate all the formulas in the workbook."""
+        # -- A recalc can change formula-cell values on every sheet, so the
+        # -- entire column-read cache must be dropped.
+        self._invalidate_column_cache()
         self.wb.app.calculate()

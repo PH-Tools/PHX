@@ -143,6 +143,78 @@ def test_xl_app_get_sheet_by_name():
 
 
 # -----------------------------------------------------------------------------
+# Column-read caching
+
+
+def test_get_single_column_data_is_cached():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    sheet = app.get_sheet_by_name("Sheet1")
+    sheet.range("A1:A5").value = ["a", "b", "c", "d", "e"]
+    assert app.get_single_column_data("Sheet1", "A", 1, 5) == ["a", "b", "c", "d", "e"]
+
+    # -- Change the cell values behind the facade's back: the cached read wins.
+    sheet.range("A1:A5").value = ["x", "x", "x", "x", "x"]
+    assert app.get_single_column_data("Sheet1", "A", 1, 5) == ["a", "b", "c", "d", "e"]
+
+
+def test_get_single_column_data_returns_a_copy_not_the_cache():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    app.get_sheet_by_name("Sheet1").range("A1:A3").value = ["a", "b", "c"]
+    first = app.get_single_column_data("Sheet1", "A", 1, 3)
+    first.append("MUTATED")
+    assert app.get_single_column_data("Sheet1", "A", 1, 3) == ["a", "b", "c"]
+
+
+def test_write_invalidates_only_that_sheets_column_cache():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    sheet_1 = app.get_sheet_by_name("Sheet1")
+    sheet_2 = app.get_sheet_by_name("Sheet2")
+    sheet_1.range("A1:A3").value = ["a", "b", "c"]
+    sheet_2.range("A1:A3").value = ["d", "e", "f"]
+    app.get_single_column_data("Sheet1", "A", 1, 3)  # prime both caches
+    app.get_single_column_data("Sheet2", "A", 1, 3)
+
+    sheet_1.range("A1:A3").value = ["new", "new", "new"]
+    sheet_2.range("A1:A3").value = ["new", "new", "new"]
+    app.write_xl_item(xl_data.XlItem("Sheet1", "C1", 42))
+
+    assert app.get_single_column_data("Sheet1", "A", 1, 3) == ["new", "new", "new"]  # invalidated
+    assert app.get_single_column_data("Sheet2", "A", 1, 3) == ["d", "e", "f"]  # still cached
+
+
+def test_calculate_invalidates_all_column_caches():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    sheet_1 = app.get_sheet_by_name("Sheet1")
+    sheet_1.range("A1:A3").value = ["a", "b", "c"]
+    app.get_single_column_data("Sheet1", "A", 1, 3)
+
+    sheet_1.range("A1:A3").value = ["recalced", "recalced", "recalced"]
+    app.calculate()
+    assert app.get_single_column_data("Sheet1", "A", 1, 3) == ["recalced", "recalced", "recalced"]
+
+
+def test_in_silent_mode_exit_invalidates_column_caches():
+    mock_xw = Mock_XL_Framework()
+    app = xl_app.XLConnection(xl_framework=mock_xw)
+
+    sheet_1 = app.get_sheet_by_name("Sheet1")
+    sheet_1.range("A1:A3").value = ["a", "b", "c"]
+    with app.in_silent_mode():
+        app.get_single_column_data("Sheet1", "A", 1, 3)
+        sheet_1.range("A1:A3").value = ["post-calc", "post-calc", "post-calc"]
+    # -- exiting silent-mode recalculates: the cache must not serve stale data.
+    assert app.get_single_column_data("Sheet1", "A", 1, 3) == ["post-calc", "post-calc", "post-calc"]
+
+
+# -----------------------------------------------------------------------------
 # Searching
 
 

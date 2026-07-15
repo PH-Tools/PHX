@@ -164,6 +164,23 @@ def test_sheet_name_reads_do_not_scale_with_facade_calls():
     assert name_reads <= 2  # the mock workbook has 2 sheets: one full sweep, ever
 
 
+def test_column_read_cache_costs_one_round_trip():
+    """T1.4 regression guard: repeated column reads are served from cache;
+    a write to the sheet forces exactly one fresh read."""
+    conn, counter = _proxied_connection()
+    conn.get_sheet_by_name("Sheet1").range("A1:A5").value = ["a", "b", "c", "d", "e"]
+    counter.counts.clear()
+
+    for _ in range(3):
+        conn.get_single_column_data("Sheet1", "A", 1, 5)
+    assert counter.counts[("range.value.get", "Sheet1")] == 1
+
+    conn.write_xl_item(xl_data.XlItem("Sheet1", "C1", 42))
+    conn.get_single_column_data("Sheet1", "A", 1, 5)
+    conn.get_single_column_data("Sheet1", "A", 1, 5)
+    assert counter.counts[("range.value.get", "Sheet1")] == 2
+
+
 def test_counting_proxy_report_shape():
     conn, counter = _proxied_connection()
     conn.write_xl_item(xl_data.XlItem("Sheet1", "A1", 1))
