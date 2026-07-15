@@ -73,14 +73,21 @@ class XlItem:
         self.font_color = font_color
 
     @property
+    def xl_anchor_cell(self) -> str:
+        """The range's top-left (anchor) cell. ie: 'A1:D10' -> 'A1', 'L41' -> 'L41'."""
+        return self.xl_range.split(":")[0]
+
+    @property
     def xl_row_number(self) -> int:
+        # -- Parse the anchor cell only: joining digits across a multi-cell
+        # -- range would fold the end-row in (ie: 'A1:D10' -> 110).
         # -- Note: was previously int(first-digit-char), so 'L41' gave 4 and
         # -- 'L41' vs 'L48' compared as the same row in merge_xl_item_row.
-        return int("".join(_ for _ in self.xl_range if _.isdigit()))
+        return int("".join(_ for _ in self.xl_anchor_cell if _.isdigit()))
 
     @property
     def xl_col_number(self) -> int:
-        return xl_ord(self.xl_range)
+        return xl_ord(self.xl_anchor_cell)
 
     @property
     def xl_col_alpha(self) -> str:

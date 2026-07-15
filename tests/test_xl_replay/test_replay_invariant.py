@@ -20,8 +20,6 @@ To (re-)record the fixture: 'python scripts/perf/record_replay_fixture.py'.
 import json
 import pathlib
 
-import pytest
-
 from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.hbjson_to_phpp import write_phx_project_to_phpp
 from PHX.PHPP import phpp_app
@@ -49,8 +47,13 @@ def _diff_cell_states(result: dict, golden: dict) -> list[str]:
     return diffs
 
 
-@pytest.mark.skipif(not FIXTURE_FILE.exists(), reason="Replay fixture has not been recorded yet.")
 def test_full_export_replay_matches_golden_cell_state(reset_class_counters) -> None:
+    # -- Fail (never skip) if the fixture is missing: a silent skip would turn
+    # -- off the write-path regression gate without anyone noticing in CI.
+    assert FIXTURE_FILE.exists(), (
+        f"Replay fixture not found: {FIXTURE_FILE}. It is versioned in-repo; "
+        "re-record with 'python scripts/perf/record_replay_fixture.py' if it was removed intentionally."
+    )
     fixture = json.loads(FIXTURE_FILE.read_text())
 
     # -- Build the reference PhxProject (deterministic: counters are reset).
