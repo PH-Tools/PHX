@@ -290,6 +290,27 @@ def test_compare_numeric_string_vs_number():
     assert readback_verify.compare({"n": "42.0"}, {"n": 42}) == []
 
 
+def test_as_number_rejects_nan_and_inf():
+    # -- 'NaN'/'inf' text float-parses, but a NaN would poison block_sum totals
+    # -- and NaN != NaN would make compare() flag two equivalent extracts.
+    assert readback_verify._as_number("NaN") is None
+    assert readback_verify._as_number("inf") is None
+    assert readback_verify._as_number(float("nan")) is None
+    assert readback_verify._as_number(42) == 42.0
+
+
+def test_compare_treats_nan_values_as_plain_text():
+    # -- two 'NaN' cells fall through to the non-numeric equality check
+    assert readback_verify.compare({"n": "NaN"}, {"n": "NaN"}) == []
+    assert len(readback_verify.compare({"n": "NaN"}, {"n": 1.0})) == 1
+
+
+def test_compare_nan_floats_match_each_other_but_not_numbers():
+    nan = float("nan")
+    assert readback_verify.compare({"n": nan}, {"n": nan}) == []
+    assert len(readback_verify.compare({"n": nan}, {"n": 1.0})) == 1
+
+
 def test_compare_reports_missing_keys_and_mismatches():
     diffs = readback_verify.compare({"a": 1, "b": "x"}, {"b": "y", "c": 3})
     assert len(diffs) == 3  # 'a' missing from second, 'b' mismatch, 'c' missing from first

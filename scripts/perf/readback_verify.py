@@ -151,11 +151,15 @@ def _as_number(value: Value) -> float | None:
     if isinstance(value, bool) or value is None:
         return None
     if isinstance(value, (int, float)):
-        return float(value)
-    try:
-        return float(str(value).strip())
-    except (ValueError, TypeError):
-        return None
+        number = float(value)
+    else:
+        try:
+            number = float(str(value).strip())
+        except (ValueError, TypeError):
+            return None
+    # -- NaN/inf are non-numbers here: a NaN would poison 'block_sum' totals,
+    # -- and NaN != NaN would make 'compare()' flag two equivalent extracts.
+    return number if math.isfinite(number) else None
 
 
 def _block_values(reader: WorkbookReader, entry: dict) -> list[Value]:
@@ -260,6 +264,14 @@ def compare(a: dict[str, Any], b: dict[str, Any], rtol: float = 1e-6, atol: floa
             diffs.append(f"'{key}': missing from second extract")
             continue
         va, vb = a[key], b[key]
+        # -- NaN floats can round-trip through the JSON extracts; NaN != NaN,
+        # -- so compare them by NaN-ness instead of equality.
+        va_nan = isinstance(va, float) and math.isnan(va)
+        vb_nan = isinstance(vb, float) and math.isnan(vb)
+        if va_nan or vb_nan:
+            if not (va_nan and vb_nan):
+                diffs.append(f"'{key}': {va!r} != {vb!r}")
+            continue
         na, nb = _as_number(va), _as_number(vb)
         if na is not None and nb is not None:
             if not math.isclose(na, nb, rel_tol=rtol, abs_tol=atol):

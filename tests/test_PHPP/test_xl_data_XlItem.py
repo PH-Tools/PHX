@@ -45,3 +45,20 @@ def test_XlItem_covert_FT():
 def test_XlItem_list():
     item = xl_data.XlItem("sheet_1", "A1", [1, 2, 3, 4], "FT", "FT")
     assert item.write_value == [1, 2, 3, 4]
+
+
+def test_XlItem_row_and_col_numbers_parse_the_anchor_cell_only():
+    # -- single-cell anchors
+    item = xl_data.XlItem("sheet_1", "L41", None)
+    assert item.xl_anchor_cell == "L41"
+    assert item.xl_row_number == 41
+    assert item.xl_col_number == xl_data.xl_ord("L")
+    assert item.xl_col_alpha == "L"
+
+    # -- multi-cell ranges (ie: block-clears) must not fold the end-cell in:
+    # -- 'A1:D10' previously gave row 110 and a column blended from 'A' + 'D'.
+    item = xl_data.XlItem("sheet_1", "A1:D10", None)
+    assert item.xl_anchor_cell == "A1"
+    assert item.xl_row_number == 1
+    assert item.xl_col_number == xl_data.xl_ord("A")
+    assert item.xl_col_alpha == "A"

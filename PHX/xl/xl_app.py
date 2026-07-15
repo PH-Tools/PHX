@@ -654,15 +654,21 @@ class XLConnection:
     def _use_raw_write(self, _xl_item: xl_data.XlItem | xl_data.XLItem_List) -> bool:
         """Return True if the item can be written through the fast 'raw_value' path.
 
-        On macOS the xlwings '.value' converter layer adds ~5x per write (and
-        far more on 2D blocks) on top of the AppleEvent cost, so plain data
+        The xlwings '.value' converter layer adds ~5x per write (and far more
+        on 2D blocks) on top of the AppleEvent cost on macOS, so plain data
         writes go through 'range.raw_value' with the shaping done Python-side
         ('xl_data.prepare_raw_write'). Items that rely on converter behavior
         stay on the '.value' path: colored items (the color-write offsets are
         anchored to the converter's range), multi-cell target addresses
         (which use '.value' scalar-broadcast, ie: block-clears), and empty
-        lists (which the converter silently skips). On Windows the COM
-        backend expects different raw shapes - it keeps '.value' throughout.
+        lists (which the converter silently skips).
+
+        Only Windows is excluded (its COM backend expects different raw
+        shapes). Everything else - macOS in production, plus the Linux CI
+        runners driving the in-memory fakes - takes the raw path, which is
+        deliberate: it keeps CI exercising the exact write path that ships
+        on macOS. Live Excel never runs on Linux, so no real workbook is
+        ever written there.
         """
         if self.os_is_windows:
             return False
