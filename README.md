@@ -24,6 +24,15 @@ This library is designed to be used as part of the [Honeybee-PH plugin](https://
 
 - **to_WUFI_XML:** Libraries to allow for the export of a WUFI-Passive XML file with all of the PHX model data. This XML file can then be opened from within the WUFI-Passive application.
 
+- **to_PPP / to_METr_JSON:** Additional exporters for the PPP and METr-JSON target formats.
+
+## Development:
+
+- **Python:** 3.10+ (CPython). Runs as a library/CLI, not inside Rhino (except the `PHX/run.py` Grasshopper shim).
+- **Tests:** `python -m pytest tests/`.
+- **Commits:** conventional commits (`feat(scope):` / `fix(scope):`) drive semantic-release auto-publishing to PyPI.
+- **Agent/contributor orientation:** [`CLAUDE.md`](CLAUDE.md), the [`context/`](context/) folder, and the deep architecture docs under [`docs/dev/`](docs/dev/) and [`docs/reference/`](docs/reference/).
+
 # More Information:
 
 For more information on the use of these tools, check out the the Passive House Tools website:

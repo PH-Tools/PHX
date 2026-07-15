@@ -1,48 +1,49 @@
 # PHX (Passive House Exchange)
 
-A Python library that converts building energy model data between [Honeybee](https://github.com/ladybug-tools/honeybee-core) (HBJSON) and Passive House formats (WUFI-Passive XML, PHPP Excel, PPP). PHX models are **in-memory only** — never serialized directly. They are an intermediate representation between source and target formats.
+A Python library that converts building energy model data between [Honeybee](https://github.com/ladybug-tools/honeybee-core) (HBJSON) and Passive House formats (WUFI-Passive XML, PHPP Excel, PPP, METr JSON). Published on PyPI as `PHX`. Source: https://github.com/PH-Tools/PHX
 
-- **Repo:** https://github.com/PH-Tools/PHX | **PyPI:** https://pypi.org/project/PHX/
-- **License:** GPL-3.0+ | **Python:** 3.10+
-- **Ecosystem:** [honeybee-ph](https://github.com/PH-Tools/honeybee_ph), [Ladybug Tools](https://github.com/ladybug-tools)
+> **Key idea:** PHX models are **in-memory only** — never serialized directly. A PHX model is the intermediate representation between a *source* format (usually HBJSON) and a *target* format (PHPP/WUFI/…). Everything is `from_*` → `model` → `to_*`.
 
-## Detailed Context (read these when working on specific areas)
+## What this repo is
 
-- [`docs/dev/architecture.md`](docs/dev/architecture.md) — Data flow, full package/module map
-- [`docs/reference/phx-model-reference.md`](docs/reference/phx-model-reference.md) — PHX object graph, design patterns, Honeybee→PHX concept mappings
-- [`docs/dev/exporter-patterns.md`](docs/dev/exporter-patterns.md) — How each exporter/importer works, patterns for adding new ones
+| Package | Role |
+|---------|------|
+| `PHX/model/` | The in-memory PHX object graph (building, components, constructions, hvac, loads, geometry, certification) |
+| `PHX/from_HBJSON/` | Build a PHX model from a Honeybee-PH HBJSON file (the primary source path) |
+| `PHX/from_WUFI_XML/` | Build a PHX model from a WUFI-Passive XML file (pydantic schema parsing) |
+| `PHX/from_PHPP/` | Build a PHX model from a PHPP file |
+| `PHX/to_WUFI_XML/` | Write a PHX model to WUFI-Passive XML |
+| `PHX/to_PPP/`, `PHX/to_METr_JSON/` | Write PPP / METr-JSON targets |
+| `PHX/PHPP/`, `PHX/xl/` | PHPP Excel write path and the Excel-interop layer |
 
-## Development
+Top-level `PHX/hbjson_to_*.py` are the end-to-end CLI entry points (e.g. `hbjson_to_wufi_xml.py`).
 
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt -r dev-requirements.txt
-python -m pytest tests/
-```
+## Where things live — read before working
 
-### Code Style
-- **Line length:** 120 | **Formatter:** Black + isort (profile="black") | **Linter:** Ruff (target py310)
-- PascalCase is intentional in `xml_schemas.py` / `xml_writables.py` (matches WUFI XML/C# structure)
-- `PHX/run.py` is excluded from formatting — it's a Python 2.7 shim for Grasshopper/Rhino
+| Working on… | Read |
+|-------------|------|
+| Product scope, what belongs here | `context/PRD.md` |
+| Orientation + where the deep docs are | `context/ARCHITECTURE.md` |
+| **Full** data flow / package map (authoritative) | `docs/dev/architecture.md` |
+| PHX object graph, design patterns, HB→PHX mappings | `docs/reference/phx-model-reference.md` |
+| Adding/changing an exporter or importer | `docs/dev/exporter-patterns.md` |
+| Code rules (style, commits, testing invariants) | `context/CODING_STANDARDS.md` |
+| Deps, packaging, CI, release | `context/TECH_STACK.md` |
+| Current / in-flight work | `planning/STATUS.md` |
+| The public docs site (autodoc spoke — do not restructure) | `docs/.instructions.md` |
 
-### Commits & CI
-- **Conventional commits** (`feat(scope):`, `fix(scope):`) — semantic-release auto-publishes to PyPI
-- GitHub Actions runs `pytest` on Python 3.10; deploys on merge to `main`
+Full context index: `context/README.md`. (The rich dev/reference deep-dives live in the public `docs/` spoke, not `context/` — `context/` holds scope, orientation, and rules; `docs/` holds the published reference.)
 
-### Testing
-- `python -m pytest tests/` — mirrors source structure (`test_model/`, `test_from_HBJSON/`, `test_to_WUFI_xml/`, etc.)
-- `reset_class_counters` fixture resets all `_count` ClassVars for predictable ID numbering
-- `to_xml_reference_cases` parametrizes end-to-end (HBJSON input → expected XML output) comparisons
-- Reference files in `tests/reference_files/` (organized by source: `from_grasshopper_tests/`, `from_hb_json_tests/`, `from_WUFI/`)
-- `live_excel`-marked tests drive a real Excel app and are deselected by default (run manually: `pytest -m live_excel`)
-- `tests/test_xl_replay/` — record/replay invariant for the PHPP write path: any change to *how* cells are written must reproduce the recorded golden cell-state exactly (re-record with `scripts/perf/record_replay_fixture.py` only when the intended output legitimately changes)
+## Hard rules
 
-### Key Dependencies
-- `honeybee-core`, `honeybee-energy`, `honeybee-ph` — Honeybee model classes + PH extensions
-- `pydantic>=2.0` — WUFI XML schema parsing (`from_WUFI_XML/`)
-- `PH-units` — Unit conversion | `xlwings` — Excel/PHPP | `lxml` — XML parsing | `rich` — Console output
+1. **The PHX model is transient.** No serialization of the PHX model itself — build it `from_*`, write it `to_*`. Don't add a "save PHX model" path.
+2. **Conventional commits drive releases.** `feat(scope):` / `fix(scope):` — semantic-release auto-publishes to PyPI on merge to `main`. Commit messages are load-bearing.
+3. **Some code is deliberately non-idiomatic.** PascalCase in `xml_schemas.py` / `xml_writables.py` mirrors the WUFI XML / C# structure — keep it. `PHX/run.py` is a Python-2.7 Grasshopper shim, excluded from formatting.
+4. **The PHPP write path has a golden-state invariant.** `tests/test_xl_replay/` record/replays exact cell writes; any change to *how* cells are written must reproduce the recorded golden state (re-record via `scripts/perf/record_replay_fixture.py` only when the output legitimately changes).
+5. **Docs are an autodoc spoke.** New/renamed public API → update `docs/nav.yml` + docstrings in the `ph-docs` format (`docs/.instructions.md`). Never restructure `docs/`.
+6. **Verify before closeout:** `python -m pytest tests/`.
 
-## Docs
-- This package has auto-generated docs which are collected and displayed by the 'ph-docs' hub. For reference, please review `docs/.instructions.md`.
-- Anytime a new class, module, method or function is added or updated - review the docs and be sure that it is properly included in the `docs/nav.yml` file.
-- All docstrings must conform to the `ph-docs` format outlined in `docs/.instructions.md`
+## Ecosystem
+
+- Upstream source: **honeybee-ph** (produces the HBJSON PHX consumes).
+- PHX is used by the **honeybee_grasshopper_ph** workflow and any tool that needs to reach PHPP/WUFI.
