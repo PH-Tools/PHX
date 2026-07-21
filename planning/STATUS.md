@@ -2,13 +2,25 @@
 
 Master index of tracked planning work in PHX. Update when a unit of work is added, changes status, or is folded back into `context/`/`docs/`.
 
-_Last updated: 2026-07-15_
+_Last updated: 2026-07-21_
 
 ## Active / current work
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
-| _(none tracked here yet)_ | | | |
+| Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
+
+## Cross-repo work
+
+`dwelling-zone-decoupling` spans three repos. PHX is the **downstream consumer**: it never
+reads `Room.zone` (verified, 0 hits), so its role is to prove the upstream change is safe and
+to retire a duplicated dwelling-aggregation helper. Deferrable without blocking the others.
+
+| Repo | Doc | Role |
+|------|-----|------|
+| `honeybee_ph` | `planning/refactor/dwelling-zone-decoupling.md` | Primary — shared helper + tests |
+| `honeybee_grasshopper_ph` | `planning/dwelling-zone-decoupling.md` | Root cause — the two `Room.zone` references |
+| `PHX` | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) | Downstream consumer — clearance + dedup |
 
 ## Note on legacy dated notes
 

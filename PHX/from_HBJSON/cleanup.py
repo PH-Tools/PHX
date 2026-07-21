@@ -31,6 +31,7 @@ except ImportError as e:
     raise ImportError(f"\nFailed to import honeybee_ph:\n\t{e}")
 
 try:
+    from honeybee_energy_ph.dwellings import total_dwelling_count
     from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
     from honeybee_energy_ph.properties.load.process import ProcessPhProperties
@@ -193,29 +194,6 @@ def _get_room_exposed_face_area(_hb_room: room.Room) -> float:
     return sum(fc.area for fc in _hb_room.faces if isinstance(fc.boundary_condition, (Outdoors, Ground)))
 
 
-def all_unique_ph_dwelling_objects(_hb_rooms: list[room.Room]) -> list[PhDwellings]:
-    """Return a list of all the unique PhDwelling objects from a set of HB-Rooms.
-
-    Arguments:
-    ----------
-        * _hb_rooms (List[room.Room]): A list of the HB-Rooms
-
-    Returns:
-    --------
-        * (List[PhDwellings])
-    """
-    dwellings = set()
-    for room in _hb_rooms:
-        try:
-            hb_people = get_room_people(room)
-            hbph_people_prop_ph: PeoplePhProperties = hb_people.properties.ph
-            dwellings.add(hbph_people_prop_ph.dwellings)
-        except MissingEnergyPropertiesError:
-            # Room has no people defined, skip it
-            continue
-    return list(dwellings)
-
-
 def merge_occupancies(_hb_rooms: list[room.Room]) -> People:
     """Returns a new HB-People-Obj with it's values set from a list of input HB-Rooms.
 
@@ -232,9 +210,10 @@ def merge_occupancies(_hb_rooms: list[room.Room]) -> People:
 
     # -------------------------------------------------------------------------
     # Calculate the total dwelling-unit count. Ensure always at least 1 (even Non-Res)
-    total_ph_dwellings = 0
-    for dwelling_obj in all_unique_ph_dwelling_objects(_hb_rooms):
-        total_ph_dwellings += int(dwelling_obj.num_dwellings)
+    # Note: 'total_dwelling_count' sums over the UNIQUE PhDwellings objects, so a single
+    # dwelling spanning several HB-Rooms is counted once. Rooms with no People load (or
+    # which never went through 'HBPH - Set Dwelling') contribute zero, not a phantom unit.
+    total_ph_dwellings = total_dwelling_count(_hb_rooms)
     merged_ph_dwellings = PhDwellings(_num_dwellings=max(total_ph_dwellings, 1))
 
     # -------------------------------------------------------------------------
