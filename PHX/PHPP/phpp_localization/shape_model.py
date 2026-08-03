@@ -571,9 +571,9 @@ class AddnlVentInputsDucts(BaseModel):
     insul_thickness: InputItem
     insul_conductivity: InputItem
     insul_reflective: InputItem
-    sup_air_duct_len: InputItem
-    oda_air_duct_len: InputItem
-    exh_air_duct_len: InputItem
+    duct_length: InputItem
+    is_supply_flag: InputItem
+    is_exhaust_flag: InputItem
     duct_assign_1: InputItem
     duct_assign_2: InputItem
     duct_assign_3: InputItem

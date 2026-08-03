@@ -2,12 +2,13 @@
 
 Master index of tracked planning work in PHX. Update when a unit of work is added, changes status, or is folded back into `context/`/`docs/`.
 
-_Last updated: 2026-07-21_
+_Last updated: 2026-08-03_
 
 ## Active / current work
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
+| Write ventilation ducting to PHPP "Addl vent" | Feature | **In progress** — shape contract corrected; row model next | [`features/phpp-vent-ducting/`](features/phpp-vent-ducting/README.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
 
 ## Cross-repo work

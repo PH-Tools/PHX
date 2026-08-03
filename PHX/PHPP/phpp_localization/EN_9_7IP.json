@@ -1004,7 +1004,7 @@
                     "unit": null
                 },
                 "diameter": {
-                    "column": "F",
+                    "column": "E",
                     "unit": "IN"
                 },
                 "width": {
@@ -1027,17 +1027,17 @@
                     "column": "J",
                     "unit": null
                 },
-                "sup_air_duct_len": {
+                "duct_length": {
                     "column": "L",
                     "unit": "FT"
                 },
-                "oda_air_duct_len": {
+                "is_supply_flag": {
                     "column": "M",
-                    "unit": "FT"
+                    "unit": null
                 },
-                "exh_air_duct_len": {
+                "is_exhaust_flag": {
                     "column": "N",
-                    "unit": "FT"
+                    "unit": null
                 },
                 "duct_assign_1": {
                     "column": "Q",
@@ -1072,7 +1072,7 @@
                     "unit": null
                 },
                 "duct_assign_9": {
-                    "column": "Z",
+                    "column": "Y",
                     "unit": null
                 },
                 "duct_assign_10": {
