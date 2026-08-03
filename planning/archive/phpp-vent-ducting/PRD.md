@@ -1,13 +1,16 @@
 # PRD — Write Ventilation Ducting to PHPP "Addl vent"
 
+**Status:** Complete (2026-08-03)
+
 ## Problem
 
-The PHX→PHPP export (`PHX/hbjson_to_phpp.py` → `phpp_app.PHPPConnection`) writes to the
+Before this feature, the PHX→PHPP export (`PHX/hbjson_to_phpp.py` →
+`phpp_app.PHPPConnection`) handled only two of the three relevant sections on the
 "Addl vent" worksheet:
 
 - **Rooms section** — `write_project_spaces()` (`phpp_app.py:611`)
 - **Vent-Units section** — `write_project_ventilators()` (`phpp_app.py:589`)
-- **Ducts section** — *never implemented*
+- **Ducts section** — *not implemented*
 
 The duct data exists in the PHX model (`mech_collection.vent_ducting` →
 `PhxDuctElement`/`PhxDuctSegment`, `PHX/model/hvac/ducting.py`) and is already written by
@@ -16,23 +19,23 @@ the other two exporters:
 - WUFI-XML: `_PhxDuctElement()` at `PHX/to_WUFI_XML/xml_schemas.py:1484`
 - METr-JSON: `_PhxDuctElement()` at `PHX/to_METr_JSON/metr_schemas.py:1890`
 
-Result: PHPP models produced by PHX show zero duct heat loss on the cold-side ducts,
+The result was that PHPP models produced by PHX showed zero duct heat loss on cold-side ducts,
 understating ventilation heat losses vs. the equivalent WUFI model.
 
-## Existing groundwork (already in `main`, never exercised)
+## Existing groundwork and completed implementation
 
 Much of the plumbing was stubbed long ago and left dangling:
 
 | Piece | Location | State |
 |-------|----------|-------|
-| Shape pydantic model `AddnlVentInputsDucts` / `AddnlVentRoomsInputBlockDucts` | `PHX/PHPP/phpp_localization/shape_model.py:566-612` | Done |
-| Shape data `ADDNL_VENT.ducts` in all 7 localization JSONs | `PHX/PHPP/phpp_localization/EN_*.json` | Present but has 2 column bugs (below) |
-| Sheet-IO section locator `VentDucts` + `AddnlVent.write_vent_ducts()` | `PHX/PHPP/sheet_io/io_addnl_vent.py:309-376, 405-414` | Done (note: `write_vent_ducts(_vent_ducts: list)` is untyped because the row model never existed) |
-| Row model `phpp_model/vent_ducts.py` | `PHX/PHPP/phpp_model/vent_ducts.py` | **Empty file** |
-| Builder in `phpp_app.py` + call in write sequence | — | **Missing** |
+| Shape pydantic model `AddnlVentInputsDucts` / `AddnlVentRoomsInputBlockDucts` | `PHX/PHPP/phpp_localization/shape_model.py:566-612` | Done; field names clarified |
+| Shape data `ADDNL_VENT.ducts` in all 7 localization JSONs | `PHX/PHPP/phpp_localization/EN_*.json` | Corrected and validated |
+| Sheet-IO section locator `VentDucts` + `AddnlVent.write_vent_ducts()` | `PHX/PHPP/sheet_io/io_addnl_vent.py:309-376, 405-414` | Typed; live-workbook locator bugs fixed |
+| Row model `phpp_model/vent_ducts.py` | `PHX/PHPP/phpp_model/vent_ducts.py` | Implemented and tested for SI/IP shapes |
+| Builder in `phpp_app.py` + call in write sequence | `PHX/PHPP/phpp_app.py`, `PHX/hbjson_to_phpp.py` | Implemented, tested, and wired |
 
-So the actual feature is: the row model, the `phpp_app` builder, the write-sequence call,
-the shape-file fixes, and tests.
+The completed feature comprises the row model, `phpp_app` builder, write-sequence call,
+shape-file and locator fixes, tests, and public documentation.
 
 ## PHPP worksheet semantics (verified against a real PHPP EN 10.6)
 
@@ -70,7 +73,7 @@ cold ducts (ODA/EHA) and exterior-unit warm ducts (SUP/ETA) with the same two fl
 matches the WUFI convention (`DuctType` 1=supply, 2=exhaust), so PHPP and WUFI exports of
 the same model stay consistent.
 
-### Shape-file bugs found (all 7 `EN_*.json`, identical `ducts` block)
+### Shape-file bugs found and corrected (all 7 `EN_*.json`, identical `ducts` block)
 
 1. **`diameter` column is `"F"` — should be `"E"`.** (E=round diameter, F=rect width; the
    stub had diameter/width both on F.)
@@ -99,9 +102,9 @@ Build the duct rows in the same pass (or re-enumerate identically) and map
 from Excel (`get_vent_unit_num_by_phpp_id`) — it costs an xl-read per duct and adds
 nothing.
 
-**Round vs rectangular:** `duct.duct_shape` returns 1=round / 2=rect. Round → write E,
-leave F/G blank; rect → write F/G, leave E blank. (Writing both would double-define the
-duct in PHPP.)
+**Round vs rectangular:** `duct.duct_shape` returns 1=round / 2=rect. Round → write only
+E; rect → write only F/G. Omitted cells are not cleared, so the exporter assumes clean
+input rows. (Writing both would double-define the duct in PHPP.)
 
 **Units:** pass source-unit + shape target-unit through `XlItem` exactly as
 `VentUnitRow` does (`phpp_model/vent_units.py:49-54`) so the IP shape files (`EN_*IP`,
@@ -128,3 +131,13 @@ inches) convert automatically. Flag columns (J, M, N, Q–Z) have `unit: null` �
    (incl. golden replay) passes with no fixture re-record.
 3. PHPP duct rows are consistent with the WUFI-XML export of the same model
    (same lengths, diameters, insulation, type, unit assignment).
+
+## Completion evidence
+
+- Full suite: `776 passed, 3 skipped, 1 deselected`; the golden replay fixture was not
+  re-recorded.
+- Disposable PHPP EN 10.6 write verified rows 95-96, geometry/insulation/length/type/unit
+  assignment cells, resolving O/P formulas, and no watched `#REF`.
+- The repository has no PHPP 9 workbook and its only duct-bearing HBJSON has zero operating
+  airflow in the PHPP 10.6 workbook. PHPP 9 column parity and a nonzero compatible-fixture
+  heat-loss delta remain explicit downstream spot-checks, not implementation blockers.

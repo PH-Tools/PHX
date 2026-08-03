@@ -1,10 +1,12 @@
 # phpp-vent-ducting
 
-Write ventilation ducting from the PHX model to the PHPP **"Addl vent"** worksheet
+**Status:** Complete (2026-08-03)
+
+Writes ventilation ducting from the PHX model to the PHPP **"Addl vent"** worksheet
 ("Data entries for duct sections between the ventilation unit and the thermal envelope").
-Today the PHPP export writes the spaces (Rooms section) and ventilators (Units section)
-but silently drops all ducting — even though the data is in the PHX model and is already
-exported by the WUFI-XML and METr-JSON writers.
+Before this feature, PHPP export wrote the spaces (Rooms section) and ventilators (Units
+section) but silently dropped ducting already present in the PHX model and exported by the
+WUFI-XML and METr-JSON writers.
 
 ## Read order
 
@@ -14,9 +16,9 @@ exported by the WUFI-XML and METr-JSON writers.
 
 ## Scope in one line
 
-New `VentDuctRow` model class + builder method `write_project_vent_ducting()` in
+`VentDuctRow` model class + builder method `write_project_vent_ducting()` in
 `phpp_app.py`, wired into the canonical write sequence — plus fixing two column
-errors in the (never-before-used) `ducts` block of the localization shape files.
+errors in the formerly unused `ducts` block of the localization shape files.
 
 Out of scope: reading ducts *from* PHPP (`from_PHPP`), the "Addl vent 2" overflow
 worksheet, exterior-unit installation-room temperature (row 84), and any change to

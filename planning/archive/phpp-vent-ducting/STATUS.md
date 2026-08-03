@@ -1,6 +1,6 @@
 # STATUS — phpp-vent-ducting
 
-**Status:** Implemented
+**Status:** Complete
 **Last updated:** 2026-08-03
 
 ## Current state
@@ -19,9 +19,10 @@ autodoc navigation already includes both API surfaces.
 
 ## Next step
 
-Run the final verification gate, then archive this completed packet.
+None. This packet is archived; public outcomes live in
+`docs/reference/phpp-field-mapping.md` and `docs/dev/exporter-patterns.md`.
 
-## Open questions
+## Residual checks and limits
 
 1. **PHPP 9 duct columns unverified.** `EN_9_6A`/`EN_9_7IP` shape data assumed identical
    to v10 (D–Z layout). No PHPP 9 workbook was on hand. Ship with the assumption,
@@ -40,3 +41,9 @@ Run the final verification gate, then archive this completed packet.
 ## Blockers
 
 None.
+
+## Final verification
+
+- `.venv/bin/python -m pytest tests/` → `776 passed, 3 skipped, 1 deselected`
+- `git diff --check` → pass
+- `docs/nav.yml` parsed successfully; existing `phpp_app` and `vent_ducts` API entries present

@@ -6,7 +6,7 @@ This README is the index — scan or grep it instead of guessing dates. Add a ro
 
 | Item | Kind | Completed | Summary | Folder |
 |------|------|-----------|---------|--------|
-| _(none yet)_ | | | | |
+| Write ventilation ducting to PHPP "Addl vent" | Feature | 2026-08-03 | Writes PHX ventilation ducts with localized geometry, type, and unit assignments plus row/unit capacity guards. | [`phpp-vent-ducting/`](phpp-vent-ducting/README.md) |
 
 ## Conventions
 

@@ -8,8 +8,13 @@ _Last updated: 2026-08-03_
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
-| Write ventilation ducting to PHPP "Addl vent" | Feature | **Implemented** — code, PHPP 10.6 row/formula check, and docs complete; final gate/archive next | [`features/phpp-vent-ducting/`](features/phpp-vent-ducting/README.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
+
+## Completed / archived work
+
+| Item | Kind | Status | Pointer |
+|------|------|--------|---------|
+| Write ventilation ducting to PHPP "Addl vent" | Feature | **Complete** — PHPP 10.6 row/formula check and full suite pass | [`archive/phpp-vent-ducting/`](archive/phpp-vent-ducting/README.md) |
 
 ## Cross-repo work
 
