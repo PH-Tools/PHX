@@ -1,14 +1,13 @@
 {
   "hooks": {
-    "PostToolUse": [
+    "Stop": [
       {
-        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX/.claude/fsdeploy-hook.sh",
-            "timeout": 10,
-            "statusMessage": "Deploying to targets..."
+            "command": "/Users/em/.claude/ph-tools-fsdeploy.sh --sync-repo /Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX",
+            "timeout": 30,
+            "statusMessage": "Syncing PHX to installed development targets..."
           }
         ]
       }
