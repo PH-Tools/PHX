@@ -216,29 +216,31 @@ def _PhxConstructionWindow(
                 "lAngleAbs": [[0.0, 0.0, 0.0]],
             }
         ],
+        # -- METr stores every lrtb* array in its GUI order: Left, Right,
+        # -- Top, Bottom. Verified with an asymmetric METr save on 2026-08-03.
         "lrtbFrW": [
-            _wt.frame_top.width,
-            _wt.frame_right.width,
-            _wt.frame_bottom.width,
             _wt.frame_left.width,
+            _wt.frame_right.width,
+            _wt.frame_top.width,
+            _wt.frame_bottom.width,
         ],
         "lrtbFrU": [
-            _wt.frame_top.u_value,
-            _wt.frame_right.u_value,
-            _wt.frame_bottom.u_value,
             _wt.frame_left.u_value,
+            _wt.frame_right.u_value,
+            _wt.frame_top.u_value,
+            _wt.frame_bottom.u_value,
         ],
         "lrtbGlPsi": [
-            _wt.frame_top.psi_glazing,
-            _wt.frame_right.psi_glazing,
-            _wt.frame_bottom.psi_glazing,
             _wt.frame_left.psi_glazing,
+            _wt.frame_right.psi_glazing,
+            _wt.frame_top.psi_glazing,
+            _wt.frame_bottom.psi_glazing,
         ],
         "lrtbFrPsi": [
-            _wt.frame_top.psi_install,
-            _wt.frame_right.psi_install,
-            _wt.frame_bottom.psi_install,
             _wt.frame_left.psi_install,
+            _wt.frame_right.psi_install,
+            _wt.frame_top.psi_install,
+            _wt.frame_bottom.psi_install,
         ],
     }
 
