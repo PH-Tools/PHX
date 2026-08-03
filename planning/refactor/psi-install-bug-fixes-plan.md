@@ -2,7 +2,7 @@
 
 ```
 DATE:    2026-08-03
-STATUS:  In progress — Phases 1 and 6 complete; next actionable phase is Phase 4
+STATUS:  In progress — Phases 1, 4, and 6 complete; next actionable phase is Phase 7
 AUTHOR:  Ed + Claude
 SCOPE:   Fix the bugs catalogued in psi-install-possible-bugs.md §3.6. Bug fixes only —
          the psi-install *feature* work (program-aware defaults, mulled edges, PHN
@@ -82,6 +82,8 @@ This is an evidence-gathering phase; fixes land in Phase 3. For each workbook, r
 ## Phase 4 — psi-install averaging weights (bug 4)
 
 **Repo: PHX. Independent; fold into Phase 3's replay re-record if convenient.**
+
+**Status: Complete (2026-08-03), option (a).** `_collect_window_psi_lengths` now supplies both clear-glazing-edge weights for psi-glazing and full opening-edge weights for psi-install. `FrameRow` coverage verifies an unequal weighted left/right collapse while bottom/top pass through unchanged. Focused verification, including `tests/test_xl_replay/test_replay_invariant.py`, passed (`9 passed`); the full suite passed (`780 passed, 3 skipped, 1 deselected`). The golden fixture did not change because current PHPP shapes merge only equal-length left/right install edges, so re-recording would violate the no-output-change invariant.
 
 Pick one (recommend a): 
 

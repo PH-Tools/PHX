@@ -1,6 +1,6 @@
 # -*- Python Version: 3.10 -*-
 
-"""Tests for PHPP window psi-g length aggregation."""
+"""Tests for PHPP window psi length aggregation."""
 
 import pytest
 
@@ -28,7 +28,7 @@ def _rect_polygon(width: float, height: float) -> geometry.PhxPolygonRectangular
     return polygon
 
 
-def test_collect_window_psi_g_lengths_uses_glazing_edge_lengths(reset_class_counters):
+def test_collect_window_psi_lengths_uses_glazing_and_install_edge_lengths(reset_class_counters):
     window_type = constructions.PhxConstructionWindow()
     window_type.frame_left.width = 0.1
     window_type.frame_right.width = 0.2
@@ -51,7 +51,7 @@ def test_collect_window_psi_g_lengths_uses_glazing_edge_lengths(reset_class_coun
     phx_project.add_new_window_type(window_type)
     phx_project.add_new_variant(phx_variant)
 
-    result = PHPPConnection._collect_window_psi_g_lengths(phx_project)
+    result = PHPPConnection._collect_window_psi_lengths(phx_project)
 
     assert result[window_type.identifier] == pytest.approx(
         {
@@ -59,5 +59,9 @@ def test_collect_window_psi_g_lengths_uses_glazing_edge_lengths(reset_class_coun
             "psi_g_right": 2.3,
             "psi_g_bottom": 1.7,
             "psi_g_top": 1.7,
+            "psi_i_left": 3.0,
+            "psi_i_right": 3.0,
+            "psi_i_bottom": 2.0,
+            "psi_i_top": 2.0,
         }
     )

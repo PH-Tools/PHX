@@ -185,6 +185,29 @@ class TestPsiInstallSharedColumns:
         assert len(ka_items) == 1
         assert ka_items[0]._write_value == pytest.approx(0.02)
 
+    def test_shared_left_right_uses_install_edge_length_weights(self, reset_class_counters):
+        shape = _make_components_shape(_make_frames_shape(self.PSI_G_SAME, self.PSI_I_MIXED))
+        con = _make_construction(
+            psi_g={"left": 0.04, "right": 0.04, "bottom": 0.04, "top": 0.04},
+            psi_i={"left": 0.01, "right": 0.03, "bottom": 0.05, "top": 0.02},
+        )
+        row = FrameRow(
+            shape=shape,
+            phx_construction=con,
+            psi_value_weights={
+                "psi_i_left": 1.0,
+                "psi_i_right": 3.0,
+                "psi_i_bottom": 2.0,
+                "psi_i_top": 4.0,
+            },
+        )
+
+        xl_items = row.create_xl_items("Components", 10)
+
+        assert _items_for_column_range(xl_items, "JZ")[0]._write_value == pytest.approx(0.025)
+        assert _items_for_column_range(xl_items, "KB")[0]._write_value == pytest.approx(0.05)
+        assert _items_for_column_range(xl_items, "KA")[0]._write_value == pytest.approx(0.02)
+
 
 class TestPsiInstallDifferentColumns:
     """PHPP 9.x: all four psi_i fields map to different columns."""
