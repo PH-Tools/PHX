@@ -82,8 +82,8 @@ Notes:
 - Type the existing `AddnlVent.write_vent_ducts(_vent_ducts: list)` signature properly
   (`list[vent_ducts.VentDuctRow]`) while you're there — it was left untyped because the
   row model didn't exist.
-- Capacity check: `VentDucts.find_section_last_entry_row()` already locates the end of
-  the section ("Additional lines" marker). Rows beyond capacity → `warning` (match the
+- Capacity check: `VentDucts.find_section_last_entry_row()` locates the end of
+  the section (version-specific "Additional..." marker). Rows beyond capacity → `warning` (match the
   project's existing warn style) + truncate.
 
 ## Step 4 — Wire into the write sequence (Complete)
@@ -111,12 +111,22 @@ Insert `phpp_conn.write_project_vent_ducting(phx_project)` **after**
 - Reset-counter hygiene: `PhxDuctElement` has a `_count` ClassVar — use the existing
   `reset_class_counters` conftest fixture pattern if instance numbering matters in tests.
 
-## Step 6 — Live verification (Ed / manual)
+## Step 6 — Live verification (Complete with fixture limitation)
 
 Run an HBJSON model that has ducting (any recent project export) through
 `hbjson_to_phpp.py` against PHPP 10.6 and eyeball the Ducts section: lengths in L, one
 flag in M or N, assignment in the right Q–Z column, K/O/P formulas resolving (no `#REF`),
 and the Ventilation worksheet heat-loss result moving vs. a no-duct write.
+
+Evidence (2026-08-03): a disposable copy of PHPP EN 10.6 plus
+`Multi_Room_Complete.hbjson` wrote supply/exhaust rows 95-96 with D=1, E=176 mm,
+H=27.94 mm, I=0.04 W/(mK), J=`x`, L=1.1 m, M/N type flags, and Q=1. O resolved to
+`ODA`/`EHA`; P resolved to a nonzero design flow after the full sequence; no watched
+formula returned `#REF`. The run found and fixed the header scan (must include row 86)
+and end marker (`Additional rows...` at row 115; last entry row 114). A nonzero K/heat-loss
+delta was not available because this sole duct fixture targets PHPP 9 and carries zero
+operating airflow / an incomplete PHPP-10 temperature chain; this remains an explicit
+compatible-fixture spot-check, not an implementation blocker.
 
 ## Step 7 — Docs
 

@@ -5,17 +5,19 @@
 
 ## Current state
 
-Steps 1-5 complete. `VentDuctRow` maps the localized row contract, and
+Steps 1-6 complete. `VentDuctRow` maps the localized row contract, and
 `PHPPConnection.write_project_vent_ducting()` now builds rows using the same global
 ventilator order as the Components/Units writers. Assignments are scoped by mechanical
 collection, unknown/ambiguous/>10 assignments warn and skip, duct-free models perform no
 sheet reads, and overflow truncates to the located duct-section capacity. Both PHPP write
 sequences are wired, focused SI/IP and builder tests pass, and the unchanged golden replay
-proves the duct-free export adds no Excel interaction.
+proves the duct-free export adds no Excel interaction. A disposable PHPP 10.6 live run
+verified rows 95-96, `ODA`/`EHA` type formulas, nonzero design-flow formulas, and no
+`#REF`; it also exposed and closed the header/end-marker locator bugs.
 
 ## Next step
 
-Run the isolated PHPP 10.6 live verification in `PLAN.md` step 6, using a copied workbook.
+Complete the public documentation updates in `PLAN.md` step 7.
 
 ## Open questions
 
@@ -24,9 +26,14 @@ Run the isolated PHPP 10.6 live verification in `PLAN.md` step 6, using a copied
    flag in the PR for Ed to spot-check.
 2. **Shape-field rename resolved.** Repository grep confirmed the former names were
    unused outside the shape model and JSON files, so the clearer names were adopted.
-3. Duct-section row capacity (~15 rows in 10.6) and the 10-unit assignment limit are
+3. Duct-section row capacity (20 rows in the verified 10.6 workbook) and the 10-unit assignment limit are
    handled by warn+truncate/skip. If a real multifamily model overflows this in practice,
    revisit (PHPP "Addl vent 2" overflow sheet is out of scope for now).
+4. **Heat-loss delta fixture limitation.** The only repository HBJSON with ducting targets
+   PHPP 9 and has zero operating airflow plus an incomplete PHPP-10 temperature chain.
+   The PHPP 10.6 live run therefore verified row/formula behavior but could not demonstrate
+   a nonzero conductance/heat-loss delta. Recheck with the next compatible client export;
+   do not treat this as a code blocker.
 
 ## Blockers
 

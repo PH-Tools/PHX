@@ -109,8 +109,8 @@ inches) convert automatically. Flag columns (J, M, N, Q–Z) have `unit: null` �
 
 ## Constraints
 
-- **PHPP capacity:** the Ducts section has a fixed number of entry rows (~15 in 10.6;
-  `find_section_last_entry_row` locates the end via the "Additional lines" text). More
+- **PHPP capacity:** the Ducts section has 20 entry rows in the verified 10.6 workbook;
+  `find_section_last_entry_row` locates the end via the version-specific "Additional..." text). More
   ducts than rows → warn and truncate (match how the sheet handles overflow elsewhere;
   do not write past the section).
 - Max 10 vent units are assignable (Q–Z). Ducts serving a ventilator beyond #10 → warn+skip.

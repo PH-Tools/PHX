@@ -316,8 +316,8 @@ class VentDucts:
         self.section_first_entry_row: int | None = None
         self.section_last_entry_row: int | None = None
 
-    def find_section_header_row(self, _row_start: int = 100, _row_end: int = 300) -> int:
-        """Return the row number of the 'Rooms' section header."""
+    def find_section_header_row(self, _row_start: int = 1, _row_end: int = 300) -> int:
+        """Return the row number of the ventilation-duct section header."""
 
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
@@ -331,8 +331,8 @@ class VentDucts:
                 return i
 
         raise Exception(
-            f'\n\tError: Not able to find the "Vent-Ducts" input section'
-            f'of the "{self.shape.name}" worksheet? Please be sure the section'
+            f'\n\tError: Not able to find the "Vent-Ducts" input section '
+            f'of the "{self.shape.name}" worksheet? Please be sure the section '
             f'begins with the "{self.shape.ducts.locator_string_header}" '
             f"flag in column {self.shape.ducts.locator_col_header}?"
         )
