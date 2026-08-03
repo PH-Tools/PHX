@@ -474,20 +474,22 @@ Worksheet key: `ADDNL_VENT`
 ### ducts
 
 - Header locator: col `E`, string `"Round"`
-- Entry locator: col `D`, string `"1"`
+- Header search range: rows `1:300` (PHPP 10.6 header: row `86`)
+- First entry row: header + `9` (PHPP 10.6: row `95`)
+- End locator: col `D`, string containing `"Additional"` (PHPP 10.6: row `115`; last entry row `114`)
 
 | Field | Column | Unit |
 |-------|--------|------|
 | `quantity` | D |  |
-| `diameter` | F | MM |
+| `diameter` | E | MM |
 | `width` | F | MM |
 | `height` | G | MM |
 | `insul_thickness` | H | MM |
 | `insul_conductivity` | I | W/MK |
 | `insul_reflective` | J |  |
-| `sup_air_duct_len` | L | M |
-| `oda_air_duct_len` | M | M |
-| `exh_air_duct_len` | N | M |
+| `duct_length` | L | M |
+| `is_supply_flag` | M |  |
+| `is_exhaust_flag` | N |  |
 | `duct_assign_1` | Q |  |
 | `duct_assign_2` | R |  |
 | `duct_assign_3` | S |  |
@@ -496,8 +498,14 @@ Worksheet key: `ADDNL_VENT`
 | `duct_assign_6` | V |  |
 | `duct_assign_7` | W |  |
 | `duct_assign_8` | X |  |
-| `duct_assign_9` | Z |  |
+| `duct_assign_9` | Y |  |
 | `duct_assign_10` | Z |  |
+
+For round rows PHX writes only diameter E; for rectangular rows it writes only F/G. PHX
+writes `1` to one of the M/N type flags and to the selected Q-Z assignment column for the
+corresponding 1-based ventilation-unit row. Omitted cells are not cleared, so export assumes
+clean input rows. K (conductance), O (duct type), and P (design airflow) are PHPP formulas
+and are never overwritten by PHX.
 
 ---
 

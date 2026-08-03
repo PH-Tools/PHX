@@ -166,7 +166,7 @@ metr_json_to_file.write_metr_json_file(target_path, metr_text)
 
 4. **Localization** (`phpp_localization/`) provides shape-file JSON that maps logical field names to cell addresses for a given PHPP version. Currently ships with **English-only** shape files for PHPP v9 (9.6A, 9.7IP) and v10 (10.3, 10.4A, 10.4IP, 10.6, 10.6IP). The version detection code recognizes German (DE) and Spanish (ES) worksheet names for navigation, but no DE/ES shape files are provided.
 
-5. **`PHPPConnection` exposes 20 `write_*` methods** — 17 functional write operations plus 3 non-residential stubs (`write_non_res_utilization_profiles`, `write_non_res_space_lighting`, `write_non_res_IHG`).
+5. **`PHPPConnection` exposes 21 `write_*` methods** — 18 functional write operations plus 3 non-residential stubs (`write_non_res_utilization_profiles`, `write_non_res_space_lighting`, `write_non_res_IHG`). The canonical write sequence writes ventilation units first, then ducts, then rooms; duct assignments use the same project order as the ventilation-unit rows.
 
 ### Usage
 
@@ -180,7 +180,11 @@ with phpp_conn.xl.in_silent_mode():
     phpp_conn.write_certification_config(phx_project)
     phpp_conn.write_climate_data(phx_project)
     phpp_conn.write_project_constructions(phx_project)
-    # ... 14 more write operations
+    # ... envelope and component writes ...
+    phpp_conn.write_project_ventilators(phx_project)
+    phpp_conn.write_project_vent_ducting(phx_project)
+    phpp_conn.write_project_spaces(phx_project)
+    # ... remaining project writes ...
 ```
 
 `in_silent_mode()` is a context manager on `XLConnection` that disables screen updating, display alerts, and sets calculation to manual on enter; restores all three and triggers recalculation on exit.

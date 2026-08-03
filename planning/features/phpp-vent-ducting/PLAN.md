@@ -128,9 +128,15 @@ delta was not available because this sole duct fixture targets PHPP 9 and carrie
 operating airflow / an incomplete PHPP-10 temperature chain; this remains an explicit
 compatible-fixture spot-check, not an implementation blocker.
 
-## Step 7 — Docs
+## Step 7 — Docs (Complete)
 
 Per repo rule 5: new public API (`write_project_vent_ducting`, `VentDuctRow`) →
 docstrings in ph-docs format; check whether `docs/nav.yml` autodoc pages for
 `PHX.PHPP.phpp_model` / `phpp_app` need the new module added (follow
 `docs/.instructions.md` — do not restructure).
+
+Outcome (2026-08-03): both public APIs have ph-docs-compatible docstrings. The existing
+`docs/nav.yml` already lists `phpp_app` and `phpp_model/vent_ducts`, so no navigation edit
+was required. Updated the public exporter-pattern and PHPP field-mapping references with
+the canonical write sequence, corrected Ducts columns, locator contract, formula ownership,
+and clean-row assumption.
