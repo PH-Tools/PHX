@@ -7,7 +7,7 @@ STATUS:  Research complete — code survey of all four package repos + PHN + rul
 AUTHOR:  Ed + Claude
 SCOPE:   Reference only. How psi-install is stored/flows today in honeybee_ph, PHX,
          honeybee_grasshopper_ph(+), and PH-Navigator; program default values; gaps.
-RELATED: README.md (router), PRD.md (draft design), STATUS.md
+RELATED: psi-install-bug-fixes-plan.md (completed implementation)
 ```
 
 Everything below was verified against source on 2026-08-03. File:line references

@@ -129,6 +129,11 @@ Follows the same class-name dispatch pattern as the WUFI XML exporter, but simpl
 
 4. **File writer** (`metr_json_to_file.py`): `write_metr_json_file(_file_path, _json_text)` writes UTF-8 text.
 
+5. **Window frame side order:** METr's `lrtbFrW`, `lrtbFrU`, `lrtbGlPsi`, and
+   `lrtbFrPsi` arrays are ordered **Left, Right, Top, Bottom**. This differs from
+   the PHX model's clockwise frame iterator (Top, Right, Bottom, Left), so the
+   schema maps each side explicitly.
+
 ### Usage
 
 ```python

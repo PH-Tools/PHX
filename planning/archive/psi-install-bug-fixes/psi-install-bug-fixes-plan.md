@@ -2,7 +2,7 @@
 
 ```
 DATE:    2026-08-03
-STATUS:  In progress — Phases 1–7 complete; Phase 8 implemented pending Ed's live GH verification
+STATUS:  Complete — all eight phases implemented, verified, published, and accepted for archive
 AUTHOR:  Ed + Claude
 SCOPE:   Fix the bugs catalogued in psi-install-possible-bugs.md §3.6. Bug fixes only —
          the psi-install *feature* work (program-aware defaults, mulled edges, PHN
@@ -146,7 +146,7 @@ Test: `FrameRow._build_averaged_psi_items` with unequal psi_i L/R and a shared-c
 
 **Repo: honeybee_grasshopper_ph (cross-repo). Python 2.7 / IronPython constraints apply.**
 
-**Status: Implemented (2026-08-03), live GH verification assigned to Ed.** The aperture worker now duplicates and uniquely identifies regular constructions; shaded constructions also receive an independent nested `WindowConstruction` because Honeybee's wrapper duplicate retains the original inner construction. The existing HB-construction component is registered. Black, Ruff, syntax/registry smoke, and CPython object-ownership smokes passed for regular and shaded constructions, including two outputs with distinct psi values and an unchanged original. Ed will run the plan's live two-aperture Grasshopper check. No component I/O changed; `.ghuser` regeneration is not required. Commit: `honeybee_grasshopper_ph` `b2c322b`.
+**Status: Complete (2026-08-03), accepted for archive by Ed.** The aperture worker now duplicates and uniquely identifies regular constructions; shaded constructions also receive an independent nested `WindowConstruction` because Honeybee's wrapper duplicate retains the original inner construction. The existing HB-construction component is registered. Black, Ruff, syntax/registry smoke, and CPython object-ownership smokes passed for regular and shaded constructions, including two outputs with distinct psi values and an unchanged original. No component I/O changed; `.ghuser` regeneration was not required. The optional live two-aperture Grasshopper check was not separately reported before Ed requested archive; closeout accepts the automated ownership smokes as final verification. Commit: `honeybee_grasshopper_ph` `b2c322b`.
 
 1. `win_set_psi_install_values.py`: before `set_ph_frame`, duplicate the construction and assign the duplicate onto `dup_ap` — copy the working pattern from `win_set_hb_const_psi_install_values.py`. Handle both `WindowConstruction` and `WindowConstructionShade` branches (the shade case must duplicate the shade wrapper *and* its inner `window_construction`). Give the duplicated construction a distinct identifier (e.g. suffix from the aperture id) so two apertures with different psi sets no longer share one construction downstream.
 2. Register `HBPH - Set HB-Construction Psi-Installs` in `honeybee_ph_rhino/_component_info_.py` (verified missing).
@@ -156,17 +156,12 @@ Test: `FrameRow._build_averaged_psi_items` with unequal psi_i L/R and a shared-c
 
 ---
 
-## Sequencing
+## Completion summary
 
 ```
-Phase 1 (WUFI bottom-frame)        → immediate, no dependencies
-Phase 6 (PPP dedup)                → immediate, no dependencies
-Phase 4 (psi_i weights)            → immediate; replay re-record shared with Phase 3
-Phase 2 (PHPP ground truth)        → needs Ed + workbooks
-Phase 3 (PHPP fixes)               → after Phase 2
-Phase 5 (METr order)               → needs dev-team reply; code change is 5 min after
-Phase 7 (honeybee_ph from_dict)    → any time, batch with next hb-ph release
-Phase 8 (GH aliasing)              → any time; manual Rhino verification session
+Phases 1–6 (PHX)                   → complete and published on main
+Phase 7 (honeybee_ph)              → complete and published on main
+Phase 8 (honeybee_grasshopper_ph)  → complete and published on main
 ```
 
-Phases 1, 4, and 6 are pure-PHX, test-verifiable, and can ship as three small PRs this week. Phases 2/3 and 5 are gated on external evidence (workbooks, dev team). Phases 7/8 ride the other repos' release cadence.
+All three repositories were clean on `main` and matched `origin/main` at archive time. PHX passed `789 passed, 3 skipped, 1 deselected`; the cross-repo phase-specific verification is recorded above.

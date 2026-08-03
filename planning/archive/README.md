@@ -6,6 +6,7 @@ This README is the index — scan or grep it instead of guessing dates. Add a ro
 
 | Item | Kind | Completed | Summary | Folder |
 |------|------|-----------|---------|--------|
+| Psi-install bug fixes | Refactor (cross-repo) | 2026-08-03 | Corrects WUFI, PHPP, PPP, and METr side/value handling plus upstream HBJSON robustness and GH construction ownership. | [`psi-install-bug-fixes/`](psi-install-bug-fixes/psi-install-bug-fixes-plan.md) |
 | Write ventilation ducting to PHPP "Addl vent" | Feature | 2026-08-03 | Writes PHX ventilation ducts with localized geometry, type, and unit assignments plus row/unit capacity guards. | [`phpp-vent-ducting/`](phpp-vent-ducting/README.md) |
 
 ## Conventions
