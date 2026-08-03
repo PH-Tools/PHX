@@ -2,7 +2,7 @@
 
 ```
 DATE:    2026-08-03
-STATUS:  In progress — Phases 1, 4, 6, and 7 complete; next actionable phase is Phase 8
+STATUS:  In progress — Phases 1, 4, 6, and 7 complete; Phase 8 implemented pending live GH verification
 AUTHOR:  Ed + Claude
 SCOPE:   Fix the bugs catalogued in psi-install-possible-bugs.md §3.6. Bug fixes only —
          the psi-install *feature* work (program-aware defaults, mulled edges, PHN
@@ -132,6 +132,8 @@ Test: `FrameRow._build_averaged_psi_items` with unequal psi_i L/R and a shared-c
 ## Phase 8 — GH aliasing fix + component registration (bug 8)
 
 **Repo: honeybee_grasshopper_ph (cross-repo). Python 2.7 / IronPython constraints apply.**
+
+**Status: Implemented (2026-08-03), live GH verification assigned to Ed.** The aperture worker now duplicates and uniquely identifies regular constructions; shaded constructions also receive an independent nested `WindowConstruction` because Honeybee's wrapper duplicate retains the original inner construction. The existing HB-construction component is registered. Black, Ruff, syntax/registry smoke, and CPython object-ownership smokes passed for regular and shaded constructions, including two outputs with distinct psi values and an unchanged original. Ed will run the plan's live two-aperture Grasshopper check. No component I/O changed; `.ghuser` regeneration is not required. Commit: `honeybee_grasshopper_ph` `b2c322b`.
 
 1. `win_set_psi_install_values.py`: before `set_ph_frame`, duplicate the construction and assign the duplicate onto `dup_ap` — copy the working pattern from `win_set_hb_const_psi_install_values.py`. Handle both `WindowConstruction` and `WindowConstructionShade` branches (the shade case must duplicate the shade wrapper *and* its inner `window_construction`). Give the duplicated construction a distinct identifier (e.g. suffix from the aperture id) so two apertures with different psi sets no longer share one construction downstream.
 2. Register `HBPH - Set HB-Construction Psi-Installs` in `honeybee_ph_rhino/_component_info_.py` (verified missing).
