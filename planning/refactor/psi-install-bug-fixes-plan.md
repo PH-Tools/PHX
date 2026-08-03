@@ -2,7 +2,7 @@
 
 ```
 DATE:    2026-08-03
-STATUS:  In progress — Phases 1, 2, 4, 6, and 7 complete; Phase 8 implemented pending Ed's live GH verification; Phase 3 next
+STATUS:  In progress — Phases 1–4, 6, and 7 complete; Phase 5 blocked on METr order confirmation; Phase 8 implemented pending Ed's live GH verification
 AUTHOR:  Ed + Claude
 SCOPE:   Fix the bugs catalogued in psi-install-possible-bugs.md §3.6. Bug fixes only —
          the psi-install *feature* work (program-aware defaults, mulled edges, PHN
@@ -79,11 +79,13 @@ This is an evidence-gathering phase; fixes land in Phase 3. For each workbook, r
 
 **Repo: PHX. Depends on Phase 2.**
 
+**Status: Complete (2026-08-03).** The PHPP 10.4/10.6 IP localizations now use the workbook-confirmed physical order: Components bottom `KB` / top `KA`, Windows bottom `AQ` / top `AP`. `WindowRow` writes explicit psi-install values with `W/MK` input units and each localization's target units, so IP exports convert to `BTU/HR-FT-F`. Parameterized tests cover all four 10.4/10.6 SI/IP files and verify columns, unit metadata, and converted values. Verification: focused localization/writer/replay suite (`15 passed`), Black/isort/Ruff on changed Python files, and `.venv/bin/python -m pytest tests/` (`788 passed, 3 skipped, 1 deselected`). The recorded replay workbook is PHPP 10.6 SI; its columns and numeric cell values are unchanged, so the replay fixture passed without re-recording. Re-recording an unchanged golden state would violate the golden-fixture invariant.
+
 1. Correct the wrong localization variant(s): align psi_i bottom/top columns (Components + Windows sections) so SI and IP agree with the actual workbooks.
 2. `windows_rows.py:90-99`:
    - If the columns are psi inputs: add `"W/MK"` input unit + `self._get_target_unit(...)` target, mirroring the Components-sheet pattern (fixes the IP no-conversion bug).
    - If the columns are 0/1 install-situation selectors: write the selector instead (`0` when that edge's psi_install == 0, else `1`), remove the TODO, and document the semantics in the docstring.
-3. Re-record the golden replay fixture; note the legitimate output change in the commit body.
+3. Re-record the golden replay fixture only if its intended cell state changes; the current fixture is SI and required no re-record.
 4. Tests: unit test on `WindowRow.create_xl_items` asserting column letters and units per localization (parametrize over EN_10_6 / EN_10_6IP at minimum).
 
 **Commit:** `fix(phpp): correct psi-install columns in SI/IP localizations and Windows-sheet write`

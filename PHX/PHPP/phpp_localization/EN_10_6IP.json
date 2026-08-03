@@ -600,11 +600,11 @@
                     "unit": "BTU/HR-FT-F"
                 },
                 "psi_i_bottom": {
-                    "column": "KA",
+                    "column": "KB",
                     "unit": "BTU/HR-FT-F"
                 },
                 "psi_i_top": {
-                    "column": "KB",
+                    "column": "KA",
                     "unit": "BTU/HR-FT-F"
                 }
             }
@@ -731,11 +731,11 @@
                     "unit": "BTU/HR-FT-F"
                 },
                 "psi_i_bottom": {
-                    "column": "AP",
+                    "column": "AQ",
                     "unit": "BTU/HR-FT-F"
                 },
                 "psi_i_top": {
-                    "column": "AQ",
+                    "column": "AP",
                     "unit": "BTU/HR-FT-F"
                 },
                 "window_area": {

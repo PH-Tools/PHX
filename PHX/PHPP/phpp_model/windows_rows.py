@@ -57,6 +57,10 @@ class WindowRow:
     def create_xl_items(self, _sheet_name: str, _row_num: int) -> list[xl_data.XlItem]:
         """Returns a list of the XL Items to write for this Surface Entry
 
+        PHPP's four installation fields accept either an explicit psi-install
+        value or the selector values 1/0. PHX writes explicit psi-install
+        values, converted from W/(mK) to the target workbook's unit system.
+
         Arguments:
         ----------
             * _sheet_name: (str) The name of the worksheet to write to.
@@ -86,17 +90,30 @@ class WindowRow:
                 "M",
                 self._get_target_unit("height"),
             ),
-            # -- TODO: Install condition, not Psi-Install
-            XLItemWindows(create_range("psi_i_left"), self.phx_construction.frame_left.psi_install),
+            XLItemWindows(
+                create_range("psi_i_left"),
+                self.phx_construction.frame_left.psi_install,
+                "W/MK",
+                self._get_target_unit("psi_i_left"),
+            ),
             XLItemWindows(
                 create_range("psi_i_right"),
                 self.phx_construction.frame_right.psi_install,
+                "W/MK",
+                self._get_target_unit("psi_i_right"),
             ),
             XLItemWindows(
                 create_range("psi_i_bottom"),
                 self.phx_construction.frame_bottom.psi_install,
+                "W/MK",
+                self._get_target_unit("psi_i_bottom"),
             ),
-            XLItemWindows(create_range("psi_i_top"), self.phx_construction.frame_top.psi_install),
+            XLItemWindows(
+                create_range("psi_i_top"),
+                self.phx_construction.frame_top.psi_install,
+                "W/MK",
+                self._get_target_unit("psi_i_top"),
+            ),
         ]
 
         items_merged = xl_data.merge_xl_item_row(items)
