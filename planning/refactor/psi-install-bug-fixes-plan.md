@@ -2,7 +2,7 @@
 
 ```
 DATE:    2026-08-03
-STATUS:  In progress — Phases 1, 4, and 6 complete; next actionable phase is Phase 7
+STATUS:  In progress — Phases 1, 4, 6, and 7 complete; next actionable phase is Phase 8
 AUTHOR:  Ed + Claude
 SCOPE:   Fix the bugs catalogued in psi-install-possible-bugs.md §3.6. Bug fixes only —
          the psi-install *feature* work (program-aware defaults, mulled edges, PHN
@@ -120,6 +120,8 @@ Test: `FrameRow._build_averaged_psi_items` with unequal psi_i L/R and a shared-c
 ## Phase 7 — honeybee_ph from_dict robustness (bug 7)
 
 **Repo: honeybee_ph (cross-repo, low priority — batch with the next honeybee_ph release).**
+
+**Status: Complete (2026-08-03).** `PhWindowFrameElement.from_dict()` now falls back to the initialized class defaults for all five legacy frame fields, and `AperturePhProperties.from_dict()` now uses the canonical 4-inch (`0.1016 m`) install-depth default. Verification: focused tests (`10 passed`), full suite (`763 passed`), and Black passed. Repository-wide coverage remains at the pre-existing 76% against a configured 100% target; Ed accepted that baseline for this phase. Commit: `honeybee_ph` `62d72fb`.
 
 1. `honeybee_energy_ph/construction/window.py:58-62`: switch `width` / `u_factor` / `psi_glazing` / `psi_install` / `chi_value` to `.get(key, <class default>)`, matching the `solar_absorptance` / `thermal_emissivity` pattern. Defaults: 0.1 / 1.0 / 0.04 / 0.04 / 0.0.
 2. While there: fix the `install_depth` from_dict fallback inconsistency (0.1 vs 0.1016 at `honeybee_ph/properties/aperture.py:141`) noted in the research doc §2.

@@ -8,7 +8,7 @@ _Last updated: 2026-08-03_
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
-| Psi-install bug fixes | Refactor (cross-repo) | **In progress** — Phases 1, 4, and 6 complete; Phase 7 next | [`refactor/psi-install-bug-fixes-plan.md`](refactor/psi-install-bug-fixes-plan.md) |
+| Psi-install bug fixes | Refactor (cross-repo) | **In progress** — Phases 1, 4, 6, and 7 complete; Phase 8 next | [`refactor/psi-install-bug-fixes-plan.md`](refactor/psi-install-bug-fixes-plan.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
 
 ## Completed / archived work
