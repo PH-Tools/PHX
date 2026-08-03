@@ -86,7 +86,7 @@ Notes:
   the section ("Additional lines" marker). Rows beyond capacity → `warning` (match the
   project's existing warn style) + truncate.
 
-## Step 4 — Wire into the write sequence
+## Step 4 — Wire into the write sequence (Complete)
 
 Files: `PHX/hbjson_to_phpp.py` (canonical sequence, `write_phx_project_to_phpp`),
 `_testing_HBJSON_to_PHPP.py` (dev harness, lines 64-65).
@@ -95,7 +95,7 @@ Insert `phpp_conn.write_project_vent_ducting(phx_project)` **after**
 `write_project_ventilators` (assignment ordinals depend on the units having been written)
 — i.e. between lines 49 and 50 of `hbjson_to_phpp.py`, before `write_project_spaces`.
 
-## Step 5 — Tests
+## Step 5 — Tests (Complete)
 
 - **Unit — row model** (`tests/test_PHPP/test_phpp_model/test_vent_ducts.py`): build
   `PhxDuctElement`s (round + rect, supply + exhaust, reflective on/off, multi-segment for

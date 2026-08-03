@@ -62,6 +62,7 @@ if __name__ == "__main__":
         phpp_conn.write_project_window_shading(phx_project)
         phpp_conn.write_project_ventilation_components(phx_project)
         phpp_conn.write_project_ventilators(phx_project)
+        phpp_conn.write_project_vent_ducting(phx_project)
         phpp_conn.write_project_spaces(phx_project)
         phpp_conn.write_project_ventilation_type(phx_project)
         phpp_conn.write_project_airtightness(phx_project)

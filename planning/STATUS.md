@@ -8,7 +8,7 @@ _Last updated: 2026-08-03_
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
-| Write ventilation ducting to PHPP "Addl vent" | Feature | **In progress** — builder complete; write-sequence wiring next | [`features/phpp-vent-ducting/`](features/phpp-vent-ducting/README.md) |
+| Write ventilation ducting to PHPP "Addl vent" | Feature | **Implemented** — automated suite complete; live PHPP spot-check next | [`features/phpp-vent-ducting/`](features/phpp-vent-ducting/README.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
 
 ## Cross-repo work

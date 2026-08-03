@@ -1,19 +1,21 @@
 # STATUS — phpp-vent-ducting
 
-**Status:** In progress
+**Status:** Implemented
 **Last updated:** 2026-08-03
 
 ## Current state
 
-Steps 1-3 complete. `VentDuctRow` maps the localized row contract, and
+Steps 1-5 complete. `VentDuctRow` maps the localized row contract, and
 `PHPPConnection.write_project_vent_ducting()` now builds rows using the same global
 ventilator order as the Components/Units writers. Assignments are scoped by mechanical
 collection, unknown/ambiguous/>10 assignments warn and skip, duct-free models perform no
-sheet reads, and overflow truncates to the located duct-section capacity.
+sheet reads, and overflow truncates to the located duct-section capacity. Both PHPP write
+sequences are wired, focused SI/IP and builder tests pass, and the unchanged golden replay
+proves the duct-free export adds no Excel interaction.
 
 ## Next step
 
-Wire the builder into both PHPP write sequences in `PLAN.md` step 4.
+Run the isolated PHPP 10.6 live verification in `PLAN.md` step 6, using a copied workbook.
 
 ## Open questions
 
