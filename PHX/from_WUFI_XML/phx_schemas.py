@@ -283,10 +283,10 @@ def _PhxConstructionWindow(_t: wufi_xml.WufiWindowType) -> PhxConstructionWindow
     phx_obj.frame_top = PhxWindowFrameElement(**frame_data_top)
 
     frame_data_bottom = {
-        "width": _t.Frame_Width_Top or frame_data_top["width"],
-        "u_value": _t.Frame_U_Top or frame_data_top["u_value"],
-        "psi_glazing": _t.Glazing_Psi_Top or frame_data_top["psi_glazing"],
-        "psi_install": _t.Frame_Psi_Top or frame_data_top["psi_install"],
+        "width": _t.Frame_Width_Bottom or frame_data_top["width"],
+        "u_value": _t.Frame_U_Bottom or frame_data_top["u_value"],
+        "psi_glazing": _t.Glazing_Psi_Bottom or frame_data_top["psi_glazing"],
+        "psi_install": _t.Frame_Psi_Bottom or frame_data_top["psi_install"],
     }
     phx_obj.frame_bottom = PhxWindowFrameElement(**frame_data_bottom)
 
