@@ -2,7 +2,7 @@
 
 ```
 DATE:    2026-08-03
-STATUS:  In progress — Phases 1, 4, 6, and 7 complete; Phase 8 implemented pending live GH verification
+STATUS:  In progress — Phases 1, 2, 4, 6, and 7 complete; Phase 8 implemented pending Ed's live GH verification; Phase 3 next
 AUTHOR:  Ed + Claude
 SCOPE:   Fix the bugs catalogued in psi-install-possible-bugs.md §3.6. Bug fixes only —
          the psi-install *feature* work (program-aware defaults, mulled edges, PHN
@@ -57,6 +57,15 @@ Corrections to the research doc: item 7 has no real-world exposure (key present 
 ## Phase 2 — Establish PHPP ground truth: psi_i columns + Windows-sheet semantics (bugs 2, 3-semantic)
 
 **Repo: PHX. Blocked on: real PHPP 10.6 SI, 10.6 IP (and ideally 10.4A/IP) workbooks — Ed to supply/open.**
+
+**Status: Complete (2026-08-03) from the available licensed PHPP 10.6 SI workbook.** `plans/20260714/excel-interop-refactor/test_files/PHPP_EN_V10.6_Empty.xlsx` provides the decisive physical-column ground truth. No IP or 10.4 workbook was found locally, but a unit-system variant cannot reorder the same worksheet; therefore the IP localization files, not SI, are the swapped variants.
+
+| Version / units | Components psi-install columns | Windows edge columns | Windows cell semantics | Evidence |
+|---|---|---|---|---|
+| PHPP 10.6 SI | sides `JZ`; top `KA`; bottom `KB` | left `AN`; right `AO`; top `AP`; bottom `AQ` | Explicit `W/(mK)` value **or** selector `1/0`; `1` uses Components value, `0` means adjacent window | Direct workbook labels at Components rows 8–13 and Windows rows 20–23 |
+| PHPP 10.6 IP | Must use the same physical order: top `KA` / bottom `KB`; top `AP` / bottom `AQ` | Current JSON reverses both top/bottom pairs | Explicit psi values remain valid but require W/mK → Btu/h-ft-F conversion | Inference from the verified unit-invariant 10.6 sheet layout; no local IP workbook found |
+| PHPP 10.4A / IP | SI JSON follows the verified 10.6 layout; IP JSON repeats the same reversal | Same | Same code path | Localization comparison; no local 10.4 workbook found |
+| PHPP 9.x | Four distinct sequential columns; no mapping change planned | Four distinct columns | Not re-verified from a workbook | No local 9.x workbook found; outside the defective 10.x pair |
 
 This is an evidence-gathering phase; fixes land in Phase 3. For each workbook, record:
 
