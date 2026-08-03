@@ -2,7 +2,6 @@
 
 """Data model of the PHPP 'Shape' (worksheet names and input column names)."""
 
-
 from pydantic import BaseModel
 
 # -----------------------------------------------------------------------------
