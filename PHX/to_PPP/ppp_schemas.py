@@ -664,10 +664,10 @@ def _frame_dedup_key(wt: PhxConstructionWindow) -> str:
     """Return a dedup key for frame type."""
     return (
         f"{wt.frame_type_display_name}"
-        f"|{wt.frame_left.width}|{wt.frame_left.u_value}"
-        f"|{wt.frame_right.width}|{wt.frame_right.u_value}"
-        f"|{wt.frame_top.width}|{wt.frame_top.u_value}"
-        f"|{wt.frame_bottom.width}|{wt.frame_bottom.u_value}"
+        f"|{wt.frame_left.width}|{wt.frame_left.u_value}|{wt.frame_left.psi_glazing}|{wt.frame_left.psi_install}"
+        f"|{wt.frame_right.width}|{wt.frame_right.u_value}|{wt.frame_right.psi_glazing}|{wt.frame_right.psi_install}"
+        f"|{wt.frame_top.width}|{wt.frame_top.u_value}|{wt.frame_top.psi_glazing}|{wt.frame_top.psi_install}"
+        f"|{wt.frame_bottom.width}|{wt.frame_bottom.u_value}|{wt.frame_bottom.psi_glazing}|{wt.frame_bottom.psi_install}"
     )
 
 

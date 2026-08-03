@@ -2,7 +2,7 @@
 
 ```
 DATE:    2026-08-03
-STATUS:  In progress — Phase 1 complete; next actionable phase is Phase 6
+STATUS:  In progress — Phases 1 and 6 complete; next actionable phase is Phase 4
 AUTHOR:  Ed + Claude
 SCOPE:   Fix the bugs catalogued in psi-install-possible-bugs.md §3.6. Bug fixes only —
          the psi-install *feature* work (program-aware defaults, mulled edges, PHN
@@ -106,6 +106,8 @@ Test: `FrameRow._build_averaged_psi_items` with unequal psi_i L/R and a shared-c
 ## Phase 6 — PPP frame dedup key (bug 6)
 
 **Repo: PHX. Independent — can run any time.**
+
+**Status: Complete (2026-08-03).** The frame dedup key now includes per-side psi-install and psi-glazing. Parametrized regression coverage proves that constructions differing only in either psi field produce distinct PPP frame rows and distinct `Fenster_Rahmen` references. Verification: `.venv/bin/python -m pytest tests/test_to_PPP/test_ppp_schemas.py -q` (`6 passed`) and `.venv/bin/python -m pytest tests/` (`779 passed, 3 skipped, 1 deselected`). Black, isort, diff-check, and changed-code Ruff checks passed; full-file Ruff retains five unrelated warnings already present on `HEAD` (`F841` at line 505 and `B007` at lines 732, 755, and 768).
 
 1. `to_PPP/ppp_schemas.py:663-671`: extend `_frame_dedup_key` with per-side `psi_install` and `psi_glazing`.
 2. Review `_glazing_dedup_key` while there — it already covers name/g/u; fine as-is.
