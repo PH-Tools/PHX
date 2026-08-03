@@ -25,7 +25,7 @@ Verification gate: the PHPP-9 shape files (`EN_9_6A`, `EN_9_7IP`) were only assu
 share the v10 duct columns — no PHPP-9 workbook was available. Flag this in the PR;
 Ed can spot-check a PHPP 9.6 file. Do not block on it.
 
-## Step 2 — Row model: `PHX/PHPP/phpp_model/vent_ducts.py`
+## Step 2 — Row model: `PHX/PHPP/phpp_model/vent_ducts.py` (Complete)
 
 The file exists and is empty. Model it directly on `vent_units.py` (`VentUnitRow`):
 

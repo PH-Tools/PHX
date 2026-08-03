@@ -1021,7 +1021,7 @@
                 },
                 "insul_conductivity": {
                     "column": "I",
-                    "unit": "HR-FT2-F/BUT-IN"
+                    "unit": "HR-FT2-F/BTU-IN"
                 },
                 "insul_reflective": {
                     "column": "J",

@@ -5,14 +5,15 @@
 
 ## Current state
 
-Step 1 complete. All seven localization files now map round diameter to E and ventilator
-assignment 9 to Y. The three misleading length/type fields are renamed to
-`duct_length`, `is_supply_flag`, and `is_exhaust_flag`; the two type flags are raw,
-unitless inputs.
+Steps 1-2 complete. `VentDuctRow` now maps round or rectangular geometry, weighted
+insulation properties, duct length, the supply/exhaust flag, and one validated unit
+assignment to localized `XlItem` objects. All seven shapes carry the corrected column
+contract; the three IP shapes also use the valid `HR-FT2-F/BTU-IN` conductivity unit.
+Focused SI/IP row tests pass, including actual IP conversion.
 
 ## Next step
 
-Implement the `VentDuctRow` model in `PLAN.md` step 2.
+Implement `PHPPConnection.write_project_vent_ducting()` in `PLAN.md` step 3.
 
 ## Open questions
 
