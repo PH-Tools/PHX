@@ -5,15 +5,15 @@
 
 ## Current state
 
-Steps 1-2 complete. `VentDuctRow` now maps round or rectangular geometry, weighted
-insulation properties, duct length, the supply/exhaust flag, and one validated unit
-assignment to localized `XlItem` objects. All seven shapes carry the corrected column
-contract; the three IP shapes also use the valid `HR-FT2-F/BTU-IN` conductivity unit.
-Focused SI/IP row tests pass, including actual IP conversion.
+Steps 1-3 complete. `VentDuctRow` maps the localized row contract, and
+`PHPPConnection.write_project_vent_ducting()` now builds rows using the same global
+ventilator order as the Components/Units writers. Assignments are scoped by mechanical
+collection, unknown/ambiguous/>10 assignments warn and skip, duct-free models perform no
+sheet reads, and overflow truncates to the located duct-section capacity.
 
 ## Next step
 
-Implement `PHPPConnection.write_project_vent_ducting()` in `PLAN.md` step 3.
+Wire the builder into both PHPP write sequences in `PLAN.md` step 4.
 
 ## Open questions
 

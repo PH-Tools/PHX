@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from ph_units.unit_type import Unit
 
 from PHX.PHPP.phpp_localization import shape_model
-from PHX.PHPP.phpp_model import vent_space, vent_units
+from PHX.PHPP.phpp_model import vent_ducts, vent_space, vent_units
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset, xl_writable
 
@@ -402,7 +402,7 @@ class AddnlVent:
         for item in xl_data.merge_xl_item_rows(row_items):
             self.xl.write_xl_item(item)
 
-    def write_vent_ducts(self, _vent_ducts: list) -> None:
+    def write_vent_ducts(self, _vent_ducts: list[vent_ducts.VentDuctRow]) -> None:
         if not self.vent_ducts.section_first_entry_row:
             self.vent_ducts.section_first_entry_row = self.vent_ducts.find_section_first_entry_row()
 

@@ -56,7 +56,7 @@ Use the `_create_range` / `_get_target_unit` / `partial(XlItem, _sheet_name)` id
 `VentUnitRow`. Register the module in `phpp_model`'s import surface the same way
 `vent_units` is imported in `phpp_app.py:22-24`.
 
-## Step 3 — Builder: `phpp_app.PHPPConnection.write_project_vent_ducting()`
+## Step 3 — Builder: `phpp_app.PHPPConnection.write_project_vent_ducting()` (Complete)
 
 File: `PHX/PHPP/phpp_app.py` (place after `write_project_ventilators`, ~line 610).
 

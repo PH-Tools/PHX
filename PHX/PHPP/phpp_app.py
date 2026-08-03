@@ -2,7 +2,9 @@
 
 """Controller for managing the PHPP Connection."""
 
-from PHX.model import building, certification, components, project
+from collections.abc import Iterator
+
+from PHX.model import building, certification, components, hvac, project
 from PHX.model.hvac.collection import NoDeviceFoundError
 from PHX.PHPP import phpp_localization, sheet_io
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
@@ -19,6 +21,7 @@ from PHX.PHPP.phpp_model import (
     hot_water_tank,
     shading_rows,
     uvalues_constructor,
+    vent_ducts,
     vent_space,
     vent_units,
     ventilation_data,
@@ -385,14 +388,12 @@ class PHPPConnection:
         """Write all of the ventilators from a PhxProject to the PHPP 'Components' worksheet."""
 
         phpp_ventilator_rows: list[component_vent.VentilatorRow] = []
-        for phx_variant in phx_project.variants:
-            for mech_collection in phx_variant.mech_collections:
-                for phx_ventilator in mech_collection.ventilation_devices:
-                    new_vent_row = component_vent.VentilatorRow(
-                        shape=self.shape.COMPONENTS,
-                        phx_vent_sys=phx_ventilator,
-                    )
-                    phpp_ventilator_rows.append(new_vent_row)
+        for phx_ventilator in self._iter_project_ventilators(phx_project):
+            new_vent_row = component_vent.VentilatorRow(
+                shape=self.shape.COMPONENTS,
+                phx_vent_sys=phx_ventilator,
+            )
+            phpp_ventilator_rows.append(new_vent_row)
         self.components.write_ventilators(phpp_ventilator_rows)
         return None
 
@@ -592,20 +593,107 @@ class PHPPConnection:
             return None
 
         phpp_vent_unit_rows: list[vent_units.VentUnitRow] = []
-        for phx_variant in phx_project.variants:
-            for mech_collection in phx_variant.mech_collections:
-                for phx_ventilator in mech_collection.ventilation_devices:
-                    phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
-                        phx_ventilator.display_name
-                    )
-                    new_vent_row = vent_units.VentUnitRow(
-                        shape=self.shape.ADDNL_VENT,
-                        phx_vent_sys=phx_ventilator,
-                        phpp_id_ventilator=phpp_id_ventilator,
-                    )
-                    phpp_vent_unit_rows.append(new_vent_row)
+        for phx_ventilator in self._iter_project_ventilators(phx_project):
+            phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(phx_ventilator.display_name)
+            new_vent_row = vent_units.VentUnitRow(
+                shape=self.shape.ADDNL_VENT,
+                phx_vent_sys=phx_ventilator,
+                phpp_id_ventilator=phpp_id_ventilator,
+            )
+            phpp_vent_unit_rows.append(new_vent_row)
 
         self.addnl_vent.write_vent_units(phpp_vent_unit_rows)
+        return None
+
+    @staticmethod
+    def _iter_project_mech_collections(
+        phx_project: project.PhxProject,
+    ) -> Iterator[hvac.PhxMechanicalSystemCollection]:
+        """Yield mechanical collections in their PHPP worksheet order."""
+        for phx_variant in phx_project.variants:
+            yield from phx_variant.mech_collections
+
+    @classmethod
+    def _iter_project_ventilators(cls, phx_project: project.PhxProject) -> Iterator[hvac.PhxDeviceVentilator]:
+        """Yield project ventilators in their PHPP worksheet order."""
+        for mech_collection in cls._iter_project_mech_collections(phx_project):
+            yield from mech_collection.ventilation_devices
+
+    def write_project_vent_ducting(self, phx_project: project.PhxProject) -> None:
+        """Write duct sections between ventilation units and the thermal envelope to PHPP.
+
+        Ducts are assigned to ventilator columns by the same one-based project order used
+        by :meth:`write_project_ventilators`. PHPP supports ten ventilator assignments and
+        a localized fixed number of duct rows; unsupported rows are reported and skipped.
+
+        Arguments:
+        ----------
+            * phx_project (project.PhxProject): Project containing the ventilation ducting.
+        """
+        if self.easyPh:
+            return None
+
+        unit_number_by_collection_and_id: dict[tuple[int, int], int | None] = {}
+        unit_number = 0
+        for mech_collection in self._iter_project_mech_collections(phx_project):
+            for ventilator in mech_collection.ventilation_devices:
+                unit_number += 1
+                key = (id(mech_collection), ventilator.id_num)
+                if key in unit_number_by_collection_and_id:
+                    unit_number_by_collection_and_id[key] = None
+                    self.xl.output(
+                        f"\nPHPPVentDuctWarning: ventilator ID {ventilator.id_num} occurs more than once in one "
+                        "mechanical collection; ducts using that ID will be skipped as ambiguous.\n"
+                    )
+                else:
+                    unit_number_by_collection_and_id[key] = unit_number
+
+        phpp_vent_duct_rows: list[vent_ducts.VentDuctRow] = []
+        for mech_collection in self._iter_project_mech_collections(phx_project):
+            for phx_duct in mech_collection.vent_ducting:
+                key = (id(mech_collection), phx_duct.vent_unit_id)
+                if key not in unit_number_by_collection_and_id:
+                    self.xl.output(
+                        f"\nPHPPVentDuctWarning: duct '{phx_duct.display_name}' references unknown "
+                        f"ventilator ID {phx_duct.vent_unit_id}; skipping this duct.\n"
+                    )
+                    continue
+
+                unit_number = unit_number_by_collection_and_id[key]
+                if unit_number is None:
+                    continue
+                if unit_number > 10:
+                    self.xl.output(
+                        f"\nPHPPVentDuctWarning: duct '{phx_duct.display_name}' is assigned to PHPP "
+                        f"ventilator {unit_number}, beyond the 10-unit duct limit; skipping this duct.\n"
+                    )
+                    continue
+
+                phpp_vent_duct_rows.append(
+                    vent_ducts.VentDuctRow(
+                        shape=self.shape.ADDNL_VENT,
+                        phx_duct=phx_duct,
+                        phpp_vent_unit_number=unit_number,
+                    )
+                )
+
+        if not phpp_vent_duct_rows:
+            return None
+
+        duct_section = self.addnl_vent.vent_ducts
+        first_entry_row = duct_section.section_first_entry_row or duct_section.find_section_first_entry_row()
+        duct_section.section_first_entry_row = first_entry_row
+        last_entry_row = duct_section.section_last_entry_row or duct_section.find_section_last_entry_row()
+        duct_section.section_last_entry_row = last_entry_row
+        row_capacity = last_entry_row - first_entry_row + 1
+        if len(phpp_vent_duct_rows) > row_capacity:
+            self.xl.output(
+                f"\nPHPPVentDuctWarning: {len(phpp_vent_duct_rows)} ducts exceed the {row_capacity}-row "
+                "Additional Ventilation duct-section capacity; truncating the remaining ducts.\n"
+            )
+            phpp_vent_duct_rows = phpp_vent_duct_rows[:row_capacity]
+
+        self.addnl_vent.write_vent_ducts(phpp_vent_duct_rows)
         return None
 
     def write_project_spaces(self, phx_project: project.PhxProject) -> None:
