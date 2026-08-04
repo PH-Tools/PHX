@@ -3,7 +3,7 @@
 """Tests for the PHPP Additional Ventilation duct-section locator."""
 
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, call
 
 import pytest
 
@@ -40,6 +40,33 @@ def test_duct_header_search_includes_phpp_10_6_row_86():
         _row_start=1,
         _row_end=300,
     )
+
+
+def test_duct_header_search_continues_after_inserted_room_rows():
+    shape = _load_addnl_vent_shape("EN_10_6.json")
+    xl = Mock()
+    xl.get_single_column_data.side_effect = (
+        [None] * 300,
+        [None] * 5 + ["Round duct diameter"],
+    )
+
+    header_row = VentDucts(xl, shape).find_section_header_row()
+
+    assert header_row == 306
+    assert xl.get_single_column_data.call_args_list == [
+        call(
+            _sheet_name="Addl vent",
+            _col="E",
+            _row_start=1,
+            _row_end=300,
+        ),
+        call(
+            _sheet_name="Addl vent",
+            _col="E",
+            _row_start=301,
+            _row_end=600,
+        ),
+    ]
 
 
 @pytest.mark.parametrize("shape_filename", SHAPE_FILENAMES)

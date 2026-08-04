@@ -474,7 +474,9 @@ Worksheet key: `ADDNL_VENT`
 ### ducts
 
 - Header locator: col `E`, string `"Round"`
-- Header search range: rows `1:300` (PHPP 10.6 header: row `86`)
+- Header search: starts with rows `1:300`, then continues in 300-row blocks up to row
+  `10000` when inserted room rows push the Ducts section down (PHPP 10.6 default header:
+  row `86`)
 - First entry row: header + `9` (PHPP 10.6: row `95`)
 - End locator: col `D`, string containing `"Additional"` (PHPP 10.6: row `115`; last entry row `114`)
 

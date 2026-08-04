@@ -318,6 +318,7 @@ class VentDucts:
 
     def find_section_header_row(self, _row_start: int = 1, _row_end: int = 300) -> int:
         """Return the row number of the ventilation-duct section header."""
+        SEARCH_ROW_LIMIT = 10_000
 
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
@@ -329,6 +330,14 @@ class VentDucts:
         for i, val in enumerate(xl_data, start=_row_start):
             if self.shape.ducts.locator_string_header in str(val):
                 return i
+
+        # The Rooms section can be extended with inserted rows, which pushes the
+        # downstream Units and Ducts sections beyond the initial search block.
+        if _row_end < SEARCH_ROW_LIMIT:
+            return self.find_section_header_row(
+                _row_start=_row_end + 1,
+                _row_end=min(_row_end + 300, SEARCH_ROW_LIMIT),
+            )
 
         raise Exception(
             f'\n\tError: Not able to find the "Vent-Ducts" input section '
