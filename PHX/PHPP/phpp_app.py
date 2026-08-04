@@ -140,6 +140,9 @@ class PHPPConnection:
         # ---------------------------------------------------------------------
         # -- Find the right Version number
         raw_version_id: str = str(data[1])  # Use the second value in the row - data (will this always work?)
+        # -- easyPH workbooks tag the edition onto the version ("10.6 easyPHv3 IP").
+        # -- They share their base version's shapefile, so drop the tag before parsing.
+        raw_version_id = version.strip_easyph_edition_tag(raw_version_id)
         ver_major, ver_minor = raw_version_id.split(".")
 
         # ---------------------------------------------------------------------
