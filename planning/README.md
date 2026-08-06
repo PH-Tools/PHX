@@ -9,6 +9,7 @@ Tracked working plans for PHX. See [`.instructions.md`](.instructions.md) for th
 - `STATUS.md` — master index of active features/refactors.
 - `features/` — plans for new capabilities.
 - `refactor/` — cross-cutting refactor investigations.
+- `bug-fix/` — defect investigations and their phased fixes.
 - `archive/` — completed/superseded work, flat by slug, indexed in `archive/README.md`.
 
 **Not this folder:** `plans/` (gitignored) holds dated scratch notes, licensed PHPP fixtures, and perf scratch referenced by `scripts/perf/`. Committed planning lives here in `planning/`.
