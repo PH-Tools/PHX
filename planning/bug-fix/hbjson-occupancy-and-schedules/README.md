@@ -1,6 +1,6 @@
 # hbjson-occupancy-and-schedules
 
-**Status:** Ready to implement — planning closed, all questions resolved
+**Status:** In progress — Phase 0 complete; Phase 1 next
 **Opened:** 2026-08-06
 
 Four defects in the `from_HBJSON` conversion path. Three cause every PHX model built from an

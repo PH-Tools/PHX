@@ -1,26 +1,29 @@
 # STATUS — hbjson-occupancy-and-schedules
 
-**Status:** Ready to implement — planning closed, all questions resolved
+**Status:** In progress — Phase 0 complete; Phase 1 next
 **Last updated:** 2026-08-06
 
 ## Readiness
 
 | phase | ready? | note |
 |---|---|---|
-| 0 — ACH ventilation 3600x | **Yes** | Independent commit; 0 of 37 projects exposed |
+| 0 — ACH ventilation 3600x | **Complete** | 4 focused cases + Excel replay + full suite green |
 | 1 — test scaffolding | **Yes** | Fixture is `HBJSON/01_no_dwelling_no_occupancy.hbjson` |
 | 2 — Space occupancy + TODO | **Yes** | Gate, key, and distribution rule all decided (D1, D2, D6) |
 | 3 — schedule fallback | **Yes** | Applies to all models (D10) |
 | 4 — lighting EFLH | **Yes** | Must follow Phase 3 |
 | 5 — goldens + closeout | After 0-4 | — |
 
-Start at Phase 0. Phase 2 is what resolves the reported METr symptom.
+Phase 0 is complete. Phase 1 is next. Phase 2 is what resolves the reported METr symptom.
 
 ## Current state
 
-Planning complete; nothing implemented. Four defects reproduced in-process against the real
-project file, six purpose-built Grasshopper models, and both committed reference fixtures.
-Every design and scope question is resolved (D1-D10), the last one by a WUFI A/B run.
+Planning is complete. Phase 0 corrects the ACH double-conversion and distributes every Room
+ventilation term by unweighted Space floor-area fraction. Four focused cases, the Excel replay
+invariant, and the full suite pass. Phases 1-5 remain unimplemented. All four defects were
+reproduced in-process against the real project file, six purpose-built Grasshopper models, and
+both committed reference fixtures. Every design and scope question is resolved (D1-D10), the
+last one by a WUFI A/B run.
 
 Source of the report: METr showed `Occupant quantity = 0` on all five utilization zones of a
 NON-RESIDENTIAL office project (`2616 {IA} 39 15th St`).
@@ -78,8 +81,7 @@ reason to gate by building category. Golden fields change; residential WUFI resu
 
 ## Next step
 
-**Planning is closed.** Begin implementation at
-[`plans/PHASE-0-ach-ventilation-units.md`](plans/PHASE-0-ach-ventilation-units.md).
+Begin [`plans/PHASE-1-test-scaffolding.md`](plans/PHASE-1-test-scaffolding.md).
 
 The six phase plans in [`plans/`](plans/) are the handoff surface — each is self-contained and
 can be given to a coding agent on its own.

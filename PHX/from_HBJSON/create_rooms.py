@@ -2,7 +2,6 @@
 
 """Functions to build PHX 'RoomVentilation' entities from Honeybee-PH Spaces"""
 
-
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_ph import space
@@ -22,10 +21,10 @@ from PHX.model.utilization_patterns import (
 
 
 def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
-    """Calculate and return the total peak ventilation flow rate for a Space.
+    """Calculate and return the Space's share of its Room's peak ventilation flow.
 
-    This function will determine the peak flow by-person, by-area, by-zone, and by-ach
-    and return the sum of all four flow-rate types.
+    This function determines the Room's peak flow by-person, by-area, by-zone, and
+    by-ACH, then distributes the total by unweighted Space floor-area fraction.
 
     Arguments:
     ----------
@@ -42,25 +41,26 @@ def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
 
     host_room_prop_ph = get_ph_prop_from_room(host)
     (
-        flow_per_person,
-        flow_per_area,
-        air_changes_per_hour,
-        flow_per_zone,
+        flow_per_person,  # -- m3/s PER PERSON
+        flow_per_area,  # -- m3/s PER M2 of HB-Room floor
+        flow_by_ach_m3s,  # -- m3/s TOTAL for the Room (already ach * volume / 3600)
+        flow_per_zone,  # -- m3/s TOTAL for the Room
     ) = hb_room_vent_flowrates(host)
-    # TODO: Unweighted or weighted? Which is right?
-    ref_flr_area = _space.floor_area
 
-    # -- Basic flow rates
-    m3s_by_occupancy = ref_flr_area * hb_room_ppl_per_area(host) * flow_per_person
-    m3s_by_area = ref_flr_area * flow_per_area
-
-    # -- Figure out % of the HB-Room that the Space represents
-    # -- For the Flow-by-Zone and Flow-by_ACH, need to calc the Room total flow
-    # -- and then calc the % of that total that this one space represents.
+    # -- Calculate each flow-type as the HB-Room total, then distribute it by the
+    # -- Space's unweighted share of the Room's total Space floor area. This keeps
+    # -- sum(Space flows) == Room total even when the Spaces do not tile the Room.
     hb_room_total_space_fa = host_room_prop_ph.total_space_floor_area
-    space_percent_of_total = ref_flr_area / hb_room_total_space_fa
+    if not hb_room_total_space_fa:
+        return 0.0
+    space_percent_of_total = _space.floor_area / hb_room_total_space_fa
 
-    m3s_by_ach = (air_changes_per_hour * space_percent_of_total) / 3_600
+    hb_room_floor_area = host.floor_area
+    room_peak_occupancy = hb_room_ppl_per_area(host) * hb_room_floor_area
+
+    m3s_by_occupancy = flow_per_person * room_peak_occupancy * space_percent_of_total
+    m3s_by_area = flow_per_area * hb_room_floor_area * space_percent_of_total
+    m3s_by_ach = flow_by_ach_m3s * space_percent_of_total
     m3s_by_zone = flow_per_zone * space_percent_of_total
 
     return (m3s_by_occupancy + m3s_by_area + m3s_by_zone + m3s_by_ach) * 3_600
