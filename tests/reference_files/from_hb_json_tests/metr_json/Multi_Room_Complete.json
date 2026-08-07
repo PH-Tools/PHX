@@ -30,9 +30,9 @@
     "date": [
       2026,
       8,
-      3,
-      15,
-      13,
+      6,
+      21,
+      19,
       0
     ],
     "wBkg": false
@@ -1579,7 +1579,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_52d4bce9",
+      "n": "PhWindowConstruction_92d8b249",
       "detU": true,
       "detGd": false,
       "Uw": 0.8339189189189188,
@@ -3524,7 +3524,7 @@
             "id": 42,
             "idSKP": -1,
             "itv": 4,
-            "n": "Shade_d9f3293d",
+            "n": "Shade_e4b64387",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3666,7 +3666,7 @@
             "id": 43,
             "idSKP": -1,
             "itv": 5,
-            "n": "Shade_7a243d9a",
+            "n": "Shade_da1f10b3",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3808,7 +3808,7 @@
             "id": 41,
             "idSKP": -1,
             "itv": 6,
-            "n": "PhWindowConstruction_52d4bce9",
+            "n": "PhWindowConstruction_92d8b249",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -3953,7 +3953,7 @@
             "id": 25,
             "idSKP": -1,
             "itv": 7,
-            "n": "Room_4_f1c6307d..Face5_Glz0",
+            "n": "Room_4_7fb63841..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4788,31 +4788,7 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__195f5d58",
-                "typeTbZ": -15,
-                "lengthTbZ": 22.0,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__1a09e9aa",
-                "typeTbZ": -15,
-                "lengthTbZ": 14.758048651498616,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__3a0681a5",
+                "n": "_unnamed_bldg_segment__29eef79a",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4824,7 +4800,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__49932029",
+                "n": "_unnamed_bldg_segment__49b7f669",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4836,7 +4812,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__8b288a75",
+                "n": "_unnamed_bldg_segment__a234b95e",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.799999999999997,
                 "psiTbZ": 0.01,
@@ -4848,9 +4824,9 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__b47ff3a9",
+                "n": "_unnamed_bldg_segment__a8631ab7",
                 "typeTbZ": -15,
-                "lengthTbZ": 14.000714267493642,
+                "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -4860,9 +4836,33 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__be9d26fd",
+                "n": "_unnamed_bldg_segment__aba2515a",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__d4cdb617",
+                "typeTbZ": -15,
+                "lengthTbZ": 14.758048651498616,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__dcbad3cc",
+                "typeTbZ": -15,
+                "lengthTbZ": 14.000714267493642,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -4879,8 +4879,8 @@
                 "quantity": 1,
                 "area": 10.89,
                 "clearH": 2.75,
-                "dVFrSup": 0.01,
-                "dVFrEx": 0.01,
+                "dVFrSup": 53.24,
+                "dVFrEx": 53.24,
                 "dVFiz": 0.0,
                 "idUPatV": 1,
                 "idVUnit": 1
@@ -4891,8 +4891,8 @@
                 "quantity": 1,
                 "area": 10.89,
                 "clearH": 2.75,
-                "dVFrSup": 0.01,
-                "dVFrEx": 0.01,
+                "dVFrSup": 53.24,
+                "dVFrEx": 53.24,
                 "dVFiz": 0.0,
                 "idUPatV": 1,
                 "idVUnit": 1
@@ -4908,16 +4908,16 @@
             "nBedR": 3,
             "lExhVent": [
               {
-                "n": "example_kitchen_hood",
-                "typeExhV": 2,
-                "ExhVfR": 509.7032388,
-                "runTU": 0.08
-              },
-              {
                 "n": "example_dryer_vent",
                 "typeExhV": 1,
                 "ExhVfR": 442800.0,
                 "runTU": 7.625
+              },
+              {
+                "n": "example_kitchen_hood",
+                "typeExhV": 2,
+                "ExhVfR": 509.7032388,
+                "runTU": 0.08
               }
             ],
             "lFoundPH": [
@@ -5980,7 +5980,7 @@
               },
               {
                 "info": "Heat pump",
-                "n": "e91cf2b9-3c9b-4a5c-bbef-2cf10b29d907",
+                "n": "ddc9bbcb-6386-4978-8516-8922af68b734",
                 "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
