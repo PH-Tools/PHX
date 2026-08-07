@@ -20,13 +20,13 @@ def _build_non_res_project():
     )
 
 
-def test_DEFECT_1_space_peak_occupancy_is_currently_zero():
-    """The non-res People load exists, but no occupancy reaches PHX Spaces."""
+def test_space_peak_occupancy_comes_from_the_non_res_people_load():
+    """The non-res People load reaches every PHX Space."""
     project = _build_non_res_project()
     spaces = [space for variant in project.variants for zone in variant.building.zones for space in zone.spaces]
 
     assert len(spaces) == 4
-    assert all(space.peak_occupancy == 0 for space in spaces)
+    assert [space.peak_occupancy for space in spaces] == pytest.approx([5.65] * 4)
 
 
 def test_DEFECT_2_schedule_with_no_ph_periods_is_degenerate():
@@ -53,7 +53,7 @@ def test_wufi_reference_pins_current_defect_fields():
     """The WUFI reference exposes all three fields that later phases must flip."""
     root = ElementTree.fromstring(xml_builder.generate_WUFI_XML_from_object(_build_non_res_project()))
 
-    assert [float(node.text) for node in root.iter("NumberOccupants")] == [0.0] * 4
+    assert [float(node.text) for node in root.iter("NumberOccupants")] == pytest.approx([5.65] * 4)
     assert [float(node.text) for node in root.iter("RelativeAbsenteeism")] == [0.0]
     assert [float(node.text) for node in root.iter("LightingFullLoadHours")] == [8760.0] * 4
 
@@ -64,5 +64,5 @@ def test_metr_reference_pins_current_defect_fields():
     loads = [variant["building"]["lZone"][0]["loadsZ"] for variant in metr["lVariant"]]
 
     assert [pattern["relAbs"] for pattern in metr["lUtilNResPH"]] == [0.0]
-    assert [person["nOcc"] for zone in loads for person in zone["lPersZ"]] == [0.0] * 4
+    assert [person["nOcc"] for zone in loads for person in zone["lPersZ"]] == pytest.approx([5.65] * 4)
     assert [lighting["lFLoadH"] for zone in loads for lighting in zone["lLight"]] == [8760] * 4

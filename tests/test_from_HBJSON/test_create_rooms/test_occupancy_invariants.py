@@ -1,6 +1,7 @@
 """Implementation-independent occupancy-channel invariants."""
 
 import pytest
+from honeybee.model import Model
 
 from PHX.from_HBJSON import cleanup, create_project
 from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import (
@@ -41,16 +42,33 @@ def test_gate_must_read_pre_merge_state():
         0,
     ]
 
+    project = create_project.convert_hb_model_to_PhxProject(Model("pre_merge_gate", rooms))
+    assert (
+        sum(
+            space.peak_occupancy
+            for variant in project.variants
+            for zone in variant.building.zones
+            for space in zone.spaces
+        )
+        > 0
+    )
+
 
 def test_untagged_rooms_are_each_their_own_group():
     """Serialized untagged Rooms share a default ID but must remain separate groups."""
     rooms = list(load_hb_model(NON_RES_FIXTURE).rooms[:2])
+    rooms[0].properties.energy.people = rooms[0].properties.energy.people.duplicate()
     rooms[0].properties.energy.people.properties.ph.number_people = 3
 
     assert all(room.properties.energy.people.properties.ph.number_dwelling_units == 0 for room in rooms)
     assert len({room.properties.energy.people.properties.ph.dwellings.identifier for room in rooms}) == 1
     assert len({room.identifier for room in rooms}) == 2
     assert rooms[1].properties.energy.people.people_per_area > 0
+
+    project = create_project.convert_hb_model_to_PhxProject(Model("untagged_groups", rooms))
+    spaces = [space for variant in project.variants for zone in variant.building.zones for space in zone.spaces]
+    assert spaces[0].peak_occupancy == 0
+    assert spaces[1].peak_occupancy > 0
 
 
 @pytest.mark.parametrize(

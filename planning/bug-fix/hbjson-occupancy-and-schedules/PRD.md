@@ -1,6 +1,6 @@
 # PRD — HBJSON Space load and utilization-schedule defects
 
-**Status:** In progress — Phases 0-1 complete; Phase 2 next
+**Status:** In progress — Phases 0-2 complete; Phase 3 next
 **Last updated:** 2026-08-06
 
 ## Problem
@@ -24,12 +24,12 @@ HB source:  people_per_area = 0.05651055401870768   ← present and correct
 Investigating it surfaced four defects in total — three in scope for the reported symptom,
 plus one pre-existing, unrelated bug in the same function.
 
-| # | Defect | Location | Real-project exposure |
-|---|---|---|---|
-| 0 | ACH ventilation flow understated 3600x | `create_rooms.py:63` | **None** — 0 of 37 projects |
-| 1 | Space occupancy load never populated | `create_rooms.py:140-143` | Every model without explicit PH occupancy |
-| 2 | No HB→PH fallback for occupancy/lighting schedules | `create_schedules.py:179-258` | **Every** project |
-| 3 | Lighting full-load hours ignore the utilization factor | `model/schedules/lighting.py:117-119` | **Every** project |
+| # | Defect | State | Location | Real-project exposure |
+|---|---|---|---|---|
+| 0 | ACH ventilation flow understated 3600x | **Fixed — Phase 0** | `create_rooms.py` | **None** — 0 of 37 projects |
+| 1 | Space occupancy load never populated | **Fixed — Phase 2** | `create_rooms.py` | Every model without explicit PH occupancy |
+| 2 | No HB→PH fallback for occupancy/lighting schedules | Open — Phase 3 | `create_schedules.py:179-258` | **Every** project |
+| 3 | Lighting full-load hours ignore the utilization factor | Open — Phase 4 | `model/schedules/lighting.py:117-119` | **Every** project |
 
 ---
 

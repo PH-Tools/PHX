@@ -1,22 +1,22 @@
 # hbjson-occupancy-and-schedules
 
-**Status:** In progress — Phases 0-1 complete; Phase 2 next
+**Status:** In progress — Phases 0-2 complete; Phase 3 next
 **Opened:** 2026-08-06
 
-Four defects in the `from_HBJSON` conversion path. Three cause every PHX model built from an
-HBJSON to export **zero per-space occupants** and a **degenerate utilization pattern**
+Four defects were identified in the `from_HBJSON` conversion path. At packet opening, three
+caused PHX models built from HBJSON to export **zero per-space occupants** and a **degenerate utilization pattern**
 (`0-24 h`, `365 d`, relative factor `0.0`, lighting full-load hours `8760`) to WUFI-Passive XML
 and METr JSON. The fourth is an unrelated pre-existing bug found in the same function.
 
 Found while investigating a NON-RESIDENTIAL office project (`2616 {IA} 39 15th St`) that
 exported `Occupant quantity = 0` for all five utilization zones in METr.
 
-| # | Defect | Real-project exposure |
-|---|---|---|
-| 0 | ACH ventilation flow understated **3600x** | **None** — 0 of 37 projects |
-| 1 | Space occupancy load never populated | Every model without explicit PH occupancy |
-| 2 | No HB→PH fallback for occupancy/lighting schedules | **Every** project |
-| 3 | Lighting full-load hours are the window, not EFLH | **Every** project |
+| # | Defect | State | Real-project exposure |
+|---|---|---|---|
+| 0 | ACH ventilation flow understated **3600x** | **Fixed — Phase 0** | **None** — 0 of 37 projects |
+| 1 | Space occupancy load never populated | **Fixed — Phase 2** | Every model without explicit PH occupancy |
+| 2 | No HB→PH fallback for occupancy/lighting schedules | Open — Phase 3 | **Every** project |
+| 3 | Lighting full-load hours are the window, not EFLH | Open — Phase 4 | **Every** project |
 
 ## Read order
 

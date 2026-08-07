@@ -1,6 +1,6 @@
 # STATUS — hbjson-occupancy-and-schedules
 
-**Status:** In progress — Phases 0-1 complete; Phase 2 next
+**Status:** In progress — Phases 0-2 complete; Phase 3 next
 **Last updated:** 2026-08-06
 
 ## Readiness
@@ -9,22 +9,25 @@
 |---|---|---|
 | 0 — ACH ventilation 3600x | **Complete** | 4 focused cases + Excel replay + full suite green |
 | 1 — test scaffolding | **Complete** | 26 focused tests + 819-test full gate green |
-| 2 — Space occupancy + TODO | **Yes** | Gate, key, and distribution rule all decided (D1, D2, D6) |
+| 2 — Space occupancy + TODO | **Complete** | 44 focused tests + 82.31-person real-project check + 837-test full gate green |
 | 3 — schedule fallback | **Yes** | Applies to all models (D10) |
 | 4 — lighting EFLH | **Yes** | Must follow Phase 3 |
 | 5 — goldens + closeout | After 0-4 | — |
 
-Phases 0 and 1 are complete. Phase 2 is next and is what resolves the reported METr symptom.
+Phases 0-2 are complete. Phase 2 resolves the reported METr symptom. Phase 3 is next.
 
 ## Current state
 
 Planning is complete. Phase 0 corrects the ACH double-conversion and distributes every Room
 ventilation term by unweighted Space floor-area fraction. Phase 1 adds the durable six-model
 scenario corpus, a non-residential HBJSON/WUFI/METr reference, synthetic occupancy fixtures,
-pre-merge and untagged-group invariants, all-six GH anchors, and defect characterization. Its
-26 focused tests pass, as does the full repo gate (819 passed, 3 skipped, 1 deselected). Phases
-2-5 remain unimplemented. Every design and scope question is resolved (D1-D10), the last one
-by a WUFI A/B run.
+pre-merge and untagged-group invariants, all-six GH anchors, and defect characterization. Phase
+2 now indexes explicit occupancy from pre-merge Rooms, gates per dwelling group, and distributes
+the HB People load without losing occupants when Spaces do not tile a Room. The 44 focused tests
+pass, the reported real project exports 82.31 occupants, the residential occupancy fields remain
+byte-identical in WUFI XML and METr JSON, and the full gate passes (837 passed, 3 skipped, 1
+deselected). Phases 3-5 remain unimplemented. Every design and scope question is resolved
+(D1-D10), the last one by a WUFI A/B run.
 
 The planning source for the non-residential reference contained the intended four office
 `People` loads but no serialized PH Spaces; `check_room_has_spaces()` is a no-op. The durable
@@ -36,12 +39,12 @@ NON-RESIDENTIAL office project (`2616 {IA} 39 15th St`).
 
 ## Confirmed defects
 
-| # | Defect | Location | Real-project exposure |
-|---|---|---|---|
-| 0 | ACH ventilation flow understated 3600x | `from_HBJSON/create_rooms.py:63` | **None** — 0 of 37 projects |
-| 1 | Space occupancy load never populated | `from_HBJSON/create_rooms.py:140-143` | Every model without explicit PH occupancy |
-| 2 | No HB→PH fallback for occupancy/lighting schedules | `from_HBJSON/create_schedules.py:179-258` | **Every** project |
-| 3 | Lighting full-load hours are the window, not EFLH | `model/schedules/lighting.py:117-119` | **Every** project |
+| # | Defect | State | Location | Real-project exposure |
+|---|---|---|---|---|
+| 0 | ACH ventilation flow understated 3600x | **Fixed — Phase 0** | `from_HBJSON/create_rooms.py` | **None** — 0 of 37 projects |
+| 1 | Space occupancy load never populated | **Fixed — Phase 2** | `from_HBJSON/create_rooms.py` | Every model without explicit PH occupancy |
+| 2 | No HB→PH fallback for occupancy/lighting schedules | Open — Phase 3 | `from_HBJSON/create_schedules.py:179-258` | **Every** project |
+| 3 | Lighting full-load hours are the window, not EFLH | Open — Phase 4 | `model/schedules/lighting.py:117-119` | **Every** project |
 
 Not affected (verified): PHPP write path, PPP write path, `from_WUFI_XML` import, and the whole
 explicit zone-level occupancy channel (`PhxZone.res_occupant_quantity`).

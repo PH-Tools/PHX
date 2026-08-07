@@ -5,19 +5,11 @@ from statistics import mean
 import pytest
 
 from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import (
+    OCCUPANCY_CORPUS_CASES,
     OCCUPANCY_SCENARIO_DIR,
-    RoomSpec,
     build_rooms,
     load_hb_model,
-)
-
-CORPUS_CASES = (
-    ("01_no_dwelling_no_occupancy.hbjson", False),
-    ("02_single_dwelling_no_occupancy.hbjson", False),
-    ("03_single_dwelling_set_occupancy.hbjson", True),
-    ("04_no_dwelling_set_occupancy.hbjson", True),
-    ("05_multiple_dweling_set_occupancy.hbjson", True),
-    ("06_res_with_hallway.hbjson", True),
+    room_specs_from_rooms,
 )
 
 
@@ -25,23 +17,11 @@ def _load_rooms(_filename: str):
     return list(load_hb_model(OCCUPANCY_SCENARIO_DIR / _filename).rooms)
 
 
-@pytest.mark.parametrize(("filename", "apply_set_occupancy"), CORPUS_CASES)
+@pytest.mark.parametrize(("filename", "apply_set_occupancy"), OCCUPANCY_CORPUS_CASES)
 def test_fixture_builder_matches_real_component_output(filename: str, apply_set_occupancy: bool):
     """The synthetic builder reproduces all six committed GH exports' People state."""
     actual_rooms = _load_rooms(filename)
-    specs = [
-        RoomSpec(
-            room.identifier,
-            room.floor_area,
-            room.properties.energy.people.properties.ph.number_people,
-            (
-                str(room.properties.energy.people.properties.ph.dwellings.identifier)
-                if room.properties.energy.people.properties.ph.number_dwelling_units >= 1
-                else None
-            ),
-        )
-        for room in actual_rooms
-    ]
+    specs = room_specs_from_rooms(actual_rooms)
     avg_occ_rate = mean(actual_rooms[0].properties.energy.people.occupancy_schedule.values())
     rebuilt_rooms = build_rooms(
         specs,

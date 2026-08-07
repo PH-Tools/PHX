@@ -8,7 +8,7 @@ _Last updated: 2026-08-06_
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
-| HBJSON Space loads + utilization schedules | Bug fix | **In progress** — Phases 0-1 complete; Phase 2 next | [`bug-fix/hbjson-occupancy-and-schedules/`](bug-fix/hbjson-occupancy-and-schedules/README.md) |
+| HBJSON Space loads + utilization schedules | Bug fix | **In progress** — Phases 0-2 complete; Phase 3 next | [`bug-fix/hbjson-occupancy-and-schedules/`](bug-fix/hbjson-occupancy-and-schedules/README.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
 
 ## Completed / archived work

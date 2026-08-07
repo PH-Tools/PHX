@@ -12,6 +12,7 @@ from honeybee_ph.properties.room import RoomPhProperties
 from honeybee_ph.team import ProjectTeamMember
 
 from PHX.from_HBJSON import cleanup, create_assemblies, create_schedules, create_shades, create_variant
+from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
 from PHX.model.project import PhxProject, PhxProjectData, ProjectData_Agent
 
 logger = logging.getLogger()
@@ -136,13 +137,15 @@ def convert_hb_model_to_PhxProject(
     create_assemblies.build_opaque_assemblies_from_HB_model(phx_project, _hb_model)
     create_assemblies.build_transparent_assembly_types_from_HB_Model(phx_project, get_hb_apertures(_hb_model))
     create_schedules.add_all_HB_schedules_to_PHX_Project(phx_project, _hb_model)
+    hb_rooms = _hb_model.rooms
+    dwelling_occupancy = DwellingOccupancyIndex.from_hb_rooms(hb_rooms)
 
     # -- TODO: Make all these operations if..else... with flags in the func arguments.
 
     # -- Merge the rooms together by their Building Segment, Add to the Project
     # -- then create a new variant from the merged room.
     # -- try and weld the vertices too in order to reduce load-time.
-    for room_group in sort_hb_rooms_by_bldg_segment(_hb_model.rooms):
+    for room_group in sort_hb_rooms_by_bldg_segment(hb_rooms):
         # -- Configure the merge_faces and merge_face_tolerance
         if isinstance(_merge_faces, bool):
             merge_faces: bool = _merge_faces
@@ -160,6 +163,7 @@ def convert_hb_model_to_PhxProject(
             _vent_sched_collection=phx_project.utilization_patterns_ventilation,
             _occ_sched_collection=phx_project.utilization_patterns_occupancy,
             _lighting_sched_collection=phx_project.utilization_patterns_lighting,
+            _dwelling_occupancy=dwelling_occupancy,
             _group_components=_group_components,
             _merge_spaces_by_erv=_merge_spaces_by_erv,
             _merge_exhaust_vent_devices=_merge_exhaust_vent_devices,

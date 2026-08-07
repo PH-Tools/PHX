@@ -18,6 +18,14 @@ from PHX.from_HBJSON import read_HBJSON_file
 REFERENCE_HBJSON_DIR = Path("tests", "reference_files", "from_grasshopper_tests", "hbjson")
 OCCUPANCY_SCENARIO_DIR = REFERENCE_HBJSON_DIR / "occupancy_scenarios"
 NON_RES_FIXTURE = REFERENCE_HBJSON_DIR / "Non_Residential_Office.hbjson"
+OCCUPANCY_CORPUS_CASES = (
+    ("01_no_dwelling_no_occupancy.hbjson", False),
+    ("02_single_dwelling_no_occupancy.hbjson", False),
+    ("03_single_dwelling_set_occupancy.hbjson", True),
+    ("04_no_dwelling_set_occupancy.hbjson", True),
+    ("05_multiple_dweling_set_occupancy.hbjson", True),
+    ("06_res_with_hallway.hbjson", True),
+)
 
 
 @dataclass(frozen=True)
@@ -28,6 +36,23 @@ class RoomSpec:
     floor_area_m2: float
     number_people: float
     dwelling: str | None
+
+
+def room_specs_from_rooms(rooms: list[Room]) -> list[RoomSpec]:
+    """Reconstruct synthetic fixture inputs from real Grasshopper Room state."""
+    return [
+        RoomSpec(
+            room.identifier,
+            room.floor_area,
+            room.properties.energy.people.properties.ph.number_people,
+            (
+                str(room.properties.energy.people.properties.ph.dwellings.identifier)
+                if room.properties.energy.people.properties.ph.number_dwelling_units >= 1
+                else None
+            ),
+        )
+        for room in rooms
+    ]
 
 
 def _add_full_floor_space(_hb_room: Room) -> Space:

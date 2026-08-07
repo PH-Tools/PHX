@@ -24,6 +24,7 @@ from honeybee_phhvac.properties.room import (
 )
 
 from PHX.from_HBJSON import create_building, create_elec_equip, create_foundations, create_hvac
+from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
 from PHX.from_HBJSON._type_utils import (
     MissingEnergyPropertiesError,
     get_room_electric_equipment,
@@ -57,6 +58,7 @@ def add_building_from_hb_room(
     _group_components: bool = False,
     _merge_spaces_by_erv: bool = False,
     _tolerance: float = 0.001,
+    _dwelling_occupancy: DwellingOccupancyIndex | None = None,
 ) -> None:
     """Create the  PHX-Building with all Components and Zones based on a Honeybee-Room.
 
@@ -72,6 +74,8 @@ def add_building_from_hb_room(
             UtilizationPatternOccCollection with the occupancy schedules.
         * _lighting_sched_collection (UtilizationPatternLightingCollection): The PhxProject's
             UtilizationPatternLightingCollection with the lighting schedules.
+        * _dwelling_occupancy (DwellingOccupancyIndex | None): Explicit PH occupancy totals for
+            the pre-merge Honeybee Rooms, grouped by dwelling.
         * group_components (bool): default=False. Set to true to have the converter
             group the components by assembly-type.
 
@@ -84,11 +88,12 @@ def add_building_from_hb_room(
     # -- Build up the Zones and add them to the building
     _variant.building.add_zones(
         create_building.create_zone_from_hb_room(
-            _hb_room,
-            _vent_sched_collection,
-            _occ_sched_collection,
-            _lighting_sched_collection,
-            _merge_spaces_by_erv,
+            _hb_room=_hb_room,
+            _vent_sched_collection=_vent_sched_collection,
+            _occ_sched_collection=_occ_sched_collection,
+            _lighting_sched_collection=_lighting_sched_collection,
+            _merge_spaces_by_erv=_merge_spaces_by_erv,
+            _dwelling_occupancy=_dwelling_occupancy,
         )
     )
     _variant.building.add_zones(create_building.create_attached_zones_from_hb_room(_hb_room))
@@ -961,6 +966,7 @@ def from_hb_room(
     _merge_spaces_by_erv: bool = False,
     _merge_exhaust_vent_devices: bool = False,
     _tolerance: float = 0.001,
+    _dwelling_occupancy: DwellingOccupancyIndex | None = None,
 ) -> project.PhxVariant:
     """Create a new PHX-Variant based on a single PH/Honeybee Room.
 
@@ -969,6 +975,8 @@ def from_hb_room(
         * _hb_room (honeybee.room.Room): The honeybee room to base the Variant on.
         * _assembly_dict (Dict[str, constructions.PhxConstructionOpaque]): The Assembly Type dict.
         * _window_type_dict (Dict[str, constructions.PhxConstructionWindow]): The Window Type dict.
+        * _dwelling_occupancy (DwellingOccupancyIndex | None): Explicit PH occupancy totals for
+            the pre-merge Honeybee Rooms, grouped by dwelling.
         * _group_components (bool): default=False. Set to true to have the converter
             group the components by assembly-type.
         * _merge_spaces_by_erv (bool): default=False. Set to true to merge spaces that
@@ -1004,6 +1012,7 @@ def from_hb_room(
         _vent_sched_collection=_vent_sched_collection,
         _occ_sched_collection=_occ_sched_collection,
         _lighting_sched_collection=_lighting_sched_collection,
+        _dwelling_occupancy=_dwelling_occupancy,
         _group_components=_group_components,
         _merge_spaces_by_erv=_merge_spaces_by_erv,
         _tolerance=_tolerance,

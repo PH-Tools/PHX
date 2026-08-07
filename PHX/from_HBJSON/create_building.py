@@ -15,6 +15,7 @@ from honeybee_ph.properties.aperture import AperturePhProperties
 from honeybee_ph.properties.room import RoomPhProperties
 
 from PHX.from_HBJSON import create_geometry
+from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
 from PHX.from_HBJSON._type_utils import MissingEnergyPropertiesError, get_room_people
 from PHX.from_HBJSON.create_rooms import create_room_from_space
 from PHX.model import building, components, constructions
@@ -383,6 +384,7 @@ def create_zone_from_hb_room(
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     _lighting_sched_collection: UtilizationPatternCollection_Lighting,
     _merge_spaces_by_erv: bool = False,
+    _dwelling_occupancy: DwellingOccupancyIndex | None = None,
 ) -> building.PhxZone:
     """Create a new PHX-Zone based on a honeybee-Room.
 
@@ -391,6 +393,9 @@ def create_zone_from_hb_room(
         * _hb_room (room.Room): The honeybee-Room to use as the source.
         * _vent_sched_collection (UtilizationPatternCollection_Ventilation): The Ventilation Schedule Collection.
         * _occ_sched_collection (UtilizationPatternCollection_Occupancy): The Occupancy Schedule Collection.
+        * _dwelling_occupancy (DwellingOccupancyIndex | None): Explicit PH occupancy totals for
+            the pre-merge Honeybee Rooms, grouped by dwelling. If omitted, the index is derived
+            from the Rooms hosting this zone's Spaces for backwards compatibility.
 
     Returns:
     --------
@@ -407,6 +412,9 @@ def create_zone_from_hb_room(
 
     # -- Sort the HB-Room's Spaces by their full_name
     sorted_spaces = sorted(room_prop_ph.spaces, key=lambda sp: sp.full_name)
+    if _dwelling_occupancy is None:
+        hosts = {sp.host.identifier: sp.host for sp in sorted_spaces if sp.host}
+        _dwelling_occupancy = DwellingOccupancyIndex.from_hb_rooms(hosts.values())
 
     # -- Create a new WUFI-Space (Room) for each HBPH-Space
     _create_space = partial(
@@ -414,6 +422,7 @@ def create_zone_from_hb_room(
         _vent_sched_collection=_vent_sched_collection,
         _occ_sched_collection=_occ_sched_collection,
         _lighting_sched_collection=_lighting_sched_collection,
+        _dwelling_occupancy=_dwelling_occupancy,
     )
     new_zone.spaces = [_create_space(sp) for sp in sorted_spaces]
 
