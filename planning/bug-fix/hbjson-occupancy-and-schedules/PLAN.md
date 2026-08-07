@@ -324,6 +324,8 @@ byte-identical; golden diffs confined to `BeginUtilization` / `EndUtilization` /
 
 ## Phase 4 — lighting full-load hours as EFLH
 
+**Status:** Complete — 5 boundary tests, Excel replay, and the 850-test full gate pass.
+
 **Must follow Phase 3.** (Scope question resolved — see PRD "Resolved question".)
 
 File: `PHX/model/schedules/lighting.py`

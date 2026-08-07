@@ -1,6 +1,6 @@
 # STATUS — hbjson-occupancy-and-schedules
 
-**Status:** In progress — Phases 0-3 complete; Phase 4 next
+**Status:** In progress — Phases 0-4 complete; Phase 5 next
 **Last updated:** 2026-08-06
 
 ## Readiness
@@ -11,11 +11,12 @@
 | 1 — test scaffolding | **Complete** | 26 focused tests + 819-test full gate green |
 | 2 — Space occupancy + TODO | **Complete** | 44 focused tests + 82.31-person real-project check + 837-test full gate green |
 | 3 — schedule fallback | **Complete** | 8 focused tests + Excel replay + 845-test full gate green |
-| 4 — lighting EFLH | **Yes** | Must follow Phase 3 |
-| 5 — goldens + closeout | After 0-4 | — |
+| 4 — lighting EFLH | **Complete** | 5 boundary tests + Excel replay + 850-test full gate green |
+| 5 — goldens + closeout | **Yes** | Phases 0-4 complete |
 
-Phases 0-3 are complete. Phase 2 resolves the reported METr symptom. Phase 3 derives HB-style
-occupancy and lighting schedules from their annual hourly means. Phase 4 is next.
+Phases 0-4 are complete. Phase 2 resolves the reported METr symptom. Phase 3 derives HB-style
+occupancy and lighting schedules from their annual hourly means. Phase 4 reports lighting
+full-load hours as EFLH. Phase 5 is next.
 
 ## Current state
 
@@ -33,8 +34,12 @@ alignment. The reported office factor is `0.286712`; the Generic Office and resi
 are `0.288562` and `0.720833`. The eight focused schedule tests, Excel replay invariant, and
 full gate pass (845 passed, 3 skipped, 1 deselected); the only golden movement required by the
 round-trip contract is `Multi_Room_Complete.xml` `RelativeAbsenteeism` `0.0 -> 0.7208333333333333`.
-Phases 4-5 remain unimplemented. Every design and scope question is resolved (D1-D10), the last
-one by a WUFI A/B run.
+Phase 4 now reports lighting EFLH as `annual_operating_hours × relative_utilization_factor`,
+clamped to 0-8760. Its five boundary tests pass; the reported office, Generic Office, and
+residential schedules produce 3009.51 / 2555.39 / 365.00 hours, and exporter movement is confined
+to `LightingFullLoadHours` / `lFLoadH`. The 39-test Excel replay invariant and the full gate also
+pass (850 passed, 3 skipped, 1 deselected). Phase 5 remains unimplemented. Every design and scope
+question is resolved (D1-D10), the last one by a WUFI A/B run.
 
 The planning source for the non-residential reference contained the intended four office
 `People` loads but no serialized PH Spaces; `check_room_has_spaces()` is a no-op. The durable
@@ -51,7 +56,7 @@ NON-RESIDENTIAL office project (`2616 {IA} 39 15th St`).
 | 0 | ACH ventilation flow understated 3600x | **Fixed — Phase 0** | `from_HBJSON/create_rooms.py` | **None** — 0 of 37 projects |
 | 1 | Space occupancy load never populated | **Fixed — Phase 2** | `from_HBJSON/create_rooms.py` | Every model without explicit PH occupancy |
 | 2 | No HB→PH fallback for occupancy/lighting schedules | **Fixed — Phase 3** | `from_HBJSON/create_schedules.py` | **Every** project |
-| 3 | Lighting full-load hours are the window, not EFLH | Open — Phase 4 | `model/schedules/lighting.py:117-119` | **Every** project |
+| 3 | Lighting full-load hours are the window, not EFLH | **Fixed — Phase 4** | `model/schedules/lighting.py:117-127` | **Every** project |
 
 Not affected (verified): PHPP write path, PPP write path, `from_WUFI_XML` import, and the whole
 explicit zone-level occupancy channel (`PhxZone.res_occupant_quantity`).
@@ -97,7 +102,7 @@ reason to gate by building category. Golden fields change; residential WUFI resu
 
 ## Next step
 
-Begin [`plans/PHASE-4-lighting-eflh.md`](plans/PHASE-4-lighting-eflh.md).
+Begin [`plans/PHASE-5-goldens-and-closeout.md`](plans/PHASE-5-goldens-and-closeout.md).
 
 The six phase plans in [`plans/`](plans/) are the handoff surface — each is self-contained and
 can be given to a coding agent on its own.

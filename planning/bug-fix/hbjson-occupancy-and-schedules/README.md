@@ -1,6 +1,6 @@
 # hbjson-occupancy-and-schedules
 
-**Status:** In progress — Phases 0-3 complete; Phase 4 next
+**Status:** In progress — Phases 0-4 complete; Phase 5 next
 **Opened:** 2026-08-06
 
 Four defects were identified in the `from_HBJSON` conversion path. At packet opening, three
@@ -16,7 +16,7 @@ exported `Occupant quantity = 0` for all five utilization zones in METr.
 | 0 | ACH ventilation flow understated **3600x** | **Fixed — Phase 0** | **None** — 0 of 37 projects |
 | 1 | Space occupancy load never populated | **Fixed — Phase 2** | Every model without explicit PH occupancy |
 | 2 | No HB→PH fallback for occupancy/lighting schedules | **Fixed — Phase 3** | **Every** project |
-| 3 | Lighting full-load hours are the window, not EFLH | Open — Phase 4 | **Every** project |
+| 3 | Lighting full-load hours are the window, not EFLH | **Fixed — Phase 4** | **Every** project |
 
 ## Read order
 

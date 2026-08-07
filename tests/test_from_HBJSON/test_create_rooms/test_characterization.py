@@ -44,31 +44,31 @@ def test_schedule_without_ph_periods_uses_annual_mean():
     assert schedule.relative_utilization_factor == pytest.approx(GENERIC_OFFICE_OCCUPANCY_MEAN)
 
 
-def test_DEFECT_3_full_load_lighting_hours_is_currently_8760():
-    """Lighting full-load hours currently report the window rather than EFLH."""
+def test_full_load_lighting_hours_reports_eflh():
+    """Lighting full-load hours apply the HB schedule's annual utilization factor."""
     hb_room = _load_non_res_model().rooms[0]
     schedule = create_schedules.build_lighting_schedule_from_hb_room(hb_room)
 
     assert schedule is not None
-    assert schedule.full_load_lighting_hours == 8760
+    assert schedule.full_load_lighting_hours == pytest.approx(2555.39130768)
 
 
 def test_wufi_reference_pins_current_phase_fields():
-    """The WUFI reference pins the corrected load/factor and pre-Phase-4 EFLH."""
+    """The WUFI reference pins the corrected occupancy load, factor, and EFLH."""
     root = ElementTree.fromstring(xml_builder.generate_WUFI_XML_from_object(_build_non_res_project()))
 
     assert [float(node.text) for node in root.iter("NumberOccupants")] == pytest.approx([5.65] * 4)
     assert [float(node.text) for node in root.iter("RelativeAbsenteeism")] == pytest.approx(
         [GENERIC_OFFICE_OCCUPANCY_MEAN]
     )
-    assert [float(node.text) for node in root.iter("LightingFullLoadHours")] == [8760.0] * 4
+    assert [float(node.text) for node in root.iter("LightingFullLoadHours")] == pytest.approx([2555.4] * 4)
 
 
 def test_metr_reference_pins_current_phase_fields():
-    """The METr reference pins the corrected load/factor and pre-Phase-4 EFLH."""
+    """The METr reference pins the corrected occupancy load, factor, and EFLH."""
     metr = metr_builder.generate_metr_json_dict(_build_non_res_project())
     loads = [variant["building"]["lZone"][0]["loadsZ"] for variant in metr["lVariant"]]
 
     assert [pattern["relAbs"] for pattern in metr["lUtilNResPH"]] == pytest.approx([GENERIC_OFFICE_OCCUPANCY_MEAN])
     assert [person["nOcc"] for zone in loads for person in zone["lPersZ"]] == pytest.approx([5.65] * 4)
-    assert [lighting["lFLoadH"] for zone in loads for lighting in zone["lLight"]] == [8760] * 4
+    assert [lighting["lFLoadH"] for zone in loads for lighting in zone["lLight"]] == pytest.approx([2555.4] * 4)
