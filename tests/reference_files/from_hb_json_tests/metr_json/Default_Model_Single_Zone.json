@@ -31,8 +31,8 @@
       2026,
       8,
       6,
-      21,
-      19,
+      23,
+      33,
       0
     ],
     "wBkg": false
@@ -852,9 +852,9 @@
       "hUtilL": 1,
       "beginU": 0,
       "endU": 24,
-      "aUtil": 365.0,
+      "aUtil": 365,
       "illumLev": 300.0,
-      "relAbs": 0.0,
+      "relAbs": 0.28856164383561644,
       "pUfLight": 1.0,
       "aOccup": "NaN",
       "rSetpT": "NaN",

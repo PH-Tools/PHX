@@ -20,6 +20,7 @@ semantic-release version bump).
 | 3 — schedule HB-style fallback | after 2 | nothing |
 | 4 — lighting EFLH | **after 3** (never before) | nothing |
 | 5 — goldens, validation, closeout | last | — |
+| 6 — WUFI occupancy round-trip stabilization | before Phase 5 archive | Phase 5 R14 failure |
 
 Phase 4 before Phase 3 collapses FLH from 8760 to 0, because the utilization factor is `0.0`
 today. Phase 0 is confirmed to ship as an independent commit — it is unrelated to the reported
@@ -288,6 +289,8 @@ watch all six real models plus the eight synthetic scenarios pass.
 
 ## Phase 3 — HB-style fallback for occupancy and lighting schedules
 
+**Status:** Complete — 8 focused tests, Excel replay, and the 845-test full gate pass.
+
 (Scope question resolved — see PRD "Resolved question". Applies to all models.)
 
 File: `PHX/from_HBJSON/create_schedules.py`. Mirror the ventilation structure at `:139-176`:
@@ -322,6 +325,8 @@ byte-identical; golden diffs confined to `BeginUtilization` / `EndUtilization` /
 
 ## Phase 4 — lighting full-load hours as EFLH
 
+**Status:** Complete — 5 boundary tests, Excel replay, and the 850-test full gate pass.
+
 **Must follow Phase 3.** (Scope question resolved — see PRD "Resolved question".)
 
 File: `PHX/model/schedules/lighting.py`
@@ -348,10 +353,15 @@ moves a residential model.
 
 ## Phase 5 — Goldens, validation, closeout
 
+**Status:** Complete — targeted goldens, public docs, real-project validation, adjacent bug
+filing, negative gates, and archive closeout are complete.
+
 1. Re-record affected reference files. Review **field by field**; every changed value maps to a
    requirement row or it is a bug in the change.
 2. Layer-5 negative checks.
-3. Re-export the real project; confirm in METr.
+3. Re-export the real project; confirm the generated METr JSON and WUFI XML. The METr desktop
+   application was unavailable and the Parallels WUFI launch timed out, so the permitted raw
+   WUFI XML validation path was used for the final application-level check.
 4. Docs: `docs/reference/phx-model-reference.md` — the two occupancy channels, the
    mutual-exclusion invariant, the gating rule, and the EFLH convention.
    `docs/dev/exporter-patterns.md` if the schedule-fallback pattern generalizes. Cite the
@@ -366,6 +376,21 @@ moves a residential model.
 **Verification gate:** `python -m pytest tests/` fully green.
 
 **Commit:** `test(reference): re-record WUFI-XML and METr-JSON goldens for Space loads and utilization patterns`
+
+---
+
+## Phase 6 — WUFI occupancy round-trip stabilization
+
+**Status:** Complete — added after Phase 5 exposed a pre-existing R14 blocker.
+
+`_ridgeway.xml` contained empty `ReferenceWaterContent` elements and 206 person/lighting
+utilization-zone records but only 148 ventilation-room records. The WUFI schema now treats that
+material field as explicitly optional, and the importer reconstructs load-only `PhxSpace`
+objects without collapsing duplicate-named ventilation rooms. `_ridgeway` and `_la_mora` retain
+all Space- and zone-level occupancy fields through WUFI XML → PHX → WUFI XML.
+
+Full implementation and verification contract:
+[`plans/PHASE-6-wufi-roundtrip-stabilization.md`](plans/PHASE-6-wufi-roundtrip-stabilization.md).
 
 ---
 

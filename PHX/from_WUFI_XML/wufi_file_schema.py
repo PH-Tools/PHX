@@ -837,7 +837,7 @@ class WufiMaterial(WufiBaseModel):
     Porosity: wufi_unit._Percentage
     HeatCapacity: wufi_unit.Joule_per_KGK
     WaterVaporResistance: wufi_unit.WUFI_Vapor_Resistance_Factor
-    ReferenceWaterContent: wufi_unit.KG_per_M3
+    ReferenceWaterContent: wufi_unit.KG_per_M3 | None = None
     Color: WufiColor | None = None
 
 

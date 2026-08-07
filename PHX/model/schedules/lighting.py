@@ -117,5 +117,11 @@ class PhxScheduleLighting:
 
     @property
     def full_load_lighting_hours(self) -> float:
-        """Return the annual full-load lighting hours, clamped to 0-8760."""
-        return max(0, min(8760, self.annual_operating_hours))
+        """Return the annual equivalent full-load lighting hours (EFLH), clamped 0-8760.
+
+        EFLH is the load-weighted hour count -- SUM(hourly load fraction) over the year --
+        not the operating window. Per the 2021 Phius protocol this value OVERRIDES the
+        lighting utilization pattern in WUFI (the pattern reference points at the
+        occupancy pattern), so it must carry the load, not the window.
+        """
+        return max(0, min(8760, self.annual_operating_hours * self.relative_utilization_factor))

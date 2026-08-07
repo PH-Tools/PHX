@@ -12,8 +12,8 @@
 			<Year>2026</Year>
 			<Month>8</Month>
 			<Day>6</Day>
-			<Hour>21</Hour>
-			<Minutes>19</Minutes>
+			<Hour>23</Hour>
+			<Minutes>33</Minutes>
 		</Date_Project>
 		<WhiteBackgroundPictureBuilding/>
 		<Customer_Name/>
@@ -61,9 +61,9 @@
 			<HeightUtilizationLevel>0.5</HeightUtilizationLevel>
 			<BeginUtilization>0</BeginUtilization>
 			<EndUtilization>24</EndUtilization>
-			<AnnualUtilizationDays>365.0</AnnualUtilizationDays>
+			<AnnualUtilizationDays>365</AnnualUtilizationDays>
 			<IlluminationLevel unit="lux">300</IlluminationLevel>
-			<RelativeAbsenteeism unit="-">0.0</RelativeAbsenteeism>
+			<RelativeAbsenteeism unit="-">0.28856164383561644</RelativeAbsenteeism>
 			<PartUseFactorPeriodForLighting unit="-">1</PartUseFactorPeriodForLighting>
 		</UtilizationPattern>
 	</UtilizationPatternsPH>

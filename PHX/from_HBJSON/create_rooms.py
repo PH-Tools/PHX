@@ -11,6 +11,7 @@ from honeybee_ph_utils.occupancy import hb_room_ppl_per_area
 from honeybee_ph_utils.ventilation import hb_room_vent_flowrates
 from honeybee_phhvac.properties.room import get_ph_hvac_from_space
 
+from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
 from PHX.from_HBJSON._type_utils import get_space_energy_properties
 from PHX.model import spaces
 from PHX.model.utilization_patterns import (
@@ -81,6 +82,7 @@ def create_room_from_space(
     _vent_sched_collection: UtilizationPatternCollection_Ventilation,
     _occ_sched_collection: UtilizationPatternCollection_Occupancy,
     _lighting_sched_collection: UtilizationPatternCollection_Lighting,
+    _dwelling_occupancy: DwellingOccupancyIndex | None = None,
 ) -> spaces.PhxSpace:
     """Create a new RoomVentilation object with attributes based on a Honeybee-PH Space
 
@@ -91,6 +93,11 @@ def create_room_from_space(
             ventilation schedules to use for the new PHX-Room.
         * _occ_sched_collection (UtilizationPatternCollection_Occupancy): A collection of
             occupancy schedules to use for the new PHX-Room.
+        * _lighting_sched_collection (UtilizationPatternCollection_Lighting): A collection of
+            lighting schedules to use for the new PHX-Room.
+        * _dwelling_occupancy (DwellingOccupancyIndex | None): Explicit PH occupancy totals for
+            the pre-merge Honeybee Rooms, grouped by dwelling. If omitted, the Space host is
+            treated as a one-Room conversion context for backwards compatibility.
 
     Returns:
     --------
@@ -139,8 +146,23 @@ def create_room_from_space(
 
     # -- Keep the new room's Occupancy reference aligned with the HB-Room's
     if hbe_occ:
-        occ_sched_id = hbe_occ.occupancy_schedule.identifier
-        new_room.occupancy.schedule = _occ_sched_collection[occ_sched_id]
+        new_room.occupancy.schedule = _occ_sched_collection[hbe_occ.occupancy_schedule.identifier]
+
+        # -- Explicit PH occupancy wins, evaluated per dwelling group. When any Room
+        # -- in the group states number_people, that dwelling is already expressed
+        # -- through PhxZone.res_occupant_quantity. The group-uniform People density
+        # -- is derived from the same input, so emitting it here would double-count.
+        # -- _space.host is the original pre-merge Room; the merged Room is unusable
+        # -- because merge_occupancies() forces a dwelling and sums number_people.
+        host = _space.host
+        dwelling_occupancy = _dwelling_occupancy or DwellingOccupancyIndex.from_hb_rooms([host] if host else [])
+        if host and not dwelling_occupancy.has_explicit_occupancy(host):
+            # -- Preserve the Room's total peak occupancy even when its Spaces do not
+            # -- tile the Room by distributing the total by Space floor-area fraction.
+            room_peak_occupancy = hbe_occ.people_per_area * host.floor_area
+            total_space_fa = get_ph_prop_from_room(host).total_space_floor_area
+            if total_space_fa:
+                new_room.peak_occupancy = room_peak_occupancy * (_space.floor_area / total_space_fa)
 
     # -- Keep the new room's Lighting reference aligned with the HB-Room's
     if hbe_lighting:

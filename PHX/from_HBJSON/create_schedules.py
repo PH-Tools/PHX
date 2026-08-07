@@ -2,6 +2,7 @@
 
 """Functions used to create Project elements from the Honeybee-Model"""
 
+from statistics import mean
 
 from honeybee import model, room
 from honeybee_energy.lib.scheduletypelimits import schedule_type_limit_by_identifier
@@ -47,6 +48,28 @@ def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
     hbph_sched_prop: phx_ruleset.ScheduleRulesetPhProperties = hbe_vent_sched_prop.ph  # type: ignore
     # No Honeybee-Energy-PH Schedule detailed Operating Periods - return whether they exist
     return bool(hbph_sched_prop.daily_operating_periods)
+
+
+def _room_has_ph_style_occupancy(_hb_room: room.Room) -> bool:
+    """Return True when the Room's occupancy schedule has PH operating periods."""
+    try:
+        hbe_schedule = get_people_schedule(_hb_room)
+    except MissingEnergyPropertiesError:
+        return False
+
+    hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
+    return bool(hbe_schedule_prop_ph.daily_operating_periods)
+
+
+def _room_has_ph_style_lighting(_hb_room: room.Room) -> bool:
+    """Return True when the Room's lighting schedule has PH operating periods."""
+    try:
+        hbe_schedule = get_lighting_schedule(_hb_room)
+    except MissingEnergyPropertiesError:
+        return False
+
+    hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
+    return bool(hbe_schedule_prop_ph.daily_operating_periods)
 
 
 def _create_vent_schedule_from_hb_style(
@@ -176,6 +199,50 @@ def build_ventilation_schedule_from_hb_room(
     return new_vent_schedule
 
 
+def _create_occupancy_schedule_from_hb_style(
+    _hb_room: room.Room,
+) -> occupancy.PhxScheduleOccupancy:
+    """Derive a PH-style occupancy pattern from a raw HB/E+ hourly schedule.
+
+    Per the Phius utilization-pattern protocol, represent the schedule as 0-24 hours,
+    365 days, with the annual mean of the hourly values as the utilization factor.
+    """
+    hbe_schedule = get_people_schedule(_hb_room)
+    hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
+
+    new_phx_occ_schedule = occupancy.PhxScheduleOccupancy()
+    new_phx_occ_schedule.identifier = hbe_schedule.identifier
+    hbe_schedule_prop_ph.id_num = new_phx_occ_schedule.id_num
+    new_phx_occ_schedule.display_name = hbe_schedule.display_name
+    new_phx_occ_schedule.annual_utilization_factor = mean(hbe_schedule.values())
+    return new_phx_occ_schedule
+
+
+def _create_occupancy_schedule_from_ph_style(
+    _hb_room: room.Room,
+) -> occupancy.PhxScheduleOccupancy:
+    """Build an occupancy pattern from detailed PH schedule properties."""
+    hbe_schedule = get_people_schedule(_hb_room)
+    hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
+    daily_period = hbe_schedule_prop_ph.first_operating_period
+
+    new_phx_occ_schedule = occupancy.PhxScheduleOccupancy()
+    new_phx_occ_schedule.identifier = hbe_schedule.identifier
+    hbe_schedule_prop_ph.id_num = new_phx_occ_schedule.id_num
+    new_phx_occ_schedule.display_name = hbe_schedule.display_name
+    new_phx_occ_schedule.annual_utilization_days = hbe_schedule_prop_ph.operating_days_year
+    new_phx_occ_schedule.relative_utilization_factor = hbe_schedule_prop_ph.annual_average_operating_fraction
+
+    if daily_period:
+        new_phx_occ_schedule.start_hour = daily_period.start_hour
+        new_phx_occ_schedule.end_hour = daily_period.end_hour
+    else:
+        new_phx_occ_schedule.start_hour = 0
+        new_phx_occ_schedule.end_hour = 24
+
+    return new_phx_occ_schedule
+
+
 def build_occupancy_schedule_from_hb_room(
     _hb_room: room.Room,
 ) -> occupancy.PhxScheduleOccupancy | None:
@@ -192,29 +259,58 @@ def build_occupancy_schedule_from_hb_room(
 
     # -- Make sure that the room has an occupancy schedule
     try:
-        hbe_schedule = get_people_schedule(_hb_room)
+        get_people_schedule(_hb_room)
     except MissingEnergyPropertiesError:
         # No people or occupancy_schedule found
         return None
 
+    if _room_has_ph_style_occupancy(_hb_room):
+        return _create_occupancy_schedule_from_ph_style(_hb_room)
+    return _create_occupancy_schedule_from_hb_style(_hb_room)
+
+
+def _create_lighting_schedule_from_hb_style(
+    _hb_room: room.Room,
+) -> lighting.PhxScheduleLighting:
+    """Derive a PH-style lighting pattern from a raw HB/E+ hourly schedule.
+
+    Per the Phius utilization-pattern protocol, represent the schedule as 0-24 hours,
+    365 days, with the annual mean of the hourly values as the utilization factor.
+    """
+    hbe_schedule = get_lighting_schedule(_hb_room)
+    hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
+
+    new_phx_lighting_schedule = lighting.PhxScheduleLighting()
+    new_phx_lighting_schedule.identifier = hbe_schedule.identifier
+    hbe_schedule_prop_ph.id_num = new_phx_lighting_schedule.id_num
+    new_phx_lighting_schedule.display_name = hbe_schedule.display_name
+    new_phx_lighting_schedule.annual_utilization_factor = mean(hbe_schedule.values())
+    return new_phx_lighting_schedule
+
+
+def _create_lighting_schedule_from_ph_style(
+    _hb_room: room.Room,
+) -> lighting.PhxScheduleLighting:
+    """Build a lighting pattern from detailed PH schedule properties."""
+    hbe_schedule = get_lighting_schedule(_hb_room)
     hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
     daily_period = hbe_schedule_prop_ph.first_operating_period
 
-    # -- Build the new Schedule
-    new_phx_occ_schedule = occupancy.PhxScheduleOccupancy()
-    new_phx_occ_schedule.identifier = hbe_schedule.identifier
-    new_phx_occ_schedule.display_name = hbe_schedule.display_name
-    new_phx_occ_schedule.annual_utilization_days = hbe_schedule_prop_ph.operating_days_year
-    new_phx_occ_schedule.relative_utilization_factor = hbe_schedule_prop_ph.annual_average_operating_fraction
+    new_phx_lighting_schedule = lighting.PhxScheduleLighting()
+    new_phx_lighting_schedule.identifier = hbe_schedule.identifier
+    hbe_schedule_prop_ph.id_num = new_phx_lighting_schedule.id_num
+    new_phx_lighting_schedule.display_name = hbe_schedule.display_name
+    new_phx_lighting_schedule.annual_utilization_days = hbe_schedule_prop_ph.operating_days_year
+    new_phx_lighting_schedule.relative_utilization_factor = hbe_schedule_prop_ph.annual_average_operating_fraction
 
     if daily_period:
-        new_phx_occ_schedule.start_hour = daily_period.start_hour
-        new_phx_occ_schedule.end_hour = daily_period.end_hour
+        new_phx_lighting_schedule.start_hour = daily_period.start_hour
+        new_phx_lighting_schedule.end_hour = daily_period.end_hour
     else:
-        new_phx_occ_schedule.start_hour = 0
-        new_phx_occ_schedule.end_hour = 24
+        new_phx_lighting_schedule.start_hour = 0
+        new_phx_lighting_schedule.end_hour = 24
 
-    return new_phx_occ_schedule
+    return new_phx_lighting_schedule
 
 
 def build_lighting_schedule_from_hb_room(
@@ -228,34 +324,19 @@ def build_lighting_schedule_from_hb_room(
 
     Returns:
     --------
-        * (Optional[occupancy.PhxScheduleLighting]): The new PHX Lighting Schedule or None.
+        * (Optional[lighting.PhxScheduleLighting]): The new PHX Lighting Schedule or None.
     """
 
-    # -- Make sure that the room has an occupancy schedule
+    # -- Make sure that the room has a lighting schedule
     try:
-        hbe_schedule = get_lighting_schedule(_hb_room)
+        get_lighting_schedule(_hb_room)
     except MissingEnergyPropertiesError:
         # No lighting or lighting.schedule found
         return None
 
-    hbe_schedule_prop_ph: phx_ruleset.ScheduleRulesetPhProperties = hbe_schedule.properties.ph  # type: ignore
-    daily_period = hbe_schedule_prop_ph.first_operating_period
-
-    # -- Build the new Schedule
-    new_phx_occ_schedule = lighting.PhxScheduleLighting()
-    new_phx_occ_schedule.identifier = hbe_schedule.identifier
-    new_phx_occ_schedule.display_name = hbe_schedule.display_name
-    new_phx_occ_schedule.annual_utilization_days = hbe_schedule_prop_ph.operating_days_year
-    new_phx_occ_schedule.relative_utilization_factor = hbe_schedule_prop_ph.annual_average_operating_fraction
-
-    if daily_period:
-        new_phx_occ_schedule.start_hour = daily_period.start_hour
-        new_phx_occ_schedule.end_hour = daily_period.end_hour
-    else:
-        new_phx_occ_schedule.start_hour = 0
-        new_phx_occ_schedule.end_hour = 24
-
-    return new_phx_occ_schedule
+    if _room_has_ph_style_lighting(_hb_room):
+        return _create_lighting_schedule_from_ph_style(_hb_room)
+    return _create_lighting_schedule_from_hb_style(_hb_room)
 
 
 def _add_default_vent_schedule_to_Rooms(_hb_model: model.Model) -> model.Model:

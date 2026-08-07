@@ -5779,15 +5779,29 @@ Instant DHW
 								<DesignVolumeFlowRateExhaust unit="m³/h">849.51</DesignVolumeFlowRateExhaust>
 							</Room>
 						</RoomsVentilation>
-						<LoadsPersonsPH count="2">
+						<LoadsPersonsPH count="4">
 							<LoadPerson index="0">
+								<Name>Office</Name>
+								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">0.0</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="1">
+								<Name>Workshop</Name>
+								<IdentNrUtilizationPattern>2</IdentNrUtilizationPattern>
+								<ChoiceActivityPersons>3</ChoiceActivityPersons>
+								<NumberOccupants>0.0</NumberOccupants>
+								<FloorAreaUtilizationZone unit="m²">0.0</FloorAreaUtilizationZone>
+							</LoadPerson>
+							<LoadPerson index="2">
 								<Name>a</Name>
 								<IdentNrUtilizationPattern>3</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>0.0</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">0.0</FloorAreaUtilizationZone>
 							</LoadPerson>
-							<LoadPerson index="1">
+							<LoadPerson index="3">
 								<Name>b</Name>
 								<IdentNrUtilizationPattern>4</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
@@ -5795,8 +5809,44 @@ Instant DHW
 								<FloorAreaUtilizationZone unit="m²">0.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 						</LoadsPersonsPH>
-						<LoadsLightingsPH count="2">
+						<LoadsLightingsPH count="4">
 							<LoadsLighting index="0">
+								<Name>Office</Name>
+								<RoomCategory>1</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="1">
+								<Name>Workshop</Name>
+								<RoomCategory>2</RoomCategory>
+								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
+								<LightingControl>1</LightingControl>
+								<WithinThermalEnvelope>true</WithinThermalEnvelope>
+								<MotionDetector>false</MotionDetector>
+								<FacadeIncludingWindows>false</FacadeIncludingWindows>
+								<FractionTreatedFloorArea>1</FractionTreatedFloorArea>
+								<DeviationFromNorth>0</DeviationFromNorth>
+								<RoomDepth>1</RoomDepth>
+								<RoomWidth>1</RoomWidth>
+								<RoomHeight>1</RoomHeight>
+								<LintelHeight>1</LintelHeight>
+								<WindowWidth>1</WindowWidth>
+								<InstalledLightingPower>0.0</InstalledLightingPower>
+								<LightingFullLoadHours>0</LightingFullLoadHours>
+							</LoadsLighting>
+							<LoadsLighting index="2">
 								<Name>a</Name>
 								<RoomCategory>3</RoomCategory>
 								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
@@ -5814,7 +5864,7 @@ Instant DHW
 								<InstalledLightingPower>0.0</InstalledLightingPower>
 								<LightingFullLoadHours>0</LightingFullLoadHours>
 							</LoadsLighting>
-							<LoadsLighting index="1">
+							<LoadsLighting index="3">
 								<Name>b</Name>
 								<RoomCategory>4</RoomCategory>
 								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>

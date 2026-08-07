@@ -1,6 +1,6 @@
 # STATUS — hbjson-occupancy-and-schedules
 
-**Status:** In progress — Phase 0 complete; Phase 1 next
+**Status:** Complete — archived 2026-08-06
 **Last updated:** 2026-08-06
 
 ## Readiness
@@ -8,34 +8,61 @@
 | phase | ready? | note |
 |---|---|---|
 | 0 — ACH ventilation 3600x | **Complete** | 4 focused cases + Excel replay + full suite green |
-| 1 — test scaffolding | **Yes** | Fixture is `HBJSON/01_no_dwelling_no_occupancy.hbjson` |
-| 2 — Space occupancy + TODO | **Yes** | Gate, key, and distribution rule all decided (D1, D2, D6) |
-| 3 — schedule fallback | **Yes** | Applies to all models (D10) |
-| 4 — lighting EFLH | **Yes** | Must follow Phase 3 |
-| 5 — goldens + closeout | After 0-4 | — |
+| 1 — test scaffolding | **Complete** | 26 focused tests + 819-test full gate green |
+| 2 — Space occupancy + TODO | **Complete** | 44 focused tests + 82.31-person real-project check + 837-test full gate green |
+| 3 — schedule fallback | **Complete** | 8 focused tests + Excel replay + 845-test full gate green |
+| 4 — lighting EFLH | **Complete** | 5 boundary tests + Excel replay + 850-test full gate green |
+| 5 — goldens + closeout | **Complete** | Goldens/docs/validation, negative gates, adjacent bugs, and archive complete |
+| 6 — WUFI round-trip stabilization | **Complete** | 3 focused + 47 WUFI + 853-test full gate green |
 
-Phase 0 is complete. Phase 1 is next. Phase 2 is what resolves the reported METr symptom.
+All phases are complete. Phase 2 resolves the reported METr symptom. Phase 3 derives HB-style
+occupancy and lighting schedules from their annual hourly means. Phase 4 reports lighting
+full-load hours as EFLH. Phase 6 closes the WUFI-authored occupancy round-trip gap exposed by
+Phase 5. Phase 5 records the goldens, validations, public docs, adjacent bugs, and archive.
 
 ## Current state
 
 Planning is complete. Phase 0 corrects the ACH double-conversion and distributes every Room
-ventilation term by unweighted Space floor-area fraction. Four focused cases, the Excel replay
-invariant, and the full suite pass. Phases 1-5 remain unimplemented. All four defects were
-reproduced in-process against the real project file, six purpose-built Grasshopper models, and
-both committed reference fixtures. Every design and scope question is resolved (D1-D10), the
-last one by a WUFI A/B run.
+ventilation term by unweighted Space floor-area fraction. Phase 1 adds the durable six-model
+scenario corpus, a non-residential HBJSON/WUFI/METr reference, synthetic occupancy fixtures,
+pre-merge and untagged-group invariants, all-six GH anchors, and defect characterization. Phase
+2 now indexes explicit occupancy from pre-merge Rooms, gates per dwelling group, and distributes
+the HB People load without losing occupants when Spaces do not tile a Room. The 44 focused tests
+pass, the reported real project exports 82.31 occupants, the residential occupancy fields remain
+byte-identical in WUFI XML and METr JSON, and the full gate passes (837 passed, 3 skipped, 1
+deselected). Phase 3 now derives HB-style occupancy and lighting patterns as `0/24/365` with the
+annual hourly mean as the utilization factor while preserving PH-style output and schedule-ID
+alignment. The reported office factor is `0.286712`; the Generic Office and residential factors
+are `0.288562` and `0.720833`. The eight focused schedule tests, Excel replay invariant, and
+full gate pass (845 passed, 3 skipped, 1 deselected); the only golden movement required by the
+round-trip contract is `Multi_Room_Complete.xml` `RelativeAbsenteeism` `0.0 -> 0.7208333333333333`.
+Phase 4 now reports lighting EFLH as `annual_operating_hours × relative_utilization_factor`,
+clamped to 0-8760. Its five boundary tests pass; the reported office, Generic Office, and
+residential schedules produce 3009.51 / 2555.39 / 365.00 hours, and exporter movement is confined
+to `LightingFullLoadHours` / `lFLoadH`. The 39-test Excel replay invariant and the full gate also
+pass (850 passed, 3 skipped, 1 deselected). Phase 6 now imports empty WUFI material reference-water
+content safely, reconstructs load-only utilization-zone Spaces without collapsing duplicate-named
+ventilation rooms, and passes 3 focused tests, all 47 WUFI importer tests, and the 853-test full
+gate. Phase 5 goldens, public docs, adjacent bug filing, real-project validation, R14, and archive
+closeout are complete. Every design and scope question is resolved (D1-D10), the last
+one by a WUFI A/B run.
+
+The planning source for the non-residential reference contained the intended four office
+`People` loads but no serialized PH Spaces; `check_room_has_spaces()` is a no-op. The durable
+test fixture therefore adds one full-floor PH Space per Room so Phase 2 can produce and assert
+the planned `NumberOccupants 0.0 -> nonzero` delta.
 
 Source of the report: METr showed `Occupant quantity = 0` on all five utilization zones of a
 NON-RESIDENTIAL office project (`2616 {IA} 39 15th St`).
 
 ## Confirmed defects
 
-| # | Defect | Location | Real-project exposure |
-|---|---|---|---|
-| 0 | ACH ventilation flow understated 3600x | `from_HBJSON/create_rooms.py:63` | **None** — 0 of 37 projects |
-| 1 | Space occupancy load never populated | `from_HBJSON/create_rooms.py:140-143` | Every model without explicit PH occupancy |
-| 2 | No HB→PH fallback for occupancy/lighting schedules | `from_HBJSON/create_schedules.py:179-258` | **Every** project |
-| 3 | Lighting full-load hours are the window, not EFLH | `model/schedules/lighting.py:117-119` | **Every** project |
+| # | Defect | State | Location | Real-project exposure |
+|---|---|---|---|---|
+| 0 | ACH ventilation flow understated 3600x | **Fixed — Phase 0** | `from_HBJSON/create_rooms.py` | **None** — 0 of 37 projects |
+| 1 | Space occupancy load never populated | **Fixed — Phase 2** | `from_HBJSON/create_rooms.py` | Every model without explicit PH occupancy |
+| 2 | No HB→PH fallback for occupancy/lighting schedules | **Fixed — Phase 3** | `from_HBJSON/create_schedules.py` | **Every** project |
+| 3 | Lighting full-load hours are the window, not EFLH | **Fixed — Phase 4** | `model/schedules/lighting.py:117-127` | **Every** project |
 
 Not affected (verified): PHPP write path, PPP write path, `from_WUFI_XML` import, and the whole
 explicit zone-level occupancy channel (`PhxZone.res_occupant_quantity`).
@@ -79,12 +106,17 @@ radius, must be reviewable alone.
 both fields are inert for `BuildingCategory=1`, so there is no re-certification risk and no
 reason to gate by building category. Golden fields change; residential WUFI results do not.
 
-## Next step
+## Closeout evidence
 
-Begin [`plans/PHASE-1-test-scaffolding.md`](plans/PHASE-1-test-scaffolding.md).
+- The nine targeted WUFI XML and METr JSON goldens match fresh exporter output field-by-field;
+  protected zone-level occupant and bedroom fields remain unchanged.
+- The real 39 15th St export retains 15.04 / 13.91 / 29.25 / 22.23 / 1.88 occupants by Space,
+  82.31 total, `RelativeAbsenteeism=0.286712`, and lighting EFLH of 3009.5.
+- Raw WUFI XML round trips retain `_ridgeway` 206 Space loads / 1 zone value and `_la_mora`
+  4 Space loads / 6 zone values. The desktop METr application was unavailable and the Parallels
+  WUFI launch timed out, so the approved raw WUFI XML fallback supplied the final validation.
 
-The six phase plans in [`plans/`](plans/) are the handoff surface — each is self-contained and
-can be given to a coding agent on its own.
+The seven phase plans in [`plans/`](plans/) preserve the implementation and verification record.
 
 ## Resolved question — do Defects 2 and 3 apply to residential?
 
@@ -113,7 +145,9 @@ None external.
 ## Test corpus
 
 Six Grasshopper models in [`HBJSON/`](HBJSON/), definitions in
-[`grasshopper-model/`](grasshopper-model/). Full table in `PRD.md`. Highlights:
+[`grasshopper-model/`](grasshopper-model/), and durable test copies in
+`tests/reference_files/from_grasshopper_tests/hbjson/occupancy_scenarios/`. Full table in
+`PRD.md`. Highlights:
 
 - **03** anchors the group-uniform density invariant to 8 decimal places
   (`7 / 0.720833 / 400 = 0.02427746`, actual `0.02427746`).
@@ -168,11 +202,11 @@ unit test (PLAN layer 2, invariant 2) rather than another export.
     once that is fixed — METr surfaced the original symptom and may consume these fields
     differently from WUFI.
 
-## Adjacent bugs to file (PLAN Phase 5)
+## Adjacent bugs filed (PLAN Phase 5)
 
 | # | Bug | Repo | State |
 |---|---|---|---|
-| 1 | `get_dwelling_obj()` breaks across HBJSON round-trip | `honeybee_ph` | To file |
-| 2 | `_num_people` list padding repeats the last value | `honeybee_grasshopper_ph` | To file |
+| 1 | `get_dwelling_obj()` breaks across HBJSON round-trip | `honeybee_ph` | **Filed** — `planning/refactor/dwelling-default-roundtrip.md` |
+| 2 | `_num_people` list padding repeats the last value | `honeybee_grasshopper_ph` | **Filed** — `planning/occupancy-list-padding.md` |
 | 3 | `Infiltration from ACH` 50Pa output unit mismatch | `honeybee_grasshopper_ph_plus` | **Written up** — `planning/bug-fixes/infiltration-from-ach-units.md` |
-| 4 | `FloorAreaUtilizationZone`: WUFI writes `floor_area`, METr writes `weighted_floor_area` | PHX | To file |
+| 4 | `FloorAreaUtilizationZone`: WUFI writes `floor_area`, METr writes `weighted_floor_area` | PHX | **Filed** — `planning/bug-fix/floor-area-utilization-zone.md` |

@@ -3,6 +3,7 @@
 """Classes for converting WUFI-Pydantic Entities to PHX Model Objects."""
 
 import sys
+from collections import defaultdict, deque
 from functools import partial
 from typing import Any
 
@@ -1325,25 +1326,45 @@ def _PhxZone(_data: wufi_xml.WufiZone, _phx_project_host: PhxProject) -> PhxZone
     phx_obj.specific_heat_capacity = SpecificHeatCapacityType(_spec_cap_WH_m2k(_data.SpecificHeatCapacity))
 
     # ----------------------------------------------------------------------
-    # -- Create all the spaces from the XML "RoomsVentilation" data
-    for space_ventilation_data in _data.RoomsVentilation or []:
-        phx_obj.spaces.append(
-            as_phx_obj(
-                space_ventilation_data,
-                "PhxSpace",
-                _phx_project_host=_phx_project_host,
-            )
-        )
+    # -- Build Spaces from the union of ventilation rooms and person loads. WUFI may
+    # -- carry occupancy/lighting utilization zones that have no ventilation record.
+    # -- Keep person-load order: the ventilation-room list is an ordered subset of it.
+    ventilation_spaces = [
+        as_phx_obj(data, "PhxSpace", _phx_project_host=_phx_project_host) for data in _data.RoomsVentilation or []
+    ]
+    ventilation_spaces_by_name = defaultdict(deque)
+    for space in ventilation_spaces:
+        ventilation_spaces_by_name[space.display_name].append(space)
 
-    # -- Try and add in any occupancy, lighting loads to the spaces, if they exist.
-    # -- Will try and find a load with a matching name.
     occupancy_load_data = {d.Name: d for d in _data.LoadsPersonsPH or []}
     lighting_load_data = {d.Name: d for d in _data.LoadsLightingsPH or []}
-    for space in phx_obj.spaces:
+    used_ventilation_space_ids = set()
+
+    for occupancy_data in _data.LoadsPersonsPH or []:
+        matching_ventilation_spaces = ventilation_spaces_by_name[occupancy_data.Name]
+        if matching_ventilation_spaces:
+            space = matching_ventilation_spaces.popleft()
+            used_ventilation_space_ids.add(id(space))
+        else:
+            floor_area = occupancy_data.FloorAreaUtilizationZone or 0.0
+            space = PhxSpace(
+                display_name=occupancy_data.Name,
+                floor_area=floor_area,
+                weighted_floor_area=floor_area,
+            )
+
+        space = _add_occupancy_data_to_space(space, _phx_project_host, occupancy_data)
+        space = _add_lighting_data_to_space(space, _phx_project_host, lighting_load_data.get(occupancy_data.Name, None))
+        phx_obj.spaces.append(space)
+
+    for space in ventilation_spaces:
+        if id(space) in used_ventilation_space_ids:
+            continue
         space = _add_occupancy_data_to_space(
             space, _phx_project_host, occupancy_load_data.get(space.display_name, None)
         )
         space = _add_lighting_data_to_space(space, _phx_project_host, lighting_load_data.get(space.display_name, None))
+        phx_obj.spaces.append(space)
 
     # ----------------------------------------------------------------------
     # -- Add in any devices and thermal bridges as well.

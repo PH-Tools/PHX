@@ -29585,14 +29585,14 @@
 						<LoadsPersonsPH count="2">
 							<LoadPerson index="0">
 								<Name>ERU1 (M701 schedule)</Name>
-								<IdentNrUtilizationPattern>5</IdentNrUtilizationPattern>
+								<IdentNrUtilizationPattern>7</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>0.0</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">0.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 							<LoadPerson index="1">
 								<Name>ERU2 (M701 schedule)</Name>
-								<IdentNrUtilizationPattern>6</IdentNrUtilizationPattern>
+								<IdentNrUtilizationPattern>8</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>0.0</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">0.0</FloorAreaUtilizationZone>
@@ -29601,7 +29601,7 @@
 						<LoadsLightingsPH count="2">
 							<LoadsLighting index="0">
 								<Name>ERU1 (M701 schedule)</Name>
-								<RoomCategory>5</RoomCategory>
+								<RoomCategory>7</RoomCategory>
 								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
 								<LightingControl>1</LightingControl>
 								<WithinThermalEnvelope>true</WithinThermalEnvelope>
@@ -29619,7 +29619,7 @@
 							</LoadsLighting>
 							<LoadsLighting index="1">
 								<Name>ERU2 (M701 schedule)</Name>
-								<RoomCategory>6</RoomCategory>
+								<RoomCategory>8</RoomCategory>
 								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
 								<LightingControl>1</LightingControl>
 								<WithinThermalEnvelope>true</WithinThermalEnvelope>
@@ -60579,14 +60579,14 @@
 						<LoadsPersonsPH count="2">
 							<LoadPerson index="0">
 								<Name>ERU1 (M701 schedule)</Name>
-								<IdentNrUtilizationPattern>7</IdentNrUtilizationPattern>
+								<IdentNrUtilizationPattern>9</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>0.0</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">0.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 							<LoadPerson index="1">
 								<Name>ERU2 (M701 schedule)</Name>
-								<IdentNrUtilizationPattern>8</IdentNrUtilizationPattern>
+								<IdentNrUtilizationPattern>10</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
 								<NumberOccupants>0.0</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">0.0</FloorAreaUtilizationZone>
@@ -60595,7 +60595,7 @@
 						<LoadsLightingsPH count="2">
 							<LoadsLighting index="0">
 								<Name>ERU1 (M701 schedule)</Name>
-								<RoomCategory>7</RoomCategory>
+								<RoomCategory>9</RoomCategory>
 								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
 								<LightingControl>1</LightingControl>
 								<WithinThermalEnvelope>true</WithinThermalEnvelope>
@@ -60613,7 +60613,7 @@
 							</LoadsLighting>
 							<LoadsLighting index="1">
 								<Name>ERU2 (M701 schedule)</Name>
-								<RoomCategory>8</RoomCategory>
+								<RoomCategory>10</RoomCategory>
 								<ChoiceLightTransmissionGlazing>1</ChoiceLightTransmissionGlazing>
 								<LightingControl>1</LightingControl>
 								<WithinThermalEnvelope>true</WithinThermalEnvelope>

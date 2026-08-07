@@ -1,30 +1,30 @@
 # hbjson-occupancy-and-schedules
 
-**Status:** In progress — Phase 0 complete; Phase 1 next
+**Status:** Complete — archived 2026-08-06
 **Opened:** 2026-08-06
 
-Four defects in the `from_HBJSON` conversion path. Three cause every PHX model built from an
-HBJSON to export **zero per-space occupants** and a **degenerate utilization pattern**
+Four defects were identified in the `from_HBJSON` conversion path. At packet opening, three
+caused PHX models built from HBJSON to export **zero per-space occupants** and a **degenerate utilization pattern**
 (`0-24 h`, `365 d`, relative factor `0.0`, lighting full-load hours `8760`) to WUFI-Passive XML
 and METr JSON. The fourth is an unrelated pre-existing bug found in the same function.
 
 Found while investigating a NON-RESIDENTIAL office project (`2616 {IA} 39 15th St`) that
 exported `Occupant quantity = 0` for all five utilization zones in METr.
 
-| # | Defect | Real-project exposure |
-|---|---|---|
-| 0 | ACH ventilation flow understated **3600x** | **None** — 0 of 37 projects |
-| 1 | Space occupancy load never populated | Every model without explicit PH occupancy |
-| 2 | No HB→PH fallback for occupancy/lighting schedules | **Every** project |
-| 3 | Lighting full-load hours are the window, not EFLH | **Every** project |
+| # | Defect | State | Real-project exposure |
+|---|---|---|---|
+| 0 | ACH ventilation flow understated **3600x** | **Fixed — Phase 0** | **None** — 0 of 37 projects |
+| 1 | Space occupancy load never populated | **Fixed — Phase 2** | Every model without explicit PH occupancy |
+| 2 | No HB→PH fallback for occupancy/lighting schedules | **Fixed — Phase 3** | **Every** project |
+| 3 | Lighting full-load hours are the window, not EFLH | **Fixed — Phase 4** | **Every** project |
 
 ## Read order
 
 1. [`PRD.md`](PRD.md) — the occupancy channels, all four defects, the **gating rule** and its
    derivation, the 2021 Phius protocol, the test corpus, requirements, and the resolved question.
-2. [`PLAN.md`](PLAN.md) — the five-layer test strategy, then six phases with verification gates.
+2. [`PLAN.md`](PLAN.md) — the five-layer test strategy, then seven phases with verification gates.
 3. [`STATUS.md`](STATUS.md) — decisions made (D1-D10), readiness, limits, adjacent bugs.
-4. [`plans/`](plans/) — **six self-contained, agent-ready phase plans.** Each states its own
+4. [`plans/`](plans/) — **seven self-contained, agent-ready phase plans.** Each states its own
    context, exact edits, guardrails, tests, verification commands, definition of done, and
    commit message. This is the handoff surface; `PLAN.md` is the overview it expands.
 
@@ -49,6 +49,10 @@ Six purpose-built Grasshopper models — real component output, no cross-repo im
 
 - [`HBJSON/`](HBJSON/) — the exported models (the fixtures)
 - [`grasshopper-model/`](grasshopper-model/) — the `.ghx` definition and per-case screenshots
+
+The six HBJSONs are also copied to the durable test fixture tree at
+`tests/reference_files/from_grasshopper_tests/hbjson/occupancy_scenarios/`; the Phase 1 tests
+read that copy so archiving this planning packet cannot break the suite.
 
 | file | shape | per-room gate | per-group gate |
 |---|---|---|---|
@@ -88,15 +92,8 @@ and the zone-level channel carries the occupancy (`7`). Defect 1 is not under te
 > See `PRD.md` → "Why the first A/B attempt could not work". **Always edit the raw PHX export.**
 > The METr export was unaffected: it is clean PHX output with every field intact.
 
-Supporting: [`scenario_harness.py`](scenario_harness.py) and
-[`scenario_harness_sfh.py`](scenario_harness_sfh.py) are throwaway scripts that produced the
-scenario matrix by loading the **real** `honeybee_grasshopper_ph` component logic by file path.
-They make the matrix reproducible rather than asserted. Delete both when this packet is archived.
-
-```
-PYTHONPATH=. .venv/bin/python planning/bug-fix/hbjson-occupancy-and-schedules/scenario_harness.py
-PYTHONPATH=. .venv/bin/python planning/bug-fix/hbjson-occupancy-and-schedules/scenario_harness_sfh.py
-```
+The throwaway scenario harnesses were retired at archive. Their durable outputs remain in the
+six-model HBJSON corpus and the corresponding regression tests.
 
 ## Scope
 
