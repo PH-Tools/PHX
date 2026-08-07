@@ -26,7 +26,7 @@ def test_fixture_builder_matches_real_component_output(filename: str, apply_set_
     rebuilt_rooms = build_rooms(
         specs,
         avg_occ_rate=avg_occ_rate,
-        hb_program=actual_rooms[0].properties.energy.program_type.identifier,
+        people_per_area=actual_rooms[0].properties.energy.people.people_per_area,
         apply_set_occupancy=apply_set_occupancy,
     )
 

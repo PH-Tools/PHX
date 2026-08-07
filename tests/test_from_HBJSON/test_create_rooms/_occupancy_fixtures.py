@@ -19,6 +19,7 @@ REFERENCE_HBJSON_DIR = Path("tests", "reference_files", "from_grasshopper_tests"
 OCCUPANCY_SCENARIO_DIR = REFERENCE_HBJSON_DIR / "occupancy_scenarios"
 NON_RES_FIXTURE = REFERENCE_HBJSON_DIR / "Non_Residential_Office.hbjson"
 GENERIC_OFFICE_OCCUPANCY_MEAN = 0.28856164383561644
+GENERIC_OFFICE_PEOPLE_PER_M2 = 0.05651055401870768
 OCCUPANCY_CORPUS_CASES = (
     ("01_no_dwelling_no_occupancy.hbjson", False),
     ("02_single_dwelling_no_occupancy.hbjson", False),
@@ -83,7 +84,7 @@ def build_rooms(
     specs: list[RoomSpec],
     *,
     avg_occ_rate: float,
-    hb_program: str,
+    people_per_area: float,
     apply_set_occupancy: bool = True,
 ) -> list[Room]:
     """Build HB Rooms in the state that ``HBPH - Set Occupancy`` leaves behind.
@@ -113,11 +114,12 @@ def build_rooms(
     for index, spec in enumerate(specs):
         side_length = sqrt(spec.floor_area_m2)
         hb_room = Room.from_box(spec.name, side_length, side_length, 3.0, origin=Point3D(index * 20, 0, 0))
-        hb_room.properties.energy.program_type = program_type_by_identifier(hb_program)
+        hb_room.properties.energy.program_type = program_type_by_identifier("Generic Office Program")
         hb_room.properties.energy.people = hb_room.properties.energy.people.duplicate()
 
         people = hb_room.properties.energy.people
         people.unlock()
+        people.people_per_area = people_per_area
         people.properties.ph.number_people = spec.number_people
         if spec.dwelling is not None:
             dwelling = dwelling_objects.setdefault(spec.dwelling, PhDwellings(_num_dwellings=1))

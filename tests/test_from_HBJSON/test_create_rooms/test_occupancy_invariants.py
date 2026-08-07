@@ -5,6 +5,7 @@ from honeybee.model import Model
 
 from PHX.from_HBJSON import cleanup, create_project
 from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import (
+    GENERIC_OFFICE_PEOPLE_PER_M2,
     NON_RES_FIXTURE,
     OCCUPANCY_SCENARIO_DIR,
     RoomSpec,
@@ -21,7 +22,7 @@ def test_gate_must_read_pre_merge_state():
             RoomSpec("office_with_program_people", 100, 0, None),
         ],
         avg_occ_rate=0.5,
-        hb_program="2019::SmallOffice::OpenOffice",
+        people_per_area=GENERIC_OFFICE_PEOPLE_PER_M2,
         apply_set_occupancy=False,
     )
     merged = cleanup.merge_rooms(rooms, 0.01, 1.0, False)

@@ -10,6 +10,7 @@ from honeybee.room import Room
 
 from PHX.from_HBJSON import create_project
 from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import (
+    GENERIC_OFFICE_PEOPLE_PER_M2,
     OCCUPANCY_CORPUS_CASES,
     OCCUPANCY_SCENARIO_DIR,
     RoomSpec,
@@ -17,8 +18,6 @@ from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import (
     load_hb_model,
     room_specs_from_rooms,
 )
-
-OFFICE_PEOPLE_PER_M2 = 0.05651055401870768
 
 
 @dataclass(frozen=True)
@@ -48,13 +47,13 @@ SYNTHETIC_SCENARIOS = (
         "untagged_program_load",
         [RoomSpec("room_a", 100, 0, None)],
         False,
-        [100 * OFFICE_PEOPLE_PER_M2],
+        [100 * GENERIC_OFFICE_PEOPLE_PER_M2],
     ),
     OccupancyScenario(
         "tagged_dwelling_without_explicit_occupancy",
         [RoomSpec("room_a", 100, 0, "A")],
         False,
-        [100 * OFFICE_PEOPLE_PER_M2],
+        [100 * GENERIC_OFFICE_PEOPLE_PER_M2],
     ),
     OccupancyScenario(
         "one_dwelling_with_explicit_occupancy_on_subset",
@@ -76,13 +75,13 @@ SYNTHETIC_SCENARIOS = (
             RoomSpec("room_c", 100, 0, "B"),
         ],
         False,
-        [0.0, 0.0, 100 * OFFICE_PEOPLE_PER_M2],
+        [0.0, 0.0, 100 * GENERIC_OFFICE_PEOPLE_PER_M2],
     ),
     OccupancyScenario(
         "untagged_rooms_are_gated_independently",
         [RoomSpec("room_a", 100, 1, None), RoomSpec("room_b", 100, 0, None)],
         False,
-        [0.0, 100 * OFFICE_PEOPLE_PER_M2],
+        [0.0, 100 * GENERIC_OFFICE_PEOPLE_PER_M2],
     ),
     OccupancyScenario(
         "explicit_room_without_a_space_still_suppresses_its_dwelling",
@@ -95,7 +94,7 @@ SYNTHETIC_SCENARIOS = (
         "non_tiling_space_preserves_the_room_total",
         [RoomSpec("room_a", 100, 0, None)],
         False,
-        [100 * OFFICE_PEOPLE_PER_M2],
+        [100 * GENERIC_OFFICE_PEOPLE_PER_M2],
         _shrink_only_space,
     ),
 )
@@ -116,7 +115,7 @@ def test_synthetic_occupancy_gate_matrix(scenario: OccupancyScenario):
     rooms = build_rooms(
         scenario.specs,
         avg_occ_rate=0.5,
-        hb_program="2019::SmallOffice::OpenOffice",
+        people_per_area=GENERIC_OFFICE_PEOPLE_PER_M2,
         apply_set_occupancy=scenario.apply_set_occupancy,
     )
     if scenario.prepare:
@@ -146,7 +145,7 @@ def test_real_grasshopper_scenario_matrix(filename: str, apply_set_occupancy: bo
     rooms = build_rooms(
         specs,
         avg_occ_rate=mean(actual_rooms[0].properties.energy.people.occupancy_schedule.values()),
-        hb_program=actual_rooms[0].properties.energy.program_type.identifier,
+        people_per_area=actual_rooms[0].properties.energy.people.people_per_area,
         apply_set_occupancy=apply_set_occupancy,
     )
 

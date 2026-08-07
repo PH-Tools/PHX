@@ -1,14 +1,18 @@
 """Unit tests for explicit PH occupancy indexing by dwelling group."""
 
 from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
-from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import RoomSpec, build_rooms
+from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import (
+    GENERIC_OFFICE_PEOPLE_PER_M2,
+    RoomSpec,
+    build_rooms,
+)
 
 
 def _build(specs: list[RoomSpec]):
     return build_rooms(
         specs,
         avg_occ_rate=0.5,
-        hb_program="2019::SmallOffice::OpenOffice",
+        people_per_area=GENERIC_OFFICE_PEOPLE_PER_M2,
         apply_set_occupancy=False,
     )
 
