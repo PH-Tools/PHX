@@ -1,11 +1,25 @@
 {
+  "description": "Mirror PHX package edits into installed local development targets.",
   "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "REPO_ROOT=$(git rev-parse --show-toplevel) && /Users/em/.claude/ph-tools-fsdeploy.sh --sync-repo \"$REPO_ROOT\"",
+            "timeout": 30,
+            "statusMessage": "Syncing PHX edits to installed development targets..."
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/em/.claude/ph-tools-fsdeploy.sh --sync-repo /Users/em/Dropbox/bldgtyp-00/00_PH_Tools/PHX",
+            "command": "REPO_ROOT=$(git rev-parse --show-toplevel) && /Users/em/.claude/ph-tools-fsdeploy.sh --sync-repo \"$REPO_ROOT\" && printf '%s\\n' '{\"continue\":true,\"suppressOutput\":true}'",
             "timeout": 30,
             "statusMessage": "Syncing PHX to installed development targets..."
           }
