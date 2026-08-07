@@ -1,6 +1,6 @@
 # hbjson-occupancy-and-schedules
 
-**Status:** In progress — Phase 0 complete; Phase 1 next
+**Status:** In progress — Phases 0-1 complete; Phase 2 next
 **Opened:** 2026-08-06
 
 Four defects in the `from_HBJSON` conversion path. Three cause every PHX model built from an
@@ -49,6 +49,10 @@ Six purpose-built Grasshopper models — real component output, no cross-repo im
 
 - [`HBJSON/`](HBJSON/) — the exported models (the fixtures)
 - [`grasshopper-model/`](grasshopper-model/) — the `.ghx` definition and per-case screenshots
+
+The six HBJSONs are also copied to the durable test fixture tree at
+`tests/reference_files/from_grasshopper_tests/hbjson/occupancy_scenarios/`; the Phase 1 tests
+read that copy so archiving this planning packet cannot break the suite.
 
 | file | shape | per-room gate | per-group gate |
 |---|---|---|---|

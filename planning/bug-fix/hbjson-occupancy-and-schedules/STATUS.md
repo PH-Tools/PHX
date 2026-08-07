@@ -1,6 +1,6 @@
 # STATUS — hbjson-occupancy-and-schedules
 
-**Status:** In progress — Phase 0 complete; Phase 1 next
+**Status:** In progress — Phases 0-1 complete; Phase 2 next
 **Last updated:** 2026-08-06
 
 ## Readiness
@@ -8,22 +8,28 @@
 | phase | ready? | note |
 |---|---|---|
 | 0 — ACH ventilation 3600x | **Complete** | 4 focused cases + Excel replay + full suite green |
-| 1 — test scaffolding | **Yes** | Fixture is `HBJSON/01_no_dwelling_no_occupancy.hbjson` |
+| 1 — test scaffolding | **Complete** | 26 focused tests + 819-test full gate green |
 | 2 — Space occupancy + TODO | **Yes** | Gate, key, and distribution rule all decided (D1, D2, D6) |
 | 3 — schedule fallback | **Yes** | Applies to all models (D10) |
 | 4 — lighting EFLH | **Yes** | Must follow Phase 3 |
 | 5 — goldens + closeout | After 0-4 | — |
 
-Phase 0 is complete. Phase 1 is next. Phase 2 is what resolves the reported METr symptom.
+Phases 0 and 1 are complete. Phase 2 is next and is what resolves the reported METr symptom.
 
 ## Current state
 
 Planning is complete. Phase 0 corrects the ACH double-conversion and distributes every Room
-ventilation term by unweighted Space floor-area fraction. Four focused cases, the Excel replay
-invariant, and the full suite pass. Phases 1-5 remain unimplemented. All four defects were
-reproduced in-process against the real project file, six purpose-built Grasshopper models, and
-both committed reference fixtures. Every design and scope question is resolved (D1-D10), the
-last one by a WUFI A/B run.
+ventilation term by unweighted Space floor-area fraction. Phase 1 adds the durable six-model
+scenario corpus, a non-residential HBJSON/WUFI/METr reference, synthetic occupancy fixtures,
+pre-merge and untagged-group invariants, all-six GH anchors, and defect characterization. Its
+26 focused tests pass, as does the full repo gate (819 passed, 3 skipped, 1 deselected). Phases
+2-5 remain unimplemented. Every design and scope question is resolved (D1-D10), the last one
+by a WUFI A/B run.
+
+The planning source for the non-residential reference contained the intended four office
+`People` loads but no serialized PH Spaces; `check_room_has_spaces()` is a no-op. The durable
+test fixture therefore adds one full-floor PH Space per Room so Phase 2 can produce and assert
+the planned `NumberOccupants 0.0 -> nonzero` delta.
 
 Source of the report: METr showed `Occupant quantity = 0` on all five utilization zones of a
 NON-RESIDENTIAL office project (`2616 {IA} 39 15th St`).
@@ -81,7 +87,7 @@ reason to gate by building category. Golden fields change; residential WUFI resu
 
 ## Next step
 
-Begin [`plans/PHASE-1-test-scaffolding.md`](plans/PHASE-1-test-scaffolding.md).
+Begin [`plans/PHASE-2-space-occupancy-load.md`](plans/PHASE-2-space-occupancy-load.md).
 
 The six phase plans in [`plans/`](plans/) are the handoff surface — each is self-contained and
 can be given to a coding agent on its own.
@@ -113,7 +119,9 @@ None external.
 ## Test corpus
 
 Six Grasshopper models in [`HBJSON/`](HBJSON/), definitions in
-[`grasshopper-model/`](grasshopper-model/). Full table in `PRD.md`. Highlights:
+[`grasshopper-model/`](grasshopper-model/), and durable test copies in
+`tests/reference_files/from_grasshopper_tests/hbjson/occupancy_scenarios/`. Full table in
+`PRD.md`. Highlights:
 
 - **03** anchors the group-uniform density invariant to 8 decimal places
   (`7 / 0.720833 / 400 = 0.02427746`, actual `0.02427746`).

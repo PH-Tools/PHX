@@ -158,6 +158,10 @@ def reset_class_counters():
             Path("tests", "reference_files", "from_grasshopper_tests", "hbjson", "Multi_Room_Complete.hbjson"),
             Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "Multi_Room_Complete.xml"),
         ),
+        (
+            Path("tests", "reference_files", "from_grasshopper_tests", "hbjson", "Non_Residential_Office.hbjson"),
+            Path("tests", "reference_files", "from_grasshopper_tests", "wufi_xml", "Non_Residential_Office.xml"),
+        ),
     ]
 )
 def to_xml_reference_cases(request):
@@ -178,6 +182,10 @@ def to_xml_reference_cases(request):
         (
             Path("tests", "reference_files", "from_grasshopper_tests", "hbjson", "Multi_Room_Complete.hbjson"),
             Path("tests", "reference_files", "from_WUFI", "metr_json", "Multi_Room_Complete.json"),
+        ),
+        (
+            Path("tests", "reference_files", "from_grasshopper_tests", "hbjson", "Non_Residential_Office.hbjson"),
+            Path("tests", "reference_files", "from_grasshopper_tests", "metr_json", "Non_Residential_Office.json"),
         ),
     ]
 )
