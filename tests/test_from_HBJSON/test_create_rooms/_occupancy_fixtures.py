@@ -18,6 +18,7 @@ from PHX.from_HBJSON import read_HBJSON_file
 REFERENCE_HBJSON_DIR = Path("tests", "reference_files", "from_grasshopper_tests", "hbjson")
 OCCUPANCY_SCENARIO_DIR = REFERENCE_HBJSON_DIR / "occupancy_scenarios"
 NON_RES_FIXTURE = REFERENCE_HBJSON_DIR / "Non_Residential_Office.hbjson"
+GENERIC_OFFICE_OCCUPANCY_MEAN = 0.28856164383561644
 OCCUPANCY_CORPUS_CASES = (
     ("01_no_dwelling_no_occupancy.hbjson", False),
     ("02_single_dwelling_no_occupancy.hbjson", False),

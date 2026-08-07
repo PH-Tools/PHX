@@ -288,6 +288,8 @@ watch all six real models plus the eight synthetic scenarios pass.
 
 ## Phase 3 — HB-style fallback for occupancy and lighting schedules
 
+**Status:** Complete — 8 focused tests, Excel replay, and the 845-test full gate pass.
+
 (Scope question resolved — see PRD "Resolved question". Applies to all models.)
 
 File: `PHX/from_HBJSON/create_schedules.py`. Mirror the ventilation structure at `:139-176`:

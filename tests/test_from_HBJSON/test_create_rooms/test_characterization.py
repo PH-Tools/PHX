@@ -1,4 +1,4 @@
-"""Characterize the three known load/schedule defects before behavior changes."""
+"""Characterize the occupancy and schedule fields changed by the phased fixes."""
 
 from xml.etree import ElementTree
 
@@ -7,7 +7,11 @@ import pytest
 from PHX.from_HBJSON import create_project, create_schedules
 from PHX.to_METr_JSON import metr_builder
 from PHX.to_WUFI_XML import xml_builder
-from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import NON_RES_FIXTURE, load_hb_model
+from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import (
+    GENERIC_OFFICE_OCCUPANCY_MEAN,
+    NON_RES_FIXTURE,
+    load_hb_model,
+)
 
 
 def _load_non_res_model():
@@ -29,15 +33,15 @@ def test_space_peak_occupancy_comes_from_the_non_res_people_load():
     assert [space.peak_occupancy for space in spaces] == pytest.approx([5.65] * 4)
 
 
-def test_DEFECT_2_schedule_with_no_ph_periods_is_degenerate():
-    """A stock HB occupancy schedule currently becomes 0/24/365 with factor 0."""
+def test_schedule_without_ph_periods_uses_annual_mean():
+    """A stock HB occupancy schedule becomes 0/24/365 with its annual mean."""
     hb_room = _load_non_res_model().rooms[0]
     schedule = create_schedules.build_occupancy_schedule_from_hb_room(hb_room)
 
     assert schedule is not None
     assert (schedule.start_hour, schedule.end_hour) == (0, 24)
     assert schedule.annual_utilization_days == pytest.approx(365.0, abs=0.001)
-    assert schedule.relative_utilization_factor == 0.0
+    assert schedule.relative_utilization_factor == pytest.approx(GENERIC_OFFICE_OCCUPANCY_MEAN)
 
 
 def test_DEFECT_3_full_load_lighting_hours_is_currently_8760():
@@ -49,20 +53,22 @@ def test_DEFECT_3_full_load_lighting_hours_is_currently_8760():
     assert schedule.full_load_lighting_hours == 8760
 
 
-def test_wufi_reference_pins_current_defect_fields():
-    """The WUFI reference exposes all three fields that later phases must flip."""
+def test_wufi_reference_pins_current_phase_fields():
+    """The WUFI reference pins the corrected load/factor and pre-Phase-4 EFLH."""
     root = ElementTree.fromstring(xml_builder.generate_WUFI_XML_from_object(_build_non_res_project()))
 
     assert [float(node.text) for node in root.iter("NumberOccupants")] == pytest.approx([5.65] * 4)
-    assert [float(node.text) for node in root.iter("RelativeAbsenteeism")] == [0.0]
+    assert [float(node.text) for node in root.iter("RelativeAbsenteeism")] == pytest.approx(
+        [GENERIC_OFFICE_OCCUPANCY_MEAN]
+    )
     assert [float(node.text) for node in root.iter("LightingFullLoadHours")] == [8760.0] * 4
 
 
-def test_metr_reference_pins_current_defect_fields():
-    """The METr reference exposes all three fields that later phases must flip."""
+def test_metr_reference_pins_current_phase_fields():
+    """The METr reference pins the corrected load/factor and pre-Phase-4 EFLH."""
     metr = metr_builder.generate_metr_json_dict(_build_non_res_project())
     loads = [variant["building"]["lZone"][0]["loadsZ"] for variant in metr["lVariant"]]
 
-    assert [pattern["relAbs"] for pattern in metr["lUtilNResPH"]] == [0.0]
+    assert [pattern["relAbs"] for pattern in metr["lUtilNResPH"]] == pytest.approx([GENERIC_OFFICE_OCCUPANCY_MEAN])
     assert [person["nOcc"] for zone in loads for person in zone["lPersZ"]] == pytest.approx([5.65] * 4)
     assert [lighting["lFLoadH"] for zone in loads for lighting in zone["lLight"]] == [8760] * 4
