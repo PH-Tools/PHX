@@ -2,12 +2,13 @@
 
 Master index of tracked planning work in PHX. Update when a unit of work is added, changes status, or is folded back into `context/`/`docs/`.
 
-_Last updated: 2026-08-03_
+_Last updated: 2026-08-06_
 
 ## Active / current work
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
+| HBJSON Space loads + utilization schedules | Bug fix | **In progress** — Phase 0 complete; Phase 1 next | [`bug-fix/hbjson-occupancy-and-schedules/`](bug-fix/hbjson-occupancy-and-schedules/README.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
 
 ## Completed / archived work
