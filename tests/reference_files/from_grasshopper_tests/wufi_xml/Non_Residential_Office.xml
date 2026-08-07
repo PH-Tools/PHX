@@ -63,7 +63,7 @@
 			<EndUtilization>24</EndUtilization>
 			<AnnualUtilizationDays>365.0</AnnualUtilizationDays>
 			<IlluminationLevel unit="lux">300</IlluminationLevel>
-			<RelativeAbsenteeism unit="-">0.0</RelativeAbsenteeism>
+			<RelativeAbsenteeism unit="-">0.28856164383561644</RelativeAbsenteeism>
 			<PartUseFactorPeriodForLighting unit="-">1</PartUseFactorPeriodForLighting>
 		</UtilizationPattern>
 	</UtilizationPatternsPH>
@@ -306,7 +306,7 @@
 								<Name>-Room_1_default_space</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
-								<NumberOccupants>0.0</NumberOccupants>
+								<NumberOccupants>5.65</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">100.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 						</LoadsPersonsPH>
@@ -327,7 +327,7 @@
 								<LintelHeight>1</LintelHeight>
 								<WindowWidth>1</WindowWidth>
 								<InstalledLightingPower>10.55</InstalledLightingPower>
-								<LightingFullLoadHours>8760</LightingFullLoadHours>
+								<LightingFullLoadHours>2555.4</LightingFullLoadHours>
 							</LoadsLighting>
 						</LoadsLightingsPH>
 						<GrossVolume_Selection>7</GrossVolume_Selection>
@@ -875,7 +875,7 @@
 								<Name>-Room_2_default_space</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
-								<NumberOccupants>0.0</NumberOccupants>
+								<NumberOccupants>5.65</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">100.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 						</LoadsPersonsPH>
@@ -896,7 +896,7 @@
 								<LintelHeight>1</LintelHeight>
 								<WindowWidth>1</WindowWidth>
 								<InstalledLightingPower>10.55</InstalledLightingPower>
-								<LightingFullLoadHours>8760</LightingFullLoadHours>
+								<LightingFullLoadHours>2555.4</LightingFullLoadHours>
 							</LoadsLighting>
 						</LoadsLightingsPH>
 						<GrossVolume_Selection>7</GrossVolume_Selection>
@@ -1444,7 +1444,7 @@
 								<Name>-Room_3_default_space</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
-								<NumberOccupants>0.0</NumberOccupants>
+								<NumberOccupants>5.65</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">100.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 						</LoadsPersonsPH>
@@ -1465,7 +1465,7 @@
 								<LintelHeight>1</LintelHeight>
 								<WindowWidth>1</WindowWidth>
 								<InstalledLightingPower>10.55</InstalledLightingPower>
-								<LightingFullLoadHours>8760</LightingFullLoadHours>
+								<LightingFullLoadHours>2555.4</LightingFullLoadHours>
 							</LoadsLighting>
 						</LoadsLightingsPH>
 						<GrossVolume_Selection>7</GrossVolume_Selection>
@@ -2013,7 +2013,7 @@
 								<Name>-Room_4_default_space</Name>
 								<IdentNrUtilizationPattern>1</IdentNrUtilizationPattern>
 								<ChoiceActivityPersons>3</ChoiceActivityPersons>
-								<NumberOccupants>0.0</NumberOccupants>
+								<NumberOccupants>5.65</NumberOccupants>
 								<FloorAreaUtilizationZone unit="m²">100.0</FloorAreaUtilizationZone>
 							</LoadPerson>
 						</LoadsPersonsPH>
@@ -2034,7 +2034,7 @@
 								<LintelHeight>1</LintelHeight>
 								<WindowWidth>1</WindowWidth>
 								<InstalledLightingPower>10.55</InstalledLightingPower>
-								<LightingFullLoadHours>8760</LightingFullLoadHours>
+								<LightingFullLoadHours>2555.4</LightingFullLoadHours>
 							</LoadsLighting>
 						</LoadsLightingsPH>
 						<GrossVolume_Selection>7</GrossVolume_Selection>

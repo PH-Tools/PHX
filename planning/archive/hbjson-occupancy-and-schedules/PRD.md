@@ -1,6 +1,6 @@
 # PRD — HBJSON Space load and utilization-schedule defects
 
-**Status:** In progress — Phases 0-4 complete; Phase 5 next
+**Status:** Complete — archived 2026-08-06
 **Last updated:** 2026-08-06
 
 ## Problem

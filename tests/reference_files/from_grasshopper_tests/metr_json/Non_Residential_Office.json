@@ -1057,7 +1057,7 @@
       "endU": 24,
       "aUtil": 365.0,
       "illumLev": 300.0,
-      "relAbs": 0.0,
+      "relAbs": 0.28856164383561644,
       "pUfLight": 1.0,
       "aOccup": "NaN",
       "rSetpT": "NaN",
@@ -2726,7 +2726,7 @@
                   "n": "-Room_1_default_space",
                   "idUPat": 1,
                   "actPers": 3,
-                  "nOcc": 0.0,
+                  "nOcc": 5.65,
                   "flAUZone": 100.0
                 }
               ],
@@ -2749,7 +2749,7 @@
                   "lintelH": 1.0,
                   "widthW": 1.0,
                   "instLP": 10.55,
-                  "lFLoadH": 8760,
+                  "lFLoadH": 2555.4,
                   "lightTrU": "NaN"
                 }
               ],
@@ -4476,7 +4476,7 @@
                   "n": "-Room_2_default_space",
                   "idUPat": 1,
                   "actPers": 3,
-                  "nOcc": 0.0,
+                  "nOcc": 5.65,
                   "flAUZone": 100.0
                 }
               ],
@@ -4499,7 +4499,7 @@
                   "lintelH": 1.0,
                   "widthW": 1.0,
                   "instLP": 10.55,
-                  "lFLoadH": 8760,
+                  "lFLoadH": 2555.4,
                   "lightTrU": "NaN"
                 }
               ],
@@ -6226,7 +6226,7 @@
                   "n": "-Room_3_default_space",
                   "idUPat": 1,
                   "actPers": 3,
-                  "nOcc": 0.0,
+                  "nOcc": 5.65,
                   "flAUZone": 100.0
                 }
               ],
@@ -6249,7 +6249,7 @@
                   "lintelH": 1.0,
                   "widthW": 1.0,
                   "instLP": 10.55,
-                  "lFLoadH": 8760,
+                  "lFLoadH": 2555.4,
                   "lightTrU": "NaN"
                 }
               ],
@@ -7976,7 +7976,7 @@
                   "n": "-Room_4_default_space",
                   "idUPat": 1,
                   "actPers": 3,
-                  "nOcc": 0.0,
+                  "nOcc": 5.65,
                   "flAUZone": 100.0
                 }
               ],
@@ -7999,7 +7999,7 @@
                   "lintelH": 1.0,
                   "widthW": 1.0,
                   "instLP": 10.55,
-                  "lFLoadH": 8760,
+                  "lFLoadH": 2555.4,
                   "lightTrU": "NaN"
                 }
               ],

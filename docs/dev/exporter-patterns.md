@@ -49,6 +49,34 @@ Each CLI entry point wires up these parameters differently:
 
 Then each exporter serializes the `PhxProject` to its target format.
 
+### PH-style and Honeybee-style schedule fallback
+
+`from_HBJSON/create_schedules.py` supports both schedule representations that occur in source
+models. When a schedule has explicit Passive House `daily_operating_periods`, PHX preserves the
+PH-style start/end windows, operating days, and relative utilization factor. When those periods
+are absent, PHX derives an HB-style fallback from the Honeybee hourly schedule instead of
+exporting an all-zero utilization factor.
+
+For occupancy and lighting, the fallback is a `0 / 24 / 365` pattern whose relative utilization
+factor is the annual mean of the hourly Honeybee values. The two representations are equivalent
+at the annual level:
+
+```
+annual utilization = operating-window hours / 8760 * relative utilization factor
+```
+
+Thus a PH-style `7-18`, 250-day pattern at factor `1.0` and a `0-24`, 365-day pattern at factor
+`0.313927` carry the same annual utilization. Ventilation follows the same PH-style-versus-HB-style
+branching pattern but uses its existing four-part Honeybee fallback because ventilation needs
+daily operating periods rather than a single annual mean.
+
+Lighting full-load hours are then calculated as the lighting schedule's annual operating-window
+hours multiplied by its relative utilization factor. This is EFLH (the sum of hourly load
+fractions), not the raw window. The convention comes from the 2021 Phius non-residential loads
+protocol: use one occupancy pattern for the space, then use EFLH for lighting because WUFI treats
+the EFLH input as the governing lighting value. Keeping the fallback and EFLH calculation together
+means `8760 * mean(hourly lighting values)` reproduces the source schedule's annual lighting load.
+
 ---
 
 ## WUFI XML Exporter (`to_WUFI_XML/`)
@@ -261,6 +289,20 @@ ppp_txt_to_file.write_ppp_file(target_path, ppp_file)
 4. **PHX builders** (`phx_schemas.py`): Functions named `_PhxClassName` (or `_WufiClassName` for WUFI-specific types) that consume Pydantic objects and produce PHX model objects. A central dispatcher `as_phx_obj(_model, _schema_name, **kwargs)` looks up builders via `getattr` on the module. Type libraries (windows, assemblies, shades, schedules) are built first, then each variant's building, certification, and HVAC systems.
 
 5. **Entry point** (`phx_converter.py`): `convert_WUFI_XML_to_PHX_project(_wufi_xml_project: WUFIplusProject) -> PhxProject` — a thin wrapper that calls `_PhxProject()` from `phx_schemas`.
+
+### WUFI utilization zones without ventilation rooms
+
+WUFI does not require its three per-zone lists to have identical membership. A zone can contain
+`LoadsPersonsPH` and `LoadsLightingsPH` records for utilization zones that are absent from
+`RoomsVentilation` (for example, stairs, corridors, elevator areas, and laundry rooms with no
+mechanical ventilation assignment).
+
+The importer therefore builds `PhxSpace` objects in person-load order from the union of person
+loads and ventilation rooms. Matching records are joined by name, duplicate-named ventilation
+rooms remain distinct, and load-only Spaces take their floor area from
+`FloorAreaUtilizationZone`. On export, `LoadsPersonsPH` and `LoadsLightingsPH` include every
+Space, while `RoomsVentilation` includes only Spaces with nonzero ventilation airflow. This
+preserves WUFI's asymmetric list membership through a WUFI XML → PHX → WUFI XML round-trip.
 
 ### Full pipeline
 

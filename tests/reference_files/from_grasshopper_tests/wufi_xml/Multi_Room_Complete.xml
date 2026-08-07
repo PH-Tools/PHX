@@ -771,7 +771,7 @@
 								<LintelHeight>1</LintelHeight>
 								<WindowWidth>1</WindowWidth>
 								<InstalledLightingPower>13.911891558295746</InstalledLightingPower>
-								<LightingFullLoadHours>8760</LightingFullLoadHours>
+								<LightingFullLoadHours>365.0</LightingFullLoadHours>
 							</LoadsLighting>
 							<LoadsLighting index="1">
 								<Name>102-Room_4</Name>
@@ -789,7 +789,7 @@
 								<LintelHeight>1</LintelHeight>
 								<WindowWidth>1</WindowWidth>
 								<InstalledLightingPower>13.911891558295746</InstalledLightingPower>
-								<LightingFullLoadHours>8760</LightingFullLoadHours>
+								<LightingFullLoadHours>365.0</LightingFullLoadHours>
 							</LoadsLighting>
 						</LoadsLightingsPH>
 						<GrossVolume_Selection>7</GrossVolume_Selection>

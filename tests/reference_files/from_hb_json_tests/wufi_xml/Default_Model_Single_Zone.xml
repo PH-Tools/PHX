@@ -63,7 +63,7 @@
 			<EndUtilization>24</EndUtilization>
 			<AnnualUtilizationDays>365.0</AnnualUtilizationDays>
 			<IlluminationLevel unit="lux">300</IlluminationLevel>
-			<RelativeAbsenteeism unit="-">0.0</RelativeAbsenteeism>
+			<RelativeAbsenteeism unit="-">0.28856164383561644</RelativeAbsenteeism>
 			<PartUseFactorPeriodForLighting unit="-">1</PartUseFactorPeriodForLighting>
 		</UtilizationPattern>
 	</UtilizationPatternsPH>

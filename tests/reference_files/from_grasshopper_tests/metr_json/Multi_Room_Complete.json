@@ -1664,7 +1664,7 @@
       "endU": 24,
       "aUtil": 365.0,
       "illumLev": 300.0,
-      "relAbs": 0.0,
+      "relAbs": 0.7208333333333333,
       "pUfLight": 1.0,
       "aOccup": "NaN",
       "rSetpT": "NaN",
@@ -4409,7 +4409,7 @@
                   "lintelH": 1.0,
                   "widthW": 1.0,
                   "instLP": 13.911891558295746,
-                  "lFLoadH": 8760,
+                  "lFLoadH": 365.0,
                   "lightTrU": "NaN"
                 },
                 {
@@ -4428,7 +4428,7 @@
                   "lintelH": 1.0,
                   "widthW": 1.0,
                   "instLP": 13.911891558295746,
-                  "lFLoadH": 8760,
+                  "lFLoadH": 365.0,
                   "lightTrU": "NaN"
                 }
               ],

@@ -218,6 +218,31 @@ The following model classes support `+` for consolidation (merging coplanar surf
 ### Program = Load + Schedule
 Ventilation, occupancy, and lighting each follow: `PhxProgram* = PhxLoad* + PhxSchedule*`. The load holds numeric values (airflow, people, watts); the schedule holds operating periods and hours.
 
+### Occupancy Channels and Lighting EFLH
+
+HBJSON occupancy reaches WUFI XML and METr JSON through two independent channels:
+
+| Channel | PHX field | WUFI XML | METr JSON |
+|---------|-----------|----------|-----------|
+| Explicit Passive House occupancy | `PhxZone.res_occupant_quantity` | `OccupantQuantityUserDef` | `loadsZ.nOcc` |
+| Derived Honeybee People load | `PhxSpace.occupancy.load.people_per_m2` / `peak_occupancy` | `LoadPerson/NumberOccupants` | `loadsZ.lPersZ[].nOcc` |
+
+The channels are mutually exclusive per dwelling group. If any pre-merge Honeybee Room in a
+dwelling group carries explicit PH occupancy, PHX suppresses the derived Space occupancy for
+every Room in that group. Otherwise it derives occupants from the Honeybee People load. An
+untagged Room is a group of one. The gate is group-level because the upstream *Set Occupancy*
+workflow normalizes `people_per_area` across the whole dwelling; a per-Room gate would leak
+derived occupants from the other Rooms and double-count the same people. PHX distributes each
+Room's derived total among its Spaces by their share of total PH Space floor area, preserving
+the Room total even when the Spaces do not tile the Honeybee Room.
+
+`PhxScheduleLighting.full_load_lighting_hours` is an equivalent-full-load-hours (EFLH) value:
+the schedule's annual operating-window hours multiplied by its relative utilization factor,
+clamped to 0-8760. It is not merely the operating window. This follows the Phius non-residential
+loads protocol: the shared occupancy utilization pattern describes when the space is in use,
+while lighting EFLH carries the load-weighted annual lighting operation and overrides the
+lighting pattern in WUFI.
+
 ### Dict-Keyed vs List Collections
 - **Dict-keyed** (by identifier/key): `assembly_types`, `window_types`, `shade_types`, `_devices`, `_thermal_bridges` — O(1) lookup
 - **List-ordered**: `variants`, `zones`, `spaces`, `_components` — ordered iteration
@@ -260,6 +285,12 @@ Some enums use `_missing_()` to handle unknown values at runtime rather than rai
 **Libraries vs inline:** Honeybee stores constructions/schedules inline on rooms and faces. PHX extracts them into project-level libraries and components reference by identifier.
 
 **Room → Zone + Space split:** A single HB Room may become one PhxZone with one PhxSpace, or multiple rooms may be grouped into a single zone with multiple spaces (grouped by `ph_bldg_segment`).
+
+**WUFI load-only Spaces:** A WUFI zone may contain person/lighting utilization-zone records that
+have no matching `RoomsVentilation` record. The WUFI importer still creates a `PhxSpace` for each
+person-load record so those loads survive a round-trip. Such a Space has zero ventilation airflow;
+the WUFI exporter includes it in `LoadsPersonsPH` / `LoadsLightingsPH` but correctly omits it from
+`RoomsVentilation`.
 
 **Program composition:** HB stores loads and schedules separately. PHX pairs them: `PhxProgramVentilation` = `PhxLoadVentilation` + `PhxScheduleVentilation`.
 
