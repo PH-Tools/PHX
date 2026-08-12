@@ -507,7 +507,10 @@ class PHPPConnection:
         for phx_variant in phx_project.variants:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
-                    for ap_polygon in phx_aperture.polygons:
+                    for ap_element in phx_aperture.elements:
+                        ap_polygon = ap_element.polygon
+                        if ap_polygon is None:
+                            continue
                         host_polygon = phx_component.get_host_polygon_by_child_id_num(ap_polygon.id_num)
                         phpp_host_surface_id_name = self.areas.surfaces.get_surface_phpp_id_by_name(
                             host_polygon.display_name, _use_cache=True
@@ -526,7 +529,7 @@ class PHPPConnection:
                             windows_rows.WindowRow(
                                 shape=self.shape.WINDOWS,
                                 phx_polygon=ap_polygon,
-                                phx_construction=phx_aperture.window_type,
+                                phx_aperture_element=ap_element,
                                 phpp_host_surface_id_name=phpp_host_surface_id_name,
                                 phpp_id_frame=phpp_id_frame,
                                 phpp_id_glazing=phpp_id_glazing,
