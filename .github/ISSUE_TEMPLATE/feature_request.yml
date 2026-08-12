@@ -1,0 +1,76 @@
+name: Feature / enhancement
+description: PHX should support something it does not support today
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which conversion path is affected?
+      multiple: true
+      options:
+        - TO_PHPP
+        - TO_WUFI
+        - FROM_HBJSON
+        - FROM_WUFI_XML
+        - FROM_PHPP
+        - TO_METr_JSON
+        - PHX model
+        - Excel interop (PHX/xl)
+        - Documentation
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is painful today. Say what has to be done by hand, or what result is wrong without it — not just the name of the missing feature.
+      placeholder: |
+        PHX never writes cooling equipment to the PHPP. Any project with mechanical
+        cooling needs the Cooling Units worksheet filled in by hand after every export.
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+      description: What exists today, including any partial scaffolding. Cite `file.py:line` where you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired
+    attributes:
+      label: Desired behavior
+      description: What PHX should do. Be explicit about what is out of scope, so the ticket does not grow.
+    validations:
+      required: true
+
+  - type: textarea
+    id: where
+    attributes:
+      label: Where in the code
+      description: Bulleted list of the files a change would touch — including new files that need creating.
+      placeholder: |
+        - `PHX/PHPP/sheet_io/` — new `io_summ_vent.py`
+        - `PHX/PHPP/phpp_localization/shape_model.py` + `EN_*.json` — new worksheet shape
+        - `PHX/hbjson_to_phpp.py` — add to the write sequence
+
+  - type: textarea
+    id: open_questions
+    attributes:
+      label: Open questions
+      description: Anything that must be decided before starting — especially whether the source data exists upstream in honeybee-ph.
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Checkboxes stating what "done" means.
+      value: |
+        - [ ]
+        - [ ] A model without this feature is unaffected and does not error
+        - [ ] Verified against a hand-entered reference file

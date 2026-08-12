@@ -1,0 +1,76 @@
+name: Bug report
+description: Something in PHX produces the wrong result, or fails
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which conversion path is affected?
+      multiple: true
+      options:
+        - TO_PHPP
+        - TO_WUFI
+        - FROM_HBJSON
+        - FROM_WUFI_XML
+        - FROM_PHPP
+        - TO_METr_JSON
+        - PHX model
+        - Excel interop (PHX/xl)
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What goes wrong, and why it matters. Name the affected result if you know it (e.g. "heating demand is understated", "the export leaves a half-written workbook").
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Numbered steps. Note the PHPP/WUFI version if it is version-specific.
+      placeholder: |
+        1. Set the ventilation type to "Extract air" in Grasshopper
+        2. Export to PHPP v10.6 EN
+        3. The Ventilation worksheet shows "1-Balanced PH ventilation with HR"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+      description: What the code does today. Cite `file.py:line` where you can — it is the single most useful thing in the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired
+    attributes:
+      label: Desired behavior
+      description: What should happen instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: where
+    attributes:
+      label: Where in the code
+      description: Bulleted list of the files and line ranges a fix would touch. Leave blank if unknown.
+      placeholder: |
+        - `PHX/PHPP/phpp_app.py` — `write_project_ventilation_type()`
+        - `PHX/model/hvac/ventilation.py` — likely needs the attribute
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Checkboxes stating how we know it is fixed. Include the test that would prove it.
+      value: |
+        - [ ]
+        - [ ] Regression test covering this case
