@@ -13,6 +13,7 @@ from honeybee_energy_ph.properties.construction.opaque import OpaqueConstruction
 from honeybee_energy_ph.properties.load.people import PeoplePhProperties
 from honeybee_ph.properties.aperture import AperturePhProperties
 from honeybee_ph.properties.room import RoomPhProperties
+from honeybee_ph_utils import aperture_psi_install
 
 from PHX.from_HBJSON import create_geometry
 from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
@@ -214,6 +215,21 @@ def create_component_from_hb_aperture(
         new_phx_ap_element.shading_dimensions.d_over = shading_dims.d_over
     new_phx_ap_element.winter_shading_factor = hb_ap_prop_ph.winter_shading_factor
     new_phx_ap_element.summer_shading_factor = hb_ap_prop_ph.summer_shading_factor
+
+    # -- Set the element's resolved per-edge psi-install values (aperture-level
+    # -- Install Types over construction frame defaults, resolved upstream).
+    try:
+        psi_values = aperture_psi_install.resolve_psi_install_values(_hb_aperture)
+    except ValueError:
+        # -- No PH frame and not fully assigned: fall back to the window-type's values.
+        psi_values = None
+    if psi_values is not None:
+        new_phx_ap_element.install_psi = components.PhxApertureElementPsiInstall(
+            top=psi_values["top"],
+            right=psi_values["right"],
+            bottom=psi_values["bottom"],
+            left=psi_values["left"],
+        )
 
     phx_ap.add_elements((new_phx_ap_element,))
 

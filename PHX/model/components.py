@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Collection
+from dataclasses import dataclass
 from typing import ClassVar
 
 from PHX.model import constructions, geometry
@@ -367,6 +368,32 @@ class PhxApertureShadingDimensions(PhxComponentBase):
         self.o_over: float | None = None  # Overhang Depth from glass
 
 
+@dataclass
+class PhxApertureElementPsiInstall:
+    """Resolved per-edge psi-install values (W/mK) for a single aperture element.
+
+    Values are the *effective* installation psi-values for the element's four edges,
+    resolved upstream (honeybee-ph Install Types over construction defaults). When an
+    element carries no resolved values, consumers fall back to the host window-type's
+    per-edge ``frame_*.psi_install`` values (see PhxApertureElement.resolved_psi_install).
+    """
+
+    top: float = 0.0
+    right: float = 0.0
+    bottom: float = 0.0
+    left: float = 0.0
+
+    @property
+    def values(self) -> tuple[float, float, float, float]:
+        """The four edge values in (top, right, bottom, left) order."""
+        return (self.top, self.right, self.bottom, self.left)
+
+    @property
+    def unique_key(self) -> str:
+        """A stable, content-keyed identity string for grouping / variant synthesis."""
+        return "psi({:.4f},{:.4f},{:.4f},{:.4f})".format(*self.values)
+
+
 class PhxApertureElement(PhxComponentBase):
     """A single sash or glazing unit within an aperture component.
 
@@ -385,6 +412,9 @@ class PhxApertureElement(PhxComponentBase):
             cooling season (0-1). Default: 0.75.
         shading_dimensions (PhxApertureShadingDimensions): PHPP-style horizon, reveal,
             and overhang dimensions. Default: new PhxApertureShadingDimensions().
+        install_psi (PhxApertureElementPsiInstall | None): The element's resolved
+            per-edge psi-install values, or None to use the window-type's values.
+            Default: None.
     """
 
     def __init__(self, _host: PhxComponentAperture):
@@ -396,6 +426,24 @@ class PhxApertureElement(PhxComponentBase):
         self.winter_shading_factor: float = 0.75
         self.summer_shading_factor: float = 0.75
         self.shading_dimensions = PhxApertureShadingDimensions()
+        self.install_psi: PhxApertureElementPsiInstall | None = None
+
+    @property
+    def resolved_psi_install(self) -> PhxApertureElementPsiInstall:
+        """The element's effective per-edge psi-install values (W/mK).
+
+        The element's own resolved values when set, otherwise the host
+        window-type's per-edge frame psi-install values.
+        """
+        if self.install_psi is not None:
+            return self.install_psi
+        window_type = self.host.window_type
+        return PhxApertureElementPsiInstall(
+            top=window_type.frame_top.psi_install,
+            right=window_type.frame_right.psi_install,
+            bottom=window_type.frame_bottom.psi_install,
+            left=window_type.frame_left.psi_install,
+        )
 
     @property
     def area(self) -> float:
@@ -484,6 +532,9 @@ class PhxApertureElement(PhxComponentBase):
             abs(self.winter_shading_factor - other.winter_shading_factor) > TOLERANCE
             or abs(self.summer_shading_factor - other.summer_shading_factor) > TOLERANCE
         ):
+            return False
+
+        if self.resolved_psi_install.unique_key != other.resolved_psi_install.unique_key:
             return False
 
         return self.polygon == other.polygon
@@ -613,6 +664,17 @@ class PhxComponentAperture(PhxComponentBase):
         return tuple(sorted(self.polygon_ids))
 
     @property
+    def psi_install_key(self) -> str:
+        """A stable key for the elements' resolved psi-install values.
+
+        Components with elements resolving to different per-edge psi-install values
+        must not merge (a WUFI Component references exactly one WindowType). Normally
+        all of a component's elements share one resolved tuple, so this is a single
+        'psi(...)' string.
+        """
+        return "|".join(sorted({e.resolved_psi_install.unique_key for e in self.elements}))
+
+    @property
     def unique_key(self) -> str:
         """Returns a unique text key,. Useful for sorting / grouping / merging components."""
         attributes = {
@@ -625,6 +687,7 @@ class PhxComponentAperture(PhxComponentBase):
             "shade_type_id_num": self.shade_type_id_num,
             "variant_type_name": self.variant_type_name,
             "default_monthly_shading_correction_factor": self.default_monthly_shading_correction_factor,
+            "psi_install_key": self.psi_install_key,
         }
         return "-".join(f"{v}" for k, v in attributes.items())
 

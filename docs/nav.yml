@@ -25,6 +25,7 @@ nav:
       - phx_site: api/model/phx_site.md
       - assembly_pathways: api/model/assembly_pathways.md
       - utilization_patterns: api/model/utilization_patterns.md
+      - transforms: api/model/transforms.md
       - Enums:
         - building: api/model/enums/building.md
         - hvac: api/model/enums/hvac.md

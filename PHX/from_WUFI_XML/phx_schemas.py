@@ -257,39 +257,30 @@ def _PhxConstructionWindow(_t: wufi_xml.WufiWindowType) -> PhxConstructionWindow
     phx_obj.glass_mean_emissivity = _t.MeanEmissivity
     phx_obj.glass_g_value = _t.g_Value
 
-    # -- if there is no value provide, fall back to the last value found...
+    # -- If a side's value is missing (None) fall back to the last side found (an
+    # -- explicit 0.0 in the XML is a real value - eg. a mulled edge - and is kept).
     # -- I *think* there will always be a 'left' frame-element?
-    frame_data_left = {
-        "width": _t.Frame_Width_Left or 0.1,
-        "u_value": _t.Frame_U_Left or 1.0,
-        "psi_glazing": _t.Glazing_Psi_Left or 0.0,
-        "psi_install": _t.Frame_Psi_Left or 0.0,
-    }
-    phx_obj.frame_left = PhxWindowFrameElement(**frame_data_left)
+    def _frame_element(_width, _u_value, _psi_glazing, _psi_install, _fallback: PhxWindowFrameElement):
+        return PhxWindowFrameElement(
+            width=_width if _width is not None else _fallback.width,
+            u_value=_u_value if _u_value is not None else _fallback.u_value,
+            psi_glazing=_psi_glazing if _psi_glazing is not None else _fallback.psi_glazing,
+            psi_install=_psi_install if _psi_install is not None else _fallback.psi_install,
+        )
 
-    frame_data_right = {
-        "width": _t.Frame_Width_Right or frame_data_left["width"],
-        "u_value": _t.Frame_U_Right or frame_data_left["u_value"],
-        "psi_glazing": _t.Glazing_Psi_Right or frame_data_left["psi_glazing"],
-        "psi_install": _t.Frame_Psi_Right or frame_data_left["psi_install"],
-    }
-    phx_obj.frame_right = PhxWindowFrameElement(**frame_data_right)
-
-    frame_data_top = {
-        "width": _t.Frame_Width_Top or frame_data_right["width"],
-        "u_value": _t.Frame_U_Top or frame_data_right["u_value"],
-        "psi_glazing": _t.Glazing_Psi_Top or frame_data_right["psi_glazing"],
-        "psi_install": _t.Frame_Psi_Top or frame_data_right["psi_install"],
-    }
-    phx_obj.frame_top = PhxWindowFrameElement(**frame_data_top)
-
-    frame_data_bottom = {
-        "width": _t.Frame_Width_Bottom or frame_data_top["width"],
-        "u_value": _t.Frame_U_Bottom or frame_data_top["u_value"],
-        "psi_glazing": _t.Glazing_Psi_Bottom or frame_data_top["psi_glazing"],
-        "psi_install": _t.Frame_Psi_Bottom or frame_data_top["psi_install"],
-    }
-    phx_obj.frame_bottom = PhxWindowFrameElement(**frame_data_bottom)
+    default_frame_element = PhxWindowFrameElement(width=0.1, u_value=1.0, psi_glazing=0.0, psi_install=0.0)
+    phx_obj.frame_left = _frame_element(
+        _t.Frame_Width_Left, _t.Frame_U_Left, _t.Glazing_Psi_Left, _t.Frame_Psi_Left, default_frame_element
+    )
+    phx_obj.frame_right = _frame_element(
+        _t.Frame_Width_Right, _t.Frame_U_Right, _t.Glazing_Psi_Right, _t.Frame_Psi_Right, phx_obj.frame_left
+    )
+    phx_obj.frame_top = _frame_element(
+        _t.Frame_Width_Top, _t.Frame_U_Top, _t.Glazing_Psi_Top, _t.Frame_Psi_Top, phx_obj.frame_right
+    )
+    phx_obj.frame_bottom = _frame_element(
+        _t.Frame_Width_Bottom, _t.Frame_U_Bottom, _t.Glazing_Psi_Bottom, _t.Frame_Psi_Bottom, phx_obj.frame_top
+    )
 
     return phx_obj
 

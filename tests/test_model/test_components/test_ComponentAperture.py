@@ -36,3 +36,29 @@ def test_reset_aperture_construction(reset_class_counters):
 
     for ap in c2.apertures:
         assert ap.window_type == new_const
+
+
+def test_apertures_with_different_element_psi_do_not_share_unique_key(reset_class_counters):
+    """Two apertures, same window-type, different resolved psi -> different unique_key (no merge)."""
+    win_type = constructions.PhxConstructionWindow()
+    win_type.set_all_frames_psi_install(0.04)
+
+    c = components.PhxComponentOpaque()
+    ap1 = components.PhxComponentAperture(_host=c)
+    ap1.window_type = win_type
+    el1 = components.PhxApertureElement(_host=ap1)
+    ap1.add_element(el1)
+
+    ap2 = components.PhxComponentAperture(_host=c)
+    ap2.window_type = win_type
+    el2 = components.PhxApertureElement(_host=ap2)
+    ap2.add_element(el2)
+
+    assert ap1.unique_key == ap2.unique_key
+
+    el2.install_psi = components.PhxApertureElementPsiInstall(top=0.04, right=0.04, bottom=0.04, left=0.0)
+    assert ap1.unique_key != ap2.unique_key
+
+    # -- explicit values equal to the type's values keep the same key (no-op invariant)
+    el2.install_psi = components.PhxApertureElementPsiInstall(top=0.04, right=0.04, bottom=0.04, left=0.04)
+    assert ap1.unique_key == ap2.unique_key

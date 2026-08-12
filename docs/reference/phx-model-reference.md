@@ -136,7 +136,7 @@ PhxProject
 |--------|------------|---------|
 | `model/project.py` | `PhxProject`, `PhxVariant`, `PhxProjectData`, `ProjectData_Agent`, `PhxProjectDate`, `WufiPlugin` | Top-level containers |
 | `model/building.py` | `PhxBuilding`, `PhxZone` | Building geometry container, thermal zones |
-| `model/components.py` | `PhxComponentBase`, `PhxComponentOpaque`, `PhxComponentAperture`, `PhxApertureElement`, `PhxApertureShadingDimensions`, `PhxComponentThermalBridge` | Surfaces, windows, thermal bridges |
+| `model/components.py` | `PhxComponentBase`, `PhxComponentOpaque`, `PhxComponentAperture`, `PhxApertureElement`, `PhxApertureElementPsiInstall`, `PhxApertureShadingDimensions`, `PhxComponentThermalBridge` | Surfaces, windows, thermal bridges |
 | `model/constructions.py` | `PhxConstructionOpaque`, `PhxConstructionWindow`, `PhxWindowFrameElement`, `PhxLayer`, `PhxLayerDivisionGrid`, `PhxLayerDivisionCell`, `PhxMaterial`, `PhxColor` | Assembly/material definitions |
 | `model/assembly_pathways.py` | `PhxHeatFlowPathway`, `identify_heat_flow_pathways()`, `compute_r_value_from_pathways()` | ISO 6946 heat-flow pathway analysis for composite assemblies |
 | `model/geometry.py` | `PhxPolygon`, `PhxPolygonRectangular`, `PhxVertix`, `PhxVertix2D`, `PhxVector`, `PhxPlane`, `PhxLineSegment`, `PhxGraphics3D` | 3D geometry primitives |
@@ -272,7 +272,7 @@ Some enums use `_missing_()` to handle unknown values at runtime rather than rai
 | `Room` | `PhxZone` (via `PhxBuilding`) | HB Rooms grouped by `ph_bldg_segment` into zones. |
 | `Room` (sub-space) | `PhxSpace` | Each HB Room → one or more PhxSpaces within a zone. |
 | `Face` (Wall/Floor/Roof) | `PhxComponentOpaque` | Each HB Face → component with geometry + assembly ref. |
-| `Aperture` | `PhxComponentAperture` / `PhxApertureElement` | Windows within opaque components. |
+| `Aperture` | `PhxComponentAperture` / `PhxApertureElement` | Windows within opaque components. Each element carries resolved per-edge psi-install values (aperture-level Install Types over window-type defaults); WUFI/METr exports synthesize content-keyed window-type variants from them (`model/transforms.py`), PHPP writes them per-row. |
 | `OpaqueConstruction` | `PhxConstructionOpaque` | Reusable assembly in `PhxProject.assembly_types`. |
 | `WindowConstruction` | `PhxConstructionWindow` | Reusable window type in `PhxProject.window_types`. |
 | `EnergyMaterial` | `PhxMaterial` | Part of construction layers. |

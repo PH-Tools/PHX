@@ -5,7 +5,7 @@
 from dataclasses import dataclass
 from functools import partial
 
-from PHX.model import constructions, geometry
+from PHX.model import components, geometry
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
 
@@ -31,7 +31,7 @@ class WindowRow:
     __slots__ = (
         "shape",
         "phx_polygon",
-        "phx_construction",
+        "phx_aperture_element",
         "phpp_host_surface_id_name",
         "phpp_id_frame",
         "phpp_id_glazing",
@@ -39,7 +39,7 @@ class WindowRow:
     )
     shape: shape_model.Windows
     phx_polygon: geometry.PhxPolygonRectangular
-    phx_construction: constructions.PhxConstructionWindow
+    phx_aperture_element: components.PhxApertureElement
     phpp_host_surface_id_name: str | None
     phpp_id_frame: str | None
     phpp_id_glazing: str | None
@@ -58,8 +58,10 @@ class WindowRow:
         """Returns a list of the XL Items to write for this Surface Entry
 
         PHPP's four installation fields accept either an explicit psi-install
-        value or the selector values 1/0. PHX writes explicit psi-install
-        values, converted from W/(mK) to the target workbook's unit system.
+        value or the selector values 1/0. PHX writes the element's *resolved*
+        per-window psi-install values (aperture-level Install Type assignments
+        over the window-type's frame defaults), converted from W/(mK) to the
+        target workbook's unit system.
 
         Arguments:
         ----------
@@ -71,6 +73,7 @@ class WindowRow:
         """
         create_range = partial(self._create_range, _row_num=_row_num)
         XLItemWindows = partial(xl_data.XlItem, _sheet_name)
+        psi_install = self.phx_aperture_element.resolved_psi_install
         items: list[xl_data.XlItem] = [
             XLItemWindows(create_range("variant_input"), self.phpp_id_variant_type),
             XLItemWindows(create_range("quantity"), 1),
@@ -92,25 +95,25 @@ class WindowRow:
             ),
             XLItemWindows(
                 create_range("psi_i_left"),
-                self.phx_construction.frame_left.psi_install,
+                psi_install.left,
                 "W/MK",
                 self._get_target_unit("psi_i_left"),
             ),
             XLItemWindows(
                 create_range("psi_i_right"),
-                self.phx_construction.frame_right.psi_install,
+                psi_install.right,
                 "W/MK",
                 self._get_target_unit("psi_i_right"),
             ),
             XLItemWindows(
                 create_range("psi_i_bottom"),
-                self.phx_construction.frame_bottom.psi_install,
+                psi_install.bottom,
                 "W/MK",
                 self._get_target_unit("psi_i_bottom"),
             ),
             XLItemWindows(
                 create_range("psi_i_top"),
-                self.phx_construction.frame_top.psi_install,
+                psi_install.top,
                 "W/MK",
                 self._get_target_unit("psi_i_top"),
             ),
