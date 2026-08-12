@@ -8,7 +8,7 @@ _Last updated: 2026-08-12_
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
-| Aperture-level Psi-Install (Install Types) | Refactor (cross-repo) | **Implemented** (2026-08-12) — awaiting merge + release, then `honeybee_grasshopper_ph`. Manual follow-up: aperture-bearing xl-replay fixture (Ed, live Excel) | [`refactor/aperture-psi-install.md`](refactor/aperture-psi-install.md) |
+| Aperture-bearing xl-replay golden fixture | Follow-up (manual) | **Open** — needs live Excel + licensed PHPP (`scripts/perf/record_replay_fixture.py`); covered by unit tests meanwhile | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
 | Align `FloorAreaUtilizationZone` between WUFI and METr | Bug fix | **Filed** — exporter contract needs a source-of-truth decision | [`bug-fix/floor-area-utilization-zone.md`](bug-fix/floor-area-utilization-zone.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
 
@@ -17,6 +17,7 @@ _Last updated: 2026-08-12_
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
 | HBJSON Space loads + utilization schedules | Bug fix | **Complete** — seven phases implemented and verified; packet archived | [`archive/hbjson-occupancy-and-schedules/`](archive/hbjson-occupancy-and-schedules/README.md) |
+| Aperture-level Psi-Install (Install Types) | Refactor (cross-repo) | **Complete** — merged (PR #80) + released v1.56.73; archived | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
 | Psi-install bug fixes | Refactor (cross-repo) | **Complete** — eight phases published across PHX, honeybee_ph, and honeybee_grasshopper_ph | [`archive/psi-install-bug-fixes/`](archive/psi-install-bug-fixes/psi-install-bug-fixes-plan.md) |
 | Write ventilation ducting to PHPP "Addl vent" | Feature | **Complete** — PHPP 10.6 row/formula check and full suite pass | [`archive/phpp-vent-ducting/`](archive/phpp-vent-ducting/README.md) |
 
@@ -29,7 +30,7 @@ variant synthesis. Blocked on the `honeybee_ph` primary shipping.
 | Repo | Doc | Role |
 |------|-----|------|
 | `honeybee_ph` | `planning/refactor/aperture-psi-install.md` | Primary — data model + resolver + tests |
-| `PHX` | [`refactor/aperture-psi-install.md`](refactor/aperture-psi-install.md) | PHPP per-row write; WUFI/METr variant synthesis |
+| `PHX` | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) | PHPP per-row write; WUFI/METr variant synthesis — **complete, archived** |
 | `honeybee_grasshopper_ph` | `planning/refactor/aperture-psi-install.md` | Components; deletes the bug-#59 mechanism |
 | `ph-navigator-v2` | `planning/features_v1.1/aperture-psi-install/upstream-alignment.md` | Phase-07 GH-client mapping |
 
