@@ -260,37 +260,27 @@ def _PhxConstructionWindow(_t: wufi_xml.WufiWindowType) -> PhxConstructionWindow
     # -- If a side's value is missing (None) fall back to the last side found (an
     # -- explicit 0.0 in the XML is a real value - eg. a mulled edge - and is kept).
     # -- I *think* there will always be a 'left' frame-element?
-    def _frame_element_data(_width, _u_value, _psi_glazing, _psi_install, _fallback: dict) -> dict:
-        return {
-            "width": _width if _width is not None else _fallback["width"],
-            "u_value": _u_value if _u_value is not None else _fallback["u_value"],
-            "psi_glazing": _psi_glazing if _psi_glazing is not None else _fallback["psi_glazing"],
-            "psi_install": _psi_install if _psi_install is not None else _fallback["psi_install"],
-        }
+    def _frame_element(_width, _u_value, _psi_glazing, _psi_install, _fallback: PhxWindowFrameElement):
+        return PhxWindowFrameElement(
+            width=_width if _width is not None else _fallback.width,
+            u_value=_u_value if _u_value is not None else _fallback.u_value,
+            psi_glazing=_psi_glazing if _psi_glazing is not None else _fallback.psi_glazing,
+            psi_install=_psi_install if _psi_install is not None else _fallback.psi_install,
+        )
 
-    frame_data_left = _frame_element_data(
-        _t.Frame_Width_Left,
-        _t.Frame_U_Left,
-        _t.Glazing_Psi_Left,
-        _t.Frame_Psi_Left,
-        {"width": 0.1, "u_value": 1.0, "psi_glazing": 0.0, "psi_install": 0.0},
+    default_frame_element = PhxWindowFrameElement(width=0.1, u_value=1.0, psi_glazing=0.0, psi_install=0.0)
+    phx_obj.frame_left = _frame_element(
+        _t.Frame_Width_Left, _t.Frame_U_Left, _t.Glazing_Psi_Left, _t.Frame_Psi_Left, default_frame_element
     )
-    phx_obj.frame_left = PhxWindowFrameElement(**frame_data_left)
-
-    frame_data_right = _frame_element_data(
-        _t.Frame_Width_Right, _t.Frame_U_Right, _t.Glazing_Psi_Right, _t.Frame_Psi_Right, frame_data_left
+    phx_obj.frame_right = _frame_element(
+        _t.Frame_Width_Right, _t.Frame_U_Right, _t.Glazing_Psi_Right, _t.Frame_Psi_Right, phx_obj.frame_left
     )
-    phx_obj.frame_right = PhxWindowFrameElement(**frame_data_right)
-
-    frame_data_top = _frame_element_data(
-        _t.Frame_Width_Top, _t.Frame_U_Top, _t.Glazing_Psi_Top, _t.Frame_Psi_Top, frame_data_right
+    phx_obj.frame_top = _frame_element(
+        _t.Frame_Width_Top, _t.Frame_U_Top, _t.Glazing_Psi_Top, _t.Frame_Psi_Top, phx_obj.frame_right
     )
-    phx_obj.frame_top = PhxWindowFrameElement(**frame_data_top)
-
-    frame_data_bottom = _frame_element_data(
-        _t.Frame_Width_Bottom, _t.Frame_U_Bottom, _t.Glazing_Psi_Bottom, _t.Frame_Psi_Bottom, frame_data_top
+    phx_obj.frame_bottom = _frame_element(
+        _t.Frame_Width_Bottom, _t.Frame_U_Bottom, _t.Glazing_Psi_Bottom, _t.Frame_Psi_Bottom, phx_obj.frame_top
     )
-    phx_obj.frame_bottom = PhxWindowFrameElement(**frame_data_bottom)
 
     return phx_obj
 

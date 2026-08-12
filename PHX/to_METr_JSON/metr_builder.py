@@ -5,6 +5,8 @@
 import json
 from typing import Any
 
+from PHX.model.project import PhxProject
+from PHX.model.transforms import synthesize_window_type_psi_variants
 from PHX.to_METr_JSON import metr_converter
 
 
@@ -20,6 +22,11 @@ def generate_metr_json_dict(_phx_object: Any, _schema_name: str | None = None) -
     --------
         * dict: The METr JSON representation.
     """
+    # -- METr JSON (like WUFI XML) has no per-aperture psi-install: apertures whose
+    # -- elements resolve to non-default values get a content-keyed window-type variant.
+    if isinstance(_phx_object, PhxProject):
+        synthesize_window_type_psi_variants(_phx_object)
+
     schema_function = metr_converter.get_schema_function(_phx_object, _schema_name)
     return schema_function(_phx_object)
 
