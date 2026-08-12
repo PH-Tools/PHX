@@ -62,6 +62,80 @@ def test_window_type_reads_distinct_frame_sides() -> None:
     ) == (0.14, 1.4, 0.014, 0.024)
 
 
+def test_window_type_explicit_zero_psi_install_is_kept() -> None:
+    """An explicit 0.0 psi-install (eg. a mulled edge) must NOT fall back to the previous side."""
+    wufi_window_type = WufiWindowType(
+        IdentNr=1,
+        Name="Mulled right edge",
+        Uw_Detailed=True,
+        GlazingFrameDetailed=True,
+        FrameFactor=0.3,
+        U_Value=0.8,
+        U_Value_Glazing=0.7,
+        MeanEmissivity=0.04,
+        g_Value=0.5,
+        SHGC_Hemispherical=0.45,
+        U_Value_Frame=1.0,
+        Frame_Width_Left=0.11,
+        Frame_U_Left=1.1,
+        Glazing_Psi_Left=0.011,
+        Frame_Psi_Left=0.10,
+        Frame_Width_Right=0.11,
+        Frame_U_Right=1.1,
+        Glazing_Psi_Right=0.0,
+        Frame_Psi_Right=0.0,
+        Frame_Width_Top=0.11,
+        Frame_U_Top=1.1,
+        Glazing_Psi_Top=0.011,
+        Frame_Psi_Top=0.10,
+        Frame_Width_Bottom=0.11,
+        Frame_U_Bottom=1.1,
+        Glazing_Psi_Bottom=0.011,
+        Frame_Psi_Bottom=0.10,
+    )
+
+    phx_window_type = _PhxConstructionWindow(wufi_window_type)
+
+    assert phx_window_type.frame_left.psi_install == 0.10
+    assert phx_window_type.frame_right.psi_install == 0.0  # NOT 0.10
+    assert phx_window_type.frame_right.psi_glazing == 0.0  # NOT 0.011
+    assert phx_window_type.frame_top.psi_install == 0.10
+    assert phx_window_type.frame_bottom.psi_install == 0.10
+
+
+def test_window_type_missing_side_falls_back_to_previous() -> None:
+    """A side with no data (None) still inherits from the previously-parsed side."""
+    wufi_window_type = WufiWindowType(
+        IdentNr=1,
+        Name="Left only",
+        Uw_Detailed=True,
+        GlazingFrameDetailed=True,
+        FrameFactor=0.3,
+        U_Value=0.8,
+        U_Value_Glazing=0.7,
+        MeanEmissivity=0.04,
+        g_Value=0.5,
+        SHGC_Hemispherical=0.45,
+        U_Value_Frame=1.0,
+        Frame_Width_Left=0.11,
+        Frame_U_Left=1.1,
+        Glazing_Psi_Left=0.011,
+        Frame_Psi_Left=0.021,
+    )
+
+    phx_window_type = _PhxConstructionWindow(wufi_window_type)
+
+    for frame_element in (
+        phx_window_type.frame_right,
+        phx_window_type.frame_top,
+        phx_window_type.frame_bottom,
+    ):
+        assert frame_element.width == 0.11
+        assert frame_element.u_value == 1.1
+        assert frame_element.psi_glazing == 0.011
+        assert frame_element.psi_install == 0.021
+
+
 # -- Check the number of window types
 def test_window_types_loaded_LA_MORA(
     phx_project_from_wufi_xml_LA_MORA: PhxProject,
