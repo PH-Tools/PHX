@@ -379,6 +379,14 @@ class PHPPConnection:
     def write_project_window_components(self, phx_project: project.PhxProject) -> None:
         """Write all of the frame and glass constructions from a PhxProject to the PHPP 'Components' worksheet."""
 
+        if getattr(phx_project, "_window_type_psi_variants_synthesized", False):
+            raise ValueError(
+                "This PhxProject has had WUFI/METr psi-install window-type variants "
+                "synthesized (a prior to_WUFI_XML / to_METr_JSON export mutated it). "
+                "PHPP writes per-window psi-install natively and must see only the base "
+                "window types - re-build the PhxProject from the HBJSON for the PHPP export."
+            )
+
         psi_lengths_by_construction = self._collect_window_psi_lengths(phx_project)
         glazing_component_rows: list[component_glazing.GlazingRow] = []
         frame_component_rows: list[component_frame.FrameRow] = []

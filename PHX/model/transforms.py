@@ -105,27 +105,31 @@ def synthesize_window_type_psi_variants(_phx_project: PhxProject) -> None:
     the component. Apertures sharing a (base-type, psi-tuple) pair share one variant:
     M base types + K distinct non-default tuples => exactly M + K window types.
 
-    Mutates the project in place. Idempotent: components already pointing at a variant
-    whose values match their elements' are left alone. Models with no per-instance
-    psi-install overrides are untouched (the no-op invariant).
+    Mutates the project in place and marks it with '_window_type_psi_variants_synthesized'
+    so the PHPP write path (which must see only base types - it writes per-window psi
+    natively) can refuse a contaminated project. Idempotent: components already pointing
+    at a variant whose values match their elements' are left alone. Models with no
+    per-instance psi-install overrides are untouched (the no-op invariant).
     """
     variants_by_key: dict[tuple[int, str], PhxConstructionWindow] = {}
 
     for phx_variant in _phx_project.variants:
-        for phx_component in phx_variant.building.opaque_components:
-            for phx_aperture in phx_component.apertures:
-                psi = _component_resolved_psi_install(phx_aperture)
-                if psi is None:
-                    continue
-                base_type = phx_aperture.window_type
-                if psi.values == _window_type_psi_values(base_type):
-                    continue
+        for phx_aperture in phx_variant.building.aperture_components:
+            psi = _component_resolved_psi_install(phx_aperture)
+            if psi is None:
+                continue
+            base_type = phx_aperture.window_type
+            if psi.values == _window_type_psi_values(base_type):
+                continue
 
-                cache_key = (base_type.id_num, psi.unique_key)
-                variant_type = variants_by_key.get(cache_key)
-                if variant_type is None:
-                    variant_type = _build_window_type_psi_variant(base_type, psi)
-                    _phx_project.add_new_window_type(variant_type, _key=variant_type.identifier)
-                    variants_by_key[cache_key] = variant_type
+            cache_key = (base_type.id_num, psi.unique_key)
+            variant_type = variants_by_key.get(cache_key)
+            if variant_type is None:
+                variant_type = _build_window_type_psi_variant(base_type, psi)
+                _phx_project.add_new_window_type(variant_type, _key=variant_type.identifier)
+                variants_by_key[cache_key] = variant_type
 
-                phx_aperture.set_window_type(variant_type)
+            phx_aperture.set_window_type(variant_type)
+
+    if variants_by_key:
+        _phx_project._window_type_psi_variants_synthesized = True

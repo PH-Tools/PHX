@@ -156,7 +156,18 @@ def test_wufi_xml_builder_runs_the_transform(reset_class_counters) -> None:
     assert len(phx_project.window_types) == 2
     variant_type = apertures[0].window_type
     assert f"<IdentNrWindowType>{variant_type.id_num}</IdentNrWindowType>" in xml_text
-    assert 'count="2"' in xml_text or "WindowType" in xml_text
+    assert '<WindowTypes count="2">' in xml_text
+
+
+def test_transform_marks_the_project(reset_class_counters) -> None:
+    """A project with synthesized variants is marked; no-op projects are not."""
+    phx_project_noop, _, _ = _build_project_with_apertures([None])
+    synthesize_window_type_psi_variants(phx_project_noop)
+    assert not getattr(phx_project_noop, "_window_type_psi_variants_synthesized", False)
+
+    phx_project, _, _ = _build_project_with_apertures([(0.04, 0.04, 0.04, 0.0)])
+    synthesize_window_type_psi_variants(phx_project)
+    assert phx_project._window_type_psi_variants_synthesized is True
 
 
 def test_metr_builder_runs_the_transform(reset_class_counters) -> None:

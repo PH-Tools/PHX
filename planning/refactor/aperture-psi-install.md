@@ -36,8 +36,9 @@ window constructions stay minimal in the HBJSON. PHX's job:
 ### 2.1 `PhxApertureElement` — resolved per-edge install psi
 
 `PHX/model/components.py` (`PhxApertureElement`, `:370`): add a small per-edge structure
-(working name `PhxPsiInstall`): `top/right/bottom/left` floats (W/mK) plus an optional per-edge
-label (the install-type display name, for provenance and variant naming).
+(as implemented: `PhxApertureElementPsiInstall`): `top/right/bottom/left` floats (W/mK).
+Per-edge install-type labels were dropped at implementation - variant display-names carry
+the numeric values instead, which is simpler and just as QA-legible.
 
 - **Always populated** at `from_HBJSON` with the resolver's output — even when no override
   exists (values then equal the window type's). Uniform representation; "overridden?" is
@@ -62,6 +63,11 @@ in exactly one place, upstream.
 
 `create_assemblies.py` is untouched: window types are still built once per HB construction
 identifier (`:511-519`) with the construction's own frame data.
+
+Fallback behavior (as implemented): if the resolver raises ValueError (no PH frame and
+not all four sides assigned), the element's `install_psi` stays `None` and
+`resolved_psi_install` falls back to the window-type's values - mirroring the existing
+`create_assemblies` no-PH-frame precedent.
 
 ## 3. Exporter changes
 
@@ -101,10 +107,13 @@ Variant construction rules:
   M base types + K distinct non-default tuples ⇒ exactly M + K types.
 
 **Variant `u_value_window` — decided 2026-08-12 (Ed): recompute.** The stored U_w includes
-install psi (computed at `create_assemblies.py:418` on the ISO standard window), so each
-variant recomputes its own standard-window U_w via a small PHX-native helper operating on the
-variant's `PhxWindowFrameElement` data (mirroring `honeybee_ph_utils.iso_10077_1`'s
-standard-window method). Stored values stay honest regardless of `use_detailed_uw`.
+install psi (computed at `create_assemblies.py:418` on the ISO standard window). As
+implemented, the recompute is an **exact delta adjustment** on the ISO standard window
+(1.23m x 1.48m): `u_w_variant = u_w_base + sum((psi_new - psi_base) * edge_length) / area`.
+This is mathematically identical to a from-scratch standard-window recompute when the base
+U_w came from the ISO calc (the from_HBJSON path), and strictly better when the base value
+came from a WUFI file (where a from-scratch recompute would *change* the non-psi portion).
+Stored values stay honest regardless of `use_detailed_uw`.
 
 Scope note: the transform mutates `project.window_types` / component references. Each export
 pipeline (`hbjson_to_phpp`, WUFI, METr) runs on its own project instance today, so this is
@@ -132,11 +141,11 @@ simplify pass. Dev loop runs against the local `honeybee_ph` checkout (editable 
 
 | Phase | Scope | Verification | State |
 |---|---|---|---|
-| 1 | `from_WUFI_XML` psi fallback fix (§4): `is not None` instead of `or`-chains | Explicit-0.0 edge round-trips; existing WUFI import tests green | ☐ |
-| 2 | Model: per-edge resolved-psi block on `PhxApertureElement` + tuple digest in `PhxComponentAperture.unique_key` (§2.1-2.2) | Merge-homogeneity tests; unchanged `unique_key` for no-override models | ☐ |
-| 3 | `from_HBJSON`: populate resolved values via the upstream resolver (§2.3) | Conversion tests: overrides land on the element; no-override values equal type values | ☐ |
-| 4 | PHPP: `WindowRow` reads the element's resolved values (§3.1) | Per-row psi tests updated; Components sheet unchanged | ☐ |
-| 5 | WUFI/METr: window-type variant synthesis transform (§3.2), recomputed `u_value_window` | Count invariant (M+K), determinism, no-op invariant vs reference XMLs | ☐ |
+| 1 | `from_WUFI_XML` psi fallback fix (§4): `is not None` instead of `or`-chains | Explicit-0.0 edge round-trips; existing WUFI import tests green | ✅ 2026-08-12 |
+| 2 | Model: per-edge resolved-psi block on `PhxApertureElement` + tuple digest in `PhxComponentAperture.unique_key` (§2.1-2.2) | Merge-homogeneity tests; unchanged `unique_key` for no-override models | ✅ 2026-08-12 |
+| 3 | `from_HBJSON`: populate resolved values via the upstream resolver (§2.3) | Conversion tests: overrides land on the element; no-override values equal type values | ✅ 2026-08-12 |
+| 4 | PHPP: `WindowRow` reads the element's resolved values (§3.1) | Per-row psi tests updated; Components sheet unchanged | ✅ 2026-08-12 |
+| 5 | WUFI/METr: window-type variant synthesis transform (§3.2), recomputed `u_value_window` | Count invariant (M+K), determinism, no-op invariant vs reference XMLs | ✅ 2026-08-12 |
 | 6 | Closeout: xl-replay aperture-fixture gap (assess feasibility — golden fixture may need a licensed PHPP workbook to record; if so, document and cover with unit tests instead), full suite, docs | Full suite green; status sync | ☐ |
 
 ## 6. Tests (the "never again" invariants)
