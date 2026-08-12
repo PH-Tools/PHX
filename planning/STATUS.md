@@ -8,7 +8,7 @@ _Last updated: 2026-08-12_
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
-| Aperture-level Psi-Install (Install Types) | Refactor (cross-repo) | **Planned** — design agreed 2026-08-12; blocked on `honeybee_ph` primary | [`refactor/aperture-psi-install.md`](refactor/aperture-psi-install.md) |
+| Aperture-level Psi-Install (Install Types) | Refactor (cross-repo) | **Implemented** (2026-08-12) — awaiting merge + release, then `honeybee_grasshopper_ph`. Manual follow-up: aperture-bearing xl-replay fixture (Ed, live Excel) | [`refactor/aperture-psi-install.md`](refactor/aperture-psi-install.md) |
 | Align `FloorAreaUtilizationZone` between WUFI and METr | Bug fix | **Filed** — exporter contract needs a source-of-truth decision | [`bug-fix/floor-area-utilization-zone.md`](bug-fix/floor-area-utilization-zone.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
 

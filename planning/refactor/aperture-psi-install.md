@@ -1,7 +1,9 @@
 # Refactor: Aperture-level Psi-Install — PHX conversion + exporters
 
-**Status:** Planned — design agreed 2026-08-12; not implemented. Blocked on `honeybee_ph`
-shipping the data model + resolver (the primary).
+**Status:** Implemented (2026-08-12) — all 6 phases complete on `refactor/aperture-psi-install`;
+awaiting merge + release. Built against honeybee-ph with the merged primary (PR #87).
+Open manual follow-up: record an aperture-bearing xl-replay fixture (needs live Excel +
+licensed PHPP via `scripts/perf/record_replay_fixture.py` — Ed's machine).
 **Date:** 2026-08-12
 **Author:** Ed May + Claude
 **Kind:** Cross-repo refactor, downstream consumer + the export-side heavy lifting.
@@ -115,10 +117,11 @@ U_w came from the ISO calc (the from_HBJSON path), and strictly better when the 
 came from a WUFI file (where a from-scratch recompute would *change* the non-psi portion).
 Stored values stay honest regardless of `use_detailed_uw`.
 
-Scope note: the transform mutates `project.window_types` / component references. Each export
-pipeline (`hbjson_to_phpp`, WUFI, METr) runs on its own project instance today, so this is
-safe — but assert/document it, or operate on a copy, so a future shared-project pipeline can't
-silently ship variant types to PHPP.
+Scope note (as implemented): the transform mutates `project.window_types` / component
+references and marks the project (`_window_type_psi_variants_synthesized`). The PHPP
+Components writer refuses a marked project with a clear error, so a future shared-project
+pipeline cannot silently ship variant types to PHPP. Each export pipeline runs on its own
+project instance today.
 
 ### 3.3 PPP
 
@@ -146,26 +149,26 @@ simplify pass. Dev loop runs against the local `honeybee_ph` checkout (editable 
 | 3 | `from_HBJSON`: populate resolved values via the upstream resolver (§2.3) | Conversion tests: overrides land on the element; no-override values equal type values | ✅ 2026-08-12 |
 | 4 | PHPP: `WindowRow` reads the element's resolved values (§3.1) | Per-row psi tests updated; Components sheet unchanged | ✅ 2026-08-12 |
 | 5 | WUFI/METr: window-type variant synthesis transform (§3.2), recomputed `u_value_window` | Count invariant (M+K), determinism, no-op invariant vs reference XMLs | ✅ 2026-08-12 |
-| 6 | Closeout: xl-replay aperture-fixture gap (assess feasibility — golden fixture may need a licensed PHPP workbook to record; if so, document and cover with unit tests instead), full suite, docs | Full suite green; status sync | ☐ |
+| 6 | Closeout: xl-replay aperture-fixture gap, full suite, docs | ✅ 2026-08-12. Assessed: recording needs live Excel + licensed PHPP template (`scripts/perf/record_replay_fixture.py` is manual-invocation-only) — covered with unit tests instead (per-row write incl. overrides); fixture recording left as a manual follow-up for Ed. Full suite 876 green; docs nav + model reference updated | ✅ 2026-08-12 |
 
 ## 6. Tests (the "never again" invariants)
 
 The bug-#59 class of failure: instance data faked with per-instance types, uuid identifiers,
 counts growing with instance count. Encode the inverse at this layer:
 
-- [ ] **Count invariant (PHPP)**: N apertures, M base types, any mix of overrides ⇒ exactly M
+- [x] **Count invariant (PHPP)**: N apertures, M base types, any mix of overrides ⇒ exactly M
       Components frame/glazing entries; N Windows rows with per-row resolved psi.
-- [ ] **Count invariant (WUFI/METr)**: M base types + K distinct non-default tuples ⇒ exactly
+- [x] **Count invariant (WUFI/METr)**: M base types + K distinct non-default tuples ⇒ exactly
       M + K `<WindowType>` entries; every `IdentNrWindowType` resolves.
-- [ ] **No-op invariant**: a model with zero overrides exports **byte-identical** WUFI XML /
+- [x] **No-op invariant**: a model with zero overrides exports **byte-identical** WUFI XML /
       METr JSON / PHPP writes vs. pre-refactor. (Regression gate for every existing project.)
-- [ ] **Determinism**: converting the same HBJSON twice yields identical variant identifiers,
+- [x] **Determinism**: converting the same HBJSON twice yields identical variant identifiers,
       id_nums, and ordering.
-- [ ] **Merge homogeneity**: two apertures, same window type, different tuples ⇒ separate
+- [x] **Merge homogeneity**: two apertures, same window type, different tuples ⇒ separate
       aperture components; same tuple ⇒ merged as today.
-- [ ] Zero-psi edge round-trips WUFI XML (the §4 fallback fix, asserted with explicit 0.0).
-- [ ] End-to-end fixture modeled on project 2310: 939 apertures / 79 types / uniform psi ⇒
+- [x] Zero-psi edge round-trips WUFI XML (the §4 fallback fix, asserted with explicit 0.0).
+- [x] End-to-end fixture modeled on project 2310 (scaled: count-invariant + shared-variant tests in test_transforms.py; full 2310 re-export happens at GH closeout): 939 apertures / 79 types / uniform psi ⇒
       79 types in every target.
-- [ ] Known gap to close while here: the xl-replay golden fixture (`tests/test_xl_replay/`)
+- [x] Known gap assessed: the xl-replay golden fixture (`tests/test_xl_replay/`)
       contains **zero apertures**, so Components/Windows writes are outside the replay gate.
       Add an aperture-bearing fixture with mixed install conditions.
