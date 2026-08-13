@@ -3,6 +3,15 @@ from collections.abc import ValuesView
 from PHX.model.constructions import PhxConstructionWindow
 from PHX.model.project import PhxProject
 
+# -- NOTE: the XML file may carry export-time psi-install variant types synthesized by
+# -- to_WUFI_XML (WUFI has no per-aperture psi). The HBJSON-sourced project holds only the
+# -- base types (resolved psi lives on the aperture elements), so the XML side is compared
+# -- net of the variants, which are recognizable by their display-name suffix.
+
+
+def _base_window_types(_window_types) -> list[PhxConstructionWindow]:
+    return [wt for wt in _window_types.values() if "[Psi-i " not in wt.display_name]
+
 
 def test_project_data(
     phx_project_from_hbjson: PhxProject,
@@ -12,8 +21,8 @@ def test_project_data(
     hbjson_windows = phx_project_from_hbjson.window_types
     xml_windows = phx_project_from_wufi_xml.window_types
 
-    # -- Check the two
-    assert len(hbjson_windows) == len(xml_windows)
+    # -- Check the two (net of any export-time psi variants on the XML side)
+    assert len(hbjson_windows) == len(_base_window_types(xml_windows))
 
 
 def _find_matching_window(
@@ -41,12 +50,12 @@ def test_window_type_attributes_match(
 ) -> None:
     # -- Pull out the Project Data
     hbjson_windows = phx_project_from_hbjson.window_types
-    xml_windows = phx_project_from_wufi_xml.window_types
+    xml_base_windows = _base_window_types(phx_project_from_wufi_xml.window_types)
 
-    assert len(hbjson_windows) == len(xml_windows)
+    assert len(hbjson_windows) == len(xml_base_windows)
 
     for hbjson_type in hbjson_windows.values():
-        xml_type = _find_matching_window(hbjson_type, xml_windows.values())
+        xml_type = _find_matching_window(hbjson_type, xml_base_windows)
 
         assert hbjson_type.u_value_window == xml_type.u_value_window
         assert hbjson_type.u_value_glass == xml_type.u_value_glass

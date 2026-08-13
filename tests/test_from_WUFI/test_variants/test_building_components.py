@@ -64,7 +64,13 @@ def _apertures_diff(_xml_ap: PhxComponentAperture, _hbjson_ap: PhxComponentApert
             ("exposure_exterior", _xml_ap.exposure_exterior, _hbjson_ap.exposure_exterior),
             ("exposure_interior", _xml_ap.exposure_interior, _hbjson_ap.exposure_interior),
             ("interior_attachment_id", _xml_ap.interior_attachment_id, _hbjson_ap.interior_attachment_id),
-            ("window_type_id_num", _xml_ap.window_type_id_num, _hbjson_ap.window_type_id_num),
+            # -- NOTE: window_type_id_num is NOT compared directly: the XML side may
+            # -- reference an export-time psi-install variant type (WUFI carries no
+            # -- per-aperture psi), while the HBJSON side references the base type and
+            # -- carries the resolved psi on its elements. Compare effective data instead.
+            ("window_type_u_value_glass", _xml_ap.window_type.u_value_glass, _hbjson_ap.window_type.u_value_glass),
+            ("window_type_g_value", _xml_ap.window_type.glass_g_value, _hbjson_ap.window_type.glass_g_value),
+            ("psi_install_key", _xml_ap.psi_install_key, _hbjson_ap.psi_install_key),
             ("variant_type_name", _xml_ap.variant_type_name, _hbjson_ap.variant_type_name),
         ):
             mismatch = _compare_scalar(field_name, xml_value, hbjson_value)
