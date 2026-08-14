@@ -933,7 +933,7 @@ def _PhxSpace(_r: spaces.PhxSpace) -> list[xml_writable]:
         XML_Node("Name", _r.display_name),
         XML_Node("Type", _r.wufi_type),
         XML_Node("IdentNrUtilizationPatternVent", _r.ventilation.schedule.id_num),
-        XML_Node("IdentNrVentilationUnit", _r.vent_unit_id_num),
+        XML_Node("IdentNrVentilationUnit", _r.vent_unit_id_num or 0),
         XML_Node("Quantity", _r.quantity),
         XML_Node("AreaRoom", _r.weighted_floor_area, "unit", "m²"),
         XML_Node("ClearRoomHeight", _r.clear_height, "unit", "m"),

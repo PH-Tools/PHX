@@ -286,7 +286,7 @@ class WufiRoom(WufiBaseModel):
     Name: str
     Type: int
     IdentNrUtilizationPatternVent: int
-    IdentNrVentilationUnit: int
+    IdentNrVentilationUnit: int | None = None
     Quantity: int
     AreaRoom: wufi_unit.M2 | None = None
     ClearRoomHeight: wufi_unit.M | None = None

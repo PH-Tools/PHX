@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from PHX.model.programs.lighting import PhxProgramLighting
 from PHX.model.programs.occupancy import PhxProgramOccupancy
@@ -75,7 +75,8 @@ class PhxSpace:
         weighted_floor_area (float): iCFA/TFA-weighted floor area (m2). Default: 0.0.
         net_volume (float): Net interior volume of the space (m3). Default: 0.0.
         clear_height (float): Average floor-to-ceiling clear height (m). Default: 2.5.
-        vent_unit_id_num (int): ID number of the assigned ventilation unit (ERV/HRV). Default: 0.
+        vent_unit_id_num (Optional[int]): ID number of the assigned ventilation unit
+            (ERV/HRV), or None when no mechanical unit is assigned. Default: None.
         vent_unit_display_name (str): Display name of the assigned ventilation unit. Default: ''.
         ventilation (PhxProgramVentilation): Ventilation program with airflow loads and schedules.
         occupancy (PhxProgramOccupancy): Occupancy program with people density and schedules.
@@ -95,7 +96,7 @@ class PhxSpace:
     clear_height: float = 2.5
 
     # -- Ventilation Unit (ERV) number
-    vent_unit_id_num: int = 0
+    vent_unit_id_num: Optional[int] = None
     vent_unit_display_name: str = ""
 
     # -- Programs

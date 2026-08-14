@@ -5,7 +5,6 @@
 from collections.abc import Iterator
 
 from PHX.model import building, certification, components, hvac, project
-from PHX.model.hvac.collection import NoDeviceFoundError
 from PHX.PHPP import phpp_localization, sheet_io
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.PHPP.phpp_model import (
@@ -660,15 +659,17 @@ class PHPPConnection:
         unit_number_by_collection_and_id: dict[tuple[int, int], int | None] = {}
         unit_number = 0
         for mech_collection in self._iter_project_mech_collections(phx_project):
+            device_id_counts = mech_collection.ventilation_device_id_counts()
             for ventilator in mech_collection.ventilation_devices:
                 unit_number += 1
                 key = (id(mech_collection), ventilator.id_num)
-                if key in unit_number_by_collection_and_id:
+                if device_id_counts[ventilator.id_num] > 1:
+                    if key not in unit_number_by_collection_and_id:
+                        self.xl.output(
+                            f"\nPHPPVentDuctWarning: ventilator ID {ventilator.id_num} occurs more than once in one "
+                            "mechanical collection; ducts using that ID will be skipped as ambiguous.\n"
+                        )
                     unit_number_by_collection_and_id[key] = None
-                    self.xl.output(
-                        f"\nPHPPVentDuctWarning: ventilator ID {ventilator.id_num} occurs more than once in one "
-                        "mechanical collection; ducts using that ID will be skipped as ambiguous.\n"
-                    )
                 else:
                     unit_number_by_collection_and_id[key] = unit_number
 
@@ -727,20 +728,22 @@ class PHPPConnection:
 
         phpp_vent_rooms: list[vent_space.VentSpaceRow] = []
         for phx_variant in phx_project.variants:
+            ventilation_device_index = phx_variant.ventilation_device_index()
             for zone in phx_variant.building.zones:
                 for room in zone.spaces:
                     # -- Find the right Ventilator assigned to the Space.
-                    try:
-                        phx_mech_ventilator = phx_variant.get_mech_device_by_id(room.vent_unit_id_num)
+                    if room.vent_unit_id_num is None:
+                        phpp_row_ventilator = None
+                    else:
+                        phx_mech_ventilator = phx_variant.get_ventilation_device_by_id(
+                            room.vent_unit_id_num, ventilation_device_index
+                        )
                         phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
                             phx_mech_ventilator.display_name
                         )
                         phpp_row_ventilator = self.addnl_vent.vent_units.get_vent_unit_num_by_phpp_id(
                             phpp_id_ventilator
                         )
-                    except NoDeviceFoundError:
-                        # If no ventilation system / unit has not been applied yet
-                        phpp_row_ventilator = None
 
                     phx_vent_pattern = phx_project.utilization_patterns_ventilation.get_pattern_by_id_num(
                         room.ventilation.schedule.id_num

@@ -10,6 +10,7 @@ devices (pumps), and renewable energy devices (PV) within a project.
 from __future__ import annotations
 
 from collections import defaultdict
+from collections.abc import Iterator
 from copy import copy
 from dataclasses import dataclass, field
 from functools import reduce
@@ -547,7 +548,33 @@ class PhxMechanicalSystemCollection:
     @property
     def ventilation_devices(self) -> list[hvac.AnyPhxVentilation]:
         """Returns a list of the 'Ventilation' devices in the collection."""
-        return [_ for _ in self.devices if isinstance(_, hvac.PhxDeviceVentilation)]
+        return sorted(self.iter_ventilation_devices(), key=lambda device: device.display_name)
+
+    def iter_ventilation_devices(self) -> Iterator[hvac.AnyPhxVentilation]:
+        """Yield ventilation devices without allocating the presentation-order list."""
+        for device in self._devices.values():
+            if isinstance(device, hvac.PhxDeviceVentilation):
+                yield device
+
+    def ventilation_device_id_counts(self) -> dict[int, int]:
+        """Return occurrence counts for ventilation-device IDs in this collection."""
+        counts: dict[int, int] = {}
+        for device in self.iter_ventilation_devices():
+            counts[device.id_num] = counts.get(device.id_num, 0) + 1
+        return counts
+
+    def ventilation_assignment_issues(self) -> list[str]:
+        """Return unresolved or ambiguous duct references owned by this collection."""
+        device_counts = self.ventilation_device_id_counts()
+        issues: list[str] = []
+        for duct in self.vent_ducting:
+            match_count = device_counts.get(duct.vent_unit_id, 0)
+            label = f"Ventilation duct '{duct.display_name}'"
+            if match_count == 0:
+                issues.append(f"{label} references missing ventilation device ID {duct.vent_unit_id}.")
+            elif match_count > 1:
+                issues.append(f"{label} ID {duct.vent_unit_id} matches {match_count} ventilation devices.")
+        return issues
 
     @property
     def space_heating_devices(self) -> list[hvac.AnyPhxHeater]:

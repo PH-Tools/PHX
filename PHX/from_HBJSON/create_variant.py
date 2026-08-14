@@ -555,13 +555,21 @@ def add_ventilation_systems_from_hb_rooms(_variant: project.PhxVariant, _hb_room
     """
 
     ph_prop = get_ph_prop_from_room(_hb_room)
+    hbph_vent_systems = []
     for hbph_space in ph_prop.spaces:
         # -- Note: in the case of a merged room, the space's host may NOT be the same
         # -- as '_hb_room', so always refer back to the space to get the mechanical devices
         hbph_vent_sys = get_ventilation_system_from_space(hbph_space)
         if not hbph_vent_sys:
             continue
+        hbph_vent_systems.append(hbph_vent_sys)
 
+    # -- Validate the complete source set before adding PHX objects or rewriting
+    # -- source identifiers. A later malformed system must not leave a partial graph.
+    for hbph_vent_sys in hbph_vent_systems:
+        create_hvac.validate_ventilation_system_source(hbph_vent_sys)
+
+    for hbph_vent_sys in hbph_vent_systems:
         # ---------------------------------------------------------------------
         # -- Get or Build the PHX Ventilation Device
         # -- If the ventilator already exists, just use that one.

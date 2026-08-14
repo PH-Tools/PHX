@@ -69,6 +69,15 @@ def _default_ventilator_name(_hr: float, _mr: float) -> str:
     return f"Ventilator: {_hr*100 :0.0f}%-HR, {_mr*100 :0.0f}%-MR"
 
 
+def validate_ventilation_system_source(_hbeph_vent_sys: ventilation.PhVentilationSystem) -> None:
+    """Raise when a source mechanical ventilation system has no real unit."""
+    if not _hbeph_vent_sys.ventilation_unit:
+        raise ValueError(
+            "Cannot convert honeybee-ph ventilation system {!r}: ventilation_unit is required "
+            "for a mechanical system.".format(_hbeph_vent_sys.display_name)
+        )
+
+
 def build_phx_ventilator(
     _hbeph_vent_sys: ventilation.PhVentilationSystem,
 ) -> hvac.PhxDeviceVentilator:
@@ -86,11 +95,10 @@ def build_phx_ventilator(
         * (mech_equip.Ventilator): The new Passive House Ventilator created.
     """
 
+    validate_ventilation_system_source(_hbeph_vent_sys)
+
     phx_vent = hvac.PhxDeviceVentilator()
     _id_num = phx_vent.id_num  # preserver so 'transfer_attributes' doesn't kill it...
-
-    if not _hbeph_vent_sys.ventilation_unit:
-        return phx_vent
     phx_vent = _transfer_attributes(_hbeph_vent_sys, phx_vent)
     phx_vent = _transfer_attributes(_hbeph_vent_sys.ventilation_unit, phx_vent)
 
@@ -98,9 +106,7 @@ def build_phx_ventilator(
     phx_vent.params.sys_type = _hbeph_vent_sys.sys_type
 
     # -- Sort out the Display name to use
-    if not _hbeph_vent_sys.ventilation_unit:
-        ventilator_name = _default_ventilator_name(0.0, 0.0)
-    elif _hbeph_vent_sys.ventilation_unit.display_name == "_unnamed_ventilator_":
+    if _hbeph_vent_sys.ventilation_unit.display_name == "_unnamed_ventilator_":
         ventilator_name = _default_ventilator_name(
             _hbeph_vent_sys.ventilation_unit.sensible_heat_recovery,
             _hbeph_vent_sys.ventilation_unit.latent_heat_recovery,

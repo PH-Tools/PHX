@@ -1449,7 +1449,7 @@ def _PhxSpace(_data: wufi_xml.WufiRoom, _phx_project_host: PhxProject) -> PhxSpa
     phx_obj.clear_height = _data.ClearRoomHeight or 0.0
 
     # -- Ventilation Unit (ERV) number
-    phx_obj.vent_unit_id_num = _data.IdentNrVentilationUnit
+    phx_obj.vent_unit_id_num = _data.IdentNrVentilationUnit or None
 
     # -- Ventilation Schedule and Load
     project_util_pat_ven = _phx_project_host.utilization_patterns_ventilation

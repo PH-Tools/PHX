@@ -74,6 +74,7 @@ def _build_surface_index_map(variant) -> SurfaceIndexMap:
 def build_ppp_file(project: PhxProject) -> PppFile:
     """Build a complete PppFile from a PhxProject."""
     variant = project.variants[0]
+    variant.assert_ventilation_assignments_ready()
 
     # Build cross-reference maps
     assembly_map = _build_assembly_map(project)
