@@ -1,6 +1,6 @@
 # STATUS — project-scoped-identities
 
-**Status:** Scoped · 2026-08-14
+**Status:** In progress · 2026-08-14
 
 - The counter/reference audit is complete in `AUDIT.md`: 27 explicit `_count`
   declarations, inherited counter families, 16 WUFI importer overwrites, HBJSON
@@ -17,12 +17,31 @@
   conversion, exposed to nested constructors through a token-reset context and
   retained on `PhxProject` for explicit later mutation scopes. Direct standalone
   construction keeps the legacy fallback during this release.
-- **Next step:** implement `plans/PHASE-0-baselines-and-red-tests.md`, then proceed
-  one phase at a time only after its focused and regression gates are green.
+- Phase 0 characterization is complete. The sequential public-conversion test
+  fails only on numeric identities: assemblies `1..3 → 13..15`, components
+  `5,6,9 → 14,15,18`, and vertices beginning `27 → 63`.
+- Phase 1 is complete. `IdentityAllocator` provides isolated namespaces,
+  explicit claims, deterministic duplicate diagnostics, exception-safe
+  `ContextVar` scopes, nested reuse, and legacy direct-constructor fallback.
+- **Next step:** migrate project libraries/patterns and then the remaining
+  entity families so the Phase 0 sequential test turns green.
 - Blockers: none. Do not begin broad `_count` deletion or golden regeneration;
   both are explicitly outside the compatibility-first implementation.
 - Planning verification: 107 existing facade, WUFI/METr reference, WUFI import,
   PHPP ventilator/duct, and xl-replay tests pass (`107 passed in 3.46s`).
+
+## Phase evidence
+
+| Phase | Status | Red/green evidence |
+|---|---|---|
+| 0 — baselines and red tests | Complete | `test_project_identity_isolation.py`: expected projection failure; identity-only drift reproduced |
+| 1 — allocator and scope | Complete | allocator `8 passed`; protected model/WUFI/METr/xl-replay gate `448 passed` |
+| 2 — project libraries and patterns | In progress | next |
+| 3 — envelope and geometry | Pending | — |
+| 4 — zones/HVAC/distribution | Pending | — |
+| 5 — WUFI explicit identities | Pending | — |
+| 6 — export validation | Pending | — |
+| 7 — docs and closeout | Pending | — |
 
 ## Decisions
 

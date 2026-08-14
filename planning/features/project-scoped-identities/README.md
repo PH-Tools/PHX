@@ -15,5 +15,6 @@ changing one another's IDs or exported cross-references.
 **Origin:** production-readiness gap identified by the ph-modeler POC review
 (2026-08-14). This is not a currently reproduced wrong-energy defect.
 
-**Planning boundary:** this packet is docs-only as of 2026-08-14. No runtime
-identity behavior or tests have been changed yet.
+**Implementation state:** in progress on `codex/project-scoped-identities` as of
+2026-08-14. Phase 0 captured deterministic sequential leakage and Phase 1 added
+the isolated allocator/context primitive; entity migration is next.
