@@ -47,6 +47,31 @@ from PHX.model.utilization_patterns import (
 )
 
 
+def _climate_readiness_issues(_climate: site.Climate) -> list[str]:
+    """Return explicit climate-readiness issues without breaking legacy HBJSON."""
+    provenance = getattr(_climate, "provenance", None)
+    if provenance is None:
+        if _climate.peak_loads is None:
+            return ["peak_loads: approved or specialized peak-load climate data must be supplied separately."]
+        return []
+
+    issues: list[str] = []
+    readiness_checks = (
+        (
+            "monthly_demand_readiness_issues",
+            "monthly climate: update honeybee-ph to validate explicit monthly-data availability.",
+        ),
+        (
+            "peak_load_readiness_issues",
+            "peak-load climate: update honeybee-ph to validate explicit peak-load availability.",
+        ),
+    )
+    for method_name, unavailable_message in readiness_checks:
+        readiness_check = getattr(_climate, method_name, None)
+        issues.extend(readiness_check() if readiness_check is not None else [unavailable_message])
+    return issues
+
+
 def add_building_from_hb_room(
     _variant: project.PhxVariant,
     _hb_room: room.Room,
@@ -375,6 +400,15 @@ def add_climate_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) 
     # -- aliases
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     ud_site: site.Site = room_prop_ph.ph_bldg_segment.site
+    ud_climate = ud_site.climate
+    readiness_issues = _climate_readiness_issues(ud_climate)
+    if readiness_issues:
+        raise ValueError(
+            "Cannot convert Honeybee climate for Room '{}': climate is not ready for PHX conversion:\n- {}".format(
+                _hb_room.display_name,
+                "\n- ".join(readiness_issues),
+            )
+        )
     ud_ground = ud_site.climate.ground
     phx_climate = _variant.site.climate
 
@@ -998,6 +1032,7 @@ def from_hb_room(
     new_variant.name = _hb_room.display_name
 
     # -- Build the Variant Elements (Dev. note: order matters!!)
+    add_climate_from_hb_room(new_variant, _hb_room)
     add_ventilation_systems_from_hb_rooms(new_variant, _hb_room)
     add_heating_systems_from_hb_rooms(new_variant, _hb_room)
     add_heat_pump_systems_from_hb_rooms(new_variant, _hb_room)
@@ -1025,7 +1060,6 @@ def from_hb_room(
     add_phius_certification_from_hb_room(new_variant, _hb_room)
     add_phi_certification_from_hb_room(new_variant, _hb_room)
     add_PhxPhBuildingData_from_hb_room(new_variant, _hb_room)
-    add_climate_from_hb_room(new_variant, _hb_room)
     add_local_pe_conversion_factors(new_variant, _hb_room)
     add_local_co2_conversion_factors(new_variant, _hb_room)
     add_elec_equip_from_hb_room(new_variant, _hb_room)
