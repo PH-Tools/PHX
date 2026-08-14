@@ -9,7 +9,6 @@ _Last updated: 2026-08-14_
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
 | Public live Honeybee → PHX API | API/docs cleanup | **Complete** — verified and archived | [`archive/honeybee-conversion-facade/`](archive/honeybee-conversion-facade/PRD.md) |
-| Explicit ventilation assignment semantics | Feature (cross-repo) | **Implemented** — honeybee-ph v1.33.42 verified; PHX release and archive pending | [`features/ventilation-assignment-semantics/`](features/ventilation-assignment-semantics/PRD.md) |
 | Project-scoped deterministic identities | Architecture feature | **Requested** — concurrency/isolation gap; no reproduced output defect yet | [`features/project-scoped-identities/`](features/project-scoped-identities/PRD.md) |
 | Aperture-bearing xl-replay golden fixture | Follow-up (manual) | **Open** — needs live Excel + licensed PHPP (`scripts/perf/record_replay_fixture.py`); covered by unit tests meanwhile | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
 | Align `FloorAreaUtilizationZone` between WUFI and METr | Bug fix | **Filed** — exporter contract needs a source-of-truth decision | [`bug-fix/floor-area-utilization-zone.md`](bug-fix/floor-area-utilization-zone.md) |
@@ -19,6 +18,7 @@ _Last updated: 2026-08-14_
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
+| Explicit ventilation assignment semantics | Feature (cross-repo) | **Complete** — PHX v1.56.79 released with `honeybee-ph>=1.33.42`; published OpenPH v0.5.1 matrix verified | [`archive/ventilation-assignment-semantics/`](archive/ventilation-assignment-semantics/README.md) |
 | HBJSON Space loads + utilization schedules | Bug fix | **Complete** — seven phases implemented and verified; packet archived | [`archive/hbjson-occupancy-and-schedules/`](archive/hbjson-occupancy-and-schedules/README.md) |
 | Aperture-level Psi-Install (Install Types) | Refactor (cross-repo) | **Complete** — merged (PR #80) + released v1.56.73; archived | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
 | Psi-install bug fixes | Refactor (cross-repo) | **Complete** — eight phases published across PHX, honeybee_ph, and honeybee_grasshopper_ph | [`archive/psi-install-bug-fixes/`](archive/psi-install-bug-fixes/psi-install-bug-fixes-plan.md) |

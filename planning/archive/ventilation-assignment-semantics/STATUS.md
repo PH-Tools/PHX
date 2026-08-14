@@ -1,6 +1,6 @@
 # STATUS — ventilation-assignment-semantics
 
-**Status:** Implemented · PHX release pending · 2026-08-14
+**Status:** Complete · PHX v1.56.79 released and archived · 2026-08-14
 
 - `STATE_TABLE.md` freezes `PhxSpace.vent_unit_id_num: Optional[int] = None` as
   the domain representation of no assignment.
@@ -19,12 +19,15 @@
   unassigned mechanical airflow, and collection-scoped duct references.
 - PHPP, WUFI, METr, and PPP run readiness before output; PHPP skips Space
   lookup for `None`.
-- honeybee-ph **v1.33.42** is published and passes a clean installed-artifact
-  smoke test. PHX now requires `honeybee-ph>=1.33.42`.
-- **Next step:** publish and verify the PHX release, record the final
-  compatibility matrix, then archive both active packets.
+- honeybee-ph **v1.33.42** and PHX **v1.56.79** are published and pass clean
+  installed-artifact smoke tests. PHX requires `honeybee-ph>=1.33.42`.
+- The published matrix `honeybee-ph==1.33.42`, `PHX==1.56.79`,
+  `openph==0.5.1`, and `openph-demand==0.5.0` installs and converts the
+  no-mechanical, zero-duct, and multi-duct states successfully.
+- Both active packets are archived. No release blocker or next implementation
+  step remains in this feature.
 - Cross-repo coordination:
-  - honeybee-ph `planning/features/default-ventilation-system-factory/`
+  - honeybee-ph `planning/archive/default-ventilation-system-factory/`
   - OpenPH `planning/archive/dated/2026-08-14/ventilation-input-semantics/`
 - No contract blocker remains. OpenPH already supports `None`, zero ducts, and
   multiple duct elements; it retains legacy input `0` compatibility.

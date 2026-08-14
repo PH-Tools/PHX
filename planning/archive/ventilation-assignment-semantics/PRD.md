@@ -1,6 +1,6 @@
 # PRD — Explicit ventilation assignment semantics
 
-**Status:** Implemented · PHX release pending · 2026-08-14
+**Status:** Complete · PHX v1.56.79 released · 2026-08-14
 **Author:** Ed May + Codex
 **Kind:** Cross-boundary model/converter feature (PHX is primary for PHX representation)
 
@@ -13,7 +13,7 @@ mechanical-device assignment. An absent assignment must not masquerade as the
 integer ID `0`, and a missing honeybee-ph ventilation unit must not create a
 blank `PhxDeviceVentilator` merely to satisfy downstream lookups.
 
-### Current hazardous behavior
+### Pre-feature hazardous behavior
 
 - `PhxSpace.vent_unit_id_num` defaults to `0`.
 - `from_HBJSON/create_rooms.py` copies the honeybee-ph system's numeric ID.
