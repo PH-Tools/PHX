@@ -9,7 +9,6 @@ from honeybee_energy.construction import window
 from honeybee_energy.properties.aperture import ApertureEnergyProperties
 from honeybee_energy.properties.face import FaceEnergyProperties
 from honeybee_energy_ph.boundarycondition import PhAdditionalZone
-from honeybee_energy_ph.properties.construction.opaque import OpaqueConstructionPhProperties
 from honeybee_energy_ph.properties.load.people import PeoplePhProperties
 from honeybee_ph.properties.aperture import AperturePhProperties
 from honeybee_ph.properties.room import RoomPhProperties
@@ -263,7 +262,6 @@ def create_components_from_hb_face(
     if not hasattr(hb_face_const, "properties"):
         msg = f"Error: Face Construction: '{hb_face_const.display_name}' of type: '{type(hb_face_const)}' is missing a .properties attribute?"
         raise ValueError(msg)
-    hb_face_const_prop_ph: OpaqueConstructionPhProperties = hb_face_const.properties.ph  # type: ignore
     hb_room_prop_ph: RoomPhProperties = _hb_room.properties.ph
 
     # -- Build the new PHX Opaque Component
@@ -271,7 +269,7 @@ def create_components_from_hb_face(
     opaque_compo.display_name = _hb_face.display_name
 
     opaque_compo.assembly = _assembly_dict[hb_face_prop_energy.construction.identifier]
-    opaque_compo.assembly_type_id_num = hb_face_const_prop_ph.id_num
+    opaque_compo.assembly_type_id_num = opaque_compo.assembly.id_num
 
     opaque_compo.face_type = _hb_face_type_to_phx_enum(_hb_face)
     opaque_compo.face_opacity = _hb_face_opacity_to_phx_enum(_hb_face)
@@ -419,7 +417,6 @@ def create_zone_from_hb_room(
     """
     new_zone = building.PhxZone()
 
-    new_zone.id_num = building.PhxZone._count
     new_zone.display_name = _hb_room.display_name
 
     room_prop_ph: RoomPhProperties | None = getattr(_hb_room.properties, "ph", None)

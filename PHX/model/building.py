@@ -21,6 +21,7 @@ from PHX.model.enums.building import (
     ZoneType,
 )
 from PHX.model.hvac import collection
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 from PHX.model.programs import occupancy
 
 
@@ -110,8 +111,7 @@ class PhxZone:
     merge_spaces_by_erv: bool = False
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.ZONES, self.__class__)
 
     def add_thermal_bridge(self, _thermal_bridge: PhxComponentThermalBridge) -> None:
         """Add a new PhxComponentThermalBridge to the PhxZone."""
@@ -174,6 +174,7 @@ class PhxZone:
         self.clear_thermal_bridges()
         for tb in merged_tb_components:
             self.add_thermal_bridge(tb)
+
 
 @dataclass
 class PhxBuilding:

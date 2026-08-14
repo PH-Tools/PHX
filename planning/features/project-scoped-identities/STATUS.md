@@ -30,8 +30,12 @@
   polygons and vertices are isolated, including the historical 2D-to-3D vertex
   burn. Automatic claims use a compact high-water mark so transient geometry
   does not accumulate per-ID allocator entries.
-- **Next step:** migrate zones, Spaces, HVAC, and distribution identities and
-  install the scope at the public HB conversion boundary.
+- Phase 4 is complete. The core HB converter owns a fresh allocator, every
+  remaining model counter family uses scoped allocation, and the project retains
+  its allocator for explicit later mutation. Eight threaded conversions across
+  two independently loaded fixtures match sequential WUFI/METr baselines.
+- **Next step:** scope WUFI import and replace unchecked explicit-ID overwrites
+  with namespace claims.
 - Blockers: none. Do not begin broad `_count` deletion or golden regeneration;
   both are explicitly outside the compatibility-first implementation.
 - Planning verification: 107 existing facade, WUFI/METr reference, WUFI import,
@@ -45,8 +49,8 @@
 | 1 — allocator and scope | Complete | allocator `8 passed`; protected model/WUFI/METr/xl-replay gate `448 passed` |
 | 2 — project libraries and patterns | Complete | focused `2 passed`; protected Phase 2 gate `466 passed` |
 | 3 — envelope and geometry | Complete | focused/protected geometry + PHPP gate `312 passed` |
-| 4 — zones/HVAC/distribution | In progress | next |
-| 5 — WUFI explicit identities | Pending | — |
+| 4 — zones/HVAC/distribution | Complete | isolation `5 passed` (parallel repeated 3x); broad gate `485 passed, 3 skipped` |
+| 5 — WUFI explicit identities | In progress | next |
 | 6 — export validation | Pending | — |
 | 7 — docs and closeout | Pending | — |
 

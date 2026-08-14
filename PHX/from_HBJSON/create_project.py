@@ -13,6 +13,7 @@ from honeybee_ph.team import ProjectTeamMember
 
 from PHX.from_HBJSON import cleanup, create_assemblies, create_schedules, create_shades, create_variant
 from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
+from PHX.model.identity import identity_scope
 from PHX.model.project import PhxProject, PhxProjectData, ProjectData_Agent
 
 logger = logging.getLogger()
@@ -106,6 +107,26 @@ def convert_hb_model_to_PhxProject(
     _merge_faces: bool | float = False,
     _merge_spaces_by_erv: bool = False,
     _merge_exhaust_vent_devices: bool = False,
+) -> PhxProject:
+    """Build one PHX project in an isolated identity-allocation scope."""
+    with identity_scope() as allocator:
+        phx_project = _convert_hb_model_to_PhxProject(
+            _hb_model=_hb_model,
+            _group_components=_group_components,
+            _merge_faces=_merge_faces,
+            _merge_spaces_by_erv=_merge_spaces_by_erv,
+            _merge_exhaust_vent_devices=_merge_exhaust_vent_devices,
+        )
+        phx_project._attach_identity_allocator(allocator)
+        return phx_project
+
+
+def _convert_hb_model_to_PhxProject(
+    _hb_model: model.Model,
+    _group_components: bool,
+    _merge_faces: bool | float,
+    _merge_spaces_by_erv: bool,
+    _merge_exhaust_vent_devices: bool,
 ) -> PhxProject:
     """Return a complete WUFI Project object with values based on the HB Model
 

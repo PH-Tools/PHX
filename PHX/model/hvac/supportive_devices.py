@@ -14,6 +14,7 @@ from typing import ClassVar
 
 from PHX.model.enums.hvac import PhxSupportiveDeviceType
 from PHX.model.hvac import _base
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 
 @dataclass
@@ -99,9 +100,10 @@ class PhxSupportiveDevice(_base.PhxMechanicalDevice):
     params: PhxSupportiveDeviceParams = field(default_factory=PhxSupportiveDeviceParams)
 
     def __post_init__(self):
+        # Preserve the historical leaf-device allocation burn before assigning
+        # the supportive-device family identity.
         super().__post_init__()
-        PhxSupportiveDevice._count += 1
-        self.id_num = PhxSupportiveDevice._count
+        self.id_num = allocate_identity(IdentityNamespaces.SUPPORTIVE_DEVICES, PhxSupportiveDevice)
 
     def __add__(self, other: PhxSupportiveDevice) -> PhxSupportiveDevice:
         if self.device_type != other.device_type:

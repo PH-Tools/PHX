@@ -27,6 +27,28 @@ class IdentityNamespaces:
     COMPONENTS = "variant.components"
     VERTICES = "variant.geometry.vertices"
     POLYGONS = "variant.geometry.polygons"
+    ZONES = "variant.zones"
+    SPACES = "variant.spaces"
+    MECHANICAL_SYSTEMS = "variant.mechanical.systems"
+    RENEWABLE_COLLECTIONS = "variant.mechanical.renewable_collections"
+    SUPPORTIVE_COLLECTIONS = "variant.mechanical.supportive_collections"
+    EXHAUST_COLLECTIONS = "variant.mechanical.exhaust_collections"
+    SUPPORTIVE_DEVICES = "variant.mechanical.supportive_devices"
+    EXHAUST_DEVICES = "variant.mechanical.exhaust_devices"
+    DUCTS = "variant.mechanical.ducts"
+    PIPE_ELEMENTS = "variant.mechanical.pipe_elements"
+    PIPE_BRANCHES = "variant.mechanical.pipe_branches"
+    PIPE_TRUNKS = "variant.mechanical.pipe_trunks"
+
+    @staticmethod
+    def mechanical_devices(owner: type[LegacyCounterOwner]) -> str:
+        """Return the compatibility namespace for one mechanical leaf type."""
+        return f"variant.mechanical.devices.{owner.__name__}"
+
+    @staticmethod
+    def electrical_devices(owner: type[LegacyCounterOwner]) -> str:
+        """Return the compatibility namespace for one electrical leaf type."""
+        return f"variant.electrical.devices.{owner.__name__}"
 
 
 class LegacyCounterOwner(Protocol):

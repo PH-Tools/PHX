@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import ClassVar
 
 from PHX.model.enums.elec_equip import ElectricEquipmentType
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 logger = logging.getLogger(__name__)
 
@@ -54,8 +55,7 @@ class PhxElectricalDevice:
     device_type: ElectricEquipmentType = field(default=ElectricEquipmentType.CUSTOM)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.electrical_devices(self.__class__), self.__class__)
 
     @property
     def reference_quantity(self) -> int:

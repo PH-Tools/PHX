@@ -9,7 +9,7 @@ _Last updated: 2026-08-14_
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
 | Public live Honeybee → PHX API | API/docs cleanup | **Complete** — verified and archived | [`archive/honeybee-conversion-facade/`](archive/honeybee-conversion-facade/PRD.md) |
-| Project-scoped deterministic identities | Architecture feature | **In progress** — Phases 0–3 complete; HB zone/HVAC scope migration next | [`features/project-scoped-identities/`](features/project-scoped-identities/README.md) |
+| Project-scoped deterministic identities | Architecture feature | **In progress** — Phases 0–4 complete; HB sequential/parallel isolation green, WUFI claims next | [`features/project-scoped-identities/`](features/project-scoped-identities/README.md) |
 | Aperture-bearing xl-replay golden fixture | Follow-up (manual) | **Open** — needs live Excel + licensed PHPP (`scripts/perf/record_replay_fixture.py`); covered by unit tests meanwhile | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
 | Align `FloorAreaUtilizationZone` between WUFI and METr | Bug fix | **Filed** — exporter contract needs a source-of-truth decision | [`bug-fix/floor-area-utilization-zone.md`](bug-fix/floor-area-utilization-zone.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |

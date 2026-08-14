@@ -22,6 +22,7 @@ from PHX.model.enums.hvac import (
     PhxHowWaterPipingInsulationQuality,
 )
 from PHX.model.geometry import PhxLineSegment
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 
 @dataclass
@@ -276,8 +277,7 @@ class PhxPipeElement:
     _segments: dict = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        PhxPipeElement._count += 1
-        self.id_num = PhxPipeElement._count
+        self.id_num = allocate_identity(IdentityNamespaces.PIPE_ELEMENTS, PhxPipeElement)
 
     @property
     def segments(self) -> list[PhxPipeSegment]:
@@ -360,8 +360,7 @@ class PhxPipeBranch:
     fixtures: list[PhxPipeElement] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        PhxPipeBranch._count += 1
-        self.id_num = PhxPipeBranch._count
+        self.id_num = allocate_identity(IdentityNamespaces.PIPE_BRANCHES, PhxPipeBranch)
 
     def add_fixture(self, _f: PhxPipeElement) -> None:
         """Append a fixture (twig) pipe element to this branch."""
@@ -392,8 +391,7 @@ class PhxPipeTrunk:
     branches: list[PhxPipeBranch] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        PhxPipeTrunk._count += 1
-        self.id_num = PhxPipeTrunk._count
+        self.id_num = allocate_identity(IdentityNamespaces.PIPE_TRUNKS, PhxPipeTrunk)
 
     def add_branch(self, _b: PhxPipeBranch) -> None:
         """Append a branch pipe to this trunk."""

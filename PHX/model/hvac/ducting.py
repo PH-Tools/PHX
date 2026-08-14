@@ -7,7 +7,6 @@ more PhxDuctSegment objects, each with geometry, cross-section dimensions,
 and insulation properties.
 """
 
-
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -15,6 +14,7 @@ from typing import ClassVar
 
 from PHX.model.enums.hvac import PhxVentDuctType
 from PHX.model.geometry import PhxLineSegment
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 
 @dataclass
@@ -102,8 +102,7 @@ class PhxDuctElement:
     _segments: dict = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.DUCTS, self.__class__)
 
     @property
     def quantity(self) -> int:

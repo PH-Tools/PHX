@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from contextlib import AbstractContextManager
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, ClassVar
@@ -19,7 +20,7 @@ from PHX.model.constructions import (
 from PHX.model.geometry import PhxGraphics3D
 from PHX.model.hvac import PhxDeviceVentilation, PhxMechanicalDevice
 from PHX.model.hvac.collection import NoDeviceFoundError, PhxMechanicalSystemCollection
-from PHX.model.identity import IdentityNamespaces, allocate_identity
+from PHX.model.identity import IdentityAllocator, IdentityNamespaces, allocate_identity, identity_scope
 from PHX.model.phx_site import PhxSite
 from PHX.model.schedules import lighting, occupancy, ventilation
 from PHX.model.shades import PhxWindowShade
@@ -439,6 +440,17 @@ class PhxProject:
     program_version: str = "3.2.0.1"
     scope: int = 3
     visualized_geometry: int = 2
+    _identity_allocator: IdentityAllocator | None = field(default=None, init=False, repr=False, compare=False)
+
+    def _attach_identity_allocator(self, allocator: IdentityAllocator) -> None:
+        """Retain the allocator that owns identities in this project graph."""
+        self._identity_allocator = allocator
+
+    def identity_scope(self) -> AbstractContextManager[IdentityAllocator]:
+        """Return a context manager for deterministic post-conversion mutation."""
+        if self._identity_allocator is None:
+            self._identity_allocator = IdentityAllocator()
+        return identity_scope(self._identity_allocator)
 
     def add_new_variant(self, _variant: PhxVariant) -> None:
         """Adds a new PHX Variant to the Project."""
