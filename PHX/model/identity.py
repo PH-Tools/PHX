@@ -12,6 +12,20 @@ from typing import Protocol, TypeAlias
 IdentityNamespace: TypeAlias = Hashable
 
 
+class IdentityNamespaces:
+    """Stable namespace keys grouped by target/reference ownership."""
+
+    VARIANTS = "project.variants"
+    MATERIALS = "project.materials"
+    ASSEMBLIES = "project.assemblies"
+    WINDOWS = "project.windows"
+    SHADES = "project.shades"
+    VENTILATION_PATTERNS = "project.patterns.ventilation"
+    OCCUPANCY_PATTERNS = "project.patterns.occupancy"
+    LIGHTING_PATTERNS = "project.patterns.lighting"
+    PH_BUILDING_DATA = "variant.ph_building_data"
+
+
 class LegacyCounterOwner(Protocol):
     """Structural type for classes that retain the legacy counter fallback."""
 

@@ -23,8 +23,10 @@
 - Phase 1 is complete. `IdentityAllocator` provides isolated namespaces,
   explicit claims, deterministic duplicate diagnostics, exception-safe
   `ContextVar` scopes, nested reuse, and legacy direct-constructor fallback.
-- **Next step:** migrate project libraries/patterns and then the remaining
-  entity families so the Phase 0 sequential test turns green.
+- Phase 2 is complete. Variants, libraries, patterns, and PH-building data use
+  scoped namespaces; HB builders retain allocated instance IDs and the WUFI
+  PH-building writer no longer reads class state.
+- **Next step:** migrate the envelope/component/geometry identity families.
 - Blockers: none. Do not begin broad `_count` deletion or golden regeneration;
   both are explicitly outside the compatibility-first implementation.
 - Planning verification: 107 existing facade, WUFI/METr reference, WUFI import,
@@ -36,8 +38,8 @@
 |---|---|---|
 | 0 — baselines and red tests | Complete | `test_project_identity_isolation.py`: expected projection failure; identity-only drift reproduced |
 | 1 — allocator and scope | Complete | allocator `8 passed`; protected model/WUFI/METr/xl-replay gate `448 passed` |
-| 2 — project libraries and patterns | In progress | next |
-| 3 — envelope and geometry | Pending | — |
+| 2 — project libraries and patterns | Complete | focused `2 passed`; protected Phase 2 gate `466 passed` |
+| 3 — envelope and geometry | In progress | next |
 | 4 — zones/HVAC/distribution | Pending | — |
 | 5 — WUFI explicit identities | Pending | — |
 | 6 — export validation | Pending | — |

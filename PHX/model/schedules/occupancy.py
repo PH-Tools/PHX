@@ -8,6 +8,8 @@ import uuid
 from dataclasses import dataclass, field
 from typing import ClassVar
 
+from PHX.model.identity import IdentityNamespaces, allocate_identity
+
 
 @dataclass
 class PhxScheduleOccupancy:
@@ -39,8 +41,7 @@ class PhxScheduleOccupancy:
     relative_utilization_factor: float = 0.0  # Relative to the 'annual_utilization_days'
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.OCCUPANCY_PATTERNS, self.__class__)
 
     def __eq__(self, other: PhxScheduleOccupancy) -> bool:
         TOLERANCE = 0.001

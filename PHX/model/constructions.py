@@ -11,6 +11,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, ClassVar
 
 from PHX.model.assembly_pathways import identify_heat_flow_pathways
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 if TYPE_CHECKING:
     from PHX.model.assembly_pathways import PhxHeatFlowPathway
@@ -80,8 +81,7 @@ class PhxMaterial:
     argb_color: PhxColor = field(default_factory=PhxColor)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.MATERIALS, self.__class__)
 
     def __eq__(self, other: PhxMaterial) -> bool:
         return self.id_num == other.id_num
@@ -511,8 +511,7 @@ class PhxConstructionOpaque:
     layers: list[PhxLayer] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.ASSEMBLIES, self.__class__)
 
     @property
     def identifier(self) -> str:
@@ -667,8 +666,7 @@ class PhxConstructionWindow:
     _id_num_shade: int = -1
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.WINDOWS, self.__class__)
 
     @property
     def glazing_type_display_name(self) -> str:

@@ -12,6 +12,7 @@ from PHX.model import ground
 from PHX.model.enums import phi_certification_phpp_9, phius_certification
 from PHX.model.enums.building import WindExposureType
 from PHX.model.enums.hvac import PhxNighttimeVentilationControl, PhxSummerBypassMode
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 
 @dataclass
@@ -154,8 +155,7 @@ class PhxPhBuildingData:
     summer_ventilation: PhxSummerVentilation = field(default_factory=PhxSummerVentilation)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.PH_BUILDING_DATA, self.__class__)
 
     def add_foundation(self, _input: ground.PhxFoundation | None) -> None:
         """Append a foundation element to this building's foundation collection.

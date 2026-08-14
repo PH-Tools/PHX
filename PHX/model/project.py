@@ -19,6 +19,7 @@ from PHX.model.constructions import (
 from PHX.model.geometry import PhxGraphics3D
 from PHX.model.hvac import PhxDeviceVentilation, PhxMechanicalDevice
 from PHX.model.hvac.collection import NoDeviceFoundError, PhxMechanicalSystemCollection
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 from PHX.model.phx_site import PhxSite
 from PHX.model.schedules import lighting, occupancy, ventilation
 from PHX.model.shades import PhxWindowShade
@@ -97,8 +98,7 @@ class PhxVariant:
     _mech_collections: list[PhxMechanicalSystemCollection] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.VARIANTS, self.__class__)
 
         # -- Always Add a default mech-collection
         self._mech_collections.append(PhxMechanicalSystemCollection())

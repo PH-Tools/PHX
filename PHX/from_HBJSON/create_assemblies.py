@@ -288,7 +288,6 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
             if hb_const.identifier not in _project.assembly_types:
                 # -- Create a new Assembly with Layers from the Honeybee-Construction
                 new_assembly = constructions.PhxConstructionOpaque()
-                new_assembly.id_num = constructions.PhxConstructionOpaque._count
                 new_assembly.display_name = hb_const.display_name
                 new_assembly.layers = [build_layer_from_hb_material(mat) for mat in materials]
                 _set_opaque_assembly_exterior_radiation_properties(new_assembly, materials)
@@ -385,7 +384,6 @@ def build_phx_window_type_from_HB_WindowConstruction(
         * (constructions.WindowType): The new PHX-WindowType.
     """
     phx_window_type = constructions.PhxConstructionWindow()
-    phx_window_type.id_num = constructions.PhxConstructionWindow._count
     phx_window_type.display_name = _hb_win_const.display_name
     phx_window_type.identifier = _hb_win_const.identifier
 
