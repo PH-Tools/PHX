@@ -1,6 +1,6 @@
 # PRD — Explicit ventilation assignment semantics
 
-**Status:** Requested · 2026-08-14
+**Status:** In progress · cross-repo contract accepted · 2026-08-14
 **Author:** Ed May + Codex
 **Kind:** Cross-boundary model/converter feature (PHX is primary for PHX representation)
 
@@ -30,21 +30,21 @@ Before implementation, document the mapping for at least these states:
 | Source state | PHX meaning | Device reference |
 |---|---|---|
 | No ventilation airflow and no mechanical system | None/unassigned | `None` |
-| Natural/window ventilation explicitly selected | Explicit non-mechanical mode | `None` |
-| Balanced/extract/supply mechanical system with device | Mechanical | Valid device ID |
+| Existing summer window-ventilation data | Summer ACH fields; no primary K12=3 mode | `None` |
+| Balanced/extract mechanical system with device | Mechanical | Valid device ID |
 | Mechanical airflow/system but missing device | Invalid/incomplete | Diagnostic; no placeholder |
 | Device exists but Space reference does not resolve | Invalid/incomplete | Diagnostic naming both objects |
 
-The exact mode enum/value belongs to implementation design, but the semantic
-states above must remain distinguishable in the PHX model.
+The accepted implementation uses `Optional[int]` for assignment. Existing
+summer window-ventilation inputs remain separate; primary PHPP K12=3 window
+mode is deferred until an upstream source representation exists.
 
 ### Model contract
 
-1. Replace `vent_unit_id_num: int = 0` with a nullable or explicit assignment
-   representation. `0` is not the no-device sentinel.
-2. Preserve a valid numeric ID exactly, including old/imported models if `0`
-   can be proven to be a legitimate target-format ID. Compatibility logic must
-   not guess silently.
+1. Replace `vent_unit_id_num: int = 0` with
+   `vent_unit_id_num: Optional[int] = None`. `0` is not the no-device sentinel.
+2. Preserve every positive imported device ID exactly. Normalize blank/`0`
+   absence at supported import boundaries; PHX device IDs start at 1.
 3. Provide a model-level integrity check that validates every Space mechanical
    assignment against the variant's device collections and returns all
    unresolved references together.
@@ -67,8 +67,12 @@ states above must remain distinguishable in the PHX model.
 
 Each exporter translates explicit PHX states according to its own format:
 
-- PHPP, WUFI XML, METr JSON, and PPP must not write Python `None` blindly.
-- Natural/window versus no ventilation uses the target's documented mechanism.
+- PHPP skips assignment lookup/write for `None`.
+- WUFI XML and METr JSON emit numeric `0` under the accepted legacy writer
+  convention; WUFI import normalizes blank/`0` to `None`. This is a boundary
+  compatibility rule, not a PHX domain value.
+- Existing summer window inputs remain independent. Primary PHPP K12=3 window
+  mode is deferred rather than inferred from absence.
 - Mechanical assignments always reference a device actually written by that
   exporter.
 - Invalid/incomplete states fail before partial output is produced.
@@ -125,4 +129,3 @@ solver rules.
 - PHPP xl-replay and WUFI/METr/PPP reference outputs are unchanged for existing
   valid mechanical-system fixtures.
 - Full `python -m pytest tests/` passes.
-
