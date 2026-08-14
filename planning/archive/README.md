@@ -6,6 +6,7 @@ This README is the index — scan or grep it instead of guessing dates. Add a ro
 
 | Item | Kind | Completed | Summary | Folder |
 |------|------|-----------|---------|--------|
+| Explicit ventilation assignment semantics | Feature (cross-repo) | 2026-08-14 | Released PHX v1.56.79 with nullable assignments, mutation-free source preflight, aggregate readiness, target-local legacy mappings, and `honeybee-ph>=1.33.42`; published OpenPH v0.5.1 matrix passes. | [`ventilation-assignment-semantics/`](ventilation-assignment-semantics/README.md) |
 | Public live Honeybee → PHX API | API/docs cleanup | 2026-08-14 | Adds the typed `PHX.conversion.from_honeybee()` facade, public option names, boundary diagnostics, equivalence tests, and corrected PHX/OpenPH documentation. | [`honeybee-conversion-facade/`](honeybee-conversion-facade/README.md) |
 | Aperture-level Psi-Install (Install Types) | Refactor (cross-repo) | 2026-08-12 | Resolved per-edge psi-install on aperture elements; per-row PHPP write; content-keyed WUFI/METr window-type variant synthesis; from_WUFI explicit-0.0 fallback fix. | [`aperture-psi-install/`](aperture-psi-install/aperture-psi-install-plan.md) |
 | HBJSON Space loads + utilization schedules | Bug fix | 2026-08-06 | Restores per-Space people loads, Honeybee schedule fallbacks, lighting EFLH, and stable WUFI occupancy round trips. | [`hbjson-occupancy-and-schedules/`](hbjson-occupancy-and-schedules/README.md) |

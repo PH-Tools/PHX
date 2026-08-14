@@ -66,6 +66,19 @@ filename = "pyproject.toml"
 search = "version = \"{current_version}\""
 replace = "version = \"{new_version}\""
 
+[[tool.bumpversion.files]]
+filename = "uv.lock"
+search = '''
+name = "phx"
+version = "{current_version}"
+source = {{ editable = "." }}
+'''
+replace = '''
+name = "phx"
+version = "{new_version}"
+source = {{ editable = "." }}
+'''
+
 # -- Testing ---
 [tool.pytest.ini_options]
 # -- 'live_excel' tests drive a real Excel application: manual-invocation only.
