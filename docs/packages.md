@@ -9,6 +9,14 @@ card_description: "The importers, exporters, and model packages that make up PHX
 PHX is organized around a central in-memory model with importers that read source
 formats into that model and exporters that write it out to target formats.
 
+## conversion
+
+The public live-object API. `PHX.conversion.from_honeybee()` converts an already
+constructed Honeybee `Model` carrying honeybee-ph extensions into a transient
+`PhxProject`, without file I/O or serialization.
+
+[Source](https://github.com/PH-Tools/PHX/blob/main/PHX/conversion.py)
+
 ## model
 
 The PHX model classes and structures. These objects are an intermediate representation
@@ -20,9 +28,11 @@ of the importers below.
 
 ## from_HBJSON
 
-Creates a new PHX model from an existing HBJSON file produced by
-[Honeybee-PH](https://github.com/PH-Tools/honeybee_ph). This is the primary import
-path for most workflows.
+Contains the established Honeybee → PHX conversion implementation plus helpers
+for reading HBJSON files produced by
+[Honeybee-PH](https://github.com/PH-Tools/honeybee_ph). New live-object callers
+should use `PHX.conversion.from_honeybee()`; file-oriented workflows compose the
+HBJSON reader with that public facade.
 
 [Source](https://github.com/PH-Tools/PHX/tree/main/PHX/from_HBJSON)
 

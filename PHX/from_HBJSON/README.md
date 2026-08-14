@@ -1,2 +1,14 @@
-# from_HBJSON:
-The modules in this package are used to build up a new PHX model object, based on an existing Honeybee-model. These modules include tools for the reading of HBJSON files which have been created with additional Passive House specific attributes using the [Honeybee-PH](https://github.com/PH-Tools/honeybee_ph) plugin.
+# from_HBJSON
+
+These modules implement Honeybee → PHX conversion and provide the file-reading
+helpers used by HBJSON-oriented workflows. New callers with an existing live
+Honeybee model should use the stable public facade:
+
+```python
+from PHX.conversion import from_honeybee
+
+phx_project = from_honeybee(hb_model)
+```
+
+The legacy `create_project.convert_hb_model_to_PhxProject()` entry point remains
+available for backwards compatibility.

@@ -298,9 +298,15 @@ the WUFI exporter includes it in `LoadsPersonsPH` / `LoadsLightingsPH` but corre
 
 ### Conversion Entry Points
 
-The PHX repo's `from_HBJSON/` package handles Honeybee → PHX conversion:
+The public live-object entry point is:
 
-- `create_project.convert_hb_model_to_PhxProject()` — main entry point
+- `PHX.conversion.from_honeybee()` — convert a live Honeybee + honeybee-ph `Model` to a transient
+  `PhxProject` without file I/O or serialization
+
+The established implementation remains under `from_HBJSON/` for backwards compatibility and
+for the file-oriented CLI workflows:
+
+- `create_project.convert_hb_model_to_PhxProject()` — legacy-compatible conversion implementation
 - `create_variant.py` — build PhxVariant from HB model
 - `create_building.py`, `create_rooms.py`, `create_geometry.py` — geometry conversion
 - `create_assemblies.py` — construction/material conversion
