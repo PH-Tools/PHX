@@ -133,8 +133,8 @@ def generate_WUFI_XML_from_object(
     # -- WUFI XML has no per-aperture psi-install: apertures whose elements resolve
     # -- to non-default values get a content-keyed window-type variant instead.
     if isinstance(_phx_object, PhxProject):
-        validate_project_identities(_phx_object, IdentityValidationTarget.WUFI)
         _phx_object.assert_ventilation_assignments_ready()
+        validate_project_identities(_phx_object, IdentityValidationTarget.WUFI)
         synthesize_window_type_psi_variants(_phx_object)
 
     doc = Document()

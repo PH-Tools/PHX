@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 from enum import Enum
 
@@ -274,21 +273,6 @@ class _GraphValidator:
                         collection.zone_coverage.zone_num,
                         f"{owner}.mechanical_systems[{collection_index}].zone_coverage.zone_num",
                     )
-
-        for message in variant.ventilation_assignment_issues():
-            if "references missing ventilation device ID" not in message:
-                continue
-            match = re.search(r"ID (\d+)", message)
-            if match:
-                self.issues.append(
-                    IdentityIssue(
-                        owner,
-                        IdentityNamespaces.VENTILATION_REFERENCES,
-                        int(match.group(1)),
-                        IdentityIssueKind.DANGLING_REFERENCE,
-                        message,
-                    )
-                )
 
 
 def validate_project_identities(project: PhxProject, target: IdentityValidationTarget | str) -> None:

@@ -41,7 +41,6 @@ class IdentityNamespaces:
     ZONES = IdentityNamespaceKey("variant.zones", variant_owned=True)
     SPACES = IdentityNamespaceKey("variant.spaces", variant_owned=True)
     MECHANICAL_SYSTEMS = IdentityNamespaceKey("variant.mechanical.systems", variant_owned=True)
-    VENTILATION_REFERENCES = IdentityNamespaceKey("variant.mechanical.ventilation_devices", variant_owned=True)
     RENEWABLE_COLLECTIONS = IdentityNamespaceKey("variant.mechanical.renewable_collections", variant_owned=True)
     SUPPORTIVE_COLLECTIONS = IdentityNamespaceKey("variant.mechanical.supportive_collections", variant_owned=True)
     EXHAUST_COLLECTIONS = IdentityNamespaceKey("variant.mechanical.exhaust_collections", variant_owned=True)
