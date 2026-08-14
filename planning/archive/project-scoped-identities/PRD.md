@@ -1,6 +1,6 @@
 # PRD — Project-scoped deterministic identities
 
-**Status:** Scoped · 2026-08-14
+**Status:** Complete · 2026-08-14
 **Author:** Ed May + Codex
 **Kind:** Architecture/correctness feature (PHX model + converters + exporters)
 

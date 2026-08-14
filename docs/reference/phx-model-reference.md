@@ -197,8 +197,20 @@ All subclass `PhxElectricalDevice`:
 
 ## Design Patterns
 
-### ClassVar Counters
-Every model class has `_count: ClassVar[int] = 0` auto-incremented in `__post_init__` or `__init__`, assigning `id_num`. Tests must reset these for predictable IDs.
+### Project-scoped identities
+
+Public Honeybee and WUFI conversions build each `PhxProject` inside a fresh
+`IdentityAllocator` scope. Integer IDs are allocated in reference-domain
+namespaces (assemblies, windows, components, variant geometry, HVAC, etc.), so
+sequential and concurrent conversions of independent projects cannot change one
+another's output. Imported WUFI IDs are explicit claims and are reserved for
+later allocation.
+
+The completed project retains its allocator. Later model construction that must
+join the project graph uses `with phx_project.identity_scope(owner=variant.id_num):`
+for variant-owned objects. Concurrent mutation of the same project is not
+supported. Legacy `_count` ClassVars remain only as a compatibility fallback for
+standalone constructors outside a project identity scope.
 
 ### UUID + id_num Dual Identity
 Constructions and devices carry both a `uuid.UUID | str` identifier and an integer `id_num`. The UUID is for lookup/deduplication; `id_num` is for sequential output numbering.
@@ -346,9 +358,10 @@ for the file-oriented CLI workflows:
 
 ## Testing Patterns
 
-### Class Counter Reset
+### Legacy class-counter reset
 
-Tests **must** reset `_count` ClassVars for predictable IDs:
+Use `reset_class_counters` only for tests that directly construct standalone
+model objects and explicitly assert compatibility numbering:
 
 ```python
 @pytest.fixture
@@ -360,19 +373,8 @@ def reset_class_counters():
         _reset_phx_class_counters()
 ```
 
-When adding a new model class with `_count`, add it to `_reset_phx_class_counters()` in `conftest.py`.
-
-### Module Reload (End-to-End Tests)
-
-For reference-case tests that compare full XML output, modules must be reloaded (not just counters reset) to guarantee clean state:
-
-```python
-importlib.reload(building)
-importlib.reload(components)
-# ... all model modules
-```
-
-Add new modules to `_reload_phx_classes()` in `conftest.py` if needed for reference-case tests.
+Public conversion and reference-case tests must not reset counters or reload
+modules. Their determinism is part of the conversion-boundary contract.
 
 ### Test Organization
 
@@ -390,7 +392,7 @@ Tests mirror the source structure under `tests/`:
 ### Writing New Tests
 
 1. Place tests in the directory that mirrors the source module path
-2. Use `reset_class_counters` fixture for any test that creates model objects
+2. Use `reset_class_counters` only when asserting standalone fallback numbering
 3. Test `__str__`/`__repr__` to catch serialization issues early
 4. Test `__add__` if the class supports merging
 5. Test `unique_key` if the class supports grouping

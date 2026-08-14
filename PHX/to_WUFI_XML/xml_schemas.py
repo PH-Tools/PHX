@@ -364,7 +364,7 @@ def _PhxPhBuildingData(
     cert = _phius_cert.phius_certification_settings
 
     return [
-        XML_Node("IdentNr", bd._count),
+        XML_Node("IdentNr", bd.id_num),
         XML_Node("BuildingCategory", cert.phius_building_category_type.value),
         XML_Node("OccupancyTypeResidential", cert.phius_building_use_type.value),
         XML_Node("BuildingStatus", cert.phius_building_status.value),

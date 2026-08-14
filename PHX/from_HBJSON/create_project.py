@@ -13,6 +13,7 @@ from honeybee_ph.team import ProjectTeamMember
 
 from PHX.from_HBJSON import cleanup, create_assemblies, create_schedules, create_shades, create_variant
 from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
+from PHX.model.identity import build_project_with_identities, identity_owner_scope
 from PHX.model.project import PhxProject, PhxProjectData, ProjectData_Agent
 
 logger = logging.getLogger()
@@ -107,6 +108,25 @@ def convert_hb_model_to_PhxProject(
     _merge_spaces_by_erv: bool = False,
     _merge_exhaust_vent_devices: bool = False,
 ) -> PhxProject:
+    """Build one PHX project in an isolated identity-allocation scope."""
+    return build_project_with_identities(
+        lambda: _convert_hb_model_to_PhxProject(
+            _hb_model=_hb_model,
+            _group_components=_group_components,
+            _merge_faces=_merge_faces,
+            _merge_spaces_by_erv=_merge_spaces_by_erv,
+            _merge_exhaust_vent_devices=_merge_exhaust_vent_devices,
+        )
+    )
+
+
+def _convert_hb_model_to_PhxProject(
+    _hb_model: model.Model,
+    _group_components: bool,
+    _merge_faces: bool | float,
+    _merge_spaces_by_erv: bool,
+    _merge_exhaust_vent_devices: bool,
+) -> PhxProject:
     """Return a complete WUFI Project object with values based on the HB Model
 
     Arguments:
@@ -145,7 +165,7 @@ def convert_hb_model_to_PhxProject(
     # -- Merge the rooms together by their Building Segment, Add to the Project
     # -- then create a new variant from the merged room.
     # -- try and weld the vertices too in order to reduce load-time.
-    for room_group in sort_hb_rooms_by_bldg_segment(hb_rooms):
+    for variant_index, room_group in enumerate(sort_hb_rooms_by_bldg_segment(hb_rooms), start=1):
         # -- Configure the merge_faces and merge_face_tolerance
         if isinstance(_merge_faces, bool):
             merge_faces: bool = _merge_faces
@@ -156,29 +176,30 @@ def convert_hb_model_to_PhxProject(
 
         merged_hb_room = cleanup.merge_rooms(room_group, merge_face_tolerance, _hb_model.angle_tolerance, merge_faces)
 
-        new_variant = create_variant.from_hb_room(
-            _hb_room=merged_hb_room,
-            _assembly_dict=phx_project.assembly_types,
-            _window_type_dict=phx_project.window_types,
-            _vent_sched_collection=phx_project.utilization_patterns_ventilation,
-            _occ_sched_collection=phx_project.utilization_patterns_occupancy,
-            _lighting_sched_collection=phx_project.utilization_patterns_lighting,
-            _dwelling_occupancy=dwelling_occupancy,
-            _group_components=_group_components,
-            _merge_spaces_by_erv=_merge_spaces_by_erv,
-            _merge_exhaust_vent_devices=_merge_exhaust_vent_devices,
-            _tolerance=_hb_model.tolerance,
-        )
+        with identity_owner_scope(variant_index):
+            new_variant = create_variant.from_hb_room(
+                _hb_room=merged_hb_room,
+                _assembly_dict=phx_project.assembly_types,
+                _window_type_dict=phx_project.window_types,
+                _vent_sched_collection=phx_project.utilization_patterns_ventilation,
+                _occ_sched_collection=phx_project.utilization_patterns_occupancy,
+                _lighting_sched_collection=phx_project.utilization_patterns_lighting,
+                _dwelling_occupancy=dwelling_occupancy,
+                _group_components=_group_components,
+                _merge_spaces_by_erv=_merge_spaces_by_erv,
+                _merge_exhaust_vent_devices=_merge_exhaust_vent_devices,
+                _tolerance=_hb_model.tolerance,
+            )
 
-        new_variant = cleanup.weld_vertices(new_variant)
+            new_variant = cleanup.weld_vertices(new_variant)
 
-        create_shades.add_hb_model_shades_to_variant(
-            new_variant,
-            _hb_model,
-            _merge_faces=merge_faces,
-            _tolerance=_hb_model.tolerance,
-            _angle_tolerance_degrees=_hb_model.angle_tolerance,
-        )
+            create_shades.add_hb_model_shades_to_variant(
+                new_variant,
+                _hb_model,
+                _merge_faces=merge_faces,
+                _tolerance=_hb_model.tolerance,
+                _angle_tolerance_degrees=_hb_model.angle_tolerance,
+            )
 
         phx_project.add_new_variant(new_variant)
 

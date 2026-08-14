@@ -108,7 +108,6 @@ def _create_vent_schedule_from_hb_style(
 
     # -- Keep all the IDs in alignment....
     new_phx_vent_schedule.identifier = hbe_vent_sched.identifier
-    new_phx_vent_schedule.id_num = new_phx_vent_schedule._count
     ph_sched_props: phx_ruleset.ScheduleRulesetPhProperties = hbe_vent_sched.properties.ph  # type: ignore
     ph_sched_props.id_num = new_phx_vent_schedule.id_num  # <--- Important!
     new_phx_vent_schedule.name = hbe_vent_sched.display_name
@@ -153,7 +152,6 @@ def _create_vent_schedule_from_ph_style(
 
     # -- Keep all the IDs in alignment....
     new_phx_vent_schedule.identifier = hbe_vent_sched.identifier
-    new_phx_vent_schedule.id_num = new_phx_vent_schedule._count
     hbe_vent_sched_prop_ph.id_num = new_phx_vent_schedule.id_num  # Important!
 
     return new_phx_vent_schedule

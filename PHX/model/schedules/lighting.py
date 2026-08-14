@@ -8,6 +8,8 @@ import uuid
 from dataclasses import dataclass, field
 from typing import ClassVar
 
+from PHX.model.identity import IdentityNamespaces, allocate_identity
+
 
 @dataclass
 class PhxScheduleLighting:
@@ -62,8 +64,7 @@ class PhxScheduleLighting:
         return new_schedule
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.LIGHTING_PATTERNS, self.__class__)
 
     def __eq__(self, other: PhxScheduleLighting) -> bool:
         TOLERANCE = 0.001

@@ -31,6 +31,7 @@ from PHX.model.hvac.ventilation import (
     PhxExhaustVentilatorUserDefined,
 )
 from PHX.model.hvac.water import AnyWaterTank
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 # ------------------------------------------------------------------------------
 
@@ -103,8 +104,7 @@ class PhxRenewableDeviceCollection:
     _devices: dict[str, AnyRenewableDevice] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.RENEWABLE_COLLECTIONS, self.__class__)
 
     @property
     def devices(self) -> list[AnyRenewableDevice]:
@@ -228,8 +228,7 @@ class PhxSupportiveDeviceCollection:
     _devices: dict[str, PhxSupportiveDevice] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.SUPPORTIVE_COLLECTIONS, self.__class__)
 
     @property
     def devices(self) -> list[PhxSupportiveDevice]:
@@ -377,8 +376,7 @@ class PhxExhaustVentilatorCollection:
     _devices: dict[str, AnyPhxExhaustVent] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.EXHAUST_COLLECTIONS, self.__class__)
 
     @property
     def devices(self) -> list[AnyPhxExhaustVent]:
@@ -534,8 +532,7 @@ class PhxMechanicalSystemCollection:
     renewable_devices: PhxRenewableDeviceCollection = field(default_factory=PhxRenewableDeviceCollection)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.MECHANICAL_SYSTEMS, self.__class__)
 
     # -------------------------------------------------------------------------
     #  -- Mechanical Devices

@@ -7,6 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import ClassVar, Optional
 
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 from PHX.model.programs.lighting import PhxProgramLighting
 from PHX.model.programs.occupancy import PhxProgramOccupancy
 from PHX.model.programs.ventilation import PhxProgramVentilation
@@ -107,8 +108,7 @@ class PhxSpace:
     electric_equipment = None
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.SPACES, self.__class__)
 
     @property
     def peak_occupancy(self) -> float:

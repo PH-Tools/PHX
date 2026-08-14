@@ -5,7 +5,7 @@
 import sys
 from collections import defaultdict, deque
 from functools import partial
-from typing import Any
+from typing import Any, Protocol
 
 from ph_units.converter import convert
 from rich import print
@@ -13,7 +13,13 @@ from rich import print
 from PHX.from_WUFI_XML import wufi_file_schema as wufi_xml
 from PHX.model.building import PhxBuilding, PhxZone
 from PHX.model.certification import PhxPhBuildingData, PhxPhiusCertification
-from PHX.model.components import PhxApertureElement, PhxComponentAperture, PhxComponentOpaque, PhxComponentThermalBridge
+from PHX.model.components import (
+    PhxApertureElement,
+    PhxComponentAperture,
+    PhxComponentBase,
+    PhxComponentOpaque,
+    PhxComponentThermalBridge,
+)
 from PHX.model.constructions import (
     PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE,
     PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY,
@@ -107,6 +113,7 @@ from PHX.model.hvac.ventilation import (
     PhxExhaustVentilatorUserDefined,
 )
 from PHX.model.hvac.water import PhxHotWaterTank
+from PHX.model.identity import IdentityNamespace, IdentityNamespaces, claim_identity, identity_owner_scope
 from PHX.model.phx_site import PhxClimate, PhxCO2Factor, PhxGround, PhxPEFactor, PhxSite, PhxSiteEnergyFactors
 from PHX.model.project import PhxProject, PhxProjectData, PhxProjectDate, PhxVariant, ProjectData_Agent, WufiPlugin
 from PHX.model.schedules.lighting import PhxScheduleLighting
@@ -131,6 +138,24 @@ def as_phx_obj(_model, _schema_name, **kwargs) -> Any:
     """
     builder = getattr(sys.modules[__name__], f"_{_schema_name}")
     return builder(_model, **kwargs)
+
+
+class _WritableIdentity(Protocol):
+    id_num: int
+
+
+def _claim_object_identity(
+    _obj: _WritableIdentity | PhxComponentBase,
+    _namespace: IdentityNamespace,
+    _value: int,
+    _source: str,
+) -> None:
+    """Claim a WUFI identity and assign it to a public or protected ID field."""
+    claimed = claim_identity(_namespace, _value, _source)
+    if isinstance(_obj, PhxComponentBase):
+        _obj._id_num = claimed
+    else:
+        _obj.id_num = claimed
 
 
 # -----------------------------------------------------------------------------
@@ -181,7 +206,8 @@ def _PhxProject(_model: wufi_xml.WUFIplusProject) -> PhxProject:
     # ----------------------------------------------------------------------
     # -- Build all the actual Variants
     for variant_dict in _model.Variants or []:
-        new_variant = as_phx_obj(variant_dict, "PhxVariant", _phx_project_host=phx_obj)
+        with identity_owner_scope(variant_dict.IdentNr):
+            new_variant = as_phx_obj(variant_dict, "PhxVariant", _phx_project_host=phx_obj)
         phx_obj.add_new_variant(new_variant)
 
     return phx_obj
@@ -244,7 +270,7 @@ def _PhxProjectData(_model: wufi_xml.WufiProjectData) -> PhxProjectData:
 
 def _PhxConstructionWindow(_t: wufi_xml.WufiWindowType) -> PhxConstructionWindow:
     phx_obj = PhxConstructionWindow()
-    phx_obj.id_num = _t.IdentNr
+    _claim_object_identity(phx_obj, IdentityNamespaces.WINDOWS, _t.IdentNr, f"WindowType[{_t.Name}]")
     phx_obj.identifier = str(_t.IdentNr)
     phx_obj.display_name = _t.Name
     phx_obj.use_detailed_uw = _t.Uw_Detailed
@@ -287,7 +313,7 @@ def _PhxConstructionWindow(_t: wufi_xml.WufiWindowType) -> PhxConstructionWindow
 
 def _PhxConstructionOpaque(_data: wufi_xml.WufiAssembly) -> PhxConstructionOpaque:
     phx_obj = PhxConstructionOpaque()
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(phx_obj, IdentityNamespaces.ASSEMBLIES, _data.IdentNr, f"Assembly[{_data.Name}]")
     phx_obj.identifier = str(_data.IdentNr)
     phx_obj.display_name = _data.Name
     phx_obj.layer_order = _data.Order_Layers
@@ -296,7 +322,11 @@ def _PhxConstructionOpaque(_data: wufi_xml.WufiAssembly) -> PhxConstructionOpaqu
     # -- First, create any exchange-materials
     exchange_materials: dict[int, PhxMaterial] = {}
     for exchange_mat in _data.ExchangeMaterials or []:
-        new_exchange_mat: PhxMaterial = as_phx_obj(exchange_mat, "PhxExchangeMaterial")
+        new_exchange_mat: PhxMaterial = as_phx_obj(
+            exchange_mat,
+            "PhxExchangeMaterial",
+            _namespace=(IdentityNamespaces.MATERIALS, _data.IdentNr),
+        )
         exchange_materials[exchange_mat.IdentNr] = new_exchange_mat
 
     for layer in _data.Layers:
@@ -365,9 +395,9 @@ def _PhxMaterial(_data: wufi_xml.WufiMaterial) -> PhxMaterial:
     return phx_obj
 
 
-def _PhxExchangeMaterial(_data: wufi_xml.WufiExchangeMaterial) -> PhxMaterial:
+def _PhxExchangeMaterial(_data: wufi_xml.WufiExchangeMaterial, _namespace: IdentityNamespace) -> PhxMaterial:
     phx_obj = PhxMaterial()
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(phx_obj, _namespace, _data.IdentNr, f"ExchangeMaterial[{_data.Name}]")
     phx_obj.display_name = _data.Name
     phx_obj.conductivity = _data.ThermalConductivity
     phx_obj.density = _data.BulkDensity
@@ -377,7 +407,7 @@ def _PhxExchangeMaterial(_data: wufi_xml.WufiExchangeMaterial) -> PhxMaterial:
 
 def _PhxWindowShade(_data: wufi_xml.WufiSolarProtectionType) -> PhxWindowShade:
     phx_obj = PhxWindowShade()
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(phx_obj, IdentityNamespaces.SHADES, _data.IdentNr, f"SolarProtection[{_data.Name}]")
     phx_obj.identifier = str(_data.IdentNr)
     phx_obj.display_name = _data.Name
     phx_obj.operation_mode = _data.OperationMode
@@ -394,7 +424,9 @@ def _PhxScheduleVentilation(
 ) -> PhxScheduleVentilation:
     phx_obj = PhxScheduleVentilation()
 
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(
+        phx_obj, IdentityNamespaces.VENTILATION_PATTERNS, _data.IdentNr, f"VentilationPattern[{_data.Name}]"
+    )
     phx_obj.name = _data.Name
     phx_obj.identifier = str(_data.IdentNr)
     phx_obj.operating_days = _data.OperatingDays
@@ -412,7 +444,9 @@ def _PhxScheduleVentilation(
 
 def _PhxScheduleOccupancy(_data: wufi_xml.WufiUtilizationPattern) -> PhxScheduleOccupancy:
     phx_obj = PhxScheduleOccupancy()
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(
+        phx_obj, IdentityNamespaces.OCCUPANCY_PATTERNS, _data.IdentNr, f"OccupancyPattern[{_data.Name}]"
+    )
     phx_obj.identifier = str(_data.IdentNr)
     phx_obj.display_name = _data.Name
     phx_obj.start_hour = _data.BeginUtilization
@@ -441,7 +475,9 @@ def _WufiPlugin(_model: wufi_xml.WufiPlugin) -> WufiPlugin:
 def _PhxVariant(_xml_variant_data: wufi_xml.WufiVariant, _phx_project_host: PhxProject) -> PhxVariant:
     phx_obj = PhxVariant()
 
-    phx_obj.id_num = _xml_variant_data.IdentNr
+    _claim_object_identity(
+        phx_obj, IdentityNamespaces.VARIANTS, _xml_variant_data.IdentNr, f"Variant[{_xml_variant_data.Name}]"
+    )
     phx_obj.name = _xml_variant_data.Name
     phx_obj.remarks = _xml_variant_data.Remarks
     phx_obj.plugin = as_phx_obj(_xml_variant_data.PlugIn, "WufiPlugin")
@@ -466,7 +502,12 @@ def _PhxVariant(_xml_variant_data: wufi_xml.WufiVariant, _phx_project_host: PhxP
 
         new_mechanical_collection = PhxMechanicalSystemCollection()
         new_mechanical_collection.display_name = xml_system_data.Name
-        new_mechanical_collection.id_num = xml_system_data.IdentNr
+        _claim_object_identity(
+            new_mechanical_collection,
+            IdentityNamespaces.MECHANICAL_SYSTEMS,
+            xml_system_data.IdentNr,
+            f"MechanicalSystem[{xml_system_data.Name}]",
+        )
         new_mechanical_collection.zone_coverage = as_phx_obj(xml_system_data.ZonesCoverage[0], "PhxZoneCoverage")
 
         # ---------------------------------------------------------------------
@@ -858,7 +899,7 @@ def _PhxBuilding(
 
 def _PhxVertix(_data: wufi_xml.WufiVertix) -> PhxVertix:
     phx_obj = PhxVertix()
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(phx_obj, IdentityNamespaces.VERTICES, _data.IdentNr, f"Vertex[{_data.IdentNr}]")
     phx_obj.x = _data.X
     phx_obj.y = _data.Y
     phx_obj.z = _data.Z
@@ -890,7 +931,7 @@ def _PhxPolygon(_data: wufi_xml.WufiPolygon, _vertix_dict: dict[int, PhxVertix] 
         normal_vector=plane.normal_vector,
         plane=plane,
     )
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(phx_obj, IdentityNamespaces.POLYGONS, _data.IdentNr, f"Polygon[{_data.IdentNr}]")
     phx_obj._vertices = [_vertix_dict[_.IdentNr] for _ in _data.IdentNrPoints]
     if _data.IdentNrPolygonsInside:
         for _ in _data.IdentNrPolygonsInside:
@@ -914,6 +955,7 @@ def _PhxComponentAperture(
     _window_types: dict[str, PhxConstructionWindow],
 ) -> PhxComponentAperture:
     phx_obj = PhxComponentAperture(_host=None)  # type: ignore
+    _claim_object_identity(phx_obj, IdentityNamespaces.COMPONENTS, _data.IdentNr, f"Component[{_data.Name}]")
 
     phx_obj.display_name = _data.Name or "__unnamed_component__"
     phx_obj.face_type = ComponentFaceType.WINDOW
@@ -952,7 +994,7 @@ def _PhxComponentOpaque(
     # -- Build either an opaque or transparent component
     phx_obj = PhxComponentOpaque()
 
-    phx_obj._id_num = _data.IdentNr
+    _claim_object_identity(phx_obj, IdentityNamespaces.COMPONENTS, _data.IdentNr, f"Component[{_data.Name}]")
     phx_obj.display_name = _data.Name or "__unnamed_component__"
     phx_obj.face_opacity = ComponentFaceOpacity(_data.Type)
     phx_obj.color_interior = ComponentColor(_data.IdentNrColorI)
@@ -1127,7 +1169,7 @@ def _PhxPhiusCertification(_data: wufi_xml.WufiPassivehouseData, _phx_building: 
 def _PhxPhBuildingData(_data: wufi_xml.WufiPH_Building, _phx_building: PhxBuilding) -> PhxPhBuildingData:
 
     phx_obj = PhxPhBuildingData()
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(phx_obj, IdentityNamespaces.PH_BUILDING_DATA, _data.IdentNr, f"PHBuilding[{_data.IdentNr}]")
     phx_obj.num_of_units = _data.NumberUnits
     phx_obj.num_of_floors = _data.CountStories
     phx_obj.occupancy_setting_method = _data.OccupancySettingMethod
@@ -1306,7 +1348,7 @@ def _PhxZone(_data: wufi_xml.WufiZone, _phx_project_host: PhxProject) -> PhxZone
     phx_obj.zone_type = ZoneType(_data.KindZone)
     phx_obj.attached_zone_type = AttachedZoneType(_data.KindAttachedZone or 0)
     phx_obj.attached_zone_reduction_factor = _data.TemperatureReductionFactorUserDefined or 1.0
-    phx_obj.id_num = _data.IdentNr
+    _claim_object_identity(phx_obj, IdentityNamespaces.ZONES, _data.IdentNr, f"Zone[{_data.Name}]")
     phx_obj.display_name = _data.Name
     phx_obj.volume_gross = _data.GrossVolume or 0.0
     phx_obj.volume_net = _data.NetVolume or 0.0
@@ -1393,7 +1435,12 @@ def _add_occupancy_data_to_space(
     if not project_util_patterns_occ.key_is_in_collection(occ_pattern_id):
         new_schedule = PhxScheduleOccupancy.constant_operation()
         new_schedule.display_name = _occupancy_data.Name
-        new_schedule.id_num = int(occ_pattern_id)
+        _claim_object_identity(
+            new_schedule,
+            IdentityNamespaces.OCCUPANCY_PATTERNS,
+            int(occ_pattern_id),
+            f"SpaceOccupancyPattern[{_occupancy_data.Name}]",
+        )
         new_schedule.identifier = str(occ_pattern_id)
         project_util_patterns_occ.add_new_util_pattern(new_schedule)
 
@@ -1417,14 +1464,19 @@ def _add_lighting_data_to_space(
 
     # -- Get the right Lighting Utilization Pattern
     project_util_pat_lighting = _phx_project_host.utilization_patterns_lighting
-    lighting_pattern_id = _lighting_data.RoomCategory
+    lighting_pattern_id = str(_lighting_data.RoomCategory)
 
     # -- Ensure that the lighting pattern is in the project collection. If
     # -- not, create a new one based on the full-load lighting hours.
     if not project_util_pat_lighting.key_is_in_collection(lighting_pattern_id):
         new_schedule = PhxScheduleLighting.from_annual_operating_hours(_lighting_data.LightingFullLoadHours)
         new_schedule.display_name = _lighting_data.Name
-        new_schedule.id_num = int(lighting_pattern_id)
+        _claim_object_identity(
+            new_schedule,
+            IdentityNamespaces.LIGHTING_PATTERNS,
+            int(lighting_pattern_id),
+            f"SpaceLightingPattern[{_lighting_data.Name}]",
+        )
         new_schedule.identifier = str(lighting_pattern_id)
         project_util_pat_lighting.add_new_util_pattern(new_schedule)
 
@@ -1499,6 +1551,12 @@ def _PhxMechanicalDevice(_data: wufi_xml.WufiDevice) -> Any:
 
     # -- Pass the data off using the correct device-builder-classname
     new_mech_device = as_phx_obj(_data, builder_class_name)
+    _claim_object_identity(
+        new_mech_device,
+        IdentityNamespaces.mechanical_devices(new_mech_device.__class__),
+        _data.IdentNr,
+        f"MechanicalDevice[{_data.Name or _data.IdentNr}]",
+    )
 
     # -- Set the usage profile (heating %, cooling %, etc.) of the device
     new_mech_device.usage_profile = as_phx_obj(_data, "PhxUsageProfile")
@@ -1510,7 +1568,6 @@ def _PhxDevice_Ventilation(_data: wufi_xml.WufiDevice) -> PhxDeviceVentilator:
     phx_obj = PhxDeviceVentilator()
 
     phx_obj.display_name = _data.Name or "unnamed_ventilation"
-    phx_obj.id_num = _data.IdentNr
     phx_obj.identifier = str(_data.IdentNr)
 
     phx_obj.params.sensible_heat_recovery = _data.HeatRecovery

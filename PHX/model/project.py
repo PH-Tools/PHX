@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Hashable, Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, ClassVar
@@ -19,6 +21,13 @@ from PHX.model.constructions import (
 from PHX.model.geometry import PhxGraphics3D
 from PHX.model.hvac import PhxDeviceVentilation, PhxMechanicalDevice
 from PHX.model.hvac.collection import NoDeviceFoundError, PhxMechanicalSystemCollection
+from PHX.model.identity import (
+    IdentityAllocator,
+    IdentityNamespaces,
+    allocate_identity,
+    identity_owner_scope,
+    identity_scope,
+)
 from PHX.model.phx_site import PhxSite
 from PHX.model.schedules import lighting, occupancy, ventilation
 from PHX.model.shades import PhxWindowShade
@@ -97,8 +106,7 @@ class PhxVariant:
     _mech_collections: list[PhxMechanicalSystemCollection] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        self.__class__._count += 1
-        self.id_num = self.__class__._count
+        self.id_num = allocate_identity(IdentityNamespaces.VARIANTS, self.__class__)
 
         # -- Always Add a default mech-collection
         self._mech_collections.append(PhxMechanicalSystemCollection())
@@ -439,6 +447,23 @@ class PhxProject:
     program_version: str = "3.2.0.1"
     scope: int = 3
     visualized_geometry: int = 2
+    _identity_allocator: IdentityAllocator | None = field(default=None, init=False, repr=False, compare=False)
+
+    def _attach_identity_allocator(self, allocator: IdentityAllocator) -> None:
+        """Retain the allocator that owns identities in this project graph."""
+        self._identity_allocator = allocator
+
+    @contextmanager
+    def identity_scope(self, owner: Hashable | None = None) -> Iterator[IdentityAllocator]:
+        """Activate this project's allocator, optionally for one variant owner."""
+        if self._identity_allocator is None:
+            self._identity_allocator = IdentityAllocator()
+        with identity_scope(self._identity_allocator) as allocator:
+            if owner is None:
+                yield allocator
+            else:
+                with identity_owner_scope(owner):
+                    yield allocator
 
     def add_new_variant(self, _variant: PhxVariant) -> None:
         """Adds a new PHX Variant to the Project."""

@@ -1035,7 +1035,6 @@ def from_hb_room(
 
     # -- Keep all the ID numbers aligned
     room_ph_prop: RoomPhProperties = _hb_room.properties.ph
-    new_variant.id_num = project.PhxVariant._count
     room_ph_prop.id_num = new_variant.id_num
     new_variant.name = _hb_room.display_name
 

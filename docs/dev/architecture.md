@@ -41,6 +41,8 @@ PHX/
 ├── conversion.py           # Public live Honeybee Model -> PhxProject facade
 ├── model/                  # Core PHX domain model (dataclasses)
 │   ├── project.py          # PhxProject (top-level), PhxVariant, PhxProjectData
+│   ├── identity.py         # Project-scoped identity allocation and explicit claims
+│   ├── identity_validation.py # Target-specific duplicate/reference validation
 │   ├── building.py         # PhxBuilding, PhxZone
 │   ├── components.py       # PhxComponentOpaque, PhxComponentAperture, PhxComponentThermalBridge
 │   ├── constructions.py    # PhxConstructionOpaque, PhxConstructionWindow, PhxMaterial
@@ -132,3 +134,19 @@ PHX/
 ├── hbjson_to_ppp.py        # CLI entry point: HBJSON -> PPP
 └── run.py                  # Python 2.7 compatibility wrapper (for Grasshopper/Rhino)
 ```
+
+## Identity ownership
+
+The public Honeybee and WUFI import boundaries create a fresh identity allocator
+for each project and retain it on the resulting `PhxProject`. Nested constructors
+receive that allocator through an exception-safe context; variant-owned
+namespaces are additionally qualified by the variant owner. Independent project
+conversions are therefore safe to run concurrently. Concurrent mutation of one
+shared project or one shared mutable Honeybee source remains outside the
+contract.
+
+Standalone model construction still falls back to legacy class counters for
+compatibility. Exporters never reset those globals. WUFI and METr validate the
+identity graph before serialization, and the canonical PHPP write sequence
+validates before its first Excel call. PPP has no numeric-reference consumer and
+does not use this gate.

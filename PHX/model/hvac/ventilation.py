@@ -13,6 +13,7 @@ from typing import ClassVar, Union
 
 from PHX.model.enums.hvac import DeviceType, PhxExhaustVentType, SystemType
 from PHX.model.hvac import _base
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 
 @dataclass
@@ -285,11 +286,10 @@ class PhxExhaustVentilatorBase(_base.PhxMechanicalDevice):
     id_num: int = field(init=False, default=0)
 
     def __post_init__(self):
+        # Preserve the historical leaf-device allocation burn before assigning
+        # the shared exhaust-device identity used by this family.
         super().__post_init__()
-        # -- Use PhxExhaustVentilatorBase._count instead of super() so that all
-        # -- counting happens at the parent class, not the child class.
-        PhxExhaustVentilatorBase._count += 1
-        self.id_num = PhxExhaustVentilatorBase._count
+        self.id_num = allocate_identity(IdentityNamespaces.EXHAUST_DEVICES, PhxExhaustVentilatorBase)
         self.quantity = 1
 
 

@@ -57,6 +57,20 @@ Each CLI entry point wires up these parameters differently:
 
 Then each exporter serializes the `PhxProject` to its target format.
 
+### Identity lifecycle and export gates
+
+Every public conversion owns a fresh project-scoped identity allocator. Do not
+reset class counters in an importer or exporter. Builders allocate through the
+active namespace, WUFI importers claim source IDs, and explicit post-conversion
+mutation enters `phx_project.identity_scope()` (with the variant ID as `owner`
+for variant-local objects).
+
+`generate_WUFI_XML_from_object()`, `generate_metr_json_dict()`, and the canonical
+`write_phx_project_to_phpp()` sequence run target-specific, read-only identity
+validation before serialization or Excel writes. The aggregate diagnostic
+reports the object path, namespace, numeric value, and duplicate/dangling kind.
+Keep PPP independent unless it gains a concrete numeric-reference contract.
+
 ### PH-style and Honeybee-style schedule fallback
 
 `from_HBJSON/create_schedules.py` supports both schedule representations that occur in source
