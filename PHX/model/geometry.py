@@ -9,6 +9,8 @@ from collections.abc import Collection
 from dataclasses import dataclass, field
 from typing import ClassVar
 
+from PHX.model.identity import IdentityNamespaces, allocate_identity
+
 
 class PolygonEdgeError(Exception):
     """Raised when a PhxPolygonRectangular edge cannot be constructed due to missing vertices."""
@@ -25,7 +27,8 @@ class PolygonEdgeError(Exception):
 class PhxVertix2D:
     """A 2D vertex point used for planar geometry operations.
 
-    Automatically assigns a unique sequential ID on creation via a class-level counter.
+    Uses the active project's vertex namespace, with the legacy 3D-vertex class
+    counter retained for standalone construction.
 
     Attributes:
         x (float): The X coordinate.
@@ -57,8 +60,7 @@ class PhxVertix2D:
         return abs(self.x - other.x) < TOLERANCE and abs(self.y - other.y) < TOLERANCE
 
     def __post_init__(self):
-        PhxVertix._count += 1
-        self.id_num = PhxVertix._count
+        self.id_num = allocate_identity(IdentityNamespaces.VERTICES, PhxVertix)
 
     @property
     def unique_key(self) -> str:
@@ -73,7 +75,8 @@ class PhxVertix2D:
 class PhxVertix:
     """A 3D vertex point used as the fundamental geometric primitive in PHX.
 
-    Automatically assigns a unique sequential ID on creation via a class-level counter.
+    Uses the active project's vertex namespace, with a class-counter fallback
+    for standalone construction.
 
     Attributes:
         x (float): The X coordinate. Default: 0.0.
@@ -116,8 +119,7 @@ class PhxVertix:
         )
 
     def __post_init__(self):
-        PhxVertix._count += 1
-        self.id_num = PhxVertix._count
+        self.id_num = allocate_identity(IdentityNamespaces.VERTICES, PhxVertix)
 
     @property
     def unique_key(self) -> str:
@@ -307,7 +309,8 @@ class PhxLineSegment:
 class PhxPolygon:
     """A 3D polygon surface defined by 3 or more coplanar vertices.
 
-    Automatically assigns a unique sequential ID on creation via a class-level counter.
+    Uses the active project's polygon namespace, with a class-counter fallback
+    for standalone construction.
     Area and center are lazily computed from vertex geometry when first accessed.
 
     Attributes:
@@ -368,8 +371,7 @@ class PhxPolygon:
             self._center = _in
 
     def __post_init__(self):
-        PhxPolygon._count += 1
-        self.id_num = PhxPolygon._count
+        self.id_num = allocate_identity(IdentityNamespaces.POLYGONS, PhxPolygon)
 
     @property
     def display_name(self) -> str:

@@ -24,6 +24,9 @@ class IdentityNamespaces:
     OCCUPANCY_PATTERNS = "project.patterns.occupancy"
     LIGHTING_PATTERNS = "project.patterns.lighting"
     PH_BUILDING_DATA = "variant.ph_building_data"
+    COMPONENTS = "variant.components"
+    VERTICES = "variant.geometry.vertices"
+    POLYGONS = "variant.geometry.polygons"
 
 
 class LegacyCounterOwner(Protocol):
@@ -55,6 +58,8 @@ class IdentityAllocator:
     """Allocate deterministic positive integers within independent namespaces."""
 
     def __init__(self) -> None:
+        # Automatic claims below each next-candidate are represented by the
+        # high-water mark; only sparse explicit claims retain source strings.
         self._claims: dict[IdentityNamespace, dict[int, str]] = {}
         self._next_candidates: dict[IdentityNamespace, int] = {}
 
@@ -64,7 +69,6 @@ class IdentityAllocator:
         candidate = self._next_candidates.get(namespace, 1)
         while candidate in claims:
             candidate += 1
-        claims[candidate] = source
         self._next_candidates[namespace] = candidate + 1
         return candidate
 
@@ -75,21 +79,26 @@ class IdentityAllocator:
                 f"Identity in namespace {namespace!r} must be positive; received {value} from {source}."
             )
         claims = self._claims.setdefault(namespace, {})
-        if value in claims:
-            raise DuplicateIdentityError(namespace, value, claims[value], source)
+        if value < self._next_candidates.get(namespace, 1):
+            raise DuplicateIdentityError(namespace, value, "automatic allocation", source)
+        if existing_source := claims.get(value):
+            raise DuplicateIdentityError(namespace, value, existing_source, source)
         claims[value] = source
         self._next_candidates.setdefault(namespace, 1)
         return value
 
     def is_claimed(self, namespace: IdentityNamespace, value: int) -> bool:
         """Return whether a value is already claimed in a namespace."""
-        return value in self._claims.get(namespace, {})
+        return value < self._next_candidates.get(namespace, 1) or value in self._claims.get(namespace, {})
 
     def snapshot(self) -> dict[IdentityNamespace, tuple[int, ...]]:
         """Return a deterministic diagnostic view of allocated identities."""
+        namespaces = self._claims.keys() | self._next_candidates.keys()
         return {
-            namespace: tuple(sorted(claims))
-            for namespace, claims in sorted(self._claims.items(), key=lambda item: str(item[0]))
+            namespace: tuple(
+                sorted(set(range(1, self._next_candidates.get(namespace, 1))) | self._claims.get(namespace, {}).keys())
+            )
+            for namespace in sorted(namespaces, key=str)
         }
 
 

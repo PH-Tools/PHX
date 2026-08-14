@@ -26,7 +26,12 @@
 - Phase 2 is complete. Variants, libraries, patterns, and PH-building data use
   scoped namespaces; HB builders retain allocated instance IDs and the WUFI
   PH-building writer no longer reads class state.
-- **Next step:** migrate the envelope/component/geometry identity families.
+- Phase 3 is complete. Components retain one shared compatibility namespace;
+  polygons and vertices are isolated, including the historical 2D-to-3D vertex
+  burn. Automatic claims use a compact high-water mark so transient geometry
+  does not accumulate per-ID allocator entries.
+- **Next step:** migrate zones, Spaces, HVAC, and distribution identities and
+  install the scope at the public HB conversion boundary.
 - Blockers: none. Do not begin broad `_count` deletion or golden regeneration;
   both are explicitly outside the compatibility-first implementation.
 - Planning verification: 107 existing facade, WUFI/METr reference, WUFI import,
@@ -39,8 +44,8 @@
 | 0 — baselines and red tests | Complete | `test_project_identity_isolation.py`: expected projection failure; identity-only drift reproduced |
 | 1 — allocator and scope | Complete | allocator `8 passed`; protected model/WUFI/METr/xl-replay gate `448 passed` |
 | 2 — project libraries and patterns | Complete | focused `2 passed`; protected Phase 2 gate `466 passed` |
-| 3 — envelope and geometry | In progress | next |
-| 4 — zones/HVAC/distribution | Pending | — |
+| 3 — envelope and geometry | Complete | focused/protected geometry + PHPP gate `312 passed` |
+| 4 — zones/HVAC/distribution | In progress | next |
 | 5 — WUFI explicit identities | Pending | — |
 | 6 — export validation | Pending | — |
 | 7 — docs and closeout | Pending | — |

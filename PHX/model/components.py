@@ -16,23 +16,24 @@ from PHX.model.enums.building import (
     ComponentFaceType,
     ThermalBridgeType,
 )
+from PHX.model.identity import IdentityNamespaces, allocate_identity
 
 
 class PhxComponentBase:
-    """Base class with auto-incrementing ID counter for all PHX building components.
+    """Base class providing numeric identity for all PHX building components.
 
-    Provides a unique ``id_num`` to every Opaque, Aperture, and Thermal Bridge
-    component created during a session.
+    Components built in a project identity scope share that project's component
+    namespace. Standalone construction retains the session-level class counter
+    as a backwards-compatible fallback.
 
     Attributes:
-        _count (ClassVar[int]): Session-level counter shared across all subclasses.
+        _count (ClassVar[int]): Legacy standalone counter shared across subclasses.
     """
 
     _count: ClassVar[int] = 0
 
     def __init__(self):
-        PhxComponentBase._count += 1
-        self._id_num: int = PhxComponentBase._count
+        self._id_num: int = allocate_identity(IdentityNamespaces.COMPONENTS, PhxComponentBase)
 
     @property
     def id_num(self) -> int:
