@@ -16,27 +16,35 @@ Guide for understanding existing exporters/importers and adding new ones.
 
 ## Common Pipeline
 
-All exporters share the same first two steps — read an HBJSON file into a Honeybee model, then convert it to a PHX project:
+All Honeybee-based exporters share one object boundary: convert a live Honeybee model carrying
+honeybee-ph extensions into a transient PHX project:
 
 ```python
-from PHX.from_HBJSON import read_HBJSON_file, create_project
+from PHX.conversion import from_honeybee
 
-# 1. Read HBJSON -> Honeybee Model
-hb_json_dict = read_HBJSON_file.read_hb_json_from_file(source_path)
-hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
-# Note: convert_hbjson_dict_to_hb_model always normalizes the model to Meters.
-
-# 2. Convert HB Model -> PHX Project
-phx_project = create_project.convert_hb_model_to_PhxProject(
+phx_project = from_honeybee(
     hb_model,
-    _group_components=True,        # Group components by assembly type
-    _merge_faces=False,            # True | False | float (custom tolerance)
-    _merge_spaces_by_erv=False,    # Merge spaces served by the same ERV
-    _merge_exhaust_vent_devices=False,
+    group_components=True,        # Group components by assembly type
+    merge_faces=False,            # True | False | float (custom tolerance)
+    merge_spaces_by_erv=False,    # Merge spaces served by the same ERV
+    merge_exhaust_vent_devices=False,
 )
 ```
 
-**`_merge_faces`** accepts `bool | float` — when a float is passed, it is used as the merge tolerance instead of `_hb_model.tolerance`.
+`merge_faces` accepts `bool | float`; a float supplies the merge tolerance instead of using
+`hb_model.tolerance`.
+
+File-oriented entry points prepend the HBJSON reading step:
+
+```python
+from PHX.from_HBJSON import read_HBJSON_file
+
+hb_json_dict = read_HBJSON_file.read_hb_json_from_file(source_path)
+hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
+# convert_hbjson_dict_to_hb_model normalizes the model to Meters.
+
+phx_project = from_honeybee(hb_model)
+```
 
 Each CLI entry point wires up these parameters differently:
 

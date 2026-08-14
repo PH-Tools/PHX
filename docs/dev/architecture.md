@@ -15,19 +15,30 @@ llm_related:
 ## Data Flow
 
 ```
-HBJSON file ──> from_HBJSON ──> PHX Model (in-memory) ──> to_WUFI_XML  ──> .xml file
-                                     |                ──> PHPP          ──> Excel (via xlwings)
-                                     |                ──> to_PPP        ──> .ppp file
-                                     |                ──> to_METr_JSON  ──> .json file
-WUFI XML file ──> from_WUFI_XML ─────┘
+HBJSON file ──> read/parse ──┐
+                             ├──> Honeybee + honeybee-ph Model
+live Honeybee Model ─────────┘              │
+                                            └──> conversion.from_honeybee()
+                                                       │
+                                                       └──> PHX Model (in-memory)
+                                                              ├──> to_WUFI_XML  ──> .xml file
+                                                              ├──> PHPP          ──> Excel (via xlwings)
+                                                              ├──> to_PPP        ──> .ppp file
+                                                              └──> to_METr_JSON  ──> .json file
+WUFI XML file ──> from_WUFI_XML ────────────────────────────> PHX Model (in-memory)
 ```
 
 PHX is an **in-memory-only translator** — PHX models are never serialized directly. They exist as an intermediate representation created from a source (usually HBJSON) and consumed by an output writer.
+
+`PHX.conversion.from_honeybee()` is the public Honeybee → PHX boundary. It accepts an already
+constructed Honeybee model carrying honeybee-ph extensions. Reading an HBJSON file into that
+Honeybee object is an optional, separate step used by file-oriented workflows.
 
 ## Package Structure
 
 ```
 PHX/
+├── conversion.py           # Public live Honeybee Model -> PhxProject facade
 ├── model/                  # Core PHX domain model (dataclasses)
 │   ├── project.py          # PhxProject (top-level), PhxVariant, PhxProjectData
 │   ├── building.py         # PhxBuilding, PhxZone
@@ -59,7 +70,7 @@ PHX/
 │   ├── loads/              # Load definitions (ventilation, occupancy, lighting)
 │   └── programs/           # Program types (ventilation, occupancy, lighting)
 │
-├── from_HBJSON/            # HBJSON -> PHX Model conversion
+├── from_HBJSON/            # Honeybee conversion implementation + HBJSON file reader
 │   ├── read_HBJSON_file.py # Read and parse HBJSON files
 │   ├── create_project.py   # Main entry: convert_hb_model_to_PhxProject()
 │   ├── create_variant.py   # Build PhxVariant from HB model

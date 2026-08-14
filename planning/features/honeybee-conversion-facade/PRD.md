@@ -1,6 +1,6 @@
 # PRD — Public Honeybee → PHX API
 
-**Status:** Requested · 2026-08-14
+**Status:** In progress · 2026-08-14 — implementation complete; verification pending
 **Author:** Ed May + Codex
 **Kind:** API/documentation cleanup (no new conversion behavior or model-format change)
 

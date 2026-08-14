@@ -9,7 +9,8 @@ A Python library that converts building energy model data between [Honeybee](htt
 | Package | Role |
 |---------|------|
 | `PHX/model/` | The in-memory PHX object graph (building, components, constructions, hvac, loads, geometry, certification) |
-| `PHX/from_HBJSON/` | Build a PHX model from a Honeybee-PH HBJSON file (the primary source path) |
+| `PHX/conversion.py` | Public live Honeybee / honeybee-ph `Model` → `PhxProject` facade |
+| `PHX/from_HBJSON/` | Honeybee conversion implementation plus HBJSON file-reading helpers |
 | `PHX/from_WUFI_XML/` | Build a PHX model from a WUFI-Passive XML file (pydantic schema parsing) |
 | `PHX/from_PHPP/` | Build a PHX model from a PHPP file |
 | `PHX/to_WUFI_XML/` | Write a PHX model to WUFI-Passive XML |
