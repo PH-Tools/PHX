@@ -1,6 +1,6 @@
 # PRD — Public Honeybee → PHX API
 
-**Status:** In progress · 2026-08-14 — implementation complete; verification pending
+**Status:** Complete · 2026-08-14
 **Author:** Ed May + Codex
 **Kind:** API/documentation cleanup (no new conversion behavior or model-format change)
 
@@ -118,18 +118,28 @@ The remaining problem is discoverability and API quality:
 
 ## Acceptance criteria
 
-- `from PHX.conversion import from_honeybee` is a documented public import.
-- The facade is statically typed `Model -> PhxProject` and exposes the four
+- [x] `from PHX.conversion import from_honeybee` is a documented public import.
+- [x] The facade is statically typed `Model -> PhxProject` and exposes the four
   existing options with public names and unchanged defaults.
-- Facade and legacy calls produce equivalent projects for reference cases and
+- [x] Facade and legacy calls produce equivalent projects for reference cases and
   representative option combinations.
-- Conversion through the facade performs no temporary-file or JSON round-trip.
-- Wrong input types and missing honeybee-ph extension data produce boundary-
+- [x] Conversion through the facade performs no temporary-file or JSON round-trip.
+- [x] Wrong input types and missing honeybee-ph extension data produce boundary-
   appropriate errors.
-- Existing `convert_hb_model_to_PhxProject()` callers and file-based CLIs
+- [x] Existing `convert_hb_model_to_PhxProject()` callers and file-based CLIs
   continue to work.
-- Public architecture, importer/exporter, and API documentation distinguish
+- [x] Public architecture, importer/exporter, and API documentation distinguish
   the live-object conversion from the optional HBJSON file-reading step.
-- OpenPH examples use the new facade but retain their own single-variant
+- [x] OpenPH examples use the new facade but retain their own single-variant
   cardinality check and unwrap.
-- `python -m pytest tests/` passes.
+- [x] `python -m pytest tests/` passes.
+
+## Completion evidence
+
+- PHX implementation: `0705767` (`feat(conversion): add public Honeybee facade`)
+- OpenPH example update: `99b675d`
+  (`docs(conversion): use public PHX Honeybee facade`)
+- Black, isort, and Ruff pass on the new facade and tests.
+- OpenPH Ruff format/lint checks pass on `src/openph/conversion.py`.
+- Full PHX suite: `887 passed, 3 skipped, 1 deselected`.
+- No model-format, serialization, converter-internal, or legacy-call changes.

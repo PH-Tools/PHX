@@ -6,6 +6,7 @@ This README is the index — scan or grep it instead of guessing dates. Add a ro
 
 | Item | Kind | Completed | Summary | Folder |
 |------|------|-----------|---------|--------|
+| Public live Honeybee → PHX API | API/docs cleanup | 2026-08-14 | Adds the typed `PHX.conversion.from_honeybee()` facade, public option names, boundary diagnostics, equivalence tests, and corrected PHX/OpenPH documentation. | [`honeybee-conversion-facade/`](honeybee-conversion-facade/README.md) |
 | Aperture-level Psi-Install (Install Types) | Refactor (cross-repo) | 2026-08-12 | Resolved per-edge psi-install on aperture elements; per-row PHPP write; content-keyed WUFI/METr window-type variant synthesis; from_WUFI explicit-0.0 fallback fix. | [`aperture-psi-install/`](aperture-psi-install/aperture-psi-install-plan.md) |
 | HBJSON Space loads + utilization schedules | Bug fix | 2026-08-06 | Restores per-Space people loads, Honeybee schedule fallbacks, lighting EFLH, and stable WUFI occupancy round trips. | [`hbjson-occupancy-and-schedules/`](hbjson-occupancy-and-schedules/README.md) |
 | Psi-install bug fixes | Refactor (cross-repo) | 2026-08-03 | Corrects WUFI, PHPP, PPP, and METr side/value handling plus upstream HBJSON robustness and GH construction ownership. | [`psi-install-bug-fixes/`](psi-install-bug-fixes/psi-install-bug-fixes-plan.md) |
