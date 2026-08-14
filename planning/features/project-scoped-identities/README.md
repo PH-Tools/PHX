@@ -16,5 +16,6 @@ changing one another's IDs or exported cross-references.
 (2026-08-14). This is not a currently reproduced wrong-energy defect.
 
 **Implementation state:** in progress on `codex/project-scoped-identities` as of
-2026-08-14. Phase 0 captured deterministic sequential leakage and Phase 1 added
-the isolated allocator/context primitive; entity migration is next.
+2026-08-14. Phases 0–5 are complete: public HB and WUFI conversions own isolated
+allocators, all runtime identity families are scoped, and imported WUFI IDs are
+preserved and reserved. Export-boundary validation is next.

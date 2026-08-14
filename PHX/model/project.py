@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from contextlib import AbstractContextManager
+from collections.abc import Hashable, Iterator
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, ClassVar
@@ -20,7 +21,13 @@ from PHX.model.constructions import (
 from PHX.model.geometry import PhxGraphics3D
 from PHX.model.hvac import PhxDeviceVentilation, PhxMechanicalDevice
 from PHX.model.hvac.collection import NoDeviceFoundError, PhxMechanicalSystemCollection
-from PHX.model.identity import IdentityAllocator, IdentityNamespaces, allocate_identity, identity_scope
+from PHX.model.identity import (
+    IdentityAllocator,
+    IdentityNamespaces,
+    allocate_identity,
+    identity_owner_scope,
+    identity_scope,
+)
 from PHX.model.phx_site import PhxSite
 from PHX.model.schedules import lighting, occupancy, ventilation
 from PHX.model.shades import PhxWindowShade
@@ -446,11 +453,17 @@ class PhxProject:
         """Retain the allocator that owns identities in this project graph."""
         self._identity_allocator = allocator
 
-    def identity_scope(self) -> AbstractContextManager[IdentityAllocator]:
-        """Return a context manager for deterministic post-conversion mutation."""
+    @contextmanager
+    def identity_scope(self, owner: Hashable | None = None) -> Iterator[IdentityAllocator]:
+        """Activate this project's allocator, optionally for one variant owner."""
         if self._identity_allocator is None:
             self._identity_allocator = IdentityAllocator()
-        return identity_scope(self._identity_allocator)
+        with identity_scope(self._identity_allocator) as allocator:
+            if owner is None:
+                yield allocator
+            else:
+                with identity_owner_scope(owner):
+                    yield allocator
 
     def add_new_variant(self, _variant: PhxVariant) -> None:
         """Adds a new PHX Variant to the Project."""

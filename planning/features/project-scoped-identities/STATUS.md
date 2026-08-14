@@ -34,8 +34,13 @@
   remaining model counter family uses scoped allocation, and the project retains
   its allocator for explicit later mutation. Eight threaded conversions across
   two independently loaded fixtures match sequential WUFI/METr baselines.
-- **Next step:** scope WUFI import and replace unchecked explicit-ID overwrites
-  with namespace claims.
+- Phase 5 is complete. WUFI import now owns a fresh allocator, preserves and
+  reserves explicit source identities, scopes variant-owned namespaces, skips
+  sparse claims for later automatic allocations, and reports duplicate claims
+  with both source paths. Project construction and allocator retention use one
+  shared lifecycle helper for both public importers.
+- **Next step:** add the typed project validator and gate WUFI, METr, and PHPP
+  exports at the contracts they consume.
 - Blockers: none. Do not begin broad `_count` deletion or golden regeneration;
   both are explicitly outside the compatibility-first implementation.
 - Planning verification: 107 existing facade, WUFI/METr reference, WUFI import,
@@ -50,7 +55,7 @@
 | 2 — project libraries and patterns | Complete | focused `2 passed`; protected Phase 2 gate `466 passed` |
 | 3 — envelope and geometry | Complete | focused/protected geometry + PHPP gate `312 passed` |
 | 4 — zones/HVAC/distribution | Complete | isolation `5 passed` (parallel repeated 3x); broad gate `485 passed, 3 skipped` |
-| 5 — WUFI explicit identities | In progress | next |
+| 5 — WUFI explicit identities | Complete | focused/import/export gate `221 passed, 3 skipped`; no reference-file diff |
 | 6 — export validation | Pending | — |
 | 7 — docs and closeout | Pending | — |
 

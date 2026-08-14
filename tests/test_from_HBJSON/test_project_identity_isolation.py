@@ -116,8 +116,9 @@ def test_failed_conversion_does_not_leak_into_next_conversion(monkeypatch):
 def test_project_mutation_scope_continues_owning_namespace():
     phx_project = _fresh_conversion()
     existing_zone_ids = {zone.id_num for variant in phx_project.variants for zone in variant.zones}
+    owner = phx_project.variants[0].id_num
 
-    with phx_project.identity_scope():
+    with phx_project.identity_scope(owner=owner):
         first_new_zone = PhxZone()
         second_new_zone = PhxZone()
 

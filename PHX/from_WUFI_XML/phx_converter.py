@@ -1,6 +1,7 @@
 from PHX.from_WUFI_XML.phx_schemas import _PhxProject
 from PHX.from_WUFI_XML.wufi_file_schema import WUFIplusProject
 from PHX.model import project
+from PHX.model.identity import build_project_with_identities
 
 
 def convert_WUFI_XML_to_PHX_project(
@@ -16,5 +17,4 @@ def convert_WUFI_XML_to_PHX_project(
     --------
         * (project.PhxProject): A new PHX project with all data from the WUFI file.
     """
-    phx_project = _PhxProject(_wufi_xml_project)
-    return phx_project
+    return build_project_with_identities(lambda: _PhxProject(_wufi_xml_project))
