@@ -27,7 +27,11 @@ Follow the established family patterns in `docs/dev/exporter-patterns.md`. A new
 ## 5. Testing
 
 - **pytest** — `python -m pytest tests/`; tests mirror the source layout.
-- Use `reset_class_counters` where deterministic IDs matter.
+- Public conversion/reference tests must prove project-scoped determinism without
+  resetting globals. Use `reset_class_counters` only for standalone-constructor
+  tests that explicitly assert the legacy fallback.
+- New reference-bearing model families must allocate through a named
+  `IdentityNamespaces` contract and be covered by the affected export validator.
 - **PHPP write path:** any change to *how* cells are written must reproduce the `tests/test_xl_replay/` golden cell-state. Re-record (via `scripts/perf/record_replay_fixture.py`) only when the intended output legitimately changes — never to "make the test pass".
 - Add end-to-end reference cases (`to_xml_reference_cases`) for new conversion behavior.
 

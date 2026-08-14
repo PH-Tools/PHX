@@ -15,8 +15,8 @@ changing one another's IDs or exported cross-references.
 **Origin:** production-readiness gap identified by the ph-modeler POC review
 (2026-08-14). This is not a currently reproduced wrong-energy defect.
 
-**Implementation state:** in progress on `codex/project-scoped-identities` as of
-2026-08-14. Phases 0–5 are complete: public HB and WUFI conversions own isolated
-allocators, all runtime identity families are scoped, imported WUFI IDs are
-preserved and reserved, and affected exporters validate the graph before
-consuming numeric references. Transition docs and full-suite closeout are next.
+**Implementation state:** complete on `codex/project-scoped-identities` as of
+2026-08-14. Public HB and WUFI conversions own isolated allocators, all runtime
+identity families are scoped, imported WUFI IDs are preserved and reserved, and
+affected exporters validate the graph before consuming numeric references. The
+full suite passes without reference-fixture changes.

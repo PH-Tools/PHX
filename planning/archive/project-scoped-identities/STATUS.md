@@ -1,6 +1,6 @@
 # STATUS — project-scoped-identities
 
-**Status:** In progress · 2026-08-14
+**Status:** Complete · 2026-08-14
 
 - The counter/reference audit is complete in `AUDIT.md`: 27 explicit `_count`
   declarations, inherited counter families, 16 WUFI importer overwrites, HBJSON
@@ -44,8 +44,14 @@
   WUFI/METr serialization or the first PHPP Excel write. It reuses the existing
   ventilation-readiness contract, snapshots variant graph accessors once, and
   does not add a PPP dependency.
-- **Next step:** complete transition cleanup and canonical documentation, run
-  the full regression suite, and archive the planning packet.
+- Phase 7 is complete. Public reference fixtures no longer reset global
+  counters; the remaining reset fixture is documented as standalone fallback
+  coverage. Canonical architecture, exporter, model-reference, coding-standard,
+  and model-index docs describe the scoped identity contract.
+- Full verification: `933 passed, 3 skipped, 1 deselected`; reference-file diff
+  is empty. Black and isort pass for all branch Python changes. Ruff reports only
+  three pre-existing, unchanged simplification findings in `model/building.py`.
+- **Next step:** merge/release through the normal repository workflow.
 - Blockers: none. Do not begin broad `_count` deletion or golden regeneration;
   both are explicitly outside the compatibility-first implementation.
 - Planning verification: 107 existing facade, WUFI/METr reference, WUFI import,
@@ -62,7 +68,7 @@
 | 4 — zones/HVAC/distribution | Complete | isolation `5 passed` (parallel repeated 3x); broad gate `485 passed, 3 skipped` |
 | 5 — WUFI explicit identities | Complete | focused/import/export gate `221 passed, 3 skipped`; no reference-file diff |
 | 6 — export validation | Complete | validation/export/PHPP/xl-replay/PPP gate `386 passed, 3 skipped`; no reference-file diff |
-| 7 — docs and closeout | Pending | — |
+| 7 — docs and closeout | Complete | no-reset reference/isolation `14 passed`; full suite `933 passed, 3 skipped, 1 deselected`; goldens unchanged |
 
 ## Decisions
 

@@ -9,7 +9,6 @@ _Last updated: 2026-08-14_
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
 | Public live Honeybee → PHX API | API/docs cleanup | **Complete** — verified and archived | [`archive/honeybee-conversion-facade/`](archive/honeybee-conversion-facade/PRD.md) |
-| Project-scoped deterministic identities | Architecture feature | **In progress** — Phases 0–6 complete; target-specific exporter validation green, docs/full-suite closeout next | [`features/project-scoped-identities/`](features/project-scoped-identities/README.md) |
 | Aperture-bearing xl-replay golden fixture | Follow-up (manual) | **Open** — needs live Excel + licensed PHPP (`scripts/perf/record_replay_fixture.py`); covered by unit tests meanwhile | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
 | Align `FloorAreaUtilizationZone` between WUFI and METr | Bug fix | **Filed** — exporter contract needs a source-of-truth decision | [`bug-fix/floor-area-utilization-zone.md`](bug-fix/floor-area-utilization-zone.md) |
 | Decouple "Dwelling" from `Room.zone` | Refactor (cross-repo) | **Implemented** — awaiting step 3 (`honeybee_grasshopper_ph`), then the `hbph_test_models.gh` end-to-end run | [`refactor/dwelling-zone-decoupling.md`](refactor/dwelling-zone-decoupling.md) |
@@ -18,6 +17,7 @@ _Last updated: 2026-08-14_
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
+| Project-scoped deterministic identities | Architecture feature | **Complete** — isolated HB/WUFI allocation, explicit claims, exporter validation, and full regression suite; archived | [`archive/project-scoped-identities/`](archive/project-scoped-identities/README.md) |
 | Explicit ventilation assignment semantics | Feature (cross-repo) | **Complete** — PHX v1.56.79 released with `honeybee-ph>=1.33.42`; published OpenPH v0.5.1 matrix verified | [`archive/ventilation-assignment-semantics/`](archive/ventilation-assignment-semantics/README.md) |
 | HBJSON Space loads + utilization schedules | Bug fix | **Complete** — seven phases implemented and verified; packet archived | [`archive/hbjson-occupancy-and-schedules/`](archive/hbjson-occupancy-and-schedules/README.md) |
 | Aperture-level Psi-Install (Install Types) | Refactor (cross-repo) | **Complete** — merged (PR #80) + released v1.56.73; archived | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
