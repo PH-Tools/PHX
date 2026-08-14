@@ -265,16 +265,16 @@ wheels = [
 
 [[package]]
 name = "honeybee-ph"
-version = "1.33.30"
+version = "1.33.40"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "honeybee-core" },
     { name = "honeybee-energy" },
     { name = "ph-units" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2c/71/d607d1b089b082b619489aa52a5ada499f12c7298c304059fbd262948a73/honeybee_ph-1.33.30.tar.gz", hash = "sha256:79a9775472e1bb5bf8f860c88ad69d22bf1018ed56e27e527bf572642f613a31", size = 148168, upload-time = "2026-07-21T15:21:42.605Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/93/f7/871f1bed33f159157f02ecd27f2901707fc2983254b0cd20123c073960eb/honeybee_ph-1.33.40.tar.gz", hash = "sha256:dd6a36f2ccf3eb024a94cc096005623538f6a3ff090466cfe8dd1b25ef69716f", size = 159775, upload-time = "2026-08-14T18:44:36.554Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/19/32/ccd94e1560790a36339e5b977fa968e1d47211466c38d49a24459139a5ac/honeybee_ph-1.33.30-py3-none-any.whl", hash = "sha256:dfb7accf50f19d4cc29c8b52c9b8f955f1591cdfb8612137170aac333195f017", size = 200094, upload-time = "2026-07-21T15:21:40.664Z" },
+    { url = "https://files.pythonhosted.org/packages/32/00/592a1dcf2b92682664d195502cf88f0fdd88d08899bdbf0d26f4ecfa78a4/honeybee_ph-1.33.40-py3-none-any.whl", hash = "sha256:70eafc8429165fea6857f7ee8913c917709e8e19880f7fc5c5973cd0239c722e", size = 212343, upload-time = "2026-08-14T18:44:35.055Z" },
 ]
 
 [[package]]
@@ -546,7 +546,7 @@ wheels = [
 
 [[package]]
 name = "phx"
-version = "1.56.62"
+version = "1.56.75"
 source = { editable = "." }
 dependencies = [
     { name = "honeybee-core" },
@@ -576,7 +576,7 @@ requires-dist = [
     { name = "coverage", marker = "extra == 'dev'" },
     { name = "honeybee-core", specifier = ">=1.64.9" },
     { name = "honeybee-energy", specifier = ">=1.116.103" },
-    { name = "honeybee-ph", specifier = ">=1.33.30" },
+    { name = "honeybee-ph", specifier = ">=1.33.40" },
     { name = "isort", marker = "extra == 'dev'" },
     { name = "lxml" },
     { name = "openpyxl", marker = "extra == 'dev'" },
