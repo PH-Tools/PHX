@@ -1,6 +1,6 @@
 # PRD — Explicit ventilation assignment semantics
 
-**Status:** In progress · cross-repo contract accepted · 2026-08-14
+**Status:** Implemented · PHX release pending · 2026-08-14
 **Author:** Ed May + Codex
 **Kind:** Cross-boundary model/converter feature (PHX is primary for PHX representation)
 

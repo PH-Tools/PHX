@@ -1,6 +1,6 @@
 # STATUS — ventilation-assignment-semantics
 
-**Status:** Implemented · coordinated release pending · 2026-08-14
+**Status:** Implemented · PHX release pending · 2026-08-14
 
 - `STATE_TABLE.md` freezes `PhxSpace.vent_unit_id_num: Optional[int] = None` as
   the domain representation of no assignment.
@@ -19,8 +19,10 @@
   unassigned mechanical airflow, and collection-scoped duct references.
 - PHPP, WUFI, METr, and PPP run readiness before output; PHPP skips Space
   lookup for `None`.
-- **Next step:** publish the coordinated honeybee-ph and PHX releases, record
-  compatible version pins, then archive both active packets.
+- honeybee-ph **v1.33.42** is published and passes a clean installed-artifact
+  smoke test. PHX now requires `honeybee-ph>=1.33.42`.
+- **Next step:** publish and verify the PHX release, record the final
+  compatibility matrix, then archive both active packets.
 - Cross-repo coordination:
   - honeybee-ph `planning/features/default-ventilation-system-factory/`
   - OpenPH `planning/archive/dated/2026-08-14/ventilation-input-semantics/`
@@ -38,3 +40,6 @@
   equipment and balanced systems with zero or two supply/exhaust ducts.
 - Full PHX gate: Black and `git diff --check` passed; `python -m pytest
   tests/` passed with **901 tests**, **3 skipped**, and **1 deselected**.
+- Final locked release gate against published `honeybee-ph==1.33.42`: Black,
+  `uv lock --check`, and `git diff --check` pass; **907 tests** pass with
+  **3 skipped** and **1 deselected** on Python 3.10.
