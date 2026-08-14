@@ -282,3 +282,9 @@ def validate_project_identities(project: PhxProject, target: IdentityValidationT
     validator.validate(project)
     if validator.issues:
         raise IdentityValidationError(resolved_target, validator.issues)
+
+
+def validate_project_export_readiness(project: PhxProject, target: IdentityValidationTarget | str) -> None:
+    """Run shared export preflight in backwards-compatible diagnostic order."""
+    project.assert_ventilation_assignments_ready()
+    validate_project_identities(project, target)

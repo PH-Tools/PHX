@@ -26,7 +26,6 @@ from PHX.model.hvac import (
 )
 from PHX.model.schedules import occupancy as sched_occupancy
 from PHX.model.schedules import ventilation as sched_ventilation
-from PHX.model.schedules.ventilation import PhxScheduleVentilation
 
 
 @pytest.fixture
@@ -102,8 +101,6 @@ def _reset_phx_class_counters():
     collection.PhxMechanicalSystemCollection._count = 0
 
     spaces.PhxSpace._count = 0
-    ventilation.PhxDeviceVentilation._count = 0
-    ventilation.PhxDeviceVentilator._count = 0
 
     heating.PhxHeatingDevice._count = 0
     heating.PhxHeaterElectric._count = 0
@@ -133,14 +130,12 @@ def _reset_phx_class_counters():
     renewable_devices.PhxDevicePhotovoltaic._count = 0
 
     sched_ventilation.PhxScheduleVentilation._count = 0
-    PhxScheduleVentilation._count = 0
-    PhxScheduleVentilation.id_num = 0
     sched_occupancy.PhxScheduleOccupancy._count = 0
 
 
 @pytest.fixture
 def reset_class_counters():
-    """Re-set class's _count variable in order to test id-num incrementing properly"""
+    """Reset legacy fallback counters for standalone-constructor tests."""
     _reset_phx_class_counters()
     try:
         yield
@@ -165,12 +160,8 @@ def reset_class_counters():
     ]
 )
 def to_xml_reference_cases(request):
-    """Yields file-paths to reference test-cases"""
-    _reset_phx_class_counters()
-    try:
-        yield request.param
-    finally:
-        _reset_phx_class_counters()
+    """Return conversion reference paths without resetting process-global counters."""
+    return request.param
 
 
 @pytest.fixture(
@@ -190,9 +181,5 @@ def to_xml_reference_cases(request):
     ]
 )
 def to_metr_json_reference_cases(request):
-    """Yields file-paths to reference test-cases for METr JSON export."""
-    _reset_phx_class_counters()
-    try:
-        yield request.param
-    finally:
-        _reset_phx_class_counters()
+    """Return METr reference paths without resetting process-global counters."""
+    return request.param

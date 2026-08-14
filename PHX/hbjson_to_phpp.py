@@ -6,7 +6,7 @@ import pathlib
 import sys
 
 from PHX.from_HBJSON import create_project, read_HBJSON_file
-from PHX.model.identity_validation import IdentityValidationTarget, validate_project_identities
+from PHX.model.identity_validation import IdentityValidationTarget, validate_project_export_readiness
 from PHX.PHPP import phpp_app
 
 
@@ -33,8 +33,7 @@ def write_phx_project_to_phpp(
     --------
         * None
     """
-    phx_project.assert_ventilation_assignments_ready()
-    validate_project_identities(phx_project, IdentityValidationTarget.PHPP)
+    validate_project_export_readiness(phx_project, IdentityValidationTarget.PHPP)
     phpp_conn.write_certification_config(phx_project)
     phpp_conn.write_climate_data(phx_project)
     # Note: have to re-calc after Climate is set to avoid having any 'errors' in
