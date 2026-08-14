@@ -17,5 +17,6 @@ changing one another's IDs or exported cross-references.
 
 **Implementation state:** in progress on `codex/project-scoped-identities` as of
 2026-08-14. Phases 0–5 are complete: public HB and WUFI conversions own isolated
-allocators, all runtime identity families are scoped, and imported WUFI IDs are
-preserved and reserved. Export-boundary validation is next.
+allocators, all runtime identity families are scoped, imported WUFI IDs are
+preserved and reserved, and affected exporters validate the graph before
+consuming numeric references. Transition docs and full-suite closeout are next.

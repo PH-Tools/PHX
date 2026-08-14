@@ -5,6 +5,7 @@
 import json
 from typing import Any
 
+from PHX.model.identity_validation import IdentityValidationTarget, validate_project_identities
 from PHX.model.project import PhxProject
 from PHX.model.transforms import synthesize_window_type_psi_variants
 from PHX.to_METr_JSON import metr_converter
@@ -25,6 +26,7 @@ def generate_metr_json_dict(_phx_object: Any, _schema_name: str | None = None) -
     # -- METr JSON (like WUFI XML) has no per-aperture psi-install: apertures whose
     # -- elements resolve to non-default values get a content-keyed window-type variant.
     if isinstance(_phx_object, PhxProject):
+        validate_project_identities(_phx_object, IdentityValidationTarget.METR)
         _phx_object.assert_ventilation_assignments_ready()
         synthesize_window_type_psi_variants(_phx_object)
 

@@ -39,8 +39,13 @@
   sparse claims for later automatic allocations, and reports duplicate claims
   with both source paths. Project construction and allocator retention use one
   shared lifecycle helper for both public importers.
-- **Next step:** add the typed project validator and gate WUFI, METr, and PHPP
-  exports at the contracts they consume.
+- Phase 6 is complete. A read-only, target-profiled validator aggregates
+  deterministically ordered duplicate and dangling-reference issues before
+  WUFI/METr serialization or the first PHPP Excel write. It reuses the existing
+  ventilation-readiness contract, snapshots variant graph accessors once, and
+  does not add a PPP dependency.
+- **Next step:** complete transition cleanup and canonical documentation, run
+  the full regression suite, and archive the planning packet.
 - Blockers: none. Do not begin broad `_count` deletion or golden regeneration;
   both are explicitly outside the compatibility-first implementation.
 - Planning verification: 107 existing facade, WUFI/METr reference, WUFI import,
@@ -56,7 +61,7 @@
 | 3 — envelope and geometry | Complete | focused/protected geometry + PHPP gate `312 passed` |
 | 4 — zones/HVAC/distribution | Complete | isolation `5 passed` (parallel repeated 3x); broad gate `485 passed, 3 skipped` |
 | 5 — WUFI explicit identities | Complete | focused/import/export gate `221 passed, 3 skipped`; no reference-file diff |
-| 6 — export validation | Pending | — |
+| 6 — export validation | Complete | validation/export/PHPP/xl-replay/PPP gate `386 passed, 3 skipped`; no reference-file diff |
 | 7 — docs and closeout | Pending | — |
 
 ## Decisions

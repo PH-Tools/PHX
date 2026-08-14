@@ -6,6 +6,7 @@ import pathlib
 import sys
 
 from PHX.from_HBJSON import create_project, read_HBJSON_file
+from PHX.model.identity_validation import IdentityValidationTarget, validate_project_identities
 from PHX.PHPP import phpp_app
 
 
@@ -32,6 +33,7 @@ def write_phx_project_to_phpp(
     --------
         * None
     """
+    validate_project_identities(phx_project, IdentityValidationTarget.PHPP)
     phx_project.assert_ventilation_assignments_ready()
     phpp_conn.write_certification_config(phx_project)
     phpp_conn.write_climate_data(phx_project)
