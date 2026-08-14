@@ -9,7 +9,7 @@ _Last updated: 2026-08-14_
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
 | Public live Honeybee → PHX API | API/docs cleanup | **Complete** — verified and archived | [`archive/honeybee-conversion-facade/`](archive/honeybee-conversion-facade/PRD.md) |
-| Explicit ventilation assignment semantics | Feature (cross-repo) | **Requested** — remove device-ID `0` sentinel and blank-device fallback | [`features/ventilation-assignment-semantics/`](features/ventilation-assignment-semantics/PRD.md) |
+| Explicit ventilation assignment semantics | Feature (cross-repo) | **Implemented** — honeybee-ph v1.33.42 verified; PHX release and archive pending | [`features/ventilation-assignment-semantics/`](features/ventilation-assignment-semantics/PRD.md) |
 | Project-scoped deterministic identities | Architecture feature | **Requested** — concurrency/isolation gap; no reproduced output defect yet | [`features/project-scoped-identities/`](features/project-scoped-identities/PRD.md) |
 | Aperture-bearing xl-replay golden fixture | Follow-up (manual) | **Open** — needs live Excel + licensed PHPP (`scripts/perf/record_replay_fixture.py`); covered by unit tests meanwhile | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
 | Align `FloorAreaUtilizationZone` between WUFI and METr | Bug fix | **Filed** — exporter contract needs a source-of-truth decision | [`bug-fix/floor-area-utilization-zone.md`](bug-fix/floor-area-utilization-zone.md) |

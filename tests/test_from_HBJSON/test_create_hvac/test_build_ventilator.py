@@ -1,6 +1,9 @@
+import pytest
+
 from honeybee_phhvac.ventilation import PhVentilationSystem, Ventilator
 
 from PHX.from_HBJSON.create_hvac import build_phx_ventilator
+from PHX.model.hvac import PhxDeviceVentilator
 
 
 def test_build_phx_ventilator_maps_subsoil_heat_exchange_fields(reset_class_counters):
@@ -34,3 +37,15 @@ def test_build_phx_ventilator_maps_sys_type(reset_class_counters):
     phx_ventilator = build_phx_ventilator(hb_vent_system)
 
     assert phx_ventilator.params.sys_type == 2
+
+
+def test_build_phx_ventilator_rejects_missing_source_unit_before_placeholder_creation(
+    reset_class_counters,
+):
+    hb_vent_system = PhVentilationSystem()
+    initial_count = PhxDeviceVentilator._count
+
+    with pytest.raises(ValueError, match="ventilation_unit"):
+        build_phx_ventilator(hb_vent_system)
+
+    assert PhxDeviceVentilator._count == initial_count

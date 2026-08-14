@@ -312,6 +312,23 @@ rooms remain distinct, and load-only Spaces take their floor area from
 Space, while `RoomsVentilation` includes only Spaces with nonzero ventilation airflow. This
 preserves WUFI's asymmetric list membership through a WUFI XML → PHX → WUFI XML round-trip.
 
+### Ventilation assignment boundaries
+
+PHX keeps no assignment as `PhxSpace.vent_unit_id_num = None`. Exporters do
+not look up device ID `0`:
+
+- PHPP omits the Space's ventilator assignment.
+- WUFI XML and METr JSON emit numeric `0` as a legacy writer convention.
+- WUFI import normalizes a missing, blank, or numeric `0` reference back to
+  `None`; positive IDs are preserved.
+- PPP, PHPP, WUFI, and METr project entry points validate all exported
+  ventilation references before section/schema/cell generation.
+
+Use `PhxVariant.ventilation_assignment_issues()` for non-raising diagnostics
+and `assert_ventilation_assignments_ready()` at a new project exporter
+boundary. Do not infer PHPP K12 window-only mode from an unassigned Space;
+summer window-ventilation ACH remains a separate input.
+
 ### Full pipeline
 
 ```

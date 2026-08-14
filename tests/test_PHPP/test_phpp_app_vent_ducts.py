@@ -5,6 +5,8 @@
 from types import SimpleNamespace
 from unittest.mock import Mock
 
+from PHX.model.hvac import PhxDeviceVentilator
+from PHX.model.hvac.collection import PhxMechanicalSystemCollection
 from PHX.model.hvac.ducting import PhxDuctElement
 from PHX.PHPP.phpp_app import PHPPConnection
 
@@ -14,10 +16,14 @@ def _project(*collections):
 
 
 def _collection(ventilator_ids=(), ducts=()):
-    return SimpleNamespace(
-        ventilation_devices=[SimpleNamespace(id_num=id_num) for id_num in ventilator_ids],
-        vent_ducting=list(ducts),
-    )
+    collection = PhxMechanicalSystemCollection()
+    for index, id_num in enumerate(ventilator_ids):
+        ventilator = PhxDeviceVentilator(display_name=f"Ventilator {index:03d}")
+        ventilator.id_num = id_num
+        collection.add_new_mech_device(f"ventilator-{index}", ventilator)
+    for duct in ducts:
+        collection.add_vent_ducting(duct)
+    return collection
 
 
 def _duct(identifier: str, vent_unit_id: int) -> PhxDuctElement:

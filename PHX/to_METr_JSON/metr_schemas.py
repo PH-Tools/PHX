@@ -1052,7 +1052,7 @@ def _PhxSpace(_sp: spaces.PhxSpace) -> dict:
         "dVFrEx": round(_sp.ventilation.load.flow_extract, TOL_LEV1),
         "dVFiz": 0.0,
         "idUPatV": _sp.ventilation.schedule.id_num,
-        "idVUnit": _sp.vent_unit_id_num,
+        "idVUnit": _sp.vent_unit_id_num or 0,
     }
 
 

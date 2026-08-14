@@ -111,6 +111,7 @@ PhxProject
 | Window properties | `PhxComponentAperture.window_type` → `PhxConstructionWindow` |
 | Window frames | `PhxConstructionWindow.frame_top/right/bottom/left` → `PhxWindowFrameElement` |
 | Room ventilation rates | `PhxSpace.ventilation` → `PhxProgramVentilation.load` → `PhxLoadVentilation` |
+| Room ventilation-unit assignment | `PhxSpace.vent_unit_id_num` → matching variant ventilation device, or `None` |
 | Occupancy schedule | `PhxSpace.occupancy` → `PhxProgramOccupancy.schedule` → `PhxScheduleOccupancy` |
 | Thermal bridges | `PhxZone.thermal_bridges` (returns `ValuesView[PhxComponentThermalBridge]`) |
 | HVAC devices | `PhxVariant.mech_collections` → `PhxMechanicalSystemCollection.devices` |
@@ -218,6 +219,23 @@ The following model classes support `+` for consolidation (merging coplanar surf
 ### Program = Load + Schedule
 Ventilation, occupancy, and lighting each follow: `PhxProgram* = PhxLoad* + PhxSchedule*`. The load holds numeric values (airflow, people, watts); the schedule holds operating periods and hours.
 
+### Ventilation Assignment Integrity
+
+`PhxSpace.vent_unit_id_num` is `None` when no mechanical ventilation unit is
+assigned. Positive identifiers resolve against all ventilation devices in the
+Space's `PhxVariant`; the display name is descriptive and never repairs a bad
+reference. Duct identifiers are scoped to their owning
+`PhxMechanicalSystemCollection`, so separate collections may reuse a numeric
+device ID without making their ducts ambiguous.
+
+Call `PhxVariant.ventilation_assignment_issues()` to collect every invalid
+Space and duct reference, or `assert_ventilation_assignments_ready()` to raise
+one aggregate `VentilationAssignmentError`. Project-level exporters run the
+same readiness check before writing. A Space with supply/extract airflow may
+remain unassigned when the variant has no mechanical ventilation devices; once
+a device is modeled, every mechanically ventilated Space must resolve to one
+device.
+
 ### Occupancy Channels and Lighting EFLH
 
 HBJSON occupancy reaches WUFI XML and METr JSON through two independent channels:
@@ -295,6 +313,12 @@ the WUFI exporter includes it in `LoadsPersonsPH` / `LoadsLightingsPH` but corre
 **Program composition:** HB stores loads and schedules separately. PHX pairs them: `PhxProgramVentilation` = `PhxLoadVentilation` + `PhxScheduleVentilation`.
 
 **HVAC disaggregation:** HB uses high-level `IdealAirSystem`. PHX disaggregates into specific device types (ventilators, heaters, heat pumps, hot water tanks, piping) with usage profiles specifying coverage percentages.
+
+**Ventilation absence:** A Honeybee Room with no PH ventilation system becomes
+an unassigned `PhxSpace` and creates no PHX ventilator. A source mechanical
+system must contain a real `Ventilator`; incomplete systems fail before any
+PHX device, duct, or source-ID mutation occurs. Empty exterior-duct collections
+remain empty.
 
 ### Conversion Entry Points
 

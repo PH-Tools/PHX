@@ -17,7 +17,7 @@ from PHX.model.constructions import (
     PhxConstructionWindow,
 )
 from PHX.model.geometry import PhxGraphics3D
-from PHX.model.hvac import PhxMechanicalDevice
+from PHX.model.hvac import PhxDeviceVentilation, PhxMechanicalDevice
 from PHX.model.hvac.collection import NoDeviceFoundError, PhxMechanicalSystemCollection
 from PHX.model.phx_site import PhxSite
 from PHX.model.schedules import lighting, occupancy, ventilation
@@ -27,6 +27,17 @@ from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Occupancy,
     UtilizationPatternCollection_Ventilation,
 )
+
+
+class VentilationAssignmentError(ValueError):
+    """Raised when ventilation references do not resolve within a PHX project graph."""
+
+    def __init__(self, _issues: list[str]):
+        self.issues = tuple(_issues)
+        message = "Ventilation assignment readiness failed with {} issue(s):\n- {}".format(
+            len(self.issues), "\n- ".join(self.issues)
+        )
+        super().__init__(message)
 
 
 @dataclass
@@ -241,6 +252,72 @@ class PhxVariant:
 
         raise NoDeviceFoundError(_id_num)
 
+    def get_ventilation_device_by_id(
+        self,
+        _id_num: int,
+        _index: dict[int, tuple[PhxDeviceVentilation, int]] | None = None,
+    ) -> PhxDeviceVentilation:
+        """Return the one ventilation device with this variant-scoped ID."""
+        match = (_index if _index is not None else self.ventilation_device_index()).get(_id_num)
+        if match is None:
+            raise NoDeviceFoundError(_id_num)
+        device, count = match
+        if count == 1:
+            return device
+        raise ValueError(f"Multiple ventilation devices found with id num: {_id_num}.")
+
+    def ventilation_device_index(self) -> dict[int, tuple[PhxDeviceVentilation, int]]:
+        """Return each variant-scoped ventilation ID's first device and occurrence count."""
+        index: dict[int, tuple[PhxDeviceVentilation, int]] = {}
+        for mech_collection in self._mech_collections:
+            for device in mech_collection.iter_ventilation_devices():
+                first_device, count = index.get(device.id_num, (device, 0))
+                index[device.id_num] = (first_device, count + 1)
+        return index
+
+    def ventilation_assignment_issues(self) -> list[str]:
+        """Return every unresolved or ambiguous Space and duct ventilation reference."""
+        device_counts = {device_id: count for device_id, (_, count) in self.ventilation_device_index().items()}
+
+        issues: list[str] = []
+
+        def check_reference(_object_label: str, _id_num: int | None) -> None:
+            if _id_num is None:
+                return
+            match_count = device_counts.get(_id_num, 0)
+            if match_count == 0:
+                issues.append(f"{_object_label} references missing ventilation device ID {_id_num}.")
+            elif match_count > 1:
+                issues.append(f"{_object_label} ID {_id_num} matches {match_count} ventilation devices.")
+
+        for zone in self.building.zones:
+            for space in zone.spaces:
+                if (
+                    space.vent_unit_id_num is None
+                    and device_counts
+                    and (space.ventilation.load.flow_supply > 0 or space.ventilation.load.flow_extract > 0)
+                ):
+                    issues.append(
+                        f"Space '{space.display_name}' in zone '{zone.display_name}' has mechanical airflow "
+                        "but no ventilation-device assignment."
+                    )
+                    continue
+                check_reference(
+                    f"Space '{space.display_name}' in zone '{zone.display_name}'",
+                    space.vent_unit_id_num,
+                )
+
+        for mech_collection in self._mech_collections:
+            issues.extend(mech_collection.ventilation_assignment_issues())
+
+        return issues
+
+    def assert_ventilation_assignments_ready(self) -> None:
+        """Raise one diagnostic containing every invalid ventilation reference."""
+        issues = self.ventilation_assignment_issues()
+        if issues:
+            raise VentilationAssignmentError(issues)
+
 
 @dataclass
 class ProjectData_Agent:
@@ -366,6 +443,20 @@ class PhxProject:
     def add_new_variant(self, _variant: PhxVariant) -> None:
         """Adds a new PHX Variant to the Project."""
         self.variants.append(_variant)
+
+    def ventilation_assignment_issues(self) -> list[str]:
+        """Return ventilation-reference issues from every project variant."""
+        issues: list[str] = []
+        for variant in self.variants:
+            for issue in variant.ventilation_assignment_issues():
+                issues.append(f"Variant '{variant.name}': {issue}")
+        return issues
+
+    def assert_ventilation_assignments_ready(self) -> None:
+        """Raise before export when any variant has invalid ventilation references."""
+        issues = self.ventilation_assignment_issues()
+        if issues:
+            raise VentilationAssignmentError(issues)
 
     @property
     def assembly_type_id_numbers(self) -> set[int]:

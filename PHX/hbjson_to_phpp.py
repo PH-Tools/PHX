@@ -32,6 +32,7 @@ def write_phx_project_to_phpp(
     --------
         * None
     """
+    phx_project.assert_ventilation_assignments_ready()
     phpp_conn.write_certification_config(phx_project)
     phpp_conn.write_climate_data(phx_project)
     # Note: have to re-calc after Climate is set to avoid having any 'errors' in
