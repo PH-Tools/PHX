@@ -25,6 +25,36 @@ scan but happens to fail loudly today because it forces the prefix through
 `int()`, which throws on an empty cell. That is an accident of the surface ID
 being numeric, not a designed guard — worth making explicit.
 
+**Per-lookup investigation writeups** (each grounded in the pristine and a real
+populated workbook):
+
+| Lookup | Writeup | Priority |
+|---|---|---|
+| `get_constructor_phpp_id_by_name` | [`constructor-id-lookup-none-exposure.md`](constructor-id-lookup-none-exposure.md) | **Highest** — the searched column holds material-layer names too, so the collision needs no contrivance |
+| `get_glazing_phpp_id_by_name` | [`glazing-id-lookup-none-exposure.md`](glazing-id-lookup-none-exposure.md) | Medium — hard-coded bounds, no override; two silent failure modes |
+| `get_frame_phpp_id_by_name` | [`frame-id-lookup-none-exposure.md`](frame-id-lookup-none-exposure.md) | Lowest — exact analogue of the fixed ventilator case; mechanical remedy |
+
+## A second, distinct failure the same scans expose
+
+Every `Components` component block is **two lists, not one** (verified in
+pristine PHPP 10.6):
+
+| Rows | Content |
+|---|---|
+| 13–111 | 99 **user-defined** slots, IDs `01ud`…`99ud` — what PHX writes |
+| 112 | `◄ Content` navigation link |
+| ~115–720 | PHI's **certified-component library**, IDs like `1187gl03`, `1194ws02`, `2088vs03` |
+
+PHPP's own lookups deliberately span both (`Components!LQ13:MF914`) — a user may
+select either a self-entered component or a certified one. **PHX's lookups
+should not**, because PHX writes the component into the user block and then
+resolves the name it just wrote. A scan from row 1 to 500 reaches ~380 rows of
+certified library, where a name collision resolves to a real-but-wrong prefix
+(`1194ws02-<name>`) rather than `None-<name>`.
+
+So the bounding fix addresses two failures at once, and the ventilator fix
+already shipped with the correct narrower bound (user block only).
+
 ## Why it was not folded into the ventilator fix
 
 Deliberate scope call, not an oversight:

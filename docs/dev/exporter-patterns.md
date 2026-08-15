@@ -236,15 +236,22 @@ rather than by hard-coding rows. Two rules follow, and both have been violated:
    Enumerating from `0` — or from a hard-coded `1` — returns an index that
    happens to be right only when the block starts at row 1.
 
-2. **A component-ID lookup must be bounded to the entry section.** IDs are built
-   as `"<prefix>-<name>"`, where the prefix is read from the ID cell beside the
-   matched name. A search that starts at row 1 can match a header, label, or note
-   row whose ID cell is empty, producing `"None-<name>"` — a string PHPP cannot
-   resolve. PHPP resolves component selections against the entry rows only
-   (e.g. `Components!LQ13:MF914` for ventilation units), so bounding the search
-   to `section_first_entry_row .. section_last_entry_row` matches the workbook's
-   own semantics. Never format an empty prefix into an ID: raise
+2. **A component-ID lookup must be bounded to the user-defined entry block.** IDs
+   are built as `"<prefix>-<name>"`, where the prefix is read from the ID cell
+   beside the matched name. A search that starts at row 1 can match a header,
+   label, or note row whose ID cell is empty, producing `"None-<name>"` — a
+   string PHPP cannot resolve. Never format an empty prefix into an ID: raise
    `ResolveComponentIDException` instead.
+
+   Bounding matters at *both* ends, because a `Components` component block holds
+   **two** lists: the 99 user-defined slots (rows 13–111, IDs `01ud`…`99ud`) that
+   PHX writes into, and below them PHI's certified-component library (IDs like
+   `2088vs03`). PHPP's own lookups deliberately span both — a user may select
+   either — but **PHX's must not**: PHX writes the component and then resolves
+   the name it just wrote, so the target is always in the user block. A wide scan
+   that reaches the library resolves a colliding name to a real-but-wrong prefix,
+   which is a quieter failure than `None-` because the ID *looks* valid.
+   `section_first_entry_row .. section_last_entry_row` is the right span.
 
 Rule 2 matters because the failure is silent end-to-end. PHPP reports `#N/A` on
 a sheet most users never open, the dependent result cell shows a clean `0`, and

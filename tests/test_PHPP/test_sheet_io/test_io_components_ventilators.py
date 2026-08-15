@@ -75,6 +75,9 @@ PRISTINE_VENT_UNIT_BLOCK: dict[str, object] = {
 }
 
 FIRST_ENTRY_ROW = 13
+# -- A property of the 30-slot seed above, NOT of a real PHPP: a pristine 10.6
+# -- workbook has 99 user slots (rows 13-111) followed by PHI's certified-
+# -- component library. The locator computes this at runtime either way.
 LAST_ENTRY_ROW = 42
 UNIT_SELECTION_COL = "F"
 FIRST_UNIT_ROW = 70
