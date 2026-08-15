@@ -222,15 +222,17 @@ class Frames:
         return self._section_last_entry_row
 
     def find_section_header_row(self, _row_start: int = 1, _row_end: int = 100) -> int:
+        """Return the row number of the 'Frames' section header."""
         xl_data = self.xl.get_single_column_data(
             _sheet_name=self.shape.name,
             _col=self.shape.frames.locator_col_header,
             _row_start=_row_start,
             _row_end=_row_end,
         )
-        """Return the row number of the 'Frames' section header."""
 
-        for i, val in enumerate(xl_data):
+        # -- The data begins at '_row_start', so enumerate from there: the
+        # -- caller wants a worksheet row number, not an index into the block.
+        for i, val in enumerate(xl_data, start=_row_start):
             if self.shape.frames.locator_string_header == val:
                 return i
 
@@ -408,7 +410,9 @@ class Ventilators:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data):
+        # -- The data begins at '_row_start', so enumerate from there: the
+        # -- caller wants a worksheet row number, not an index into the block.
+        for i, val in enumerate(xl_data, start=_row_start):
             if self.shape.ventilators.locator_string_header == val:
                 return i
 

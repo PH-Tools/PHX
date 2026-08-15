@@ -96,6 +96,11 @@ def _reset_phx_class_counters():
     elec_equip.PhxDeviceCustomElec._count = 0
     elec_equip.PhxDeviceCustomLighting._count = 0
     elec_equip.PhxDeviceCustomMEL._count = 0
+    # -- Elevators are instantiated by 'get_device_type_map()', which every
+    # -- 'PHPPConnection' builds on init - so their counters leak like any other.
+    elec_equip.PhxElevatorHydraulic._count = 0
+    elec_equip.PhxElevatorGearedTraction._count = 0
+    elec_equip.PhxElevatorGearlessTraction._count = 0
 
     _base.PhxMechanicalDevice._count = 0
     collection.PhxMechanicalSystemCollection._count = 0

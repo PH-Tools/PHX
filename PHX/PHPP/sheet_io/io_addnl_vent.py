@@ -35,7 +35,9 @@ class Spaces:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data):
+        # -- The data begins at '_row_start', so enumerate from there: the
+        # -- caller wants a worksheet row number, not an index into the block.
+        for i, val in enumerate(xl_data, start=_row_start):
             if self.shape.rooms.locator_string_header in str(val):
                 return i
 
