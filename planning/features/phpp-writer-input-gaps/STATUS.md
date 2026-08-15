@@ -1,6 +1,27 @@
 # Status — PHPP writer input gaps
 
-**Status:** Requested — filed 2026-08-15, not started. No PHX code changed.
+**Status:** Superseded 2026-08-15 by
+[`planning/bug-fix/phpp-writer-input-gaps/`](../../bug-fix/phpp-writer-input-gaps/README.md),
+which carries the verified diagnoses and the phased plans. This folder is kept
+as the incoming request, unedited.
+
+Three of the five diagnoses below did not survive verification against the code
+and the blank 10.6 workbook — read the bug-fix README before working from this
+file:
+
+- **Gap 1** is not a missing writer. `Verification!F29` has one; a version-match
+  guard `return`s before it and drops all 12 `Verification` writes.
+- **Gap 3** is two cells. `J20` (the `f` coefficient) is dead in the same way as
+  `J19`; PHPP reads `f` from `M20`.
+- **Gap 5** is three defects. PHX also writes `display_name` into a dead cell
+  (`L67`) and `source` into `P67`, which is the `T Comfort criterion [°C]`
+  numeric input.
+
+Gaps 2 and 4 held up exactly as filed.
+
+---
+
+**Original status:** Requested — filed 2026-08-15, not started. No PHX code changed.
 
 ## Where this came from
 
