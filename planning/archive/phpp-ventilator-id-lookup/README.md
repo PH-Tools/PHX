@@ -1,11 +1,17 @@
-# PHPP export: ventilator ID can resolve to `None-<name>`, silently zeroing heat recovery
+# PHPP export: ventilator ID could resolve to `None-<name>`, silently zeroing heat recovery
 
-**Status:** Verified (partially) — implementation plan ready, not yet started
+**Status:** **Fixed** — implemented, verified, archived
 **Opened:** 2026-08-15
-**Re-verified:** 2026-08-15 (see [Verification](#verification))
-**Owners:** `PHX/PHPP/sheet_io/io_components.py`, `PHX/PHPP/sheet_io/io_addnl_vent.py`
+**Closed:** 2026-08-15
+**Branch:** `bug-fix/phpp-ventilator-id-lookup-bounds`
+**Owners:** `PHX/PHPP/sheet_io/io_components.py`, `io_addnl_vent.py`, `io_areas.py`, `io_elec_non_res.py`
 **Originally found by:** OpenPH `native_reference` golden fixture
 (`openph-workspace`, `planning/archive/dated/2026-08-15/native-pipeline-reference-case/`)
+
+> **Outcome:** the reported *failure mode* was real and is fixed; the reported
+> *trigger* (PHX double-writing the ventilator into the `Components` label row)
+> never reproduced and was not the cause. See [Not reproduced](#not-reproduced)
+> and [Residual follow-ups](#residual-follow-ups).
 
 ---
 
@@ -39,9 +45,9 @@ wrong and no one finds out".
 
 ---
 
-## Verification
+## Investigation evidence
 
-Method: seeded the repo's in-memory `FakeXLFramework`
+How the original report was checked. Seeded the repo's in-memory `FakeXLFramework`
 (`tests/test_xl_replay/fake_xl_framework.py`) with the **actual pristine cell
 values** read out of `PHPP_EN_V10.6_Empty.xlsx` — the template
 `openph-workspace/tools/write_native_reference_phpp.py:73` really uses — then ran
@@ -145,7 +151,7 @@ removed and confirm it stays green first.
 
 ---
 
-## Defects to fix
+## Defects fixed
 
 | # | Location | Defect |
 |---|---|---|
@@ -195,240 +201,102 @@ too.
 
 ---
 
-## Implementation plan
+## What was done
 
-Strict red-green TDD: **every phase writes a failing test first, confirms it
-fails for the stated reason, then makes it pass.** Full suite green at the end
-of each phase before starting the next.
+Six commits on `bug-fix/phpp-ventilator-id-lookup-bounds`, strict red-green TDD —
+every phase wrote a failing test first and confirmed it failed for the stated
+reason before the fix landed.
 
-Baseline to beat: `python -m pytest tests/` → **933 passed, 3 skipped,
-1 deselected**.
+| Commit | Defect | Change |
+|---|---|---|
+| `f85da2a` | D1 | `find_section_header_row` now `enumerate(..., start=_row_start)` in `Ventilators`, `Frames`, `Spaces`. Also resets the three `PhxElevator` counters in the test conftest (see below). |
+| `8f156f3` | D4 | `find_section_last_entry_row` recursion now enumerates from `_start_row`, in `Ventilators` **and** `Frames` (`Glazings` was already correct). |
+| `961ad6c` | D2 + D3 | `get_ventilator_phpp_id_by_name` defaults its bounds to the entry section; both ID builders share `_build_ventilator_phpp_id`, which raises `ResolveComponentIDException` rather than formatting an empty prefix. |
+| `4bfbedf` | D5 | `Areas.Surfaces` and `ElecNonRes.Lighting` header locators honour `_row_start`. |
+| `b2c425d` | coverage | End-to-end write-path tests against a fake workbook seeded from the real pristine PHPP 10.6 `Components` **and** `Addl vent` blocks. |
+| `d75d30c` | review | Ventilator ID lookups gain the `_use_cache` pattern its sibling lookups already had; test dedupe and a shared `sheet_io` conftest. |
 
-### Phase 0 — test scaffolding
+### Deviations from the plan as written
 
-No production code. Create `tests/test_PHPP/test_sheet_io/test_io_components_ventilators.py`
-following the conventions already in `test_io_addnl_vent_ducts.py`
-(shape loaded from `PHX/PHPP/phpp_localization/*.json`, `unittest.mock.Mock()`
-for the `xl` connection, one parametrized sweep over all seven locale files).
+- **D1 and D4 were each wider than filed.** `Frames.find_section_last_entry_row`
+  had the same recursion defect as `Ventilators`, and unlike the ventilator copy
+  it was already **live** via `first_empty_frame_row_num`. Fixed in the same pass.
+- **The post-write `^\d+ud-` assertion was dropped**, as the plan proposed: with
+  D2/D3 in place an unresolvable ID raises at lookup time, before anything
+  reaches `Addl vent`, and a hardcoded regex would bake an EN-locale convention
+  into otherwise shape-file-driven code.
+- **A pre-existing test-fixture bug was fixed.** `_reset_phx_class_counters` in
+  `tests/conftest.py` omitted the three `PhxElevator` classes. Every
+  `PHPPConnection` constructs them via `get_device_type_map()`, so they leak like
+  any other counter; the elevator `id_num` tests passed only because
+  `test_model/` happens to sort before `test_xl_replay/`. Adding a
+  `PHPPConnection`-building test module anywhere would have broken them.
+- **A caching gap was closed.** `Ventilators` was the only component-lookup class
+  without the `_use_cache` / `self.cache` pattern that `Glazings`, `Frames`,
+  `Surfaces` and `Constructors` all have, while `write_project_spaces` resolves a
+  ventilator ID **once per room**. On a 200-500 unit multifamily project that is
+  hundreds of redundant worksheet reads for a handful of distinct names — and on
+  macOS each can degrade to a per-cell interop scan (xlwings #1924 guard,
+  `xl_app.py:324-331`). The `Components` section is fully written before that
+  pass and does not change during it, so the cache is safe there.
 
-Add a module-level constant holding the pristine PHPP 10.6 `Components`
-ventilator block exactly as tabulated in [Verification](#verification), plus a
-helper that builds a `FakeXLFramework` seeded with it for the integration-level
-tests in Phases 3 and 5. Seed the full `sheet_names` list and base `seed` from
-`tests/test_xl_replay/fixtures/single_zone_replay.json` so `PHPPConnection`
-constructs (it needs `Data` and `Areas` to initialise).
+## Verification
 
-**Gate:** `pytest tests/` still 933 passed.
+- `python -m pytest tests/` → **971 passed, 3 skipped, 1 deselected**
+  (baseline before this work: 933 passed, 3 skipped, 1 deselected).
+- `tests/test_xl_replay/test_replay_invariant.py` green throughout, **without
+  re-recording** the golden fixture.
+- The regression tests were confirmed red against the pre-fix code by restoring
+  `io_components.py` from `8f156f3`: 5 failed, including
+  `test_full_ventilator_round_trip_survives_a_name_in_the_label_row`, which
+  wrote `"None-REF-HRV"` into the `Addl vent` unit selection exactly as reported.
+- The original reproduction now yields `01ud-REF-HRV`.
 
-### Phase 1 — D1: header row is a row number
+### Corpus cross-check
 
-**RED.** Three tests, one per class, asserting the true row:
+The `phi-rules` PHPP 10 teardowns independently confirm the mechanism and the
+fix's semantics:
 
-```python
-def test_ventilator_header_row_is_a_row_number_not_an_index():
-    shape = _load_components_shape("EN_10_6.json")
-    xl = Mock()
-    xl.get_single_column_data.return_value = [None] * 7 + ["Ventilation units"]
-    assert Ventilators(xl, shape).find_section_header_row() == 8   # currently 7
-```
+- `calculators/phpp-components/rules.md` — ventilation units occupy `LQ:MF`,
+  `Components!LQ8:MF13`: header row 8, first entry row 13. Matches the workbook.
+- `calculators/phpp-addl-vent/rules.md` — `Addl vent!F70` is a data-validation
+  selection whose performance lookups read `Components!$LQ$13:$MF$914`
+  "by the selected unit prefix". **PHPP itself resolves only against the entry
+  rows**, which is why bounding the search there is the correct semantic rather
+  than a defensive guard.
+- The corpus also records (2026-08-15) that entry-block row positions vary by
+  *file*, not by version — the `Addl vent` unit table sits at row 70, 97, and 65
+  in three different workbooks, two of them the same PHPP release. This is why
+  the locators search for marker strings, and why the locator off-by-ones
+  mattered.
 
-Plus one test proving the bug is not masked by a non-default start:
+## Residual follow-ups
 
-```python
-def test_ventilator_header_row_honours_a_non_default_row_start():
-    xl.get_single_column_data.return_value = ["Ventilation units"]
-    assert Ventilators(xl, shape).find_section_header_row(_row_start=50) == 50   # currently 0
-```
+1. **Re-run the OpenPH `native_reference` case with
+   `_repair_ventilator_registration` removed** (`openph-workspace/tools/write_native_reference_phpp.py`).
+   Nothing in PHX writes `Components!LR12`, and that was never reproduced — so
+   the workaround may already be unnecessary. **Do not delete it on the strength
+   of this fix alone**; run the case first. If something still writes that row, it
+   will now fail loudly and identify itself.
+2. **The same silent-`None` exposure remains in three sibling lookups** —
+   `get_glazing_phpp_id_by_name`, `get_frame_phpp_id_by_name`, and
+   `get_constructor_phpp_id_by_name` all scan from row 1 and build
+   `f"{prefix}-{_name}"` unguarded. Deliberately left out of scope here (this
+   ticket was ventilator-scoped and each carries its own behaviour-change risk on
+   a released package). Filed as
+   [`bug-fix/component-id-lookup-hardening.md`](../../bug-fix/component-id-lookup-hardening.md).
+3. **Extract the shared marker-scan helper.** Eight `find_section_header_row`-family
+   methods across four files re-implement "read a column block, scan for a marker,
+   return its row". This bug had to be fixed in five of those copies. A single
+   `find_row_of_marker(...)` helper would make the off-by-one unrepresentable.
+   Behaviour-preserving refactor; deliberately deferred off a bug-fix branch.
+4. **The replay fixture still has no ventilation devices.** Adding one needs live
+   Excel plus a licensed PHPP — the same blocker already tracked for the
+   aperture-psi-install fixture. The unit-level tests added here cover the path
+   meanwhile.
 
-Confirm all four fail with the index value.
-
-**GREEN.** In each of the three methods:
-
-```python
-for i, val in enumerate(xl_data, start=_row_start):
-```
-
-**Also add a characterization test that must stay green throughout**, pinning
-the invariant that actually matters downstream:
-
-```python
-def test_first_entry_row_is_13_in_a_pristine_phpp_10_6():
-    # holds both before and after the D1 fix - the shift cancels
-    assert Ventilators(xl, shape).find_section_first_entry_row() == 13
-```
-
-**Gate:** full suite green; `test_replay_invariant` green without re-recording.
-
-### Phase 2 — D4: `find_section_last_entry_row` recursion base
-
-**RED.** Force the recursion by returning a full 501-value window first:
-
-```python
-def test_last_entry_row_is_correct_when_the_section_exceeds_one_read_block():
-    xl.get_single_column_data.side_effect = (
-        ["01ud"] * 501,                 # rows 13..513, no empty -> recurse
-        ["01ud"] * 10 + [None] * 491,   # rows 513..1013, empty at 523
-    )
-    assert Ventilators(xl, shape).find_section_last_entry_row() == 522
-```
-
-Confirm it fails (returns `22`, off by the 500-row block).
-
-**GREEN.** `enumerate(xl_data, start=_start_row)` at `io_components.py:396`.
-`_start_row` is already resolved to `section_first_entry_row` at the top of the
-method, so the first-pass behaviour is unchanged by construction.
-
-**Gate:** full suite green.
-
-### Phase 3 — D2 + D3: make the lookup structurally sound
-
-This is the fix that closes the reported defect. Do D3 first (it is the
-structural cure), then D2 (the belt-and-braces raise), in two red-green cycles
-within the phase.
-
-**RED (D3).** The exact reported scenario, at integration level against the
-seeded `FakeXLFramework`:
-
-```python
-def test_ventilator_id_ignores_a_name_in_the_label_row():
-    # LR12 is the units label row - above the entry section.
-    fake, conn, phpp = _connect(extra_components={"LR12": "REF-HRV", "LR13": "REF-HRV"})
-    assert phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV") == "01ud-REF-HRV"
-```
-
-Currently returns `'None-REF-HRV'`.
-
-**GREEN (D3).** Resolve the default bounds from the section, preserving the
-existing parameters:
-
-```python
-def get_ventilator_phpp_id_by_name(
-    self, _name: str, _row_start: int | None = None, _row_end: int | None = None
-) -> str:
-    """Return the PHPP ID ("01ud-MyVentilator") of a Ventilator component by name.
-
-    The search is bounded to the ventilator entry section so that a matching
-    string in a header, label, or note row can never be mistaken for an entry.
-    """
-    row_start = _row_start or self.section_first_entry_row
-    row_end = _row_end or self.section_last_entry_row
-    ...
-```
-
-Note this newly activates `find_section_last_entry_row` on the live path —
-which is exactly why D4 lands first.
-
-**RED (D2).** Prove the residual case still fails loudly rather than silently:
-
-```python
-def test_ventilator_id_raises_when_the_id_cell_is_empty():
-    # A name inside the entry section whose ID cell was cleared.
-    fake, conn, phpp = _connect(extra_components={"LQ13": None, "LR13": "REF-HRV"})
-    with pytest.raises(VentilatorIDNotFoundError):
-        phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV")
-
-
-def test_ventilator_id_never_formats_none_into_the_string():
-    # regression guard on the exact reported symptom
-    ...
-    assert "None-" not in phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV")
-```
-
-**GREEN (D2).** Add `VentilatorIDNotFoundError` to
-`PHX/PHPP/sheet_io/io_exceptions.py` (follow the existing constructor style —
-message built in `__init__`, `super().__init__(self.msg)`), and raise it when
-the prefix cell reads `None` or empty. Keep the existing not-found exception for
-the "name is absent entirely" case; the message should name the sheet, the cell
-address, and the ventilator, and say that an unresolvable component ID is never
-a valid export.
-
-Apply the same treatment to `get_ventilator_phpp_id_by_row_num` — it has the
-same `f"{id_num}-{id_name}"` formatting and the same `None` exposure, even
-though nothing currently reaches it with an empty cell.
-
-**Gate:** full suite green; `test_replay_invariant` green without re-recording.
-
-### Phase 4 — D5: close the latent `start=1` trap
-
-**RED.** For `io_areas` and `io_elec_non_res`, one test each calling
-`find_section_header_row(_row_start=N)` with `N != 1` and asserting the true row.
-
-**GREEN.** `enumerate(xl_data, start=_row_start)`.
-
-**Gate:** full suite green.
-
-### Phase 5 — close the coverage gap that let this through
-
-**RED / regression.** The test that would have caught the original report as
-filed — and that pins N1 so nobody re-files it:
-
-```python
-def test_ventilator_write_touches_only_entry_rows():
-    """Regression: the ventilator must never be written into the label row (12)."""
-    fake, conn, phpp = _connect()
-    with conn.in_silent_mode():
-        phpp.write_project_ventilation_components(_project_with_ventilators(["REF-HRV"]))
-    written = fake.written_state()["Components"]
-    assert {_row_of(a) for a in written} == {13}
-    assert set(written) == {"LR13", "LS13", "LT13", "LW13", "MB13"}
-```
-
-Parametrize over one ventilator, two variants × one ventilator, and one
-collection with two devices (expected row sets `{13}`, `{13, 14}`, `{13, 14}`).
-Add the end-to-end pairing that the OpenPH case exercised:
-
-```python
-def test_full_ventilator_round_trip_produces_a_resolvable_phpp_id():
-    """write components -> look the name back up -> write the Addl vent selection."""
-```
-
-These pass on the fixed code; they are the regression net, not a red step.
-
-**Gate:** full suite green. Expected total: 933 + ~20 new tests, 0 failures.
-
-### Phase 6 — closeout
-
-1. `python -m pytest tests/` — must be green, `test_xl_replay` included and
-   **not** re-recorded.
-2. Docstrings updated in `ph-docs` format on every touched public method
-   (`io_components.py`, `io_addnl_vent.py`, `io_areas.py`,
-   `io_elec_non_res.py`, `io_exceptions.py`). No `docs/nav.yml` change needed.
-3. Update `planning/STATUS.md`: this row moves to **Fixed**, with the OpenPH
-   re-run left as the open follow-up.
-4. Conventional commit — the user-visible behaviour change is the loud failure,
-   so:
-
-   ```
-   fix(phpp): bound the ventilator ID lookup to the entry section
-
-   get_ventilator_phpp_id_by_name scanned column LR from row 1 and read the
-   ID prefix one column left, so a name matched above the entry section
-   produced "None-<name>". PHPP cannot resolve it, Ventilation!L32 falls to
-   0, and the workbook silently models a balanced HRV with no heat recovery.
-
-   Bounds the search to the entry section and raises when the ID cell is
-   empty. Also fixes three 0-based enumerate() off-by-ones in the section
-   locators (Ventilators/Frames/Spaces header rows, and the
-   find_section_last_entry_row recursion base) that returned indices rather
-   than row numbers.
-
-   BEHAVIOUR CHANGE: an unresolvable ventilator ID now raises at export time
-   instead of writing a bad selection to 'Addl vent'.
-   ```
-
-### Follow-ups (not this ticket)
-
-- **Re-run the OpenPH `native_reference` case with
-  `_repair_ventilator_registration` removed.** If it stays green, delete the
-  workaround and the `LR12` mystery is closed. If it fails, it will now fail
-  *loudly* and point at whatever really writes that row.
-- **The replay fixture has no ventilation devices.** Adding one requires live
-  Excel plus a licensed PHPP (`scripts/perf/record_replay_fixture.py`) —
-  the same blocker as the aperture-psi-install fixture already tracked in
-  `planning/STATUS.md`. Phase 5's unit-level tests cover the path meanwhile;
-  fold this into that existing blocked item rather than opening a new one.
-- **`Ventilators.find_first_empty_row` (`io_components.py:438`) is dead code** —
-  never called. Noted, not removed (out of scope per the surgical-change rule).
+The invariants behind (2) and (3) are written up in
+`docs/dev/exporter-patterns.md` → *Section locators and component-ID lookups*.
 
 ---
 
@@ -440,3 +308,4 @@ section is affected, and the failure is silent, so **previously exported PHPP
 files are worth spot-checking**: `Ventilation!L32` reading `0` with a balanced
 HRV assigned is the signature, and `Addl vent` showing `#N/A` for the unit's
 application range confirms it.
+

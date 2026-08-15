@@ -6,6 +6,7 @@ This README is the index — scan or grep it instead of guessing dates. Add a ro
 
 | Item | Kind | Completed | Summary | Folder |
 |------|------|-----------|---------|--------|
+| PHPP ventilator ID resolves to `None-<name>` | Bug fix | 2026-08-15 | Bounds the ventilator component-ID lookup to the entry section and raises on an empty ID cell instead of building `None-<name>`; fixes five section-locator off-by-ones and adds end-to-end write-path cover. | [`phpp-ventilator-id-lookup/`](phpp-ventilator-id-lookup/README.md) |
 | Project-scoped deterministic identities | Architecture feature | 2026-08-14 | Isolates HB/WUFI identities per project, preserves explicit WUFI claims, validates exporter references, and removes public reference-test dependence on global resets. | [`project-scoped-identities/`](project-scoped-identities/README.md) |
 | Explicit ventilation assignment semantics | Feature (cross-repo) | 2026-08-14 | Released PHX v1.56.79 with nullable assignments, mutation-free source preflight, aggregate readiness, target-local legacy mappings, and `honeybee-ph>=1.33.42`; published OpenPH v0.5.1 matrix passes. | [`ventilation-assignment-semantics/`](ventilation-assignment-semantics/README.md) |
 | Public live Honeybee → PHX API | API/docs cleanup | 2026-08-14 | Adds the typed `PHX.conversion.from_honeybee()` facade, public option names, boundary diagnostics, equivalence tests, and corrected PHX/OpenPH documentation. | [`honeybee-conversion-facade/`](honeybee-conversion-facade/README.md) |

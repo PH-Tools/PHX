@@ -223,6 +223,34 @@ metr_json_to_file.write_metr_json_file(target_path, metr_text)
 
 5. **`PHPPConnection` exposes 21 `write_*` methods** — 18 functional write operations plus 3 non-residential stubs (`write_non_res_utilization_profiles`, `write_non_res_space_lighting`, `write_non_res_IHG`). The canonical write sequence writes ventilation units first, then ducts, then rooms; duct assignments use the same project order as the ventilation-unit rows.
 
+### Section locators and component-ID lookups
+
+Entry-block row positions are **not fixed**, and not a function of the PHPP
+version: a section sits lower in a populated project file than in an empty one.
+Controllers therefore locate a section by searching a column for its marker
+string (`locator_string_header` / `locator_string_entry` in the shape files)
+rather than by hard-coding rows. Two rules follow, and both have been violated:
+
+1. **A locator returns a worksheet row number, not an index.** The scan reads a
+   block starting at `_row_start`, so it must `enumerate(xl_data, start=_row_start)`.
+   Enumerating from `0` — or from a hard-coded `1` — returns an index that
+   happens to be right only when the block starts at row 1.
+
+2. **A component-ID lookup must be bounded to the entry section.** IDs are built
+   as `"<prefix>-<name>"`, where the prefix is read from the ID cell beside the
+   matched name. A search that starts at row 1 can match a header, label, or note
+   row whose ID cell is empty, producing `"None-<name>"` — a string PHPP cannot
+   resolve. PHPP resolves component selections against the entry rows only
+   (e.g. `Components!LQ13:MF914` for ventilation units), so bounding the search
+   to `section_first_entry_row .. section_last_entry_row` matches the workbook's
+   own semantics. Never format an empty prefix into an ID: raise
+   `ResolveComponentIDException` instead.
+
+Rule 2 matters because the failure is silent end-to-end. PHPP reports `#N/A` on
+a sheet most users never open, the dependent result cell shows a clean `0`, and
+the resulting energy demand stays plausible — only a comparison against an
+independently-computed expectation catches it.
+
 ### Usage
 
 ```python
