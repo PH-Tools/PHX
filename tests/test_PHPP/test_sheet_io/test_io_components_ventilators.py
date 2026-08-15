@@ -26,23 +26,12 @@ import pytest
 from PHX.model import hvac, project
 from PHX.PHPP import phpp_app
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
-from PHX.PHPP.sheet_io.io_addnl_vent import Spaces
 from PHX.PHPP.sheet_io.io_components import Frames, Ventilators
 from PHX.PHPP.sheet_io.io_exceptions import ResolveComponentIDException
 from PHX.xl.xl_app import XLConnection
 from tests.test_xl_replay.fake_xl_framework import FakeXLFramework
 
 SHAPE_DIR = Path("PHX", "PHPP", "phpp_localization")
-SHAPE_FILENAMES = (
-    "EN_9_6A.json",
-    "EN_9_7IP.json",
-    "EN_10_3.json",
-    "EN_10_4A.json",
-    "EN_10_4IP.json",
-    "EN_10_6.json",
-    "EN_10_6IP.json",
-)
-
 REPLAY_FIXTURE = Path("tests", "test_xl_replay", "fixtures", "single_zone_replay.json")
 
 # -- The pristine 'Components' ventilator block, read from PHPP_EN_V10.6_Empty.xlsx.
@@ -66,7 +55,6 @@ PRISTINE_VENTILATOR_BLOCK: dict[str, object] = {
     **{f"LQ{12 + i}": f"{i:02d}ud" for i in range(1, 31)},
 }
 
-HEADER_ROW = 8
 FIRST_ENTRY_ROW = 13
 LAST_ENTRY_ROW = 42
 
@@ -123,48 +111,12 @@ def row_num(_address: str) -> int:
 
 
 # -----------------------------------------------------------------------------
-# -- Section-header location: the returned value must be a ROW NUMBER
-
-
-@pytest.mark.parametrize("shape_filename", SHAPE_FILENAMES)
-def test_ventilator_header_row_is_a_row_number_not_an_index(shape_filename: str) -> None:
-    """The header on row 8 must report as 8, not as its 0-based index in the read block."""
-    shape = components_shape(shape_filename)
-    xl = Mock()
-    xl.get_single_column_data.return_value = [None] * (HEADER_ROW - 1) + [shape.ventilators.locator_string_header]
-
-    assert Ventilators(xl, shape).find_section_header_row() == HEADER_ROW
-
-
-def test_ventilator_header_row_honours_a_non_default_row_start() -> None:
-    """A search that begins at row 50 must report rows relative to row 50."""
-    shape = components_shape()
-    xl = Mock()
-    xl.get_single_column_data.return_value = [shape.ventilators.locator_string_header]
-
-    assert Ventilators(xl, shape).find_section_header_row(_row_start=50) == 50
-
-
-def test_frame_header_row_is_a_row_number_not_an_index() -> None:
-    shape = components_shape()
-    xl = Mock()
-    xl.get_single_column_data.return_value = [None] * 7 + [shape.frames.locator_string_header]
-
-    assert Frames(xl, shape).find_section_header_row() == 8
-
-
-def test_room_header_row_is_a_row_number_not_an_index() -> None:
-    shape = load_shape("EN_10_6.json").ADDNL_VENT
-    xl = Mock()
-    xl.get_single_column_data.return_value = [None] * 7 + [shape.rooms.locator_string_header]
-
-    assert Spaces(xl, shape).find_section_header_row() == 8
-
-
-# -----------------------------------------------------------------------------
-# -- Characterization: the entry-row locator is invariant under the fix above.
-# -- It read from 'section_header_row' and enumerated from the same value, so
-# -- the old off-by-one cancelled. These must stay green before AND after.
+# -- Entry-section location.
+# --
+# -- 'find_section_header_row' is covered in test_section_header_locators.py.
+# -- The entry-row locators below are invariant under that fix: they read from
+# -- 'section_header_row' and enumerate from the same value, so the old
+# -- off-by-one cancelled. They must stay green before AND after it.
 
 
 def test_first_entry_row_is_located_in_a_pristine_phpp(reset_class_counters) -> None:

@@ -52,7 +52,9 @@ class Lighting:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data, start=1):
+        # -- The data begins at '_row_start', so enumerate from there: the
+        # -- caller wants a worksheet row number, not an index into the block.
+        for i, val in enumerate(xl_data, start=_row_start):
             if val == self.shape.lighting_rows.locator_string_header:
                 return i
 
