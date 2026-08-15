@@ -2,6 +2,7 @@
 
 """Classes for converting WUFI-Pydantic Entities to PHX Model Objects."""
 
+import logging
 import sys
 from collections import defaultdict, deque
 from functools import partial
@@ -142,6 +143,12 @@ def as_phx_obj(_model, _schema_name, **kwargs) -> Any:
 
 class _WritableIdentity(Protocol):
     id_num: int
+
+
+logger = logging.getLogger(__name__)
+
+# -- Collection-key for the shared Occupancy Pattern used by Spaces with no person-load.
+_UNOCCUPIED_PATTERN_IDENTIFIER = "__phx_unoccupied__"
 
 
 def _claim_object_identity(
@@ -1359,26 +1366,41 @@ def _PhxZone(_data: wufi_xml.WufiZone, _phx_project_host: PhxProject) -> PhxZone
     phx_obj.specific_heat_capacity = SpecificHeatCapacityType(_spec_cap_WH_m2k(_data.SpecificHeatCapacity))
 
     # ----------------------------------------------------------------------
-    # -- Build Spaces from the union of ventilation rooms and person loads. WUFI may
-    # -- carry occupancy/lighting utilization zones that have no ventilation record.
-    # -- Keep person-load order: the ventilation-room list is an ordered subset of it.
+    # -- Build Spaces from the union of the Zone's three Space-shaped lists: the
+    # -- ventilation rooms ('Additional Vent') and the person / lighting utilization
+    # -- zones ('Use non-res'). Neither WUFI nor METr carries a cross-list ID, so the
+    # -- entry 'Name' is the only join-key available. That is reliable for files PHX
+    # -- itself wrote (one Space fans out to one entry in each list) but is only a
+    # -- best-effort guess for files authored in WUFI, where the lists are independent
+    # -- tables of unrelated lengths. Every record is therefore consumed at most once,
+    # -- and any list which does not reconcile 1:1 is reported.
+    # -- Space order follows the person-load list, then any left-over ventilation rooms.
     ventilation_spaces = [
         as_phx_obj(data, "PhxSpace", _phx_project_host=_phx_project_host) for data in _data.RoomsVentilation or []
     ]
-    ventilation_spaces_by_name = defaultdict(deque)
+    ventilation_spaces_by_name: defaultdict[str, deque[PhxSpace]] = defaultdict(deque)
     for space in ventilation_spaces:
-        ventilation_spaces_by_name[space.display_name].append(space)
+        ventilation_spaces_by_name[_space_list_join_key(space.display_name)].append(space)
 
-    occupancy_load_data = {d.Name: d for d in _data.LoadsPersonsPH or []}
-    lighting_load_data = {d.Name: d for d in _data.LoadsLightingsPH or []}
+    lighting_load_data: defaultdict[str, deque[wufi_xml.WufiLoadsLighting]] = defaultdict(deque)
+    for lighting_data in _data.LoadsLightingsPH or []:
+        lighting_load_data[_space_list_join_key(lighting_data.Name)].append(lighting_data)
+
     used_ventilation_space_ids = set()
+    unpaired_person_load_names: list[str | None] = []
+
+    def _pop_lighting_data(_name: str | None) -> wufi_xml.WufiLoadsLighting | None:
+        """Consume the next unused lighting record matching a name, if there is one."""
+        matching_lighting_data = lighting_load_data[_space_list_join_key(_name)]
+        return matching_lighting_data.popleft() if matching_lighting_data else None
 
     for occupancy_data in _data.LoadsPersonsPH or []:
-        matching_ventilation_spaces = ventilation_spaces_by_name[occupancy_data.Name]
+        matching_ventilation_spaces = ventilation_spaces_by_name[_space_list_join_key(occupancy_data.Name)]
         if matching_ventilation_spaces:
             space = matching_ventilation_spaces.popleft()
             used_ventilation_space_ids.add(id(space))
         else:
+            unpaired_person_load_names.append(occupancy_data.Name)
             floor_area = occupancy_data.FloorAreaUtilizationZone or 0.0
             space = PhxSpace(
                 display_name=occupancy_data.Name,
@@ -1387,17 +1409,21 @@ def _PhxZone(_data: wufi_xml.WufiZone, _phx_project_host: PhxProject) -> PhxZone
             )
 
         space = _add_occupancy_data_to_space(space, _phx_project_host, occupancy_data)
-        space = _add_lighting_data_to_space(space, _phx_project_host, lighting_load_data.get(occupancy_data.Name, None))
+        space = _add_lighting_data_to_space(space, _phx_project_host, _pop_lighting_data(occupancy_data.Name))
         phx_obj.spaces.append(space)
 
+    # -- Any ventilation room left over has no person-load record: every record in
+    # -- 'LoadsPersonsPH' was consumed by the loop above. Do NOT re-read one here.
+    unpaired_room_names: list[str | None] = []
     for space in ventilation_spaces:
         if id(space) in used_ventilation_space_ids:
             continue
-        space = _add_occupancy_data_to_space(
-            space, _phx_project_host, occupancy_load_data.get(space.display_name, None)
-        )
-        space = _add_lighting_data_to_space(space, _phx_project_host, lighting_load_data.get(space.display_name, None))
+        unpaired_room_names.append(space.display_name)
+        space = _add_occupancy_data_to_space(space, _phx_project_host, None)
+        space = _add_lighting_data_to_space(space, _phx_project_host, _pop_lighting_data(space.display_name))
         phx_obj.spaces.append(space)
+
+    _report_space_list_reconciliation(_data.Name, unpaired_room_names, unpaired_person_load_names, lighting_load_data)
 
     # ----------------------------------------------------------------------
     # -- Add in any devices and thermal bridges as well.
@@ -1417,6 +1443,59 @@ def _PhxZone(_data: wufi_xml.WufiZone, _phx_project_host: PhxProject) -> PhxZone
     return phx_obj
 
 
+def _space_list_join_key(_name: str | None) -> str:
+    """Return the normalized key used to pair the Zone's three Space-shaped lists.
+
+    'Name' is the only join-key WUFI and METr offer, and it is hand-typed free text in
+    both UIs, so surrounding and repeated whitespace is normalized away. Case is left
+    alone deliberately: a false pairing silently merges two genuinely different rooms,
+    while a missed pairing only leaves two half-populated Spaces, which is both the
+    safer failure and the one '_report_space_list_reconciliation' reports.
+    """
+    return " ".join((_name or "").split())
+
+
+def _report_space_list_reconciliation(
+    _zone_name: str | None,
+    _unpaired_rooms: list[str | None],
+    _unpaired_persons: list[str | None],
+    _unused_lighting_data: defaultdict[str, deque[wufi_xml.WufiLoadsLighting]],
+) -> None:
+    """Report any of the Zone's three Space-shaped lists which did not pair 1:1.
+
+    A file PHX wrote always reconciles exactly. Anything else means the source was
+    authored in WUFI/METr, where the lists are independent tables, and the resulting
+    PHX Spaces are only partly populated.
+    """
+    unpaired_lighting = [d.Name for queue in _unused_lighting_data.values() for d in queue]
+    if not (_unpaired_rooms or _unpaired_persons or unpaired_lighting):
+        return
+
+    logger.warning(
+        f"Zone '{_zone_name}': the ventilation-room and utilization-zone lists do not "
+        f"pair 1:1 by name. Un-paired ventilation rooms (no person-load, imported as "
+        f"un-occupied): {_unpaired_rooms or None}. Un-paired person-loads (no ventilation "
+        f"airflow): {_unpaired_persons or None}. Un-paired lighting-loads (dropped): "
+        f"{unpaired_lighting or None}."
+    )
+
+
+def _get_unoccupied_pattern(_phx_project_host: PhxProject) -> PhxScheduleOccupancy:
+    """Return the Project's shared 'no person-load' Occupancy Pattern, creating it if needed.
+
+    WUFI ventilation-rooms are not required to have a matching person-load record, but the
+    export always writes a 'LoadPerson' node (and its 'IdentNrUtilizationPattern' reference)
+    for every Space. Those Spaces need a pattern which actually exists in the Project's
+    'UtilizationPatternsPH' collection, otherwise the reference dangles.
+    """
+    project_util_patterns_occ = _phx_project_host.utilization_patterns_occupancy
+    if not project_util_patterns_occ.key_is_in_collection(_UNOCCUPIED_PATTERN_IDENTIFIER):
+        new_schedule = PhxScheduleOccupancy(identifier=_UNOCCUPIED_PATTERN_IDENTIFIER)
+        new_schedule.display_name = "Unoccupied"
+        project_util_patterns_occ.add_new_util_pattern(new_schedule)
+    return project_util_patterns_occ[_UNOCCUPIED_PATTERN_IDENTIFIER]
+
+
 def _add_occupancy_data_to_space(
     _space: PhxSpace,
     _phx_project_host: PhxProject,
@@ -1424,7 +1503,19 @@ def _add_occupancy_data_to_space(
 ) -> PhxSpace:
     """Add occupancy data to a space, if any is supplied."""
     if not _occupancy_data:
+        # -- The Space's own default schedule is not part of the Project's collection, so
+        # -- point it at the shared 'unoccupied' pattern to keep the export reference valid.
+        _space.occupancy.schedule = _get_unoccupied_pattern(_phx_project_host)
         return _space
+
+    # -- 'peak_occupancy' is stored as a density, so it is silently lost whenever the
+    # -- Space has no floor-area. A ventilation-room with a blank 'AreaRoom' is legal in
+    # -- WUFI, so fall back to the person-load's own utilization-zone area in that case.
+    # -- NOTE: when the room DOES carry an area the two may still disagree; which one
+    # -- wins is the open 'FloorAreaUtilizationZone' contract question, left alone here.
+    if not _space.floor_area and (utilization_zone_area := _occupancy_data.FloorAreaUtilizationZone):
+        _space.floor_area = utilization_zone_area
+        _space.weighted_floor_area = utilization_zone_area
 
     # -- Get the Project's Occupancy Utilization Pattern
     project_util_patterns_occ = _phx_project_host.utilization_patterns_occupancy

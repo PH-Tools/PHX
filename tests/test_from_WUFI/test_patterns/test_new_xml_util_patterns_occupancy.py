@@ -40,3 +40,21 @@ def test_vent_patterns_match(
         assert pattern_from_xml.relative_utilization_factor == approx(pattern_from_hbjson.relative_utilization_factor)
         assert pattern_from_xml.annual_operating_hours == approx(pattern_from_hbjson.annual_operating_hours)
         assert pattern_from_xml.annual_utilization_factor == approx(pattern_from_hbjson.annual_utilization_factor)
+
+
+def test_spaces_without_person_loads_reference_a_real_occupancy_pattern(
+    phx_project_from_wufi_xml_SCHOOL: PhxProject,
+) -> None:
+    """WUFI ventilation-rooms with no matching 'LoadsPersonsPH' record must still
+    point at an Occupancy Pattern which exists in the Project's collection, since
+    the WUFI/METr writers always emit an 'IdentNrUtilizationPattern' reference."""
+
+    project = phx_project_from_wufi_xml_SCHOOL
+    project_pattern_ids = {p.id_num for p in project.utilization_patterns_occupancy.values()}
+    assert project_pattern_ids
+
+    spaces = [space for variant in project.variants for zone in variant.zones for space in zone.spaces]
+    assert spaces
+
+    for space in spaces:
+        assert space.occupancy.schedule.id_num in project_pattern_ids
