@@ -36,6 +36,21 @@ class ReadDataException(Exception):
         super().__init__(self.msg)
 
 
+class ResolveComponentIDException(Exception):
+    """Raised when a component's PHPP ID cannot be built because its ID cell is empty."""
+
+    def __init__(self, _component_name, _sheet_name, _id_address):
+        """Raised when the ID cell beside a matched component name holds no value."""
+        self.msg = (
+            f"\n\tError: Cannot build the PHPP ID for the component "
+            f"'{_component_name}': the ID cell '{_sheet_name}'!{_id_address} is "
+            "empty. An unresolvable component ID is never a valid export - PHPP "
+            "would silently fail to look the component up. Please check that the "
+            "component is entered in the worksheet's entry section."
+        )
+        super().__init__(self.msg)
+
+
 class PHPPDataMissingException(Exception):
     """Raised when a required PHPP field returns None."""
 
