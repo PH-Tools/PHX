@@ -117,8 +117,9 @@ def test_empty_and_trivial_inputs():
 
 def test_blocks_write_correctly_through_xl_connection():
     """End-to-end: block items land per-cell exactly like the per-item path."""
-    from PHX.xl.xl_app import XLConnection
     from tests.test_xl_replay.fake_xl_framework import FakeXLFramework
+
+    from PHX.xl.xl_app import XLConnection
 
     def run(items) -> dict:
         fake = FakeXLFramework(sheet_names=["Areas"])
