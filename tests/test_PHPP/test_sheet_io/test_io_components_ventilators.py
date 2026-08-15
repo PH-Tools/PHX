@@ -55,8 +55,28 @@ PRISTINE_VENTILATOR_BLOCK: dict[str, object] = {
     **{f"LQ{12 + i}": f"{i:02d}ud" for i in range(1, 31)},
 }
 
+# -- The pristine 'Addl vent' ventilation-unit block, from the same workbook.
+PRISTINE_VENT_UNIT_BLOCK: dict[str, object] = {
+    "C63": "Selection of the ventilation unit",
+    "F64": "Go to list of ventilation units",
+    "C65": "Venti-",
+    "D65": "Quan-",
+    "E65": "Description of",
+    "F65": "Selection of",
+    "C66": "lation",
+    "D66": "tity",
+    "E66": "ventilation units",
+    "F66": "ventilation unit",
+    "C67": "unit no.",
+    "D68": "[-]",
+    "F69": "Sorting options",
+    **{f"C{69 + i}": i for i in range(1, 11)},
+}
+
 FIRST_ENTRY_ROW = 13
 LAST_ENTRY_ROW = 42
+UNIT_SELECTION_COL = "F"
+FIRST_UNIT_ROW = 70
 
 
 def load_shape(filename: str) -> PhppShape:
@@ -78,6 +98,7 @@ def connect(_extra_components: dict | None = None) -> tuple[FakeXLFramework, XLC
     fixture = json.loads(REPLAY_FIXTURE.read_text())
     seed = dict(fixture["seed"])
     seed["Components"] = {**PRISTINE_VENTILATOR_BLOCK, **(_extra_components or {})}
+    seed["Addl vent"] = dict(PRISTINE_VENT_UNIT_BLOCK)
 
     fake_xl = FakeXLFramework(sheet_names=fixture["sheet_names"], seed=seed)
     connection = XLConnection(xl_framework=fake_xl)
@@ -213,3 +234,94 @@ def test_ventilator_id_honours_an_explicit_row_span(reset_class_counters) -> Non
     with pytest.raises(Exception, match="REF-HRV"):
         # -- a span that excludes row 13 must not find it
         phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV", _row_start=20, _row_end=30)
+
+
+# -----------------------------------------------------------------------------
+# -- Write path: the ventilator must land in the entry section, and only there.
+
+
+@pytest.mark.parametrize(
+    "ventilator_names_by_variant, expected_rows",
+    (
+        pytest.param([["REF-HRV"]], {13}, id="one-variant-one-unit"),
+        pytest.param([["REF-HRV-A"], ["REF-HRV-B"]], {13, 14}, id="two-variants-one-unit-each"),
+        pytest.param([["REF-HRV", "REF-HRV"]], {13, 14}, id="one-variant-two-units"),
+    ),
+)
+def test_ventilator_write_touches_only_entry_rows(
+    reset_class_counters, ventilator_names_by_variant: list[list[str]], expected_rows: set[int]
+) -> None:
+    """Regression: nothing may be written into the label row (12) or any row above it."""
+    fake_xl, connection, phpp = connect()
+
+    with connection.in_silent_mode():
+        phpp.write_project_ventilation_components(build_project(ventilator_names_by_variant))
+
+    written = fake_xl.written_state()["Components"]
+    assert {row_num(address) for address in written} == expected_rows
+
+
+def test_ventilator_write_fills_every_mapped_input_column(reset_class_counters) -> None:
+    fake_xl, connection, phpp = connect()
+
+    with connection.in_silent_mode():
+        phpp.write_project_ventilation_components(build_project([["REF-HRV"]]))
+
+    written = fake_xl.written_state()["Components"]
+    assert written == {
+        "LR13": "REF-HRV",
+        "LS13": 0.75,
+        "LT13": 0.6,
+        "LW13": 0.45,
+        "MB13": "yes",
+    }
+
+
+def test_full_ventilator_round_trip_produces_a_resolvable_unit_selection(reset_class_counters) -> None:
+    """The chain that produced the bad workbook: write Components, look the name back up, write 'Addl vent'.
+
+    A PHPP-resolvable selection carries the entry-row ID prefix. "None-REF-HRV"
+    is what the unbounded lookup used to write here, and PHPP silently zeroed
+    the unit's heat recovery in response.
+    """
+    fake_xl, connection, phpp = connect()
+    phx_project = build_project([["REF-HRV"]])
+
+    with connection.in_silent_mode():
+        phpp.write_project_ventilation_components(phx_project)
+        phpp.write_project_ventilators(phx_project)
+
+    selection = fake_xl.written_state()["Addl vent"][f"{UNIT_SELECTION_COL}{FIRST_UNIT_ROW}"]
+    assert selection == "01ud-REF-HRV"
+
+
+def test_full_ventilator_round_trip_numbers_multiple_units_in_project_order(reset_class_counters) -> None:
+    fake_xl, connection, phpp = connect()
+    phx_project = build_project([["REF-HRV-A"], ["REF-HRV-B"]])
+
+    with connection.in_silent_mode():
+        phpp.write_project_ventilation_components(phx_project)
+        phpp.write_project_ventilators(phx_project)
+
+    written = fake_xl.written_state()["Addl vent"]
+    assert written[f"{UNIT_SELECTION_COL}{FIRST_UNIT_ROW}"] == "01ud-REF-HRV-A"
+    assert written[f"{UNIT_SELECTION_COL}{FIRST_UNIT_ROW + 1}"] == "02ud-REF-HRV-B"
+
+
+def test_full_ventilator_round_trip_survives_a_name_in_the_label_row(reset_class_counters) -> None:
+    """The reported failure, end to end.
+
+    With the ventilator's name also present in the units label row (12), the
+    unbounded lookup matched that row, read its empty ID cell, and wrote
+    "None-REF-HRV" into the 'Addl vent' unit selection. PHPP cannot resolve
+    that, so 'Ventilation'!L32 (effective heat recovery) fell to 0 and the
+    workbook modelled a balanced HRV with no heat recovery at all.
+    """
+    fake_xl, connection, phpp = connect({"LR12": "REF-HRV"})
+    phx_project = build_project([["REF-HRV"]])
+
+    with connection.in_silent_mode():
+        phpp.write_project_ventilation_components(phx_project)
+        phpp.write_project_ventilators(phx_project)
+
+    assert fake_xl.written_state()["Addl vent"][f"{UNIT_SELECTION_COL}{FIRST_UNIT_ROW}"] == "01ud-REF-HRV"
