@@ -12,6 +12,7 @@ from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model.component_frame import FrameRow
 from PHX.PHPP.phpp_model.component_glazing import GlazingRow
 from PHX.PHPP.phpp_model.component_vent import VentilatorRow
+from PHX.PHPP.sheet_io.io_exceptions import ResolveComponentIDException
 from PHX.xl import xl_app
 from PHX.xl.xl_data import col_offset, merge_xl_item_rows
 
@@ -461,35 +462,63 @@ class Ventilators:
             f"Error: Cannot find the first empty row in the '{self.shape.name}' sheet, column {search_col}?"
         )
 
-    def get_ventilator_phpp_id_by_name(self, _name: str, _row_start: int = 1, _row_end: int = 500) -> str:
-        """Return the PHPP ID of a Ventilator component by name."""
+    def get_ventilator_phpp_id_by_name(
+        self, _name: str, _row_start: int | None = None, _row_end: int | None = None
+    ) -> str:
+        """Return the PHPP ID ("01ud-MyVentilator") of a Ventilator component, by name.
+
+        The search is bounded to the ventilator entry section. PHPP resolves the
+        'Addl vent' unit selection against the entry rows only
+        ('Components!LQ13:MF914'), so a name matched in a header, label, or note
+        row above the section could never resolve in the workbook anyway.
+
+        Arguments:
+        ----------
+            * _name: (str) The Ventilator display-name to search for.
+            * _row_start: (int | None) default=None. Overrides the first row
+                searched. Defaults to the first entry row of the section.
+            * _row_end: (int | None) default=None. Overrides the last row
+                searched. Defaults to the last entry row of the section.
+
+        Returns:
+        --------
+            * (str): The PHPP ID of the Ventilator component.
+        """
+        name_col = str(self.shape.ventilators.inputs.display_name.column)
         row = self.xl.get_row_num_of_value_in_column(
             sheet_name=self.shape.name,
-            row_start=_row_start,
-            row_end=_row_end,
-            col=str(self.shape.ventilators.inputs.display_name.column),
+            row_start=_row_start or self.section_first_entry_row,
+            row_end=_row_end or self.section_last_entry_row,
+            col=name_col,
             find=_name,
         )
 
         if not row:
             raise Exception(
-                f'Error: Cannot find a Ventilator component named: "{_name}"]'
-                f"in column {self.shape.ventilators.inputs.display_name.column}?"
+                f'Error: Cannot find a Ventilator component named: "{_name}" '
+                f"in column {name_col} of the '{self.shape.name}' worksheet?"
             )
 
-        prefix = self.xl.get_data(
-            self.shape.name,
-            f"{col_offset(str(self.shape.ventilators.inputs.display_name.column), -1)}{row}",
-        )
-        return f"{prefix}-{_name}"
+        return self._build_ventilator_phpp_id(f"{col_offset(name_col, -1)}{row}", _name)
 
     def get_ventilator_phpp_id_by_row_num(self, _row_num: int) -> str:
         """Return the PHPP Ventilator ID ("01ud-MyVentilator", etc..) for the given row number."""
-        id_col = str(self.shape.ventilators.inputs.id.column)
-        id_num = self.xl.get_data(self.shape.name, f"{id_col}{_row_num}")
         name_col = str(self.shape.ventilators.inputs.display_name.column)
         id_name = self.xl.get_data(self.shape.name, f"{name_col}{_row_num}")
-        return f"{id_num}-{id_name}"
+        id_col = str(self.shape.ventilators.inputs.id.column)
+        return self._build_ventilator_phpp_id(f"{id_col}{_row_num}", str(id_name))
+
+    def _build_ventilator_phpp_id(self, _id_address: str, _name: str) -> str:
+        """Return "<prefix>-<name>", raising if the ID cell at '_id_address' is empty.
+
+        Formatting an empty ID cell into the string would yield "None-<name>":
+        a PHPP-unresolvable selection that raises nothing, shows no error on the
+        'Ventilation' worksheet, and silently zeroes the unit's heat recovery.
+        """
+        prefix = self.xl.get_data(self.shape.name, _id_address)
+        if prefix is None or not str(prefix).strip():
+            raise ResolveComponentIDException(_name, self.shape.name, _id_address)
+        return f"{prefix}-{_name}"
 
 
 class Components:

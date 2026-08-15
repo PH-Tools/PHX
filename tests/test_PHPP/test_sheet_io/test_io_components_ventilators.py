@@ -28,6 +28,7 @@ from PHX.PHPP import phpp_app
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.PHPP.sheet_io.io_addnl_vent import Spaces
 from PHX.PHPP.sheet_io.io_components import Frames, Ventilators
+from PHX.PHPP.sheet_io.io_exceptions import ResolveComponentIDException
 from PHX.xl.xl_app import XLConnection
 from tests.test_xl_replay.fake_xl_framework import FakeXLFramework
 
@@ -204,3 +205,59 @@ def test_frame_last_entry_row_is_correct_when_the_section_exceeds_one_read_block
     frames._section_first_entry_row = FIRST_ENTRY_ROW
 
     assert frames.find_section_last_entry_row() == 522
+
+
+# -----------------------------------------------------------------------------
+# -- Component-ID lookup: bounded to the entry section, and never silently 'None'
+
+
+def test_ventilator_id_resolves_against_the_entry_row(reset_class_counters) -> None:
+    _, _, phpp = connect({"LR13": "REF-HRV"})
+    assert phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV") == "01ud-REF-HRV"
+
+
+def test_ventilator_id_ignores_a_matching_name_in_the_label_row(reset_class_counters) -> None:
+    """LR12 is the units label row - above the entry section, and unresolvable to PHPP.
+
+    This is the reported defect: the unbounded scan matched row 12 first and
+    read its empty ID cell, yielding "None-REF-HRV".
+    """
+    _, _, phpp = connect({"LR12": "REF-HRV", "LR13": "REF-HRV"})
+    assert phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV") == "01ud-REF-HRV"
+
+
+def test_ventilator_id_never_formats_none_into_the_string(reset_class_counters) -> None:
+    _, _, phpp = connect({"LR12": "REF-HRV", "LR13": "REF-HRV"})
+    assert "None-" not in phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV")
+
+
+def test_ventilator_id_raises_when_the_id_cell_is_empty(reset_class_counters) -> None:
+    """An explicit row-span may still reach a row with no ID; it must fail loudly."""
+    _, _, phpp = connect({"LR12": "REF-HRV"})
+
+    with pytest.raises(ResolveComponentIDException):
+        # -- the pre-fix default span, kept available for callers
+        phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV", _row_start=1, _row_end=500)
+
+
+def test_ventilator_id_by_row_num_raises_when_the_id_cell_is_empty(reset_class_counters) -> None:
+    _, _, phpp = connect({"LR12": "REF-HRV"})
+
+    with pytest.raises(ResolveComponentIDException):
+        phpp.components.ventilators.get_ventilator_phpp_id_by_row_num(12)
+
+
+def test_ventilator_id_raises_when_the_name_is_absent(reset_class_counters) -> None:
+    _, _, phpp = connect()
+
+    with pytest.raises(Exception, match="NOT-A-VENTILATOR"):
+        phpp.components.ventilators.get_ventilator_phpp_id_by_name("NOT-A-VENTILATOR")
+
+
+def test_ventilator_id_honours_an_explicit_row_span(reset_class_counters) -> None:
+    """Backwards compatibility: explicit bounds still override the section bounds."""
+    _, _, phpp = connect({"LR13": "REF-HRV"})
+
+    with pytest.raises(Exception, match="REF-HRV"):
+        # -- a span that excludes row 13 must not find it
+        phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV", _row_start=20, _row_end=30)
