@@ -174,3 +174,33 @@ def test_first_entry_row_is_located_in_a_pristine_phpp(reset_class_counters) -> 
 def test_last_entry_row_is_located_in_a_pristine_phpp(reset_class_counters) -> None:
     _, _, phpp = connect()
     assert phpp.components.ventilators.section_last_entry_row == LAST_ENTRY_ROW
+
+
+def test_last_entry_row_is_correct_when_the_section_exceeds_one_read_block() -> None:
+    """The 500-row recursion must report rows relative to the block it just read."""
+    shape = components_shape()
+    xl = Mock()
+    xl.get_single_column_data.side_effect = (
+        ["01ud"] * 501,  # -- rows 13..513, no gap: recurse
+        ["01ud"] * 10 + [None] * 491,  # -- rows 513..1013, first gap on row 523
+    )
+
+    ventilators = Ventilators(xl, shape)
+    ventilators._section_first_entry_row = FIRST_ENTRY_ROW
+
+    assert ventilators.find_section_last_entry_row() == 522
+
+
+def test_frame_last_entry_row_is_correct_when_the_section_exceeds_one_read_block() -> None:
+    """Same recursion defect on the Frames section, which reaches it via find_first_empty_row()."""
+    shape = components_shape()
+    xl = Mock()
+    xl.get_single_column_data.side_effect = (
+        ["01ud"] * 501,
+        ["01ud"] * 10 + [None] * 491,
+    )
+
+    frames = Frames(xl, shape)
+    frames._section_first_entry_row = FIRST_ENTRY_ROW
+
+    assert frames.find_section_last_entry_row() == 522

@@ -276,11 +276,13 @@ class Frames:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+        # -- The data begins at '_start_row', which is NOT the section start
+        # -- once the search has recursed into the next 500-row block.
+        for i, val in enumerate(xl_data, start=_start_row):
             if not val:
                 return i - 1
-        else:
-            return self.find_section_last_entry_row(_row_end)
+
+        return self.find_section_last_entry_row(_row_end)
 
     def find_first_empty_row(self) -> int:
         """Return the first empty row in the frames input section."""
@@ -395,11 +397,13 @@ class Ventilators:
             _row_end=_row_end,
         )
 
-        for i, val in enumerate(xl_data, start=self.section_first_entry_row):
+        # -- The data begins at '_start_row', which is NOT the section start
+        # -- once the search has recursed into the next 500-row block.
+        for i, val in enumerate(xl_data, start=_start_row):
             if not val:
                 return i - 1
-        else:
-            return self.find_section_last_entry_row(_row_end)
+
+        return self.find_section_last_entry_row(_row_end)
 
     def find_section_header_row(self, _row_start: int = 1, _row_end: int = 100) -> int:
         """Return the row number of the 'Ventilators' section header."""
