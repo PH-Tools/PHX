@@ -18,6 +18,7 @@ section only. Anything above the first entry row is unresolvable to PHPP, so
 PHX must never build a component ID out of it.
 """
 
+import json
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -25,13 +26,13 @@ import pytest
 
 from PHX.model import hvac, project
 from PHX.PHPP import phpp_app
-from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.PHPP.sheet_io.io_components import Frames, Ventilators
 from PHX.PHPP.sheet_io.io_exceptions import ResolveComponentIDException
+from PHX.xl import xl_data
 from PHX.xl.xl_app import XLConnection
-from tests.test_xl_replay.fake_xl_framework import FakeXLFramework
+from tests.test_PHPP.test_sheet_io.conftest import load_shape
+from tests.test_xl_replay.fake_xl_framework import FakeXLFramework, parse_cell
 
-SHAPE_DIR = Path("PHX", "PHPP", "phpp_localization")
 REPLAY_FIXTURE = Path("tests", "test_xl_replay", "fixtures", "single_zone_replay.json")
 
 # -- The pristine 'Components' ventilator block, read from PHPP_EN_V10.6_Empty.xlsx.
@@ -79,12 +80,8 @@ UNIT_SELECTION_COL = "F"
 FIRST_UNIT_ROW = 70
 
 
-def load_shape(filename: str) -> PhppShape:
-    return PhppShape.model_validate_json((SHAPE_DIR / filename).read_bytes())
-
-
-def components_shape(filename: str = "EN_10_6.json"):
-    return load_shape(filename).COMPONENTS
+def components_shape(_filename: str = "EN_10_6.json"):
+    return load_shape(_filename).COMPONENTS
 
 
 def connect(_extra_components: dict | None = None) -> tuple[FakeXLFramework, XLConnection, phpp_app.PHPPConnection]:
@@ -93,8 +90,6 @@ def connect(_extra_components: dict | None = None) -> tuple[FakeXLFramework, XLC
     The sheet list and base seed come from the replay fixture so that
     'PHPPConnection' can initialize (it reads the 'Data' and 'Areas' sheets).
     """
-    import json
-
     fixture = json.loads(REPLAY_FIXTURE.read_text())
     seed = dict(fixture["seed"])
     seed["Components"] = {**PRISTINE_VENTILATOR_BLOCK, **(_extra_components or {})}
@@ -128,7 +123,7 @@ def build_project(_ventilator_names_by_variant: list[list[str]]) -> project.PhxP
 
 
 def row_num(_address: str) -> int:
-    return int("".join(c for c in _address if c.isdigit()))
+    return parse_cell(_address)[1]
 
 
 # -----------------------------------------------------------------------------
@@ -150,34 +145,23 @@ def test_last_entry_row_is_located_in_a_pristine_phpp(reset_class_counters) -> N
     assert phpp.components.ventilators.section_last_entry_row == LAST_ENTRY_ROW
 
 
-def test_last_entry_row_is_correct_when_the_section_exceeds_one_read_block() -> None:
-    """The 500-row recursion must report rows relative to the block it just read."""
-    shape = components_shape()
+@pytest.mark.parametrize("io_type", (Ventilators, Frames))
+def test_last_entry_row_is_correct_when_the_section_exceeds_one_read_block(io_type) -> None:
+    """The 500-row recursion must report rows relative to the block it just read.
+
+    Frames reaches this method live via 'first_empty_frame_row_num'; Ventilators
+    reaches it via the entry-section bounds of the component-ID lookup.
+    """
     xl = Mock()
     xl.get_single_column_data.side_effect = (
         ["01ud"] * 501,  # -- rows 13..513, no gap: recurse
         ["01ud"] * 10 + [None] * 491,  # -- rows 513..1013, first gap on row 523
     )
 
-    ventilators = Ventilators(xl, shape)
-    ventilators._section_first_entry_row = FIRST_ENTRY_ROW
+    io_class = io_type(xl, components_shape())
+    io_class._section_first_entry_row = FIRST_ENTRY_ROW
 
-    assert ventilators.find_section_last_entry_row() == 522
-
-
-def test_frame_last_entry_row_is_correct_when_the_section_exceeds_one_read_block() -> None:
-    """Same recursion defect on the Frames section, which reaches it via find_first_empty_row()."""
-    shape = components_shape()
-    xl = Mock()
-    xl.get_single_column_data.side_effect = (
-        ["01ud"] * 501,
-        ["01ud"] * 10 + [None] * 491,
-    )
-
-    frames = Frames(xl, shape)
-    frames._section_first_entry_row = FIRST_ENTRY_ROW
-
-    assert frames.find_section_last_entry_row() == 522
+    assert io_class.find_section_last_entry_row() == 522
 
 
 # -----------------------------------------------------------------------------
@@ -196,12 +180,10 @@ def test_ventilator_id_ignores_a_matching_name_in_the_label_row(reset_class_coun
     read its empty ID cell, yielding "None-REF-HRV".
     """
     _, _, phpp = connect({"LR12": "REF-HRV", "LR13": "REF-HRV"})
+
+    # -- The reported symptom was the literal string "None-REF-HRV"; the exact
+    # -- match below is what rules it out.
     assert phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV") == "01ud-REF-HRV"
-
-
-def test_ventilator_id_never_formats_none_into_the_string(reset_class_counters) -> None:
-    _, _, phpp = connect({"LR12": "REF-HRV", "LR13": "REF-HRV"})
-    assert "None-" not in phpp.components.ventilators.get_ventilator_phpp_id_by_name("REF-HRV")
 
 
 def test_ventilator_id_raises_when_the_id_cell_is_empty(reset_class_counters) -> None:
@@ -325,3 +307,32 @@ def test_full_ventilator_round_trip_survives_a_name_in_the_label_row(reset_class
         phpp.write_project_ventilators(phx_project)
 
     assert fake_xl.written_state()["Addl vent"][f"{UNIT_SELECTION_COL}{FIRST_UNIT_ROW}"] == "01ud-REF-HRV"
+
+
+def test_ventilator_id_lookup_can_be_cached(reset_class_counters) -> None:
+    """The per-room write path asks for the same few names once per room.
+
+    Proven by making the worksheet lie after the first lookup: a cached call
+    must return the original answer, an uncached one must see the new sheet.
+    """
+    _, connection, phpp = connect()
+    ventilators = phpp.components.ventilators
+
+    with connection.in_silent_mode():
+        phpp.write_project_ventilation_components(build_project([["REF-HRV"]]))
+        assert ventilators.get_ventilator_phpp_id_by_name("REF-HRV", _use_cache=True) == "01ud-REF-HRV"
+
+        # -- move the ventilator down a row; only an uncached read notices
+        connection.write_xl_item(xl_data.XlItem("Components", "LR13", None))
+        connection.write_xl_item(xl_data.XlItem("Components", "LR14", "REF-HRV"))
+
+        assert ventilators.get_ventilator_phpp_id_by_name("REF-HRV", _use_cache=True) == "01ud-REF-HRV"
+        assert ventilators.get_ventilator_phpp_id_by_name("REF-HRV") == "02ud-REF-HRV"
+
+
+def test_ventilator_id_lookup_is_uncached_by_default(reset_class_counters) -> None:
+    _, _, phpp = connect({"LR13": "REF-HRV"})
+    ventilators = phpp.components.ventilators
+
+    assert ventilators.get_ventilator_phpp_id_by_name("REF-HRV") == "01ud-REF-HRV"
+    assert ventilators.cache["REF-HRV"] == "01ud-REF-HRV"

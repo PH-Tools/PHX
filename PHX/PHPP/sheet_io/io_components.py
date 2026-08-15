@@ -356,6 +356,7 @@ class Ventilators:
     def __init__(self, _xl: xl_app.XLConnection, _shape: shape_model.Components):
         self.xl = _xl
         self.shape = _shape
+        self.cache: dict[str, str] = {}
         self._section_header_row: int | None = None
         self._section_first_entry_row: int | None = None
         self._section_last_entry_row: int | None = None
@@ -463,7 +464,11 @@ class Ventilators:
         )
 
     def get_ventilator_phpp_id_by_name(
-        self, _name: str, _row_start: int | None = None, _row_end: int | None = None
+        self,
+        _name: str,
+        _row_start: int | None = None,
+        _row_end: int | None = None,
+        _use_cache: bool = False,
     ) -> str:
         """Return the PHPP ID ("01ud-MyVentilator") of a Ventilator component, by name.
 
@@ -479,11 +484,19 @@ class Ventilators:
                 searched. Defaults to the first entry row of the section.
             * _row_end: (int | None) default=None. Overrides the last row
                 searched. Defaults to the last entry row of the section.
+            * _use_cache: (bool) default=False. Re-use a previously resolved ID
+                for this name instead of re-reading the worksheet. Safe once the
+                ventilator section has been written, and worth it on the
+                per-space write path, which asks for the same handful of names
+                once per room.
 
         Returns:
         --------
             * (str): The PHPP ID of the Ventilator component.
         """
+        if _use_cache and _name in self.cache:
+            return self.cache[_name]
+
         name_col = str(self.shape.ventilators.inputs.display_name.column)
         row = self.xl.get_row_num_of_value_in_column(
             sheet_name=self.shape.name,
@@ -499,7 +512,9 @@ class Ventilators:
                 f"in column {name_col} of the '{self.shape.name}' worksheet?"
             )
 
-        return self._build_ventilator_phpp_id(f"{col_offset(name_col, -1)}{row}", _name)
+        phpp_id = self._build_ventilator_phpp_id(f"{col_offset(name_col, -1)}{row}", _name)
+        self.cache[_name] = phpp_id
+        return phpp_id
 
     def get_ventilator_phpp_id_by_row_num(self, _row_num: int) -> str:
         """Return the PHPP Ventilator ID ("01ud-MyVentilator", etc..) for the given row number."""

@@ -17,7 +17,6 @@ Regression cover for the three classes that enumerated 0-based
 hard-coded 'start=1' (Areas.Surfaces, ElecNonRes.Lighting).
 """
 
-from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
@@ -27,21 +26,7 @@ from PHX.PHPP.sheet_io.io_addnl_vent import Spaces, VentUnits
 from PHX.PHPP.sheet_io.io_areas import Surfaces
 from PHX.PHPP.sheet_io.io_components import Frames, Ventilators
 from PHX.PHPP.sheet_io.io_elec_non_res import Lighting
-
-SHAPE_DIR = Path("PHX", "PHPP", "phpp_localization")
-SHAPE_FILENAMES = (
-    "EN_9_6A.json",
-    "EN_9_7IP.json",
-    "EN_10_3.json",
-    "EN_10_4A.json",
-    "EN_10_4IP.json",
-    "EN_10_6.json",
-    "EN_10_6IP.json",
-)
-
-
-def load_shape(filename: str = "EN_10_6.json") -> PhppShape:
-    return PhppShape.model_validate_json((SHAPE_DIR / filename).read_bytes())
+from tests.test_PHPP.test_sheet_io.conftest import SHAPE_FILENAMES, load_shape
 
 
 def _ventilators(shape: PhppShape):

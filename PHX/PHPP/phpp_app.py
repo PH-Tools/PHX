@@ -738,8 +738,11 @@ class PHPPConnection:
                         phx_mech_ventilator = phx_variant.get_ventilation_device_by_id(
                             room.vent_unit_id_num, ventilation_device_index
                         )
+                        # -- One lookup per room, but only a handful of distinct
+                        # -- ventilators: the 'Components' section is already
+                        # -- written and does not change again during this pass.
                         phpp_id_ventilator = self.components.ventilators.get_ventilator_phpp_id_by_name(
-                            phx_mech_ventilator.display_name
+                            phx_mech_ventilator.display_name, _use_cache=True
                         )
                         phpp_row_ventilator = self.addnl_vent.vent_units.get_vent_unit_num_by_phpp_id(
                             phpp_id_ventilator
