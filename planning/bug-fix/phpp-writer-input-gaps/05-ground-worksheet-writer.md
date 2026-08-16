@@ -6,7 +6,11 @@ section 1) only; see *The hard part* below.
 **Owner:** `PHX/PHPP/` — no owner today; `GROUND` is an unused stub
 **Umbrella:** [`README.md`](README.md)
 **Filed as:** "Ground / floor-slab type → `Ground` worksheet" (gap 4 of the incoming request)
-**Depends on:** [`03`](03-summvent-heat-recovery-mode.md) Phase 2 (the radio-group helper)
+**Depends on:** [`03`](03-summvent-heat-recovery-mode.md) Phase 2 (the radio-group helper); **and, for
+Phase 2 onward, [`features/foundation-phpp10-shape/`](../../features/foundation-phpp10-shape/README.md)**
+— the honeybee-ph/PHX foundation model is WUFI-shaped and lacks the "interior wall towards
+heated" pairs and the crawl-space wind shield factor that this writer would otherwise leave at
+template defaults. Ed's call 2026-08-15: fix the shape upstream first, then write from it.
 
 ## Confirmed as filed
 
@@ -130,9 +134,12 @@ inputs are **not** direct attribute copies:
 | `H43` | `crawlspace_wall_u_value` |
 | `P42` | `PhxSite.climate.avg_wind_speed` (PHX default 4.0 = PHPP default) — confirm this is the same quantity before wiring it |
 
-**No PHX source exists** for the "interior wall towards heated" pairs
-(`H28`/`P28`, `H36`/`P36`, `H44`/`P44`) or the wind shield factor `P43`. Leave
-them at template defaults and say so in the docstring; do not invent values.
+**No PHX source exists today** for the "interior wall towards heated" pairs
+(`H28`/`P28`, `H36`/`P36`, `H44`/`P44`) or the wind shield factor `P43`.
+**Superseded 2026-08-15:** these are being added to the model upstream
+([`features/foundation-phpp10-shape/`](../../features/foundation-phpp10-shape/PRD.md) §4–5);
+Phase 2 below maps them from the model. Until that release lands, do not
+implement Phase 2 with template defaults.
 
 **No PHPP target exists** for `PhxHeatedBasement.slab_depth_below_grade_m`
 (consumed only by the derivation above) or `PhxSlabOnGrade.floor_slab_area_m2` /
@@ -274,6 +281,17 @@ fixture" item with the same constraint).
 `docs/reference/phx-model-reference.md` (the PHX→PHPP mapping tables) and
 `docs/dev/exporter-patterns.md`. Record the Phase 4 numbers. Update
 [`README.md`](README.md) and `planning/STATUS.md`.
+
+**Hand-off to OpenPH (required).** This writer is what regenerates OpenPH's
+`native_reference` PHPP workbook once its `tools/write_native_reference_phpp.py::_write_ground`
+patch is retired. Contribute the *as-implemented* attribute → cell map, the
+derived-quantity conversions, the validation/raise behaviour and the Phase 4
+numbers to the hand-off doc the foundation-shape packet owns —
+`openph-workspace/planning/features/ground-degree-hours-alignment/upstream/phx-foundation-phpp10-shape.md`
+(see `features/foundation-phpp10-shape/PRD.md` §"Hand-off to OpenPH") — or, if
+this ships separately from that packet, write a sibling
+`upstream/phx-05-ground-writer.md` there with the same front matter and note it
+in the OpenPH packet's `STATUS.md` "Blockers".
 
 ## Related
 
