@@ -29,11 +29,15 @@ class PhiCertIHGType(Enum):
     """Internal heat gains calculation method for PHI certification (PHPP v10).
 
     Values:
+        USER_DEFINED: User-defined IHG values. Available for building-use types
+            OTHER_RES (12) and OTHER_NONRES (23) only. Corresponds to PHPP v10
+            IHG drop-down value "1-User-defined" (Data!B173 formula branch).
         STANDARD: Standard IHG values per PHI protocol.
         RES_CUSTOM: Custom IHG values for residential buildings.
         NONRES_CUSTOM: Custom IHG values for non-residential buildings.
     """
 
+    USER_DEFINED = 1
     STANDARD = 2
     RES_CUSTOM = 3
     NONRES_CUSTOM = 4
