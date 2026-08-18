@@ -1,4 +1,7 @@
 from PHX.model import certification, ground
+from PHX.model.enums.phi_certification_phpp_10 import PhiCertIHGType as PhiCertIHGType_V10
+from PHX.model.enums.phi_certification_phpp_9 import PhiCertIHGType as PhiCertIHGType_V9
+import pytest
 
 
 def test_default_PH_Building(reset_class_counters):
@@ -19,3 +22,25 @@ def test_add_single_foundation(reset_class_counters):
 
     assert len(obj_1.foundations) == 1
     assert f_1 in obj_1.foundations
+
+
+def test_PHICertIHGType_enum_v9():
+    
+    assert PhiCertIHGType_V9.USER_DETERMINED.value == 1
+    assert PhiCertIHGType_V9.STANDARD.value == 2
+    assert PhiCertIHGType_V9.RES_CUSTOM.value == 3
+    assert PhiCertIHGType_V9.NONRES_CUSTOM.value == 4
+
+    with pytest.raises(ValueError):
+        PhiCertIHGType_V9(5)  # Invalid value, should raise ValueError
+
+
+def test_PHICertIHGType_enum_v10():
+    
+    assert PhiCertIHGType_V10.USER_DEFINED.value == 1
+    assert PhiCertIHGType_V10.STANDARD.value == 2
+    assert PhiCertIHGType_V10.RES_CUSTOM.value == 3
+    assert PhiCertIHGType_V10.NONRES_CUSTOM.value == 4
+
+    with pytest.raises(ValueError):
+        PhiCertIHGType_V10(5)  # Invalid value, should raise ValueError
