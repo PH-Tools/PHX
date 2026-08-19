@@ -18,7 +18,7 @@ Use **conventional commits**: `feat(scope):`, `fix(scope):`, `chore(scope):`, et
 - **Black** + **isort** (`profile="black"`), line length **120**; **Ruff** targeting py310.
 - **Intentional exceptions — do not "fix":**
   - PascalCase in `to_WUFI_XML/xml_schemas.py` and `xml_writables.py` mirrors the WUFI XML / C# structure.
-  - `PHX/run.py` is a Python-2.7 Grasshopper shim and is excluded from formatting — keep it Py2.7-safe.
+  - `PHX/run.py` is a Python-2.7 Grasshopper shim and is excluded from formatting — keep it Py2.7-safe. Apply the **ironpython-27-compatibility** skill when editing it; the rest of this repo is CPython 3.10+ and unconstrained.
 
 ## 4. Adding importers/exporters
 
