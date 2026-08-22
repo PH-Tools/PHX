@@ -2,7 +2,6 @@
 
 """Functions to build PHX-Foundations from HBPH source objects."""
 
-
 from honeybee_ph.foundations import PhFoundation
 
 from PHX.model import ground
