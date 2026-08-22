@@ -2,7 +2,6 @@
 
 """Functions for building PHX-Geometry from Ladybug / Honeybee Geometry."""
 
-
 from honeybee import aperture, face, shade
 from ladybug_geometry.geometry3d.plane import Plane
 from ladybug_geometry.geometry3d.pointvector import Point3D, Vector3D

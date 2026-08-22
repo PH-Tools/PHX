@@ -33,6 +33,7 @@
             "input_column": "T",
             "input_row_offset": 4,
             "options": {
+                "1": "1-User-defined",
                 "2": "2-Standard",
                 "3": "3-PHPP-calculation ('IHG' worksheet)",
                 "4": "4-PHPP-calculation ('IHG non-res' worksheet)"

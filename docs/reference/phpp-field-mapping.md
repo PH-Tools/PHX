@@ -29,7 +29,7 @@ Worksheet key: `VERIFICATION`
 |-----------|-------------------------|-------------|-----------|------------|------|---------|
 | `phi_building_category_type` | Building use | R | T | 1 |  | `1`: 10-Residential building: Residential; `2`: 12-Residential building: Other; `11`: 10-Residential building: Residential; `12`: 12-Residential building: Other |
 | `phi_building_use_type` | Building use | R | T | 1 |  | `10`: 10-Residential building: Residential; `12`: 12-Residential building: Other; `20`: 20-Non-res building: Office/Administration; `21`: 21-Non-res building: School half-days (< 7 h); `22`: 22-Non-res building: School full-time (≥ 7 h); `23`: 23-Non-res.: Other |
-| `phi_building_ihg_type` | Building use | R | T | 4 |  | `2`: 2-Standard; `3`: 3-PHPP-calculation ('IHG' worksheet); `4`: 4-PHPP-calculation ('IHG non-res' worksheet) |
+| `phi_building_ihg_type` | Building use | R | T | 4 |  | `1`: 1-User-defined; `2`: 2-Standard; `3`: 3-PHPP-calculation ('IHG' worksheet); `4`: 4-PHPP-calculation ('IHG non-res' worksheet) |
 | `phi_building_occupancy_type` | No. of occupants | R | R | 2 |  | `1`: *(null)*; `2`: *(null)* |
 | `phi_certification_type` | Planned energy standard | T | T | 1 |  | `10`: 10-Passive house; `21`: 21-EnerPHit (Component method); `22`: 22-EnerPHit (Energy demand method); `30`: 30-PHI Low Energy Building; `40`: 40-Other |
 | `phi_certification_class` | Class | Primary energy method | T | T | 1 |  | `10`: 10-Classic | PER (renewable); `11`: 11-Classic | PE (non-renewable); `20`: 20-Plus | PER (renewable); `30`: 30-Premium | PER (renewable) |

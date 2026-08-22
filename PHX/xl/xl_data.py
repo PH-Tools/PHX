@@ -263,9 +263,7 @@ def _as_raw_write_element(_value: Any) -> Any:
     return _value
 
 
-def prepare_raw_write(
-    _xl_item: Union[XlItem, XLItem_List], _transpose: bool = False
-) -> tuple[str, Any]:
+def prepare_raw_write(_xl_item: Union[XlItem, XLItem_List], _transpose: bool = False) -> tuple[str, Any]:
     """Return the (full-range-address, raw-shaped-data) for a 'raw_value' write.
 
     The xlwings '.value' converter costs ~5x per write on macOS (one extra

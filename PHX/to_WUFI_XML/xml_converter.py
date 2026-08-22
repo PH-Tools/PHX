@@ -1,6 +1,7 @@
 # -*- Python Version: 3.10 -*-
 
 """"""
+
 from collections.abc import Callable
 from typing import Any
 

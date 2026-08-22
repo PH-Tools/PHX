@@ -2,7 +2,6 @@
 
 """Functions for finding / loading the right PHPP-ShapeFile."""
 
-
 import os
 import pathlib
 

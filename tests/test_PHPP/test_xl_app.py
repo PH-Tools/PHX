@@ -325,9 +325,7 @@ def test_write_raw_path_guards():
     assert app._use_raw_write(xl_data.XlItem("Sheet1", "A1", 42))
     assert app._use_raw_write(xl_data.XlItem("Sheet1", "A1", [1, 2, 3]))
     # -- colored items: the color-write offsets anchor to the converter's range
-    assert not app._use_raw_write(
-        xl_data.XlItem("Sheet1", "A1", 42, range_color=(1, 2, 3), font_color=(4, 5, 6))
-    )
+    assert not app._use_raw_write(xl_data.XlItem("Sheet1", "A1", 42, range_color=(1, 2, 3), font_color=(4, 5, 6)))
     # -- multi-cell addresses use '.value' scalar-broadcast (ie: block clears)
     assert not app._use_raw_write(xl_data.XlItem("Sheet1", "A1:D10", None))
     # -- empty lists are silently skipped by the converter - keep that behavior
