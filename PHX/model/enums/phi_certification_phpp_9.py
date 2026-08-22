@@ -46,7 +46,7 @@ class PhiCertIHGType(Enum):
         RES_CUSTOM: Custom IHG values for residential buildings.
         NONRES_CUSTOM: Custom IHG values for non-residential buildings.
     """
-    
+
     USER_DETERMINED = 1
     STANDARD = 2
     RES_CUSTOM = 3
