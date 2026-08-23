@@ -1,5 +1,4 @@
 import pytest
-
 from honeybee_phhvac.ventilation import PhVentilationSystem, Ventilator
 
 from PHX.from_HBJSON.create_hvac import build_phx_ventilator
