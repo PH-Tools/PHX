@@ -26,6 +26,7 @@ class RefusalReason(enum.Enum):
         VERSION_UNSUPPORTED: A PHPP whose version/language has no results map (named in the detail).
         BLANK_TEMPLATE: A PHPP with no project content (TFA 0, no building name) — identity is known, results are not read.
         RESULTS_REGION_EMPTY: Sniffed as a project PHPP, but every results cell is empty (no cached values).
+        READ_ERROR: openpyxl raised while reading a bounded cell (malformed sheet XML, ...); named, not propagated.
     """
 
     NOT_A_FILE = "not_a_file"
@@ -35,6 +36,7 @@ class RefusalReason(enum.Enum):
     VERSION_UNSUPPORTED = "version_unsupported"
     BLANK_TEMPLATE = "blank_template"
     RESULTS_REGION_EMPTY = "results_region_empty"
+    READ_ERROR = "read_error"
 
 
 @dataclass(frozen=True)

@@ -208,10 +208,19 @@ def read_results(_path: pathlib.Path | str) -> ReadResult:
     --------
         * (ReadResult): record or refusal, plus the report. Refusals are typed
             (not a file / not a workbook / not a PHPP / version unreadable / version
-            unsupported / blank template / results region empty); nothing raises.
+            unsupported / blank template / results region empty / read error); nothing raises.
     """
     path = pathlib.Path(_path)
     report = ReadReport(path=path)
+    try:
+        return _read_results(path, report)
+    except Exception as e:  # hard rule: a workbook we cannot read yields a refusal, never a traceback
+        report.refusal = Refusal(RefusalReason.READ_ERROR, f"{type(e).__name__} while reading: {e}")
+        return ReadResult(None, report.refusal, report)
+
+
+def _read_results(path: pathlib.Path, report: ReadReport) -> ReadResult:
+    """The read proper; 'read_results' wraps it so stray exceptions become typed refusals."""
 
     if not path.is_file():
         report.refusal = Refusal(RefusalReason.NOT_A_FILE, f"{path} is not a file")
@@ -246,7 +255,8 @@ def read_results(_path: pathlib.Path | str) -> ReadResult:
         if identity.flavour is Flavour.BLANK_TEMPLATE:
             report.refusal = Refusal(
                 RefusalReason.BLANK_TEMPLATE,
-                f"{identity.version_label} with TFA {sniff.evidence.get('tfa')!r} and no building name — a blank template, not project results",
+                f"{identity.version_label} with TFA {sniff.evidence.get('tfa')!r}, no building name, no dwelling units, "
+                f"template climate — a blank template, not project results",
             )
             return ReadResult(None, report.refusal, report, identity)
 

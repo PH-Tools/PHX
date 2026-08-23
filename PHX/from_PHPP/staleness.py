@@ -13,7 +13,7 @@ Observable signals, from the package itself:
   * 'docProps/core.xml'  -> lastModifiedBy, modified            (openpyxl 'properties')
   * 'docProps/app.xml'   -> Application, AppVersion             (zip part, read directly)
   * 'xl/workbook.xml'    -> <calcPr calcMode= fullCalcOnLoad=>  (zip part, read directly)
-  * the results cells    -> formula present but no cached value (a second, formula-mode open)
+  * the results cells    -> formula present but no '<v>' cached value (raw sheet XML)
 """
 
 from __future__ import annotations
@@ -60,6 +60,9 @@ class Freshness:
 
 
 _CALC_PR = re.compile(r"<calcPr\b([^>]*)/?>")
+# -- Excel's own Application strings. openpyxl writes 'Microsoft Excel Compatible / Openpyxl x.y'
+# -- (which contains 'Excel' — hence a strict match, not a substring test).
+_EXCEL_APP = re.compile(r"^Microsoft( Macintosh)? Excel( Online)?$")
 _ATTR = re.compile(r'(\w+)="([^"]*)"')
 
 
@@ -105,52 +108,92 @@ def read_package_signals(path: pathlib.Path) -> dict[str, Any]:
     return out
 
 
+_SHEET_TAG = re.compile(r'<sheet\b[^>]*\bname="([^"]+)"[^>]*\br:id="([^"]+)"')
+_REL_TAG = re.compile(r"<Relationship\b[^>]*>")
+
+
+def _sheet_parts(z: zipfile.ZipFile) -> dict[str, str]:
+    """Map worksheet name (upper-cased) -> zip part name, via workbook.xml and its rels."""
+    wbxml = z.read("xl/workbook.xml").decode("utf-8", "replace")
+    rels = z.read("xl/_rels/workbook.xml.rels").decode("utf-8", "replace")
+    rid_to_target: dict[str, str] = {}
+    for rel in _REL_TAG.findall(rels):
+        attrs = dict(_ATTR.findall(rel))
+        if "Id" in attrs and "Target" in attrs:
+            rid_to_target[attrs["Id"]] = attrs["Target"]
+    out: dict[str, str] = {}
+    for name, rid in _SHEET_TAG.findall(wbxml):
+        target = rid_to_target.get(rid)
+        if target:
+            target = target.lstrip("/")
+            out[name.upper()] = target if target.startswith("xl/") else "xl/" + target
+    return out
+
+
+def _has_cached_value(t_attr: str | None, inner_xml: str) -> bool:
+    """True if a formula cell's XML carries a value Excel calculated.
+
+    Excel writes '<v>number</v>', or 't="str"' + '<v>text</v>' / '<v/>' for a "" result,
+    or 't="e"'/'t="b"' with a value. openpyxl writes an empty '<v></v>' with no 't' — that,
+    or no '<v>' at all, is an uncalculated cell.
+    """
+    m = re.search(r"<v>([^<]*)</v>|<v/>", inner_xml)
+    if m is None:
+        return False
+    text = (m.group(1) or "").strip()
+    return bool(text) or t_attr == "str"
+
+
 def formula_cache_signals(
     path: pathlib.Path, specs: tuple[ResultCellSpec, ...], values_xl: OpenpyxlWorkbook | None = None
 ) -> dict[str, Any]:
-    """Open the file a second time in formula mode and compare each results cell with its cached value.
+    """Inspect each results cell's raw XML: does it carry a formula, and does it carry a cached value?
+
+    Excel always writes a cached value beside a formula it has calculated ('t="str"'
+    with an empty '<v/>' for a "" result); a formula cell with no value, or openpyxl's
+    bare '<v></v>', means the file was written by something that did not calculate.
+    openpyxl's parsed value cannot tell those apart (both read as None) — hence the raw read.
 
     Arguments:
     ----------
         * path: (pathlib.Path) The workbook.
         * specs: (tuple[ResultCellSpec, ...]) The results cells to check.
-        * values_xl: (OpenpyxlWorkbook | None) An already-open data_only workbook to reuse for the
-            cached values (saves one open); opened here if None.
+        * values_xl: (OpenpyxlWorkbook | None) Unused; kept so callers may pass their open workbook.
 
     Returns:
     --------
         * (dict[str, Any]): 'n_formula' cells carrying a formula, 'n_formula_cached' of those with a
-            cached value, 'formula_without_cache' the keys lacking one, 'skipped_sheets' sheets absent.
+            '<v>' element, 'formula_without_cache' the keys lacking one, 'skipped_sheets' sheets absent.
     """
     n_formula = 0
     n_cached = 0
     missing: list[str] = []
     skipped: set[str] = set()
-    own_vx = values_xl is None
-    vx = OpenpyxlWorkbook(path, data_only=True) if values_xl is None else values_xl
+    by_sheet: dict[str, list[ResultCellSpec]] = {}
+    for spec in specs:
+        by_sheet.setdefault(spec.sheet.upper(), []).append(spec)
     try:
-        fx = OpenpyxlWorkbook(path, data_only=False)
-    except Exception:
-        if own_vx:
-            vx.close()
-        raise
-    try:
-        for spec in specs:
-            if spec.sheet.upper() not in fx.worksheet_names:
-                skipped.add(spec.sheet)
-                continue
-            raw = fx.get_single_data_item(spec.sheet, spec.cell)
-            if isinstance(raw, str) and raw.startswith("="):
-                n_formula += 1
-                cached = vx.get_single_data_item(spec.sheet, spec.cell)
-                if cached is None:
-                    missing.append(spec.key)
-                else:
-                    n_cached += 1
-    finally:
-        fx.close()
-        if own_vx:
-            vx.close()
+        with zipfile.ZipFile(path) as z:
+            parts = _sheet_parts(z)
+            for sheet_key, sheet_specs in by_sheet.items():
+                part = parts.get(sheet_key)
+                if part is None or part not in z.namelist():
+                    skipped.add(sheet_specs[0].sheet)
+                    continue
+                xml = z.read(part).decode("utf-8", "replace")
+                for spec in sheet_specs:
+                    m = re.search(rf'<c r="{spec.cell}"((?:\s+[\w:]+="[^"]*")*)>(.*?)</c>', xml, re.S)
+                    attrs = dict(_ATTR.findall(m.group(1))) if m else {}
+                    inner = m.group(2) if m else ""
+                    if "<f" not in inner:
+                        continue
+                    n_formula += 1
+                    if _has_cached_value(attrs.get("t"), inner):
+                        n_cached += 1
+                    else:
+                        missing.append(spec.key)
+    except (zipfile.BadZipFile, KeyError, OSError):
+        skipped.update(s.sheet for s in specs)
     return {
         "n_formula": n_formula,
         "n_formula_cached": n_cached,
@@ -191,7 +234,7 @@ def assess(
     evidence.append(
         f"writer: {app!r} v{sig.get('app_version')!r}, last-modified-by {sig.get('last_modified_by')!r} at {sig.get('modified')}"
     )
-    if app is None or "excel" not in str(app).lower():
+    if app is None or not _EXCEL_APP.match(str(app).strip()):
         suspect_reasons.append(f"last writer is not Excel ({app!r})")
 
     calc_mode = sig.get("calc_mode")
@@ -209,6 +252,10 @@ def assess(
     )
     if sig["skipped_sheets"]:
         evidence.append(f"sheets absent, not checked: {sig['skipped_sheets']}")
+    if 0 < n_c < n_f:
+        suspect_reasons.append(
+            f"{n_f - n_c} of {n_f} results formula cells have no cached value (Excel always writes one)"
+        )
 
     if n_f > 0 and n_c == 0:
         verdict = FreshnessVerdict.EMPTY

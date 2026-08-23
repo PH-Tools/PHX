@@ -3,7 +3,9 @@
 """Is this file a PHPP? Which version, which language, project or blank template?
 
 Reads only bounded header cells: the sheet list, 'Data!A1:D10' (version row),
-'Verification!I35' (TFA) and 'Verification!K5' (building name). Siblings that
+and four project-content signals — 'Verification!I35' (TFA, a formula), 'K5'
+(building name), 'F29' (dwelling units) and 'Climate!D12' (the climate data set
+picked; the blank template ships with 'DE-9999-PHPP-Standard'). Siblings that
 live next to a PHPP in a project folder — the blank PHI template, the Heat Pump
 Tool, any renamed .xlsx — must classify as blank-template / not-a-PHPP without
 the reader ever reaching into their cells as if they were results.
@@ -28,17 +30,21 @@ REQUIRED_SHEETS: tuple[str, ...] = ("DATA", "VERIFICATION", "PER")
 DATA_VERSION_SEARCH_COL = "A"
 DATA_VERSION_SEARCH_ROWS = (1, 10)
 
-# -- Blank-template signals (Verification).
+# -- Blank-template signals. TFA is a formula (no cached value in a never-calculated
+# -- or cache-stripped file); the other three are inputs, so they survive a cache strip.
 TFA_RESULT_CELL = "I35"
 BUILDING_NAME_CELL = "K5"
+DWELLING_UNITS_CELL = "F29"
+CLIMATE_DATASET_CELL = ("Climate", "D12")
+CLIMATE_TEMPLATE_DEFAULT = "DE-9999-PHPP-STANDARD"
 
 
 class Flavour(enum.Enum):
     """What kind of PHPP-shaped file this is.
 
     Values:
-        PROJECT: A PHPP with project content (TFA > 0 or a building name).
-        BLANK_TEMPLATE: A PHPP with no project content (PHI's empty template, or a never-filled copy).
+        PROJECT: A PHPP with project content (TFA > 0, or a building name, dwelling units, or a chosen climate).
+        BLANK_TEMPLATE: A PHPP with none of those (PHI's empty template, or a never-filled copy).
     """
 
     PROJECT = "project"
@@ -163,10 +169,25 @@ def sniff_workbook(xl: OpenpyxlWorkbook) -> SniffResult:
 
     tfa = xl.get_single_data_item("Verification", TFA_RESULT_CELL)
     building_name = xl.get_single_data_item("Verification", BUILDING_NAME_CELL)
+    dwelling_units = xl.get_single_data_item("Verification", DWELLING_UNITS_CELL)
+    climate = None
+    if CLIMATE_DATASET_CELL[0].upper() in xl.worksheet_names:
+        climate = xl.get_single_data_item(*CLIMATE_DATASET_CELL)
     result.evidence["tfa"] = tfa
     result.evidence["building_name_present"] = bool(str(building_name or "").strip())
+    result.evidence["dwelling_units"] = dwelling_units
+    result.evidence["climate_is_template_default"] = (
+        climate is None or str(climate).strip().upper() == CLIMATE_TEMPLATE_DEFAULT
+    )
     has_tfa = isinstance(tfa, (int, float)) and not isinstance(tfa, bool) and tfa > 0
-    flavour = Flavour.PROJECT if (has_tfa or result.evidence["building_name_present"]) else Flavour.BLANK_TEMPLATE
+    has_units = isinstance(dwelling_units, (int, float)) and not isinstance(dwelling_units, bool) and dwelling_units > 0
+    is_project = (
+        has_tfa
+        or result.evidence["building_name_present"]
+        or has_units
+        or not result.evidence["climate_is_template_default"]
+    )
+    flavour = Flavour.PROJECT if is_project else Flavour.BLANK_TEMPLATE
 
     result.identity = PhppIdentity(
         version=version,
