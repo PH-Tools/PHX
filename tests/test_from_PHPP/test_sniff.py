@@ -54,10 +54,23 @@ def test_sniff_not_a_file(tmp_path: pathlib.Path) -> None:
     assert r.refusal is not None and r.refusal.reason is RefusalReason.NOT_A_FILE
 
 
-def test_sniff_phpp9_layout_has_no_language_cell(tmp_path: pathlib.Path) -> None:
-    r = sniff_path(phpp_shaped.write_version(tmp_path / "v9.xlsx", "9.7", None))
+def test_sniff_phpp9_layout_language_from_pe_factor_proxy(tmp_path: pathlib.Path) -> None:
+    r = sniff_path(phpp_shaped.write_version(tmp_path / "v9.xlsx", "9.6a", None))
+    assert r.identity is not None
+    assert r.identity.version_key == "EN_9_6A" and not r.identity.language_cell_present
+    assert r.evidence["language_from_pe_factor_proxy"] is True
+
+
+def test_sniff_easyph_variant_normalises_to_the_base_version(tmp_path: pathlib.Path) -> None:
+    r = sniff_path(phpp_shaped.write_version(tmp_path / "ez.xlsx", "10.6 easyPHv3", "EN "))
+    assert r.identity is not None
+    assert r.identity.version_key == "EN_10_6" and r.identity.variant == "easyPHv3"
+    assert r.identity.version_label == "PHPP 10.6 EN (easyPHv3)"
+
+
+def test_sniff_garbage_version_is_unreadable(tmp_path: pathlib.Path) -> None:
+    r = sniff_path(phpp_shaped.write_version(tmp_path / "g.xlsx", "ten point six", "EN "))
     assert r.refusal is not None and r.refusal.reason is RefusalReason.VERSION_UNREADABLE
-    assert "9.7" in r.refusal.detail
 
 
 @pytest.mark.parametrize("version, key", [("10.4a", "EN_10_4A"), ("10.3", "EN_10_3"), ("9.7", "EN_9_7")])

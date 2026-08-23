@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import enum
 import pathlib
+import re
 import zipfile
 from dataclasses import dataclass, field
 from typing import Any
@@ -29,6 +30,11 @@ REQUIRED_SHEETS: tuple[str, ...] = ("DATA", "VERIFICATION", "PER")
 # -- Where the version row is looked for (PHX 'phpp_app.get_phpp_version' does the same scan).
 DATA_VERSION_SEARCH_COL = "A"
 DATA_VERSION_SEARCH_ROWS = (1, 10)
+
+# -- 'Data!B<n>' forms seen: '10.6', '10.4a', '9.6a' (a number in some 9.x files), '10.6 easyPHv3'.
+_VERSION_RE = re.compile(r"^(\d+)\.(\d+[a-z]?)(?:\s+(easyph\w*))?$", re.IGNORECASE)
+# -- PHPP 9 'Data' has no language cell; PHX's write path uses the PE-factor set name as a proxy.
+_LANGUAGE_PROXY = {"1-PE-FAKTOREN": "DE", "1-FACTORES EP": "ES", "1-PE-FACTORS": "EN"}
 
 # -- Blank-template signals. TFA is a formula (no cached value in a never-calculated
 # -- or cache-stripped file); the other three are inputs, so they survive a cache strip.
@@ -59,13 +65,18 @@ class PhppIdentity:
         version (PHPPVersion): Major/minor/language as PHX's write path models them.
         flavour (Flavour): Project or blank template.
         version_row (int): The 'Data' row the version label was found on.
-        language_cell_present (bool): False for PHPP 9 files, whose 'Data' sheet has no 'Language' cell.
+        language_cell_present (bool): False for PHPP 9 files, whose 'Data' sheet has no 'Language' cell
+            (the language then comes from the PE-factor set name, as PHX's write path does).
+        variant (str): A flavour suffix on the version string, ie: 'easyPHv3'; '' for plain PHPP.
+        raw_version (str): The version cell as read, ie: '10.6 easyPHv3'.
     """
 
     version: PHPPVersion
     flavour: Flavour
     version_row: int
     language_cell_present: bool
+    variant: str = ""
+    raw_version: str = ""
 
     @property
     def version_key(self) -> str:
@@ -74,8 +85,9 @@ class PhppIdentity:
 
     @property
     def version_label(self) -> str:
-        """Human label, ie: 'PHPP 10.6 EN'."""
-        return f"PHPP {self.version.number()} {self.version.language}"
+        """Human label, ie: 'PHPP 10.6 EN' or 'PHPP 10.6 EN (easyPHv3)'."""
+        base = f"PHPP {self.version.number()} {self.version.language}"
+        return f"{base} ({self.variant})" if self.variant else base
 
 
 @dataclass
@@ -106,7 +118,7 @@ def _find_version_row(xl: OpenpyxlWorkbook) -> tuple[int | None, list[Any]]:
     col = xl.get_single_column_data("Data", DATA_VERSION_SEARCH_COL, r1, r2)
     for i, val in enumerate(col, start=r1):
         if val is not None and str(val).upper().strip().replace(" ", "").startswith("PHPP"):
-            row = xl.get_data("Data", f"A{i}:F{i}")
+            row = xl.get_data("Data", f"A{i}:Z{i}")
             return i, list(row) if isinstance(row, list) else [row]
     return None, []
 
@@ -146,22 +158,30 @@ def sniff_workbook(xl: OpenpyxlWorkbook) -> SniffResult:
         )
         return result
 
-    # -- Row layout in 10.x: A='PHPP Version', B='10.6', C='Language', D='EN '.
-    # -- In 9.x: A='PHPP Version', B=9.6 (number), no language cells.
+    # -- Row layout in 10.x: A='PHPP Version', B='10.6', C='Language', D='EN ', E='1-PE-factors …'.
+    # -- In 9.x: A='PHPP Version', B='9.6a', C='1-PE-factors …' — no language cells.
     raw_version = row_vals[1] if len(row_vals) > 1 else None
-    if raw_version is None or "." not in str(raw_version):
+    m = _VERSION_RE.match(str(raw_version).strip()) if raw_version is not None else None
+    if m is None:
         result.refusal = Refusal(
-            RefusalReason.VERSION_UNREADABLE, f"Data!B{version_row} is {raw_version!r}, expected 'major.minor'"
+            RefusalReason.VERSION_UNREADABLE,
+            f"Data!B{version_row} is {raw_version!r}, expected 'major.minor[letter] [easyPH…]'",
         )
         return result
-    major, minor = str(raw_version).strip().split(".", 1)
+    major, minor, variant = m.group(1), m.group(2), m.group(3) or ""
 
     language_cell_present = len(row_vals) > 3 and str(row_vals[2] or "").strip().upper() == "LANGUAGE"
     language = str(row_vals[3] or "").strip() if language_cell_present else ""
     if not language:
+        for val in row_vals:
+            for marker, lang in _LANGUAGE_PROXY.items():
+                if marker in str(val or "").upper():
+                    language = lang
+        result.evidence["language_from_pe_factor_proxy"] = bool(language)
+    if not language:
         result.refusal = Refusal(
             RefusalReason.VERSION_UNREADABLE,
-            f"version {raw_version!r} found at Data!B{version_row} but no language cell (PHPP 9 layout?)",
+            f"version {raw_version!r} found at Data!B{version_row} but no language cell and no PE-factor proxy",
         )
         return result
 
@@ -194,6 +214,8 @@ def sniff_workbook(xl: OpenpyxlWorkbook) -> SniffResult:
         flavour=flavour,
         version_row=version_row,
         language_cell_present=language_cell_present,
+        variant=variant,
+        raw_version=str(raw_version).strip(),
     )
     return result
 

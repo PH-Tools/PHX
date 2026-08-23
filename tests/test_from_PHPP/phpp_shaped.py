@@ -63,6 +63,9 @@ def _skeleton(version: str = "10.6", language: str | None = "EN ") -> openpyxl.W
     if language is not None:
         data["C5"] = "Language"
         data["D5"] = language
+        data["E5"] = "1-PE-factors (non-renewable) PHI Certification"
+    else:  # PHPP 9 layout: the PE-factor set name follows the version directly
+        data["C5"] = "1-PE-factors (non-renewable) PHI Certification"
     # -- captions at the mapped label cells
     for spec in RESULTS_MAP_EN_10_6:
         wb[spec.sheet][spec.label_cell] = spec.label_expected

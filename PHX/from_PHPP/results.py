@@ -247,6 +247,10 @@ def _read_results(path: pathlib.Path, report: ReadReport) -> ReadResult:
                 f"{identity.version_label} (key {identity.version_key}) has no results map; supported: EN 10.x",
             )
             return ReadResult(None, report.refusal, report, identity)
+        if identity.variant:
+            report.notes.append(
+                f"variant {identity.variant!r}: read with the {resolved.version_key} map; captions are asserted per cell"
+            )
         if not resolved.verified:
             report.notes.append(
                 f"results map for {resolved.version_key} is assumed from the 10.6 EN map (phi-rules: 10.x addresses are one thing); captions are asserted per cell"
