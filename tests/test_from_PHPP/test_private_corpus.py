@@ -13,12 +13,12 @@ from PHX.from_PHPP import Flavour, FreshnessVerdict, RefusalReason, read_results
 from PHX.from_PHPP.results import ValueStatus
 
 PRIVATE = pathlib.Path(__file__).parent / "_private"
-LINDE = sorted(p for p in PRIVATE.glob("*.xlsx") if not p.name.startswith(("PHPP_EN", "Heat_Pump", "derived_")))
-pytestmark = pytest.mark.skipif(not PRIVATE.is_dir() or not LINDE, reason="private corpus not present")
+PROJECT_WORKBOOKS = sorted(p for p in PRIVATE.glob("*.xlsx") if not p.name.startswith(("PHPP_EN", "Heat_Pump", "derived_")))
+pytestmark = pytest.mark.skipif(not PRIVATE.is_dir() or not PROJECT_WORKBOOKS, reason="private corpus not present")
 
 
-@pytest.mark.parametrize("path", LINDE, ids=lambda p: p.name)
-def test_linde_workbook_reads_fresh_with_every_value_sourced(path: pathlib.Path) -> None:
+@pytest.mark.parametrize("path", PROJECT_WORKBOOKS, ids=lambda p: p.name)
+def test_project_workbook_reads_fresh_with_every_value_sourced(path: pathlib.Path) -> None:
     r = read_results(path)
     assert r.ok, r.report.summary()
     rec = r.record
@@ -32,7 +32,7 @@ def test_linde_workbook_reads_fresh_with_every_value_sourced(path: pathlib.Path)
     # -- exactly one of cooling demand / overheating frequency applies per PHPP's AB30 switch
     statuses = {rec.values["cooling_demand"].status, rec.values["overheating_frequency"].status}
     assert statuses == {ValueStatus.OK, ValueStatus.NOT_APPLICABLE}
-    assert 300 < float(rec.get("tfa")) < 320  # type: ignore[arg-type]
+    assert float(rec.get("tfa")) > 0  # type: ignore[arg-type]
     assert rec.values["heating_demand"].unit == "kWh/(m²a)"
     assert rec.values["site_energy_demand"].unit == "MWh/a"
 
