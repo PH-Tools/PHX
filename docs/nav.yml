@@ -82,6 +82,13 @@ nav:
       - phx_schemas: api/from_WUFI_XML/phx_schemas.md
       - wufi_file_schema: api/from_WUFI_XML/wufi_file_schema.md
       - wufi_file_types: api/from_WUFI_XML/wufi_file_types.md
+    - from_PHPP:
+      - sniff: api/from_PHPP/sniff.md
+      - results: api/from_PHPP/results.md
+      - results_map: api/from_PHPP/results_map.md
+      - staleness: api/from_PHPP/staleness.md
+      - report: api/from_PHPP/report.md
+      - xl_openpyxl: api/from_PHPP/xl_openpyxl.md
     - to_WUFI_XML:
       - xml_txt_to_file: api/to_WUFI_XML/xml_txt_to_file.md
       - xml_builder: api/to_WUFI_XML/xml_builder.md
@@ -154,6 +161,7 @@ nav:
       - xl_app: api/xl/xl_app.md
       - xl_data: api/xl/xl_data.md
       - xl_typing: api/xl/xl_typing.md
+      - xl_readable: api/xl/xl_readable.md
     - Scripts:
       - hbjson_to_wufi_xml: api/hbjson_to_wufi_xml.md
       - hbjson_to_phpp: api/hbjson_to_phpp.md

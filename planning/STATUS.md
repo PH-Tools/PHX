@@ -2,12 +2,13 @@
 
 Master index of tracked planning work in PHX. Update when a unit of work is added, changes status, or is folded back into `context/`/`docs/`.
 
-_Last updated: 2026-08-15_
+_Last updated: 2026-08-23_
 
 ## Active / current work
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
+| `from_PHPP` results reader (Pholio spike 2) | Feature (new source family) | **Implemented on branch `feat/from-phpp-results-reader`, PR pending** — closed-file reader: sniff (version/language/project vs blank template vs not-a-PHPP), headline `Verification`+`PER`+`Cooling load` results with source cell + caption asserted, stale-cache verdict, typed refusals; `xl/xl_readable.XLReadable` read Protocol; 46 tests (synthetic PHPP-shaped public fixtures + gitignored private corpus). Results map verified on 10.6 EN only; 10.x EN assumed, 9.x/IP refused by name | `PHX/from_PHPP/`, `tests/test_from_PHPP/` |
 | Public live Honeybee → PHX API | API/docs cleanup | **Complete** — verified and archived | [`archive/honeybee-conversion-facade/`](archive/honeybee-conversion-facade/PRD.md) |
 | Aperture-bearing xl-replay golden fixture | Follow-up (manual) | **Open** — needs live Excel + licensed PHPP (`scripts/perf/record_replay_fixture.py`); covered by unit tests meanwhile | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
 | PHPP writer input gaps | Bug fix (6 items) | **Scoped** — the incoming request verified against the code and the blank 10.6 template; three of its five diagnoses changed. `Verification` is a version-guard defect dropping 12 inputs, not a missing `F29` writer; `Ventilation` is two dead cells (`J19` *and* `J20`), not one; `Climate` additionally corrupts `P67`. `SummVent` and `Ground` confirmed as filed. **`06` added 2026-08-15:** `Verification!N30` mechanical cooling — never written and no model field; drives `Ground!N122` (ground-iteration interior-temperature clamp), which is how OpenPH found it. Needs a honeybee-ph `SetPoints.mechanical_cooling` field first. `05` (`Ground` writer) now depends on the foundation-shape feature below | [`bug-fix/phpp-writer-input-gaps/`](bug-fix/phpp-writer-input-gaps/README.md) |

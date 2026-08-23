@@ -12,10 +12,10 @@ A Python library that converts building energy model data between [Honeybee](htt
 | `PHX/conversion.py` | Public live Honeybee / honeybee-ph `Model` → `PhxProject` facade |
 | `PHX/from_HBJSON/` | Honeybee conversion implementation plus HBJSON file-reading helpers |
 | `PHX/from_WUFI_XML/` | Build a PHX model from a WUFI-Passive XML file (pydantic schema parsing) |
-| `PHX/from_PHPP/` | Build a PHX model from a PHPP file |
+| `PHX/from_PHPP/` | Read a **closed** PHPP file (openpyxl, read-only): sniff, headline results record, stale-cache signals, typed refusals. Not a PHX-model builder yet |
 | `PHX/to_WUFI_XML/` | Write a PHX model to WUFI-Passive XML |
 | `PHX/to_PPP/`, `PHX/to_METr_JSON/` | Write PPP / METr-JSON targets |
-| `PHX/PHPP/`, `PHX/xl/` | PHPP Excel write path and the Excel-interop layer |
+| `PHX/PHPP/`, `PHX/xl/` | PHPP Excel write path and the Excel-interop layer (`xl/xl_readable.py` is the read Protocol both backends satisfy) |
 
 Top-level `PHX/hbjson_to_*.py` are the end-to-end CLI entry points (e.g. `hbjson_to_wufi_xml.py`).
 

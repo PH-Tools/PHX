@@ -28,7 +28,8 @@ The PHX model is normalized and transient. Importers and exporters are symmetric
 - **`from_WUFI_XML/`** — reads WUFI XML using **pydantic v2** schemas (`phx_schemas.py`, `wufi_file_schema.py`).
 - **`to_WUFI_XML/`** — writes WUFI XML via `xml_builder.py` / `xml_converter.py` / `xml_writables.py` (PascalCase mirrors the WUFI/C# schema).
 - **`PHPP/` + `xl/`** — the PHPP Excel write path and Excel-interop layer (`xlwings`).
-- **`to_PPP/`, `to_METr_JSON/`, `from_PHPP/`** — additional target/source families.
+- **`to_PPP/`, `to_METr_JSON/`** — additional target families.
+- **`from_PHPP/`** — reads a *closed* PHPP with openpyxl (read-only, cached values): sniff → headline `ResultsRecord` → stale-cache verdict, with a typed `ReadReport`/`Refusal`. Behind `xl/xl_readable.XLReadable`, the read Protocol the xlwings `XLConnection` also satisfies. Not a PHX-model builder (yet).
 
 ## Entry points
 
