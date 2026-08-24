@@ -26,6 +26,7 @@ live Honeybee Model ─────────┘              │
                                                               ├──> to_PPP        ──> .ppp file
                                                               └──> to_METr_JSON  ──> .json file
 WUFI XML file ──> from_WUFI_XML ────────────────────────────> PHX Model (in-memory)
+PHPP .xlsx ─────> from_PHPP (sniff + headline results, read-only) ──> ResultsRecord (not a PHX Model)
 ```
 
 PHX is an **in-memory-only translator** — PHX models are never serialized directly. They exist as an intermediate representation created from a source (usually HBJSON) and consumed by an output writer.
@@ -96,6 +97,14 @@ PHX/
 │   ├── wufi_file_types.py      # Pydantic type definitions
 │   ├── phx_schemas.py          # PHX model schema definitions
 │   └── phx_converter.py        # WUFI XML data -> PHX model conversion
+│
+├── from_PHPP/              # Closed PHPP file -> typed results record (openpyxl, read-only)
+│   ├── xl_openpyxl.py          # OpenpyxlWorkbook: the closed-file backend for xl.xl_readable.XLReadable
+│   ├── sniff.py                # PHPP? version? language? project / blank template / not-a-PHPP
+│   ├── results_map.py          # Per-version results cells, each paired with its caption
+│   ├── results.py              # read_results() -> ResultsRecord | Refusal, + ReadReport
+│   ├── staleness.py            # Stale-cache signals -> fresh / suspect / empty
+│   └── report.py               # Refusal, RefusalReason, ReadReport, UnreadItem
 │
 ├── to_WUFI_XML/            # PHX Model -> WUFI XML export
 │   ├── xml_builder.py      # Main entry: generate_WUFI_XML_from_object()

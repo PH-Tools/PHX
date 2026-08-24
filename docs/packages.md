@@ -45,7 +45,24 @@ editing of WUFI models.
 
 ## from_PHPP
 
-Creates a new PHX model from an existing PHPP Excel file.
+Reads a **closed** PHPP Excel file without Excel (openpyxl, read-only, cached values):
+sniffs whether the file is a PHPP and which version/language, reads the headline
+results (`Verification` + `PER` + `Cooling load`) into a typed `ResultsRecord` — every
+value with its source cell and the caption read beside it — and reports stale-cache
+signals (`fresh` / `suspect` / `empty`). Anything it cannot read is named in a
+`ReadReport`; unsupported files yield a typed `Refusal`, never an exception. It does
+not (yet) build a PHX model.
+
+```python
+from PHX.from_PHPP import read_results
+
+r = read_results("path/to/project.xlsx")
+if r.ok:
+    print(r.record.get("heating_demand"), r.record.values["heating_demand"].source)
+    print(r.record.freshness.verdict)
+else:
+    print(r.refusal)  # Refused (blank_template): PHPP 10.6 EN with TFA 0 ...
+```
 
 [Source](https://github.com/PH-Tools/PHX/tree/main/PHX/from_PHPP)
 
