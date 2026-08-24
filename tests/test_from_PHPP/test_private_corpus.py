@@ -13,7 +13,9 @@ from PHX.from_PHPP import Flavour, FreshnessVerdict, RefusalReason, read_results
 from PHX.from_PHPP.results import ValueStatus
 
 PRIVATE = pathlib.Path(__file__).parent / "_private"
-PROJECT_WORKBOOKS = sorted(p for p in PRIVATE.glob("*.xlsx") if not p.name.startswith(("PHPP_EN", "Heat_Pump", "derived_")))
+PROJECT_WORKBOOKS = sorted(
+    p for p in PRIVATE.glob("*.xlsx") if not p.name.startswith(("PHPP_EN", "Heat_Pump", "derived_"))
+)
 pytestmark = pytest.mark.skipif(not PRIVATE.is_dir() or not PROJECT_WORKBOOKS, reason="private corpus not present")
 
 
