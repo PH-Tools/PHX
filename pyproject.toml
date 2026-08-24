@@ -33,9 +33,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "black",
+    "black==26.5.1",
     "coverage",
-    "isort",
+    "isort==8.0.1",
     "openpyxl",
     "pytest",
     "pytest-cov",
