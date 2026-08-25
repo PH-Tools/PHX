@@ -1,6 +1,6 @@
 # `PhxSpace.__add__` mutates the source model during serialization
 
-**Status:** **Fixed** on branch `bug-fix/space-merge-mutates-source-graph` (2026-08-25). 10 new tests; 1042 green. The deeper restructure — moving the ERV merge out of serialization and into conversion (§5 item 1) — is **not** done and remains the right follow-up.
+**Status:** **Fixed** on branch `bug-fix/space-merge-mutates-source-graph` (2026-08-25). 10 new tests; 1062 green after merging `main`. The deeper restructure — moving the ERV merge out of serialization and into conversion (§5 item 1) — is **not** done and remains the right follow-up.
 **Opened:** 2026-08-25
 **Kind:** Long-standing latent defect (not a recent regression)
 **Introduced:** `45765b9` (2024-06-05, *"feat(wufi): Add new merge-spaces option"*), first released in **v1.45.0**
@@ -213,7 +213,7 @@ The merge itself still does its job — the emitted `<Room>` carries the summed
 unchanged from what a first export always produced. No reference fixture moved.
 
 ```
-python -m pytest tests/    ->  1042 passed, 3 skipped, 1 deselected
+python -m pytest tests/    ->  1062 passed, 3 skipped, 1 deselected  (with main merged in)
 python -m black  --check . ->  clean
 python -m isort  --check . ->  clean
 ```
