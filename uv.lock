@@ -546,7 +546,7 @@ wheels = [
 
 [[package]]
 name = "phx"
-version = "1.56.93"
+version = "1.56.94"
 source = { editable = "." }
 dependencies = [
     { name = "honeybee-core" },
