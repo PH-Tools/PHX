@@ -113,6 +113,10 @@ directory = "_coverage_html"
 # -- Code Formatting ---
 [tool.black]
 line-length = 120
+# Pin the grammar target to `requires-python`. Without this Black infers a newer
+# target from each release (26.3.1 -> py314, 26.5.1 -> py315), which both trips the
+# AST safety check on a 3.10 interpreter and lets formatting drift between versions.
+target-version = ["py310"]
 # Exclude Python 2.7 compatibility file
 extend-exclude = "PHX/run.py"
 

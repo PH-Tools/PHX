@@ -212,6 +212,12 @@ for variant-owned objects. Concurrent mutation of the same project is not
 supported. Legacy `_count` ClassVars remain only as a compatibility fallback for
 standalone constructors outside a project identity scope.
 
+A project built from bare constructors has no allocator, and `identity_scope()`
+is a no-op for it — it yields `None` and leaves the legacy-counter numbering in
+place, which is that project's own consistent identity regime. Callers therefore
+enter the scope unconditionally rather than testing whether the project was
+converter-built.
+
 ### UUID + id_num Dual Identity
 Constructions and devices carry both a `uuid.UUID | str` identifier and an integer `id_num`. The UUID is for lookup/deduplication; `id_num` is for sequential output numbering.
 
