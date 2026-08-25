@@ -368,11 +368,15 @@ Nine systems each declaring 100% coverage of zone 1 — 900% total. Reachable to
 on the `from_HBJSON` path; the dangling-reference variant of this (a WUFI-imported
 project whose only zone is `IdentNr 5`) stays latent.
 
-**Open:** whether WUFI honours system-level `ZoneCoverage`, device-level
-`usage_profile.cooling_percent`, or both. If `ZoneCoverage` is load-bearing this is
-a modelling error; if the device percent dominates it is cosmetic. Verify against a
-WUFI-authored multi-system file before choosing the correction (the `wufi-xml`
-skill covers reading these).
+**Checked 2026-08-25 — probably not a defect.** Two real-project files in
+`tests/reference_files/from_WUFI/wufi_xml/` disagree with the premise: `_la_mora`
+has three systems (`System`, `Cooling overflow`, `Cooling overflow 2`) at
+1.0/1.0/1.0 = **3.0**, and `_ridgeway` has two at 1.0/0.5 = **1.5**. Coverage
+summing to 1.0 is not a WUFI invariant, and a human splitting cooling into
+overflow systems for this same 200 kW reason left each at 1.0 — the names were
+typed in the WUFI UI (`git log -S "Cooling overflow"` over `PHX/` is empty). PHX's
+output matches that convention. See [`PLAN.md`](PLAN.md) Phase 3 for the residual
+question and the provenance caveat.
 
 ### 7.3 The trigger is a variant total, not a per-device maximum
 
