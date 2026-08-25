@@ -28,6 +28,7 @@ Top-level `PHX/hbjson_to_*.py` are the end-to-end CLI entry points (e.g. `hbjson
 | **Full** data flow / package map (authoritative) | `docs/dev/architecture.md` |
 | PHX object graph, design patterns, HB→PHX mappings | `docs/reference/phx-model-reference.md` |
 | Adding/changing an exporter or importer | `docs/dev/exporter-patterns.md` |
+| Changing the PHPP/Excel write path (or proposing a new backend) | `context/EXCEL_INTEROP.md` |
 | Code rules (style, commits, testing invariants) | `context/CODING_STANDARDS.md` |
 | Deps, packaging, CI, release | `context/TECH_STACK.md` |
 | Current / in-flight work | `planning/STATUS.md` |
