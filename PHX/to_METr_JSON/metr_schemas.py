@@ -7,6 +7,7 @@ The converter discovers these by class name: PhxProject → _PhxProject(), etc.
 """
 
 import operator
+from copy import copy
 from datetime import datetime
 from functools import reduce
 from typing import Any
@@ -969,7 +970,10 @@ def _metr_spaces(_z: building.PhxZone) -> list[spaces.PhxSpace]:
         if len(space_group) > 1:
             new_space = reduce(operator.add, space_group)
         else:
-            new_space = space_group[0]
+            # -- A group of one never goes through __add__, so name it here.
+            # -- Copy first: renaming the source Space would leak this METr-side
+            # -- naming back into the caller's model.
+            new_space = copy(space_group[0])
             new_space.display_name = new_space.vent_unit_display_name
         merged_spaces.append(new_space)
     return sorted(merged_spaces, key=lambda x: x.vent_unit_display_name)
