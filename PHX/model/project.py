@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from collections.abc import Hashable, Iterator
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, ClassVar
@@ -454,16 +454,33 @@ class PhxProject:
         self._identity_allocator = allocator
 
     @contextmanager
-    def identity_scope(self, owner: Hashable | None = None) -> Iterator[IdentityAllocator]:
-        """Activate this project's allocator, optionally for one variant owner."""
+    def identity_scope(self, owner: Hashable | None = None) -> Iterator[IdentityAllocator | None]:
+        """Join this project's identity regime for post-conversion mutations.
+
+        Objects built inside the scope are numbered from this project's own
+        allocator, in the namespace owned by ``owner`` (pass a variant's
+        ``id_num`` for variant-local objects such as zones or mechanical
+        collections).
+
+        A project that was not built by a public converter has no allocator: its
+        objects were numbered by the legacy class counters, which are already
+        unique within it. The scope is a no-op for such a project and yields
+        ``None`` - attaching an empty allocator here would restart numbering at 1
+        and collide with what the graph already holds.
+
+        Concurrent mutation of one project is not supported. Independent projects
+        may be built and exported concurrently; one project's allocator is not
+        thread-safe and must not be entered from two threads at once.
+        """
         if self._identity_allocator is None:
-            self._identity_allocator = IdentityAllocator()
-        with identity_scope(self._identity_allocator) as allocator:
-            if owner is None:
-                yield allocator
-            else:
-                with identity_owner_scope(owner):
-                    yield allocator
+            yield None
+            return
+
+        with ExitStack() as stack:
+            allocator = stack.enter_context(identity_scope(self._identity_allocator))
+            if owner is not None:
+                stack.enter_context(identity_owner_scope(owner))
+            yield allocator
 
     def add_new_variant(self, _variant: PhxVariant) -> None:
         """Adds a new PHX Variant to the Project."""
