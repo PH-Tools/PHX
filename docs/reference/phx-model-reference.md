@@ -218,6 +218,22 @@ place, which is that project's own consistent identity regime. Callers therefore
 enter the scope unconditionally rather than testing whether the project was
 converter-built.
 
+### Copying a Program: new load, shared schedule
+
+`PhxProgramVentilation` / `PhxProgramOccupancy` / `PhxProgramLighting` pair a
+per-instance `load` with a project-registered `schedule`. When deriving one
+program from another the two halves need opposite treatment:
+
+- the **load** must be a fresh object. Sharing it means a write through one
+  reference silently lands in the other - this is what made the ERV space-merge
+  corrupt the model it was serializing, compounding airflow on every export.
+- the **schedule** must stay the *same object*. Schedules are project-registered
+  utilization patterns referenced from the output by `id_num` and validated
+  against the project's pattern collections; a copy is unregistered, so the
+  exporters would write a dangling pattern reference.
+
+A `deepcopy` of a program is therefore wrong on both counts.
+
 ### UUID + id_num Dual Identity
 Constructions and devices carry both a `uuid.UUID | str` identifier and an integer `id_num`. The UUID is for lookup/deduplication; `id_num` is for sequential output numbering.
 

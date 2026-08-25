@@ -135,11 +135,22 @@ class PhxSpace:
         other cases, spaces should be kept separated. Note that the occupancy,
         lighting, and ventilation schedules are NOT merged, however the
         ventilation loads ARE added together.
+
+        Neither source space is modified. The merged space gets its own
+        PhxProgramVentilation carrying the summed load, because the merge runs
+        while an exporter is serializing: writing the sum back through a shared
+        program would compound the airflow on every export and would follow the
+        source Spaces into any other target written from the same project.
+
+        The *schedule* is deliberately shared rather than copied. Schedules are
+        project-registered utilization patterns referenced from the output by
+        'id_num'; a copy would be unregistered and the exporters would emit a
+        dangling pattern reference.
         """
         if spaces_are_not_addable(self, other):
             raise ValueError(f"Space {self.display_name} cannot be added to space {other.display_name}.")
 
-        new_space = PhxSpace(
+        return PhxSpace(
             display_name=self.vent_unit_display_name,
             wufi_type=self.wufi_type,
             quantity=1,
@@ -149,9 +160,11 @@ class PhxSpace:
             clear_height=area_weighted_clear_height(self, other),
             vent_unit_id_num=self.vent_unit_id_num,
             vent_unit_display_name=self.vent_unit_display_name,
-            ventilation=self.ventilation,
+            ventilation=PhxProgramVentilation(
+                display_name=self.ventilation.display_name,
+                load=self.ventilation.load + other.ventilation.load,
+                schedule=self.ventilation.schedule,
+            ),
             occupancy=self.occupancy,
             lighting=self.lighting,
         )
-        new_space.ventilation.load = self.ventilation.load + other.ventilation.load
-        return new_space

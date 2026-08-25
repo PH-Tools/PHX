@@ -1,6 +1,6 @@
 # `PhxSpace.__add__` mutates the source model during serialization
 
-**Status:** Filed — reproduced, root-caused; needs a fix decision
+**Status:** **Fixed** on branch `bug-fix/space-merge-mutates-source-graph` (2026-08-25). 10 new tests; 1062 green after merging `main`. The deeper restructure — moving the ERV merge out of serialization and into conversion (§5 item 1) — is **not** done and remains the right follow-up.
 **Opened:** 2026-08-25
 **Kind:** Long-standing latent defect (not a recent regression)
 **Introduced:** `45765b9` (2024-06-05, *"feat(wufi): Add new merge-spaces option"*), first released in **v1.45.0**
@@ -197,7 +197,46 @@ or lighting — WUFI's `<Room>` (`xml_schemas.py:931-955`) and METr's room dict
 flows, the vent schedule ID and the vent unit ID — so this is **inert in both
 targets today**. Verify before changing anything; it may be deliberate.
 
-## 6. Verification plan
+## 6. Verification — done 2026-08-25
+
+Original reproduction, after the fix:
+
+```
+flows before any export:   [53.24, 53.24]
+flows after WUFI export 1: [53.24, 53.24]
+flows after WUFI export 2: [53.24, 53.24]
+two exports byte-identical? True
+```
+
+The merge itself still does its job — the emitted `<Room>` carries the summed
+`106.48` while the source Spaces stay at `53.24`, so the exported file is
+unchanged from what a first export always produced. No reference fixture moved.
+
+```
+python -m pytest tests/    ->  1062 passed, 3 skipped, 1 deselected  (with main merged in)
+python -m black  --check . ->  clean
+python -m isort  --check . ->  clean
+```
+
+### What shipped
+
+- `PhxSpace.__add__` builds its own `PhxProgramVentilation` with the summed load
+  and a **shared** `schedule` (a copy would be an unregistered pattern).
+  Neither source Space is touched.
+- Both exporters' single-space branch now renames a `copy()` rather than the
+  source Space (`xml_schemas.py`, `metr_schemas.py`).
+
+### Tests added
+
+`tests/test_model/test_spaces/test_spaces.py` — sums the load, mutates neither
+source, is repeatable, does not share the program object, keeps the registered
+schedule object.
+
+`tests/test_export/test_export_does_not_mutate_the_model.py` — WUFI and METr
+exports leave the airflows alone, WUFI export is byte-repeatable, METr-then-WUFI
+matches WUFI alone, and no source Space gets renamed.
+
+### Original plan (kept for reference)
 
 Red tests first:
 
