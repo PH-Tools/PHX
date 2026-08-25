@@ -47,12 +47,15 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
         # ---------------------------------------------------------------------
         # -- Figure out the number of cooling systems needed and the attributes
 
+        # -- The existing cooling devices are re-sized alongside the new ones, so the
+        # -- capacity and airflow divide over every device the variant ends up with.
         number_of_new_cooling_systems = int(variant_total_cooling_capacity / 200.0)
-        target_number_of_cooling_systems = number_of_new_cooling_systems + 1
         target_number_of_cooling_devices = total_number_of_cooling_devices + number_of_new_cooling_systems
-        target_cooling_system_size = variant_total_cooling_capacity / target_number_of_cooling_systems
-        target_cooling_system_airflow_rate = variant_total_airflow_rate / target_number_of_cooling_systems
+        target_cooling_system_size = variant_total_cooling_capacity / target_number_of_cooling_devices
+        target_cooling_system_airflow_rate = variant_total_airflow_rate / target_number_of_cooling_devices
         target_cooling_system_coverage_percentage = 1.0 / target_number_of_cooling_devices
+
+        # -- COPs are averaged over the *existing* devices, not divided up among the new ones
         target_recirc_cop = total_recirc_cop / total_number_of_cooling_devices
         target_dehumid_cop = total_dehumid_cop / total_number_of_cooling_devices
 
@@ -76,27 +79,29 @@ def split_cooling_into_multiple_systems(_phx_project: PhxProject):
                 hp_device.params_cooling.recirculation.min_coil_temp = min_coil_temp
 
         # ---------------------------------------------------------------------
-        # -- Add each of the new cooling systems needed
-        for i in range(number_of_new_cooling_systems):
-            new_collection = PhxMechanicalSystemCollection()
+        # -- Add each of the new cooling systems needed. This runs after the conversion
+        # -- has returned, so the new objects must join the project's identity regime
+        # -- explicitly -- see PhxProject.identity_scope.
+        with _phx_project.identity_scope(owner=phx_variant.id_num):
+            for i in range(number_of_new_cooling_systems):
+                new_collection = PhxMechanicalSystemCollection()
+                new_collection.display_name = f"Cooling System [{i + 2}]"
 
-            new_collection.display_name = f"Cooling System [{i + 2}]"
+                # -- Build the new Heat Pump for cooling only
+                new_cooling_heat_pump = PhxHeatPumpAnnual()
+                new_cooling_heat_pump.display_name = f"Cooling System [{i + 2}]"
+                new_cooling_heat_pump.usage_profile.cooling = True
+                new_cooling_heat_pump.params_cooling.recirculation.used = True
+                new_cooling_heat_pump.params_cooling.dehumidification.used = True
+                new_cooling_heat_pump.params_cooling.recirculation.capacity = target_cooling_system_size
+                new_cooling_heat_pump.params_cooling.recirculation.flow_rate_m3_hr = target_cooling_system_airflow_rate
+                new_cooling_heat_pump.params_cooling.recirculation.annual_COP = target_recirc_cop
+                new_cooling_heat_pump.params_cooling.dehumidification.annual_COP = target_dehumid_cop
+                new_cooling_heat_pump.usage_profile.cooling_percent = target_cooling_system_coverage_percentage
+                new_cooling_heat_pump.params_cooling.recirculation.min_coil_temp = min_coil_temp
 
-            # -- Build the new Heat Pump for cooling only
-            new_cooling_heat_pump = PhxHeatPumpAnnual()
-            new_cooling_heat_pump.display_name = f"Cooling System [{i + 2}]"
-            new_cooling_heat_pump.usage_profile.cooling = True
-            new_cooling_heat_pump.params_cooling.recirculation.used = True
-            new_cooling_heat_pump.params_cooling.dehumidification.used = True
-            new_cooling_heat_pump.params_cooling.recirculation.capacity = target_cooling_system_size
-            new_cooling_heat_pump.params_cooling.recirculation.flow_rate_m3_hr = target_cooling_system_airflow_rate
-            new_cooling_heat_pump.params_cooling.recirculation.annual_COP = target_recirc_cop
-            new_cooling_heat_pump.params_cooling.dehumidification.annual_COP = target_dehumid_cop
-            new_cooling_heat_pump.usage_profile.cooling_percent = target_cooling_system_coverage_percentage
-            new_cooling_heat_pump.params_cooling.recirculation.min_coil_temp = min_coil_temp
-
-            # -- Add the new heat-pump to the mech-collection and to the variant
-            new_collection.add_new_mech_device(new_cooling_heat_pump.identifier, new_cooling_heat_pump)
-            phx_variant.add_mechanical_collection(new_collection)
+                # -- Add the new heat-pump to the mech-collection and to the variant
+                new_collection.add_new_mech_device(new_cooling_heat_pump.identifier, new_cooling_heat_pump)
+                phx_variant.add_mechanical_collection(new_collection)
 
     return _phx_project
