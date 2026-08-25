@@ -23,6 +23,7 @@ Top-level `PHX/hbjson_to_*.py` are the end-to-end CLI entry points (e.g. `hbjson
 
 | Working on… | Read |
 |-------------|------|
+| **Naming anything** — a class, a field, a doc heading, a commit message | **`context/UBIQUITOUS_LANGUAGE.md`** — the canonical domain glossary. Use its terms; check its "Flagged ambiguities" before coining a new one |
 | Product scope, what belongs here | `context/PRD.md` |
 | Orientation + where the deep docs are | `context/ARCHITECTURE.md` |
 | **Full** data flow / package map (authoritative) | `docs/dev/architecture.md` |
