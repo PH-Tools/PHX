@@ -30,9 +30,9 @@
     "date": [
       2026,
       8,
-      15,
-      11,
-      4,
+      25,
+      20,
+      36,
       0
     ],
     "wBkg": false
@@ -1579,7 +1579,7 @@
     {
       "id": 1,
       "idDB": 0,
-      "n": "PhWindowConstruction_812a2142",
+      "n": "PhWindowConstruction_1ee412ee",
       "detU": true,
       "detGd": false,
       "Uw": 0.8339189189189188,
@@ -1655,7 +1655,7 @@
     {
       "id": 2,
       "idDB": 0,
-      "n": "PhWindowConstruction_812a2142 [Psi-i 0.013/0.013/0.013/0.013]",
+      "n": "PhWindowConstruction_1ee412ee [Psi-i 0.013/0.013/0.013/0.013]",
       "detU": true,
       "detGd": false,
       "Uw": 0.753529993408042,
@@ -3600,7 +3600,7 @@
             "id": 42,
             "idSKP": -1,
             "itv": 4,
-            "n": "Shade_0c79bf21",
+            "n": "Shade_733ddda4",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3742,7 +3742,7 @@
             "id": 43,
             "idSKP": -1,
             "itv": 5,
-            "n": "Shade_c668ba59",
+            "n": "Shade_3379d263",
             "visC": true,
             "idIC": -1,
             "idEC": -1,
@@ -3884,7 +3884,7 @@
             "id": 41,
             "idSKP": -1,
             "itv": 6,
-            "n": "PhWindowConstruction_812a2142",
+            "n": "PhWindowConstruction_1ee412ee",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4029,7 +4029,7 @@
             "id": 25,
             "idSKP": -1,
             "itv": 7,
-            "n": "Room_4_8bb1b64a..Face5_Glz0",
+            "n": "Room_4_17ef934c..Face5_Glz0",
             "visC": true,
             "idIC": 1,
             "idEC": -1,
@@ -4864,7 +4864,7 @@
             "nHeavyStr": "NaN",
             "lTbZ": [
               {
-                "n": "_unnamed_bldg_segment__2f682651",
+                "n": "_unnamed_bldg_segment__5b725e59",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4876,7 +4876,19 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__3dd6b605",
+                "n": "_unnamed_bldg_segment__bc78c188",
+                "typeTbZ": -15,
+                "lengthTbZ": 19.799999999999997,
+                "psiTbZ": 0.01,
+                "idOptCli": -1,
+                "CalculL": {
+                  "res": "----",
+                  "OK": false,
+                  "lExpr": []
+                }
+              },
+              {
+                "n": "_unnamed_bldg_segment__bd2edf8b",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.000714267493642,
                 "psiTbZ": 0.01,
@@ -4888,7 +4900,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__604ffb47",
+                "n": "_unnamed_bldg_segment__bf456a15",
                 "typeTbZ": -15,
                 "lengthTbZ": 22.0,
                 "psiTbZ": 0.01,
@@ -4900,7 +4912,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__a4981eac",
+                "n": "_unnamed_bldg_segment__e6a665cd",
                 "typeTbZ": -15,
                 "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
@@ -4912,19 +4924,7 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__c07fa7b4",
-                "typeTbZ": -15,
-                "lengthTbZ": 19.8,
-                "psiTbZ": 0.01,
-                "idOptCli": -1,
-                "CalculL": {
-                  "res": "----",
-                  "OK": false,
-                  "lExpr": []
-                }
-              },
-              {
-                "n": "_unnamed_bldg_segment__c422ba57",
+                "n": "_unnamed_bldg_segment__e834eb7e",
                 "typeTbZ": -15,
                 "lengthTbZ": 14.758048651498616,
                 "psiTbZ": 0.01,
@@ -4936,9 +4936,9 @@
                 }
               },
               {
-                "n": "_unnamed_bldg_segment__dbecd7c6",
+                "n": "_unnamed_bldg_segment__eca57d2b",
                 "typeTbZ": -15,
-                "lengthTbZ": 19.799999999999997,
+                "lengthTbZ": 19.8,
                 "psiTbZ": 0.01,
                 "idOptCli": -1,
                 "CalculL": {
@@ -4984,16 +4984,16 @@
             "nBedR": 3,
             "lExhVent": [
               {
-                "n": "example_dryer_vent",
-                "typeExhV": 1,
-                "ExhVfR": 442800.0,
-                "runTU": 7.625
-              },
-              {
                 "n": "example_kitchen_hood",
                 "typeExhV": 2,
                 "ExhVfR": 509.7032388,
                 "runTU": 0.08
+              },
+              {
+                "n": "example_dryer_vent",
+                "typeExhV": 1,
+                "ExhVfR": 442800.0,
+                "runTU": 7.625
               }
             ],
             "lFoundPH": [
@@ -5192,7 +5192,7 @@
             "lDevice": [
               {
                 "info": "Heat pump",
-                "n": "3dd1b45b-f5c5-497b-91ed-d639019b23b3",
+                "n": "0c215a06-1014-460c-893c-b1a2ac9e9ebd",
                 "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
@@ -5395,7 +5395,7 @@
               {
                 "info": "Heat pump",
                 "n": "Example_Heat_Pump",
-                "id": 2,
+                "id": 1,
                 "typeDev": 5,
                 "typeDevDB": 5,
                 "hRec": 0.0,
@@ -5625,7 +5625,7 @@
               {
                 "info": "Heat pump",
                 "n": "None",
-                "id": 1,
+                "id": 2,
                 "typeDev": 5,
                 "typeDevDB": 5,
                 "hRec": 0.0,
