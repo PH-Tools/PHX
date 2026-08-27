@@ -2,12 +2,13 @@
 
 Master index of tracked planning work in PHX. Update when a unit of work is added, changes status, or is folded back into `context/`/`docs/`.
 
-_Last updated: 2026-08-25_
+_Last updated: 2026-08-26_
 
 ## Active / current work
 
 | Item | Kind | Status | Pointer |
 |------|------|--------|---------|
+| PHPP Components writer leaves stale rows on shrinking export | Bug fix | **Implemented on branch `fix/phpp-components-stale-rows`** — [#99](https://github.com/PH-Tools/PHX/issues/99): `write_glazings`/`write_frames`/`write_ventilators` now block-read the section tail after writing, warn via `xl.output` naming stale rows, and take keyword-only `clear_stale=False` that blanks only the row models' own input columns (formula columns never touched). Default behavior unchanged; 1086 tests + xl-replay golden state green. Field origin: honeybee_grasshopper_ph#59 remediation (packet lives there: `planning/bugs/exported-models-inflated-window-types.md`) | `PHX/PHPP/sheet_io/io_components.py`, `tests/test_PHPP/test_sheet_io/test_io_components_stale_rows.py` |
 | `from_PHPP` results reader (Pholio spike 2) | Feature (new source family) | **Implemented on branch `feat/from-phpp-results-reader`, PR pending** — closed-file reader: sniff (version/language/project vs blank template vs not-a-PHPP), headline `Verification`+`PER`+`Cooling load` results with source cell + caption asserted, stale-cache verdict, typed refusals; `xl/xl_readable.XLReadable` read Protocol; 46 tests (synthetic PHPP-shaped public fixtures + gitignored private corpus). Results map verified on 10.6 EN only; 10.x EN assumed, 9.x/IP refused by name | `PHX/from_PHPP/`, `tests/test_from_PHPP/` |
 | Public live Honeybee → PHX API | API/docs cleanup | **Complete** — verified and archived | [`archive/honeybee-conversion-facade/`](archive/honeybee-conversion-facade/PRD.md) |
 | Aperture-bearing xl-replay golden fixture | Follow-up (manual) | **Open** — needs live Excel + licensed PHPP (`scripts/perf/record_replay_fixture.py`); covered by unit tests meanwhile | [`archive/aperture-psi-install/`](archive/aperture-psi-install/aperture-psi-install-plan.md) |
