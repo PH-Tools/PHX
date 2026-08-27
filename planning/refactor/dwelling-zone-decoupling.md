@@ -1,5 +1,7 @@
 # Refactor: Decouple "Dwelling" from `Room.zone` (PHX side)
 
+**Issue:** [#112](https://github.com/PH-Tools/PHX/issues/112)
+
 **Status:** Implemented (2026-07-21) — awaiting `honeybee_grasshopper_ph` (step 3), then the
 `hbph_test_models.gh` end-to-end run.
 **Date:** 2026-07-21

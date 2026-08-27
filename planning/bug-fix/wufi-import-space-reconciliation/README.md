@@ -1,5 +1,7 @@
 # WUFI import: Space-list reconciliation
 
+**Issue:** [#105](https://github.com/PH-Tools/PHX/issues/105)
+
 A WUFI/METr `Zone` carries three independent, name-keyed lists — ventilation rooms, person
 loads, lighting loads — and `_PhxZone` collapses them into one `PhxSpace` per name. Two defects
 live in that collapse.
@@ -33,5 +35,5 @@ care makes that guess correct for a file PHX did not write.
 
 ## Related
 
-- [`../floor-area-utilization-zone.md`](../floor-area-utilization-zone.md) — the export-side half of item 2d.
+- [PHX #108](https://github.com/PH-Tools/PHX/issues/108) — the export-side half of item 2d.
 - [`../../archive/project-scoped-identities/`](../../archive/project-scoped-identities/README.md) — the validation that surfaced item 1.

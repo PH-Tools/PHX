@@ -1,5 +1,7 @@
 # WUFI export fails identity validation on any project with ≥200 kW cooling
 
+**Issue:** [#106](https://github.com/PH-Tools/PHX/issues/106)
+
 **Status:** Phases 0-2 **implemented and verified** on branch `bug-fix/export-time-identity-scope`; Phase 3 (zone coverage) **blocked** on a WUFI-semantics question; Phase 4 close-out pending. See [`PLAN.md`](PLAN.md).
 **Opened:** 2026-08-25
 **Kind:** Regression (identity allocation), introduced by [PR #86](https://github.com/PH-Tools/PHX/pull/86), released in **v1.56.82**

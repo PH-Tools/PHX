@@ -1,5 +1,7 @@
 # PHPP writer input gaps — six defects
 
+**Issue:** [#103](https://github.com/PH-Tools/PHX/issues/103)
+
 **Status:** Scoped — 2026-08-15. No PHX code changed yet. Item `06` added
 2026-08-15 (a sixth input, found by OpenPH the same day); `05` now depends on
 the upstream foundation-shape packet.

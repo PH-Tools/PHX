@@ -1,5 +1,7 @@
 # `PhxSpace.__add__` mutates the source model during serialization
 
+**Issue:** [#107](https://github.com/PH-Tools/PHX/issues/107)
+
 **Status:** **Fixed** on branch `bug-fix/space-merge-mutates-source-graph` (2026-08-25). 10 new tests; 1062 green after merging `main`. The deeper restructure — moving the ERV merge out of serialization and into conversion (§5 item 1) — is **not** done and remains the right follow-up.
 **Opened:** 2026-08-25
 **Kind:** Long-standing latent defect (not a recent regression)

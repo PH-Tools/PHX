@@ -4,7 +4,7 @@
 **Scope decision:** `from_WUFI_XML` is a general-purpose importer for any WUFI file — taken 2026-08-15
 **Opened:** 2026-08-15
 **Owners:** `PHX/from_WUFI_XML/phx_schemas.py` (`_PhxZone`, `_add_occupancy_data_to_space`, `_add_lighting_data_to_space`)
-**Related:** [`../floor-area-utilization-zone.md`](../floor-area-utilization-zone.md) · [`../../archive/project-scoped-identities/`](../../archive/project-scoped-identities/README.md)
+**Related:** [PHX #108](https://github.com/PH-Tools/PHX/issues/108) · [`../../archive/project-scoped-identities/`](../../archive/project-scoped-identities/README.md)
 
 ## Context — the format carries three independent Space-shaped lists
 
@@ -176,7 +176,7 @@ exact-match run above, `Office` carries `area=30.0` (the room) although the sour
 (`xml_schemas.py:1856`), so the round-trip silently rewrites the utilization-zone area.
 Occupant *count* survives only because `PhxSpace.peak_occupancy` divides and re-multiplies by
 the same `floor_area` (`spaces.py:114-124`). This is the same field the open
-[`floor-area-utilization-zone.md`](../floor-area-utilization-zone.md) item is about, reached
+[PHX #108](https://github.com/PH-Tools/PHX/issues/108) item is about, reached
 from the import side.
 
 ### 2e — a blank `AreaRoom` on a matched room zeroes the occupancy
