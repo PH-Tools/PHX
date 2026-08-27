@@ -14,7 +14,7 @@ from PHX.PHPP.phpp_model.component_glazing import GlazingRow
 from PHX.PHPP.phpp_model.component_vent import VentilatorRow
 from PHX.PHPP.sheet_io.io_exceptions import ResolveComponentIDException
 from PHX.xl import xl_app
-from PHX.xl.xl_data import col_offset, merge_xl_item_rows
+from PHX.xl.xl_data import col_offset, merge_xl_item_rows, xl_chr, xl_ord
 
 
 @dataclass
@@ -536,6 +536,64 @@ class Ventilators:
         return f"{prefix}-{_name}"
 
 
+def _cell_has_value(_value: object) -> bool:
+    """Return True when an Excel cell value represents a filled user entry."""
+    return _value is not None and _value != ""
+
+
+def _format_stale_rows(_row_numbers: list[int]) -> str:
+    """Return a compact row-number label for a stale Components-section warning."""
+    if len(_row_numbers) == 1:
+        return f"row {_row_numbers[0]}"
+    if len(_row_numbers) > 10:
+        return f"rows {_row_numbers[0]}-{_row_numbers[-1]} ({len(_row_numbers)})"
+    return f"rows {', '.join(str(row) for row in _row_numbers)}"
+
+
+def _contiguous_row_groups(_row_numbers: list[int]) -> list[tuple[int, int]]:
+    """Return inclusive contiguous row spans from sorted worksheet row numbers."""
+    if not _row_numbers:
+        return []
+
+    groups: list[tuple[int, int]] = []
+    start = previous = _row_numbers[0]
+    for row in _row_numbers[1:]:
+        if row == previous + 1:
+            previous = row
+            continue
+        groups.append((start, previous))
+        start = previous = row
+    groups.append((start, previous))
+    return groups
+
+
+def _contiguous_column_groups(_columns: list[str]) -> list[tuple[str, str]]:
+    """Return inclusive contiguous column spans from Excel column letters."""
+    if not _columns:
+        return []
+
+    column_numbers = sorted({xl_ord(col) for col in _columns})
+    groups: list[tuple[str, str]] = []
+    start = previous = column_numbers[0]
+    for column in column_numbers[1:]:
+        if column == previous + 1:
+            previous = column
+            continue
+        groups.append((xl_chr(start), xl_chr(previous)))
+        start = previous = column
+    groups.append((xl_chr(start), xl_chr(previous)))
+    return groups
+
+
+def _range_address(_col_start: str, _col_end: str, _row_start: int, _row_end: int) -> str:
+    """Return an Excel range address for a column span and row span."""
+    start = f"{_col_start}{_row_start}"
+    end = f"{_col_end}{_row_end}"
+    if start == end:
+        return start
+    return f"{start}:{end}"
+
+
 class Components:
     """IO Controller for PHPP "Components" worksheet."""
 
@@ -568,14 +626,30 @@ class Components:
             self.xl.write_xl_item(item)
         return self.glazings.get_glazing_phpp_id_by_row_num(_row_num)
 
-    def write_glazings(self, _glazing_rows: list[GlazingRow]) -> None:
-        """Write a list of GlazingRow objects to the PHPP "Components" worksheet."""
+    def write_glazings(self, _glazing_rows: list[GlazingRow], *, clear_stale: bool = False) -> None:
+        """Write a list of GlazingRow objects to the PHPP "Components" worksheet.
+
+        Warns if filled rows remain below the written block in the glazings section;
+        pass clear_stale=True to blank those rows' input columns as well.
+        """
         start = self.glazings.section_first_entry_row
         row_items = [
             row.create_xl_items(self.shape.name, _row_num=i) for i, row in enumerate(_glazing_rows, start=start)
         ]
         for item in merge_xl_item_rows(row_items):
             self.xl.write_xl_item(item)
+        self._warn_or_clear_stale_rows(
+            _section_name="glazings",
+            _search_col=str(self.shape.glazings.inputs.description.column),
+            _row_start=start + len(_glazing_rows),
+            _row_end=self.glazings.section_last_entry_row,
+            _clear_stale=clear_stale,
+            _clear_columns=[
+                str(self.shape.glazings.inputs.description.column),
+                str(self.shape.glazings.inputs.g_value.column),
+                str(self.shape.glazings.inputs.u_value.column),
+            ],
+        )
 
     def write_single_frame(self, _row_num: int, _frame_row: FrameRow) -> str:
         """Write a single FrameRow object to the PHPP "Components" worksheet.
@@ -588,12 +662,42 @@ class Components:
             self.xl.write_xl_item(item)
         return self.frames.get_frame_phpp_id_by_row_num(_row_num)
 
-    def write_frames(self, _frame_row: list[FrameRow]) -> None:
-        """Write a list of FrameRow objects to the PHPP "Components" worksheet."""
+    def write_frames(self, _frame_row: list[FrameRow], *, clear_stale: bool = False) -> None:
+        """Write a list of FrameRow objects to the PHPP "Components" worksheet.
+
+        Warns if filled rows remain below the written block in the frames section;
+        pass clear_stale=True to blank those rows' input columns as well.
+        """
         start = self.frames.section_first_entry_row
         row_items = [row.create_xl_items(self.shape.name, _row_num=i) for i, row in enumerate(_frame_row, start=start)]
         for item in merge_xl_item_rows(row_items):
             self.xl.write_xl_item(item)
+        self._warn_or_clear_stale_rows(
+            _section_name="frames",
+            _search_col=str(self.shape.frames.inputs.description.column),
+            _row_start=start + len(_frame_row),
+            _row_end=self.frames.section_last_entry_row,
+            _clear_stale=clear_stale,
+            _clear_columns=[
+                str(self.shape.frames.inputs.description.column),
+                str(self.shape.frames.inputs.u_value_left.column),
+                str(self.shape.frames.inputs.u_value_right.column),
+                str(self.shape.frames.inputs.u_value_bottom.column),
+                str(self.shape.frames.inputs.u_value_top.column),
+                str(self.shape.frames.inputs.width_left.column),
+                str(self.shape.frames.inputs.width_right.column),
+                str(self.shape.frames.inputs.width_bottom.column),
+                str(self.shape.frames.inputs.width_top.column),
+                str(self.shape.frames.inputs.psi_g_left.column),
+                str(self.shape.frames.inputs.psi_g_right.column),
+                str(self.shape.frames.inputs.psi_g_bottom.column),
+                str(self.shape.frames.inputs.psi_g_top.column),
+                str(self.shape.frames.inputs.psi_i_left.column),
+                str(self.shape.frames.inputs.psi_i_right.column),
+                str(self.shape.frames.inputs.psi_i_bottom.column),
+                str(self.shape.frames.inputs.psi_i_top.column),
+            ],
+        )
 
     def write_single_ventilator(self, _row_num: int, _ventilator_row: VentilatorRow) -> str:
         """Write a single VentilatorRow object to the PHPP "Components" worksheet.
@@ -606,9 +710,83 @@ class Components:
             self.xl.write_xl_item(item)
         return self.ventilators.get_ventilator_phpp_id_by_row_num(_row_num)
 
-    def write_ventilators(self, _ventilator_row: list[VentilatorRow]) -> None:
-        """Write a list of VentilatorRow objects to the PHPP "Components" worksheet."""
+    def write_ventilators(self, _ventilator_row: list[VentilatorRow], *, clear_stale: bool = False) -> None:
+        """Write a list of VentilatorRow objects to the PHPP "Components" worksheet.
+
+        Warns if filled rows remain below the written block in the ventilators section;
+        pass clear_stale=True to blank those rows' input columns as well.
+        """
         start = self.ventilators.section_first_entry_row
         row_items = [row.create_xl_items(self.shape.name, _row_num=i) for i, row in enumerate(_ventilator_row, start)]
         for item in merge_xl_item_rows(row_items):
             self.xl.write_xl_item(item)
+        self._warn_or_clear_stale_rows(
+            _section_name="ventilators",
+            _search_col=str(self.shape.ventilators.inputs.display_name.column),
+            _row_start=start + len(_ventilator_row),
+            _row_end=self.ventilators.section_last_entry_row,
+            _clear_stale=clear_stale,
+            _clear_columns=[
+                str(self.shape.ventilators.inputs.display_name.column),
+                str(self.shape.ventilators.inputs.sensible_heat_recovery.column),
+                str(self.shape.ventilators.inputs.latent_heat_recovery.column),
+                str(self.shape.ventilators.inputs.electric_efficiency.column),
+                str(self.shape.ventilators.inputs.frost_protection_reqd.column),
+            ],
+        )
+
+    def _get_single_column_data_with_integrity_guard(
+        self,
+        _col: str,
+        _row_start: int,
+        _row_end: int,
+    ) -> list[object]:
+        """Read one column block, falling back per-cell if xlwings drops error cells."""
+        data = self.xl.get_single_column_data(
+            _sheet_name=self.shape.name,
+            _col=_col,
+            _row_start=_row_start,
+            _row_end=_row_end,
+        )
+        if not isinstance(data, list):
+            data = [data]
+
+        expected_len = _row_end - _row_start + 1
+        if len(data) == expected_len:
+            return list(data)
+
+        return [self.xl.get_data(self.shape.name, f"{_col}{row}") for row in range(_row_start, _row_end + 1)]
+
+    def _warn_or_clear_stale_rows(
+        self,
+        _section_name: str,
+        _search_col: str,
+        _row_start: int,
+        _row_end: int,
+        _clear_stale: bool,
+        _clear_columns: list[str],
+    ) -> None:
+        """Warn about, and optionally clear, stale trailing Components rows."""
+        if _row_start > _row_end:
+            return
+
+        data = self._get_single_column_data_with_integrity_guard(_search_col, _row_start, _row_end)
+        stale_rows = [row for row, value in enumerate(data, start=_row_start) if _cell_has_value(value)]
+        if not stale_rows:
+            return
+
+        self.xl.output(
+            f"Warning: '{self.shape.name}' worksheet {_section_name} section contains stale "
+            f"{_format_stale_rows(stale_rows)}. These are leftover entries from a previous export "
+            "that should be cleared or verified."
+        )
+
+        if not _clear_stale:
+            return
+
+        for row_start, row_end in _contiguous_row_groups(stale_rows):
+            for col_start, col_end in _contiguous_column_groups(_clear_columns):
+                self.xl.clear_range_data(
+                    self.shape.name,
+                    _range_address(col_start, col_end, row_start, row_end),
+                )
