@@ -9,10 +9,10 @@ from unittest.mock import Mock
 import pytest
 
 from PHX.model import constructions, hvac
+from PHX.PHPP.phpp_localization.shape_model import Components as ComponentsShape
 from PHX.PHPP.phpp_model.component_frame import FrameRow
 from PHX.PHPP.phpp_model.component_glazing import GlazingRow
 from PHX.PHPP.phpp_model.component_vent import VentilatorRow
-from PHX.PHPP.phpp_localization.shape_model import Components as ComponentsShape
 from PHX.PHPP.sheet_io.io_components import Components
 from PHX.xl.xl_app import XLConnection
 from tests.test_PHPP.test_sheet_io.conftest import load_shape
