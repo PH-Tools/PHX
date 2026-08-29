@@ -354,7 +354,12 @@ def add_PhxPhBuildingData_from_hb_room(_variant: project.PhxVariant, _hb_room: r
     # -- Air Temp Setpoints
     ph_bldg.setpoints.winter = hbph_bldg_seg.set_points.winter
     ph_bldg.setpoints.summer = hbph_bldg_seg.set_points.summer
-    ph_bldg.setpoints.mechanical_cooling = hbph_bldg_seg.set_points.mechanical_cooling
+
+    # -- mechanical_cooling requires honeybee-ph >= 1.33.42
+    # -- Only set if the attribute is available (for backwards compatibility)
+    if hasattr(hbph_bldg_seg.set_points, "mechanical_cooling"):
+        ph_bldg.setpoints.mechanical_cooling = hbph_bldg_seg.set_points.mechanical_cooling
+
     ph_bldg.mech_room_temp = hbph_bldg_seg.mech_room_temp
     ph_bldg.non_combustible_materials = hbph_bldg_seg.non_combustible_materials
 
