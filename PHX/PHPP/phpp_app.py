@@ -290,6 +290,14 @@ class PHPPConnection:
                     target_unit=self.shape.VERIFICATION.setpoint_summer.unit,
                 )
             )
+            self.verification.write_item(
+                verification_data.VerificationInput.item(
+                    shape=self.shape.VERIFICATION,
+                    input_type="mechanical_cooling",
+                    input_data="x" if self.shape.VERIFICATION.mechanical_cooling else "",
+                    target_unit=self.shape.VERIFICATION.mechanical_cooling.unit,
+                )
+            )
 
         return None
 

@@ -22,16 +22,20 @@ class PhxSetpoints:
     Attributes:
         winter (float): Heating-season indoor air temperature setpoint in deg. C. Default: 20.0.
         summer (float): Cooling-season indoor air temperature setpoint in deg. C. Default: 25.0.
+        mechanical_cooling (bool): Whether the building has mechanical cooling. Default: False.
     """
 
     winter: float = 20.0  # deg. C
     summer: float = 25.0  # deg. C
+    mechanical_cooling: bool = False
 
     def __eq__(self, other: PhxSetpoints) -> bool:
         TOLERANCE = 0.001
         if abs(self.winter - other.winter) > TOLERANCE:
             return False
-        return not abs(self.summer - other.summer) > TOLERANCE
+        if abs(self.summer - other.summer) > TOLERANCE:
+            return False
+        return self.mechanical_cooling == other.mechanical_cooling
 
 
 @dataclass
