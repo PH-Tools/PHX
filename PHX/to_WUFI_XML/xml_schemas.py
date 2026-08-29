@@ -5,6 +5,7 @@
 import logging
 import operator
 import sys
+from copy import copy
 from functools import reduce
 from typing import TypeVar
 
@@ -207,9 +208,10 @@ def _PhxZone(_z: building.PhxZone) -> list[xml_writable]:
                 if len(space_group) > 1:
                     new_space = reduce(operator.add, space_group)
                 else:
-                    # -- If there is only 1 space, won't go through the __add__
-                    # -- so be sure to set up the display_name manually here
-                    new_space = space_group[0]
+                    # -- A group of one never goes through __add__, so name it here.
+                    # -- Copy first: renaming the source Space would leak this
+                    # -- WUFI-side naming back into the caller's model.
+                    new_space = copy(space_group[0])
                     new_space.display_name = new_space.vent_unit_display_name
                 merged_spaces_.append(new_space)
             return sorted(merged_spaces_, key=lambda x: x.vent_unit_display_name)

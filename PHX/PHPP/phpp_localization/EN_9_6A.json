@@ -31,6 +31,7 @@
             "input_column": "R",
             "input_row_offset": 0,
             "options": {
+                "1": "1-User determined",
                 "2": "2-Standard",
                 "3": "3-PHPP calculation ('IHG' worksheet)",
                 "4": "4-PHPP calculation ('IHG non-res' worksheet)"

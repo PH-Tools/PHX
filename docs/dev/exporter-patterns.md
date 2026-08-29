@@ -63,7 +63,16 @@ Every public conversion owns a fresh project-scoped identity allocator. Do not
 reset class counters in an importer or exporter. Builders allocate through the
 active namespace, WUFI importers claim source IDs, and explicit post-conversion
 mutation enters `phx_project.identity_scope()` (with the variant ID as `owner`
-for variant-local objects).
+for variant-local objects). `to_WUFI_XML/_bug_fixes.py` is the worked example:
+it builds new mechanical collections after the conversion has returned, so it
+re-enters the scope to number them.
+
+The scope is a **no-op on a project that has no allocator** — one assembled from
+bare constructors rather than by a converter. Those objects were numbered by the
+legacy class counters, which are already unique within that project; attaching a
+fresh allocator there would restart numbering at 1 and collide. This means a
+post-conversion mutation site needs no "was this converter-built?" guard: enter
+the scope unconditionally and both project kinds come out correct.
 
 `generate_WUFI_XML_from_object()`, `generate_metr_json_dict()`, and the canonical
 `write_phx_project_to_phpp()` sequence run target-specific, read-only identity

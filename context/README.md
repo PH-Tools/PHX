@@ -8,11 +8,13 @@ Note the split for PHX: the **deep reference** (full architecture, model graph, 
 
 | Doc | Read when you need… |
 |-----|---------------------|
+| [`UBIQUITOUS_LANGUAGE.md`](UBIQUITOUS_LANGUAGE.md) | The canonical domain glossary — the right word for a concept when naming a class, field, doc heading, or commit, plus the terms that are genuinely ambiguous |
 | [`PRD.md`](PRD.md) | What PHX is for, who uses it, what belongs here and what does not |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Short orientation + pointers to the authoritative deep docs |
 | [`TECH_STACK.md`](TECH_STACK.md) | Runtime, deps, packaging, testing, CI, release |
 | [`CODING_STANDARDS.md`](CODING_STANDARDS.md) | Style, commit conventions, and the testing invariants |
 | [`AUTODOC.md`](AUTODOC.md) | Feature spec for the automated API-doc generator feeding ph-docs |
+| [`EXCEL_INTEROP.md`](EXCEL_INTEROP.md) | Why the PHPP write path works the way it does — the live-calc constraint, backends already ruled out, batching invariants, macOS gotchas |
 
 Authoritative deep docs (in the public spoke):
 - `../docs/dev/architecture.md` — full data flow + package/module map

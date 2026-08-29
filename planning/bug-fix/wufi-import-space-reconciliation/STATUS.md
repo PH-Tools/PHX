@@ -45,7 +45,7 @@ the model, both writers, the PHPP `Additional Vent` writer, and `from_HBJSON`.
 1. Does the `FloorAreaUtilizationZone` contract (item 2d — when a room area *and* a
    utilization-zone area are both present and disagree, the room currently wins) resolve the
    same way as the open exporter-side question in
-   [`../floor-area-utilization-zone.md`](../floor-area-utilization-zone.md)? They are the import
+   [PHX #108](https://github.com/PH-Tools/PHX/issues/108)? They are the import
    and export halves of one field.
 2. Should the join key be case-folded as well as whitespace-normalized? Currently not, on the
    grounds that a false merge is worse than a missed one and missed pairings are now reported.

@@ -1,5 +1,7 @@
 # Foundation model shape for PHPP 10.x `Ground` — cross-repo (honeybee-ph primary)
 
+**Issue:** [#104](https://github.com/PH-Tools/PHX/issues/104)
+
 **Status:** Scoped — 2026-08-15. No code changed. Blocks the `Ground` writer
 ([`../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md))
 and OpenPH's foundation work.

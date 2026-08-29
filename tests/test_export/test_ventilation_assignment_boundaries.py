@@ -2,11 +2,11 @@ from unittest.mock import Mock
 
 import pytest
 
-from PHX.PHPP import phpp_app
 from PHX.hbjson_to_phpp import write_phx_project_to_phpp
 from PHX.model.building import PhxZone
 from PHX.model.project import PhxProject, PhxVariant, VentilationAssignmentError
 from PHX.model.spaces import PhxSpace
+from PHX.PHPP import phpp_app
 from PHX.to_METr_JSON import metr_builder, metr_schemas
 from PHX.to_PPP import ppp_builder
 from PHX.to_WUFI_XML import xml_builder, xml_schemas

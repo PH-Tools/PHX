@@ -1,5 +1,7 @@
 # PHPP: the same silent `None-<name>` exposure remains in three component-ID lookups
 
+**Issue:** [#109](https://github.com/PH-Tools/PHX/issues/109)
+
 **Status:** Filed — needs a scope decision before implementing
 **Opened:** 2026-08-15
 **Owners:** `PHX/PHPP/sheet_io/io_components.py`, `PHX/PHPP/sheet_io/io_u_values.py`, `PHX/PHPP/sheet_io/io_areas.py`

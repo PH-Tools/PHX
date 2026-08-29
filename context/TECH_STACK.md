@@ -44,6 +44,12 @@ Dev extras: `black`, `isort`, `coverage`, `pytest`, `openpyxl`, etc.
 
 - **Conventional commits** (`feat(scope):`, `fix(scope):`) → **semantic-release** auto-publishes to PyPI on merge to `main`.
 - GitHub Actions runs pytest on Python 3.10; `.github/workflows/notify-hub.yml` triggers a ph-docs rebuild on doc changes.
+- **Do not push to `main` while a release run is in flight.** The "Bump version and publish"
+  job pushes a version commit + tag back to `main`; a racing push rejects that push mid-job and
+  strands an **orphan tag** (tagged bump commit on no branch), which then kills every later run
+  with `fatal: tag 'vX.Y.Z' already exists`. Repair: `git push origin :refs/tags/vX.Y.Z`, delete
+  it locally, re-run the failed workflow (observed 2026-08-27, v1.56.97). The lint gate also
+  enforces `isort --check-only` — run isort, not just black, before pushing.
 
 ## Docs
 
