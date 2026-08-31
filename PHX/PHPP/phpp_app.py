@@ -32,6 +32,42 @@ from PHX.xl import xl_app
 from PHX.xl.xl_typing import xl_Sheet_Protocol
 
 
+def get_ap_element_from_dict(
+    _window_name: str, _dict: dict[str, components.PhxApertureElement]
+) -> components.PhxApertureElement:
+    """Return the PhxApertureElement with the specified name from the dict.
+
+    When reading from excel, the name MIGHT come in as a float. This means
+    that any windows with a numerical name (ie: '106', '205', etc.) will get
+    converted to a float in excel (ie: '106' -> 106.0) and get read back in
+    that way. To support names 106, 106.0, '106' and '106.0' properly, try them
+    with a fallback sequence.
+    """
+
+    try:
+        # If its a normal string name...
+        return _dict[_window_name]
+    except KeyError:
+        pass
+
+    try:
+        # If it is a 'float' name (ie: 106.0)
+        return _dict[str(float(_window_name))]
+    except (KeyError, ValueError):
+        pass
+
+    try:
+        # If it is an 'int' name (ie: 106)
+        return _dict[str(int(float(_window_name)))]
+    except (KeyError, ValueError):
+        pass
+
+    raise KeyError(
+        f"Error: The window '{_window_name}' read back from the PHPP 'Windows' worksheet "
+        f"was not found in the PHX-Model? Valid PHX window names include: {sorted(_dict.keys())[:25]}"
+    )
+
+
 class PHPPConnection:
     """Interface for a PHPP Excel Document."""
 
@@ -552,44 +588,26 @@ class PHPPConnection:
         return None
 
     def write_project_window_shading(self, phx_project: project.PhxProject) -> None:
-        def _get_ap_element_from_dict(
-            _window_name: str, _dict: dict[str, components.PhxApertureElement]
-        ) -> components.PhxApertureElement:
-            """When reading from excel, it MIGHT come in as a float. This means
-            that any windows with a numerical name (ie: '106', '205', etc) will get
-            converted to a float in excel (ie: '106' -> 106.0) and get read back in
-            that way. To support names 106, 106.0, '106' and '106.0' properly, try them
-            with a fallback sequence.
-            """
-
-            try:
-                # If its a normal string name...
-                return _dict[_window_name]
-            except KeyError:
-                try:
-                    # If it is a 'float' name (ie: 106.1)
-                    return _dict[str(float(_window_name))]
-                except KeyError:
-                    try:
-                        # If it is an 'int' name (ie: 106)
-                        return _dict[str(int(float(_window_name)))]
-                    except KeyError as e:
-                        raise e
-
         # Get all the Window worksheet names in order
         window_names = self.windows.get_all_window_names()
 
-        # Get all the PHX Aperture objects
+        # Get all the PHX Aperture objects, keyed by the same name that
+        # 'write_project_window_surfaces' wrote to the Windows worksheet: the
+        # element's *polygon* display-name. Note that the polygon display-name
+        # falls back to the polygon's id-number when unset, so keying on the
+        # element's own display-name would fail to match for un-named apertures.
         phx_aperture_dict: dict[str, components.PhxApertureElement] = {}
         for phx_variant in phx_project.variants:
             for phx_component in phx_variant.building.opaque_components:
                 for phx_aperture in phx_component.apertures:
                     for phx_ap_element in phx_aperture.elements:
-                        phx_aperture_dict[phx_ap_element.display_name] = phx_ap_element
+                        if phx_ap_element.polygon is None:
+                            continue
+                        phx_aperture_dict[phx_ap_element.polygon.display_name] = phx_ap_element
 
         # Sort the phx apertures to match the window_names order
         phx_aperture_elements_in_order = (
-            _get_ap_element_from_dict(window_name, phx_aperture_dict) for window_name in window_names
+            get_ap_element_from_dict(window_name, phx_aperture_dict) for window_name in window_names
         )
 
         # Write out all the data to the Shading Worksheet
