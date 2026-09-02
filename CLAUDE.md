@@ -40,7 +40,7 @@ Full context index: `context/README.md`. (The rich dev/reference deep-dives live
 ## Hard rules
 
 1. **The PHX model is transient.** No serialization of the PHX model itself — build it `from_*`, write it `to_*`. Don't add a "save PHX model" path.
-2. **Conventional commits drive releases.** `feat(scope):` / `fix(scope):` — semantic-release auto-publishes to PyPI on merge to `main`. Commit messages are load-bearing.
+2. **Every shippable push to `main` auto-releases a patch** (`bump-my-version` in `.github/workflows/ci.yml`, not semantic-release; `bump:minor`/`bump:major` PR labels raise the level). Pushes touching only `planning/`, `context/`, `docs/`, `.github/`, or markdown skip the release (gated 2026-09-02). Conventional commit messages (`feat(scope):`/`fix(scope):`/`docs(...):`) remain the house style but do not drive the release decision.
 3. **Some code is deliberately non-idiomatic.** PascalCase in `xml_schemas.py` / `xml_writables.py` mirrors the WUFI XML / C# structure — keep it. `PHX/run.py` is a Python-2.7 Grasshopper shim, excluded from formatting.
 4. **The PHPP write path has a golden-state invariant.** `tests/test_xl_replay/` record/replays exact cell writes; any change to *how* cells are written must reproduce the recorded golden state (re-record via `scripts/perf/record_replay_fixture.py` only when the output legitimately changes).
 5. **Docs are an autodoc spoke.** New/renamed public API → update `docs/nav.yml` + docstrings in the `ph-docs` format (`docs/.instructions.md`). Never restructure `docs/`.
