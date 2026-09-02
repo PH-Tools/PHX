@@ -22,7 +22,7 @@ Nothing that cannot recalculate can drive this path.
 | LibreOffice headless (UNO / PyOO) | Drives LO Calc's engine, not Excel's. PHI documents functional limits for PHPP under LibreOffice; calc-fidelity risk would need its own validation harness. |
 | Microsoft Graph API | No live interleaved recalculation for this workload. |
 | Rolling our own appscript backend | Was proposed to escape xlwings overhead. Unnecessary — `raw_value` already reaches the OS floor (§3). |
-| Tier 2 "Office.js localhost-WebSocket bridge add-in" | **NO-GO** at current numbers. |
+| Tier 2 "Office.js localhost-WebSocket bridge add-in" | **NO-GO** at current numbers. ⚠ Scope: this verdict is about replacing xlwings *within the local-CPython path*, where xlwings already works. The standalone `phx-phpp-bridge` add-in (no local Python interpreter available at all; Pyodide in-process, so Office.js is the only possible host) is a different architecture and is NOT covered by this NO-GO — see `../../phx-phpp-bridge/PRD.md` §2.1. §1's live-calc-engine constraint and §3's measured costs still apply to it. |
 | Tier 3 "shadow-PHPP" (predict all IDs, one bulk write, no mid-stream reads) | **Moot** — batching inside the existing architecture hit the target. Only revisit if the live path degrades badly again. |
 | PR #47 async writes (never merged) | Races against interleaved read-back. Synchronous batching already beat its reported gains. |
 
