@@ -3,6 +3,7 @@
 """Functions used to create Project elements from the Honeybee-Model"""
 
 import logging
+import math
 
 from honeybee import model
 from honeybee.aperture import Aperture
@@ -25,6 +26,101 @@ from PHX.from_HBJSON._type_utils import (
 from PHX.model import constructions, project, shades
 
 logger = logging.getLogger(__name__)
+
+# -- A 'Declared-U Assembly' states a U-Value and a thickness without real layers. Upstream
+# -- tools represent one as a sandwich: a thin, highly-conductive shell on each side of a
+# -- single EnergyMaterialNoMass whose R-Value is the declared U with the surface films
+# -- stripped out. PH-Navigator marks the no-mass Material with the declared thickness so
+# -- the Assembly can be rebuilt as the single Layer it really is.
+DECLARED_U_MARKER_KEY = "phn_declared_u"
+DECLARED_U_SHELL_THICKNESS_M = 0.01
+DECLARED_U_SHELL_CONDUCTIVITY_W_MK = 100.0
+
+
+def _get_declared_u_marker(_hb_material) -> dict | None:
+    """Return the Declared-U marker from a Honeybee-Material's PH user-data, or None if absent or malformed."""
+    ph_props = getattr(_hb_material.properties, "ph", None)
+    user_data = getattr(ph_props, "user_data", None)
+    if not isinstance(user_data, dict):
+        return None
+
+    marker = user_data.get(DECLARED_U_MARKER_KEY)
+    return marker if isinstance(marker, dict) else None
+
+
+def _get_declared_thickness_m(_hb_material) -> float | None:
+    """Return the declared layer thickness (M) from a Declared-U marker, or None.
+
+    Note that the marker is read for the thickness only. The layer's R-Value always comes
+    from the Honeybee-Material itself, so the Assembly's U-Value is unaffected.
+
+    Arguments:
+    ----------
+        * _hb_material: The Honeybee Material to check.
+
+    Returns:
+    --------
+        * (float | None): The declared thickness in meters, or None if the marker is absent
+            or carries no usable thickness.
+    """
+    if (marker := _get_declared_u_marker(_hb_material)) is None:
+        return None
+
+    try:
+        thickness_mm = float(marker["thickness_mm"])
+    except (KeyError, TypeError, ValueError):
+        thickness_mm = None
+
+    if thickness_mm is None or thickness_mm <= 0:
+        logger.warning(
+            "Declared-U Material '%s' has an unusable 'thickness_mm' (%r). Using the default no-mass thickness.",
+            _hb_material.display_name,
+            marker.get("thickness_mm"),
+        )
+        return None
+
+    return thickness_mm / 1000
+
+
+def _is_declared_u_shell(_hb_material) -> bool:
+    """Return True if the Honeybee-Material is one of a Declared-U sandwich's shells."""
+    return (
+        isinstance(_hb_material, EnergyMaterial)
+        and math.isclose(_hb_material.thickness, DECLARED_U_SHELL_THICKNESS_M, rel_tol=1e-9)
+        and math.isclose(_hb_material.conductivity, DECLARED_U_SHELL_CONDUCTIVITY_W_MK, rel_tol=1e-9)
+    )
+
+
+def _collapse_declared_u_sandwich(
+    _hb_materials: list[EnergyMaterial | EnergyMaterialNoMass],
+) -> list[EnergyMaterial | EnergyMaterialNoMass]:
+    """Reduce a marked Declared-U sandwich to the single no-mass Material it stands for.
+
+    The shells add about 0.0002 M2K/W, so dropping them leaves the Assembly's U-Value intact
+    while the Assembly shows the one row the modeler actually declared. Any Material list
+    that is not an exact marked sandwich is returned unchanged.
+
+    Arguments:
+    ----------
+        * _hb_materials (list[EnergyMaterial | EnergyMaterialNoMass]): The Honeybee-Construction's Materials.
+
+    Returns:
+    --------
+        * (list[EnergyMaterial | EnergyMaterialNoMass]): The collapsed Material list, or the input unchanged.
+    """
+    if len(_hb_materials) != 3:
+        return _hb_materials
+
+    outer, core, inner = _hb_materials
+    if (
+        _get_declared_u_marker(core) is None
+        or not _is_declared_u_shell(outer)
+        or not _is_declared_u_shell(inner)
+        or outer.identifier != inner.identifier
+    ):
+        return _hb_materials
+
+    return [core]
 
 
 def _get_material_attr_or_default(_hb_material, _attr_name: str, _default: float) -> float:
@@ -243,7 +339,8 @@ def build_layer_from_hb_material(
         new_layer.divisions = div_grid
 
     elif isinstance(source_material, EnergyMaterialNoMass):
-        new_layer.thickness_m = _no_mass_thickness_m
+        declared_thickness_m = _get_declared_thickness_m(source_material)
+        new_layer.thickness_m = _no_mass_thickness_m if declared_thickness_m is None else declared_thickness_m
         new_layer.set_material(build_phx_material_from_hb_EnergyMaterialNoMass(source_material, new_layer.thickness_m))
 
     elif isinstance(source_material, constructions.PhxMaterial):
@@ -284,8 +381,13 @@ def build_opaque_assemblies_from_HB_model(_project: project.PhxProject, _hb_mode
                 continue
 
             # -- If is an AirBoundary, use the default material
-            materials: list[EnergyMaterial] = getattr(hb_const, "materials", DEFAULT_MATERIALS)
+            materials: list[EnergyMaterial | EnergyMaterialNoMass] = getattr(hb_const, "materials", DEFAULT_MATERIALS)
+
             if hb_const.identifier not in _project.assembly_types:
+                # -- Collapse before building the layers, so the radiation properties below
+                # -- read the outermost surviving material rather than a removed shell.
+                materials = _collapse_declared_u_sandwich(materials)
+
                 # -- Create a new Assembly with Layers from the Honeybee-Construction
                 new_assembly = constructions.PhxConstructionOpaque()
                 new_assembly.display_name = hb_const.display_name
