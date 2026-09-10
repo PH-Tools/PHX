@@ -49,6 +49,7 @@ the domain's name disagree, the "Aliases to avoid" column names the loser and th
 | **Division Grid** | The cell matrix that makes a **Layer** heterogeneous (e.g. studs plus insulation). | mixed layer, composite |
 | **Material** | A named conductivity/density/capacity record used by a **Layer**. | product, substance |
 | **Heat Flow Pathway** | One parallel path through a composite **Assembly**, per ISO 6946, used to compute an area-weighted R-value. | flow path, thermal path |
+| **Surface Resistance** | The interior (Rsi) or exterior (Rse) air-film resistance at an **Assembly** face, per EN ISO 6946. No PHX model class carries one: the target tool applies it from the **Component**'s exposure. | surface film, air film, Rsi/Rse |
 | **Thermal Bridge** | A named linear or point heat-loss element with a psi/chi value, owned by a **Zone**. | TB, junction, detail |
 | **Window Type** | A reusable glazing-plus-frame construction in the **Project** library, referenced by **Apertures**. | window construction, glazing type |
 | **Psi-Install** | The linear installation heat loss at one edge of an **Aperture Element**, resolved from the aperture's Install Type over the **Window Type** default. | install psi, frame psi, Ψ |

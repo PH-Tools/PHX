@@ -288,6 +288,16 @@
                     "column": "M",
                     "unit": "HR-FT2-F/BTU"
                 },
+                "r_si_selectors": {
+                    "wall": "2-Wall",
+                    "roof": "1-Roof",
+                    "floor": "3-Floor"
+                },
+                "r_se_selectors": {
+                    "exterior": "1-Outdoor air",
+                    "ground": "2-Ground",
+                    "ventilated": "3-Ventilated"
+                },
                 "interior_insulation": {
                     "column": "R",
                     "unit": null

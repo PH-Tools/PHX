@@ -5,6 +5,7 @@
 from collections.abc import Iterator
 
 from PHX.model import building, certification, components, hvac, project
+from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType
 from PHX.PHPP import phpp_localization, sheet_io
 from PHX.PHPP.phpp_localization.shape_model import PhppShape
 from PHX.PHPP.phpp_model import (
@@ -344,13 +345,60 @@ class PHPPConnection:
             self.climate.write_active_climate(active_climate_data)
         return None
 
+    @staticmethod
+    def _rank_assembly_exposures(
+        phx_project: project.PhxProject,
+    ) -> dict[int, list[tuple[ComponentFaceType, ComponentExposureExterior]]]:
+        """Return {assembly id_num: its (face-type, exterior-exposure) pairs, most-used first}.
+
+        WHY: PHPP resolves an assembly's surface resistances from two selector cells on the
+        assembly block itself, so it allows exactly one exposure per assembly. PHX allows a
+        single Assembly to be used at any number of exposures, so the pairs are ranked by
+        total component area and the caller takes the first. Ties break on the enum values
+        so that the same model always writes the same PHPP.
+        """
+        areas_by_exposure: dict[int, dict[tuple[ComponentFaceType, ComponentExposureExterior], float]] = {}
+        for phx_variant in phx_project.variants:
+            for opaque_component in phx_variant.building.opaque_components:
+                exposures = areas_by_exposure.setdefault(opaque_component.assembly.id_num, {})
+                key = (opaque_component.face_type, opaque_component.exposure_exterior)
+                exposures[key] = exposures.get(key, 0.0) + opaque_component.get_total_gross_component_area()
+
+        return {
+            id_num: [
+                pair for pair, _ in sorted(exposures.items(), key=lambda kv: (-kv[1], kv[0][0].value, kv[0][1].value))
+            ]
+            for id_num, exposures in areas_by_exposure.items()
+        }
+
     def write_project_constructions(self, phx_project: project.PhxProject) -> None:
         """Write all of the opaque constructions to the PHPP 'U-Values' worksheet."""
 
+        exposures_by_assembly = self._rank_assembly_exposures(phx_project)
+
         construction_blocks: list[uvalues_constructor.ConstructorBlock] = []
         for phx_construction in phx_project.assembly_types.values():
+            # -- An Assembly which no Component references keeps the ConstructorBlock defaults.
+            exposures = exposures_by_assembly.get(phx_construction.id_num) or [
+                (ComponentFaceType.WALL, ComponentExposureExterior.EXTERIOR)
+            ]
+            face_type, exposure_exterior = exposures[0]
+
+            if len(exposures) > 1:
+                found = ", ".join(f"{face.name}/{exposure.name}" for face, exposure in exposures)
+                self.xl.output(
+                    f"Warning: the Assembly '{phx_construction.display_name}' is used at more than one "
+                    f"exposure ({found}). PHPP allows only one surface-resistance selector per assembly, "
+                    f"so the largest area ({face_type.name}/{exposure_exterior.name}) is used for all of them."
+                )
+
             construction_blocks.append(
-                uvalues_constructor.ConstructorBlock(shape=self.shape.UVALUES, phx_construction=phx_construction)
+                uvalues_constructor.ConstructorBlock(
+                    shape=self.shape.UVALUES,
+                    phx_construction=phx_construction,
+                    face_type=face_type,
+                    exposure_exterior=exposure_exterior,
+                )
             )
 
         self.u_values.write_constructor_blocks(construction_blocks)

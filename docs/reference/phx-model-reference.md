@@ -354,6 +354,16 @@ declared. The marker is read for the thickness only; R always comes from the Hon
 the U-value is unchanged (the shells account for about 0.0002 m²K/W). An unmarked sandwich, such as
 the one `GHCompo_CreateSDConstructions` builds, is left alone.
 
+**Surface resistances:** no PHX model class carries one. WUFI-Passive and METr apply the films
+themselves from each component's exposure, so an assembly reaching them is film-free by design.
+PHPP instead resolves them per assembly block from two selector cells, so the PHPP writer
+(`phpp_app.write_project_constructions`) derives the selectors from the `ComponentFaceType` and
+`ComponentExposureExterior` of the components which reference the assembly: `WALL`/`ROOF_CEILING`/
+`FLOOR` pick the orientation (Rsi), and `EXTERIOR`/`GROUND`/adjacent-zone pick the adjacency (Rse).
+The selector strings are written, not numbers, so PHPP keeps the climate dependence of Rsi and the
+`Rse = Rsi` behavior of "Ventilated". PHPP allows one selector pair per assembly, so an assembly
+used at more than one exposure takes the pair covering the largest area and warns.
+
 **Program composition:** HB stores loads and schedules separately. PHX pairs them: `PhxProgramVentilation` = `PhxLoadVentilation` + `PhxScheduleVentilation`.
 
 **HVAC disaggregation:** HB uses high-level `IdealAirSystem`. PHX disaggregates into specific device types (ventilators, heaters, heat pumps, hot water tanks, piping) with usage profiles specifying coverage percentages.
