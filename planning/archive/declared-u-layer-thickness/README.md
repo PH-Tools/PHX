@@ -1,9 +1,11 @@
 # `from_HBJSON`: honor a declared thickness on a marked no-mass Layer, and collapse the sandwich shells
 
-- **Status:** Implemented on branch `feat/declared-u-layer-thickness` (2026-09-10) — both steps
-  landed in `PHX/from_HBJSON/create_assemblies.py` with 17 new tests; 1111 tests green, reference
-  XML/METr output and the xl-replay golden state unchanged. Decisions D1–D4 taken as recommended.
-  **D5 is the one open item:** the §9 films divergence still needs its own issue.
+- **Status:** Complete — merged to `main` 2026-09-10 via PR
+  [#117](https://github.com/PH-Tools/PHX/pull/117). Both steps landed in
+  `PHX/from_HBJSON/create_assemblies.py` with 17 new tests; 1111 green, reference XML/METr output
+  and the xl-replay golden state unchanged. Decisions D1–D5 all taken as recommended; the §9 films
+  divergence is now [#118](https://github.com/PH-Tools/PHX/issues/118). Outcome folded into
+  `docs/reference/phx-model-reference.md` and `context/UBIQUITOUS_LANGUAGE.md`.
 - **Filed:** 2026-09-10 (Ed May / Claude)
 - **Issue:** [#116](https://github.com/PH-Tools/PHX/issues/116)
 - **Kind:** Feature — additive, gated entirely by an upstream marker
