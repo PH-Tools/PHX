@@ -45,9 +45,11 @@ the domain's name disagree, the "Aliases to avoid" column names the loser and th
 | **Aperture Element** | One individually-framed sash or lite within an **Aperture**, carrying its own polygon and resolved per-edge **Psi-Install** values. | pane, unit, sub-window |
 | **Assembly** | A reusable opaque construction (ordered **Layers** yielding a U-value) held in the **Project** library and referenced by **Components**. | construction, buildup, type |
 | **Layer** | One thickness of an **Assembly**, holding a single **Material** or a **Division Grid** of them. | course, ply |
+| **Declared-U Assembly** | An **Assembly** stated as a U-value and a thickness rather than as real **Layers**, as designPH's user-defined library and PHI-certified construction systems do. Sources encode one as a no-mass **Material** between two thin conductive shells; PHX collapses that back to a single **Layer** when the source marks it. | declared assembly, SD construction, U-value assembly |
 | **Division Grid** | The cell matrix that makes a **Layer** heterogeneous (e.g. studs plus insulation). | mixed layer, composite |
 | **Material** | A named conductivity/density/capacity record used by a **Layer**. | product, substance |
 | **Heat Flow Pathway** | One parallel path through a composite **Assembly**, per ISO 6946, used to compute an area-weighted R-value. | flow path, thermal path |
+| **Surface Resistance** | The interior (Rsi) or exterior (Rse) air-film resistance at an **Assembly** face, per EN ISO 6946. No PHX model class carries one: the target tool applies it from the **Component**'s exposure. | surface film, air film, Rsi/Rse |
 | **Thermal Bridge** | A named linear or point heat-loss element with a psi/chi value, owned by a **Zone**. | TB, junction, detail |
 | **Window Type** | A reusable glazing-plus-frame construction in the **Project** library, referenced by **Apertures**. | window construction, glazing type |
 | **Psi-Install** | The linear installation heat loss at one edge of an **Aperture Element**, resolved from the aperture's Install Type over the **Window Type** default. | install psi, frame psi, Ψ |

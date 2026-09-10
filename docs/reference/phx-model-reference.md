@@ -328,6 +328,7 @@ Some enums use `_missing_()` to handle unknown values at runtime rather than rai
 | `OpaqueConstruction` | `PhxConstructionOpaque` | Reusable assembly in `PhxProject.assembly_types`. |
 | `WindowConstruction` | `PhxConstructionWindow` | Reusable window type in `PhxProject.window_types`. |
 | `EnergyMaterial` | `PhxMaterial` | Part of construction layers. |
+| `EnergyMaterialNoMass` | `PhxLayer` + `PhxMaterial` | Has no thickness of its own, so PHX assigns a 0.1 m default and back-solves conductivity from the R-value. A marked Declared-U Assembly overrides that (see below). |
 | `IdealAirSystem` / HVAC | `PhxMechanicalSystemCollection` | HB HVAC → PHX device collections. |
 | `Schedule` | `PhxSchedule*` | Operating patterns with utilization periods. |
 | `ph_bldg_segment` | `PhxVariant` | Rooms sharing a segment become one variant. |
@@ -343,6 +344,25 @@ have no matching `RoomsVentilation` record. The WUFI importer still creates a `P
 person-load record so those loads survive a round-trip. Such a Space has zero ventilation airflow;
 the WUFI exporter includes it in `LoadsPersonsPH` / `LoadsLightingsPH` but correctly omits it from
 `RoomsVentilation`.
+
+**Declared-U Assemblies:** an assembly stated as a U-value and a thickness rather than as real
+layers arrives as a sandwich — a 10 mm, 100 W/mK shell on each side of one `EnergyMaterialNoMass`
+whose R-value is the declared U with the surface films removed. When the no-mass material carries
+`properties.ph.user_data["phn_declared_u"]`, `from_HBJSON` reads `thickness_mm` from it for the
+layer thickness and collapses the two shells away, so the assembly shows the single layer that was
+declared. The marker is read for the thickness only; R always comes from the Honeybee material, so
+the U-value is unchanged (the shells account for about 0.0002 m²K/W). An unmarked sandwich, such as
+the one `GHCompo_CreateSDConstructions` builds, is left alone.
+
+**Surface resistances:** no PHX model class carries one. WUFI-Passive and METr apply the films
+themselves from each component's exposure, so an assembly reaching them is film-free by design.
+PHPP instead resolves them per assembly block from two selector cells, so the PHPP writer
+(`phpp_app.write_project_constructions`) derives the selectors from the `ComponentFaceType` and
+`ComponentExposureExterior` of the components which reference the assembly: `WALL`/`ROOF_CEILING`/
+`FLOOR` pick the orientation (Rsi), and `EXTERIOR`/`GROUND`/adjacent-zone pick the adjacency (Rse).
+The selector strings are written, not numbers, so PHPP keeps the climate dependence of Rsi and the
+`Rse = Rsi` behavior of "Ventilated". PHPP allows one selector pair per assembly, so an assembly
+used at more than one exposure takes the pair covering the largest area and warns.
 
 **Program composition:** HB stores loads and schedules separately. PHX pairs them: `PhxProgramVentilation` = `PhxLoadVentilation` + `PhxScheduleVentilation`.
 
