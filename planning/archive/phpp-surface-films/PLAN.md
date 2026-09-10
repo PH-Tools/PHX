@@ -1,7 +1,7 @@
 # Implementation plan — PHPP surface-resistance selectors
 
 DATE: 2026-09-10
-STATUS: Implemented on branch
+STATUS: Complete
 ISSUE: https://github.com/PH-Tools/PHX/issues/118
 
 Read [`README.md`](README.md) first: it carries the evidence the phases below

@@ -1,7 +1,7 @@
 # PHPP writer zeroes the U-Values surface resistances
 
 DATE: 2026-09-10
-STATUS: Implemented on branch
+STATUS: Complete
 AUTHOR: Claude (with Ed May)
 ISSUE: https://github.com/PH-Tools/PHX/issues/118
 

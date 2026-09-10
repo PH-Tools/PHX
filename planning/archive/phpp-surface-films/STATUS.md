@@ -1,18 +1,18 @@
 # Status — PHPP surface-resistance selectors
 
 DATE: 2026-09-10
-STATUS: Implemented on branch
+STATUS: Complete
 ISSUE: https://github.com/PH-Tools/PHX/issues/118
 
 | Phase | State |
 |---|---|
-| 1 — selector strings in the shape files | Implemented on branch |
-| 2 — `ConstructorBlock` writes the selectors | Implemented on branch |
-| 3 — resolve exposure from the components | Implemented on branch |
-| 4 — `activate_variants` restores the selectors | Implemented on branch |
-| 5 — golden state, suite, docs | Implemented on branch |
+| 1 — selector strings in the shape files | Complete |
+| 2 — `ConstructorBlock` writes the selectors | Complete |
+| 3 — resolve exposure from the components | Complete |
+| 4 — `activate_variants` restores the selectors | Complete |
+| 5 — golden state, suite, docs | Complete |
 
-**Next step:** review, then PR (`Closes #118`). Archive on merge.
+**Next step:** none. Merged to `main` 2026-09-10 via PR [#119](https://github.com/PH-Tools/PHX/pull/119) (squash), closing [#118](https://github.com/PH-Tools/PHX/issues/118). Packet archived.
 
 **Blockers:** none.
 
