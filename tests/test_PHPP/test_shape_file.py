@@ -16,6 +16,7 @@ from PHX.PHPP.phpp_model.version import PHPPVersion
         PHPPVersion("10", "4A", "EN"),
         PHPPVersion("10", "4IP", "EN"),
         PHPPVersion("10", "6", "EN"),
+        PHPPVersion("10", "6IP", "EN"),
     ],
 )
 def test_load_all_shape_files(version) -> None:

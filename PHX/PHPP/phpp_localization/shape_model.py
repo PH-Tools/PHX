@@ -200,10 +200,28 @@ class Climate(BaseModel):
 # -----------------------------------------------------------------------------
 
 
+class UValuesRsiSelectors(BaseModel):
+    """The PHPP 'U-values' orientation selector strings which drive the interior surface resistance (Rsi)."""
+
+    wall: str
+    roof: str
+    floor: str
+
+
+class UValuesRseSelectors(BaseModel):
+    """The PHPP 'U-values' adjacency selector strings which drive the exterior surface resistance (Rse)."""
+
+    exterior: str
+    ground: str
+    ventilated: str
+
+
 class UValuesConstructorInputs(BaseModel):
     display_name: InputItem
     r_si: InputItem
     r_se: InputItem
+    r_si_selectors: UValuesRsiSelectors
+    r_se_selectors: UValuesRseSelectors
     interior_insulation: InputItem
     sec_1_description: InputItem
     sec_1_conductivity: InputItem

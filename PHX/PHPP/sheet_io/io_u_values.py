@@ -45,6 +45,9 @@ class UValues:
         self.shape = _shape
         self._constructor_start_rows: list[int] = []
         self.cache = {}
+        # -- {assembly display-name: (Rsi-selector, Rse-selector)} as written, so that
+        # -- 'activate_variants' can restore them after it clears the constructor blocks.
+        self._surface_resistance_selectors: dict[str, tuple[str, str]] = {}
 
     # -------------------------------------------------------------------------
     # -- Getters
@@ -227,6 +230,11 @@ class UValues:
         self, _construction: uvalues_constructor.ConstructorBlock, _start_row: int
     ) -> None:
         """Write a single Construction with all the layers to the PHPP worksheet."""
+        self._surface_resistance_selectors[_construction.phx_construction.display_name] = (
+            _construction.r_si_selector,
+            _construction.r_se_selector,
+        )
+
         for item in _construction.create_xl_items(self.shape.name, _start_row):
             self.xl.write_xl_item(item)
 
@@ -335,14 +343,27 @@ class UValues:
                         )
                     )
 
-                    # -- Set the surface films to zero
-                    self.xl.write_xl_item(
-                        xl_data.XlItem(
-                            self.shape.name,
-                            f"{self.shape.constructor.inputs.r_si.column}{row_num + self.shape.constructor.inputs.rse_row_offset}:{self.shape.constructor.inputs.r_se.column}{row_num + self.shape.constructor.inputs.rsi_row_offset}",
-                            0,
-                        )
-                    )
+                    # -- Restore the surface-resistance selectors cleared above. Without
+                    # -- them PHPP leaves the block's U-value blank.
+                    self.write_surface_resistance_selectors(row_num, str(assembly_name))
+
+    def write_surface_resistance_selectors(self, _row_num: int, _assembly_name: str) -> None:
+        """Write the Rsi / Rse selectors for a single constructor block.
+
+        Uses the selectors recorded when the block was written. An assembly which was
+        not written by this connection falls back to the PHPP defaults (wall / outdoor air).
+        """
+        inputs = self.shape.constructor.inputs
+        r_si_selector, r_se_selector = self._surface_resistance_selectors.get(
+            _assembly_name, (inputs.r_si_selectors.wall, inputs.r_se_selectors.exterior)
+        )
+
+        self.xl.write_xl_item(
+            xl_data.XlItem(self.shape.name, f"{inputs.r_si.column}{_row_num + inputs.rsi_row_offset}", r_si_selector)
+        )
+        self.xl.write_xl_item(
+            xl_data.XlItem(self.shape.name, f"{inputs.r_se.column}{_row_num + inputs.rse_row_offset}", r_se_selector)
+        )
 
     def get_all_envelope_assemblies(self) -> list[ExistingAssemblyData]:
         assemblies: list[ExistingAssemblyData] = []

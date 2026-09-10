@@ -6,16 +6,48 @@ from dataclasses import dataclass
 from functools import partial
 
 from PHX.model.constructions import PhxConstructionOpaque, PhxLayer
+from PHX.model.enums.building import ComponentExposureExterior, ComponentFaceType
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
 
 
 @dataclass
 class ConstructorBlock:
-    """A single U-Value/Constructor entry block."""
+    """A single U-Value/Constructor entry block.
+
+    PHPP resolves each block's surface resistances from two selector cells: an
+    orientation (Rsi) and an adjacency (Rse). Both are properties of how the assembly
+    is *used*, not of the assembly itself, so the exposure of the Components which
+    reference the assembly is carried alongside the construction.
+    """
 
     shape: shape_model.UValues
     phx_construction: PhxConstructionOpaque = PhxConstructionOpaque()
+    face_type: ComponentFaceType = ComponentFaceType.WALL
+    exposure_exterior: ComponentExposureExterior = ComponentExposureExterior.EXTERIOR
+
+    @property
+    def r_si_selector(self) -> str:
+        """Return the PHPP orientation-selector string (Rsi) for the block's face-type."""
+        selectors = self.shape.constructor.inputs.r_si_selectors
+        if self.face_type == ComponentFaceType.ROOF_CEILING:
+            return selectors.roof
+        elif self.face_type == ComponentFaceType.FLOOR:
+            return selectors.floor
+        else:
+            return selectors.wall
+
+    @property
+    def r_se_selector(self) -> str:
+        """Return the PHPP adjacency-selector string (Rse) for the block's exterior exposure."""
+        selectors = self.shape.constructor.inputs.r_se_selectors
+        if self.exposure_exterior == ComponentExposureExterior.GROUND:
+            return selectors.ground
+        elif self.exposure_exterior == ComponentExposureExterior.SURFACE or self.exposure_exterior.value > 0:
+            # -- Adjacent to another zone: EN ISO 6946 treats the outer face as interior.
+            return selectors.ventilated
+        else:
+            return selectors.exterior
 
     def _create_range(self, _field_name: str, _row_offset: int, _start_row: int) -> str:
         """Return the XL Range ("P12",...) for the specific field name."""
@@ -47,17 +79,16 @@ class ConstructorBlock:
                 create_range("display_name", self.shape.constructor.inputs.name_row_offset),
                 f"'{self.phx_construction.display_name}",
             ),
+            # -- Note: the selectors are written as strings, not numbers. PHPP reads only the
+            # -- leading digit and resolves the resistance itself, which keeps the
+            # -- climate-dependence of Rsi and the 'Rse = Rsi' behavior of 'Ventilated' intact.
             XLItemUValues(
-                create_range("r_si", self.shape.constructor.inputs.rse_row_offset),
-                0.0,
-                "M2K/W",
-                self._get_target_unit("r_si"),
+                create_range("r_si", self.shape.constructor.inputs.rsi_row_offset),
+                self.r_si_selector,
             ),
             XLItemUValues(
-                create_range("r_se", self.shape.constructor.inputs.rsi_row_offset),
-                0.0,
-                "M2K/W",
-                self._get_target_unit("r_se"),
+                create_range("r_se", self.shape.constructor.inputs.rse_row_offset),
+                self.r_se_selector,
             ),
         ]
 
