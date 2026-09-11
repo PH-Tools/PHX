@@ -331,8 +331,7 @@ class PHPPConnection:
                 verification_data.VerificationInput.item(
                     shape=self.shape.VERIFICATION,
                     input_type="mechanical_cooling",
-                    input_data="x" if self.shape.VERIFICATION.mechanical_cooling else "",
-                    target_unit=self.shape.VERIFICATION.mechanical_cooling.unit,
+                    input_data="x" if phx_variant.phius_cert.ph_building_data.setpoints.mechanical_cooling else "",
                 )
             )
 
