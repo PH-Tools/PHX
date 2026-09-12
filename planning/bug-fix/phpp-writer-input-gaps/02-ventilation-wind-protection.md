@@ -6,6 +6,13 @@
 **Umbrella:** [`README.md`](README.md)
 **Filed as:** "Wind-protection class → `Ventilation!K19`" (gap 3 of the incoming request)
 
+> **Superseded in part (2026-09-12).** Decisions D3 and D4 in
+> [`../phpp-writer-fix-batch.md`](../phpp-writer-fix-batch.md) override Phases 1, 3,
+> 4 and 5 below: on PHPP 10.x drop **both** `J19` and `J20`, do **not** write f to
+> `M20` (the 10.6 template locks it as a constant; warn when the model's f is not
+> 15); PHPP 9 already writes e and f correctly to `N25`/`N26` and needs no change.
+> Phases 0 and 2 stand, adjusted to match.
+
 ## What the blank 10.6 template actually contains
 
 ```
