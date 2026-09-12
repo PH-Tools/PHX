@@ -2,7 +2,7 @@
 
 **Issue:** [#103](https://github.com/PH-Tools/PHX/issues/103)
 
-**Status:** Scoped — 2026-08-15. No PHX code changed yet. Item `06` added
+**Status:** Scoped — 2026-08-15. `05` implemented 2026-09-12 (with `03` Phase 2's helper). Item `06` added
 2026-08-15 (a sixth input, found by OpenPH the same day); `05` now depends on
 the upstream foundation-shape packet.
 **Source:** [`features/phpp-writer-input-gaps/`](../../features/phpp-writer-input-gaps/README.md) (the incoming request, filed from OpenPH)
@@ -26,7 +26,7 @@ was **not** taken at face value, and three of its five diagnoses changed.
 | [02](02-ventilation-wind-protection.md) | Wind protection written to two dead cells | `Ventilation!K19`, `M20` | **silent** | **Confirmed and enlarged** — `f` is broken the same way |
 | [03](03-summvent-heat-recovery-mode.md) | Summer heat-recovery mode never written | `SummVent!R15:R18` | **silent** | Confirmed |
 | [04](04-climate-ud-block-activation.md) | User-defined climate block never named or selected | `Climate` D67 / D9 / D10 / D12 / E76 | **silent** | **Confirmed and enlarged** — plus a cell PHX actively corrupts |
-| [05](05-ground-worksheet-writer.md) | No `Ground` writer at all | `Ground` (whole sheet) | flagged | Confirmed — **now depends on** [`features/foundation-phpp10-shape/`](../../features/foundation-phpp10-shape/README.md) for the model fields it was going to leave at template defaults |
+| [05](05-ground-worksheet-writer.md) | No `Ground` writer at all | `Ground` (whole sheet) | flagged | Confirmed — **implemented 2026-09-12** ([#120](https://github.com/PH-Tools/PHX/issues/120) Part B); PHPP 10 SI, section 1 only |
 | [06](06-verification-mechanical-cooling.md) | `Verification!N30` mechanical cooling never written; no model field | `Verification!N30` → `Ground!N122`, `I39/I40`, `Windows!AJ10:AJ14`, `SummVent!L66/R66` | **silent** | New 2026-08-15 — needs a honeybee-ph field first |
 
 ### What changed from the incoming request

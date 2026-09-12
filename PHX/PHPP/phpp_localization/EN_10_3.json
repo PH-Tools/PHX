@@ -513,7 +513,192 @@
     },
     "GROUND": {
         "name": "Ground",
-        "columns": {}
+        "input_block": {
+            "locator_col_header": "C",
+            "locator_string_header": "Floor slab type (select only one)",
+            "sections": [
+                {
+                    "selector": "C",
+                    "left": "H",
+                    "right": "P"
+                },
+                {
+                    "selector": "W",
+                    "left": "AB",
+                    "right": "AJ"
+                },
+                {
+                    "selector": "AQ",
+                    "left": "AV",
+                    "right": "BD"
+                }
+            ],
+            "inputs": {
+                "soil_conductivity": {
+                    "column": "left",
+                    "row_offset": -13,
+                    "unit": "W/MK"
+                },
+                "soil_heat_capacity": {
+                    "column": "left",
+                    "row_offset": -12,
+                    "unit": "MJ/M3K"
+                },
+                "perimeter": {
+                    "column": "left",
+                    "row_offset": -3,
+                    "unit": "M"
+                },
+                "groundwater_depth": {
+                    "column": "left",
+                    "row_offset": 31,
+                    "unit": "M"
+                },
+                "groundwater_flow_rate": {
+                    "column": "left",
+                    "row_offset": 32,
+                    "unit": "M/D"
+                },
+                "slab_on_grade": {
+                    "column": "selector",
+                    "row_offset": 2
+                },
+                "slab_perim_insulation_width": {
+                    "column": "left",
+                    "row_offset": 3,
+                    "unit": "M"
+                },
+                "slab_perim_insulation_thickness": {
+                    "column": "left",
+                    "row_offset": 4,
+                    "unit": "M"
+                },
+                "slab_perim_insulation_conductivity": {
+                    "column": "left",
+                    "row_offset": 5,
+                    "unit": "W/MK"
+                },
+                "slab_perim_insulation_horizontal": {
+                    "column": "right",
+                    "row_offset": 3
+                },
+                "slab_interior_wall_area": {
+                    "column": "left",
+                    "row_offset": 6,
+                    "unit": "M2"
+                },
+                "slab_interior_wall_u_value": {
+                    "column": "right",
+                    "row_offset": 6,
+                    "unit": "W/M2K"
+                },
+                "heated_basement": {
+                    "column": "selector",
+                    "row_offset": 8
+                },
+                "heated_basement_wall_below_area": {
+                    "column": "left",
+                    "row_offset": 9,
+                    "unit": "M2"
+                },
+                "heated_basement_wall_below_u_value": {
+                    "column": "right",
+                    "row_offset": 9,
+                    "unit": "W/M2K"
+                },
+                "unheated_basement": {
+                    "column": "selector",
+                    "row_offset": 11
+                },
+                "unheated_basement_wall_above_area": {
+                    "column": "left",
+                    "row_offset": 12,
+                    "unit": "M2"
+                },
+                "unheated_basement_wall_above_u_value": {
+                    "column": "right",
+                    "row_offset": 12,
+                    "unit": "W/M2K"
+                },
+                "unheated_basement_wall_below_area": {
+                    "column": "left",
+                    "row_offset": 13,
+                    "unit": "M2"
+                },
+                "unheated_basement_wall_below_u_value": {
+                    "column": "right",
+                    "row_offset": 13,
+                    "unit": "W/M2K"
+                },
+                "unheated_basement_interior_wall_area": {
+                    "column": "left",
+                    "row_offset": 14,
+                    "unit": "M2"
+                },
+                "unheated_basement_interior_wall_u_value": {
+                    "column": "right",
+                    "row_offset": 14,
+                    "unit": "W/M2K"
+                },
+                "unheated_basement_air_change_rate": {
+                    "column": "left",
+                    "row_offset": 15
+                },
+                "unheated_basement_floor_u_value": {
+                    "column": "right",
+                    "row_offset": 15,
+                    "unit": "W/M2K"
+                },
+                "unheated_basement_volume": {
+                    "column": "left",
+                    "row_offset": 16,
+                    "unit": "M3"
+                },
+                "crawlspace": {
+                    "column": "selector",
+                    "row_offset": 18
+                },
+                "crawlspace_floor_u_value": {
+                    "column": "left",
+                    "row_offset": 19,
+                    "unit": "W/M2K"
+                },
+                "crawlspace_vent_opening_area": {
+                    "column": "right",
+                    "row_offset": 19,
+                    "unit": "M2"
+                },
+                "crawlspace_wall_height": {
+                    "column": "left",
+                    "row_offset": 20,
+                    "unit": "M"
+                },
+                "crawlspace_wind_velocity": {
+                    "column": "right",
+                    "row_offset": 20,
+                    "unit": "M/S"
+                },
+                "crawlspace_wall_u_value": {
+                    "column": "left",
+                    "row_offset": 21,
+                    "unit": "W/M2K"
+                },
+                "crawlspace_wind_shield_factor": {
+                    "column": "right",
+                    "row_offset": 21
+                },
+                "crawlspace_interior_wall_area": {
+                    "column": "left",
+                    "row_offset": 22,
+                    "unit": "M2"
+                },
+                "crawlspace_interior_wall_u_value": {
+                    "column": "right",
+                    "row_offset": 22,
+                    "unit": "W/M2K"
+                }
+            }
+        }
     },
     "COMPONENTS": {
         "name": "Components",

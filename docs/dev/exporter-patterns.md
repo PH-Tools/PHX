@@ -214,7 +214,7 @@ metr_json_to_file.write_metr_json_file(target_path, metr_text)
 | Module/Package | Role |
 |---|---|
 | `phpp_app.py` | `PHPPConnection` — main interface to a PHPP workbook; orchestrates all write operations |
-| `sheet_io/` | 24 per-sheet read/write controllers (`io_areas.py`, `io_climate.py`, `io_windows.py`, etc.) plus `io_exceptions.py` |
+| `sheet_io/` | 25 per-sheet read/write controllers (`io_areas.py`, `io_climate.py`, `io_windows.py`, etc.) plus `io_exceptions.py` |
 | `phpp_model/` | Data classes representing PHPP rows; generate `XlItem` objects for writing |
 | `phpp_localization/` | PHPP version and language detection; shape-file JSON for cell-address mapping |
 
@@ -222,7 +222,7 @@ metr_json_to_file.write_metr_json_file(target_path, metr_text)
 
 1. **`PHPPConnection`** (`phpp_app.py`) wraps an `XLConnection` (from `PHX/xl/xl_app.py`). On init, it auto-detects the PHPP version and language from the Data worksheet, loads the matching shape file, and instantiates all sheet controller objects as attributes.
 
-2. **Sheet controllers** (`sheet_io/`) handle per-worksheet read/write. 24 controllers cover: Areas, Climate, Components, Verification, U-Values, Windows, Shading, Ventilation, AddnlVent, DHW+Distribution, Electricity, Variants, Overview, PER, SolarDHW, SolarPV, CoolingDemand, CoolingPeakLoad, CoolingUnits, HeatingDemand, HeatingPeakLoad, IHG-NonRes, Use-NonRes, Elec-NonRes.
+2. **Sheet controllers** (`sheet_io/`) handle per-worksheet read/write. 25 controllers cover: Areas, Ground, Climate, Components, Verification, U-Values, Windows, Shading, Ventilation, AddnlVent, DHW+Distribution, Electricity, Variants, Overview, PER, SolarDHW, SolarPV, CoolingDemand, CoolingPeakLoad, CoolingUnits, HeatingDemand, HeatingPeakLoad, IHG-NonRes, Use-NonRes, Elec-NonRes.
 
 3. **PHPP data models** (`phpp_model/`) are dataclasses that generate `XlItem` objects. `XlItem` (defined in `PHX/xl/xl_data.py`) carries a sheet name, cell address, write value, optional SI/IP unit conversion, and optional cell/font color.
 
@@ -230,7 +230,13 @@ metr_json_to_file.write_metr_json_file(target_path, metr_text)
 
 4. **Localization** (`phpp_localization/`) provides shape-file JSON that maps logical field names to cell addresses for a given PHPP version. Currently ships with **English-only** shape files for PHPP v9 (9.6A, 9.7IP) and v10 (10.3, 10.4A, 10.4IP, 10.6, 10.6IP). The version detection code recognizes German (DE) and Spanish (ES) worksheet names for navigation, but no DE/ES shape files are provided.
 
-5. **`PHPPConnection` exposes 21 `write_*` methods** — 18 functional write operations plus 3 non-residential stubs (`write_non_res_utilization_profiles`, `write_non_res_space_lighting`, `write_non_res_IHG`). The canonical write sequence writes ventilation units first, then ducts, then rooms; duct assignments use the same project order as the ventilation-unit rows.
+5. **`PHPPConnection` exposes 22 `write_*` methods** — 19 functional write operations plus 3 non-residential stubs (`write_non_res_utilization_profiles`, `write_non_res_space_lighting`, `write_non_res_IHG`). The canonical write sequence writes ventilation units first, then ducts, then rooms; duct assignments use the same project order as the ventilation-unit rows.
+
+6. **Unmapped worksheets skip, loudly.** A shape file may leave a worksheet's layout unmapped (`GROUND.input_block` is `None` for PHPP 9.x and the 10.x IP editions). The writer then writes nothing to that sheet and reports it through `xl.output`, rather than guessing at a layout or at units no workbook has confirmed.
+
+### Mutually exclusive `x` cells
+
+PHPP selects among options with groups of `x` cells validated by `PHPP_Daten_Ankreuzen` (`["", "x"]`). Its formulas resolve to whichever cell they test first, so a stale `x` left on a populated workbook silently wins. Write a group with `phpp_model/xl_checkbox_group.checkbox_group_items`, which sets the chosen cell to `"x"` and every sibling to `""` (never `None`, which is not a member of the validation list). The `Ground` floor-slab type selectors (`C24`/`C30`/`C33`/`C40`) are the first user.
 
 ### Section locators and component-ID lookups
 

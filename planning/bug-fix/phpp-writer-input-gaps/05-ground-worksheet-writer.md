@@ -1,7 +1,8 @@
 # The `Ground` worksheet has no writer at all
 
-**Status:** Scoped — largest of the five; its own PR. Single-foundation (building
-section 1) only; see *The hard part* below.
+**Status:** Implemented on branch `feat/phpp-ground-writer` — 2026-09-12
+([#120](https://github.com/PH-Tools/PHX/issues/120) Part B). Phases 0–6 done; see
+*As implemented* at the end. Single-foundation (building section 1) only.
 **Opened:** 2026-08-15
 **Owner:** `PHX/PHPP/` — no owner today; `GROUND` is an unused stub
 **Umbrella:** [`README.md`](README.md)
@@ -292,6 +293,59 @@ numbers to the hand-off doc the foundation-shape packet owns —
 this ships separately from that packet, write a sibling
 `upstream/phx-05-ground-writer.md` there with the same front matter and note it
 in the OpenPH packet's `STATUS.md` "Blockers".
+
+## As implemented (2026-09-12)
+
+### Decisions (Ed, 2026-09-12)
+
+- **B-1: section 1 only.** `len(foundations) > 1` raises `GroundExportError` naming the limit.
+  Multi-section (`Areas` group-B split per foundation) is deferred until a project needs it.
+- **B-2: PHPP 10 SI only.** `GROUND.input_block` is populated in `EN_10_3`, `EN_10_4A`,
+  `EN_10_6`; it is absent in `EN_9_6A`/`EN_9_7IP` (different layout, no `AwI`) **and in
+  `EN_10_4IP`/`EN_10_6IP`** (no IP workbook exists to confirm the `Ground` unit labels). The writer
+  skips an unmapped layout and says so via `xl.output`. #49 stays open for v9.
+
+### What shipped
+
+- **Phase 0:** phi-rules `ddac092` — `P25` is the horizontal check; section 2/3 floor U-values
+  are `AJ18`/`BD18`. `check_corpus.py rulesets/phpp-10-r1`: 0 problems.
+- **Phase 1:** `shape_model.Ground.input_block`: header locator (`C`, *Floor slab type (select
+  only one)*), three `sections` (`C/H/P`, `W/AB/AJ`, `AQ/AV/BD`), 34 inputs as
+  `(column role, row offset from the header, unit)`.
+- **Phase 2:** `phpp_model/ground_data.GroundFoundationBlock`; the `03` Phase 2 helper shipped
+  here as `phpp_model/xl_checkbox_group.checkbox_group_items`. `P25` is written directly
+  (`"x"`/`""`), not through the helper: it is one cell, `P26` derives.
+- **Phase 3:** `sheet_io/io_ground.Ground`, `PHPPConnection.write_project_ground`, called after
+  `write_project_opaque_surfaces`. `P42` reads `PhxVentedCrawlspace.wind_velocity_at_10m_m_s`,
+  not `PhxSite.climate.avg_wind_speed`. A `None` model value is written blank.
+- **Tests:** `test_phpp_model/test_ground_data.py` (one case per type, `H10`, both `P25`
+  positions, the refusals), `test_sheet_io/test_io_ground.py` (locator, wiring, zero / two
+  foundations, unmapped layout), `test_phpp_model/test_xl_checkbox_group.py`.
+- **Phase 5:** `Single_Zone.hbjson` has no foundation, so `single_zone_replay.json` is unchanged.
+  The foundation fixture (`fixtures/Single_Zone_Slab_On_Grade.hbjson` →
+  `tests/test_xl_replay/_private/single_zone_slab_on_grade_replay.json`, 443 golden cells) is
+  **private**: its seed is read from the licensed template. The test skips without it.
+
+### Phase 4 live check
+
+`Single_Zone.hbjson` (4 × 5 m, `A = 20 m²`, `P = 18 m`), one foundation per type, blank 10.6,
+recalculated in Excel 16.112.4. `H18` = 20 and `P18` = 0.516 arrive from `Areas`; `S22` and
+`S31` report no missing data in any case.
+
+| Type | Inputs | `H95` [W/K] | `P116` [-] |
+|---|---|---|---|
+| Slab on grade | horizontal insulation 1.0 m × 0.10 m, λ 0.035 | 6.945 | 0.541 |
+| Heated basement | z 2.5 m (`H31` = 45 m²), Uwb 0.25 | 14.639 | 0.744 |
+| Unheated basement | h 0.5 m, z 2.0 m, U 0.3 / 0.3, n 0.2, V 50 m³, Ufb 0.4 | 6.789 | 0.364 |
+| Crawl space | UCrawl 1.5, h 0.5 m, UW 0.5, εP 0.3 m², v 4, fW 0.05 | 8.913 | 0.702 |
+
+All numeric and non-zero; the heated basement carries the largest conductance (45 m² of
+below-grade wall) and the unheated basement the smallest reduction factor, as expected.
+
+### Not done here
+
+- `_foundation_type_num` is still unset by the subclasses (dispatch is on the class instead).
+- OpenPH hand-off: owed by `features/foundation-phpp10-shape/` once schema and GH release.
 
 ## Related
 

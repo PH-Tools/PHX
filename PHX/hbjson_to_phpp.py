@@ -43,6 +43,7 @@ def write_phx_project_to_phpp(
     phpp_conn.write_project_constructions(phx_project)
     phpp_conn.write_project_tfa(phx_project)
     phpp_conn.write_project_opaque_surfaces(phx_project)
+    phpp_conn.write_project_ground(phx_project)
     phpp_conn.write_project_thermal_bridges(phx_project)
     phpp_conn.write_project_window_components(phx_project)
     phpp_conn.write_project_window_surfaces(phx_project)

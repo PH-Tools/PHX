@@ -364,6 +364,36 @@ The selector strings are written, not numbers, so PHPP keeps the climate depende
 `Rse = Rsi` behavior of "Ventilated". PHPP allows one selector pair per assembly, so an assembly
 used at more than one exposure takes the pair covering the largest area and warns.
 
+**Foundations:** the model is WUFI-shaped (perimeter, depths, heights) plus the PHPP 10 `Ground`
+inputs WUFI lacks (`interior_wall_to_heated_area_m2`/`_u_value` on slab, unheated basement and
+crawlspace; `wind_velocity_at_10m_m_s` and `wind_shield_factor` on the crawlspace; none of them
+has a WUFI target). `phpp_app.write_project_ground` writes one foundation per variant into
+`Ground` building section 1, dispatching on the concrete class:
+
+| PHX | PHPP `Ground` (section 1) |
+|---|---|
+| `PhxGround.ground_thermal_conductivity` | `H9` |
+| `ground_density` × `ground_heat_capacity` / 1e6 (J/(m³K) → MJ/(m³K)) | `H10` |
+| `depth_groundwater`, `flow_rate_groundwater` | `H53`, `H54` |
+| class → type selector (siblings cleared) | `C24` slab / `C30` heated / `C33` unheated / `C40` crawlspace |
+| exposed perimeter (crawlspace: `crawlspace_floor_exposed_perimeter_m`) | `H19` |
+| slab: insulation width/depth, thickness, conductivity | `H25`, `H26`, `H27` |
+| slab: `perim_insulation_position == HORIZONTAL` | `P25` (`"x"`; blank = vertical, `P26` derives) |
+| slab / unheated / crawlspace: interior wall to heated, area and U | `H28`/`P28`, `H36`/`P36`, `H44`/`P44` |
+| heated: perimeter × `slab_depth_below_grade_m`, `basement_wall_u_value` | `H31`, `P31` |
+| unheated: perimeter × `basement_wall_height_above_grade_m`, U above grade | `H34`, `P34` |
+| unheated: perimeter × `slab_depth_below_grade_m`, U below grade | `H35`, `P35` |
+| unheated: `basement_ventilation_ach`, `basement_volume_m3`, `floor_slab_u_value` | `H37`, `H38`, `P37` |
+| crawlspace: floor U, wall height, wall U | `H41`, `H42`, `H43` |
+| crawlspace: vent opening area, wind velocity, wind shield factor | `P41`, `P42`, `P43` |
+
+The floor area and U-value (`H18`/`P18`) are formulas reading `Areas`, so the foundation's own
+`floor_slab_area_m2`, ceiling U-values and slab U-value on slab/heated types are WUFI-only. The
+writer refuses a heated basement whose below-grade wall area or U-value is not above zero (PHPP
+flags `Ground!S31`), a bare `PhxFoundation`, a `foundation_type_num` that contradicts the class,
+and more than one foundation per variant: sections 2 and 3 have no `Areas` link, so a second
+foundation would count its floor area twice. `H48` (phase shift) is never written.
+
 **Program composition:** HB stores loads and schedules separately. PHX pairs them: `PhxProgramVentilation` = `PhxLoadVentilation` + `PhxScheduleVentilation`.
 
 **HVAC disaggregation:** HB uses high-level `IdealAirSystem`. PHX disaggregates into specific device types (ventilators, heaters, heat pumps, hot water tanks, piping) with usage profiles specifying coverage percentages.

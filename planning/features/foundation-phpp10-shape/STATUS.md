@@ -1,7 +1,8 @@
 # Status — Foundation model shape for PHPP 10.x `Ground`
 
-**Status:** PHX model half implemented on branch `feat/foundation-phpp10-fields` —
-2026-09-12 ([#120](https://github.com/PH-Tools/PHX/issues/120) Part A). honeybee-ph
+**Status:** PHX model half merged to main — 2026-09-12 (PR
+[#121](https://github.com/PH-Tools/PHX/pull/121), [#120](https://github.com/PH-Tools/PHX/issues/120)
+Part A). The `05` `Ground` writer consuming it is implemented (#120 Part B). honeybee-ph
 released 2026-09 (PH-Tools/honeybee_ph#111, merged #123, `honeybee-ph` **1.33.64**).
 
 ## Current state

@@ -507,8 +507,7 @@
         }
     },
     "GROUND": {
-        "name": "Ground",
-        "columns": {}
+        "name": "Ground"
     },
     "COMPONENTS": {
         "name": "Components",
