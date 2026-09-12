@@ -596,13 +596,15 @@ class VentilationInputItem(BaseModel):
     locator_string: str
     input_column: str
     unit: str | None = None
+    options: dict | None = None
 
 
 class Ventilation(BaseModel):
     name: str
     vent_type: VentilationInputItem
-    wind_coeff_e: VentilationInputItem
-    wind_coeff_f: VentilationInputItem
+    wind_protection_class: VentilationInputItem | None = None
+    wind_coeff_e: VentilationInputItem | None = None
+    wind_coeff_f: VentilationInputItem | None = None
     airtightness_n50: VentilationInputItem
     airtightness_Vn50: VentilationInputItem
     multi_unit_on: VentilationInputItem

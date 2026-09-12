@@ -58,18 +58,30 @@ class Ventilation:
             self.shape.vent_type.locator_col,
             self.shape.vent_type.locator_string,
         )
-        self.io_wind_coeff_e = VentilationInputLocation(
-            self.xl,
-            self.shape.name,
-            self.shape.wind_coeff_e.locator_col,
-            self.shape.wind_coeff_e.locator_string,
-        )
-        self.io_wind_coeff_f = VentilationInputLocation(
-            self.xl,
-            self.shape.name,
-            self.shape.wind_coeff_f.locator_col,
-            self.shape.wind_coeff_f.locator_string,
-        )
+        self.io_wind_protection_class = None
+        if self.shape.wind_protection_class:
+            self.io_wind_protection_class = VentilationInputLocation(
+                self.xl,
+                self.shape.name,
+                self.shape.wind_protection_class.locator_col,
+                self.shape.wind_protection_class.locator_string,
+            )
+        self.io_wind_coeff_e = None
+        if self.shape.wind_coeff_e:
+            self.io_wind_coeff_e = VentilationInputLocation(
+                self.xl,
+                self.shape.name,
+                self.shape.wind_coeff_e.locator_col,
+                self.shape.wind_coeff_e.locator_string,
+            )
+        self.io_wind_coeff_f = None
+        if self.shape.wind_coeff_f:
+            self.io_wind_coeff_f = VentilationInputLocation(
+                self.xl,
+                self.shape.name,
+                self.shape.wind_coeff_f.locator_col,
+                self.shape.wind_coeff_f.locator_string,
+            )
         self.io_air_change_rate = VentilationInputLocation(
             self.xl,
             self.shape.name,
@@ -104,10 +116,19 @@ class Ventilation:
         self._write_input(self.io_vent_type, _phpp_model_obj)
 
     def write_wind_coeff_e(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
+        if self.io_wind_coeff_e is None:
+            raise ValueError("Ventilation shape has no wind-coefficient-e input.")
         self._write_input(self.io_wind_coeff_e, _phpp_model_obj)
 
     def write_wind_coeff_f(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
+        if self.io_wind_coeff_f is None:
+            raise ValueError("Ventilation shape has no wind-coefficient-f input.")
         self._write_input(self.io_wind_coeff_f, _phpp_model_obj)
+
+    def write_wind_protection_class(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
+        if self.io_wind_protection_class is None:
+            raise ValueError("Ventilation shape has no wind-protection-class input.")
+        self._write_input(self.io_wind_protection_class, _phpp_model_obj)
 
     def write_airtightness_n50(self, _phpp_model_obj: ventilation_data.VentilationInputItem) -> None:
         self._write_input(self.io_air_change_rate, _phpp_model_obj)

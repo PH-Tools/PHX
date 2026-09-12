@@ -1038,15 +1038,15 @@
             "locator_string": "Type of ventilation",
             "input_column": "K"
         },
-        "wind_coeff_e": {
+        "wind_protection_class": {
             "locator_col": "I",
             "locator_string": "Wind protection coefficient, e",
-            "input_column": "J"
-        },
-        "wind_coeff_f": {
-            "locator_col": "I",
-            "locator_string": "Wind protection coefficient, f",
-            "input_column": "J"
+            "input_column": "K",
+            "options": {
+                "0.1": "1-No protection",
+                "0.07": "2-Moderate protection",
+                "0.04": "3-High protection"
+            }
         },
         "airtightness_n50": {
             "locator_col": "I",

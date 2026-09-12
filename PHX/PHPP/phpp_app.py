@@ -925,6 +925,7 @@ class PHPPConnection:
         if self.easyPh:
             return None
 
+        wind_coeff_f_warning_emitted = False
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
 
@@ -932,13 +933,29 @@ class PHPPConnection:
                 continue
             ph_bldg: certification.PhxPhBuildingData = variant.phius_cert.ph_building_data
 
-            # TODO: Get the actual values from the Model somehow
-            self.ventilation.write_wind_coeff_e(
-                ventilation_data.VentilationInputItem.wind_coeff_e(self.shape.VENTILATION, ph_bldg.wind_coefficient_e)
-            )
-            self.ventilation.write_wind_coeff_f(
-                ventilation_data.VentilationInputItem.wind_coeff_f(self.shape.VENTILATION, ph_bldg.wind_coefficient_f)
-            )
+            if self.shape.VENTILATION.wind_protection_class:
+                self.ventilation.write_wind_protection_class(
+                    ventilation_data.VentilationInputItem.wind_protection_class(
+                        self.shape.VENTILATION, ph_bldg.wind_coefficient_e
+                    )
+                )
+                if ph_bldg.wind_coefficient_f != 15 and not wind_coeff_f_warning_emitted:
+                    self.xl.output(
+                        f"\nPHPPVentilationWarning: PHPP 10 fixes wind coefficient f at 15; "
+                        f"the model value {ph_bldg.wind_coefficient_f:g} was not written."
+                    )
+                    wind_coeff_f_warning_emitted = True
+            else:
+                self.ventilation.write_wind_coeff_e(
+                    ventilation_data.VentilationInputItem.wind_coeff_e(
+                        self.shape.VENTILATION, ph_bldg.wind_coefficient_e
+                    )
+                )
+                self.ventilation.write_wind_coeff_f(
+                    ventilation_data.VentilationInputItem.wind_coeff_f(
+                        self.shape.VENTILATION, ph_bldg.wind_coefficient_f
+                    )
+                )
             self.ventilation.write_airtightness_n50(
                 ventilation_data.VentilationInputItem.airtightness_n50(self.shape.VENTILATION, ph_bldg.airtightness_n50)
             )
