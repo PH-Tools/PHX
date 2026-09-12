@@ -32,7 +32,6 @@ except ImportError as e:
 
 try:
     from honeybee_energy_ph.dwellings import total_dwelling_count
-    from honeybee_energy_ph.properties.load.equipment import ElectricEquipmentPhProperties
     from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
     from honeybee_energy_ph.properties.load.process import ProcessPhProperties
 except ImportError as e:
@@ -383,26 +382,6 @@ def merge_elec_equip(_hb_rooms: list[room.Room]) -> ElectricEquipment:
             ),
         )
 
-    # -- Collect all the unique PH-Equipment in all the rooms.
-    # -- Increase the quantity for each duplicate piece of equipment found.
-    ph_equipment = {}
-    for room in _hb_rooms:
-        try:
-            room_electric_equipment = get_room_electric_equipment(room)
-            room_ee_prop = room_electric_equipment.properties
-            room_ee_prop_ph: ElectricEquipmentPhProperties = room_ee_prop.ph
-
-            # TODO: Deprecate...
-            # -- Get the Equipment from the HB-Elec-Equip (old method < Jan 2025)
-            for equip_key, equip in room_ee_prop_ph.equipment_collection.items():
-                try:
-                    ph_equipment[equip_key].quantity += 1
-                except KeyError:
-                    ph_equipment[equip_key] = equip
-        except MissingEnergyPropertiesError:
-            # Room has no electric equipment, skip it
-            continue
-
     # -- Calculate the total Watts of all of the HBE-Elec-Equipment in the rooms
     total_floor_area = sum(rm.floor_area for rm in _hb_rooms) or 0.0
     total_watts = 0.0
@@ -418,7 +397,7 @@ def merge_elec_equip(_hb_rooms: list[room.Room]) -> ElectricEquipment:
             # Room has no electric equipment, skip it
             continue
 
-    # -- Build a new HBE-Elec-Equip from the reference room, add all the PH-Equipment to it.
+    # -- Build a new HBE-Elec-Equip from the reference room
     if reference_electric_equipment is None:
         # No electric equipment found on any rooms - create a default
         logger.warning(
@@ -432,11 +411,6 @@ def merge_elec_equip(_hb_rooms: list[room.Room]) -> ElectricEquipment:
     else:
         new_hb_equip: ElectricEquipment = reference_electric_equipment.duplicate()  # type: ignore
         new_hb_equip.watts_per_area = total_watts / total_floor_area if total_floor_area > 0 else 0.0
-    new_hb_equip_prop_ph: ElectricEquipmentPhProperties = new_hb_equip.properties.ph
-    new_hb_equip_prop_ph.equipment_collection.remove_all_equipment()
-
-    for ph_item in ph_equipment.values():
-        new_hb_equip_prop_ph.equipment_collection.add_equipment(ph_item)
 
     return new_hb_equip
 
