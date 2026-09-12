@@ -327,6 +327,13 @@ class PHPPConnection:
                     target_unit=self.shape.VERIFICATION.setpoint_summer.unit,
                 )
             )
+            self.verification.write_item(
+                verification_data.VerificationInput.item(
+                    shape=self.shape.VERIFICATION,
+                    input_type="mechanical_cooling",
+                    input_data="x" if phx_variant.phius_cert.ph_building_data.setpoints.mechanical_cooling else "",
+                )
+            )
 
         return None
 
