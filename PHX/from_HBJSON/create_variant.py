@@ -9,7 +9,7 @@ logger = logging.getLogger()
 from honeybee import room
 from honeybee_energy.load.process import Process
 from honeybee_energy.properties.room import RoomEnergyProperties
-from honeybee_energy_ph.properties.load import equipment, lighting, people, process
+from honeybee_energy_ph.properties.load import lighting, people, process
 from honeybee_ph import phi, phius, site
 from honeybee_ph.bldg_segment import BldgSegment
 from honeybee_ph.properties.room import RoomPhProperties, get_ph_prop_from_room
@@ -27,7 +27,6 @@ from PHX.from_HBJSON import create_building, create_elec_equip, create_foundatio
 from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
 from PHX.from_HBJSON._type_utils import (
     MissingEnergyPropertiesError,
-    get_room_electric_equipment,
     get_room_energy_properties,
     get_room_infiltration,
     get_room_people,
@@ -875,19 +874,6 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
         * None
     """
     logger.debug(f"add_elec_equip_from_hb_room({_variant.id_num=}, {_hb_room.display_name=})")
-
-    # -- Get all the PhEquipment from the HBE-Electric-Equipment
-    try:
-        room_hb_energy_elec_equip = get_room_electric_equipment(_hb_room)
-        ee_properties_ph: equipment.ElectricEquipmentPhProperties = room_hb_energy_elec_equip.properties.ph
-        for equip_key, device in ee_properties_ph.equipment_collection.items():
-            phx_elec_device = create_elec_equip.build_phx_elec_device(device)
-            for zone in _variant.building.zones:
-                zone.elec_equipment_collection.add_new_device(equip_key, phx_elec_device)
-    except MissingEnergyPropertiesError:
-        # No electric equipment defined, skip
-        logger.debug(f"No electric equipment defined for room: '{_hb_room.display_name}', skipping.")
-        pass
 
     # -- Get all the PhEquipment from the HBE-Process-Loads
     try:
