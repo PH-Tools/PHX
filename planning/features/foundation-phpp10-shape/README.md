@@ -2,9 +2,11 @@
 
 **Issue:** [#104](https://github.com/PH-Tools/PHX/issues/104)
 
-**Status:** Scoped — 2026-08-15. No code changed. Blocks the `Ground` writer
+**Status:** honeybee-ph released (1.33.64); PHX model half implemented on branch
+`feat/foundation-phpp10-fields` (2026-09-12, [#120](https://github.com/PH-Tools/PHX/issues/120) Part A).
+Schema and GH halves open; the `Ground` writer
 ([`../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md))
-and OpenPH's foundation work.
+is unblocked on the model side. See [`STATUS.md`](STATUS.md).
 **Filed from:** OpenPH `planning/features/ground-degree-hours-alignment/` (Root 1 of the
 `native_reference` ground gap), on Ed's call 2026-08-15: *"we want to properly build out
 the right objects to properly support the PHPP `Ground` worksheet correctly … PHX currently

@@ -84,6 +84,10 @@ class PhxUnHeatedBasement(PhxFoundation):
         floor_slab_u_value (float | None): U-value of the basement floor slab [W/m2K]. Default: 0.0.
         basement_volume_m3 (float | None): Interior volume of the basement [m3]. Default: 0.0.
         basement_ventilation_ach (float | None): Air change rate of the basement [ACH]. Default: 0.0.
+        interior_wall_to_heated_area_m2 (float): Area of the interior wall towards the heated part of the
+            building [m2]. PHPP 10 only (Ground!H36). Default: 0.0.
+        interior_wall_to_heated_u_value (float): U-value of that interior wall [W/m2K]. PHPP 10 only
+            (Ground!P36). Default: 0.0.
     """
 
     def __init__(self):
@@ -98,6 +102,8 @@ class PhxUnHeatedBasement(PhxFoundation):
         self.floor_slab_u_value: float | None = 0.0
         self.basement_volume_m3: float | None = 0.0
         self.basement_ventilation_ach: float | None = 0.0
+        self.interior_wall_to_heated_area_m2: float = 0.0
+        self.interior_wall_to_heated_u_value: float = 0.0
 
 
 class PhxSlabOnGrade(PhxFoundation):
@@ -111,10 +117,15 @@ class PhxSlabOnGrade(PhxFoundation):
         floor_slab_u_value (float | None): U-value of the floor slab [W/m2K]. Default: 1.0.
         floor_slab_exposed_perimeter_m (float | None): Exposed perimeter of the floor slab [m]. Default: 0.0.
         perim_insulation_width_or_depth_m (float | None): Horizontal width or vertical depth of perimeter
-            insulation [m]. Default: 0.300.
-        perim_insulation_thickness_m (float | None): Thickness of the perimeter insulation [m]. Default: 0.050.
+            insulation [m]. Default: 0.0 (no perimeter insulation, matching PHPP).
+        perim_insulation_thickness_m (float | None): Thickness of the perimeter insulation [m].
+            Default: 0.0 (no perimeter insulation, matching PHPP).
         perim_insulation_conductivity (float | None): Thermal conductivity of the perimeter insulation [W/mK].
-            Default: 0.04.
+            Default: 0.0 (no perimeter insulation, matching PHPP).
+        interior_wall_to_heated_area_m2 (float): Area of the interior wall towards the heated part of the
+            building [m2]. PHPP 10 only (Ground!H28). Default: 0.0.
+        interior_wall_to_heated_u_value (float): U-value of that interior wall [W/m2K]. PHPP 10 only
+            (Ground!P28). Default: 0.0.
     """
 
     def __init__(self):
@@ -123,9 +134,11 @@ class PhxSlabOnGrade(PhxFoundation):
         self.floor_slab_u_value: float | None = 1.0
         self.floor_slab_exposed_perimeter_m: float | None = 0.0
         self._perim_insulation_position: PerimeterInsulationPosition = PerimeterInsulationPosition.VERTICAL
-        self.perim_insulation_width_or_depth_m: float | None = 0.300
-        self.perim_insulation_thickness_m: float | None = 0.050
-        self.perim_insulation_conductivity: float | None = 0.04
+        self.perim_insulation_width_or_depth_m: float | None = 0.0
+        self.perim_insulation_thickness_m: float | None = 0.0
+        self.perim_insulation_conductivity: float | None = 0.0
+        self.interior_wall_to_heated_area_m2: float = 0.0
+        self.interior_wall_to_heated_u_value: float = 0.0
 
     @property
     def perim_insulation_position(self) -> PerimeterInsulationPosition:
@@ -160,6 +173,15 @@ class PhxVentedCrawlspace(PhxFoundation):
         crawlspace_vent_opening_are_m2 (float | None): Total area of crawlspace ventilation openings [m2].
             Default: 0.0.
         crawlspace_wall_u_value (float | None): U-value of the crawlspace perimeter walls [W/m2K]. Default: 1.0.
+        wind_velocity_at_10m_m_s (float): Average site wind velocity at 10m height [m/s] (Ground!P42).
+            Default: 4.0, the PHPP value.
+        wind_shield_factor (float): Wind-shield factor for the crawlspace ventilation openings (Ground!P43).
+            A free float, not an enum: PHPP accepts any number; the PHPP manual gives 0.02 / 0.05 / 0.10 for
+            protected / average / exposed sites. Default: 0.05, the PHPP value.
+        interior_wall_to_heated_area_m2 (float): Area of the interior wall towards the heated part of the
+            building [m2]. PHPP 10 only (Ground!H44). Default: 0.0.
+        interior_wall_to_heated_u_value (float): U-value of that interior wall [W/m2K]. PHPP 10 only
+            (Ground!P44). Default: 0.0.
     """
 
     def __init__(self):
@@ -171,6 +193,10 @@ class PhxVentedCrawlspace(PhxFoundation):
         self.crawlspace_floor_u_value: float | None = 1.0
         self.crawlspace_vent_opening_are_m2: float | None = 0.0
         self.crawlspace_wall_u_value: float | None = 1.0
+        self.wind_velocity_at_10m_m_s: float = 4.0
+        self.wind_shield_factor: float = 0.05
+        self.interior_wall_to_heated_area_m2: float = 0.0
+        self.interior_wall_to_heated_u_value: float = 0.0
 
 
 # type alias

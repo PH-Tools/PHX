@@ -68,9 +68,9 @@ def test_default_PhxSlabOnGrade(reset_class_counters):
         "<FloorSlabPerimeter_Selection>6</FloorSlabPerimeter_Selection>",
         "<FloorSlabPerimeter>0.0</FloorSlabPerimeter>",
         "<PositionPerimeterInsulation>3</PositionPerimeterInsulation>",
-        "<PerimeterInsulationWidthDepth>0.3</PerimeterInsulationWidthDepth>",
-        "<ConductivityPerimeterInsulation>0.04</ConductivityPerimeterInsulation>",
-        "<ThicknessPerimeterInsulation>0.05</ThicknessPerimeterInsulation>",
+        "<PerimeterInsulationWidthDepth>0.0</PerimeterInsulationWidthDepth>",
+        "<ConductivityPerimeterInsulation>0.0</ConductivityPerimeterInsulation>",
+        "<ThicknessPerimeterInsulation>0.0</ThicknessPerimeterInsulation>",
     ]
 
 
