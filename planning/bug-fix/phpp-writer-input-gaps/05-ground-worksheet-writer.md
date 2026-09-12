@@ -1,8 +1,8 @@
 # The `Ground` worksheet has no writer at all
 
-**Status:** Implemented on branch `feat/phpp-ground-writer` — 2026-09-12
-([#120](https://github.com/PH-Tools/PHX/issues/120) Part B). Phases 0–6 done; see
-*As implemented* at the end. Single-foundation (building section 1) only.
+**Status:** Merged to main — 2026-09-12 (PR [#122](https://github.com/PH-Tools/PHX/pull/122),
+released in PHX 1.56.106; closes [#120](https://github.com/PH-Tools/PHX/issues/120)). Phases 0–6
+done; see *As implemented* at the end. Single-foundation (building section 1) only.
 **Opened:** 2026-08-15
 **Owner:** `PHX/PHPP/` — no owner today; `GROUND` is an unused stub
 **Umbrella:** [`README.md`](README.md)
@@ -304,6 +304,9 @@ in the OpenPH packet's `STATUS.md` "Blockers".
   `EN_10_6`; it is absent in `EN_9_6A`/`EN_9_7IP` (different layout, no `AwI`) **and in
   `EN_10_4IP`/`EN_10_6IP`** (no IP workbook exists to confirm the `Ground` unit labels). The writer
   skips an unmapped layout and says so via `xl.output`. #49 stays open for v9.
+- **Public replay fixture: accepted as is.** `tests/test_xl_replay/fixtures/single_zone_replay.json`
+  (committed 2026-07-15) carries seed and recalc cells read from the licensed template. Ed accepted
+  it on 2026-09-12; new fixtures that carry template-read cells go in `tests/test_xl_replay/_private/`.
 
 ### What shipped
 

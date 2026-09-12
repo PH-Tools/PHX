@@ -2,7 +2,8 @@
 
 **Status:** PHX model half merged to main — 2026-09-12 (PR
 [#121](https://github.com/PH-Tools/PHX/pull/121), [#120](https://github.com/PH-Tools/PHX/issues/120)
-Part A). The `05` `Ground` writer consuming it is implemented (#120 Part B). honeybee-ph
+Part A). The `05` `Ground` writer consuming it is merged too (PR
+[#122](https://github.com/PH-Tools/PHX/pull/122), PHX 1.56.106). honeybee-ph
 released 2026-09 (PH-Tools/honeybee_ph#111, merged #123, `honeybee-ph` **1.33.64**).
 
 ## Current state
@@ -43,16 +44,19 @@ Not done here (PRD §5, not in #120's scope): subclasses still do not set
 ## Blocks
 
 - [`../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md)
-  — now unblocked on the model side ([#120](https://github.com/PH-Tools/PHX/issues/120) Part B).
-- OpenPH `planning/features/ground-degree-hours-alignment/` Phase 02
-  (foundation objects) — waits for the PHX release.
+  — done, merged in PR [#122](https://github.com/PH-Tools/PHX/pull/122).
+- OpenPH `planning/features/ground-degree-hours-alignment/` Phases 03–04
+  (foundation objects, fixture retype) — PHX side released (1.56.106); tracked in
+  [Open-PH/openph-workspace#3](https://github.com/Open-PH/openph-workspace/issues/3).
 
 ## On completion
 
 Write the OpenPH hand-off doc described in `PRD.md` §"Hand-off to OpenPH"
 (`openph-workspace/planning/features/ground-degree-hours-alignment/upstream/phx-foundation-phpp10-shape.md`)
 before marking this `Complete`. Owed once honeybee-ph (released), `honeybee-ph-schema`
-(no issue or PR found yet), GH (PH-Tools/honeybee_grasshopper_ph#79) and PHX are released.
+(no issue or PR found yet), GH (PH-Tools/honeybee_grasshopper_ph#79) and PHX (1.56.106, done) are
+released. The OpenPH side tracks it in
+[Open-PH/openph-workspace#3](https://github.com/Open-PH/openph-workspace/issues/3).
 
 ## Cross-repo pointers
 
