@@ -64,7 +64,8 @@ class GroundFoundationBlock:
 
         def item(_name: str, _value: xl_data.xl_writable, _input_unit: str | None = None) -> xl_data.XlItem:
             if _value is None:
-                return xl_data.XlItem(_sheet_name, address(_name), UNCHECKED)
+                # -- An unset model value leaves the input blank, as the template ships it.
+                return xl_data.XlItem(_sheet_name, address(_name), "")
             target_unit = getattr(block.inputs, _name).unit
             return xl_data.XlItem(_sheet_name, address(_name), _value, _input_unit, target_unit)
 
