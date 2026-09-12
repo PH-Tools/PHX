@@ -14,7 +14,10 @@ live Excel.
    (`--yes` skips the prompt; only use it when you are certain).
 2. **Never open the PHPP template for a write-run.** `profile_export.py`
    always copies the template into the scratch dir first. Keep PHPP copies
-   under `plans/` (gitignored) — never under `tests/` or `scripts/`.
+   outside the repo or under `plans/` (gitignored) — never under `tests/` or `scripts/`.
+   On macOS the default scratch dir is `~/Library/Containers/com.microsoft.Excel/Data/phx-perf-scratch/`:
+   sandboxed Excel opens files there without a "Grant Access" dialog. Elsewhere it is the packet's
+   `scratch/` under `plans/`.
 3. Nothing here ever attaches to `books.active` unattended — workbooks are
    always targeted by explicit path, or are brand-new scratch books.
 
