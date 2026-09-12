@@ -20,6 +20,8 @@ To (re-)record the fixture: 'python scripts/perf/record_replay_fixture.py'.
 import json
 import pathlib
 
+import pytest
+
 from PHX.from_HBJSON import create_project, read_HBJSON_file
 from PHX.hbjson_to_phpp import write_phx_project_to_phpp
 from PHX.PHPP import phpp_app
@@ -29,6 +31,8 @@ from tests.test_xl_replay.fake_xl_framework import FakeXLFramework
 FIXTURES_DIR = pathlib.Path(__file__).parent / "fixtures"
 FIXTURE_FILE = FIXTURES_DIR / "single_zone_replay.json"
 HBJSON_FILE = FIXTURES_DIR / "Single_Zone.hbjson"
+FOUNDATION_FIXTURE_FILE = pathlib.Path(__file__).parent / "_private" / "single_zone_slab_on_grade_replay.json"
+FOUNDATION_HBJSON_FILE = FIXTURES_DIR / "Single_Zone_Slab_On_Grade.hbjson"
 
 
 def _diff_cell_states(result: dict, golden: dict) -> list[str]:
@@ -54,10 +58,22 @@ def test_full_export_replay_matches_golden_cell_state(reset_class_counters) -> N
         f"Replay fixture not found: {FIXTURE_FILE}. It is versioned in-repo; "
         "re-record with 'python scripts/perf/record_replay_fixture.py' if it was removed intentionally."
     )
-    fixture = json.loads(FIXTURE_FILE.read_text())
+    _assert_replay_matches_golden(FIXTURE_FILE, HBJSON_FILE)
+
+
+@pytest.mark.skipif(not FOUNDATION_FIXTURE_FILE.exists(), reason="private fixture absent (see _private/MANIFEST.md)")
+def test_foundation_export_replay_matches_golden_cell_state(reset_class_counters) -> None:
+    # -- 'Single_Zone.hbjson' has no foundation, so the fixture above never reaches the
+    # -- 'Ground' writer. This one does; its seed is read from the licensed PHPP
+    # -- template, so it lives in the gitignored '_private/' folder and skips without it.
+    _assert_replay_matches_golden(FOUNDATION_FIXTURE_FILE, FOUNDATION_HBJSON_FILE)
+
+
+def _assert_replay_matches_golden(_fixture_file: pathlib.Path, _hbjson_file: pathlib.Path) -> None:
+    fixture = json.loads(_fixture_file.read_text())
 
     # -- Build the reference PhxProject (deterministic: counters are reset).
-    hb_json_dict = read_HBJSON_file.read_hb_json_from_file(HBJSON_FILE)
+    hb_json_dict = read_HBJSON_file.read_hb_json_from_file(_hbjson_file)
     hb_model = read_HBJSON_file.convert_hbjson_dict_to_hb_model(hb_json_dict)
     phx_project = create_project.convert_hb_model_to_PhxProject(hb_model, _group_components=True)
 

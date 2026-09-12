@@ -107,6 +107,9 @@ changes accordingly — everything else in this packet stands.
 
 ### Phase 2 — a shared radio-group write helper
 
+> **Done 2026-09-12**, shipped with `05`: `PHX/PHPP/phpp_model/xl_checkbox_group.py`
+> (`checkbox_group_items`), tests in `tests/test_PHPP/test_phpp_model/test_xl_checkbox_group.py`.
+
 `SummVent!R15:R18` and `Ground!C24/C30/C33/C40` (packet [05](05-ground-worksheet-writer.md))
 are the same shape of problem: a set of mutually exclusive `x` cells where
 exactly one must be set and the siblings cleared. PHPP does not flag two ticked

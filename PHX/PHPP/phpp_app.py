@@ -17,6 +17,7 @@ from PHX.PHPP.phpp_model import (
     component_glazing,
     component_vent,
     electricity_item,
+    ground_data,
     hot_water_piping,
     hot_water_tank,
     shading_rows,
@@ -96,6 +97,7 @@ class PHPPConnection:
         self.u_values = sheet_io.UValues(self.xl, self.shape.UVALUES)
         self.components = sheet_io.Components(self.xl, self.shape.COMPONENTS)
         self.areas = sheet_io.Areas(self.xl, self.shape.AREAS)
+        self.ground = sheet_io.Ground(self.xl, self.shape.GROUND)
         self.windows = sheet_io.Windows(self.xl, self.shape.WINDOWS)
         self.shading = sheet_io.Shading(self.xl, self.shape.SHADING)
         self.addnl_vent = sheet_io.AddnlVent(self.xl, self.shape.ADDNL_VENT)
@@ -568,6 +570,45 @@ class PHPPConnection:
                 letter, desc = config
                 used.add((surface.phpp_group_number_int, letter, desc))
         return used
+
+    def write_project_ground(self, phx_project: project.PhxProject) -> None:
+        """Write the foundation to building section 1 of the PHPP 'Ground' worksheet.
+
+        One foundation per variant: 'Ground!H18' reads the single 'Areas' floor-slab
+        total, so a second foundation written into section 2 would count its floor
+        area twice. Multi-section support needs that 'Areas' total split per foundation.
+        """
+        if self.easyPh:
+            return None
+
+        for variant in phx_project.variants:
+            # TODO: How to handle multiple variants?
+
+            if not variant.phius_cert.ph_building_data:
+                continue
+            if not (foundations := variant.phius_cert.ph_building_data.foundations):
+                continue
+
+            if not self.shape.GROUND.input_block:
+                self.xl.output(
+                    f"\nPHPP Ground: the '{self.shape.GROUND.name}' worksheet layout is not mapped for "
+                    f"PHPP {self.version.number_major}.{self.version.number_minor} {self.version.language}. "
+                    f"{len(foundations)} foundation(s) not written.\n"
+                )
+                return None
+
+            if len(foundations) > 1:
+                raise ground_data.GroundExportError(
+                    f"The PHPP 'Ground' export supports one foundation per variant (building section 1), "
+                    f"but variant '{variant.name}' has {len(foundations)}: "
+                    f"{[_.display_name for _ in foundations]}. Merge them into one, or enter the extra "
+                    "building sections in PHPP by hand."
+                )
+
+            self.ground.write_foundation(
+                ground_data.GroundFoundationBlock(self.shape.GROUND, variant.site.ground, foundations[0])
+            )
+        return None
 
     def write_project_thermal_bridges(self, phx_project: project.PhxProject) -> None:
         """Write all of the thermal-bridge elements of a PhxProject to the PHPP 'Areas' worksheet."""

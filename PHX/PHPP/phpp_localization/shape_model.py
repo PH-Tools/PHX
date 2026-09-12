@@ -2,6 +2,8 @@
 
 """Data model of the PHPP 'Shape' (worksheet names and input column names)."""
 
+from typing import Literal
+
 from pydantic import BaseModel
 
 # -----------------------------------------------------------------------------
@@ -341,12 +343,75 @@ class Areas(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColGround(BaseModel): ...
+class GroundSection(BaseModel):
+    """The column letters of one of the three side-by-side 'Ground' building sections."""
+
+    selector: str
+    left: str
+    right: str
+
+
+class GroundInput(BaseModel):
+    """One 'Ground' input: its column role within a section, and its row offset from the located header."""
+
+    column: Literal["selector", "left", "right"]
+    row_offset: int
+    unit: str | None = None
+
+
+class GroundInputs(BaseModel):
+    soil_conductivity: GroundInput
+    soil_heat_capacity: GroundInput
+    perimeter: GroundInput
+    groundwater_depth: GroundInput
+    groundwater_flow_rate: GroundInput
+
+    slab_on_grade: GroundInput
+    slab_perim_insulation_width: GroundInput
+    slab_perim_insulation_thickness: GroundInput
+    slab_perim_insulation_conductivity: GroundInput
+    slab_perim_insulation_horizontal: GroundInput
+    slab_interior_wall_area: GroundInput
+    slab_interior_wall_u_value: GroundInput
+
+    heated_basement: GroundInput
+    heated_basement_wall_below_area: GroundInput
+    heated_basement_wall_below_u_value: GroundInput
+
+    unheated_basement: GroundInput
+    unheated_basement_wall_above_area: GroundInput
+    unheated_basement_wall_above_u_value: GroundInput
+    unheated_basement_wall_below_area: GroundInput
+    unheated_basement_wall_below_u_value: GroundInput
+    unheated_basement_interior_wall_area: GroundInput
+    unheated_basement_interior_wall_u_value: GroundInput
+    unheated_basement_air_change_rate: GroundInput
+    unheated_basement_floor_u_value: GroundInput
+    unheated_basement_volume: GroundInput
+
+    crawlspace: GroundInput
+    crawlspace_floor_u_value: GroundInput
+    crawlspace_vent_opening_area: GroundInput
+    crawlspace_wall_height: GroundInput
+    crawlspace_wind_velocity: GroundInput
+    crawlspace_wall_u_value: GroundInput
+    crawlspace_wind_shield_factor: GroundInput
+    crawlspace_interior_wall_area: GroundInput
+    crawlspace_interior_wall_u_value: GroundInput
+
+
+class GroundInputBlock(BaseModel):
+    locator_col_header: str
+    locator_string_header: str
+    sections: list[GroundSection]
+    inputs: GroundInputs
 
 
 class Ground(BaseModel):
     name: str
-    columns: ColGround
+    #: None where the worksheet layout is not mapped (PHPP 9.x, and the 10.x IP editions,
+    #: whose units have not been checked against a workbook). The writer skips those.
+    input_block: GroundInputBlock | None = None
 
 
 # -----------------------------------------------------------------------------
