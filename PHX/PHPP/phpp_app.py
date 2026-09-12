@@ -216,90 +216,96 @@ class PHPPConnection:
         """Return True if the PHX PHI Certification Version and the PHPP Version match."""
         return int(_phx_variant.phi_certification_major_version) == int(self.version.number_major)
 
+    def _write_phi_certification_selections(self, _phx_variant: project.PhxVariant) -> None:
+        """Write version-specific PHI certification selections for one Variant."""
+        # --- Building Type / Use
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_building_category_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_building_category_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_building_use_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_building_use_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_building_ihg_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_building_ihg_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_building_occupancy_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_building_occupancy_type,
+            )
+        )
+
+        # --- Certification Config
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_certification_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_certification_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_certification_class",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_certification_class,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_pe_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_pe_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_enerphit_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_enerphit_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_retrofit_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_retrofit_type,
+            )
+        )
+
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
         if self.easyPh:
             return None
 
+        version_warning_emitted = False
         for phx_variant in phx_project.variants:
             # TODO: how to handle multiple variants?
 
             if not self.phpp_version_equals_phx_phi_cert_version(phx_variant):
-                # -- If the versions don't match, don't try and write anything.
-                msg = (
-                    f"\nPHPPVersionWarning: the HBJSON PHI "
-                    f"Certification version (V={phx_variant.phi_certification_major_version}) "
-                    f"does not match the PHPP Version (V={self.version.number_major})? "
-                    f"Ignoring all writes to the '{self.shape.VERIFICATION.name}' worksheet.\n"
-                )
-                self.xl.output(msg)
-                return
-
-            # --- Building Type / Use
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_building_category_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_category_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_building_use_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_use_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_building_ihg_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_ihg_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_building_occupancy_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_occupancy_type,
-                )
-            )
-
-            # --- Certification Config
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_certification_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_certification_class",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_class,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_pe_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_pe_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_enerphit_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_enerphit_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_retrofit_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_retrofit_type,
-                )
-            )
+                if not version_warning_emitted:
+                    msg = (
+                        f"\nPHPPVersionWarning: the HBJSON PHI Certification version "
+                        f"(V={phx_variant.phi_certification_major_version}) does not match the PHPP Version "
+                        f"(V={self.version.number_major}). Skipping PHI certification selections on the "
+                        f"'{self.shape.VERIFICATION.name}' worksheet; dwelling units, setpoints, and mechanical "
+                        f"cooling will still be written.\n"
+                    )
+                    self.xl.output(msg)
+                    version_warning_emitted = True
+            else:
+                self._write_phi_certification_selections(phx_variant)
 
             # ---- Model Parameters
             if not phx_variant.phius_cert.ph_building_data:

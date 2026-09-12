@@ -56,7 +56,7 @@ class PhiCertType(Enum):
     ENERPHIT_BY_COMPONENT = 21
     ENERPHIT_BY_DEMAND = 22
     LOW_ENERGY_BUILDING = 30
-    OTHER = 44
+    OTHER = 40
 
 
 class PhiCertClass(Enum):
