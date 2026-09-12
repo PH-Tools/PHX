@@ -265,16 +265,16 @@ wheels = [
 
 [[package]]
 name = "honeybee-ph"
-version = "1.33.42"
+version = "1.33.59"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "honeybee-core" },
     { name = "honeybee-energy" },
     { name = "ph-units" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4f/42/21dce137c5309c54b02d6abc055a8add11f34160c95fbf80ff0a65777198/honeybee_ph-1.33.42.tar.gz", hash = "sha256:013ac6aa02e5dea27e2ec8a9c4023a7ee7d049b8eefe4039331a3573eeb64dec", size = 161243, upload-time = "2026-08-14T20:19:51.392Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/52/26/bc8e0e5811d5920a67a01d58f923e236cbe4656c760df5b8b11557766f7e/honeybee_ph-1.33.59.tar.gz", hash = "sha256:250bb95f2a242d7e44b1fefdbd91cb182b60806764e1a3a2a64700df064b0504", size = 163124, upload-time = "2026-08-29T12:19:52.319Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5a/7f/398eed08bfce9da64950e2ad5884c5531b195646da88d39862d4ebdf6f49/honeybee_ph-1.33.42-py3-none-any.whl", hash = "sha256:681264fc78ce7df53bdb74064026494ac692abee356a3bc70078d20e465ed200", size = 214167, upload-time = "2026-08-14T20:19:49.806Z" },
+    { url = "https://files.pythonhosted.org/packages/b5/26/384de6d9408b71a07d3171ffa9763676c5096a3b12455602c2a6093d8076/honeybee_ph-1.33.59-py3-none-any.whl", hash = "sha256:1985ff7c3a5777dd5231ce2aaeab5ad2cacd0851c514655c5aa1d1871854f84e", size = 215802, upload-time = "2026-08-29T12:19:50.859Z" },
 ]
 
 [[package]]
@@ -576,7 +576,7 @@ requires-dist = [
     { name = "coverage", marker = "extra == 'dev'" },
     { name = "honeybee-core", specifier = ">=1.64.9" },
     { name = "honeybee-energy", specifier = ">=1.116.103" },
-    { name = "honeybee-ph", specifier = ">=1.33.42" },
+    { name = "honeybee-ph", specifier = ">=1.33.59" },
     { name = "isort", marker = "extra == 'dev'", specifier = "==8.0.1" },
     { name = "lxml" },
     { name = "openpyxl", marker = "extra == 'dev'" },
