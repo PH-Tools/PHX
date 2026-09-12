@@ -825,19 +825,6 @@ class PHPPConnection:
         if not phpp_vent_duct_rows:
             return None
 
-        duct_section = self.addnl_vent.vent_ducts
-        first_entry_row = duct_section.section_first_entry_row or duct_section.find_section_first_entry_row()
-        duct_section.section_first_entry_row = first_entry_row
-        last_entry_row = duct_section.section_last_entry_row or duct_section.find_section_last_entry_row()
-        duct_section.section_last_entry_row = last_entry_row
-        row_capacity = last_entry_row - first_entry_row + 1
-        if len(phpp_vent_duct_rows) > row_capacity:
-            self.xl.output(
-                f"\nPHPPVentDuctWarning: {len(phpp_vent_duct_rows)} ducts exceed the {row_capacity}-row "
-                "Additional Ventilation duct-section capacity; truncating the remaining ducts.\n"
-            )
-            phpp_vent_duct_rows = phpp_vent_duct_rows[:row_capacity]
-
         self.addnl_vent.write_vent_ducts(phpp_vent_duct_rows)
         return None
 
@@ -879,9 +866,6 @@ class PHPPConnection:
                         phx_vent_pattern=phx_vent_pattern,
                     )
                     phpp_vent_rooms.append(phpp_rm)
-
-        if len(phpp_vent_rooms) >= 30:
-            pass
 
         self.addnl_vent.write_spaces(phpp_vent_rooms)
         return None
