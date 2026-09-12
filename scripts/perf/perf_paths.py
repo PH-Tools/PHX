@@ -32,9 +32,14 @@ LOCAL_CONFIG_FILE = pathlib.Path(__file__).resolve().parent / "config.local.json
 DEFAULT_PHPP = TEST_FILES_DIR / "PHPP_EN_V10.6_Empty.xlsx"
 DEFAULT_HBJSON = TEST_FILES_DIR / "Single_Zone.hbjson"
 
-# -- Scratch dir lives under 'plans/' which is gitignored, so licensed PHPP
-# -- copies can never leak into the public repo.
-DEFAULT_SCRATCH_DIR = PACKET_DIR / "scratch"
+# -- Scratch copies stay outside the public repo, so licensed PHPP copies can never leak.
+# -- On macOS they go in Excel's own sandbox container: a sandboxed Excel opens any file
+# -- there without the "Grant Access" file dialog it shows for every other folder.
+EXCEL_SANDBOX_DIR = pathlib.Path.home() / "Library" / "Containers" / "com.microsoft.Excel" / "Data"
+if platform.system() == "Darwin":
+    DEFAULT_SCRATCH_DIR = EXCEL_SANDBOX_DIR / "phx-perf-scratch"
+else:
+    DEFAULT_SCRATCH_DIR = PACKET_DIR / "scratch"  # -- 'plans/' is gitignored
 
 MINIMUM_EXCEL_BUILD = "16.102.2"
 
