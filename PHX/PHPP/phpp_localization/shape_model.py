@@ -796,7 +796,16 @@ class CoolingPeakLoad(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-class ColSummVent(BaseModel): ...
+class SummVentInputItem(BaseModel):
+    locator_col: str
+    locator_string: str
+    input_column: str
+    option_row_offsets: list[int]
+    options: dict[str, int]
+
+
+class ColSummVent(BaseModel):
+    hrv_summer_mode: SummVentInputItem | None = None
 
 
 class SummVent(BaseModel):

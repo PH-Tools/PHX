@@ -1169,7 +1169,15 @@
     },
     "SUMM_VENT": {
         "name": "SummVent",
-        "columns": {}
+        "columns": {
+            "hrv_summer_mode": {
+                "locator_col": "Q",
+                "locator_string": "HRV/ERV in summer (check only one field)",
+                "input_column": "R",
+                "option_row_offsets": [1, 2, 3, 4],
+                "options": {"1": 0, "2": 1, "3": 2, "4": 3}
+            }
+        }
     },
     "COOLING_UNITS": {
         "name": "Cooling units",

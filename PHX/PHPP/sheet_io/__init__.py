@@ -17,6 +17,7 @@ from PHX.PHPP.sheet_io.io_PER import *
 from PHX.PHPP.sheet_io.io_shading import *
 from PHX.PHPP.sheet_io.io_solar_dhw import *
 from PHX.PHPP.sheet_io.io_solar_pv import *
+from PHX.PHPP.sheet_io.io_summ_vent import *
 from PHX.PHPP.sheet_io.io_u_values import *
 from PHX.PHPP.sheet_io.io_use_non_res import *
 from PHX.PHPP.sheet_io.io_variants import *

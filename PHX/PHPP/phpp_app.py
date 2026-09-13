@@ -21,6 +21,7 @@ from PHX.PHPP.phpp_model import (
     hot_water_piping,
     hot_water_tank,
     shading_rows,
+    summ_vent_data,
     uvalues_constructor,
     vent_ducts,
     vent_space,
@@ -106,6 +107,7 @@ class PHPPConnection:
         self.cooling = sheet_io.CoolingDemand(self.xl, self.shape.COOLING_DEMAND)
         self.cooling_load = sheet_io.CoolingPeakLoad(self.xl, self.shape.COOLING_PEAK_LOAD)
         self.ventilation = sheet_io.Ventilation(self.xl, self.shape.VENTILATION)
+        self.summ_vent = sheet_io.SummVent(self.xl, self.shape.SUMM_VENT)
         self.hot_water = sheet_io.HotWater(self.xl, self.shape.DHW)
         self.electricity = sheet_io.Electricity(self.xl, self.shape.ELECTRICITY)
         self.variants = sheet_io.Variants(self.xl, self.shape.VARIANTS)
@@ -892,6 +894,30 @@ class PHPPConnection:
             )
             self.ventilation.write_multi_vent_worksheet_on(
                 ventilation_data.VentilationInputItem.multi_unit_on(self.shape.VENTILATION, "x")
+            )
+        return None
+
+    def write_project_summer_ventilation(self, phx_project: project.PhxProject) -> None:
+        """Write each Variant's summer heat-recovery mode to the PHPP 'SummVent' worksheet."""
+        if self.easyPh:
+            return None
+
+        for variant in phx_project.variants:
+            # TODO: How to handle multiple variants?
+            if not variant.phius_cert.ph_building_data:
+                continue
+
+            if not self.shape.SUMM_VENT.columns.hrv_summer_mode:
+                self.xl.output(
+                    f"\nPHPP SummVent: the '{self.shape.SUMM_VENT.name}' worksheet layout is not mapped for "
+                    f"PHPP {self.version.number_major}.{self.version.number_minor} {self.version.language}. "
+                    "Summer heat-recovery mode not written.\n"
+                )
+                return None
+
+            summer_ventilation = variant.phius_cert.ph_building_data.summer_ventilation
+            self.summ_vent.write_summer_hrv_mode(
+                summ_vent_data.SummerHrvMode(self.shape.SUMM_VENT, summer_ventilation.summer_bypass_mode)
             )
         return None
 

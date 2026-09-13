@@ -304,13 +304,19 @@ class PhxSupportiveDeviceType(Enum):
 
 
 class PhxSummerBypassMode(Enum):
-    """Summer bypass mode for the heat recovery ventilator.
+    """Summer heat-recovery mode for the Ventilator.
+
+    This is WUFI-Passive's ``SummerHRVHumidityRecovery`` field (WUFI UI:
+    "Summer HRV/ERV recovery mode") and METr's ``sumHRec`` field. Its ordinal
+    values map to the PHPP ``SummVent`` "HRV/ERV in summer" checkboxes
+    (``R15:R18`` in PHPP 10.6). The PHPP labels describe recovery, not the
+    bypass damper.
 
     Values:
-        NONE: No summer bypass.
-        TEMP_CONTROLLED: Bypass activated by temperature differential.
-        ENTHALPY_CONTROLLED: Bypass activated by enthalpy differential.
-        ALWAYS: Bypass always active in summer.
+        NONE: No summer heat recovery.
+        TEMP_CONTROLLED: Heat recovery with temperature-controlled bypass.
+        ENTHALPY_CONTROLLED: Heat recovery with enthalpy-controlled bypass.
+        ALWAYS: Heat recovery always on in summer.
     """
 
     NONE = 1
