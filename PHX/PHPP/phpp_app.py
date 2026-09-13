@@ -351,13 +351,20 @@ class PHPPConnection:
             return None
 
         for phx_variant in phx_project.variants:
-            # -- Write the actual weather station data
+            active_climate_data = climate_entry.ClimateSettings(shape=self.shape.CLIMATE, phx_site=phx_variant.site)
+            library_codes_valid = self.climate.try_library_codes(active_climate_data)
+            if library_codes_valid:
+                continue
+
+            # -- Write model weather data when the library selection is invalid,
+            # -- or unconditionally for an older shape that has no validation gate.
             weather_station_data = climate_entry.ClimateDataBlock(shape=self.shape.CLIMATE, phx_site=phx_variant.site)
             self.climate.write_climate_block(weather_station_data)
 
-            # -- Set the active weather station
-            active_climate_data = climate_entry.ClimateSettings(shape=self.shape.CLIMATE, phx_site=phx_variant.site)
-            self.climate.write_active_climate(active_climate_data)
+            if library_codes_valid is False:
+                self.climate.write_user_defined_active_climate(active_climate_data)
+            else:
+                self.climate.write_active_climate(active_climate_data)
         return None
 
     @staticmethod

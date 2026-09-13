@@ -6,6 +6,7 @@ from honeybee_ph import site
 from PHX.from_HBJSON import create_variant
 from PHX.from_HBJSON.create_variant import add_climate_from_hb_room
 from PHX.model import project
+from PHX.model.identity_validation import IdentityValidationTarget, validate_project_export_readiness
 
 
 def _hb_room_with_site(hb_site):
@@ -66,7 +67,7 @@ def test_legacy_climate_with_populated_peak_sets_remains_supported():
     assert variant.site.climate.peak_heating_1.temperature_air == -12.5
 
 
-def test_explicit_complete_climate_remains_supported():
+def test_explicit_complete_climate_with_empty_dataset_name_remains_export_ready():
     hb_site = site.Site()
     _set_explicit_readiness(hb_site, monthly_issues=[], peak_issues=[])
     _blank_phpp_codes(hb_site)
@@ -79,6 +80,15 @@ def test_explicit_complete_climate_remains_supported():
     assert variant.site.phpp_codes.country_code == ""
     assert variant.site.phpp_codes.region_code == ""
     assert variant.site.phpp_codes.dataset_name == ""
+    validate_project_export_readiness(project.PhxProject(variants=[variant]), IdentityValidationTarget.PHPP)
+
+
+def test_phpp_export_rejects_empty_site_display_name():
+    variant = project.PhxVariant()
+    variant.site.display_name = ""
+
+    with pytest.raises(ValueError, match=r"variants\[0\]\.site\.display_name"):
+        validate_project_export_readiness(project.PhxProject(variants=[variant]), IdentityValidationTarget.PHPP)
 
 
 def test_monthly_unavailable_climate_is_rejected_before_default_zeros_are_copied():

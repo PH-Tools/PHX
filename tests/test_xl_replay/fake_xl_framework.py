@@ -15,6 +15,7 @@ Semantics intentionally mirror xlwings/Excel where the export relies on them:
     * writing None clears a cell
     * a 1D list writes ACROSS a row; 'transpose=True' writes DOWN a column
     * single-cell reads return a scalar; 1D ranges a flat list; 2D a list of rows
+    * optional named-range aliases resolve to their seeded cell addresses
     * '.end("up"/"left")' jumps to the last used cell (Ctrl-arrow)
     * 'calculate()' applies the next recorded post-recalc read-delta ("epoch")
       to cells the run has not itself written
@@ -347,9 +348,15 @@ class FakeAPI:
 
 
 class FakeSheet:
-    def __init__(self, name: str, seed: dict[str, Any] | None = None):
+    def __init__(
+        self,
+        name: str,
+        seed: dict[str, Any] | None = None,
+        named_ranges: dict[str, str] | None = None,
+    ):
         self.name = name
         self.protected = True
+        self.named_ranges = {range_name.upper(): address for range_name, address in (named_ranges or {}).items()}
         # -- {(col, row): value} - the current cell state
         self.cells: dict[tuple[int, int], Any] = {}
         # -- {(col, row): value} - only the cells written DURING the run
@@ -361,6 +368,7 @@ class FakeSheet:
 
     def range(self, cell1: str, cell2: str | None = None) -> FakeRange:
         addr = f"{cell1}:{cell2}" if cell2 else cell1
+        addr = self.named_ranges.get(addr.upper(), addr)
         return FakeRange(self, parse_range(addr))
 
     def write_cells(self, _cells: dict[tuple[int, int], Any]) -> None:
@@ -486,6 +494,8 @@ class FakeXLFramework:
         * epoch_deltas: (list[{sheet: {addr: value}}]) Per-'calculate()' read
             deltas: values first seen AFTER the Nth recalc. Applied in order,
             skipping any cell this run has already written.
+        * named_ranges: ({sheet: {name: addr}}) Optional aliases for workbook
+            defined names used by the code under test.
     """
 
     def __init__(
@@ -494,9 +504,11 @@ class FakeXLFramework:
         seed: dict[str, dict[str, Any]] | None = None,
         epoch_deltas: list[dict[str, dict[str, Any]]] | None = None,
         book_name: str = "FAKE_PHPP.xlsx",
+        named_ranges: dict[str, dict[str, str]] | None = None,
     ):
         seed = seed or {}
-        sheets = [FakeSheet(name, seed.get(name)) for name in sheet_names]
+        named_ranges = named_ranges or {}
+        sheets = [FakeSheet(name, seed.get(name), named_ranges.get(name)) for name in sheet_names]
         self._book = FakeBook(self, book_name, sheets)
         self.books = FakeBooks(self._book)
         self.apps = FakeApps()

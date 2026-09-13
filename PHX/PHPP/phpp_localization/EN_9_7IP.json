@@ -187,7 +187,7 @@
             "end_col": "U"
         },
         "ud_block": {
-            "start_row": 62,
+            "start_row": 61,
             "locator_col_header": "",
             "locator_string_header": "",
             "input_columns": {
@@ -212,6 +212,8 @@
                 "longitude": "H",
                 "elevation": "J",
                 "elevation_unit": "FT",
+                "name": "L",
+                "comment": "P",
                 "display_name": "L",
                 "summer_delta_t": "N",
                 "summer_delta_t_unit": "DELTA-F",
@@ -255,7 +257,9 @@
         "named_ranges": {
             "country": "IP_Klima_Region",
             "region": "IP_Klima_Region2",
-            "data_set": "IP_Klima_Standort"
+            "data_set": "IP_Klima_Standort",
+            "ud_block_name": "IP_Klimadaten_Muster",
+            "ud_block_comment": "IP_Klimadaten_Muster_Quelle"
         },
         "defined_ranges": {
             "climate_zone": "D13",
@@ -263,6 +267,15 @@
             "site_altitude": "D18",
             "latitude": "F23",
             "longitude": "H23"
+        },
+        "library_validation_ranges": {
+            "country": {"column": "AE", "start_row": 63, "end_row": 162},
+            "region": {"column": "AJ", "start_row": 63, "end_row": 116},
+            "data_set": {"column": "AU", "start_row": 63, "end_row": 162}
+        },
+        "user_defined_selectors": {
+            "country": "ud-User Data",
+            "region": "All"
         }
     },
     "UVALUES": {

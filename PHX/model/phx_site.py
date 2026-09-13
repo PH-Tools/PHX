@@ -427,7 +427,7 @@ class PhxPHPPCodes:
 
     country_code: str = "US-United States of America"
     region_code: str = "New York"
-    dataset_name = "US0055b-New York"
+    dataset_name: str = "US0055b-New York"
 
     def __eq__(self, other) -> bool:
         return (
