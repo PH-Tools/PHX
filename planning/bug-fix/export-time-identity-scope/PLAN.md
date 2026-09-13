@@ -139,7 +139,16 @@ Residual risk carried forward: `zone_coverage.cooling` is still `1.0` on all nin
 collections (Phase 3). The export succeeds and the identity graph is valid; whether
 that 900% figure is a modelling error depends on the open WUFI question below.
 
-## Phase 3 — zone coverage *(BLOCKED — needs a WUFI-semantics answer)*
+## Phase 3 — zone coverage ✅ RESOLVED 2026-09-13: no change needed
+
+**Result (tested in WUFI-Passive, recorded on [#126](https://github.com/PH-Tools/PHX/issues/126)):** WUFI's
+coverage invariant is on the **devices**: it sums each device's `CoverageWithinSystem` across every system
+serving the zone and refuses to calculate unless it is 1.0 ("Sum of coverage is 2 (not equal 1), Cooling.").
+It does not validate or normalize the system `ZoneCoverage` values. A two-system split with zone coverage 1.0
+each and device shares 0.5 each (PHX's output) reproduced the single-system results exactly; zone 0.5 each
+with device 1.0 each was rejected. `split_cooling_into_multiple_systems` already writes `cooling_percent =
+1 / target_number_of_cooling_devices`, so PHX is correct and the 900% zone coverage is cosmetic. The analysis
+below is kept for history; its proposed commit is not needed.
 
 **Open question:** does WUFI-Passive honour system-level `ZoneCoverage`
 (`xml_schemas.py:1615-1623`), device-level `usage_profile.cooling_percent`, or
@@ -193,7 +202,7 @@ If it turns out to be cosmetic, record the finding in the ticket and drop the ph
 
 **Commit:** `fix(wufi): split zone cooling coverage across the new systems`
 
-## Phase 4 — close out ◻ PENDING (blocked behind Phase 3)
+## Phase 4 — close out ◻ PENDING (unblocked 2026-09-13)
 
 1. Re-run the Arverne D model end to end through
    `hbjson_to_wufi_xml.py` and confirm a WUFI file is produced. Open it in

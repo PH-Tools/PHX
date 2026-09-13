@@ -2,7 +2,7 @@
 
 **Issue:** [#106](https://github.com/PH-Tools/PHX/issues/106)
 
-**Status:** Phases 0-2 **implemented and verified** on branch `bug-fix/export-time-identity-scope`; Phase 3 (zone coverage) **blocked** on a WUFI-semantics question; Phase 4 close-out pending. See [`PLAN.md`](PLAN.md).
+**Status:** Phases 0-2 **merged to main** (PR #96, 2026-08-25); Phase 3 (zone coverage) **resolved, no change** (2026-09-13: WUFI validates device `CoverageWithinSystem` sums, which PHX's split satisfies; [#126](https://github.com/PH-Tools/PHX/issues/126) closed); Phase 4 close-out pending (WUFI re-run of the production model, docs note, archive). See [`PLAN.md`](PLAN.md).
 **Opened:** 2026-08-25
 **Kind:** Regression (identity allocation), introduced by [PR #86](https://github.com/PH-Tools/PHX/pull/86), released in **v1.56.82**
 **Owner files:** `PHX/to_WUFI_XML/_bug_fixes.py`, `PHX/model/project.py`
