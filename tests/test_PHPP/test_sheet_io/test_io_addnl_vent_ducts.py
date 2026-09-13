@@ -70,6 +70,24 @@ def test_duct_header_search_continues_after_inserted_room_rows():
 
 
 @pytest.mark.parametrize("shape_filename", SHAPE_FILENAMES)
+def test_duct_first_entry_row_is_the_header_plus_the_shape_offset(shape_filename):
+    shape = _load_addnl_vent_shape(shape_filename)
+    ducts = VentDucts(Mock(), shape)
+    ducts.section_header_row = 86
+
+    assert ducts.find_section_first_entry_row() == 86 + shape.ducts.first_entry_row_offset == 95
+
+
+def test_duct_first_entry_row_reads_the_offset_from_the_shape():
+    shape = _load_addnl_vent_shape("EN_10_6.json")
+    shape = shape.model_copy(update={"ducts": shape.ducts.model_copy(update={"first_entry_row_offset": 12})})
+    ducts = VentDucts(Mock(), shape)
+    ducts.section_header_row = 86
+
+    assert ducts.find_section_first_entry_row() == 98
+
+
+@pytest.mark.parametrize("shape_filename", SHAPE_FILENAMES)
 @pytest.mark.parametrize(
     "marker",
     (

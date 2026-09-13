@@ -357,9 +357,9 @@ class VentDucts:
         if not self.section_header_row:
             self.section_header_row = self.find_section_header_row()
 
-        # -- There is no 'flag' or number or any other indication of the entry row?
-        # -- So use the hard-coded offset of 9. I'm sure this will cause a problem someday...
-        return self.section_header_row + 9
+        # -- Duct entry rows carry no number or marker to locate by, so the first one sits a fixed,
+        # -- per-shape offset below the header (verified against each version's blank workbook).
+        return self.section_header_row + self.shape.ducts.first_entry_row_offset
 
     def find_section_last_entry_row(self, _rows: int = 100) -> int:
         """Return the row number of the very last user-input entry row in the 'Ducts' section."""
