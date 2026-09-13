@@ -100,15 +100,25 @@ Writers:
 ### Phase 0: characterization golden files (before any code change)
 
 No test pins WUFI XML or METr JSON for a merge-on model: `test_xml_output.py` ends in
-`assert True`, and its reference cases run with the merge off. On current `main`, write the full
-WUFI XML and METr JSON for `tests/reference_files/from_grasshopper_tests/hbjson/Multi_Room_Complete.hbjson`
-(it has an ERV serving two Spaces) with `_merge_spaces_by_erv` **on and off**, plus
-`Default_Model_Single_Zone` merge on, into `tests/reference_files/erv_room_merge/`. Add
-`tests/test_export/test_erv_room_merge_golden.py` asserting exact text equality after a class-counter
-reset, and confirm it passes on `main` twice in a row (determinism). Synthetic Honeybee models only,
-so the files are public-safe.
+`assert True`, and its reference cases run with the merge off.
 
-**Verify:** the new test passes on unmodified `main`; running it twice gives identical files.
+**Finding (2026-09-13):** whole WUFI XML and METr JSON documents are **not** stable between
+processes: heat pump `IdentNr` and `SupportiveDevices` order vary run to run, independent of
+`PYTHONHASHSEED` and of `uuid4` (filed as [#133](https://github.com/PH-Tools/PHX/issues/133)). The
+room output is stable across four runs. So the golden files hold only the sections this refactor
+touches: the WUFI `<RoomsVentilation>` and `<UtilisationPatternsVentilation>` (WUFI's spelling) blocks and the METr
+room lists.
+
+Cases, from `tests/reference_files/from_grasshopper_tests/hbjson/` (chosen from a survey of every
+HBJSON fixture): `Multi_Room_Complete` merge on and off (one Ventilator serving two Spaces),
+`occupancy_scenarios/03_single_dwelling_set_occupancy` merge on and off (one Ventilator serving four
+Spaces, exercising the left fold), `Non_Residential_Office` merge on (ventilated Spaces with no
+Ventilation Assignment, each its own group). `tests/test_export/test_erv_room_merge_golden.py` asserts
+exact text equality after a class-counter reset. Synthetic Honeybee models only, so the files are
+public-safe.
+
+**Verify:** the new test passes on unmodified `main`; two generations in separate processes give
+identical files.
 
 ### Phase 1: `VentilationRoom` and `ventilation_rooms()`
 
@@ -155,8 +165,10 @@ Swap the writers per the design sketch and delete the exporter-local merge.
 - **PPP**, which does not merge.
 - **Unassigned Spaces with merge on (to verify, not assumed).** `ventilated_spaces_grouped_by_erv` keys
   groups by `vent_unit_id_num` and sorts the keys; a mix of `None` and integer keys cannot be sorted in
-  Python 3. Check during Phase 1 whether `assert_ventilation_assignments_ready` makes that unreachable.
-  Preserve today's behavior either way and file an issue if it is reachable.
+  Python 3. An all-unassigned Zone works (`Non_Residential_Office`, merge on, is a Phase 0 golden case);
+  a Zone mixing assigned and unassigned ventilated Spaces has not been tried. Check during Phase 1
+  whether `assert_ventilation_assignments_ready` makes the mix unreachable. Preserve today's behavior
+  either way and file an issue if it is reachable.
 
 ## Execution
 

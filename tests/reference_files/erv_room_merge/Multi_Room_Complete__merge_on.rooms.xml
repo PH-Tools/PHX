@@ -1,0 +1,29 @@
+<UtilisationPatternsVentilation count="1">
+		<UtilizationPatternVent index="0">
+			<Name>Always On</Name>
+			<IdentNr>1</IdentNr>
+			<OperatingDays>7.0</OperatingDays>
+			<OperatingWeeks>52.0</OperatingWeeks>
+			<Maximum_DOS>24.0</Maximum_DOS>
+			<Maximum_PDF>1.0</Maximum_PDF>
+			<Standard_DOS>0</Standard_DOS>
+			<Standard_PDF>0</Standard_PDF>
+			<Basic_DOS>0</Basic_DOS>
+			<Basic_PDF>0</Basic_PDF>
+			<Minimum_DOS>0</Minimum_DOS>
+			<Minimum_PDF>0</Minimum_PDF>
+		</UtilizationPatternVent>
+	</UtilisationPatternsVentilation>
+<RoomsVentilation count="1">
+							<Room index="0">
+								<Name>Test_Vent_System</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">21.78</AreaRoom>
+								<ClearRoomHeight unit="m">2.75</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">106.48</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">106.48</DesignVolumeFlowRateExhaust>
+							</Room>
+						</RoomsVentilation>
