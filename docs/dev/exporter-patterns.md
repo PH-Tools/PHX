@@ -238,7 +238,7 @@ metr_json_to_file.write_metr_json_file(target_path, metr_text)
 
 ### Mutually exclusive `x` cells
 
-PHPP selects among options with groups of `x` cells validated by `PHPP_Daten_Ankreuzen` (`["", "x"]`). Its formulas resolve to whichever cell they test first, so a stale `x` left on a populated workbook silently wins. Write a group with `phpp_model/xl_checkbox_group.checkbox_group_items`, which sets the chosen cell to `"x"` and every sibling to `""` (never `None`, which is not a member of the validation list). The `Ground` floor-slab type selectors (`C24`/`C30`/`C33`/`C40`) are the first user.
+PHPP selects among options with groups of `x` cells validated by `PHPP_Daten_Ankreuzen` (`["", "x"]`). Its formulas resolve to whichever cell they test first, so a stale `x` left on a populated workbook silently wins. Write a group with `phpp_model/xl_checkbox_group.checkbox_group_items`, which sets the chosen cell to `"x"` and every sibling to `""` (never `None`, which is not a member of the validation list). The `Ground` floor-slab type selectors (`C24`/`C30`/`C33`/`C40`) are the first user; the `SummVent` "HRV/ERV in summer" group is the second (`R15:R18` in PHPP 10, `R21:R24` in PHPP 9, so it is located by its column-`Q` header, never by row). Its four boxes map ordinally to `PhxSummerBypassMode` 1-4, the same order WUFI-Passive shows for "Summer HRV/ERV recovery mode".
 
 ### Section locators and component-ID lookups
 

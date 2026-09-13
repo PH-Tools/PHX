@@ -2,10 +2,10 @@
 
 **Issue:** [#103](https://github.com/PH-Tools/PHX/issues/103)
 
-**Status:** Scoped — 2026-08-15. `05` implemented 2026-09-12 (with `03` Phase 2's helper); `01`, `02`, `04` merged 2026-09-12 (PR #128, PHX 1.56.109); `06` merged via PR #113; `03` implemented on branch `bug-fix/phpp-summvent-hrv-mode` (2026-09-13). Item `06` added
+**Status:** Complete — 2026-09-13, all six items merged and [#103](https://github.com/PH-Tools/PHX/issues/103) closed. Scoped 2026-08-15. `05` implemented 2026-09-12 (with `03` Phase 2's helper); `01`, `02`, `04` merged 2026-09-12 (PR #128, PHX 1.56.109); `06` merged via PR #113; `03` merged 2026-09-13 (PR #132, PHX 1.56.110). Item `06` added
 2026-08-15 (a sixth input, found by OpenPH the same day); `05` now depends on
 the upstream foundation-shape packet.
-**Source:** [`features/phpp-writer-input-gaps/`](../../features/phpp-writer-input-gaps/README.md) (the incoming request, filed from OpenPH)
+**Source:** [`archive/phpp-writer-input-gaps-request/`](../phpp-writer-input-gaps-request/README.md) (the incoming request, filed from OpenPH)
 
 Five inputs that the PHX model carries and that PHPP ends up computing without —
 plus a sixth (`06`) that the model does not carry at all yet.

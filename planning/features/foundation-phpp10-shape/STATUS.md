@@ -43,7 +43,7 @@ Not done here (PRD §5, not in #120's scope): subclasses still do not set
 
 ## Blocks
 
-- [`../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md)
+- [`../../archive/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../archive/phpp-writer-input-gaps/05-ground-worksheet-writer.md)
   — done, merged in PR [#122](https://github.com/PH-Tools/PHX/pull/122).
 - OpenPH `planning/features/ground-degree-hours-alignment/` Phases 03–04
   (foundation objects, fixture retype) — PHX side released (1.56.106); tracked in

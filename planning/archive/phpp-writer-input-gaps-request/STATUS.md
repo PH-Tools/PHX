@@ -1,7 +1,7 @@
 # Status — PHPP writer input gaps
 
 **Status:** Superseded 2026-08-15 by
-[`planning/bug-fix/phpp-writer-input-gaps/`](../../bug-fix/phpp-writer-input-gaps/README.md),
+[`planning/archive/phpp-writer-input-gaps/`](../phpp-writer-input-gaps/README.md),
 which carries the verified diagnoses and the phased plans. This folder is kept
 as the incoming request, unedited.
 

@@ -4,7 +4,7 @@
 
 **Status:** honeybee-ph released (1.33.64); PHX model half merged (PR
 [#121](https://github.com/PH-Tools/PHX/pull/121)); the `Ground` writer
-([`../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md))
+([`../../archive/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../archive/phpp-writer-input-gaps/05-ground-worksheet-writer.md))
 is implemented (#120 Part B). Schema and GH halves and the OpenPH hand-off remain. See [`STATUS.md`](STATUS.md).
 **Filed from:** OpenPH `planning/features/ground-degree-hours-alignment/` (Root 1 of the
 `native_reference` ground gap), on Ed's call 2026-08-15: *"we want to properly build out
@@ -17,7 +17,7 @@ before we continue any work on foundations."*
 1. [`PRD.md`](PRD.md) — the field-by-field gap between the honeybee-ph/PHX
    foundation model and PHPP 10.6 `Ground`, and the required model changes.
 2. [`STATUS.md`](STATUS.md) — state, decisions still open, next step.
-3. [`../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../bug-fix/phpp-writer-input-gaps/05-ground-worksheet-writer.md)
+3. [`../../archive/phpp-writer-input-gaps/05-ground-worksheet-writer.md`](../../archive/phpp-writer-input-gaps/05-ground-worksheet-writer.md)
    — the writer that consumes the finished shape; its cell map is the
    PHPP-side reference and is **not** repeated here.
 
