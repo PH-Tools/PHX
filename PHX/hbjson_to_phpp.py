@@ -11,7 +11,11 @@ from PHX.PHPP import phpp_app
 
 
 def write_phx_project_to_phpp(
-    phpp_conn: "phpp_app.PHPPConnection", phx_project, activate_variants: bool = False
+    phpp_conn: "phpp_app.PHPPConnection",
+    phx_project,
+    activate_variants: bool = False,
+    *,
+    clear_stale: bool = False,
 ) -> None:
     """Write a complete PhxProject to an open PHPP document.
 
@@ -28,6 +32,7 @@ def write_phx_project_to_phpp(
         * phx_project (PhxProject): The PhxProject to write to the PHPP.
         * activate_variants (bool): Set True to activate the PHPP 'Variants'
             inputs after writing. Default=False.
+        * clear_stale (bool): Clear stale PHPP list rows after writing. Default=False.
 
     Returns:
     --------
@@ -45,13 +50,13 @@ def write_phx_project_to_phpp(
     phpp_conn.write_project_opaque_surfaces(phx_project)
     phpp_conn.write_project_ground(phx_project)
     phpp_conn.write_project_thermal_bridges(phx_project)
-    phpp_conn.write_project_window_components(phx_project)
+    phpp_conn.write_project_window_components(phx_project, clear_stale=clear_stale)
     phpp_conn.write_project_window_surfaces(phx_project)
     phpp_conn.write_project_window_shading(phx_project)
-    phpp_conn.write_project_ventilation_components(phx_project)
-    phpp_conn.write_project_ventilators(phx_project)
-    phpp_conn.write_project_vent_ducting(phx_project)
-    phpp_conn.write_project_spaces(phx_project)
+    phpp_conn.write_project_ventilation_components(phx_project, clear_stale=clear_stale)
+    phpp_conn.write_project_ventilators(phx_project, clear_stale=clear_stale)
+    phpp_conn.write_project_vent_ducting(phx_project, clear_stale=clear_stale)
+    phpp_conn.write_project_spaces(phx_project, clear_stale=clear_stale)
     phpp_conn.write_project_ventilation_type(phx_project)
     phpp_conn.write_project_summer_ventilation(phx_project)
     phpp_conn.write_project_airtightness(phx_project)
@@ -66,6 +71,13 @@ def write_phx_project_to_phpp(
         phpp_conn.activate_variant_additional_vent()
 
 
+def _parse_cli_flags(argv: list[str]) -> tuple[bool, bool]:
+    """Return the activate-variants and clear-stale flags from trailing CLI arguments."""
+    activate_variants = any(arg.strip().lower() == "true" for arg in argv)
+    clear_stale = "--clear-stale" in argv
+    return activate_variants, clear_stale
+
+
 if __name__ == "__main__":
     import xlwings as xw
 
@@ -76,9 +88,9 @@ if __name__ == "__main__":
     SOURCE_FILE = pathlib.Path(str(sys.argv[1])).resolve()
     # -- The callers pass different argv layouts: 'run.py' on macOS gives
     # -- [hbjson, activate_variants], on Windows [hbjson, site_packages, activate_variants].
-    # -- Scan the trailing args for the flag. (Was previously parsed as a pathlib.Path,
+    # -- Scan the trailing args for both flags. (Variants was previously parsed as a pathlib.Path,
     # -- so the old '== "True"' check could never pass and variants never activated.)
-    ACTIVATE_VARIANTS = any(str(arg).strip().lower() == "true" for arg in sys.argv[2:])
+    ACTIVATE_VARIANTS, CLEAR_STALE = _parse_cli_flags(sys.argv[2:])
 
     # --- Read in an existing HB_JSON and re-build the HB Objects
     # -------------------------------------------------------------------------
@@ -101,4 +113,9 @@ if __name__ == "__main__":
 
     with phpp_conn.xl.in_silent_mode():
         phpp_conn.xl.unprotect_all_sheets()
-        write_phx_project_to_phpp(phpp_conn, phx_project, activate_variants=ACTIVATE_VARIANTS)
+        write_phx_project_to_phpp(
+            phpp_conn,
+            phx_project,
+            activate_variants=ACTIVATE_VARIANTS,
+            clear_stale=CLEAR_STALE,
+        )

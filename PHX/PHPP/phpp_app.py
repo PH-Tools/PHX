@@ -483,7 +483,7 @@ class PHPPConnection:
 
         return lengths_by_construction
 
-    def write_project_window_components(self, phx_project: project.PhxProject) -> None:
+    def write_project_window_components(self, phx_project: project.PhxProject, *, clear_stale: bool = False) -> None:
         """Write all of the frame and glass constructions from a PhxProject to the PHPP 'Components' worksheet."""
 
         if getattr(phx_project, "_window_type_psi_variants_synthesized", False):
@@ -508,11 +508,13 @@ class PHPPConnection:
                     psi_value_weights=psi_lengths_by_construction.get(phx_construction.identifier),
                 )
             )
-        self.components.write_glazings(glazing_component_rows)
-        self.components.write_frames(frame_component_rows)
+        self.components.write_glazings(glazing_component_rows, clear_stale=clear_stale)
+        self.components.write_frames(frame_component_rows, clear_stale=clear_stale)
         return None
 
-    def write_project_ventilation_components(self, phx_project: project.PhxProject) -> None:
+    def write_project_ventilation_components(
+        self, phx_project: project.PhxProject, *, clear_stale: bool = False
+    ) -> None:
         """Write all of the ventilators from a PhxProject to the PHPP 'Components' worksheet."""
 
         phpp_ventilator_rows: list[component_vent.VentilatorRow] = []
@@ -522,7 +524,7 @@ class PHPPConnection:
                 phx_vent_sys=phx_ventilator,
             )
             phpp_ventilator_rows.append(new_vent_row)
-        self.components.write_ventilators(phpp_ventilator_rows)
+        self.components.write_ventilators(phpp_ventilator_rows, clear_stale=clear_stale)
         return None
 
     def write_project_tfa(self, phx_project: project.PhxProject) -> None:
@@ -739,7 +741,7 @@ class PHPPConnection:
 
         return None
 
-    def write_project_ventilators(self, phx_project: project.PhxProject) -> None:
+    def write_project_ventilators(self, phx_project: project.PhxProject, *, clear_stale: bool = False) -> None:
         """Write all of the used Ventilator Units from a PhxProject to the PHPP 'Additional Vent' worksheet."""
         if self.easyPh:
             return None
@@ -754,7 +756,7 @@ class PHPPConnection:
             )
             phpp_vent_unit_rows.append(new_vent_row)
 
-        self.addnl_vent.write_vent_units(phpp_vent_unit_rows)
+        self.addnl_vent.write_vent_units(phpp_vent_unit_rows, clear_stale=clear_stale)
         return None
 
     @staticmethod
@@ -771,7 +773,7 @@ class PHPPConnection:
         for mech_collection in cls._iter_project_mech_collections(phx_project):
             yield from mech_collection.ventilation_devices
 
-    def write_project_vent_ducting(self, phx_project: project.PhxProject) -> None:
+    def write_project_vent_ducting(self, phx_project: project.PhxProject, *, clear_stale: bool = False) -> None:
         """Write duct sections between ventilation units and the thermal envelope to PHPP.
 
         Ducts are assigned to ventilator columns by the same one-based project order used
@@ -781,6 +783,7 @@ class PHPPConnection:
         Arguments:
         ----------
             * phx_project (project.PhxProject): Project containing the ventilation ducting.
+            * clear_stale (bool): Clear stale duct rows after writing. Default=False.
         """
         if self.easyPh:
             return None
@@ -834,10 +837,10 @@ class PHPPConnection:
         if not phpp_vent_duct_rows:
             return None
 
-        self.addnl_vent.write_vent_ducts(phpp_vent_duct_rows)
+        self.addnl_vent.write_vent_ducts(phpp_vent_duct_rows, clear_stale=clear_stale)
         return None
 
-    def write_project_spaces(self, phx_project: project.PhxProject) -> None:
+    def write_project_spaces(self, phx_project: project.PhxProject, *, clear_stale: bool = False) -> None:
         """Write all of the PH-Spaces from a PhxProject to the PHPP 'Additional Vent' worksheet."""
         if self.easyPh:
             return None
@@ -876,7 +879,7 @@ class PHPPConnection:
                     )
                     phpp_vent_rooms.append(phpp_rm)
 
-        self.addnl_vent.write_spaces(phpp_vent_rooms)
+        self.addnl_vent.write_spaces(phpp_vent_rooms, clear_stale=clear_stale)
         return None
 
     def write_project_ventilation_type(self, phx_project: project.PhxProject) -> None:

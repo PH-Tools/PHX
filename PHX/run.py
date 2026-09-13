@@ -267,8 +267,13 @@ def convert_hbjson_to_METR_JSON(
     return _save_folder, _save_file_name, stdout, stderr
 
 
-def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate_variants="False"):
-    # type: (str, str, str) -> Tuple[Any, Any]
+def write_hbjson_to_phpp(
+    _hbjson_file,
+    _lbt_python_site_packages_path,
+    _activate_variants="False",
+    _clear_stale="False",
+):
+    # type: (str, str, str, str) -> Tuple[Any, Any]
     """Read in an hbjson file and write out to a PHPP file.
 
     Arguments:
@@ -284,6 +289,10 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate
             early design phase. Note that if activated, any inputs will get overwritten
             when the connection to the 'Variants' worksheet is made.
             Note: Args must be strings, not actual boolean True/False.
+
+        * _clear_stale (str): Default="False". Set True to clear stale PHPP list
+            rows after writing. Note: Args must be strings, not actual boolean
+            True/False.
     Returns:
     --------
         * Tuple:
@@ -304,6 +313,7 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate
 
     # -------------------------------------------------------------------------
     # -- Read in the HBJSON, write out to PHPP
+    clear_stale = str(_clear_stale).strip().lower() == "true"
     if os.name == "nt":
         commands = [
             hb_folders.python_exe_path,
@@ -312,6 +322,8 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate
             _lbt_python_site_packages_path,
             _activate_variants,
         ]
+        if clear_stale:
+            commands.append("--clear-stale")
         stdout, stderr = _run_subprocess(commands)
     else:
         # -- If on MacOS, run the subprocess through a shell
@@ -333,6 +345,7 @@ def write_hbjson_to_phpp(_hbjson_file, _lbt_python_site_packages_path, _activate
             python_script_path,
             hbjson_file,
             _activate_variants,
+            "--clear-stale" if clear_stale else "",
         ]
         stdout, stderr = _run_subprocess_from_shell(commands)
 

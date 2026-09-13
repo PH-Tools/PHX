@@ -7,6 +7,7 @@ python_exe_path=$2
 python_script_path=$3
 hbjson_file_path=$4
 activate_variants=$5
+clear_stale=$6
 
 PYTHONHOME=""
 export PYTHONHOME
@@ -16,7 +17,8 @@ echo - Python: ${python_exe_path}
 echo - Script: ${python_script_path}
 echo - HBJSON: ${hbjson_file_path}
 echo - Variants: ${activate_variants}
+echo - Clear stale: ${clear_stale}
 cd "$exe_path"
 osascript -e "tell app \"Terminal\"
-    do script \"\\\"${python_exe_path}\\\" \\\"${python_script_path}\\\" \\\"${hbjson_file_path}\\\" ${activate_variants}\"
+    do script \"\\\"${python_exe_path}\\\" \\\"${python_script_path}\\\" \\\"${hbjson_file_path}\\\" ${activate_variants} ${clear_stale}\"
 end tell"
