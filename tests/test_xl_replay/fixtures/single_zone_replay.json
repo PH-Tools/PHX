@@ -1,6 +1,6 @@
 {
  "meta": {
-  "timestamp": "2026-09-12T20:16:57",
+  "timestamp": "2026-09-13T08:11:25",
   "platform": "Darwin",
   "platform_release": "25.6.0",
   "machine": "arm64",
@@ -3084,6 +3084,31 @@
     "I98": "(enter only if the unit is outside of the thermal envelope)",
     "I106": "Secondary calculation",
     "I107": " Y-value supply or outdoor air duct"
+   },
+   "SummVent": {
+    "Q6": "Building type:",
+    "Q7": "Eff. HR efficiency hHR,eff or HR efficiency, cooling hHR,eff,C:",
+    "Q8": "Humidity recovery efficiency hEER:",
+    "Q9": "Subsoil heat exchanger efficiency h*SHX:",
+    "Q14": "HRV/ERV in summer (check only one field)",
+    "Q15": "None",
+    "Q16": "Automatic bypass, controlled by temperature difference",
+    "Q17": "Automatic bypass, controlled by enthalpy difference",
+    "Q18": "Always",
+    "Q22": "Specific power consumption (for extract air system)",
+    "Q31": ") =",
+    "Q32": "=",
+    "Q33": ") =",
+    "Q34": "=",
+    "Q37": " ",
+    "Q39": "=",
+    "Q40": "=",
+    "Q41": "=",
+    "Q42": "=",
+    "Q43": "=",
+    "Q64": "Useful cooling demand:",
+    "Q65": "Dehumidification demand:",
+    "Q66": "Frequency of excessively high humidity:"
    }
   }
  ],
@@ -3387,6 +3412,12 @@
    "K19": "1-No protection",
    "M23": 1.0,
    "M22": 0.0
+  },
+  "SummVent": {
+   "R15": null,
+   "R16": null,
+   "R17": null,
+   "R18": "x"
   },
   "Electricity": {
    "E25": 0.0,

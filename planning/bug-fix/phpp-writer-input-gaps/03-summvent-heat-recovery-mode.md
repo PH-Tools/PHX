@@ -1,6 +1,6 @@
 # Summer heat-recovery mode is never written to `SummVent`
 
-**Status:** Scoped — one mapping question must be settled before Phase 2
+**Status:** Implemented on branch `bug-fix/phpp-summvent-hrv-mode` (2026-09-13). Mapping confirmed in WUFI-Passive (Phase 1 result); all seven shapes verified; fixtures re-recorded, `SummVent` gained exactly `R15:R17` cleared and `R18 = "x"`
 **Opened:** 2026-08-15
 **Owner:** `PHX/PHPP/` — no owner today; `SUMM_VENT` is an unused stub
 **Umbrella:** [`README.md`](README.md)
@@ -104,6 +104,33 @@ there before building one.
 to the PHPP labels, and the ordinal correspondence is stated as observed, not
 inferred. If it turns out inverted, the mapping table above is wrong and Phase 3
 changes accordingly — everything else in this packet stands.
+
+**Result (2026-09-13, observed by Ed in WUFI-Passive 3.6.0.1):** the ordinal
+mapping holds. `tests/reference_files/from_WUFI/wufi_xml/School.xml` stores
+`SummerHRVHumidityRecovery = 4`; WUFI shows it on the zone, under
+*Ventilation/Rooms → Summer ventilation → "Summer HRV/ERV recovery mode"*, as
+`Always`. The field is labelled a **recovery** mode, and its options in UI order are:
+
+| Value | WUFI-Passive label (verbatim) | PHPP 10.6 `SummVent` |
+|---|---|---|
+| 1 | `None` | `R15` "None" |
+| 2 | `Temperature controlled bypass` | `R16` "Automatic bypass, controlled by temperature difference" |
+| 3 | `Enthalpy controlled bypass` | `R17` "Automatic bypass, controlled by enthalpy difference" |
+| 4 | `Always` | `R18` "Always" |
+
+So the enum's *values* are right and its docstring (`ALWAYS: Bypass always active
+in summer`) is what is inverted; Phase 4 stands. Separate from this field, the WUFI
+ventilation *device* carries its own checkbox, "No summer bypass feature (summer
+ventilation with HRV/ERV)" (unchecked in `School.xml`); it does not map to
+`R15:R18`.
+
+**Layout across versions (read 2026-09-13):** the header string
+`HRV/ERV in summer (check only one field)` sits in column `Q` with the four
+options at `+1`…`+4` and their `x` cells in `R` on every workbook checked, but the
+row drifts: `Q14` / `R15:R18` in blank 10.6 EN and 10.6 IP (both the `SummVent`
+and `SummVent SI` sheets), `Q20` / `R21:R24` in blank 9.6a EN and 9.7 IP. Every
+blank ships `R15` (or `R21`) ticked. This confirms Phase 3's locate-by-header
+design. 10.3, 10.4a and 10.4 IP were not read here; check them during the build.
 
 ### Phase 2 — a shared radio-group write helper
 

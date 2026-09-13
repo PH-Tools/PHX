@@ -596,6 +596,14 @@ Worksheet key: `COOLING_PEAK_LOAD`
 
 Worksheet key: `SUMM_VENT`
 
+### columns.hrv_summer_mode
+
+- `locator_col`: `Q`
+- `locator_string`: `HRV/ERV in summer (check only one field)`
+- `input_column`: `R`
+- `option_row_offsets`: `1`, `2`, `3`, `4`
+- `options`: `1` → index `0`; `2` → index `1`; `3` → index `2`; `4` → index `3`
+
 ---
 
 ## Cooling units

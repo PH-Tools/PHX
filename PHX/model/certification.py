@@ -47,7 +47,10 @@ class PhxSummerVentilation:
 
     Attributes:
         ventilation_system_ach (float | None): Mechanical ventilation air change rate in ACH. Default: None.
-        summer_bypass_mode (PhxSummerBypassMode): HRV/ERV summer bypass operating mode. Default: ALWAYS.
+        summer_bypass_mode (PhxSummerBypassMode): Summer heat-recovery mode. This is WUFI-Passive's
+            ``SummerHRVHumidityRecovery`` field (WUFI UI: "Summer HRV/ERV recovery mode") and METr's
+            ``sumHRec`` field; its ordinal value maps to PHPP's ``SummVent`` "HRV/ERV in summer"
+            checkboxes. ``ALWAYS`` means heat recovery is always on in summer. Default: ALWAYS.
         daytime_extract_system_ach (float): Daytime exhaust ventilation air change rate in ACH. Default: 0.0.
         daytime_extract_system_fan_power_wh_m3 (float): Daytime exhaust fan specific power in Wh/m3.
             Default: 0.0.

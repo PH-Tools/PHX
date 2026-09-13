@@ -125,6 +125,7 @@ nav:
         - vent_ducts: api/PHPP/phpp_model/vent_ducts.md
         - vent_units: api/PHPP/phpp_model/vent_units.md
         - ventilation_data: api/PHPP/phpp_model/ventilation_data.md
+        - summ_vent_data: api/PHPP/phpp_model/summ_vent_data.md
         - hot_water_tank: api/PHPP/phpp_model/hot_water_tank.md
         - hot_water_piping: api/PHPP/phpp_model/hot_water_piping.md
         - uvalues_constructor: api/PHPP/phpp_model/uvalues_constructor.md
@@ -141,6 +142,7 @@ nav:
         - io_u_values: api/PHPP/sheet_io/io_u_values.md
         - io_shading: api/PHPP/sheet_io/io_shading.md
         - io_ventilation: api/PHPP/sheet_io/io_ventilation.md
+        - io_summ_vent: api/PHPP/sheet_io/io_summ_vent.md
         - io_addnl_vent: api/PHPP/sheet_io/io_addnl_vent.md
         - io_hot_water: api/PHPP/sheet_io/io_hot_water.md
         - io_solar_dhw: api/PHPP/sheet_io/io_solar_dhw.md

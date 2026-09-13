@@ -53,6 +53,7 @@ def write_phx_project_to_phpp(
     phpp_conn.write_project_vent_ducting(phx_project)
     phpp_conn.write_project_spaces(phx_project)
     phpp_conn.write_project_ventilation_type(phx_project)
+    phpp_conn.write_project_summer_ventilation(phx_project)
     phpp_conn.write_project_airtightness(phx_project)
     phpp_conn.write_project_volume(phx_project)
     phpp_conn.write_project_hot_water(phx_project)
