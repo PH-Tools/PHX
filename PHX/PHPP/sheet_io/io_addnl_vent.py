@@ -76,11 +76,12 @@ class Spaces:
         )
 
     def find_section_shape(self) -> None:
-        self.section_start_row = self.find_section_header_row()
+        self.section_header_row = self.find_section_header_row()
         self.section_first_entry_row = self.find_section_first_entry_row()
         self.section_last_entry_row = self.find_section_last_entry_row()
 
     def find_section_last_entry_row(self, _start_row: int | None = None, _read_length: int = 50):
+        """Return the row number of the last user-input entry row in the 'Rooms' section."""
         if not self.section_first_entry_row:
             self.section_first_entry_row = self.find_section_first_entry_row()
 
@@ -98,7 +99,7 @@ class Spaces:
         # -- Look for the first 'empty' (None) cell in the column
         for i, column_val in enumerate(col_data, start=_start_row):
             if column_val is None:
-                return i
+                return i - 1
 
         if end_row < 10_000:
             return self.find_section_last_entry_row(_start_row=end_row, _read_length=500)
@@ -249,10 +250,12 @@ class VentUnits:
 
     def find_section_shape(self) -> None:
         try:
-            self.section_start_row = self.find_section_header_row()
+            self._section_header_row = self.find_section_header_row()
         except Exception:
             # Try one more time using a larger read-block
-            self.section_start_row = self.find_section_header_row(_row_start=1, _row_end=1000)
+            self._section_header_row = self.find_section_header_row(_row_start=1, _row_end=1000)
+        self._section_first_entry_row = self.find_section_first_entry_row()
+        self._section_last_entry_row = self.find_section_last_entry_row()
 
     def get_vent_unit_num_by_phpp_id(self, _phpp_id: str) -> xl_writable:
         """Return the phpp-number of the Ventilation unit from the Additional Ventilation worksheet.
@@ -382,8 +385,9 @@ class VentDucts:
         raise Exception(f"\nError: Not able to find the last duct entry row on the " f'"{self.shape.name}" worksheet?')
 
     def find_section_shape(self) -> None:
-        self.section_start_row = self.find_section_header_row()
+        self.section_header_row = self.find_section_header_row()
         self.section_first_entry_row = self.find_section_first_entry_row()
+        self.section_last_entry_row = self.find_section_last_entry_row()
 
 
 class AddnlVent:
@@ -396,33 +400,45 @@ class AddnlVent:
         self.vent_units = VentUnits(self.xl, self.shape)
         self.vent_ducts = VentDucts(self.xl, self.shape)
 
-    def write_spaces(self, _spaces: list[vent_space.VentSpaceRow]) -> None:
-        if not self.spaces.section_first_entry_row:
-            self.spaces.section_first_entry_row = self.spaces.find_section_first_entry_row()
+    def _write_section_rows(
+        self,
+        _rows: Sequence[vent_space.VentSpaceRow | vent_units.VentUnitRow | vent_ducts.VentDuctRow],
+        _section: Spaces | VentUnits | VentDucts,
+        _section_name: str,
+    ) -> None:
+        """Locate a section's capacity, then write only rows that fit within it."""
+        if not _rows:
+            return
 
-        start = self.spaces.section_first_entry_row
-        row_items = [space.create_xl_items(self.shape.name, _row_num=i) for i, space in enumerate(_spaces, start=start)]
+        _section.find_section_shape()
+        first_entry_row = _section.section_first_entry_row
+        last_entry_row = _section.section_last_entry_row
+        if first_entry_row is None or last_entry_row is None:
+            raise ValueError(f"Unable to locate the {_section_name} entry rows on worksheet '{self.shape.name}'.")
+
+        row_capacity = last_entry_row - first_entry_row + 1
+        if len(_rows) > row_capacity:
+            self.xl.output(
+                f"\nPHPPAddlVentCapacityWarning: worksheet '{self.shape.name}' section '{_section_name}' "
+                f"has {len(_rows)} entries but capacity is {row_capacity}; truncating to {row_capacity} rows. "
+                "Use PHPP's Tools workbook to add rows.\n"
+            )
+
+        row_items = [
+            row.create_xl_items(self.shape.name, _row_num=i)
+            for i, row in enumerate(_rows[:row_capacity], start=first_entry_row)
+        ]
         for item in xl_data.merge_xl_item_rows(row_items):
             self.xl.write_xl_item(item)
+
+    def write_spaces(self, _spaces: list[vent_space.VentSpaceRow]) -> None:
+        self._write_section_rows(_spaces, self.spaces, "Rooms")
 
     def write_vent_units(self, _vent_units: list[vent_units.VentUnitRow]) -> None:
-        start = self.vent_units.section_first_entry_row
-        row_items = [
-            unit.create_xl_items(self.shape.name, _row_num=i) for i, unit in enumerate(_vent_units, start=start)
-        ]
-        for item in xl_data.merge_xl_item_rows(row_items):
-            self.xl.write_xl_item(item)
+        self._write_section_rows(_vent_units, self.vent_units, "Ventilation units")
 
     def write_vent_ducts(self, _vent_ducts: list[vent_ducts.VentDuctRow]) -> None:
-        if not self.vent_ducts.section_first_entry_row:
-            self.vent_ducts.section_first_entry_row = self.vent_ducts.find_section_first_entry_row()
-
-        start = self.vent_ducts.section_first_entry_row
-        row_items = [
-            duct.create_xl_items(self.shape.name, _row_num=i) for i, duct in enumerate(_vent_ducts, start=start)
-        ]
-        for item in xl_data.merge_xl_item_rows(row_items):
-            self.xl.write_xl_item(item)
+        self._write_section_rows(_vent_ducts, self.vent_ducts, "Ducts")
 
     def activate_variants(self, variants_worksheet_name: str, vent_unit_range: str) -> None:
         """Link the Vent unit to the Variants worksheet."""

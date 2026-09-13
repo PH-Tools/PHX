@@ -230,6 +230,8 @@ metr_json_to_file.write_metr_json_file(target_path, metr_text)
 
 4. **Localization** (`phpp_localization/`) provides shape-file JSON that maps logical field names to cell addresses for a given PHPP version. Currently ships with **English-only** shape files for PHPP v9 (9.6A, 9.7IP) and v10 (10.3, 10.4A, 10.4IP, 10.6, 10.6IP). The version detection code recognizes German (DE) and Spanish (ES) worksheet names for navigation, but no DE/ES shape files are provided.
 
+   PHX carries version-specific PHI certification enums because the PHPP 9 and 10 drop-down keys differ. The PHPP 10 builder `set_phx_phpp10_settings` deliberately leaves building category, occupancy type, and EnerPHit type on their PHPP 9 enum members; the PHPP 10 localization options accept those retained keys.
+
 5. **`PHPPConnection` exposes 22 `write_*` methods** — 19 functional write operations plus 3 non-residential stubs (`write_non_res_utilization_profiles`, `write_non_res_space_lighting`, `write_non_res_IHG`). The canonical write sequence writes ventilation units first, then ducts, then rooms; duct assignments use the same project order as the ventilation-unit rows.
 
 6. **Unmapped worksheets skip, loudly.** A shape file may leave a worksheet's layout unmapped (`GROUND.input_block` is `None` for PHPP 9.x and the 10.x IP editions). The writer then writes nothing to that sheet and reports it through `xl.output`, rather than guessing at a layout or at units no workbook has confirmed.

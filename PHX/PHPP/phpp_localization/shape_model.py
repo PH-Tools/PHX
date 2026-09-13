@@ -113,6 +113,8 @@ class ClimateNamedRanges(BaseModel):
     country: str
     region: str
     data_set: str
+    ud_block_name: str | None = None
+    ud_block_comment: str | None = None
 
 
 class ClimateDefinedRanges(BaseModel):
@@ -121,6 +123,23 @@ class ClimateDefinedRanges(BaseModel):
     site_altitude: str
     latitude: str
     longitude: str
+
+
+class ClimateValidationRange(BaseModel):
+    column: str
+    start_row: int
+    end_row: int
+
+
+class ClimateLibraryValidationRanges(BaseModel):
+    country: ClimateValidationRange
+    region: ClimateValidationRange
+    data_set: ClimateValidationRange
+
+
+class ClimateUserDefinedSelectors(BaseModel):
+    country: str
+    region: str
 
 
 class ClimateActiveDatasetCol(BaseModel):
@@ -158,6 +177,8 @@ class ClimateUDBlockCol(BaseModel):
     longitude: str
     elevation: str
     elevation_unit: str
+    name: str
+    comment: str
     display_name: str
     summer_delta_t: str
     summer_delta_t_unit: str
@@ -197,6 +218,8 @@ class Climate(BaseModel):
     ud_block: ClimateUDBlock
     named_ranges: ClimateNamedRanges
     defined_ranges: ClimateDefinedRanges
+    library_validation_ranges: ClimateLibraryValidationRanges | None = None
+    user_defined_selectors: ClimateUserDefinedSelectors | None = None
 
 
 # -----------------------------------------------------------------------------
@@ -596,13 +619,15 @@ class VentilationInputItem(BaseModel):
     locator_string: str
     input_column: str
     unit: str | None = None
+    options: dict | None = None
 
 
 class Ventilation(BaseModel):
     name: str
     vent_type: VentilationInputItem
-    wind_coeff_e: VentilationInputItem
-    wind_coeff_f: VentilationInputItem
+    wind_protection_class: VentilationInputItem | None = None
+    wind_coeff_e: VentilationInputItem | None = None
+    wind_coeff_f: VentilationInputItem | None = None
     airtightness_n50: VentilationInputItem
     airtightness_Vn50: VentilationInputItem
     multi_unit_on: VentilationInputItem

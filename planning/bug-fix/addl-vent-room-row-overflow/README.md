@@ -1,6 +1,6 @@
 # `Addl vent` room rows overflow the shipped 30-row block silently
 
-- **Status:** Scoped (writeup only — no implementation authorized yet)
+- **Status:** Implemented on branch `bug-fix/phpp-writer-fix-batch` (2026-09-12). Decisions D1/D1a and the sibling audit are in [`../phpp-writer-fix-batch.md`](../phpp-writer-fix-batch.md): rooms, units and ducts share one guard that locates each section's first and last entry rows before writing, warns, and truncates
 - **Filed:** 2026-09-02 (Ed May / Claude)
 - **Origin:** phx-phpp-bridge Phase 0a replay work (Gate G-A record,
   `phx-phpp-bridge/planning/phases/phase-0a-executor-runtime-spikes.md`,

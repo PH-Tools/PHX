@@ -1,6 +1,6 @@
 # A PHPP version mismatch silently drops the entire `Verification` worksheet
 
-**Status:** Scoped — ready to implement
+**Status:** Implemented on branch `bug-fix/phpp-writer-fix-batch` (2026-09-12). Fixture re-recorded: `Verification` gained exactly `F29`, `K28`, `N28`, `N30`; no enum cells. `PhiCertType.OTHER` corrected 44 → 40 (template drop-down and honeybee-ph both use 40)
 **Opened:** 2026-08-15
 **Owner:** `PHX/PHPP/phpp_app.py` → `write_certification_config`
 **Umbrella:** [`README.md`](README.md)

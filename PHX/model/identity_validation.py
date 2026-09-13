@@ -286,5 +286,17 @@ def validate_project_identities(project: PhxProject, target: IdentityValidationT
 
 def validate_project_export_readiness(project: PhxProject, target: IdentityValidationTarget | str) -> None:
     """Run shared export preflight in backwards-compatible diagnostic order."""
+    resolved_target = IdentityValidationTarget(target)
     project.assert_ventilation_assignments_ready()
-    validate_project_identities(project, target)
+    if resolved_target is IdentityValidationTarget.PHPP:
+        missing_display_names = [
+            f"variants[{variant_index}].site.display_name"
+            for variant_index, variant in enumerate(project.variants)
+            if not variant.site.display_name or not variant.site.display_name.strip()
+        ]
+        if missing_display_names:
+            raise ValueError(
+                "PHPP export readiness failed: a non-empty Site display_name is required to select "
+                "user-defined climate data:\n- " + "\n- ".join(missing_display_names)
+            )
+    validate_project_identities(project, resolved_target)

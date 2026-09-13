@@ -109,15 +109,16 @@ def test_duct_free_project_has_zero_sheet_interaction():
     connection.addnl_vent.vent_ducts.find_section_last_entry_row.assert_not_called()
 
 
-def test_rows_are_truncated_to_duct_section_capacity(reset_class_counters):
+def test_duct_rows_are_passed_to_shared_capacity_guard(reset_class_counters):
     connection = _connection(first_entry_row=95, last_entry_row=96)
     ducts = (_duct("one", 1), _duct("two", 1), _duct("three", 1))
 
     connection.write_project_vent_ducting(_project(_collection((1,), ducts)))
 
     rows = connection.addnl_vent.write_vent_ducts.call_args.args[0]
-    assert [row.phx_duct.identifier for row in rows] == ["one", "two"]
-    assert "3 ducts exceed the 2-row" in connection.xl.output.call_args.args[0]
+    assert [row.phx_duct.identifier for row in rows] == ["one", "two", "three"]
+    connection.addnl_vent.vent_ducts.find_section_first_entry_row.assert_not_called()
+    connection.addnl_vent.vent_ducts.find_section_last_entry_row.assert_not_called()
 
 
 def test_easyph_skips_ducts_before_project_access():

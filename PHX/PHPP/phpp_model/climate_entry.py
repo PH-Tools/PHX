@@ -19,37 +19,63 @@ class ClimateSettings:
     shape: shape_model.Climate
     phx_site: phx_site.PhxSite
 
-    def _create_range(self, _field_name: str, _row_offset: int, _start_row: int) -> str:
-        """Return the XL Range ("P12",...) for the specific field name."""
-        col = getattr(self.shape.active_dataset.input_columns, _field_name)
-        return f"{col}{_start_row + _row_offset}"
-
-    def create_xl_items(self, _sheet_name: str, _start_row: int) -> list[xl_data.XlItem]:
+    def create_selector_xl_items(
+        self,
+        _sheet_name: str,
+        _country_code: str | None = None,
+        _region_code: str | None = None,
+        _dataset_name: str | None = None,
+    ) -> list[xl_data.XlItem]:
         """Return a list of the XL items to write to the worksheet."""
-        create_range = partial(self._create_range, _start_row=_start_row)
         XLItemClimate = partial(xl_data.XlItem, _sheet_name)
+        country_code = self.phx_site.phpp_codes.country_code if _country_code is None else _country_code
+        region_code = self.phx_site.phpp_codes.region_code if _region_code is None else _region_code
+        dataset_name = self.phx_site.phpp_codes.dataset_name if _dataset_name is None else _dataset_name
 
-        xl_item_list: list[xl_data.XlItem] = [
-            XLItemClimate(create_range("country", 0), self.phx_site.phpp_codes.country_code),
-            XLItemClimate(create_range("region", 1), self.phx_site.phpp_codes.region_code),
-            XLItemClimate(create_range("dataset", 3), f"{self.phx_site.phpp_codes.dataset_name}"),
+        return [
+            XLItemClimate(self.shape.named_ranges.country, country_code),
+            XLItemClimate(self.shape.named_ranges.region, region_code),
+            XLItemClimate(self.shape.named_ranges.data_set, dataset_name),
         ]
 
+    def create_elevation_xl_item(self, _sheet_name: str) -> xl_data.XlItem:
+        """Return the site-elevation override item."""
+        XLItemClimate = partial(xl_data.XlItem, _sheet_name)
         if self.phx_site.location.site_elevation:
-            xl_item_list.append(
-                XLItemClimate(
-                    create_range("elevation_override", 9),
-                    self.phx_site.location.site_elevation,
-                    "M",
-                    self.shape.ud_block.input_columns.elevation_unit,
-                )
+            return XLItemClimate(
+                self.shape.defined_ranges.site_altitude,
+                self.phx_site.location.site_elevation,
+                "M",
+                self.shape.ud_block.input_columns.elevation_unit,
             )
-        else:
-            # probably shouldn't hardcode D17 here...
-            xl_item_list.append(
-                XLItemClimate("D18", "=D17"),
-            )
-        return xl_item_list
+        return XLItemClimate(
+            self.shape.defined_ranges.site_altitude,
+            f"={self.shape.defined_ranges.weather_station_altitude}",
+        )
+
+    def create_xl_items(
+        self,
+        _sheet_name: str,
+        _start_row: int | None = None,
+        *,
+        _country_code: str | None = None,
+        _region_code: str | None = None,
+        _dataset_name: str | None = None,
+    ) -> list[xl_data.XlItem]:
+        """Return selector and elevation items for the active climate.
+
+        ``_start_row`` remains accepted for compatibility; named ranges now
+        define the selector locations.
+        """
+        return [
+            *self.create_selector_xl_items(
+                _sheet_name,
+                _country_code,
+                _region_code,
+                _dataset_name,
+            ),
+            self.create_elevation_xl_item(_sheet_name),
+        ]
 
 
 @dataclass
@@ -99,8 +125,12 @@ class ClimateDataBlock:
         phx_climate = self.phx_site.climate
         phx_site = self.phx_site.location
 
+        block_name_range = self.shape.named_ranges.ud_block_name or create_range("name", 0)
+        block_comment_range = self.shape.named_ranges.ud_block_comment or create_range("comment", 9)
+
         # -- Build the Header assembly attributes
         xl_items_list: list[xl_data.XlItem] = [
+            XLItemClimate(block_name_range, self.phx_site.display_name),
             XLItemClimate(create_range("latitude", 0), phx_site.latitude),
             XLItemClimate(create_range("longitude", 0), phx_site.longitude),
             XLItemClimate(
@@ -109,14 +139,13 @@ class ClimateDataBlock:
                 "M",
                 self.shape.ud_block.input_columns.elevation_unit,
             ),
-            XLItemClimate(create_range("display_name", 0), self.phx_site.display_name),
             XLItemClimate(
                 create_range("summer_delta_t", 0),
                 phx_climate.daily_temp_swing,
                 "DELTA-C",
                 self.shape.ud_block.input_columns.summer_delta_t_unit,
             ),
-            XLItemClimate(create_range("source", 0), self.phx_site.source),
+            XLItemClimate(block_comment_range, self.phx_site.source),
         ]
 
         # -- Add the monthly climate data

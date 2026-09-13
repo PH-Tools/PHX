@@ -82,6 +82,15 @@ def _assert_replay_matches_golden(_fixture_file: pathlib.Path, _hbjson_file: pat
         sheet_names=fixture["sheet_names"],
         seed=fixture["seed"],
         epoch_deltas=fixture["epoch_deltas"],
+        named_ranges={
+            "Climate": {
+                "Klima_Region": "D9",
+                "Klima_Region2": "D10",
+                "Klima_Standort": "D12",
+                "Klimadaten_Muster": "D67",
+                "Klimadaten_Muster_Quelle": "E76",
+            }
+        },
     )
     connection = XLConnection(xl_framework=fake_xl)
     phpp_conn = phpp_app.PHPPConnection(connection)

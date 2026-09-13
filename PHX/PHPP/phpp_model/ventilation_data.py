@@ -33,9 +33,12 @@ class VentilationInputItem:
         --------
             * (XlItem): The XlItem to write to the sheet.
         """
+        input_shape = getattr(self.shape, self.input_type)
+        if input_shape is None:
+            raise ValueError(f"Ventilation shape has no '{self.input_type}' input.")
         return xl_data.XlItem(
             sheet_name=_sheet_name,
-            xl_range=f"{getattr(self.shape, self.input_type).input_column}{_row_num}",
+            xl_range=f"{input_shape.input_column}{_row_num}",
             write_value=self.input_data,
             input_unit=self.input_unit,
             target_unit=self.target_unit,
@@ -63,6 +66,17 @@ class VentilationInputItem:
     def wind_coeff_f(cls, shape: shape_model.Ventilation, input_data: xl_writable) -> VentilationInputItem:
         obj = cls(shape, input_data)
         obj.input_type = "wind_coeff_f"
+        return obj
+
+    @classmethod
+    def wind_protection_class(cls, shape: shape_model.Ventilation, input_data: float) -> VentilationInputItem:
+        input_shape = shape.wind_protection_class
+        if input_shape is None or input_shape.options is None:
+            raise ValueError("Ventilation shape has no wind-protection class options.")
+
+        coefficient_key = format(input_data, ".15g")
+        obj = cls(shape, input_shape.options[coefficient_key])
+        obj.input_type = "wind_protection_class"
         return obj
 
     @classmethod

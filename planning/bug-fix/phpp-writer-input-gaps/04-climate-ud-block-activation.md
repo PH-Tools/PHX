@@ -1,7 +1,9 @@
 # The user-defined climate block is filled in, never named, never selected — and one cell is corrupted
 
-**Status:** Scoped — gate decided 2026-08-15 (library codes when valid, UD
-otherwise); ready to implement
+**Status:** Implemented on branch `bug-fix/phpp-writer-fix-batch` (2026-09-12),
+Phases 0-4; the live re-record took the library path (see Phase 4 result). All seven
+shapes verified against their workbooks; PHPP 9 shapes also had the UD block origin
+one row low (62 → 61)
 **Opened:** 2026-08-15
 **Owner:** `PHX/PHPP/phpp_model/climate_entry.py`; `PHX/PHPP/sheet_io/io_climate.py`
 **Umbrella:** [`README.md`](README.md)
@@ -285,6 +287,14 @@ either branch.
 
 **Verify:** `python -m pytest tests/test_xl_replay/` green; `P67` is gone from
 `golden_writes` either way. Record which branch fired, in this file.
+
+**Result (2026-09-12, live Excel re-record):** the **library path** fired.
+`US0055c-New York` is a member of the `D12` validation list under
+`US-United States of America` / `New York`, so `D9`/`D10`/`D12`/`D18` are the only
+`Climate` writes left and the whole UD block (134 cells, rows 67-75, columns
+`E`-`T`, including `L67` and `P67`) left `golden_writes`. The re-record also needed
+`scripts/perf/record_replay_fixture.py` to resolve defined names to their cell
+address before recording.
 
 ### Phase 5 — closeout
 

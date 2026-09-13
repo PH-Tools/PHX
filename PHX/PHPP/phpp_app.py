@@ -216,90 +216,96 @@ class PHPPConnection:
         """Return True if the PHX PHI Certification Version and the PHPP Version match."""
         return int(_phx_variant.phi_certification_major_version) == int(self.version.number_major)
 
+    def _write_phi_certification_selections(self, _phx_variant: project.PhxVariant) -> None:
+        """Write version-specific PHI certification selections for one Variant."""
+        # --- Building Type / Use
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_building_category_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_building_category_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_building_use_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_building_use_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_building_ihg_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_building_ihg_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_building_occupancy_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_building_occupancy_type,
+            )
+        )
+
+        # --- Certification Config
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_certification_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_certification_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_certification_class",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_certification_class,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_pe_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_pe_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_enerphit_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_enerphit_type,
+            )
+        )
+        self.verification.write_item(
+            verification_data.VerificationInput.enum(
+                shape=self.shape.VERIFICATION,
+                input_type="phi_retrofit_type",
+                input_enum_value=_phx_variant.phi_cert.phi_certification_settings.phi_retrofit_type,
+            )
+        )
+
     def write_certification_config(self, phx_project: project.PhxProject) -> None:
         if self.easyPh:
             return None
 
+        version_warning_emitted = False
         for phx_variant in phx_project.variants:
             # TODO: how to handle multiple variants?
 
             if not self.phpp_version_equals_phx_phi_cert_version(phx_variant):
-                # -- If the versions don't match, don't try and write anything.
-                msg = (
-                    f"\nPHPPVersionWarning: the HBJSON PHI "
-                    f"Certification version (V={phx_variant.phi_certification_major_version}) "
-                    f"does not match the PHPP Version (V={self.version.number_major})? "
-                    f"Ignoring all writes to the '{self.shape.VERIFICATION.name}' worksheet.\n"
-                )
-                self.xl.output(msg)
-                return
-
-            # --- Building Type / Use
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_building_category_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_category_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_building_use_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_use_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_building_ihg_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_ihg_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_building_occupancy_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_building_occupancy_type,
-                )
-            )
-
-            # --- Certification Config
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_certification_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_certification_class",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_certification_class,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_pe_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_pe_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_enerphit_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_enerphit_type,
-                )
-            )
-            self.verification.write_item(
-                verification_data.VerificationInput.enum(
-                    shape=self.shape.VERIFICATION,
-                    input_type="phi_retrofit_type",
-                    input_enum_value=phx_variant.phi_cert.phi_certification_settings.phi_retrofit_type,
-                )
-            )
+                if not version_warning_emitted:
+                    msg = (
+                        f"\nPHPPVersionWarning: the HBJSON PHI Certification version "
+                        f"(V={phx_variant.phi_certification_major_version}) does not match the PHPP Version "
+                        f"(V={self.version.number_major}). Skipping PHI certification selections on the "
+                        f"'{self.shape.VERIFICATION.name}' worksheet; dwelling units, setpoints, and mechanical "
+                        f"cooling will still be written.\n"
+                    )
+                    self.xl.output(msg)
+                    version_warning_emitted = True
+            else:
+                self._write_phi_certification_selections(phx_variant)
 
             # ---- Model Parameters
             if not phx_variant.phius_cert.ph_building_data:
@@ -345,13 +351,20 @@ class PHPPConnection:
             return None
 
         for phx_variant in phx_project.variants:
-            # -- Write the actual weather station data
+            active_climate_data = climate_entry.ClimateSettings(shape=self.shape.CLIMATE, phx_site=phx_variant.site)
+            library_codes_valid = self.climate.try_library_codes(active_climate_data)
+            if library_codes_valid:
+                continue
+
+            # -- Write model weather data when the library selection is invalid,
+            # -- or unconditionally for an older shape that has no validation gate.
             weather_station_data = climate_entry.ClimateDataBlock(shape=self.shape.CLIMATE, phx_site=phx_variant.site)
             self.climate.write_climate_block(weather_station_data)
 
-            # -- Set the active weather station
-            active_climate_data = climate_entry.ClimateSettings(shape=self.shape.CLIMATE, phx_site=phx_variant.site)
-            self.climate.write_active_climate(active_climate_data)
+            if library_codes_valid is False:
+                self.climate.write_user_defined_active_climate(active_climate_data)
+            else:
+                self.climate.write_active_climate(active_climate_data)
         return None
 
     @staticmethod
@@ -819,19 +832,6 @@ class PHPPConnection:
         if not phpp_vent_duct_rows:
             return None
 
-        duct_section = self.addnl_vent.vent_ducts
-        first_entry_row = duct_section.section_first_entry_row or duct_section.find_section_first_entry_row()
-        duct_section.section_first_entry_row = first_entry_row
-        last_entry_row = duct_section.section_last_entry_row or duct_section.find_section_last_entry_row()
-        duct_section.section_last_entry_row = last_entry_row
-        row_capacity = last_entry_row - first_entry_row + 1
-        if len(phpp_vent_duct_rows) > row_capacity:
-            self.xl.output(
-                f"\nPHPPVentDuctWarning: {len(phpp_vent_duct_rows)} ducts exceed the {row_capacity}-row "
-                "Additional Ventilation duct-section capacity; truncating the remaining ducts.\n"
-            )
-            phpp_vent_duct_rows = phpp_vent_duct_rows[:row_capacity]
-
         self.addnl_vent.write_vent_ducts(phpp_vent_duct_rows)
         return None
 
@@ -873,9 +873,6 @@ class PHPPConnection:
                         phx_vent_pattern=phx_vent_pattern,
                     )
                     phpp_vent_rooms.append(phpp_rm)
-
-        if len(phpp_vent_rooms) >= 30:
-            pass
 
         self.addnl_vent.write_spaces(phpp_vent_rooms)
         return None
@@ -919,6 +916,7 @@ class PHPPConnection:
         if self.easyPh:
             return None
 
+        wind_coeff_f_warning_emitted = False
         for variant in phx_project.variants:
             # TODO: How to handle multiple variants?
 
@@ -926,13 +924,29 @@ class PHPPConnection:
                 continue
             ph_bldg: certification.PhxPhBuildingData = variant.phius_cert.ph_building_data
 
-            # TODO: Get the actual values from the Model somehow
-            self.ventilation.write_wind_coeff_e(
-                ventilation_data.VentilationInputItem.wind_coeff_e(self.shape.VENTILATION, ph_bldg.wind_coefficient_e)
-            )
-            self.ventilation.write_wind_coeff_f(
-                ventilation_data.VentilationInputItem.wind_coeff_f(self.shape.VENTILATION, ph_bldg.wind_coefficient_f)
-            )
+            if self.shape.VENTILATION.wind_protection_class:
+                self.ventilation.write_wind_protection_class(
+                    ventilation_data.VentilationInputItem.wind_protection_class(
+                        self.shape.VENTILATION, ph_bldg.wind_coefficient_e
+                    )
+                )
+                if ph_bldg.wind_coefficient_f != 15 and not wind_coeff_f_warning_emitted:
+                    self.xl.output(
+                        f"\nPHPPVentilationWarning: PHPP 10 fixes wind coefficient f at 15; "
+                        f"the model value {ph_bldg.wind_coefficient_f:g} was not written."
+                    )
+                    wind_coeff_f_warning_emitted = True
+            else:
+                self.ventilation.write_wind_coeff_e(
+                    ventilation_data.VentilationInputItem.wind_coeff_e(
+                        self.shape.VENTILATION, ph_bldg.wind_coefficient_e
+                    )
+                )
+                self.ventilation.write_wind_coeff_f(
+                    ventilation_data.VentilationInputItem.wind_coeff_f(
+                        self.shape.VENTILATION, ph_bldg.wind_coefficient_f
+                    )
+                )
             self.ventilation.write_airtightness_n50(
                 ventilation_data.VentilationInputItem.airtightness_n50(self.shape.VENTILATION, ph_bldg.airtightness_n50)
             )

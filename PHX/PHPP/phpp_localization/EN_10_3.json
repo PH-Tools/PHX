@@ -217,6 +217,8 @@
                 "longitude": "H",
                 "elevation": "J",
                 "elevation_unit": "M",
+                "name": "D",
+                "comment": "E",
                 "display_name": "L",
                 "summer_delta_t": "N",
                 "summer_delta_t_unit": "DELTA-C",
@@ -260,7 +262,9 @@
         "named_ranges": {
             "country": "Klima_Region",
             "region": "Klima_Region2",
-            "data_set": "Klima_Standort"
+            "data_set": "Klima_Standort",
+            "ud_block_name": "Klimadaten_Muster",
+            "ud_block_comment": "Klimadaten_Muster_Quelle"
         },
         "defined_ranges": {
             "climate_zone": "D13",
@@ -268,6 +272,15 @@
             "site_altitude": "D18",
             "latitude": "F25",
             "longitude": "H25"
+        },
+        "library_validation_ranges": {
+            "country": {"column": "AE", "start_row": 69, "end_row": 175},
+            "region": {"column": "AJ", "start_row": 69, "end_row": 122},
+            "data_set": {"column": "AU", "start_row": 69, "end_row": 175}
+        },
+        "user_defined_selectors": {
+            "country": "ud-User-defined data",
+            "region": "All"
         }
     },
     "UVALUES": {
@@ -1038,15 +1051,15 @@
             "locator_string": "Type of ventilation",
             "input_column": "K"
         },
-        "wind_coeff_e": {
+        "wind_protection_class": {
             "locator_col": "I",
             "locator_string": "Wind protection coefficient, e",
-            "input_column": "J"
-        },
-        "wind_coeff_f": {
-            "locator_col": "I",
-            "locator_string": "Wind protection coefficient, f",
-            "input_column": "J"
+            "input_column": "K",
+            "options": {
+                "0.1": "1-No protection",
+                "0.07": "2-Moderate protection",
+                "0.04": "3-High protection"
+            }
         },
         "airtightness_n50": {
             "locator_col": "I",
