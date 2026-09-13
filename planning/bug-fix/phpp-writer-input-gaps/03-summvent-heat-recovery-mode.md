@@ -1,6 +1,6 @@
 # Summer heat-recovery mode is never written to `SummVent`
 
-**Status:** Scoped — one mapping question must be settled before Phase 2
+**Status:** Implemented on branch `bug-fix/phpp-summvent-hrv-mode` (2026-09-13). Mapping confirmed in WUFI-Passive (Phase 1 result); all seven shapes verified; fixtures re-recorded, `SummVent` gained exactly `R15:R17` cleared and `R18 = "x"`
 **Opened:** 2026-08-15
 **Owner:** `PHX/PHPP/` — no owner today; `SUMM_VENT` is an unused stub
 **Umbrella:** [`README.md`](README.md)

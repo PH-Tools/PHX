@@ -2,7 +2,7 @@
 
 **Issue:** [#103](https://github.com/PH-Tools/PHX/issues/103)
 
-**Status:** Scoped — 2026-08-15. `05` implemented 2026-09-12 (with `03` Phase 2's helper); `01`, `02`, `04` merged 2026-09-12 (PR #128, PHX 1.56.109); `06` merged via PR #113. Only `03` remains. Item `06` added
+**Status:** Scoped — 2026-08-15. `05` implemented 2026-09-12 (with `03` Phase 2's helper); `01`, `02`, `04` merged 2026-09-12 (PR #128, PHX 1.56.109); `06` merged via PR #113; `03` implemented on branch `bug-fix/phpp-summvent-hrv-mode` (2026-09-13). Item `06` added
 2026-08-15 (a sixth input, found by OpenPH the same day); `05` now depends on
 the upstream foundation-shape packet.
 **Source:** [`features/phpp-writer-input-gaps/`](../../features/phpp-writer-input-gaps/README.md) (the incoming request, filed from OpenPH)
