@@ -3,9 +3,7 @@
 """Conversion Schemas for how to write PH/HB objects to WUFI XML"""
 
 import logging
-import operator
 import sys
-from copy import copy
 from functools import reduce
 from typing import TypeVar
 
@@ -29,6 +27,7 @@ from PHX.model.enums.foundations import FoundationType
 from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType
 from PHX.model.hvac import _base, renewable_devices
 from PHX.model.schedules import occupancy, ventilation
+from PHX.model.ventilation_rooms import VentilationRoom, ventilation_rooms
 from PHX.to_WUFI_XML.xml_writables import XML_List, XML_Node, XML_Object, xml_writable
 
 logger = logging.getLogger(__name__)
@@ -196,26 +195,6 @@ def _PhxBuilding(_b: building.PhxBuilding) -> list[xml_writable]:
 
 
 def _PhxZone(_z: building.PhxZone) -> list[xml_writable]:
-    def wufi_spaces(_z: building.PhxZone) -> list[spaces.PhxSpace]:
-        """Return a list of all the spaces in the PhxZone for reporting out to WUFI."""
-        if not _z.merge_spaces_by_erv:
-            # -- Return all the spaces in the zone with ventilation airflow
-            return _z.ventilated_spaces
-        else:
-            # -- Merge the Spaces together by their ERV ID
-            merged_spaces_: list[spaces.PhxSpace] = []
-            for space_group in _z.ventilated_spaces_grouped_by_erv:
-                if len(space_group) > 1:
-                    new_space = reduce(operator.add, space_group)
-                else:
-                    # -- A group of one never goes through __add__, so name it here.
-                    # -- Copy first: renaming the source Space would leak this
-                    # -- WUFI-side naming back into the caller's model.
-                    new_space = copy(space_group[0])
-                    new_space.display_name = new_space.vent_unit_display_name
-                merged_spaces_.append(new_space)
-            return sorted(merged_spaces_, key=lambda x: x.vent_unit_display_name)
-
     home_devices = list(_z.elec_equipment_collection.devices)
     logger.debug(
         "Serializing WUFI HomeDevice list for zone='%s': count=%s devices=%s",
@@ -232,7 +211,10 @@ def _PhxZone(_z: building.PhxZone) -> list[xml_writable]:
         XML_Node("IdentNr", _z.id_num),
         XML_List(
             "RoomsVentilation",
-            [XML_Object("Room", sp, "index", i, _schema_name="_PhxSpace") for i, sp in enumerate(wufi_spaces(_z))],
+            [
+                XML_Object("Room", room, "index", i, _schema_name="_VentilationRoom")
+                for i, room in enumerate(ventilation_rooms(_z))
+            ],
         ),
         XML_List(
             "LoadsPersonsPH",
@@ -954,6 +936,20 @@ def _PhxSpace(_r: spaces.PhxSpace) -> list[xml_writable]:
         # XML_Node('SupplyFlowRateUserDef', 'Test', "unit", "m³/h"),
         # XML_Node('ExhaustFlowRateUserDef', 'Test', "unit", "m³/h"),
         # XML_Node('DesignFlowInterzonalUserDef', 'Test', "unit", "m³/h"),
+    ]
+
+
+def _VentilationRoom(_room: VentilationRoom) -> list[xml_writable]:
+    return [
+        XML_Node("Name", _room.display_name),
+        XML_Node("Type", _room.wufi_type),
+        XML_Node("IdentNrUtilizationPatternVent", _room.ventilation_pattern_id_num),
+        XML_Node("IdentNrVentilationUnit", _room.ventilator_id_num or 0),
+        XML_Node("Quantity", _room.quantity),
+        XML_Node("AreaRoom", _room.weighted_floor_area, "unit", "m²"),
+        XML_Node("ClearRoomHeight", _room.clear_height, "unit", "m"),
+        XML_Node("DesignVolumeFlowRateSupply", round(_room.flow_supply, TOL_LEV1), "unit", "m³/h"),
+        XML_Node("DesignVolumeFlowRateExhaust", round(_room.flow_extract, TOL_LEV1), "unit", "m³/h"),
     ]
 
 
