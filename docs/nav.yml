@@ -16,6 +16,7 @@ nav:
       - project: api/model/project.md
       - building: api/model/building.md
       - spaces: api/model/spaces.md
+      - ventilation_rooms: api/model/ventilation_rooms.md
       - components: api/model/components.md
       - geometry: api/model/geometry.md
       - constructions: api/model/constructions.md

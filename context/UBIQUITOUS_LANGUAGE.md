@@ -136,6 +136,7 @@ the domain's name disagree, the "Aliases to avoid" column names the loser and th
 - A **Space** holds exactly one ventilation, one occupancy, and one lighting **Program**, and has at most one **Ventilation Assignment**.
 - A **Program** owns its **Load** outright and *shares* its **Utilization Pattern** with the **Project**.
 - Two **Spaces** merge only when their **Unique Key** matches, which for a **Space** means the same WUFI type and the same **Ventilation Assignment**.
+- WUFI and METr write one **Ventilation Room** per ventilated **Space**, or one per **Ventilation Assignment** when the **Zone** merges Spaces. A merged **Ventilation Room** is a read-only export record (`VentilationRoom`, from `ventilation_rooms()`), never a new **Space**; PHPP always writes the unmerged **Spaces**.
 - A **Mechanical System Collection** serves **Zones** through **Zone Coverage** and end uses through each **Device's Usage Profile**.
 
 ---

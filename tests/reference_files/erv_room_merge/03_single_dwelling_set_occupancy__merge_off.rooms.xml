@@ -1,0 +1,62 @@
+<UtilisationPatternsVentilation count="1">
+		<UtilizationPatternVent index="0">
+			<Name>Always On</Name>
+			<IdentNr>1</IdentNr>
+			<OperatingDays>7.0</OperatingDays>
+			<OperatingWeeks>52.0</OperatingWeeks>
+			<Maximum_DOS>15.0</Maximum_DOS>
+			<Maximum_PDF>1.0</Maximum_PDF>
+			<Standard_DOS>0</Standard_DOS>
+			<Standard_PDF>0</Standard_PDF>
+			<Basic_DOS>2.0</Basic_DOS>
+			<Basic_PDF>0.92</Basic_PDF>
+			<Minimum_DOS>7.0</Minimum_DOS>
+			<Minimum_PDF>0.88</Minimum_PDF>
+		</UtilizationPatternVent>
+	</UtilisationPatternsVentilation>
+<RoomsVentilation count="4">
+							<Room index="0">
+								<Name>-Room_38_default_space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">100.0</AreaRoom>
+								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">130.43</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">130.43</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="1">
+								<Name>-Room_39_default_space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">100.0</AreaRoom>
+								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">130.43</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">130.43</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="2">
+								<Name>-Room_40_default_space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">100.0</AreaRoom>
+								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">130.43</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">130.43</DesignVolumeFlowRateExhaust>
+							</Room>
+							<Room index="3">
+								<Name>-Room_41_default_space</Name>
+								<Type>99</Type>
+								<IdentNrUtilizationPatternVent>1</IdentNrUtilizationPatternVent>
+								<IdentNrVentilationUnit>1</IdentNrVentilationUnit>
+								<Quantity>1</Quantity>
+								<AreaRoom unit="m²">100.0</AreaRoom>
+								<ClearRoomHeight unit="m">2.5</ClearRoomHeight>
+								<DesignVolumeFlowRateSupply unit="m³/h">130.43</DesignVolumeFlowRateSupply>
+								<DesignVolumeFlowRateExhaust unit="m³/h">130.43</DesignVolumeFlowRateExhaust>
+							</Room>
+						</RoomsVentilation>

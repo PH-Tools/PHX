@@ -136,11 +136,12 @@ class PhxSpace:
         lighting, and ventilation schedules are NOT merged, however the
         ventilation loads ARE added together.
 
-        Neither source space is modified. The merged space gets its own
-        PhxProgramVentilation carrying the summed load, because the merge runs
-        while an exporter is serializing: writing the sum back through a shared
-        program would compound the airflow on every export and would follow the
-        source Spaces into any other target written from the same project.
+        Neither source space is modified: the merged space gets its own
+        PhxProgramVentilation carrying the summed load, so the sum never flows
+        back into a source Space's program. The WUFI and METr exporters no
+        longer call this; they write read-only rows from
+        PHX.model.ventilation_rooms.ventilation_rooms(), which reproduces this
+        arithmetic without constructing a PhxSpace.
 
         The *schedule* is deliberately shared rather than copied. Schedules are
         project-registered utilization patterns referenced from the output by

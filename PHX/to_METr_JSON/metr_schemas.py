@@ -6,10 +6,7 @@ Each function is named `_ClassName` matching the PHX class and returns a dict (o
 The converter discovers these by class name: PhxProject → _PhxProject(), etc.
 """
 
-import operator
-from copy import copy
 from datetime import datetime
-from functools import reduce
 from typing import Any
 
 from PHX.model import (
@@ -32,6 +29,7 @@ from PHX.model.hvac import heat_pumps, heating, renewable_devices
 from PHX.model.hvac import ventilation as hvac_ventilation
 from PHX.model.hvac import water
 from PHX.model.schedules import occupancy, ventilation
+from PHX.model.ventilation_rooms import VentilationRoom, ventilation_rooms
 
 TOL_LEV1 = 2  # Rounding tolerance: 9.843181919194 -> 9.84
 TOL_LEV2 = 10  # Rounding tolerance: 9.843181919194 -> 9.8431819192
@@ -960,28 +958,9 @@ def _PhxFoundation(_f: ground.PhxFoundation, _zone_id: int = -1) -> dict:
     return d
 
 
-def _metr_spaces(_z: building.PhxZone) -> list[spaces.PhxSpace]:
-    """Return the list of spaces for a zone, merging by ERV if the flag is set."""
-    if not _z.merge_spaces_by_erv:
-        return _z.ventilated_spaces
-
-    merged_spaces: list[spaces.PhxSpace] = []
-    for space_group in _z.ventilated_spaces_grouped_by_erv:
-        if len(space_group) > 1:
-            new_space = reduce(operator.add, space_group)
-        else:
-            # -- A group of one never goes through __add__, so name it here.
-            # -- Copy first: renaming the source Space would leak this METr-side
-            # -- naming back into the caller's model.
-            new_space = copy(space_group[0])
-            new_space.display_name = new_space.vent_unit_display_name
-        merged_spaces.append(new_space)
-    return sorted(merged_spaces, key=lambda x: x.vent_unit_display_name)
-
-
 def _PhxZone(_z: building.PhxZone, _foundations: list[ground.PhxFoundation] | None = None) -> dict:
     """Convert a PhxZone to a METR JSON zone dict."""
-    room_list = [_PhxSpace(sp) for sp in _metr_spaces(_z)]
+    room_list = [_ventilation_room(room) for room in ventilation_rooms(_z)]
 
     return {
         "n": _z.display_name,
@@ -1058,6 +1037,22 @@ def _PhxSpace(_sp: spaces.PhxSpace) -> dict:
         "dVFiz": 0.0,
         "idUPatV": _sp.ventilation.schedule.id_num,
         "idVUnit": _sp.vent_unit_id_num or 0,
+    }
+
+
+def _ventilation_room(_room: VentilationRoom) -> dict:
+    """Convert a VentilationRoom to a METr JSON room dict."""
+    return {
+        "n": _room.display_name,
+        "tRoom": _room.wufi_type,
+        "quantity": _room.quantity,
+        "area": round(_room.weighted_floor_area, 6),
+        "clearH": round(_room.clear_height, 6),
+        "dVFrSup": round(_room.flow_supply, TOL_LEV1),
+        "dVFrEx": round(_room.flow_extract, TOL_LEV1),
+        "dVFiz": 0.0,
+        "idUPatV": _room.ventilation_pattern_id_num,
+        "idVUnit": _room.ventilator_id_num or 0,
     }
 
 
