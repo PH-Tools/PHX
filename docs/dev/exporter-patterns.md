@@ -74,6 +74,10 @@ fresh allocator there would restart numbering at 1 and collide. This means a
 post-conversion mutation site needs no "was this converter-built?" guard: enter
 the scope unconditionally and both project kinds come out correct.
 
+The allocator is not thread-safe. Concurrent mutation of one project is not
+supported: run exports of the same `PhxProject` sequentially, or build a separate
+project per thread.
+
 `generate_WUFI_XML_from_object()`, `generate_metr_json_dict()`, and the canonical
 `write_phx_project_to_phpp()` sequence run target-specific, read-only identity
 validation before serialization or Excel writes. The aggregate diagnostic

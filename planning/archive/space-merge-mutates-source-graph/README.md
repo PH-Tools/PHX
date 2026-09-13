@@ -7,7 +7,7 @@
 **Kind:** Long-standing latent defect (not a recent regression)
 **Introduced:** `45765b9` (2024-06-05, *"feat(wufi): Add new merge-spaces option"*), first released in **v1.45.0**
 **Owner files:** `PHX/model/spaces.py`, `PHX/to_WUFI_XML/xml_schemas.py`, `PHX/to_METr_JSON/metr_schemas.py`
-**Found during:** [`export-time-identity-scope`](../../bug-fix/export-time-identity-scope/README.md) review (site #2 of that ticket's §10 inventory)
+**Found during:** [`export-time-identity-scope`](../export-time-identity-scope/README.md) review (site #2 of that ticket's §10 inventory)
 
 ---
 
@@ -182,7 +182,7 @@ than changing it.
    the identity allocation below would happen inside the conversion scope. Larger
    change; the right one.
 2. **`PhxSpace()` inside `__add__` allocates an ID outside any identity scope**
-   (site #2 in [`export-time-identity-scope`](../../bug-fix/export-time-identity-scope/README.md) §10).
+   (site #2 in [`export-time-identity-scope`](../export-time-identity-scope/README.md) §10).
    Space `id_num` is not written to WUFI or METr, so this is latent today — but it
    consumes the legacy counter during serialization. Item 1 fixes it for free.
 3. **Fix the single-space `display_name` write-back** (§2) — assign to a copy, or
@@ -265,7 +265,7 @@ this, and it would catch the next one.
 
 ## 7. Related
 
-- [`export-time-identity-scope/`](../../bug-fix/export-time-identity-scope/README.md) — the
+- [`export-time-identity-scope/`](../export-time-identity-scope/README.md) — the
   sibling ticket; this is site #2 of its §10 inventory of unscoped/ungated
   export-time model construction. Its §8.3 is site #3.
 - [`wufi-import-space-reconciliation/`](../../bug-fix/wufi-import-space-reconciliation/README.md)

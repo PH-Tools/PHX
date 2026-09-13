@@ -202,7 +202,9 @@ If it turns out to be cosmetic, record the finding in the ticket and drop the ph
 
 **Commit:** `fix(wufi): split zone cooling coverage across the new systems`
 
-## Phase 4 — close out ◻ PENDING (unblocked 2026-09-13)
+## Phase 4 — close out ✅ COMPLETE (2026-09-13)
+
+Result: stripped Arverne D export (PHX 1.56.114, windows and shades removed for WUFI load time) opened in WUFI-Passive with nine systems at 180.94 kW each, and the calculation ran without errors. Docs note added to `docs/dev/exporter-patterns.md`.
 
 1. Re-run the Arverne D model end to end through
    `hbjson_to_wufi_xml.py` and confirm a WUFI file is produced. Open it in
