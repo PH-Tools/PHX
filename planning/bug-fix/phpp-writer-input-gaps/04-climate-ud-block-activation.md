@@ -1,6 +1,6 @@
 # The user-defined climate block is filled in, never named, never selected — and one cell is corrupted
 
-**Status:** Implemented on branch `bug-fix/phpp-writer-fix-batch` (2026-09-12),
+**Status:** Merged to main (2026-09-12, PR [#128](https://github.com/PH-Tools/PHX/pull/128), PHX 1.56.109),
 Phases 0-4; the live re-record took the library path (see Phase 4 result). All seven
 shapes verified against their workbooks; PHPP 9 shapes also had the UD block origin
 one row low (62 → 61)

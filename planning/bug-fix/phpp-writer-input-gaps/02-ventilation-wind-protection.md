@@ -1,6 +1,6 @@
 # Wind protection is written to two cells PHPP never reads
 
-**Status:** Implemented on branch `bug-fix/phpp-writer-fix-batch` (2026-09-12), per the batch plan's D3/D4. Fixture re-recorded: `Ventilation` gained `K19`, lost `J19` and `J20`; nothing else moved
+**Status:** Merged to main (2026-09-12, PR [#128](https://github.com/PH-Tools/PHX/pull/128), PHX 1.56.109), per the batch plan's D3/D4. Fixture re-recorded: `Ventilation` gained `K19`, lost `J19` and `J20`; nothing else moved
 **Opened:** 2026-08-15
 **Owner:** `PHX/PHPP/phpp_app.py` → `write_project_airtightness`; `PHX/PHPP/phpp_localization/*.json` → `VENTILATION`
 **Umbrella:** [`README.md`](README.md)

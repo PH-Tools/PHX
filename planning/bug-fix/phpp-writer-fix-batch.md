@@ -1,7 +1,7 @@
 # PHPP writer fix batch: `01` + `02` + `04` + `Addl vent` capacity
 
 - **DATE:** 2026-09-12
-- **STATUS:** Implemented on branch `bug-fix/phpp-writer-fix-batch` (2026-09-12; steps 1-5 done, closeout in progress)
+- **STATUS:** Merged to main (2026-09-12, PR [#128](https://github.com/PH-Tools/PHX/pull/128), PHX 1.56.109); #115 closed and archived, #103 items 01/02/04 ticked
 - **AUTHOR:** Ed May / Claude
 - **ISSUE:** [#103](https://github.com/PH-Tools/PHX/issues/103) items 01, 02, 04 (refs, not closes: 03 stays open); [#115](https://github.com/PH-Tools/PHX/issues/115) (closes)
 
@@ -15,7 +15,7 @@ executes:
 | `01` Verification version guard | [`phpp-writer-input-gaps/01-verification-version-guard.md`](phpp-writer-input-gaps/01-verification-version-guard.md) | S |
 | `02` Ventilation wind protection | [`phpp-writer-input-gaps/02-ventilation-wind-protection.md`](phpp-writer-input-gaps/02-ventilation-wind-protection.md) | S |
 | `04` Climate UD block activation | [`phpp-writer-input-gaps/04-climate-ud-block-activation.md`](phpp-writer-input-gaps/04-climate-ud-block-activation.md) | **M** |
-| `#115` `Addl vent` capacity (rooms + units) | [`addl-vent-room-row-overflow/README.md`](addl-vent-room-row-overflow/README.md) + the audit below | S |
+| `#115` `Addl vent` capacity (rooms + units) | [`addl-vent-room-row-overflow/README.md`](../archive/addl-vent-room-row-overflow/README.md) + the audit below | S |
 
 `04` was first triaged as small. Its Phase 1 is; its Phase 2 gate (cascading,
 recalc-dependent membership check across three selectors, with a revert path) is
