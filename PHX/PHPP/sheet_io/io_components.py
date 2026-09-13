@@ -12,9 +12,17 @@ from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model.component_frame import FrameRow
 from PHX.PHPP.phpp_model.component_glazing import GlazingRow
 from PHX.PHPP.phpp_model.component_vent import VentilatorRow
+from PHX.PHPP.sheet_io._stale_rows import (
+    _cell_has_value,
+    _contiguous_column_groups,
+    _contiguous_row_groups,
+    _format_stale_rows,
+    _range_address,
+    _read_column_with_integrity_guard,
+)
 from PHX.PHPP.sheet_io.io_exceptions import ResolveComponentIDException
 from PHX.xl import xl_app
-from PHX.xl.xl_data import col_offset, merge_xl_item_rows, xl_chr, xl_ord
+from PHX.xl.xl_data import col_offset, merge_xl_item_rows
 
 
 @dataclass
@@ -536,64 +544,6 @@ class Ventilators:
         return f"{prefix}-{_name}"
 
 
-def _cell_has_value(_value: object) -> bool:
-    """Return True when an Excel cell value represents a filled user entry."""
-    return _value is not None and _value != ""
-
-
-def _format_stale_rows(_row_numbers: list[int]) -> str:
-    """Return a compact row-number label for a stale Components-section warning."""
-    if len(_row_numbers) == 1:
-        return f"row {_row_numbers[0]}"
-    if len(_row_numbers) > 10:
-        return f"rows {_row_numbers[0]}-{_row_numbers[-1]} ({len(_row_numbers)})"
-    return f"rows {', '.join(str(row) for row in _row_numbers)}"
-
-
-def _contiguous_row_groups(_row_numbers: list[int]) -> list[tuple[int, int]]:
-    """Return inclusive contiguous row spans from sorted worksheet row numbers."""
-    if not _row_numbers:
-        return []
-
-    groups: list[tuple[int, int]] = []
-    start = previous = _row_numbers[0]
-    for row in _row_numbers[1:]:
-        if row == previous + 1:
-            previous = row
-            continue
-        groups.append((start, previous))
-        start = previous = row
-    groups.append((start, previous))
-    return groups
-
-
-def _contiguous_column_groups(_columns: list[str]) -> list[tuple[str, str]]:
-    """Return inclusive contiguous column spans from Excel column letters."""
-    if not _columns:
-        return []
-
-    column_numbers = sorted({xl_ord(col) for col in _columns})
-    groups: list[tuple[str, str]] = []
-    start = previous = column_numbers[0]
-    for column in column_numbers[1:]:
-        if column == previous + 1:
-            previous = column
-            continue
-        groups.append((xl_chr(start), xl_chr(previous)))
-        start = previous = column
-    groups.append((xl_chr(start), xl_chr(previous)))
-    return groups
-
-
-def _range_address(_col_start: str, _col_end: str, _row_start: int, _row_end: int) -> str:
-    """Return an Excel range address for a column span and row span."""
-    start = f"{_col_start}{_row_start}"
-    end = f"{_col_end}{_row_end}"
-    if start == end:
-        return start
-    return f"{start}:{end}"
-
-
 class Components:
     """IO Controller for PHPP "Components" worksheet."""
 
@@ -735,28 +685,6 @@ class Components:
             ],
         )
 
-    def _get_single_column_data_with_integrity_guard(
-        self,
-        _col: str,
-        _row_start: int,
-        _row_end: int,
-    ) -> list[object]:
-        """Read one column block, falling back per-cell if xlwings drops error cells."""
-        data = self.xl.get_single_column_data(
-            _sheet_name=self.shape.name,
-            _col=_col,
-            _row_start=_row_start,
-            _row_end=_row_end,
-        )
-        if not isinstance(data, list):
-            data = [data]
-
-        expected_len = _row_end - _row_start + 1
-        if len(data) == expected_len:
-            return list(data)
-
-        return [self.xl.get_data(self.shape.name, f"{_col}{row}") for row in range(_row_start, _row_end + 1)]
-
     def _warn_or_clear_stale_rows(
         self,
         _section_name: str,
@@ -770,7 +698,7 @@ class Components:
         if _row_start > _row_end:
             return
 
-        data = self._get_single_column_data_with_integrity_guard(_search_col, _row_start, _row_end)
+        data = _read_column_with_integrity_guard(self.xl, self.shape.name, _search_col, _row_start, _row_end)
         stale_rows = [row for row, value in enumerate(data, start=_row_start) if _cell_has_value(value)]
         if not stale_rows:
             return
