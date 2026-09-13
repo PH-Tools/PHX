@@ -390,6 +390,17 @@ ppp_txt_to_file.write_ppp_file(target_path, ppp_file)
 
 5. **Entry point** (`phx_converter.py`): `convert_WUFI_XML_to_PHX_project(_wufi_xml_project: WUFIplusProject) -> PhxProject` — a thin wrapper that calls `_PhxProject()` from `phx_schemas`.
 
+### Ventilation Rooms for WUFI and METr
+
+WUFI `RoomsVentilation` and the METr room lists are written from
+`PHX/model/ventilation_rooms.ventilation_rooms(zone)`, one read-only projection both exporters share.
+It returns frozen `VentilationRoom` records: one per ventilated Space, or, when the Zone's
+`merge_spaces_by_erv` is set, one per Ventilation Assignment, with floor areas and flows summed and
+clear height area-weighted exactly as `PhxSpace.__add__` would (a left fold, so the floats are
+bit-identical). Exporters never construct, copy, rename or merge a `PhxSpace`, so an export allocates
+no Space ID Numbers and leaves the model unchanged. PHPP `Addl vent` and PPP keep reading the
+unmerged `zone.spaces`. `tests/test_export/test_erv_room_merge_golden.py` pins the room output.
+
 ### WUFI utilization zones without ventilation rooms
 
 WUFI does not require its three per-zone lists to have identical membership. A zone can contain

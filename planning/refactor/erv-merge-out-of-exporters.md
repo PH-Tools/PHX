@@ -1,10 +1,10 @@
 # Refactor: build the merged Ventilation Rooms once, read-only, instead of merging Spaces inside two exporters
 
 - **DATE:** 2026-09-13
-- **STATUS:** Scoped (plan only; no implementation authorized)
+- **STATUS:** Implemented on branch `refactor/erv-merge-out-of-exporters` (2026-09-13; Phases 0-3 done, see Outcome)
 - **AUTHOR:** Ed May / Claude
 - **ISSUE:** [#127](https://github.com/PH-Tools/PHX/issues/127) (split from [#107](https://github.com/PH-Tools/PHX/issues/107))
-- **Predecessor:** [`bug-fix/space-merge-mutates-source-graph/`](../bug-fix/space-merge-mutates-source-graph/README.md) §5 items 1-3
+- **Predecessor:** [`archive/space-merge-mutates-source-graph/`](../archive/space-merge-mutates-source-graph/README.md) §5 items 1-3
 
 ## Problem
 
@@ -147,6 +147,21 @@ Swap the writers per the design sketch and delete the exporter-local merge.
 - `PhxSpace.__add__` docstring: drop the "the merge runs while an exporter is serializing" rationale.
 - Retitle #127 and update its body to the D1 approach; `planning/STATUS.md`; archive
   `bug-fix/space-merge-mutates-source-graph/` (its §5 items 1-3 are then done) with an index row.
+
+## Outcome (2026-09-13)
+
+- **Phase 0:** golden room output captured on `main` (commit `a656751`); whole-document nondeterminism
+  filed as #133.
+- **Phases 1-2** (codex, reviewed): `PHX/model/ventilation_rooms.py` and
+  `tests/test_model/test_ventilation_rooms.py`; both exporters switched; `wufi_spaces` and
+  `_metr_spaces` deleted. The exporters' `_PhxSpace` functions stay: the ventilation-assignment boundary
+  tests call them directly. Goldens, the #107 tests and xl-replay unchanged; 1420 tests green.
+- **Mixed Ventilation Assignments:** a `PhxZone` can hold both `None` and integer `vent_unit_id_num`
+  keys, and `ventilated_spaces_grouped_by_erv` then raises `TypeError` sorting them. No validated
+  export reaches it: when a Ventilator exists, `assert_ventilation_assignments_ready` (run by the export
+  readiness gate) rejects an unassigned ventilated Space first. Behavior preserved; no issue filed.
+- **Phase 3:** `docs/dev/exporter-patterns.md`, `docs/nav.yml`, the glossary, the `PhxSpace.__add__`
+  docstring; #107 packet archived.
 
 ## Acceptance
 

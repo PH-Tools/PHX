@@ -551,7 +551,7 @@ with a >200 kW ideal-air system and no split — the original WUFI 3.x bug,
 unmitigated.
 
 **8.2 `PhxSpace.__add__` mutates the source graph *during serialization*
-(SEVERE — filed as [`space-merge-mutates-source-graph`](../space-merge-mutates-source-graph/README.md)).**
+(SEVERE — filed as [`space-merge-mutates-source-graph`](../../archive/space-merge-mutates-source-graph/README.md)).**
 `xml_schemas.py:208` and `metr_schemas.py:970` call `reduce(operator.add, ...)`
 while writing the file. `PhxSpace.__add__` (`spaces.py:142`) passes
 `ventilation=self.ventilation` — a **shared reference** — then accumulates into it.
@@ -657,7 +657,7 @@ For the record, so the next person does not have to re-derive it:
 | # | Site | Reaches an exported graph? | Covered by this fix? |
 |---|---|---|---|
 | 1 | `to_WUFI_XML/_bug_fixes.py:81,86` | Yes — `hbjson_to_wufi_xml.py:265` | **Yes** |
-| 2 | `model/spaces.py:142` (`PhxSpace.__add__`) via `xml_schemas.py:208`, `metr_schemas.py:970` | Yes — **during serialization**, downstream of the gate | No — [own ticket](../space-merge-mutates-source-graph/README.md) |
+| 2 | `model/spaces.py:142` (`PhxSpace.__add__`) via `xml_schemas.py:208`, `metr_schemas.py:970` | Yes — **during serialization**, downstream of the gate | No — [own ticket](../../archive/space-merge-mutates-source-graph/README.md) |
 | 3 | `model/transforms.py:88` + `project.py:509` via `xml_builder.py:137`, `metr_builder.py:30` | Yes — **after** validation | No — §8.3 |
 | 4 | `PHPP/phpp_model/uvalues_constructor.py:18` | No | n/a — §8.10 |
 | 5 | `model/hvac/collection.py:179,318,461` (`copy` + `__add__`) | Only from `create_variant.py` — **inside** the scope | n/a |
