@@ -1,10 +1,10 @@
 # Refactor: build the merged Ventilation Rooms once, read-only, instead of merging Spaces inside two exporters
 
 - **DATE:** 2026-09-13
-- **STATUS:** Implemented on branch `refactor/erv-merge-out-of-exporters` (2026-09-13; Phases 0-3 done, see Outcome)
+- **STATUS:** Complete — merged 2026-09-13 (PR [#134](https://github.com/PH-Tools/PHX/pull/134), PHX 1.56.111), #127 closed
 - **AUTHOR:** Ed May / Claude
 - **ISSUE:** [#127](https://github.com/PH-Tools/PHX/issues/127) (split from [#107](https://github.com/PH-Tools/PHX/issues/107))
-- **Predecessor:** [`archive/space-merge-mutates-source-graph/`](../archive/space-merge-mutates-source-graph/README.md) §5 items 1-3
+- **Predecessor:** [`space-merge-mutates-source-graph/`](space-merge-mutates-source-graph/README.md) §5 items 1-3
 
 ## Problem
 
