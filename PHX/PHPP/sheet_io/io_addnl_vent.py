@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Collection, Sequence
+from collections.abc import Callable, Collection, Sequence
 from dataclasses import dataclass, field
 
 from ph_units.unit_type import Unit
@@ -13,6 +13,42 @@ from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model import vent_ducts, vent_space, vent_units
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset, xl_writable
+
+# -- A user can extend any entry block with inserted rows, so section scans read in growing
+# -- blocks until they find their end marker, and give up only at this row.
+ROW_SEARCH_LIMIT = 10_000
+
+
+def _is_empty(_value: object) -> bool:
+    return _value is None
+
+
+def _find_row_in_column(
+    _xl: xl_app.XLConnection,
+    _sheet_name: str,
+    _col: str,
+    _row_start: int,
+    _first_block_rows: int,
+    _matches: Callable[[object], bool],
+) -> int | None:
+    """Return the first row at or below '_row_start' whose value matches, or None before ROW_SEARCH_LIMIT.
+
+    The first read spans '_first_block_rows'; later reads continue in 500-row blocks.
+    """
+    block_start, block_rows = _row_start, _first_block_rows
+    while block_start <= ROW_SEARCH_LIMIT:
+        block_end = min(block_start + block_rows, ROW_SEARCH_LIMIT)
+        values = _xl.get_single_column_data(
+            _sheet_name=_sheet_name,
+            _col=_col,
+            _row_start=block_start,
+            _row_end=block_end,
+        )
+        for row, value in enumerate(values, start=block_start):
+            if _matches(value):
+                return row
+        block_start, block_rows = block_end + 1, 500
+    return None
 
 
 class Spaces:
@@ -80,35 +116,27 @@ class Spaces:
         self.section_first_entry_row = self.find_section_first_entry_row()
         self.section_last_entry_row = self.find_section_last_entry_row()
 
-    def find_section_last_entry_row(self, _start_row: int | None = None, _read_length: int = 50):
+    def find_section_last_entry_row(self, _read_length: int = 50) -> int:
         """Return the row number of the last user-input entry row in the 'Rooms' section."""
         if not self.section_first_entry_row:
             self.section_first_entry_row = self.find_section_first_entry_row()
 
-        # -- Get the data from Excel in one operation
-        if not _start_row:
-            _start_row = self.section_first_entry_row
-        end_row = _start_row + _read_length
-        col_data = self.xl.get_single_column_data(
-            _sheet_name=self.shape.name,
-            _col=self.shape.rooms.locator_col_header,
-            _row_start=_start_row,
-            _row_end=end_row,
+        # -- The Rooms block ends at the first empty cell in the locator column
+        first_empty_row = _find_row_in_column(
+            self.xl,
+            self.shape.name,
+            self.shape.rooms.locator_col_header,
+            self.section_first_entry_row,
+            _read_length,
+            _is_empty,
         )
-
-        # -- Look for the first 'empty' (None) cell in the column
-        for i, column_val in enumerate(col_data, start=_start_row):
-            if column_val is None:
-                return i - 1
-
-        if end_row < 10_000:
-            return self.find_section_last_entry_row(_start_row=end_row, _read_length=500)
-
-        raise Exception(
-            f'Error: Unable to locate the end of the "Rooms"'
-            f'section of the "{self.shape.name}" worksheet in '
-            f"{self.shape.rooms.locator_col_header}{_start_row}:{self.shape.rooms.locator_col_header}{end_row}?"
-        )
+        if first_empty_row is None:
+            raise Exception(
+                f'Error: Unable to locate the end of the "Rooms" section of the "{self.shape.name}" worksheet in '
+                f"{self.shape.rooms.locator_col_header}{self.section_first_entry_row}:"
+                f"{self.shape.rooms.locator_col_header}{ROW_SEARCH_LIMIT}?"
+            )
+        return first_empty_row - 1
 
 
 @dataclass
@@ -233,20 +261,21 @@ class VentUnits:
     def find_section_last_entry_row(self, _rows: int = 50) -> int:
         """Return the row number of the very last user-input entry row in the 'Vent Unit' section."""
 
-        xl_data = self.xl.get_single_column_data(
-            _sheet_name=self.shape.name,
-            _col=self.shape.units.locator_col_entry,
-            _row_start=self.section_first_entry_row,
-            _row_end=self.section_first_entry_row + _rows,
+        # -- The units block ends at the first empty cell in the locator column
+        first_empty_row = _find_row_in_column(
+            self.xl,
+            self.shape.name,
+            self.shape.units.locator_col_entry,
+            self.section_first_entry_row,
+            _rows,
+            _is_empty,
         )
-
-        for i, read_value in enumerate(xl_data, start=self.section_first_entry_row):
-            if read_value is None:
-                return i - 1
-
-        raise Exception(
-            f"\nError: Not able to find the last vent-unit entry row on the " f'"{self.shape.name}" worksheet?'
-        )
+        if first_empty_row is None:
+            raise Exception(
+                f"\nError: Not able to find the last vent-unit entry row on the "
+                f'"{self.shape.name}" worksheet before row {ROW_SEARCH_LIMIT}?'
+            )
+        return first_empty_row - 1
 
     def find_section_shape(self) -> None:
         try:
@@ -367,22 +396,22 @@ class VentDucts:
         if not self.section_first_entry_row:
             self.section_first_entry_row = self.find_section_first_entry_row()
 
-        xl_data = self.xl.get_single_column_data(
-            _sheet_name=self.shape.name,
-            _col=self.shape.ducts.locator_col_entry,
-            _row_start=self.section_first_entry_row,
-            _row_end=self.section_first_entry_row + _rows,
+        # -- The duct rows carry no numbers, but instruction text follows the last entry row;
+        # -- use it as the end-of-section flag.
+        end_marker_row = _find_row_in_column(
+            self.xl,
+            self.shape.name,
+            self.shape.ducts.locator_col_entry,
+            self.section_first_entry_row,
+            _rows,
+            lambda _value: self.shape.ducts.locator_string_end in str(_value),
         )
-
-        # -- duct section doesn't have numbers, but after the last data entry
-        # -- line, there is some instruction text. Use that as the flag to indicate
-        # -- the end of the section.
-
-        for i, read_value in enumerate(xl_data, start=self.section_first_entry_row):
-            if self.shape.ducts.locator_string_end in str(read_value):
-                return i - 1
-
-        raise Exception(f"\nError: Not able to find the last duct entry row on the " f'"{self.shape.name}" worksheet?')
+        if end_marker_row is None:
+            raise Exception(
+                f"\nError: Not able to find the last duct entry row on the "
+                f'"{self.shape.name}" worksheet before row {ROW_SEARCH_LIMIT}?'
+            )
+        return end_marker_row - 1
 
     def find_section_shape(self) -> None:
         self.section_header_row = self.find_section_header_row()
