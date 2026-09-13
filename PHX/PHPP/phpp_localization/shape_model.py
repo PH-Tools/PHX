@@ -716,6 +716,7 @@ class AddnlVentRoomsInputBlockDucts(BaseModel):
     locator_col_entry: str
     locator_string_entry: str
     locator_string_end: str
+    first_entry_row_offset: int
     inputs: AddnlVentInputsDucts
 
 

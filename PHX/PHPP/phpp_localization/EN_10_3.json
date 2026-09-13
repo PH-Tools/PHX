@@ -1212,6 +1212,7 @@
             "locator_col_entry": "D",
             "locator_string_entry": "1",
             "locator_string_end": "Additional",
+            "first_entry_row_offset": 9,
             "inputs": {
                 "quantity": {
                     "column": "D",
