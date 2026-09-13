@@ -256,7 +256,9 @@ class RecSheet(_Rec):
         get = object.__getattribute__
         raw, rec = get(self, "_raw"), get(self, "_rec")
         addr = f"{cell1}:{cell2}" if cell2 else str(cell1)
-        return RecRange(raw.range(addr), rec, get(self, "_name"), parse_range(addr))
+        raw_range = raw.range(addr)
+        # -- Record the address Excel resolved, so defined names ('Klima_Region') map to their cells.
+        return RecRange(raw_range, rec, get(self, "_name"), parse_range(str(raw_range.address)))
 
 
 class RecSheets(_Rec):

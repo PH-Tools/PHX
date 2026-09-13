@@ -1,7 +1,7 @@
 # PHPP writer fix batch: `01` + `02` + `04` + `Addl vent` capacity
 
 - **DATE:** 2026-09-12
-- **STATUS:** Scoped (plan only; no implementation authorized)
+- **STATUS:** Implemented on branch `bug-fix/phpp-writer-fix-batch` (2026-09-12; steps 1-5 done, closeout in progress)
 - **AUTHOR:** Ed May / Claude
 - **ISSUE:** [#103](https://github.com/PH-Tools/PHX/issues/103) items 01, 02, 04 (refs, not closes: 03 stays open); [#115](https://github.com/PH-Tools/PHX/issues/115) (closes)
 
