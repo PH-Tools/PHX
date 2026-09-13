@@ -11,12 +11,28 @@ from ph_units.unit_type import Unit
 
 from PHX.PHPP.phpp_localization import shape_model
 from PHX.PHPP.phpp_model import vent_ducts, vent_space, vent_units
+from PHX.PHPP.sheet_io._stale_rows import (
+    _cell_has_value,
+    _contiguous_column_groups,
+    _contiguous_row_groups,
+    _format_stale_rows,
+    _range_address,
+    _read_column_with_integrity_guard,
+)
 from PHX.xl import xl_app, xl_data
 from PHX.xl.xl_data import col_offset, xl_writable
 
 # -- A user can extend any entry block with inserted rows, so section scans read in growing
 # -- blocks until they find their end marker, and give up only at this row.
 ROW_SEARCH_LIMIT = 10_000
+
+# Blank PHPP workbooks for all seven supported EN shapes were checked on 2026-09-13;
+# these input fields contain template defaults on every entry row and must be preserved.
+_TEMPLATE_DEFAULT_FIELDS_BY_SECTION: dict[str, frozenset[str]] = {
+    "Rooms": frozenset({"period_high_speed", "period_high_time"}),
+    "Ventilation units": frozenset({"frost_protection_type"}),
+    "Ducts": frozenset(),
+}
 
 
 def _is_empty(_value: object) -> bool:
@@ -434,6 +450,13 @@ class AddnlVent:
         _rows: Sequence[vent_space.VentSpaceRow | vent_units.VentUnitRow | vent_ducts.VentDuctRow],
         _section: Spaces | VentUnits | VentDucts,
         _section_name: str,
+        _input_block: (
+            shape_model.AddnlVentRoomsInputBlockRooms
+            | shape_model.AddnlVentRoomsInputBlockUnits
+            | shape_model.AddnlVentRoomsInputBlockDucts
+        ),
+        *,
+        _clear_stale: bool,
     ) -> None:
         """Locate a section's capacity, then write only rows that fit within it."""
         if not _rows:
@@ -459,15 +482,103 @@ class AddnlVent:
         ]
         for item in xl_data.merge_xl_item_rows(row_items):
             self.xl.write_xl_item(item)
+        self._warn_or_clear_stale_rows(
+            _section_name=_section_name,
+            _input_block=_input_block,
+            _row_start=first_entry_row + len(row_items),
+            _row_end=last_entry_row,
+            _clear_stale=_clear_stale,
+        )
 
-    def write_spaces(self, _spaces: list[vent_space.VentSpaceRow]) -> None:
-        self._write_section_rows(_spaces, self.spaces, "Rooms")
+    def _warn_or_clear_stale_rows(
+        self,
+        _section_name: str,
+        _input_block: (
+            shape_model.AddnlVentRoomsInputBlockRooms
+            | shape_model.AddnlVentRoomsInputBlockUnits
+            | shape_model.AddnlVentRoomsInputBlockDucts
+        ),
+        _row_start: int,
+        _row_end: int,
+        _clear_stale: bool,
+    ) -> None:
+        """Warn about, and optionally clear, stale trailing Additional Vent rows."""
+        if _row_start > _row_end:
+            return
 
-    def write_vent_units(self, _vent_units: list[vent_units.VentUnitRow]) -> None:
-        self._write_section_rows(_vent_units, self.vent_units, "Ventilation units")
+        quantity_col = _input_block.inputs.quantity.column
+        if quantity_col is None:
+            raise ValueError(f"No quantity column is configured for {_section_name} on '{self.shape.name}'.")
 
-    def write_vent_ducts(self, _vent_ducts: list[vent_ducts.VentDuctRow]) -> None:
-        self._write_section_rows(_vent_ducts, self.vent_ducts, "Ducts")
+        data = _read_column_with_integrity_guard(self.xl, self.shape.name, quantity_col, _row_start, _row_end)
+        stale_rows = [row for row, value in enumerate(data, start=_row_start) if _cell_has_value(value)]
+        if not stale_rows:
+            return
+
+        self.xl.output(
+            f"Warning: '{self.shape.name}' worksheet {_section_name} section contains stale "
+            f"{_format_stale_rows(stale_rows)}. These are leftover entries from a previous export "
+            "that should be cleared or verified."
+        )
+
+        if not _clear_stale:
+            return
+
+        excluded_fields = _TEMPLATE_DEFAULT_FIELDS_BY_SECTION[_section_name]
+        clear_columns = [
+            input_item.column
+            for field_name in type(_input_block.inputs).model_fields
+            if field_name not in excluded_fields
+            if (input_item := getattr(_input_block.inputs, field_name)).column is not None
+        ]
+        for row_start, row_end in _contiguous_row_groups(stale_rows):
+            for col_start, col_end in _contiguous_column_groups(clear_columns):
+                self.xl.clear_range_data(
+                    self.shape.name,
+                    _range_address(col_start, col_end, row_start, row_end),
+                )
+
+    def write_spaces(self, _spaces: list[vent_space.VentSpaceRow], *, clear_stale: bool = False) -> None:
+        """Write VentSpaceRow objects to the PHPP Additional Vent worksheet.
+
+        Warns if filled rows remain below the written block in the Rooms section;
+        pass clear_stale=True to blank those rows' non-default input columns as well.
+        """
+        self._write_section_rows(
+            _spaces,
+            self.spaces,
+            "Rooms",
+            self.shape.rooms,
+            _clear_stale=clear_stale,
+        )
+
+    def write_vent_units(self, _vent_units: list[vent_units.VentUnitRow], *, clear_stale: bool = False) -> None:
+        """Write VentUnitRow objects to the PHPP Additional Vent worksheet.
+
+        Warns if filled rows remain below the written block in the Ventilation units section;
+        pass clear_stale=True to blank those rows' non-default input columns as well.
+        """
+        self._write_section_rows(
+            _vent_units,
+            self.vent_units,
+            "Ventilation units",
+            self.shape.units,
+            _clear_stale=clear_stale,
+        )
+
+    def write_vent_ducts(self, _vent_ducts: list[vent_ducts.VentDuctRow], *, clear_stale: bool = False) -> None:
+        """Write VentDuctRow objects to the PHPP Additional Vent worksheet.
+
+        Warns if filled rows remain below the written block in the Ducts section;
+        pass clear_stale=True to blank those rows' input columns as well.
+        """
+        self._write_section_rows(
+            _vent_ducts,
+            self.vent_ducts,
+            "Ducts",
+            self.shape.ducts,
+            _clear_stale=clear_stale,
+        )
 
     def activate_variants(self, variants_worksheet_name: str, vent_unit_range: str) -> None:
         """Link the Vent unit to the Variants worksheet."""
