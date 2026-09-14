@@ -84,15 +84,19 @@ class VentSpaceRow:
             XLItemAddnlVent(create_range("quantity"), self.phx_room_vent.quantity),
             XLItemAddnlVent(create_range("display_name"), f"'{self.phx_room_vent.display_name}"),
             XLItemAddnlVent(create_range("vent_unit_assigned"), self.phpp_row_ventilator),
+            # -- The 'Area' column is the room's TFA / iCFA share, not its gross floor area.
+            # -- Sources that never set a weighted area (a WUFI import) keep writing the gross area.
             XLItemAddnlVent(
                 create_range("weighted_floor_area"),
-                self.phx_room_vent.floor_area,
+                self.phx_room_vent.weighted_floor_area or self.phx_room_vent.floor_area,
                 "M2",
                 self._get_target_unit("weighted_floor_area"),
             ),
+            # -- PHPP multiplies this column by the area for the ventilated volume Vv, so it
+            # -- carries the 2.5 m PHI reference height, not the room's actual clear height.
             XLItemAddnlVent(
                 create_range("clear_height"),
-                self.phx_room_vent.clear_height,
+                self.phx_room_vent.ventilation_reference_height,
                 "M",
                 self._get_target_unit("clear_height"),
             ),

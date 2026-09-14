@@ -453,6 +453,12 @@ Worksheet key: `ADDNL_VENT`
 | `period_minimum_speed` | U |  |
 | `period_minimum_time` | V |  |
 
+`VentSpaceRow` writes `PhxSpace.weighted_floor_area` (the TFA / iCFA share, falling back to
+`floor_area` when no weighted area was set) into `weighted_floor_area`, and
+`PhxSpace.ventilation_reference_height` (2.5 m by PHI convention) into `clear_height`: PHPP
+multiplies that column by the area for the ventilated volume Vv, so the room's actual
+`clear_height` belongs to the WUFI `ClearRoomHeight` node, not here.
+
 ### units
 
 - Header locator: col `C`, string `"Venti-"`
