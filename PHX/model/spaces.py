@@ -13,6 +13,17 @@ from PHX.model.programs.occupancy import PhxProgramOccupancy
 from PHX.model.programs.ventilation import PhxProgramVentilation
 
 
+def _area_weighted_height(space_a: PhxSpace, space_b: PhxSpace, _attr_name: str) -> float:
+    """Return the floor-area-weighted average of a height attribute of two spaces."""
+    try:
+        weighted_height_a = getattr(space_a, _attr_name) * space_a.floor_area
+        weighted_height_b = getattr(space_b, _attr_name) * space_b.floor_area
+        total_floor_area = space_a.floor_area + space_b.floor_area
+        return (weighted_height_a + weighted_height_b) / total_floor_area
+    except ZeroDivisionError:
+        return 0.0
+
+
 def area_weighted_clear_height(space_a: PhxSpace, space_b: PhxSpace) -> float:
     """Return the area-weighted average clear height of two spaces.
 
@@ -25,13 +36,22 @@ def area_weighted_clear_height(space_a: PhxSpace, space_b: PhxSpace) -> float:
     --------
         * float: The weighted average clear height (m). Returns 0.0 if the combined floor area is zero.
     """
-    try:
-        weighted_height_a = space_a.clear_height * space_a.floor_area
-        weighted_height_b = space_b.clear_height * space_b.floor_area
-        total_floor_area = space_a.floor_area + space_b.floor_area
-        return (weighted_height_a + weighted_height_b) / total_floor_area
-    except ZeroDivisionError:
-        return 0.0
+    return _area_weighted_height(space_a, space_b, "clear_height")
+
+
+def area_weighted_ventilation_reference_height(space_a: PhxSpace, space_b: PhxSpace) -> float:
+    """Return the area-weighted average ventilation reference height of two spaces.
+
+    Arguments:
+    ----------
+        * space_a (PhxSpace): The first space.
+        * space_b (PhxSpace): The second space.
+
+    Returns:
+    --------
+        * float: The weighted average ventilation reference height (m). Returns 0.0 if the combined floor area is zero.
+    """
+    return _area_weighted_height(space_a, space_b, "ventilation_reference_height")
 
 
 def spaces_are_not_addable(space_a: PhxSpace, space_v: PhxSpace) -> bool:
@@ -76,6 +96,9 @@ class PhxSpace:
         weighted_floor_area (float): iCFA/TFA-weighted floor area (m2). Default: 0.0.
         net_volume (float): Net interior volume of the space (m3). Default: 0.0.
         clear_height (float): Average floor-to-ceiling clear height (m). Default: 2.5.
+        ventilation_reference_height (float): The height PHPP multiplies the weighted floor
+            area by for the ventilated volume Vv (the 'Addl vent' clear-height column).
+            2.5 m per PHI convention, independent of the space's actual clear_height. Default: 2.5.
         vent_unit_id_num (Optional[int]): ID number of the assigned ventilation unit
             (ERV/HRV), or None when no mechanical unit is assigned. Default: None.
         vent_unit_display_name (str): Display name of the assigned ventilation unit. Default: ''.
@@ -95,6 +118,7 @@ class PhxSpace:
     weighted_floor_area: float = 0.0
     net_volume: float = 0.0
     clear_height: float = 2.5
+    ventilation_reference_height: float = 2.5
 
     # -- Ventilation Unit (ERV) number
     vent_unit_id_num: Optional[int] = None
@@ -159,6 +183,7 @@ class PhxSpace:
             weighted_floor_area=self.weighted_floor_area + other.weighted_floor_area,
             net_volume=self.net_volume + other.net_volume,
             clear_height=area_weighted_clear_height(self, other),
+            ventilation_reference_height=area_weighted_ventilation_reference_height(self, other),
             vent_unit_id_num=self.vent_unit_id_num,
             vent_unit_display_name=self.vent_unit_display_name,
             ventilation=PhxProgramVentilation(

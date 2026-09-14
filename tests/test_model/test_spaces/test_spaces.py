@@ -93,3 +93,23 @@ def test_merged_space_keeps_the_registered_ventilation_schedule(reset_class_coun
     merged = space_a + space_b
 
     assert merged.ventilation.schedule is space_a.ventilation.schedule
+
+
+def test_merged_space_keeps_the_default_ventilation_reference_height(reset_class_counters) -> None:
+    space_a, space_b = _space_with_flow(10.0), _space_with_flow(10.0)
+    space_a.clear_height, space_b.clear_height = 3.0, 4.0
+
+    merged = space_a + space_b
+
+    assert merged.clear_height == pytest.approx(3.5)
+    assert merged.ventilation_reference_height == pytest.approx(2.5)
+
+
+def test_merged_space_area_weights_the_ventilation_reference_height(reset_class_counters) -> None:
+    space_a, space_b = _space_with_flow(10.0), _space_with_flow(10.0)
+    space_a.floor_area, space_a.ventilation_reference_height = 10.0, 2.0
+    space_b.floor_area, space_b.ventilation_reference_height = 30.0, 3.0
+
+    merged = space_a + space_b
+
+    assert merged.ventilation_reference_height == pytest.approx(2.75)
