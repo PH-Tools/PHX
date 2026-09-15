@@ -7,6 +7,8 @@ quantity is the sum of the per-Room quantities. A stored 0, the legacy honeybee-
 counts as one unit, so N Rooms give N devices for legacy and new files alike.
 """
 
+import copy
+
 import pytest
 from honeybee.room import Room
 from honeybee_energy.lib.schedules import schedule_by_identifier
@@ -14,6 +16,7 @@ from honeybee_energy.load.process import Process
 from honeybee_energy_ph.load.ph_equipment import PhCustomAnnualMEL
 
 from PHX.from_HBJSON.cleanup import merge_process_loads
+from PHX.from_HBJSON.create_elec_equip import build_phx_elec_device
 
 
 def _rooms_sharing_one_device(_room_count: int, _quantity: int) -> list[Room]:
@@ -45,3 +48,12 @@ def test_merging_leaves_the_source_rooms_unchanged():
     merge_process_loads(rooms)
 
     assert [rm.properties.energy.process_loads[0].properties.ph.ph_equipment.quantity for rm in rooms] == [0, 0, 0]
+
+
+def test_a_device_built_from_a_merged_load_carries_no_honeybee_host():
+    """The merged copy's equipment has its honeybee host set; the PHX device must not inherit it (PHX#155)."""
+    merged = merge_process_loads(_rooms_sharing_one_device(2, 1))
+    device = build_phx_elec_device(merged[0].properties.ph.ph_equipment)
+
+    assert getattr(device, "host", None) is None
+    assert copy.deepcopy(device).quantity == 2
