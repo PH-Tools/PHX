@@ -56,6 +56,9 @@ def build_phx_elec_device(
     for attr_name in vars(_hbph_device):
         if str(attr_name).startswith("_"):
             attr_name = attr_name[1:]
+        # -- 'host' points back into the honeybee model (Process -> locked library schedule); not device data.
+        if attr_name == "host":
+            continue
 
         try:
             # try and set any Enums by number first...
