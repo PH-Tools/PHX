@@ -18,29 +18,47 @@ class Electricity:
         self.shape = shape
         self.device_map = elec_equip.get_device_type_map()
 
-    def _turn_off_all_equipment(self) -> None:
-        """Sets all the 'used' values to 0 to reset the sheet before writing new equipment."""
-        for item in self.shape.input_rows:
-            # Some items cannot be turned off....
-            excluded = [
-                "clothes_drying",
-                "cooking",
-                "consumer_elec",
-                "lighting",
-                "small_appliances",
-            ]
-            if item[0] in excluded:
-                continue
+    def _write_annual_rows(self, _devices: list[elec_equip.PhxElectricalDevice]) -> None:
+        """Write annual-energy devices onto the 'Other devices' annual rows, one row per category."""
+        if not _devices:
+            return
 
-            self.xl.write_xl_item(xl_data.XlItem(self.shape.name, f"{self.shape.input_columns.used}{item[1].data}", 0))
+        other_devices = self.shape.other_devices
+        if other_devices is None:
+            self.xl.output(
+                f"Warning: this PHPP version's '{self.shape.name}' shape has no annual 'Other devices' rows, "
+                f"so {len(_devices)} lighting / MEL / custom device(s) were not written."
+            )
+            return
+
+        annual_rows = other_devices.annual_rows.rows
+        for offset, (category, device_types) in enumerate(electricity_item.ANNUAL_ROW_CATEGORIES):
+            devices = [device for device in _devices if device.device_type in device_types]
+            if not devices:
+                continue
+            writer = electricity_item.ElectricityAnnualRowXLWriter(category, devices)
+            for item in writer.create_xl_items(self.shape, other_devices.description_column, annual_rows[offset]):
+                self.xl.write_xl_item(item)
 
     def write_equipment(self, _equipment_inputs: list[electricity_item.ElectricityItemXLWriter]) -> None:
-        """Write a list of equipment-input objects to the Worksheet."""
-        self._turn_off_all_equipment()
-
+        """Write the model's devices; each category it authors replaces PHPP's template rows for that category."""
+        annual_devices: list[elec_equip.PhxElectricalDevice] = []
+        row_writers: list[electricity_item.ElectricityItemXLWriter] = []
         for equip_input in _equipment_inputs:
+            if equip_input.phx_equipment.device_type in electricity_item.ANNUAL_ROW_TYPES:
+                annual_devices.append(equip_input.phx_equipment)
+            else:
+                row_writers.append(equip_input)
+
+        authored_types = {equip_input.phx_equipment.device_type for equip_input in _equipment_inputs}
+        for row in electricity_item.replaced_template_rows(self.shape, authored_types):
+            self.xl.write_xl_item(xl_data.XlItem(self.shape.name, f"{self.shape.input_columns.used}{row}", 0))
+
+        for equip_input in row_writers:
             for item in equip_input.create_xl_items(self.shape):
                 self.xl.write_xl_item(item)
+
+        self._write_annual_rows(annual_devices)
 
     def build_phx_device_from_phpp(self, _reader: electricity_item.ReaderDataItem) -> elec_equip.PhxElectricalDevice:
         """Build a PHX Electrical Device object from the PHPP worksheet data."""

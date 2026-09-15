@@ -1622,6 +1622,17 @@
                 "selection": 0,
                 "selection_options": {}
             }
+        },
+        "other_devices": {
+            "description_column": "D",
+            "standard_rows": {
+                "first": 45,
+                "last": 52
+            },
+            "annual_rows": {
+                "first": 64,
+                "last": 66
+            }
         }
     },
     "USE_NON_RES": {

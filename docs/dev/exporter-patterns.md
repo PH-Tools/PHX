@@ -285,6 +285,31 @@ rather than by hard-coding rows. Three rules follow, and all three have been vio
    ventilation units and ducts, and every `find_section_last_entry_row` returns
    the last entry row, not the empty row after it.
 
+### Electricity: an authored category replaces the template
+
+A PHPP starts with PHI's template appliances switched on. `Electricity.write_equipment`
+applies one rule: **a device category the model authors replaces PHPP's template rows
+for that category, and an unauthored category keeps the template.**
+
+- `electricity_item.replaced_template_rows` owns the mapping. It is the only place
+  that writes quantity 0:
+  - authored refrigeration zeroes all three refrigeration rows;
+  - authored interior lighting zeroes the per-occupant lighting row;
+  - authored MEL or user-defined devices zero the standard small-device rows.
+- Cooking, dishwashing, washing and drying are one row each, which the device writer
+  overwrites.
+- The outside-dwelling lighting quantity (`E39` in PHPP 10.6) is a formula and is never
+  written.
+
+PHPP's residential lighting and standard-device rows take no annual energy. Devices the
+model carries as annual kWh (lighting, MEL, custom, elevators) are therefore grouped one
+row per category onto the `Other devices` annual rows, where `Y = E·N` with `N` in kWh/a
+(`ANNUAL_ROW_CATEGORIES`).
+
+Those rows are the optional `other_devices` shape block, mapped only where a workbook
+verified them (10.4A and 10.6). On other shapes the annual devices are skipped with a
+warning and their templates are left alone, as for unmapped worksheets.
+
 ### Climate: library data set or user-defined block
 
 PHPP computes with whatever `Climate!D9`/`D10`/`D12` select; filling the

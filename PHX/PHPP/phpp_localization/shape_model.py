@@ -1008,10 +1008,35 @@ class ElectricityInputRows(BaseModel):
     small_appliances: ElectricityInputRow
 
 
+class ElectricityRowSpan(BaseModel):
+    first: int
+    last: int
+
+    @property
+    def rows(self) -> range:
+        """Every worksheet row in the span, inclusive of both ends."""
+        return range(self.first, self.last + 1)
+
+
+class ElectricityOtherDevices(BaseModel):
+    """PHPP's 'Other devices' block.
+
+    ``standard_rows`` are the prefilled PHI standard devices (batteries, router,
+    TV ...). ``annual_rows`` are the blank rows where ``Y = E·N`` with ``N`` in
+    kWh/a, the only residential input that takes a device's annual energy.
+    """
+
+    description_column: str
+    standard_rows: ElectricityRowSpan
+    annual_rows: ElectricityRowSpan
+
+
 class Electricity(BaseModel):
     name: str
     input_columns: ElectricityInputColumns
     input_rows: ElectricityInputRows
+    # -- Only on shapes whose rows were verified against a workbook (10.4a, 10.6).
+    other_devices: ElectricityOtherDevices | None = None
 
 
 # -----------------------------------------------------------------------------
