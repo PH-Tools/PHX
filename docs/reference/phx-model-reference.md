@@ -177,6 +177,8 @@ All subclass `PhxElectricalDevice`:
 | `PhxElevatorGearedTraction` | Geared traction elevator |
 | `PhxElevatorGearlessTraction` | Gearless traction elevator |
 
+**Quantity.** `energy_demand` is per unit and `quantity` is the number of units; every writer takes the annual energy as `get_energy_demand() * get_quantity()`. A stored quantity of 0 (the legacy honeybee-ph default) counts as one unit. `PhxDeviceCustomLighting`, `PhxDeviceCustomMEL` and the three elevator classes return the total from `get_energy_demand()` and 1 from `get_quantity()`, so WUFI and METr show one line item. When rooms merge, `cleanup.merge_process_loads` sums the per-Room quantities of a device that shares one identifier.
+
 ### HVAC Subsystem (`model/hvac/`)
 
 | Module | Key Classes |

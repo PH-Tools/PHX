@@ -430,7 +430,7 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
     logger.debug(f"Merging Process Loads from {len(_hb_rooms)} Rooms")
 
     # -- Collect all the unique Process-Load/PH-Equipment in all the rooms.
-    # -- Increase the quantity for each duplicate piece of equipment found
+    # -- Sum the quantity of each duplicate piece of equipment found
     ph_equipment: dict[str, Process] = {}
     for room in _hb_rooms:
         try:
@@ -444,14 +444,15 @@ def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
         for process_load in process_loads:
             process_prop_ph: ProcessPhProperties = process_load.properties.ph
             if equip := getattr(process_prop_ph, "ph_equipment", None):  # type: PhEquipment | None
-                if equip.identifier in ph_equipment:
-                    process_prop_ph: ProcessPhProperties = ph_equipment[equip.identifier].properties.ph
-                    if process_prop_ph.ph_equipment:
-                        process_prop_ph.ph_equipment.quantity += 1
-                    else:
-                        ph_equipment[equip.identifier] = process_load
+                # -- A stored quantity of 0 is the legacy honeybee-ph default and counts as one unit.
+                room_quantity = equip.quantity or 1
+                if merged_load := ph_equipment.get(equip.identifier):
+                    merged_load.properties.ph.ph_equipment.quantity += room_quantity
                 else:
-                    ph_equipment[equip.identifier] = process_load
+                    # -- Count on a copy so the merge never changes the source Room's equipment.
+                    merged_load = process_load.duplicate()
+                    merged_load.properties.ph.ph_equipment.quantity = room_quantity
+                    ph_equipment[equip.identifier] = merged_load
 
     return list(ph_equipment.values())
 

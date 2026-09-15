@@ -94,7 +94,9 @@ class PhxElectricalDevice:
         return self.energy_demand or 0.0
 
     def get_quantity(self) -> int:
-        """To allow for subclass custom behavior. Cannot use @property since
+        """The number of units, with a stored 0 (the legacy honeybee-ph default) counted as one.
+
+        To allow for subclass custom behavior. Cannot use @property since
         it will not work with __setattr__ which is used during HBPH->PHX object creation.
         """
         return self.quantity or 1
@@ -336,7 +338,7 @@ class PhxDeviceCustomLighting(PhxElectricalDevice):
     def get_energy_demand(self) -> float:
         if self.energy_demand is None:
             return 0
-        return self.energy_demand * self.quantity
+        return self.energy_demand * super().get_quantity()
 
     def get_quantity(self) -> int:
         return 1
@@ -357,7 +359,7 @@ class PhxDeviceCustomMEL(PhxElectricalDevice):
     def get_energy_demand(self) -> float:
         if self.energy_demand is None:
             return 0
-        return self.energy_demand * self.quantity
+        return self.energy_demand * super().get_quantity()
 
     def get_quantity(self) -> int:
         return 1
@@ -374,7 +376,7 @@ class PhxElevatorHydraulic(PhxElectricalDevice):
     def get_energy_demand(self) -> float:
         if self.energy_demand is None:
             return 0
-        return self.energy_demand * self.quantity
+        return self.energy_demand * super().get_quantity()
 
     def get_quantity(self) -> int:
         return 1
@@ -391,7 +393,7 @@ class PhxElevatorGearedTraction(PhxElectricalDevice):
     def get_energy_demand(self) -> float:
         if self.energy_demand is None:
             return 0
-        return self.energy_demand * self.quantity
+        return self.energy_demand * super().get_quantity()
 
     def get_quantity(self) -> int:
         return 1
@@ -408,7 +410,7 @@ class PhxElevatorGearlessTraction(PhxElectricalDevice):
     def get_energy_demand(self) -> float:
         if self.energy_demand is None:
             return 0
-        return self.energy_demand * self.quantity
+        return self.energy_demand * super().get_quantity()
 
     def get_quantity(self) -> int:
         return 1
