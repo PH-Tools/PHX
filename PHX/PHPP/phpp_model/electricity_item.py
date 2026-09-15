@@ -11,7 +11,100 @@ from PHX.PHPP.phpp_localization import shape_model
 from PHX.xl import xl_data
 
 # -----------------------------------------------------------------------------
+# -- Device categories
+#
+# A category the model authors replaces PHPP's template entries for that
+# category; a category it does not author keeps PHPP's template default.
+
+REFRIGERATION_TYPES = frozenset(
+    {
+        ElectricEquipmentType.REFRIGERATOR,
+        ElectricEquipmentType.FREEZER,
+        ElectricEquipmentType.FRIDGE_FREEZER,
+    }
+)
+INTERIOR_LIGHTING_TYPES = frozenset({ElectricEquipmentType.LIGHTING_INTERIOR, ElectricEquipmentType.CUSTOM_LIGHTING})
+LIGHTING_TYPES = INTERIOR_LIGHTING_TYPES | {
+    ElectricEquipmentType.LIGHTING_EXTERIOR,
+    ElectricEquipmentType.LIGHTING_GARAGE,
+}
+MEL_TYPES = frozenset({ElectricEquipmentType.MEL, ElectricEquipmentType.CUSTOM_MEL})
+CUSTOM_TYPES = frozenset({ElectricEquipmentType.CUSTOM})
+
+#: Devices the model carries as annual energy, written to PHPP's 'Other devices'
+#: annual rows (``Y = E·N``, kWh/a in ``N``), one row per category in this order.
+#: PHPP's residential lighting rows take no annual energy (row 38 is per occupant,
+#: from a lamp efficacy), so annual lighting is filed here too.
+ANNUAL_ROW_CATEGORIES: tuple[tuple[str, frozenset[ElectricEquipmentType]], ...] = (
+    ("Lighting", LIGHTING_TYPES),
+    ("Misc. electric loads", MEL_TYPES),
+    ("User defined", CUSTOM_TYPES),
+)
+ANNUAL_ROW_TYPES = LIGHTING_TYPES | MEL_TYPES | CUSTOM_TYPES
+
+
+def replaced_template_rows(_shape: shape_model.Electricity, _authored_types: set[ElectricEquipmentType]) -> list[int]:
+    """Return the template rows whose quantity PHX writes 0 because the model authors their category.
+
+    Cooking, dishwashing, washing and drying are one row each, which the device's
+    own writer overwrites, so they never appear here. Annual devices replace a
+    template only where the shape has annual rows to write them to; elsewhere
+    the template stays. 'E39' (lighting outside the dwelling unit) is a formula
+    over rows 40-42 and is never replaced.
+    """
+    rows = _shape.input_rows
+    replaced: list[int] = []
+    if _authored_types & REFRIGERATION_TYPES:
+        replaced.extend([rows.refrigerator.data, rows.freezer.data, rows.fridge_freezer.data])
+    if _shape.other_devices is None:
+        return replaced
+    if _authored_types & INTERIOR_LIGHTING_TYPES:
+        replaced.append(rows.lighting_interior.data)
+    if _authored_types & (MEL_TYPES | CUSTOM_TYPES):
+        replaced.extend(_shape.other_devices.standard_rows.rows)
+    return replaced
+
+
+# -----------------------------------------------------------------------------
 # -- Worksheet Writer
+
+
+@dataclass
+class ElectricityAnnualRowXLWriter:
+    """One PHPP 'Other devices' annual row holding every device of one category."""
+
+    __slots__ = ("category", "devices")
+    category: str
+    devices: list[elec_equip.PhxElectricalDevice]
+
+    @staticmethod
+    def _annual_kwh(_device: elec_equip.PhxElectricalDevice) -> float:
+        return _device.get_energy_demand() * _device.get_quantity()
+
+    @property
+    def total_kwh(self) -> float:
+        """The category's annual energy, kWh/a."""
+        return sum(self._annual_kwh(device) for device in self.devices)
+
+    def create_xl_items(
+        self, _shape: shape_model.Electricity, _description_column: str, _row: int
+    ) -> list[xl_data.XlItem]:
+        """Return the description, quantity, IHG flag and annual energy for one annual row."""
+        total_kwh = self.total_kwh
+        inside_kwh = sum(self._annual_kwh(device) for device in self.devices if device.in_conditioned_space)
+        names = ", ".join(device.display_name or "" for device in self.devices)
+        cols = _shape.input_columns
+
+        items: list[tuple[str, xl_data.xl_writable]] = [
+            (f"{_description_column}{_row}", f"{self.category}: {names}"),
+            (f"{cols.used}{_row}", 1),
+            # -- The IHG flag is 1 inside the envelope, 0 outside. PHPP weights it by
+            # -- energy ('Electricity!F68'), so a mixed category writes its inside share.
+            (f"{cols.in_conditioned_space}{_row}", inside_kwh / total_kwh if total_kwh else 0),
+            # -- On the annual rows column N is the energy per device, kWh/a.
+            (f"{cols.energy_demand_per_use}{_row}", total_kwh),
+        ]
+        return [xl_data.XlItem(_shape.name, *item) for item in items]
 
 
 @dataclass
@@ -22,28 +115,25 @@ class ElectricityItemXLWriter:
     phx_equipment: Any
 
     def create_xl_items(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
-        """Returns a list of xl_data.XlItem or raises and Error if equipment type is unrecognized."""
+        """Returns a list of xl_data.XlItem or raises and Error if equipment type is unrecognized.
+
+        Annual-energy devices (``ANNUAL_ROW_TYPES``) have no row of their own; the
+        worksheet controller groups them with ``ElectricityAnnualRowXLWriter``.
+        """
         xl_item_functions = {
-            "PhxDeviceDishwasher": self._dishwasher,
-            "PhxDeviceClothesWasher": self._clothes_washer,
-            "PhxDeviceClothesDryer": self._clothes_dryer,
-            "PhxDeviceRefrigerator": self._refrigerator,
-            "PhxDeviceFreezer": self._freezer,
-            "PhxDeviceFridgeFreezer": self._fridge_freezer,
-            "PhxDeviceCooktop": self._cooktop,
-            "PhxDeviceMEL": self._mel,
-            "PhxDeviceLightingInterior": self._lighting_interior,
-            "PhxDeviceLightingExterior": self._lighting_exterior,
-            "PhxDeviceLightingGarage": self._lighting_garage,
-            "PhxDeviceCustomElec": self._custom_elec,
-            "PhxDeviceCustomLighting": self._custom_lighting,
-            "PhxDeviceCustomMEL": self._custom_mel,
+            ElectricEquipmentType.DISHWASHER: self._dishwasher,
+            ElectricEquipmentType.CLOTHES_WASHER: self._clothes_washer,
+            ElectricEquipmentType.CLOTHES_DRYER: self._clothes_dryer,
+            ElectricEquipmentType.REFRIGERATOR: self._refrigerator,
+            ElectricEquipmentType.FREEZER: self._freezer,
+            ElectricEquipmentType.FRIDGE_FREEZER: self._fridge_freezer,
+            ElectricEquipmentType.COOKING: self._cooktop,
         }
         try:
-            return xl_item_functions[self.phx_equipment.__class__.__name__](_shape)
+            return xl_item_functions[self.phx_equipment.device_type](_shape)
         except KeyError:
             raise NotImplementedError(
-                f"No matching XL-write function found for equipment type: '{self.phx_equipment.__class__.__name__}'"
+                f"No matching XL-write function found for equipment type: '{self.phx_equipment.device_type}'"
             )
 
     def _dishwasher(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
@@ -88,6 +178,7 @@ class ElectricityItemXLWriter:
     def _clothes_dryer(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceClothesDryer = self.phx_equipment
         items: list[tuple[str, xl_data.xl_writable]] = [
+            (f"{_shape.input_columns.used}{_shape.input_rows.clothes_drying.data}", 1),
             (
                 f"{_shape.input_columns.in_conditioned_space}{_shape.input_rows.clothes_drying.data}",
                 str(int(equip.in_conditioned_space or 1)),
@@ -158,6 +249,7 @@ class ElectricityItemXLWriter:
     def _cooktop(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
         equip: elec_equip.PhxDeviceCooktop = self.phx_equipment
         items: list[tuple[str, xl_data.xl_writable]] = [
+            (f"{_shape.input_columns.used}{_shape.input_rows.cooking.data}", 1),
             (
                 f"{_shape.input_columns.energy_demand_per_use}{_shape.input_rows.cooking.data}",
                 equip.energy_demand_per_use,
@@ -168,27 +260,6 @@ class ElectricityItemXLWriter:
             ),
         ]
         return [xl_data.XlItem(_shape.name, *item) for item in items]
-
-    def _mel(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
-        return []
-
-    def _lighting_interior(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
-        return []
-
-    def _lighting_exterior(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
-        return []
-
-    def _lighting_garage(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
-        return []
-
-    def _custom_elec(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
-        return []
-
-    def _custom_lighting(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
-        return []
-
-    def _custom_mel(self, _shape: shape_model.Electricity) -> list[xl_data.XlItem]:
-        return []
 
 
 # -----------------------------------------------------------------------------
