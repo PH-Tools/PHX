@@ -1,6 +1,6 @@
 ---
 DATE: 2026-10-24
-STATUS: In progress (stage 1 implemented on branch `fix/dryer-type-metr-01`)
+STATUS: In progress (stage 1 merged to main; stage 2 implemented on branch `fix/dryer-type-metr-02`)
 AUTHOR: Ed May, Claude
 ISSUE: https://github.com/PH-Tools/PHX/issues/160
 REPOS: PHX (primary), honeybee_ph, honeybee_grasshopper_ph
@@ -108,7 +108,7 @@ because the PHX model's `dryer_type` is a plain int.
 
 ### Stage 1: PHX METr writer, per-type `refED` / `rDamp`
 
-**Implemented on branch** `fix/dryer-type-metr-01` (2026-10-24). Evidence: parametrized test
+**Merged to main** (PR [#161](https://github.com/PH-Tools/PHX/pull/161), 2026-10-24). Evidence: parametrized test
 `test_dryer_type_sets_ref_ed_and_residual_dampness` over types 1–7; full suite green;
 `context/METR.md` §2 dryer row updated.
 
@@ -129,6 +129,11 @@ Tests (`tests/test_to_METr_JSON/test_metr_schemas.py`): one parametrized test ov
 asserting `tDryer`, `refED` and `rDamp`, against the table above.
 
 ### Stage 2: PHX type 7 fallback for WUFI and PHPP
+
+**Implemented on branch** `fix/dryer-type-metr-02` (2026-10-24). Shared mapping is
+`PhxDeviceClothesDryer.wufi_phpp_dryer_type` (7 → 4, logs a warning naming the device). Evidence:
+`test_PhxDeviceClothesDryer_dryer_choice` (WUFI) and `test_dryer_type_selection` (PHPP 10.6), each over
+types 5 and 7; full suite green.
 
 - `to_WUFI_XML/xml_schemas.py`: write `Dryer_Choice` 4 when the type is 7, log a warning naming
   the device.

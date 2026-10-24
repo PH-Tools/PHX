@@ -1681,7 +1681,7 @@ def _PhxDeviceClothesWasher(_d: elec_equip.PhxDeviceClothesWasher) -> list[xml_w
 def _PhxDeviceClothesDryer(_d: elec_equip.PhxDeviceClothesDryer) -> list[xml_writable]:
     return [
         XML_Node("Type", _d.device_type.value),
-        XML_Node("Dryer_Choice", _d.dryer_type),
+        XML_Node("Dryer_Choice", _d.wufi_phpp_dryer_type),
         XML_Node("GasConsumption", _d.gas_consumption),
         XML_Node("EfficiencyFactorGas", _d.gas_efficiency_factor),
         XML_Node("FieldUtilizationFactorPreselection", _d.field_utilization_factor_type),

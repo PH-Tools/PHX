@@ -6,6 +6,8 @@ A category the model authors replaces PHPP's template rows for that category;
 a category it does not author keeps the template.
 """
 
+import pytest
+
 from PHX.model import elec_equip
 from PHX.PHPP.phpp_model.electricity_item import ElectricityItemXLWriter
 from PHX.PHPP.sheet_io.io_electricity import Electricity
@@ -51,6 +53,18 @@ def test_cooktop_and_dryer_write_their_quantity():
     written, _ = _write("EN_10_6.json", elec_equip.PhxDeviceCooktop(), elec_equip.PhxDeviceClothesDryer())
 
     assert (written["E21"], written["E33"]) == (1, 1)
+
+
+@pytest.mark.parametrize(
+    "dryer_type, selection", [(5, "5-Electric exhaust air dryer"), (7, "4-Condensation dryer")]
+)  # -- 7 (METr heat pump) falls back to 4
+def test_dryer_type_selection(dryer_type, selection):
+    dryer = elec_equip.PhxDeviceClothesDryer()
+    dryer.dryer_type = dryer_type
+
+    written, _ = _write("EN_10_6.json", dryer)
+
+    assert selection in written.values()
 
 
 def test_annual_devices_fill_one_row_per_category_and_replace_their_template_rows():

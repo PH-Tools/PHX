@@ -185,7 +185,7 @@ class ElectricityItemXLWriter:
             ),
             (
                 f"{_shape.input_columns.selection}{_shape.input_rows.clothes_drying.selection}",
-                _shape.input_rows.clothes_drying.selection_options[str(equip.dryer_type)],
+                _shape.input_rows.clothes_drying.selection_options[str(equip.wufi_phpp_dryer_type)],
             ),
         ]
 
