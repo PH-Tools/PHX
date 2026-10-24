@@ -112,6 +112,21 @@ A layer with exchange materials carries three extra keys. Shape taken from Ed's 
   (`{tRes, tRes6946, U, U6946, inh}`). `tRes` is the homogeneous value and `tRes6946` is
   ISO 6946 with the mix. Our `tRes` is ignored and recomputed.
 
+### Heat pumps (`tHP`)
+
+`def.tHP`: 2 Combined, 3 Heat pump (annual COP), 4 Heat pump – rated monthly COP,
+5 HPWH (EF) inside, 7 HPWH (UEF) inside. Several keys share a UI label, so check by loading
+a probe file rather than by label. For `tHP 3`, checked 2026-10-24:
+
+| UI field | Key METr reads | Not it |
+|---|---|---|
+| Annual heating coefficient of performance (COP) | `aCOPHP` | `aCOP` (a separate "Annual COP" field) |
+| Total system performance ratio of heat generator | `tSysPHP` | `pHGHP` (same label, still flagged empty) |
+
+When either is missing, Status shows "No data or invalid format" for it, and no results
+appear. The writer has set both since 2026-10-24. Monthly (`tHP 4`) and HPWH (`tHP 5`)
+keys are not yet checked this way.
+
 ### Getting a "truth" file
 
 Ed can fix a value by hand in METr and save it with **Project › Locally › Save**. Diffing

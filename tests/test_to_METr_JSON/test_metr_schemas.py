@@ -5,6 +5,7 @@
 import pytest
 
 from PHX.model import components, elec_equip
+from PHX.model.hvac import heat_pumps
 from PHX.model.constructions import (
     PhxConstructionOpaque,
     PhxConstructionWindow,
@@ -17,6 +18,7 @@ from PHX.to_METr_JSON.metr_schemas import (
     _PhxConstructionOpaque,
     _PhxConstructionWindow,
     _PhxElectricalDevice,
+    _PhxMechanicalDevice,
 )
 
 
@@ -101,3 +103,13 @@ def test_opaque_component_keeps_metr_defaults_for_default_assembly(reset_class_c
     result = _PhxComponentOpaque(components.PhxComponentOpaque(), 0)
 
     assert (result["tAbsC"], result["absEC"], result["emisEC"]) == (-2, 0.4, 0.9)
+
+
+def test_annual_heat_pump_writes_the_cop_and_ratio_keys_metr_reads(reset_class_counters):
+    heat_pump = heat_pumps.PhxHeatPumpAnnual()
+    heat_pump.params.annual_COP = 2.5
+    heat_pump.params.total_system_perf_ratio = 0.4
+
+    result = _PhxMechanicalDevice(heat_pump)
+
+    assert (result["tHP"], result["aCOPHP"], result["tSysPHP"]) == (3, 2.5, 0.4)
