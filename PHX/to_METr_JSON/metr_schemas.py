@@ -166,13 +166,29 @@ def _PhxConstructionOpaque(_a: constructions.PhxConstructionOpaque) -> dict:
         "typeGr": _a.grid_kind,
         "tRes": _a.r_value,
         "tRes6946": _a.r_value,
-        "lLayer": [
-            {
-                "thick": layer.thickness_m,
-                "idMat": layer.material.id_num,
-            }
-            for layer in _a.layers
-        ],
+        "lLayer": [_PhxLayer(layer) for layer in _a.layers],
+    }
+
+
+def _PhxLayer(_l: constructions.PhxLayer) -> dict:
+    """Convert a PhxLayer to a METR JSON layer dict, including any mixed-material subdivision.
+
+    METR lists only the 'exchange' cells, as [column, row, idMat]; a single row or column is omitted.
+    """
+    grid = _l.divisions
+    exchange_cells = []
+    for column in range(grid.column_count or 1):
+        for row in range(grid.row_count or 1):
+            material = grid.get_cell_material(column, row)
+            if material and material != _l.material:
+                exchange_cells.append([column, row, material.id_num])
+
+    return {
+        "thick": _l.thickness_m,
+        "idMat": _l.material.id_num,
+        "lExDivH": [] if grid.column_count == 1 else grid.column_widths,
+        "lExDivV": [] if grid.row_count == 1 else grid.row_heights,
+        "lExMat": exchange_cells,
     }
 
 
@@ -724,6 +740,13 @@ def _PhxComponentOpaque(_c: components.PhxComponentOpaque, _index: int) -> dict:
         )
     )
 
+    # -- Exterior radiation: like the WUFI writer, only override METR's defaults (0.4 / 0.9)
+    # -- when the assembly differs from the PHPP defaults.
+    if _c.assembly.exterior_solar_absorptance != constructions.PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE:
+        result["absEC"] = _c.assembly.exterior_solar_absorptance
+    if _c.assembly.exterior_thermal_emissivity != constructions.PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY:
+        result["emisEC"] = _c.assembly.exterior_thermal_emissivity
+
     # -- Colors and polygon references
     result.update(
         {
@@ -1155,7 +1178,8 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
     elif isinstance(
         _d, (elec_equip.PhxDeviceFridgeFreezer, elec_equip.PhxDeviceRefrigerator, elec_equip.PhxDeviceFreezer)
     ):
-        dev["refED"] = 3  # kWh/year
+        # -- WUFI norm 1=Day, 2=Year -> METR refED 2=Day (enDrD), 3=Year (enDrY)
+        dev["refED"] = {1: 2, 2: 3}.get(_d.reference_energy_norm, 3)
         dev["fSize"] = 2
     elif isinstance(_d, elec_equip.PhxDeviceLightingGarage):
         dev["fHEff"] = _d.frac_high_efficiency or NaN
