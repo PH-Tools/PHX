@@ -36,15 +36,15 @@ showed only these keys change between the seven:
 |---|---|---|---|---|---|
 | Clothesline | 1 | 3 | 0.5 | 1234 | 1-CLOTHES LINE |
 | Drying closet (cold) | 2 | 3 | 0.5 | 1234 | 2-DRYING CLOSET (COLD!) |
-| Drying closet (cold) at exhaust | 3 | 4 ⚠ | NaN ⚠ | 0 | 3-DRYING CLOSET (COLD!) IN EXTRACT AIR |
+| Drying closet (cold) at exhaust | 3 | 3 † | 0.5 † | 1234 | 3-DRYING CLOSET (COLD!) IN EXTRACT AIR |
 | Ventless: Condensation | 4 | 4 | NaN | 0 | 4-CONDENSATION DRYER |
 | Vented: Electric | 5 | 4 | NaN | 0 | 5-ELECTRIC EXHAUST AIR DRYER |
 | Vented: Natural Gas | 6 | 9 | NaN | 0 | 6-GAS EXHAUST AIR DRYER |
 | Ventless: Heat Pump | 7 | 4 | NaN | 0 | none |
 
-⚠ Type 3 is suspect. It was saved right after `ventless-condensing` and carries that file's
-`refED`/`rDamp`. WUFI's logic (below) groups 3 with 1 and 2, so 3 should probably match them.
-See Q1.
+† From a second save (`02-drying-closet-cold-at-exhaust.json`, 2026-10-24), made by switching
+from Clothesline. The first type-3 save, made right after `ventless-condensing`, showed
+`refED 4` / `rDamp NaN`: METr does not reset those fields when switching from a CEF type.
 
 The `1234` values are what Ed typed into the yearly-energy and gas-consumption fields; they show
 which field each `refED` reads (`refED 3` → `enDrY`, kWh/yr).
@@ -64,7 +64,7 @@ which field each `refED` reads (`refED 3` → `enDrY`, kWh/yr).
 - `ResidualDampness` (XML `rDamp`) is read for choices 1/2/3, and for every choice outside Phius.
   Under Phius, choices 4/5/6 use a fixed 0.6 instead.
 
-METr's `refED` per type follows the same split: 3 (yearly energy) for 1/2, 4 (CEF) for 4/5/7,
+METr's `refED` per type follows the same split: 3 (yearly energy) for 1/2/3, 4 (CEF) for 4/5/7,
 9 for gas.
 
 ### Current code
@@ -121,8 +121,6 @@ if _d.dryer_type in (1, 2, 3):
     dev["rDamp"] = METR_DRYER_RESIDUAL_DAMPNESS
 ```
 
-(Type 3's entry pending Q1.)
-
 Tests (`tests/test_to_METr_JSON/test_metr_schemas.py`): one parametrized test over types 1–7
 asserting `tDryer`, `refED` and `rDamp`, against the table above.
 
@@ -174,10 +172,10 @@ release that adds 7; before then, a `7` input raises in honeybee_ph.
   and no import error. Compare the dryer's result against the same type set by hand in METr.
 - Ed: open a type-7 WUFI XML export in WUFI-Passive; it should show "Condensation dryer".
 
-## Open questions for Ed
+## Decisions (Q1–Q6, all resolved 2026-10-24)
 
-- **Q1. Type 3 `refED`.** Re-save "Drying closet (cold) at exhaust" in METr starting from
-  Clothesline (not from Condensation). Expected: `refED 3`, `rDamp 0.5`, like 1 and 2.
+- **Q1. Type 3 `refED`.** Resolved (METr re-save, 2026-10-24): `refED 3`, `rDamp 0.5`, same as
+  types 1 and 2.
 - **Q2. `rDamp` source.** Decided (Ed, 2026-10-24): fixed 0.5 for types 1–3. No new field.
 - **Q3. `rDamp` in WUFI XML.** Decided (Ed, 2026-10-24): no change; the WUFI XML still omits
   `rDamp`.
