@@ -5,7 +5,6 @@
 import pytest
 
 from PHX.model import components, elec_equip
-from PHX.model.hvac import heat_pumps
 from PHX.model.constructions import (
     PhxConstructionOpaque,
     PhxConstructionWindow,
@@ -13,6 +12,7 @@ from PHX.model.constructions import (
     PhxMaterial,
     PhxWindowFrameElement,
 )
+from PHX.model.hvac import heat_pumps
 from PHX.to_METr_JSON.metr_schemas import (
     _PhxComponentOpaque,
     _PhxConstructionOpaque,
