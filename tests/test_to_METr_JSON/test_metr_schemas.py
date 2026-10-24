@@ -14,6 +14,7 @@ from PHX.model.constructions import (
 )
 from PHX.model.hvac import heat_pumps
 from PHX.to_METr_JSON.metr_schemas import (
+    NaN,
     _PhxComponentOpaque,
     _PhxConstructionOpaque,
     _PhxConstructionWindow,
@@ -67,6 +68,19 @@ def test_fridge_type_ref_ed_follows_reference_energy_norm(reset_class_counters, 
     device.reference_energy_norm = wufi_norm
 
     assert _PhxElectricalDevice(device)["refED"] == metr_ref_ed
+
+
+@pytest.mark.parametrize(
+    "dryer_type, metr_ref_ed, metr_r_damp",
+    [(1, 3, 0.5), (2, 3, 0.5), (3, 3, 0.5), (4, 4, NaN), (5, 4, NaN), (6, 9, NaN), (7, 4, NaN)],
+)
+def test_dryer_type_sets_ref_ed_and_residual_dampness(reset_class_counters, dryer_type, metr_ref_ed, metr_r_damp):
+    device = elec_equip.PhxDeviceClothesDryer()
+    device.dryer_type = dryer_type
+
+    result = _PhxElectricalDevice(device)
+
+    assert (result["tDryer"], result["refED"], result["rDamp"]) == (dryer_type, metr_ref_ed, metr_r_damp)
 
 
 def test_mixed_layer_writes_exchange_divisions_and_materials(reset_class_counters):
