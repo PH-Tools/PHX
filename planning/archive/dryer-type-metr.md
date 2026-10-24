@@ -1,6 +1,6 @@
 ---
 DATE: 2026-10-24
-STATUS: Verified in METr 2026-10-24; GasCon fix (stage 5) implemented on branch `fix/dryer-type-metr-04`; archive after it merges
+STATUS: Complete (2026-10-24; archived from planning/features/)
 AUTHOR: Ed May, Claude
 ISSUE: https://github.com/PH-Tools/PHX/issues/160
 REPOS: PHX (primary), honeybee_ph, honeybee_grasshopper_ph
@@ -186,12 +186,12 @@ release that adds 7; before then, a `7` input raises in honeybee_ph.
 
 ### Stage 5: METr `GasCon` for the gas dryer (found in verification)
 
-**Implemented on branch** `fix/dryer-type-metr-04` (2026-10-24). `metr_schemas.py` wrote
+**Merged to main** (PR [#164](https://github.com/PH-Tools/PHX/pull/164), PHX 1.57.7, 2026-10-24). `metr_schemas.py` wrote
 `dev["GasCon"] = _d.gas_consumption or NaN`, so the model's default 0.0 reached METr as `NaN` and the
 gas dryer (type 6) failed METr's data check. Now `NaN` only for `None`. Test:
 `test_dryer_gas_consumption_zero_is_written_as_a_number`. The same `or NaN` idiom appears at ~26 other
 sites in the METr writer (washer `utilFact`, lighting `fHEff`, heat-pump COPs, PV, DHW tanks); not
-checked in METr and out of this packet's scope.
+checked in METr and out of this packet's scope; filed as [#165](https://github.com/PH-Tools/PHX/issues/165).
 
 ## Verification
 

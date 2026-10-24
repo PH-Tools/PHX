@@ -197,6 +197,18 @@ Follows the same class-name dispatch pattern as the WUFI XML exporter, but simpl
    the PHX model's clockwise frame iterator (Top, Right, Bottom, Left), so the
    schema maps each side explicitly.
 
+### Target-only enum values
+
+When one target's option list is longer than the others', the PHX model keeps the superset and
+the narrower writers fall back through one shared model property, so the mapping lives in one
+place and every writer warns the same way. The clothes dryer is the precedent: METr's
+`tDryer` adds 7 (Ventless: Heat Pump) after WUFI's codes 1–6, which it keeps in the same order.
+`PhxDeviceClothesDryer.dryer_type` stays the METr value; `wufi_phpp_dryer_type` returns 4
+(Condensation dryer) for 7 with a warning naming the device, and both the WUFI `Dryer_Choice`
+and the PHPP selector read that property ([#160](https://github.com/PH-Tools/PHX/issues/160)).
+Per-target defaults that depend on the enum (METr's `refED`/`rDamp` by dryer type) are tables in
+the writer, taken from the target's own saves (`context/METR.md` §2).
+
 ### Usage
 
 ```python
