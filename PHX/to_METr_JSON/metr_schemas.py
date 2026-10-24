@@ -1155,7 +1155,8 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
     elif isinstance(
         _d, (elec_equip.PhxDeviceFridgeFreezer, elec_equip.PhxDeviceRefrigerator, elec_equip.PhxDeviceFreezer)
     ):
-        dev["refED"] = 3  # kWh/year
+        # -- WUFI norm 1=Day, 2=Year -> METR refED 2=Day (enDrD), 3=Year (enDrY)
+        dev["refED"] = {1: 2, 2: 3}.get(_d.reference_energy_norm, 3)
         dev["fSize"] = 2
     elif isinstance(_d, elec_equip.PhxDeviceLightingGarage):
         dev["fHEff"] = _d.frac_high_efficiency or NaN

@@ -2,8 +2,11 @@
 
 """Focused tests for PHX.to_METr_JSON.metr_schemas."""
 
+import pytest
+
+from PHX.model import elec_equip
 from PHX.model.constructions import PhxConstructionWindow, PhxWindowFrameElement
-from PHX.to_METr_JSON.metr_schemas import _PhxConstructionWindow
+from PHX.to_METr_JSON.metr_schemas import _PhxConstructionWindow, _PhxElectricalDevice
 
 
 def test_window_frame_arrays_follow_metr_left_right_top_bottom_order(reset_class_counters):
@@ -39,3 +42,15 @@ def test_window_frame_arrays_follow_metr_left_right_top_bottom_order(reset_class
     assert result["lrtbFrU"] == [1.1, 1.2, 1.3, 1.4]
     assert result["lrtbGlPsi"] == [0.01, 0.02, 0.03, 0.04]
     assert result["lrtbFrPsi"] == [0.001, 0.002, 0.003, 0.004]
+
+
+@pytest.mark.parametrize(
+    "device_class",
+    [elec_equip.PhxDeviceRefrigerator, elec_equip.PhxDeviceFreezer, elec_equip.PhxDeviceFridgeFreezer],
+)
+@pytest.mark.parametrize("wufi_norm, metr_ref_ed", [(1, 2), (2, 3)])  # WUFI Day/Year -> METr Day/Year
+def test_fridge_type_ref_ed_follows_reference_energy_norm(reset_class_counters, device_class, wufi_norm, metr_ref_ed):
+    device = device_class()
+    device.reference_energy_norm = wufi_norm
+
+    assert _PhxElectricalDevice(device)["refED"] == metr_ref_ed
