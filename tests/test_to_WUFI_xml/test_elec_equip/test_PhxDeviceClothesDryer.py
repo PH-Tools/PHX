@@ -1,3 +1,5 @@
+import pytest
+
 from PHX.model import elec_equip
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 from tests.test_to_WUFI_xml._utils import xml_string_to_list
@@ -23,3 +25,11 @@ def test_default_PhxDeviceClothesDryer(reset_class_counters):
         "<FieldUtilizationFactorPreselection>1</FieldUtilizationFactorPreselection>",
         "<FieldUtilizationFactor>1.18</FieldUtilizationFactor>",
     ]
+
+
+@pytest.mark.parametrize("dryer_type, dryer_choice", [(5, 5), (7, 4)])  # -- 7 (METr heat pump) falls back to 4
+def test_PhxDeviceClothesDryer_dryer_choice(reset_class_counters, dryer_type, dryer_choice):
+    d1 = elec_equip.PhxDeviceClothesDryer()
+    d1.dryer_type = dryer_type
+    result = generate_WUFI_XML_from_object(d1, "", "_PhxElectricalDevice")
+    assert f"<Dryer_Choice>{dryer_choice}</Dryer_Choice>" in xml_string_to_list(result)

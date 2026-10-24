@@ -203,6 +203,21 @@ class PhxDeviceClothesDryer(PhxElectricalDevice):
             self._dryer_type = value
 
     @property
+    def wufi_phpp_dryer_type(self) -> int:
+        """The dryer type for WUFI-Passive and PHPP, whose lists stop at 6.
+
+        METr's 7 (Ventless: Heat Pump) has no WUFI/PHPP equivalent and falls back to
+        4 (Condensation dryer), with a warning. Every other type passes through.
+        """
+        if self.dryer_type == 7:
+            logger.warning(
+                "Clothes dryer '%s': type 7 (heat pump) is METr-only; WUFI-Passive and PHPP receive 4 (condensation dryer).",
+                self.display_name,
+            )
+            return 4
+        return self.dryer_type
+
+    @property
     def field_utilization_factor_type(self) -> int | None:
         """The field utilization factor type (e.g., 1 = timer)."""
         return self._field_utilization_factor_type
