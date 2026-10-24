@@ -138,7 +138,7 @@ Tests: WUFI writer and PHPP writer each get a type-7 case asserting `4`; a type-
 
 ### Stage 3: honeybee_ph enum
 
-Append `"7-HEAT PUMP DRYER"` (wording pending Q4) to `PhClothesDryerType.allowed`.
+Append `"7-HEAT PUMP DRYER"` to `PhClothesDryerType.allowed`.
 
 Tests (`tests/test_honeybee_energy_ph/test_load/test_ph_equipment.py`): `PhClothesDryer` with
 `dryer_type = 7` round-trips through `to_dict`/`from_dict`; a dict with
@@ -178,14 +178,13 @@ release that adds 7; before then, a `7` input raises in honeybee_ph.
 
 - **Q1. Type 3 `refED`.** Re-save "Drying closet (cold) at exhaust" in METr starting from
   Clothesline (not from Condensation). Expected: `refED 3`, `rDamp 0.5`, like 1 and 2.
-- **Q2. `rDamp` source.** Proposed: fixed 0.5 (METr's default) for types 1–3 now. A real
-  `residual_dampness` field on `PhClothesDryer` is a new HBJSON field (old files load with the
-  default) and a new GH input; a separate follow-up if wanted.
-- **Q3. `rDamp` in WUFI XML.** PHX never writes it, so WUFI uses its own default. Leave as is
-  (proposed), or write the same 0.5 for types 1–3 so WUFI and METr match?
-- **Q4. Label for 7.** `"7-HEAT PUMP DRYER"` follows the WUFI-style uppercase labels. Any
-  preferred wording? The string is stored in HBJSON, so it is permanent once released.
-- **Q5. Fallback for 7 in WUFI/PHPP.** Proposed: 4 (Condensation, also ventless; under Phius,
-  WUFI treats 4 and 5 the same way). Alternative: 5.
-- **Q6. What `refED 9` reads for gas.** Assumed to be "CEF - Gas" (`CEFGas`). Worth one look at
-  METr's dryer panel with Vented: Natural Gas selected, to confirm which fields it shows.
+- **Q2. `rDamp` source.** Decided (Ed, 2026-10-24): fixed 0.5 for types 1–3. No new field.
+- **Q3. `rDamp` in WUFI XML.** Decided (Ed, 2026-10-24): no change; the WUFI XML still omits
+  `rDamp`.
+- **Q4. Label for 7.** Decided (Ed, 2026-10-24): `"7-HEAT PUMP DRYER"`.
+- **Q5. Fallback for 7 in WUFI/PHPP.** Decided (Ed, 2026-10-24): 4 (Condensation dryer), with a
+  warning. This is the only WUFI XML change in this packet.
+- **Q6. What `refED 9` reads for gas.** Resolved (METr panel, 2026-10-24): `refED 9` is
+  "CEF - Combined Energy Factor (Gas)". The panel shows Gas consumption [kWh] (`GasCon`),
+  Field utilization factor preselection and value, and CEF - Gas (`CEFGas`, 2.67). The electric
+  CEF (`CEFef`) is not shown for the gas dryer.
