@@ -165,7 +165,8 @@ XML as `Dryer_Choice 4`.
 
 **Merged to main** in honeybee_grasshopper_ph (PR
 [honeybee_grasshopper_ph#101](https://github.com/PH-Tools/honeybee_grasshopper_ph/pull/101), 2026-10-24).
-Not yet released: that repo's `release.yml` is dispatch-only, still at v1.43.0.
+Released as [Honeybee-PH v1.43.1](https://github.com/PH-Tools/honeybee_grasshopper_ph/releases/tag/v1.43.1)
+(hand-dispatched `release.yml`, patch), which also raises that repo's honeybee-ph pin to 1.33.68.
 
 `honeybee_ph_rhino/gh_compo_io/program/create_elec_equip.py`, `dryer_type` description. Draft:
 
