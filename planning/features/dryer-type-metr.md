@@ -1,6 +1,6 @@
 ---
 DATE: 2026-10-24
-STATUS: In progress (stage 1 merged to main; stage 2 implemented on branch `fix/dryer-type-metr-02`)
+STATUS: In progress (stages 1–2 merged to main; stage 3 next, in honeybee_ph)
 AUTHOR: Ed May, Claude
 ISSUE: https://github.com/PH-Tools/PHX/issues/160
 REPOS: PHX (primary), honeybee_ph, honeybee_grasshopper_ph
@@ -130,7 +130,7 @@ asserting `tDryer`, `refED` and `rDamp`, against the table above.
 
 ### Stage 2: PHX type 7 fallback for WUFI and PHPP
 
-**Implemented on branch** `fix/dryer-type-metr-02` (2026-10-24). Shared mapping is
+**Merged to main** (PR [#162](https://github.com/PH-Tools/PHX/pull/162), 2026-10-24). Shared mapping is
 `PhxDeviceClothesDryer.wufi_phpp_dryer_type` (7 → 4, logs a warning naming the device). Evidence:
 `test_PhxDeviceClothesDryer_dryer_choice` (WUFI) and `test_dryer_type_selection` (PHPP 10.6), each over
 types 5 and 7; full suite green.
