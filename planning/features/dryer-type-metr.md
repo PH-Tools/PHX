@@ -1,6 +1,6 @@
 ---
 DATE: 2026-10-24
-STATUS: Implemented (all four stages merged 2026-10-24); awaiting Ed's METr / WUFI-Passive checks before archiving
+STATUS: Verified in METr 2026-10-24; GasCon fix (stage 5) implemented on branch `fix/dryer-type-metr-04`; archive after it merges
 AUTHOR: Ed May, Claude
 ISSUE: https://github.com/PH-Tools/PHX/issues/160
 REPOS: PHX (primary), honeybee_ph, honeybee_grasshopper_ph
@@ -184,10 +184,32 @@ WUFI/METr 'Type of laundry-dryer' and the PHPP dryer selector. Input either -
 Also update the dryer rows in `planning/elec-equip-input-labels.md`. Lands after the honeybee_ph
 release that adds 7; before then, a `7` input raises in honeybee_ph.
 
+### Stage 5: METr `GasCon` for the gas dryer (found in verification)
+
+**Implemented on branch** `fix/dryer-type-metr-04` (2026-10-24). `metr_schemas.py` wrote
+`dev["GasCon"] = _d.gas_consumption or NaN`, so the model's default 0.0 reached METr as `NaN` and the
+gas dryer (type 6) failed METr's data check. Now `NaN` only for `None`. Test:
+`test_dryer_gas_consumption_zero_is_written_as_a_number`. The same `or NaN` idiom appears at ~26 other
+sites in the METr writer (washer `utilFact`, lighting `fHEff`, heat-pump COPs, PV, DHW tanks); not
+checked in METr and out of this packet's scope.
+
 ## Verification
 
 - PHX and honeybee_ph test suites green. Done: PHX 1510 passed; honeybee_ph 1107 passed.
-- Open (Ed): the two manual checks below.
+- METr (Claude, 2026-10-24, METr 1.92/2.74): `Multi_Room_Complete.hbjson` exported once per dryer
+  type 1, 2, 3, 6, 7 and loaded in METr. The dryer panel shows Clothesline / Drying closet (cold) /
+  Drying closet (cold) at exhaust with reference **Year** and Remaining dampness 0.5; Vented:
+  Natural Gas with **CEF - Combined Energy Factor (Gas)**; Ventless: Heat Pump with **CEF**. The
+  dryer keys of every export match Ed's per-type METr saves. One import error found and fixed
+  (stage 5): the gas dryer's `GasCon` was `NaN` for a 0.0 gas consumption, which METr reports as
+  "Internal loads, Gas consumption: No data or invalid format"; a 0 clears it.
+- WUFI-Passive: settled by construction. The type-7 XML export is byte-identical to the type-4
+  export (`Dryer_Choice 4`, the default in every reference XML), so WUFI-Passive cannot tell them
+  apart and shows "Condensation dryer".
+- Grasshopper: the released `create_elec_equip.py` carries the seven-type text and is deployed to
+  Rhino's `ladybug_tools` site-packages. The honeybee_ph enum had **not** deployed (the stage-3
+  session edited by script, which the Edit/Write deploy hook does not see); deployed by hand
+  2026-10-24. Canvas hover not viewed.
 - Ed: export one model per dryer type 1, 2, 3, 6, 7 to METr JSON with PHX, load each in METr,
   and confirm the dryer panel shows the right type, the right "Energy demand (norm) reference",
   and no import error. Compare the dryer's result against the same type set by hand in METr.
