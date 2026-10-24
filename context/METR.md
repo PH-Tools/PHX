@@ -85,7 +85,7 @@ dryer 2 = CEF, fridge types 1 = Day, cooktop 1 = Use.
 |---|---|---|
 | Dishwasher | 7 Year only | Hardcoded 7 is correct |
 | Washer | 6 Year only | Hardcoded 6 is correct |
-| Dryer (vented electric) | 4 CEF only | Hardcoded 4 is correct |
+| Dryer | by `tDryer`: 1/2/3 → 3 Year (+ `rDamp 0.5`), 4/5/7 → 4 CEF, 6 → 9 CEF (gas) | Mapped from `dryer_type`, matching METr's own saves per type (2026-10-24, [#160](https://github.com/PH-Tools/PHX/issues/160)). METr does not reset `refED`/`rDamp` when the type is switched in the UI, so a hand edit can leave stale values |
 | Fridge / freezer / combo | 2 Day or 3 Year | The only real choice; mapped from the model |
 | Cooktop | none (kWh/use) | Type comes from `tCook`: 1 Electric coil, 3 Induction, 2 Gas |
 
@@ -165,7 +165,7 @@ correctly.
 | `_PhxZone` / `_zone_design_conditions` | `tAttZ 0`, `TRedUD 1.0` | `attached_zone_type`, `attached_zone_reduction_factor` | Gap. Only matters for attached zones |
 | `_PhxZone` | `grossVolZ.sel 7`, `netVolZ.sel 6`, `flAreaZ.sel 6` | `volume_gross_mode`, `volume_net_mode`, `weighted_floor_area_mode` | Gap. Matches Elizabeth St's modes by luck |
 | `_PhxZone` | `shCapZ.iV 0` (always `val[0]` = 60 Wh/m²K) with `sel` from the model | `specific_heat_capacity`, `specific_heat_capacity_wh_m2k` | Suspect for mixed/heavy or user-defined capacity; not tested |
-| `_PhxElectricalDevice` | `refED` 7 / 6 / 4 | `reference_energy_norm` | OK in the Phius scope (§2) |
+| `_PhxElectricalDevice` | `refED` 7 / 6 (dishwasher / washer) | `reference_energy_norm` | OK in the Phius scope (§2); the dryer `refED`/`rDamp` follow `dryer_type` |
 | Components | `inclC 90`, `azimN 180`, `orient 1` | polygon geometry | Probably recomputed from `lPoly` (METr fills polygon `azimN`); not verified |
 | Apertures, foundations, DHW recirculation | type defaults | | OK: overridden from the model per type |
 

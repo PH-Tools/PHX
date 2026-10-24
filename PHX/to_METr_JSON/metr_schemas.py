@@ -1109,6 +1109,11 @@ def _PhxExhaustVentilator(_v) -> dict:
 
 # -- ELECTRICAL EQUIPMENT (HOME DEVICES / APPLIANCES) -------------------------
 
+# -- METr 'Energy demand (norm) reference' and 'Remaining dampness', by dryer type (tDryer).
+# -- 1/2/3 clothesline + drying closets: yearly energy (enDrY); 4/5/7: CEF; 6 gas: CEF - Gas
+METR_DRYER_REF_ED = {1: 3, 2: 3, 3: 3, 4: 4, 5: 4, 6: 9, 7: 4}
+METR_DRYER_RESIDUAL_DAMPNESS = 0.5
+
 
 def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
     """Convert a PhxElectricalDevice to a METR JSON home device dict.
@@ -1171,7 +1176,9 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
         dev["CEFGas"] = _d.gas_efficiency_factor
         dev["fUtilFsel"] = _d.field_utilization_factor_type
         dev["fUtilF"] = _d.field_utilization_factor
-        dev["refED"] = 4  # CEF
+        dev["refED"] = METR_DRYER_REF_ED.get(_d.dryer_type, 4)
+        if _d.dryer_type in (1, 2, 3):
+            dev["rDamp"] = METR_DRYER_RESIDUAL_DAMPNESS
     elif isinstance(_d, elec_equip.PhxDeviceCooktop):
         dev["tCook"] = _d.cooktop_type
         dev["enDrU1"] = energy

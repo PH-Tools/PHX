@@ -1,6 +1,6 @@
 ---
 DATE: 2026-10-24
-STATUS: Scoped
+STATUS: In progress (stage 1 implemented on branch `fix/dryer-type-metr-01`)
 AUTHOR: Ed May, Claude
 ISSUE: https://github.com/PH-Tools/PHX/issues/160
 REPOS: PHX (primary), honeybee_ph, honeybee_grasshopper_ph
@@ -107,6 +107,10 @@ Stages are ordered so each lands on its own. Stages 1 and 2 need nothing from ho
 because the PHX model's `dryer_type` is a plain int.
 
 ### Stage 1: PHX METr writer, per-type `refED` / `rDamp`
+
+**Implemented on branch** `fix/dryer-type-metr-01` (2026-10-24). Evidence: parametrized test
+`test_dryer_type_sets_ref_ed_and_residual_dampness` over types 1–7; full suite green;
+`context/METR.md` §2 dryer row updated.
 
 `to_METr_JSON/metr_schemas.py`, dryer branch:
 
