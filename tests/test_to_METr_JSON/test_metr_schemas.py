@@ -4,7 +4,7 @@
 
 import pytest
 
-from PHX.model import elec_equip
+from PHX.model import components, elec_equip
 from PHX.model.constructions import (
     PhxConstructionOpaque,
     PhxConstructionWindow,
@@ -12,7 +12,12 @@ from PHX.model.constructions import (
     PhxMaterial,
     PhxWindowFrameElement,
 )
-from PHX.to_METr_JSON.metr_schemas import _PhxConstructionOpaque, _PhxConstructionWindow, _PhxElectricalDevice
+from PHX.to_METr_JSON.metr_schemas import (
+    _PhxComponentOpaque,
+    _PhxConstructionOpaque,
+    _PhxConstructionWindow,
+    _PhxElectricalDevice,
+)
 
 
 def test_window_frame_arrays_follow_metr_left_right_top_bottom_order(reset_class_counters):
@@ -79,3 +84,20 @@ def test_mixed_layer_writes_exchange_divisions_and_materials(reset_class_counter
     assert result["lExDivH"] == [0.18415, 0.0381, 0.3683, 0.0381, 0.18415]
     assert result["lExDivV"] == []  # -- a single row is omitted
     assert result["lExMat"] == [[1, 0, stud.id_num], [3, 0, stud.id_num]]
+
+
+def test_opaque_component_writes_non_default_assembly_radiation_properties(reset_class_counters):
+    component = components.PhxComponentOpaque()
+    component.assembly.exterior_solar_absorptance = 0.7
+    component.assembly.exterior_thermal_emissivity = 0.82
+
+    result = _PhxComponentOpaque(component, 0)
+
+    assert (result["tAbsC"], result["absEC"], result["emisEC"]) == (-2, 0.7, 0.82)
+
+
+def test_opaque_component_keeps_metr_defaults_for_default_assembly(reset_class_counters):
+    # -- Matches the WUFI writer, which omits the nodes at the PHPP defaults (0.6 / 0.9)
+    result = _PhxComponentOpaque(components.PhxComponentOpaque(), 0)
+
+    assert (result["tAbsC"], result["absEC"], result["emisEC"]) == (-2, 0.4, 0.9)

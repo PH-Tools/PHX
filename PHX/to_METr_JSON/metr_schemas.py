@@ -740,6 +740,13 @@ def _PhxComponentOpaque(_c: components.PhxComponentOpaque, _index: int) -> dict:
         )
     )
 
+    # -- Exterior radiation: like the WUFI writer, only override METR's defaults (0.4 / 0.9)
+    # -- when the assembly differs from the PHPP defaults.
+    if _c.assembly.exterior_solar_absorptance != constructions.PHPP_DEFAULT_EXTERIOR_SOLAR_ABSORPTANCE:
+        result["absEC"] = _c.assembly.exterior_solar_absorptance
+    if _c.assembly.exterior_thermal_emissivity != constructions.PHPP_DEFAULT_EXTERIOR_THERMAL_EMISSIVITY:
+        result["emisEC"] = _c.assembly.exterior_thermal_emissivity
+
     # -- Colors and polygon references
     result.update(
         {

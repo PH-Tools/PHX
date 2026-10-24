@@ -72,8 +72,26 @@ translate each one.
 For the fridge-type devices (refrigerator, freezer, fridge/freezer combo) METr allows
 `refED` ∈ {3 Year, 2 Day}, and WUFI's `ReferenceEnergyDemandNorm` codes them 1 = Day,
 2 = Year (verified in WUFI-Passive 3.6, 2026-10-24). The writer translates these for the
-fridge types. The dishwasher (7), washer (6) and dryer (4) `refED` values are still
-hardcoded and not yet checked against the model's norm.
+fridge types.
+
+**WUFI's norm code is an index into each device's own dropdown**, so its meaning depends on
+the device (honeybee-ph `default_elec_equip.py`): dishwasher 2 = Year, washer 2 = Year,
+dryer 2 = CEF, fridge types 1 = Day, cooktop 1 = Use.
+
+**METr narrows `refED` by calc scope.** In the Phius scope (`calcScope` 4, checked in the UI
+2026-10-24):
+
+| Device | Allowed `refED` | Notes |
+|---|---|---|
+| Dishwasher | 7 Year only | Hardcoded 7 is correct |
+| Washer | 6 Year only | Hardcoded 6 is correct |
+| Dryer (vented electric) | 4 CEF only | Hardcoded 4 is correct |
+| Fridge / freezer / combo | 2 Day or 3 Year | The only real choice; mapped from the model |
+| Cooktop | none (kWh/use) | Type comes from `tCook`: 1 Electric coil, 3 Induction, 2 Gas |
+
+The nested `refED` lists in `def.tHdev` appear to be per calc-scope group (compare the
+`defVal` groups `[3,5,6]`, `[7,8]`, `[9,10]`), not per `refQ`. That is unconfirmed, so check in
+the UI before relying on it.
 
 ### Mixed (inhomogeneous) layers
 
@@ -114,9 +132,29 @@ unless noted:
 | `HVAC…distrib.lVentDuct[].id` | Renumbered from 1 |
 | `lZone[].desCondZ.TRedUD` | Moved up to `lZone[].TRedUD` |
 | `lAssembly[]` | Recomputes `tRes` and adds `U` and `partRes`. The 6.99 → 7.86 gap on Elizabeth St was the missing stud subdivision: METr was computing all-insulation. With the mix written (fixed 2026-10-24), the Exterior-Wall reads `tRes6946` 6.93 / `tRes` 7.86, i.e. R-39.38 inhomogeneous / R-44.66 homogeneous in IP. WUFI shows R-38.38 / R-43.69 for the same wall; that offset of about 1 in both values is METr vs WUFI and not yet explained |
-| `lWindow[]` | Rounds `Uw`/`frF`. **Recomputes `Ufr`** (ours 1.578 → 2.396 on Elizabeth St; see §4) |
+| `lWindow[]` | Rounds `Uw`/`frF`. **Recomputes `Ufr`** (ours 1.578 → 2.396 on Elizabeth St; see §5) |
 
-## 4. Reference case: 2626 Elizabeth St
+## 4. Hardcoded values in `metr_schemas.py` (audit 2026-10-24)
+
+The writer assigns about 570 literals. METr wants every key on every object (the
+"super-device", "super-foundation" and "super-component" pattern), so most of them are
+inert structural defaults: hygrothermal (HAM) settings, DIN 4108, the building generator,
+unused device families, and the Phius-case extras that the WUFI writer hardcodes too (WC count,
+evaporation 15 W, `tVentSys`, `tInfiltr` …). The audit compared each literal with what the
+WUFI writer reads from the PHX model, because the WUFI XML is the reference that opens
+correctly.
+
+| Where | Literal | Model has | Status |
+|---|---|---|---|
+| `_component_surface_defaults` | `tAbsC -2`, `absEC 0.4`, `emisEC 0.9` | `assembly.exterior_solar_absorptance` / `exterior_thermal_emissivity` (WUFI writes them when not the PHPP defaults 0.6 / 0.9) | **Fixed 2026-10-24.** METr's own defaults are 0.4 / 0.9 (`def.absEC` help text), so the writer keeps them at the PHPP defaults and overrides only when the assembly differs, the same rule as the WUFI writer. Elizabeth St: 4 components now at 0.7 |
+| `_PhxZone` / `_zone_design_conditions` | `tAttZ 0`, `TRedUD 1.0` | `attached_zone_type`, `attached_zone_reduction_factor` | Gap. Only matters for attached zones |
+| `_PhxZone` | `grossVolZ.sel 7`, `netVolZ.sel 6`, `flAreaZ.sel 6` | `volume_gross_mode`, `volume_net_mode`, `weighted_floor_area_mode` | Gap. Matches Elizabeth St's modes by luck |
+| `_PhxZone` | `shCapZ.iV 0` (always `val[0]` = 60 Wh/m²K) with `sel` from the model | `specific_heat_capacity`, `specific_heat_capacity_wh_m2k` | Suspect for mixed/heavy or user-defined capacity; not tested |
+| `_PhxElectricalDevice` | `refED` 7 / 6 / 4 | `reference_energy_norm` | OK in the Phius scope (§2) |
+| Components | `inclC 90`, `azimN 180`, `orient 1` | polygon geometry | Probably recomputed from `lPoly` (METr fills polygon `azimN`); not verified |
+| Apertures, foundations, DHW recirculation | type defaults | | OK: overridden from the model per type |
+
+## 5. Reference case: 2626 Elizabeth St
 
 - METr JSON: `~/Dropbox/bldgtyp/2626 Elizabeth St/15_METr/Elizabeth_St_Apartments_261024.json`
 - Matching WUFI-Passive XML of the same model: `…/13_WUFI/Elizabeth_St_Apartments_261024.xml`
@@ -131,7 +169,9 @@ unless noted:
   cooling demand 3.02, heating load 7.04 Btu/hr ft², cooling load 1.48, source energy
   2084 kWh/person yr, site energy 11.48 kBtu/ft²yr.
 - After the fridge Day/Year fix: heating 8.63, cooling 3.64. After the mixed-layer fix as
-  well: heating 9.4 kBtu/ft²yr, heating load 7.3 Btu/hr ft², cooling load 1.65.
+  well: heating 9.4 kBtu/ft²yr, heating load 7.3 Btu/hr ft², cooling load 1.65. After the
+  exterior absorptance fix (0.4 → 0.7 on 4 components): heating 9.12, cooling 3.79,
+  heating load 7.34, cooling load 1.74.
 - Warnings: DHW distribution missing inputs, fresh-air supply 1365.9 cfm vs 1161 cfm required,
   overheating 32 %, ACH50 0.85.
 - Window `Passive_House`: PHX writes `Ufr = Uw = 1.578` to **both** METr and WUFI (WUFI
