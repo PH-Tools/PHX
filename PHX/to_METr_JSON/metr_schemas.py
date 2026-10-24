@@ -166,13 +166,29 @@ def _PhxConstructionOpaque(_a: constructions.PhxConstructionOpaque) -> dict:
         "typeGr": _a.grid_kind,
         "tRes": _a.r_value,
         "tRes6946": _a.r_value,
-        "lLayer": [
-            {
-                "thick": layer.thickness_m,
-                "idMat": layer.material.id_num,
-            }
-            for layer in _a.layers
-        ],
+        "lLayer": [_PhxLayer(layer) for layer in _a.layers],
+    }
+
+
+def _PhxLayer(_l: constructions.PhxLayer) -> dict:
+    """Convert a PhxLayer to a METR JSON layer dict, including any mixed-material subdivision.
+
+    METR lists only the 'exchange' cells, as [column, row, idMat]; a single row or column is omitted.
+    """
+    grid = _l.divisions
+    exchange_cells = []
+    for column in range(grid.column_count or 1):
+        for row in range(grid.row_count or 1):
+            material = grid.get_cell_material(column, row)
+            if material and material != _l.material:
+                exchange_cells.append([column, row, material.id_num])
+
+    return {
+        "thick": _l.thickness_m,
+        "idMat": _l.material.id_num,
+        "lExDivH": [] if grid.column_count == 1 else grid.column_widths,
+        "lExDivV": [] if grid.row_count == 1 else grid.row_heights,
+        "lExMat": exchange_cells,
     }
 
 

@@ -5,8 +5,14 @@
 import pytest
 
 from PHX.model import elec_equip
-from PHX.model.constructions import PhxConstructionWindow, PhxWindowFrameElement
-from PHX.to_METr_JSON.metr_schemas import _PhxConstructionWindow, _PhxElectricalDevice
+from PHX.model.constructions import (
+    PhxConstructionOpaque,
+    PhxConstructionWindow,
+    PhxLayer,
+    PhxMaterial,
+    PhxWindowFrameElement,
+)
+from PHX.to_METr_JSON.metr_schemas import _PhxConstructionOpaque, _PhxConstructionWindow, _PhxElectricalDevice
 
 
 def test_window_frame_arrays_follow_metr_left_right_top_bottom_order(reset_class_counters):
@@ -54,3 +60,22 @@ def test_fridge_type_ref_ed_follows_reference_energy_norm(reset_class_counters, 
     device.reference_energy_norm = wufi_norm
 
     assert _PhxElectricalDevice(device)["refED"] == metr_ref_ed
+
+
+def test_mixed_layer_writes_exchange_divisions_and_materials(reset_class_counters):
+    insulation = PhxMaterial(display_name="insulation")
+    stud = PhxMaterial(display_name="stud")
+    layer = PhxLayer(thickness_m=0.18415)
+    layer.set_material(insulation)
+    layer.divisions.set_column_widths([0.18415, 0.0381, 0.3683, 0.0381, 0.18415])
+    layer.divisions.add_new_row(1.0)
+    layer.divisions.set_cell_material(1, 0, stud)
+    layer.divisions.set_cell_material(3, 0, stud)
+    assembly = PhxConstructionOpaque()
+    assembly.layers = [layer]
+
+    result = _PhxConstructionOpaque(assembly)["lLayer"][0]
+
+    assert result["lExDivH"] == [0.18415, 0.0381, 0.3683, 0.0381, 0.18415]
+    assert result["lExDivV"] == []  # -- a single row is omitted
+    assert result["lExMat"] == [[1, 0, stud.id_num], [3, 0, stud.id_num]]

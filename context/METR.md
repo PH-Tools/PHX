@@ -75,6 +75,25 @@ For the fridge-type devices (refrigerator, freezer, fridge/freezer combo) METr a
 fridge types. The dishwasher (7), washer (6) and dryer (4) `refED` values are still
 hardcoded and not yet checked against the model's norm.
 
+### Mixed (inhomogeneous) layers
+
+A layer with exchange materials carries three extra keys. Shape taken from Ed's hand-built
+`15_METr/With-Exchange-Materials.json`, 2026-10-24:
+
+```json
+{"thick": 0.18415, "idMat": 16,
+ "lExDivH": [0.18415, 0.0381, 0.3683, 0.0381, 0.18415],   // column widths [m]
+ "lExDivV": [],                                           // row heights [m]; [] = one row
+ "lExMat":  [[1, 0, 15], [3, 0, 15]]}                     // [column, row, idMat], exchange cells only
+```
+
+- Cells holding the layer's own material are not listed. `idMat` must be in `lMaterial`.
+- This matches PHX's `PhxLayerDivisionGrid` (`cell.column`, `cell.row`, 0-based from top-left)
+  and the WUFI writer's convention of dropping a single row or column.
+- On load METr adds `tAss`, `inh`, `U`, `U6946` and `partRes`
+  (`{tRes, tRes6946, U, U6946, inh}`). `tRes` is the homogeneous value and `tRes6946` is
+  ISO 6946 with the mix. Our `tRes` is ignored and recomputed.
+
 ### Getting a "truth" file
 
 Ed can fix a value by hand in METr and save it with **Project › Locally › Save**. Diffing
@@ -94,7 +113,7 @@ unless noted:
 | `tv`, `ntv`, `nr`, `view`, `uuid`, `jobNr`, `vFE`, `vBE` … | UI tree and session state |
 | `HVAC…distrib.lVentDuct[].id` | Renumbered from 1 |
 | `lZone[].desCondZ.TRedUD` | Moved up to `lZone[].TRedUD` |
-| `lAssembly[]` | Recomputes `tRes` and adds `U`. **Open question:** ours 6.99 → METr 7.86 (m²K/W) on Elizabeth St; a film difference would be about 0.17, not 0.87 |
+| `lAssembly[]` | Recomputes `tRes` and adds `U` and `partRes`. The 6.99 → 7.86 gap on Elizabeth St was the missing stud subdivision: METr was computing all-insulation. With the mix written (fixed 2026-10-24), the Exterior-Wall reads `tRes6946` 6.93 / `tRes` 7.86, i.e. R-39.38 inhomogeneous / R-44.66 homogeneous in IP. WUFI shows R-38.38 / R-43.69 for the same wall; that offset of about 1 in both values is METr vs WUFI and not yet explained |
 | `lWindow[]` | Rounds `Uw`/`frF`. **Recomputes `Ufr`** (ours 1.578 → 2.396 on Elizabeth St; see §4) |
 
 ## 4. Reference case: 2626 Elizabeth St
@@ -111,6 +130,8 @@ unless noted:
 - METr results after the shading calc (2026-10-24, IP): heating demand 9.52 kBtu/ft²yr,
   cooling demand 3.02, heating load 7.04 Btu/hr ft², cooling load 1.48, source energy
   2084 kWh/person yr, site energy 11.48 kBtu/ft²yr.
+- After the fridge Day/Year fix: heating 8.63, cooling 3.64. After the mixed-layer fix as
+  well: heating 9.4 kBtu/ft²yr, heating load 7.3 Btu/hr ft², cooling load 1.65.
 - Warnings: DHW distribution missing inputs, fresh-air supply 1365.9 cfm vs 1161 cfm required,
   overheating 32 %, ACH50 0.85.
 - Window `Passive_House`: PHX writes `Ufr = Uw = 1.578` to **both** METr and WUFI (WUFI
