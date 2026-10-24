@@ -1,6 +1,6 @@
 ---
 DATE: 2026-10-24
-STATUS: In progress (stages 1–2 merged to main; stage 3 next, in honeybee_ph)
+STATUS: In progress (stages 1–3 merged; PHX pin + type-7 test implemented on branch `fix/dryer-type-metr-03`; stage 4 next)
 AUTHOR: Ed May, Claude
 ISSUE: https://github.com/PH-Tools/PHX/issues/160
 REPOS: PHX (primary), honeybee_ph, honeybee_grasshopper_ph
@@ -144,6 +144,12 @@ types 5 and 7; full suite green.
 Tests: WUFI writer and PHPP writer each get a type-7 case asserting `4`; a type-5 case stays `5`.
 
 ### Stage 3: honeybee_ph enum
+
+**Merged to main** in honeybee_ph (PR [honeybee_ph#136](https://github.com/PH-Tools/honeybee_ph/pull/136),
+released as honeybee-ph 1.33.68, 2026-10-24). PHX follow-up **implemented on branch**
+`fix/dryer-type-metr-03`: pin `honeybee-ph>=1.33.68`, `tests/test_from_HBJSON/test_create_elec_equip.py`.
+Both first releases (PHX#162, honeybee_ph#136) failed on a docs push racing the release job; fixed
+in both `ci.yml` files and re-released by hand as PHX 1.57.5 and honeybee-ph 1.33.68.
 
 Append `"7-HEAT PUMP DRYER"` to `PhClothesDryerType.allowed`.
 
