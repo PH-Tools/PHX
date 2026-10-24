@@ -1697,6 +1697,9 @@ def _overlay_heat_pump(_d, dev: dict) -> None:
     if isinstance(_d, heat_pumps.PhxHeatPumpAnnual):
         dev["tHP"] = 3
         dev["aCOP"] = p.annual_COP or NaN
+        # -- The METR 'Heat pump' UI reads these keys, not aCOP / pHGHP
+        dev["aCOPHP"] = p.annual_COP or NaN
+        dev["tSysPHP"] = p.total_system_perf_ratio or NaN
     elif isinstance(_d, heat_pumps.PhxHeatPumpMonthly):
         dev["tHP"] = 4
         dev["rCOP1HP"] = p.COP_1 or NaN
