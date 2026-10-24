@@ -1,6 +1,6 @@
 ---
 DATE: 2026-10-24
-STATUS: In progress (stages 1–3 merged; PHX pin + type-7 test implemented on branch `fix/dryer-type-metr-03`; stage 4 next)
+STATUS: Implemented (all four stages merged 2026-10-24); awaiting Ed's METr / WUFI-Passive checks before archiving
 AUTHOR: Ed May, Claude
 ISSUE: https://github.com/PH-Tools/PHX/issues/160
 REPOS: PHX (primary), honeybee_ph, honeybee_grasshopper_ph
@@ -146,8 +146,8 @@ Tests: WUFI writer and PHPP writer each get a type-7 case asserting `4`; a type-
 ### Stage 3: honeybee_ph enum
 
 **Merged to main** in honeybee_ph (PR [honeybee_ph#136](https://github.com/PH-Tools/honeybee_ph/pull/136),
-released as honeybee-ph 1.33.68, 2026-10-24). PHX follow-up **implemented on branch**
-`fix/dryer-type-metr-03`: pin `honeybee-ph>=1.33.68`, `tests/test_from_HBJSON/test_create_elec_equip.py`.
+released as honeybee-ph 1.33.68, 2026-10-24). PHX follow-up **merged to main** (PR [#163](https://github.com/PH-Tools/PHX/pull/163),
+PHX 1.57.6): pin `honeybee-ph>=1.33.68`, `tests/test_from_HBJSON/test_create_elec_equip.py`.
 Both first releases (PHX#162, honeybee_ph#136) failed on a docs push racing the release job; fixed
 in both `ci.yml` files and re-released by hand as PHX 1.57.5 and honeybee-ph 1.33.68.
 
@@ -162,6 +162,10 @@ PHX `from_HBJSON` test that a type-7 HBPH dryer reaches the METr JSON as `tDryer
 XML as `Dryer_Choice 4`.
 
 ### Stage 4: honeybee_grasshopper_ph hover text
+
+**Merged to main** in honeybee_grasshopper_ph (PR
+[honeybee_grasshopper_ph#101](https://github.com/PH-Tools/honeybee_grasshopper_ph/pull/101), 2026-10-24).
+Not yet released: that repo's `release.yml` is dispatch-only, still at v1.43.0.
 
 `honeybee_ph_rhino/gh_compo_io/program/create_elec_equip.py`, `dryer_type` description. Draft:
 
@@ -181,7 +185,8 @@ release that adds 7; before then, a `7` input raises in honeybee_ph.
 
 ## Verification
 
-- PHX and honeybee_ph test suites green.
+- PHX and honeybee_ph test suites green. Done: PHX 1510 passed; honeybee_ph 1107 passed.
+- Open (Ed): the two manual checks below.
 - Ed: export one model per dryer type 1, 2, 3, 6, 7 to METr JSON with PHX, load each in METr,
   and confirm the dryer panel shows the right type, the right "Energy demand (norm) reference",
   and no import error. Compare the dryer's result against the same type set by hand in METr.
