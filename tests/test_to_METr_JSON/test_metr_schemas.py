@@ -83,6 +83,16 @@ def test_dryer_type_sets_ref_ed_and_residual_dampness(reset_class_counters, drye
     assert (result["tDryer"], result["refED"], result["rDamp"]) == (dryer_type, metr_ref_ed, metr_r_damp)
 
 
+@pytest.mark.parametrize("gas_consumption, metr_gas_con", [(0.0, 0.0), (250.0, 250.0), (None, NaN)])
+def test_dryer_gas_consumption_zero_is_written_as_a_number(reset_class_counters, gas_consumption, metr_gas_con):
+    """METr flags a gas dryer with GasCon NaN as 'No data or invalid format'; 0.0 is a valid input."""
+    device = elec_equip.PhxDeviceClothesDryer()
+    device.dryer_type = 6
+    device.gas_consumption = gas_consumption
+
+    assert _PhxElectricalDevice(device)["GasCon"] == metr_gas_con
+
+
 def test_mixed_layer_writes_exchange_divisions_and_materials(reset_class_counters):
     insulation = PhxMaterial(display_name="insulation")
     stud = PhxMaterial(display_name="stud")

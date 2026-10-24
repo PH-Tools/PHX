@@ -1172,7 +1172,8 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
         dev["refED"] = 6  # MEF/year
     elif isinstance(_d, elec_equip.PhxDeviceClothesDryer):
         dev["tDryer"] = _d.dryer_type
-        dev["GasCon"] = _d.gas_consumption or NaN
+        # -- 0.0 is a real value: METr rejects a gas dryer whose GasCon is NaN ("No data or invalid format")
+        dev["GasCon"] = NaN if _d.gas_consumption is None else _d.gas_consumption
         dev["CEFGas"] = _d.gas_efficiency_factor
         dev["fUtilFsel"] = _d.field_utilization_factor_type
         dev["fUtilF"] = _d.field_utilization_factor

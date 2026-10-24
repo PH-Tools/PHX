@@ -15,19 +15,30 @@ The agent can only drive tabs in its own tab group, not a METr tab Ed already ha
 **METr has no cloud copy of a local model.** Project › Locally › Load reads a JSON file into
 the tab's memory. Nothing gets loaded by URL, so every tab must load the file itself.
 
+**The tab must be in the foreground.** METr's `confirm()` and the file chooser are tab-modal; in a
+background tab they render nowhere, the renderer freezes, and the extension's keypress cannot reach
+them (2026-10-24: three freezes before the tab was fronted). Ed clicking the tab fixes it.
+
 Load a file without the native file picker (which the agent can't operate):
 
 1. Navigate the agent's tab to `https://metr.c3rro.com`.
-2. Patch the page in JS before opening the menu:
+2. Patch the page in JS before opening the menu. Overriding `window.confirm` is refused by the
+   Claude Code permission classifier ("security weaken"); this scoped patch passes:
    ```js
-   window.confirm = () => true;               // auto-accept the "Store & Sync…not checked" dialog
-   HTMLInputElement.prototype.click = function () {};  // stop the native file picker opening
+   const origClick = HTMLInputElement.prototype.click;
+   HTMLInputElement.prototype.click = function () {   // only METr's own hidden local-file input
+     if (this.type === 'file' && this.name === 'own') { return; }
+     return origClick.call(this);
+   };
    ```
-   A native `confirm()` left open freezes the renderer, and CDP clicks time out after 30 s.
-   If it does happen, pressing `Return` through the extension dismisses it.
+   An instance-level patch on the existing input is not enough: Load re-creates the element. The
+   "Store & Sync…not checked" `confirm()` then opens on the Load click (the CDP click times out
+   after 30 s while it is up); `Return` through the extension presses OK.
 3. Click **Project › Locally › Load**. This arms the file input `input[name=own]`
    (`accept=".json,.mwp"`). Setting a file on that input *before* clicking Load does nothing.
-4. Put the file on that input with the extension's `file_upload` (limit 10 MB per call).
+4. Put the file on that input with the extension's `file_upload` (limit 10 MB per call). The
+   change listener persists: later files go straight onto the input with `file_upload`, no menu
+   and no confirm (verified for five loads in a row, 2026-10-24).
 5. **Click "Calculate mean month shading"** in the Status bar. METr requires this after every
    load. Until it runs, Status shows only "Shading factors are not consistent with building
    geometry" and no results appear. It takes about 20 s on a 1 MB model.
@@ -166,6 +177,7 @@ correctly.
 | `_PhxZone` | `grossVolZ.sel 7`, `netVolZ.sel 6`, `flAreaZ.sel 6` | `volume_gross_mode`, `volume_net_mode`, `weighted_floor_area_mode` | Gap. Matches Elizabeth St's modes by luck |
 | `_PhxZone` | `shCapZ.iV 0` (always `val[0]` = 60 Wh/m²K) with `sel` from the model | `specific_heat_capacity`, `specific_heat_capacity_wh_m2k` | Suspect for mixed/heavy or user-defined capacity; not tested |
 | `_PhxElectricalDevice` | `refED` 7 / 6 (dishwasher / washer) | `reference_energy_norm` | OK in the Phius scope (§2); the dryer `refED`/`rDamp` follow `dryer_type` |
+| `_PhxElectricalDevice` and ~26 other sites | `<value> or NaN` | a `float | None` field | **Wrong for 0.0.** The gas dryer's `GasCon` 0.0 became `NaN`, and METr's data check reported "Gas consumption: No data or invalid format" (fixed 2026-10-24, [#160](https://github.com/PH-Tools/PHX/issues/160) stage 5). Washer `utilFact`, lighting `fHEff`, heat-pump COPs, PV and tank fields use the same idiom and are unchecked |
 | Components | `inclC 90`, `azimN 180`, `orient 1` | polygon geometry | Probably recomputed from `lPoly` (METr fills polygon `azimN`); not verified |
 | Apertures, foundations, DHW recirculation | type defaults | | OK: overridden from the model per type |
 
