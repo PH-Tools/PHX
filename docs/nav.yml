@@ -53,6 +53,7 @@ nav:
         - occupancy: api/model/loads/occupancy.md
         - lighting: api/model/loads/lighting.md
         - ventilation: api/model/loads/ventilation.md
+        - process: api/model/loads/process.md
       - Programs:
         - occupancy: api/model/programs/occupancy.md
         - lighting: api/model/programs/lighting.md
