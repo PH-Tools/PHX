@@ -1452,7 +1452,7 @@ def _PhxProcessLoad(_data: wufi_xml.WufiProcessLoad) -> PhxProcessLoad:
     phx_obj = PhxProcessLoad()
     phx_obj.display_name = _data.Name or phx_obj.display_name
     phx_obj.annual_energy_kwh = _data.TotalEnergyUse or 0.0
-    phx_obj.quantity = _data.Quantity or 1
+    phx_obj.quantity = _data.Quantity if _data.Quantity is not None else 1
     if _data.IncludeInSourceEnergyTotal is not None:
         phx_obj.include_in_source_energy = _data.IncludeInSourceEnergyTotal
     if _data.IncreaseSourceEnergyAllowance is not None:

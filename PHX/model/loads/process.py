@@ -13,11 +13,13 @@ class PhxProcessLoad:
 
     Written to WUFI-Passive 'ProcessLoadsPH' and METr 'lProces'. PHX builds these for
     Phius non-residential buildings from the Honeybee-Energy ElectricEquipment and
-    Process loads, so each line is the total for its row (quantity stays 1).
+    Process loads with quantity 1, so 'annual_energy_kwh' is the row total. WUFI-authored
+    rows may carry quantity > 1; there 'TotalEnergyUse' appears to be per unit (e.g.
+    1,800 W x 1,000 h = 1,800 kWh with Quantity 4), which is not yet confirmed.
 
     Attributes:
         display_name (str): Line-item name shown in WUFI / METr.
-        annual_energy_kwh (float): Total annual electric energy for the row [kWh/yr].
+        annual_energy_kwh (float): Annual electric energy [kWh/yr] (see the quantity note above).
         quantity (int): Number of units. Default: 1.
         include_in_source_energy (bool): Count the row in site and source energy totals. Default: True.
         increase_source_energy_allowance (bool): Raise the source-energy allowance by this row. Default: False.

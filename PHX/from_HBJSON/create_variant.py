@@ -892,8 +892,9 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
     if is_phius_non_residential(_hb_room):
         if _room_has_ph_equipment(_hb_room):
             logger.warning(
-                f"Room '{_hb_room.display_name}' is Phius non-residential: its PH Equipment is not exported. "
-                "Equipment comes from the Honeybee-Energy ElectricEquipment and Process loads."
+                f"Room '{_hb_room.display_name}' is Phius non-residential: its PH Equipment is not exported as "
+                "appliances. Process loads are built from the Honeybee-Energy ElectricEquipment and the Process "
+                "loads' own watts and schedules instead."
             )
         return None
 

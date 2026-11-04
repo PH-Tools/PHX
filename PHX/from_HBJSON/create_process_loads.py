@@ -35,9 +35,14 @@ def is_phius_non_residential(_hb_room: room.Room) -> bool:
 
 
 def annual_full_load_hours(_schedule: ScheduleRuleset | ScheduleFixedInterval) -> float:
-    """Return the sum of a schedule's hourly fractional values over one year [h]."""
+    """Return a schedule's annual full-load hours: its mean fractional value x 8760 [h].
+
+    Fixed-interval schedules are read at their own timestep (sub-hourly values are not
+    sampled), and a leap-year schedule is scaled to a 8760-hour year like a ruleset's.
+    """
     if isinstance(_schedule, ScheduleFixedInterval):
-        return float(sum(_schedule.values_at_timestep(1)))
+        values = _schedule.values_at_timestep(_schedule.timestep)
+        return float(sum(values)) / len(values) * 8760
     return float(sum(_schedule.values()))
 
 

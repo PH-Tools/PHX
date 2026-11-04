@@ -4,11 +4,13 @@ import pytest
 from honeybee.room import Room
 from honeybee_energy.load.equipment import ElectricEquipment
 from honeybee_energy.load.process import Process
+from honeybee_energy.schedule.fixedinterval import ScheduleFixedInterval
 from honeybee_energy.schedule.ruleset import ScheduleRuleset
 from honeybee_energy_ph.load.ph_equipment import PhCustomAnnualMEL
+from ladybug.dt import Date
 
 from PHX.from_HBJSON import create_project
-from PHX.from_HBJSON.create_process_loads import build_process_loads_from_hb_rooms
+from PHX.from_HBJSON.create_process_loads import annual_full_load_hours, build_process_loads_from_hb_rooms
 from tests.test_from_HBJSON.test_create_rooms._occupancy_fixtures import NON_RES_FIXTURE, load_hb_model
 
 
@@ -80,3 +82,35 @@ def test_phius_residential_zone_has_no_process_loads():
 
     assert all(zone.process_loads == [] for zone in zones)
     assert sum(len(zone.elec_equipment_collection.devices) for zone in zones) > 0
+
+
+@pytest.mark.parametrize(
+    "schedule, expected_hours",
+    [
+        (ScheduleFixedInterval("Quarter_Hourly", [0, 1, 1, 1] * 8760, timestep=4), 6570.0),
+        (ScheduleFixedInterval("Leap_Year", [0.5] * 8784, start_date=Date(1, 1, leap_year=True)), 4380.0),
+    ],
+)
+def test_fixed_interval_full_load_hours_use_every_timestep_on_a_8760_hour_year(schedule, expected_hours):
+    """Sub-hourly values are all counted, and a leap-year schedule scales to 8760 h like a ruleset."""
+    assert annual_full_load_hours(schedule) == pytest.approx(expected_hours)
+
+
+def test_merged_rooms_keep_one_row_and_one_schedule_per_source_room():
+    """Rooms merged into one zone each keep their own equipment schedule (the merge keeps only one)."""
+    hb_model = load_hb_model(NON_RES_FIXTURE)
+    segment = hb_model.rooms[0].properties.ph.ph_bldg_segment
+    segment.phius_certification.building_category_type = 2
+    for i, hb_room in enumerate(hb_model.rooms, start=1):
+        hb_room.properties.ph.ph_bldg_segment = segment
+        hb_room.properties.energy.electric_equipment = ElectricEquipment(
+            f"Equipment_{i}", 10.0, _constant(f"Equipment_Schedule_{i}", i / 10)
+        )
+    project = create_project.convert_hb_model_to_PhxProject(hb_model, _group_components=True, _merge_faces=False)
+    zones = [zone for variant in project.variants for zone in variant.building.zones]
+
+    assert len(zones) == 1
+    assert [(row.display_name, row.annual_energy_kwh) for row in zones[0].process_loads] == [
+        (f"{hb_room.display_name}: Electric Equipment", pytest.approx(10.0 * hb_room.floor_area * i / 10 * 8.76))
+        for i, hb_room in enumerate(hb_model.rooms, start=1)
+    ]
