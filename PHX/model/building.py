@@ -22,6 +22,7 @@ from PHX.model.enums.building import (
 )
 from PHX.model.hvac import collection
 from PHX.model.identity import IdentityNamespaces, allocate_identity
+from PHX.model.loads.process import PhxProcessLoad
 from PHX.model.programs import occupancy
 
 
@@ -59,6 +60,7 @@ class PhxZone:
         lighting (Any): Lighting data, if any.
         elec_equipment_collection (PhxElectricDeviceCollection): Collection of electrical devices.
         exhaust_ventilator_collection (PhxExhaustVentilatorCollection): Collection of exhaust ventilators.
+        process_loads (list[PhxProcessLoad]): Non-residential process-load line items.
         tfa_override (Optional[float]): User override for TFA (Treated Floor Area) in m2.
         icfa_override (Optional[float]): User override for iCFA (interior Conditioned Floor Area) in m2.
         merge_spaces_by_erv (bool): If True, spaces are merged by ERV assignment during XML export. Default: False.
@@ -100,6 +102,7 @@ class PhxZone:
     exhaust_ventilator_collection: collection.PhxExhaustVentilatorCollection = field(
         default_factory=collection.PhxExhaustVentilatorCollection
     )
+    process_loads: list[PhxProcessLoad] = field(default_factory=list)
 
     # ---------------------------------------------------------
     # -- Allow user-overrides of the weighted floor area

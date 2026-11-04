@@ -13,6 +13,7 @@ from PHX.model.constructions import (
     PhxWindowFrameElement,
 )
 from PHX.model.hvac import heat_pumps
+from PHX.model.loads.process import PhxProcessLoad
 from PHX.model.schedules.occupancy import PhxScheduleOccupancy
 from PHX.to_METr_JSON.metr_schemas import (
     NaN,
@@ -21,6 +22,7 @@ from PHX.to_METr_JSON.metr_schemas import (
     _PhxConstructionWindow,
     _PhxElectricalDevice,
     _PhxMechanicalDevice,
+    _ProcessLoad,
     _UtilizationPattern,
     _zone_loads,
 )
@@ -160,3 +162,20 @@ def test_lighting_floor_fraction_is_the_space_share_of_the_zone(reset_class_coun
     result = _zone_loads(zone)
 
     assert [light["frFloorA"] for light in result["lLight"]] == pytest.approx([0.75, 0.25])
+
+
+def test_process_load_writes_the_metr_process_row(reset_class_counters):
+    """A PhxProcessLoad becomes one METr 'lProces' row with METr's own keys."""
+    load = PhxProcessLoad(display_name="Lab: Kiln", annual_energy_kwh=4380.0, comment="from HB")
+
+    assert _ProcessLoad(load) == {
+        "n": "Lab: Kiln",
+        "totEnUse": 4380.0,
+        "quantity": 1,
+        "inclSETot": True,
+        "incrSEA": False,
+        "inTEnv": True,
+        "powROpt": 0.0,
+        "aUHOpt": 0.0,
+        "Com": "from HB",
+    }

@@ -406,6 +406,18 @@ class WufiThermalBridge(WufiBaseModel):
     IsInteriorPipe: bool | None = None
 
 
+class WufiProcessLoad(WufiBaseModel):
+    Name: str | None = None
+    TotalEnergyUse: wufi_unit.kWh | None = None
+    Quantity: wufi_unit._Int | None = None
+    IncludeInSourceEnergyTotal: bool | None = None
+    IncreaseSourceEnergyAllowance: bool | None = None
+    InsideThermalEnvelope: bool | None = None
+    PowerRatingOpt: wufi_unit.Watts | None = None
+    AnnualUseHoursOpt: wufi_unit.Hour | None = None
+    Comment: str | None = None
+
+
 class WufiZone(WufiBaseModel):
     Name: str
     KindZone: int
@@ -415,6 +427,7 @@ class WufiZone(WufiBaseModel):
     RoomsVentilation: list[WufiRoom] | None = None
     LoadsPersonsPH: list[WufiLoadPerson] | None = None
     LoadsLightingsPH: list[WufiLoadsLighting] | None = None
+    ProcessLoadsPH: list[WufiProcessLoad] | None = None
     GrossVolume_Selection: int
     GrossVolume: wufi_unit.M3 | None = None
     NetVolume_Selection: int

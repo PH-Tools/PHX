@@ -160,6 +160,19 @@ unless noted:
 | `lAssembly[]` | Recomputes `tRes` and adds `U` and `partRes`. The 6.99 → 7.86 gap on Elizabeth St was the missing stud subdivision: METr was computing all-insulation. With the mix written (fixed 2026-10-24), the Exterior-Wall reads `tRes6946` 6.93 / `tRes` 7.86, i.e. R-39.38 inhomogeneous / R-44.66 homogeneous in IP. WUFI shows R-38.38 / R-43.69 for the same wall; that offset of about 1 in both values is METr vs WUFI and not yet explained |
 | `lWindow[]` | Rounds `Uw`/`frF`. **Recomputes `Ufr`** (ours 1.578 → 2.396 on Elizabeth St; see §5) |
 
+## 3a. Internal loads (confirmed 2026-11-04, Rye Nature Center)
+
+- **`relAbs` is relative absence** (DIN V 18599-10, 0 = permanently occupied), not utilization.
+  Measured: People gains = Σ `nOcc` × (1 − `relAbs`) × 100 W. PHX writes `1 − utilization`.
+- **`lLight[].frFloorA`** is the row's fraction of the zone floor area; METr applies each row's
+  `instLP` to `frFloorA` × zone area. PHX writes each Space's share (fractions sum to 1).
+- **Non-res tabs** are Occupancy, Office equipment, Kitchen equipment, Lighting, Process loads.
+  There is no Home Devices tab, so `lHomeDev` may not count on a non-res case (unverified).
+- **`lProces[]` row keys** (from a METr-saved file): `n`, `totEnUse`, `quantity`, `inclSETot`,
+  `incrSEA`, `inTEnv`, `powROpt`, `aUHOpt`, `Com`. PHX writes `totEnUse` in kWh/yr, as for
+  WUFI `TotalEnergyUse unit="kWh/a"`. **Open:** a row typed as 456 in the IP UI (kBtu/yr) was
+  saved as 456 in an SI (`SIIP` 2) file, so METr's unit handling for this field is unconfirmed.
+
 ## 4. Hardcoded values in `metr_schemas.py` (audit 2026-10-24)
 
 The writer assigns about 570 literals. METr wants every key on every object (the
