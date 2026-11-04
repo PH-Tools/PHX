@@ -20,6 +20,19 @@ from PHX.from_HBJSON._type_utils import (
 from PHX.model import project
 from PHX.model.schedules import lighting, occupancy, ventilation
 
+# -- Utilization Pattern used by Rooms whose Program has no HB Ventilation load.
+DEFAULT_VENT_PATTERN_IDENTIFIER = "__phx_default_constant_ventilation__"
+
+
+def _build_default_vent_pattern() -> ventilation.PhxScheduleVentilation:
+    """Return a constant full-speed (24 h at 100%) ventilation Utilization Pattern."""
+    new_phx_vent_schedule = ventilation.PhxScheduleVentilation()
+    new_phx_vent_schedule.identifier = DEFAULT_VENT_PATTERN_IDENTIFIER
+    new_phx_vent_schedule.name = "default_constant_ventilation"
+    new_phx_vent_schedule.operating_periods.high.period_operating_hours = 24.0
+    new_phx_vent_schedule.operating_periods.high.period_operation_speed = 1.0
+    return new_phx_vent_schedule
+
 
 def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
     """Returns True if the HB Room has detailed PH-Style ventilation schedule
@@ -398,7 +411,10 @@ def add_all_HB_Model_ventilation_schedules_to_PHX_Project(_project: project.PhxP
             vent_schedule = get_ventilation_schedule(hb_room)
             vent_schedule_id = vent_schedule.identifier
         except MissingEnergyPropertiesError:
-            # No ventilation schedule found, skip this room
+            # -- No HB Ventilation load on the Room (some Programs have none). Its Spaces
+            # -- reference the default constant pattern instead.
+            if not _project.vent_sched_in_project_collection(DEFAULT_VENT_PATTERN_IDENTIFIER):
+                _project.add_vent_sched_to_collection(_build_default_vent_pattern())
             continue
 
         if _project.vent_sched_in_project_collection(vent_schedule_id):

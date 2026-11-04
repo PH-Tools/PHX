@@ -2,6 +2,8 @@
 
 """Functions to build PHX 'RoomVentilation' entities from Honeybee-PH Spaces"""
 
+import logging
+
 from honeybee import room
 from honeybee_energy.properties.room import RoomEnergyProperties
 from honeybee_ph import space
@@ -13,12 +15,15 @@ from honeybee_phhvac.properties.room import get_ph_hvac_from_space
 
 from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
 from PHX.from_HBJSON._type_utils import get_space_energy_properties
+from PHX.from_HBJSON.create_schedules import DEFAULT_VENT_PATTERN_IDENTIFIER
 from PHX.model import spaces
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Lighting,
     UtilizationPatternCollection_Occupancy,
     UtilizationPatternCollection_Ventilation,
 )
+
+logger = logging.getLogger()
 
 
 def calc_space_ventilation_flow_rate(_space: space.Space) -> float:
@@ -106,7 +111,6 @@ def create_room_from_space(
     # -- Type Aliases
     host_room_prop_energy = _get_energy_properties_from_space(_space)
     hbe_vent = host_room_prop_energy.ventilation
-    hbe_vent_sched = hbe_vent.schedule
     hbe_occ = host_room_prop_energy.people
     hbe_lighting = host_room_prop_energy.lighting
     space_ph_hvac = get_ph_hvac_from_space(_space)
@@ -124,7 +128,15 @@ def create_room_from_space(
     new_room.net_volume = _space.net_volume
 
     # -- Set the Room's Ventilation attributes
-    new_room.ventilation.schedule = _vent_sched_collection[hbe_vent_sched.identifier]
+    if hbe_vent is None:
+        # -- Some HB Programs have no Ventilation load (e.g. extract-only restrooms).
+        logger.warning(
+            f"Space '{_space.full_name}': host Room has no HB Ventilation load. Using zero design "
+            "flow on a constant pattern; Space-level _v_sup / _v_eta / _v_tran still apply."
+        )
+        new_room.ventilation.schedule = _vent_sched_collection[DEFAULT_VENT_PATTERN_IDENTIFIER]
+    else:
+        new_room.ventilation.schedule = _vent_sched_collection[hbe_vent.schedule.identifier]
     space_peak_flow_rate = calc_space_ventilation_flow_rate(_space)
     new_room.ventilation.load.flow_supply = space_peak_flow_rate
     new_room.ventilation.load.flow_extract = space_peak_flow_rate
