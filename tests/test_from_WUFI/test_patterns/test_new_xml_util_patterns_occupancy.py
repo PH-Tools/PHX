@@ -2,6 +2,8 @@ from collections.abc import ValuesView
 
 from pytest import approx
 
+from PHX.from_WUFI_XML import phx_schemas
+from PHX.from_WUFI_XML.wufi_file_schema import WufiUtilizationPattern
 from PHX.model.project import PhxProject
 from PHX.model.schedules.occupancy import PhxScheduleOccupancy
 
@@ -58,3 +60,20 @@ def test_spaces_without_person_loads_reference_a_real_occupancy_pattern(
 
     for space in spaces:
         assert space.occupancy.schedule.id_num in project_pattern_ids
+
+
+def test_relative_absenteeism_is_read_as_its_utilization_complement(reset_class_counters) -> None:
+    """WUFI 'RelativeAbsenteeism' 0.3 (absent 30% of use time) is PHX utilization 0.7."""
+    wufi_pattern = WufiUtilizationPattern(
+        IdentNr=1,
+        Name="Single office",
+        HeightUtilizationLevel=0.5,
+        BeginUtilization=7,
+        EndUtilization=18,
+        AnnualUtilizationDays=250,
+        IlluminationLevel=300,
+        RelativeAbsenteeism=0.3,
+        PartUseFactorPeriodForLighting=1,
+    )
+
+    assert phx_schemas._PhxScheduleOccupancy(wufi_pattern).relative_utilization_factor == approx(0.7)

@@ -59,7 +59,7 @@ def test_wufi_reference_pins_current_phase_fields():
 
     assert [float(node.text) for node in root.iter("NumberOccupants")] == pytest.approx([5.65] * 4)
     assert [float(node.text) for node in root.iter("RelativeAbsenteeism")] == pytest.approx(
-        [GENERIC_OFFICE_OCCUPANCY_MEAN]
+        [1.0 - GENERIC_OFFICE_OCCUPANCY_MEAN]
     )
     assert [float(node.text) for node in root.iter("LightingFullLoadHours")] == pytest.approx([2555.4] * 4)
 
@@ -69,6 +69,8 @@ def test_metr_reference_pins_current_phase_fields():
     metr = metr_builder.generate_metr_json_dict(_build_non_res_project())
     loads = [variant["building"]["lZone"][0]["loadsZ"] for variant in metr["lVariant"]]
 
-    assert [pattern["relAbs"] for pattern in metr["lUtilNResPH"]] == pytest.approx([GENERIC_OFFICE_OCCUPANCY_MEAN])
+    assert [pattern["relAbs"] for pattern in metr["lUtilNResPH"]] == pytest.approx(
+        [1.0 - GENERIC_OFFICE_OCCUPANCY_MEAN]
+    )
     assert [person["nOcc"] for zone in loads for person in zone["lPersZ"]] == pytest.approx([5.65] * 4)
     assert [lighting["lFLoadH"] for zone in loads for lighting in zone["lLight"]] == pytest.approx([2555.4] * 4)

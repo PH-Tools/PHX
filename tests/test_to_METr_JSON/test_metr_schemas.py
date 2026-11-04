@@ -4,7 +4,7 @@
 
 import pytest
 
-from PHX.model import components, elec_equip
+from PHX.model import building, components, elec_equip, spaces
 from PHX.model.constructions import (
     PhxConstructionOpaque,
     PhxConstructionWindow,
@@ -13,6 +13,7 @@ from PHX.model.constructions import (
     PhxWindowFrameElement,
 )
 from PHX.model.hvac import heat_pumps
+from PHX.model.schedules.occupancy import PhxScheduleOccupancy
 from PHX.to_METr_JSON.metr_schemas import (
     NaN,
     _PhxComponentOpaque,
@@ -20,6 +21,8 @@ from PHX.to_METr_JSON.metr_schemas import (
     _PhxConstructionWindow,
     _PhxElectricalDevice,
     _PhxMechanicalDevice,
+    _UtilizationPattern,
+    _zone_loads,
 )
 
 
@@ -137,3 +140,23 @@ def test_annual_heat_pump_writes_the_cop_and_ratio_keys_metr_reads(reset_class_c
     result = _PhxMechanicalDevice(heat_pump)
 
     assert (result["tHP"], result["aCOPHP"], result["tSysPHP"]) == (3, 2.5, 0.4)
+
+
+def test_utilization_pattern_writes_presence_as_relative_absence(reset_class_counters):
+    """METr 'relAbs' is relative absence (DIN V 18599-10): the complement of PHX's utilization factor."""
+    pattern = PhxScheduleOccupancy(relative_utilization_factor=0.7)
+
+    assert _UtilizationPattern(pattern)["relAbs"] == pytest.approx(0.3)
+
+
+def test_lighting_floor_fraction_is_the_space_share_of_the_zone(reset_class_counters):
+    """Each lighting row covers only its own Space, so 'frFloorA' fractions sum to 1 across the zone."""
+    zone = building.PhxZone()
+    for area in (30.0, 10.0):
+        space = spaces.PhxSpace()
+        space.weighted_floor_area = area
+        zone.spaces.append(space)
+
+    result = _zone_loads(zone)
+
+    assert [light["frFloorA"] for light in result["lLight"]] == pytest.approx([0.75, 0.25])

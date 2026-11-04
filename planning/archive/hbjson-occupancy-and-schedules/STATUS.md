@@ -96,6 +96,16 @@ when Spaces tile the room, correct when they don't.
 mapping is correct; no change. Settled by the Phius standards library (an open office at `1.0`,
 a public restroom at `0.1`) — the reverse reading is absurd.
 
+> **Reversed 2026-11-04.** `RelativeAbsenteeism` / METr `relAbs` is *absence* (DIN V 18599-10:
+> 0 = permanently occupied). Measured in METr on a non-res model (Rye Nature Center): with
+> `relAbs` = utilization 0.065/0.089/0.206 the IHG page shows People 31,394 Btu/hr = exactly
+> 92.0 persons × 100 W = Σ nOcc × (1 − relAbs). The library values above are the PHPP 10
+> *relative presence* complements of the DIN/PHPP 9 absenteeism table (office 0.3 → 0.7, WC
+> 0.9 → 0.1), so they confirm PHX's model field is utilization, not the WUFI/METr field.
+> PHX keeps storing utilization; the WUFI and METr writers emit `1 − x` and the WUFI reader
+> stores `1 − RelativeAbsenteeism`. The WUFI-Passive polarity is inferred from the field name
+> and DIN lineage, not yet measured in WUFI.
+
 **D8 — Defects 2 and 3 are one protocol.** `Defect 2 shape × Defect 3 multiplication = 8760 ×
 mean = EFLH`, exactly what the 2021 Phius thread specifies. Not two independent judgment calls.
 
