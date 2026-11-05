@@ -170,8 +170,9 @@ unless noted:
   There is no Home Devices tab, so `lHomeDev` may not count on a non-res case (unverified).
 - **`lProces[]` row keys** (from a METr-saved file): `n`, `totEnUse`, `quantity`, `inclSETot`,
   `incrSEA`, `inTEnv`, `powROpt`, `aUHOpt`, `Com`. PHX writes `totEnUse` in kWh/yr, as for
-  WUFI `TotalEnergyUse unit="kWh/a"`. **Open:** a row typed as 456 in the IP UI (kBtu/yr) was
-  saved as 456 in an SI (`SIIP` 2) file, so METr's unit handling for this field is unconfirmed.
+  WUFI `TotalEnergyUse unit="kWh/a"`. **Confirmed kWh** (Rye run, 2026-11-04): 4,011 kWh of
+  rows raised site energy by exactly 4,011 kWh/a and `IHG_Total` by 458 W (no separate
+  `IHG_Process` key). The IP UI labels the column kBtu/yr but shows the raw kWh value unconverted.
 
 ## 4. Hardcoded values in `metr_schemas.py` (audit 2026-10-24)
 
