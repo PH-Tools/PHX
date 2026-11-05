@@ -313,7 +313,9 @@ def _UtilizationPattern(_p: occupancy.PhxScheduleOccupancy) -> dict:
         "endU": _p.end_hour,
         "aUtil": round(_p.annual_utilization_days, TOL_LEV1),
         "illumLev": 300.0,
-        "relAbs": _p.relative_utilization_factor,
+        # -- METr 'relAbs' is relative ABSENCE (DIN V 18599-10: 0 = permanently occupied);
+        # -- PHX stores the utilization (presence) factor, so write its complement.
+        "relAbs": 1.0 - _p.relative_utilization_factor,
         "pUfLight": 1.0,
         "aOccup": NaN,
         "rSetpT": NaN,
@@ -864,7 +866,7 @@ def _zone_loads(_z: building.PhxZone) -> dict:
         "lPersZ": [_LoadsOccupancy(sp) for sp in _z.spaces],
         "lOffEq": [],
         "lAuxEl": [],
-        "lLight": [_LoadsLighting(sp) for sp in _z.spaces],
+        "lLight": [_LoadsLighting(sp, _space_floor_area_fraction(sp, _z)) for sp in _z.spaces],
         "lProces": [],
         "lHomeDev": [_PhxElectricalDevice(d) for d in _z.elec_equipment_collection.devices],
     }
@@ -1205,8 +1207,20 @@ def _PhxElectricalDevice(_d: elec_equip.PhxElectricalDevice) -> dict:
     return dev
 
 
-def _LoadsLighting(_sp: spaces.PhxSpace) -> dict:
-    """Convert a PhxSpace's lighting data to a METR JSON lighting load dict."""
+def _space_floor_area_fraction(_sp: spaces.PhxSpace, _z: building.PhxZone) -> float:
+    """Return the Space's share (0-1) of its Zone's total weighted floor area."""
+    zone_area = sum(sp.weighted_floor_area for sp in _z.spaces)
+    if not zone_area:
+        return 1.0
+    return _sp.weighted_floor_area / zone_area
+
+
+def _LoadsLighting(_sp: spaces.PhxSpace, _floor_area_fraction: float) -> dict:
+    """Convert a PhxSpace's lighting data to a METR JSON lighting load dict.
+
+    METr applies each lighting row's installed power to 'frFloorA' x the zone floor area,
+    so each Space's row carries only that Space's share of the zone.
+    """
     return {
         "n": _sp.display_name,
         "idUPat": _sp.occupancy.schedule.id_num,
@@ -1215,7 +1229,7 @@ def _LoadsLighting(_sp: spaces.PhxSpace) -> dict:
         "inTE": True,
         "mDet": False,
         "facInclW": False,
-        "frFloorA": 1.0,
+        "frFloorA": _floor_area_fraction,
         "devNorth": 0.0,
         "roomD": 1.0,
         "roomW": 1.0,

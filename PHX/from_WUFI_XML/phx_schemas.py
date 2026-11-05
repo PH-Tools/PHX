@@ -459,7 +459,8 @@ def _PhxScheduleOccupancy(_data: wufi_xml.WufiUtilizationPattern) -> PhxSchedule
     phx_obj.start_hour = _data.BeginUtilization
     phx_obj.end_hour = _data.EndUtilization
     phx_obj.annual_utilization_days = _data.AnnualUtilizationDays
-    phx_obj.relative_utilization_factor = _data.RelativeAbsenteeism
+    # -- WUFI stores absence (DIN V 18599-10); PHX stores the utilization (presence) complement.
+    phx_obj.relative_utilization_factor = 1.0 - _data.RelativeAbsenteeism
 
     return phx_obj
 

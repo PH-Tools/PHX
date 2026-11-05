@@ -1829,7 +1829,9 @@ def _UtilizationPattern(_p: occupancy.PhxScheduleOccupancy) -> list[xml_writable
         XML_Node("EndUtilization", _p.end_hour),
         XML_Node("AnnualUtilizationDays", round(_p.annual_utilization_days, TOL_LEV1)),
         XML_Node("IlluminationLevel", 300, "unit", "lux"),
-        XML_Node("RelativeAbsenteeism", _p.relative_utilization_factor, "unit", "-"),
+        # -- WUFI 'RelativeAbsenteeism' is ABSENCE (DIN V 18599-10: 0 = permanently occupied);
+        # -- PHX stores the utilization (presence) factor, so write its complement.
+        XML_Node("RelativeAbsenteeism", 1.0 - _p.relative_utilization_factor, "unit", "-"),
         XML_Node("PartUseFactorPeriodForLighting", 1, "unit", "-"),
         # XML_Node("AverageOccupancy", "", "unit", "m²/Person"),
         # XML_Node("RoomSetpointTemperature", "", "unit", "°C"),
