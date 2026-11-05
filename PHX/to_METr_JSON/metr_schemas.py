@@ -28,6 +28,7 @@ from PHX.model.hvac import collection as hvac_collection
 from PHX.model.hvac import heat_pumps, heating, renewable_devices
 from PHX.model.hvac import ventilation as hvac_ventilation
 from PHX.model.hvac import water
+from PHX.model.loads.process import PhxProcessLoad
 from PHX.model.schedules import occupancy, ventilation
 from PHX.model.ventilation_rooms import VentilationRoom, ventilation_rooms
 
@@ -867,7 +868,7 @@ def _zone_loads(_z: building.PhxZone) -> dict:
         "lOffEq": [],
         "lAuxEl": [],
         "lLight": [_LoadsLighting(sp, _space_floor_area_fraction(sp, _z)) for sp in _z.spaces],
-        "lProces": [],
+        "lProces": [_ProcessLoad(p) for p in _z.process_loads],
         "lHomeDev": [_PhxElectricalDevice(d) for d in _z.elec_equipment_collection.devices],
     }
 
@@ -1239,6 +1240,21 @@ def _LoadsLighting(_sp: spaces.PhxSpace, _floor_area_fraction: float) -> dict:
         "instLP": _sp.lighting.load.installed_w_per_m2,
         "lFLoadH": round(_sp.lighting.schedule.full_load_lighting_hours, 1),
         "lightTrU": NaN,
+    }
+
+
+def _ProcessLoad(_p: PhxProcessLoad) -> dict:
+    """Convert a PhxProcessLoad to a METr JSON non-residential process-load row."""
+    return {
+        "n": _p.display_name,
+        "totEnUse": round(_p.annual_energy_kwh, TOL_LEV1),
+        "quantity": _p.quantity,
+        "inclSETot": _p.include_in_source_energy,
+        "incrSEA": _p.increase_source_energy_allowance,
+        "inTEnv": _p.inside_thermal_envelope,
+        "powROpt": _p.power_rating_w,
+        "aUHOpt": _p.annual_use_hours,
+        "Com": _p.comment,
     }
 
 

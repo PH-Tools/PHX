@@ -31,6 +31,7 @@ from PHX.from_HBJSON._type_utils import (
     get_room_infiltration,
     get_room_people,
 )
+from PHX.from_HBJSON.create_process_loads import is_phius_non_residential
 from PHX.from_HBJSON.create_shw_devices import (
     build_phx_hw_heater,
     build_phx_hw_storage,
@@ -861,6 +862,17 @@ def add_shw_piping_from_hb_rooms(_variant: project.PhxVariant, _hb_room: room.Ro
 # --- Equipment ---------------------------------------------------------------
 
 
+def _room_has_ph_equipment(_hb_room: room.Room) -> bool:
+    """Return True if any Process or Lighting load on the Room carries PH Equipment."""
+    try:
+        energy_props = get_room_energy_properties(_hb_room)
+    except MissingEnergyPropertiesError:
+        return False
+    if any(getattr(p.properties.ph, "ph_equipment", None) for p in energy_props.process_loads):
+        return True
+    return bool(energy_props.lighting and energy_props.lighting.properties.ph.ph_equipment)
+
+
 def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
     """Creates new PHX-Elec-Equipment (Appliances) and adds them to each of the Variant.building.zones
 
@@ -874,6 +886,17 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
         * None
     """
     logger.debug(f"add_elec_equip_from_hb_room({_variant.id_num=}, {_hb_room.display_name=})")
+
+    # -- Phius non-residential takes its equipment from the Honeybee-Energy loads instead
+    # -- (see create_process_loads); PH appliance equipment is residential-only.
+    if is_phius_non_residential(_hb_room):
+        if _room_has_ph_equipment(_hb_room):
+            logger.warning(
+                f"Room '{_hb_room.display_name}' is Phius non-residential: its PH Equipment is not exported as "
+                "appliances. Process loads are built from the Honeybee-Energy ElectricEquipment and the Process "
+                "loads' own watts and schedules instead."
+            )
+        return None
 
     # -- Get all the PhEquipment from the HBE-Process-Loads
     try:

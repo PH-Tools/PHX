@@ -115,6 +115,7 @@ from PHX.model.hvac.ventilation import (
 )
 from PHX.model.hvac.water import PhxHotWaterTank
 from PHX.model.identity import IdentityNamespace, IdentityNamespaces, claim_identity, identity_owner_scope
+from PHX.model.loads.process import PhxProcessLoad
 from PHX.model.phx_site import PhxClimate, PhxCO2Factor, PhxGround, PhxPEFactor, PhxSite, PhxSiteEnergyFactors
 from PHX.model.project import PhxProject, PhxProjectData, PhxProjectDate, PhxVariant, ProjectData_Agent, WufiPlugin
 from PHX.model.schedules.lighting import PhxScheduleLighting
@@ -1436,11 +1437,31 @@ def _PhxZone(_data: wufi_xml.WufiZone, _phx_project_host: PhxProject) -> PhxZone
         new_phx_home_device = as_phx_obj(device_dict_data, "PhxHomeDevice")
         phx_obj.elec_equipment_collection.add_new_device(new_phx_home_device.identifier, new_phx_home_device)
 
+    phx_obj.process_loads = [_PhxProcessLoad(d) for d in _data.ProcessLoadsPH or []]
+
     for i, bridge_dict_data in enumerate(_data.ThermalBridges or []):
         new_phx_tb = as_phx_obj(bridge_dict_data, "PhxComponentThermalBridge")
         new_phx_tb.identifier = f"ThermalBridge_{i :03}"
         phx_obj.add_thermal_bridge(new_phx_tb)
 
+    return phx_obj
+
+
+def _PhxProcessLoad(_data: wufi_xml.WufiProcessLoad) -> PhxProcessLoad:
+    """Build a PhxProcessLoad from a WUFI 'ProcessLoadsPH' row; missing fields keep the PHX defaults."""
+    phx_obj = PhxProcessLoad()
+    phx_obj.display_name = _data.Name or phx_obj.display_name
+    phx_obj.annual_energy_kwh = _data.TotalEnergyUse or 0.0
+    phx_obj.quantity = _data.Quantity if _data.Quantity is not None else 1
+    if _data.IncludeInSourceEnergyTotal is not None:
+        phx_obj.include_in_source_energy = _data.IncludeInSourceEnergyTotal
+    if _data.IncreaseSourceEnergyAllowance is not None:
+        phx_obj.increase_source_energy_allowance = _data.IncreaseSourceEnergyAllowance
+    if _data.InsideThermalEnvelope is not None:
+        phx_obj.inside_thermal_envelope = _data.InsideThermalEnvelope
+    phx_obj.power_rating_w = _data.PowerRatingOpt or 0.0
+    phx_obj.annual_use_hours = _data.AnnualUseHoursOpt or 0.0
+    phx_obj.comment = _data.Comment or ""
     return phx_obj
 
 

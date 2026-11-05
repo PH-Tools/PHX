@@ -26,6 +26,7 @@ from PHX.model import (
 from PHX.model.enums.foundations import FoundationType
 from PHX.model.enums.hvac import PhxHotWaterPipingInchDiameterType
 from PHX.model.hvac import _base, renewable_devices
+from PHX.model.loads.process import PhxProcessLoad
 from PHX.model.schedules import occupancy, ventilation
 from PHX.model.ventilation_rooms import VentilationRoom, ventilation_rooms
 from PHX.to_WUFI_XML.xml_writables import XML_List, XML_Node, XML_Object, xml_writable
@@ -225,6 +226,13 @@ def _PhxZone(_z: building.PhxZone) -> list[xml_writable]:
             [
                 XML_Object("LoadsLighting", sp, "index", i, _schema_name="_LoadsLighting")
                 for i, sp in enumerate(_z.spaces)
+            ],
+        ),
+        XML_List(
+            "ProcessLoadsPH",
+            [
+                XML_Object("ProcessLoads", p, "index", i, _schema_name="_PhxProcessLoad")
+                for i, p in enumerate(_z.process_loads)
             ],
         ),
         XML_Node("GrossVolume_Selection", _z.volume_gross_mode.value),
@@ -1854,6 +1862,20 @@ def _LoadPerson(_sp: spaces.PhxSpace) -> list[xml_writable]:
         XML_Node("ChoiceActivityPersons", 3),
         XML_Node("NumberOccupants", _sp.peak_occupancy),
         XML_Node("FloorAreaUtilizationZone", _sp.floor_area, "unit", "m²"),
+    ]
+
+
+def _PhxProcessLoad(_p: PhxProcessLoad) -> list[xml_writable]:
+    return [
+        XML_Node("Name", _p.display_name),
+        XML_Node("TotalEnergyUse", _p.annual_energy_kwh, "unit", "kWh/a"),
+        XML_Node("Quantity", _p.quantity),
+        XML_Node("IncludeInSourceEnergyTotal", _p.include_in_source_energy),
+        XML_Node("IncreaseSourceEnergyAllowance", _p.increase_source_energy_allowance),
+        XML_Node("InsideThermalEnvelope", _p.inside_thermal_envelope),
+        XML_Node("PowerRatingOpt", _p.power_rating_w, "unit", "W"),
+        XML_Node("AnnualUseHoursOpt", _p.annual_use_hours, "unit", "h"),
+        XML_Node("Comment", _p.comment),
     ]
 
 

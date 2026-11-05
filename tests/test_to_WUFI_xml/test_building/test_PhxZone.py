@@ -16,6 +16,7 @@ def test_default_PhxProject(reset_class_counters):
         '<RoomsVentilation count="0"/>',
         '<LoadsPersonsPH count="0"/>',
         '<LoadsLightingsPH count="0"/>',
+        '<ProcessLoadsPH count="0"/>',
         "<GrossVolume_Selection>7</GrossVolume_Selection>",
         "<GrossVolume>0.0</GrossVolume>",
         "<NetVolume_Selection>6</NetVolume_Selection>",

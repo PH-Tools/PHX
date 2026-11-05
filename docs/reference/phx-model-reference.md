@@ -150,7 +150,7 @@ PhxProject
 | `model/utilization_patterns.py` | `UtilizationPatternCollection_Ventilation`, `UtilizationPatternCollection_Occupancy`, `UtilizationPatternCollection_Lighting` | Schedule collections |
 | `model/enums/` | Various enums | `building.py`, `hvac.py`, `elec_equip.py`, `foundations.py`, `phx_site.py`, `phi_certification_phpp_9.py`, `phi_certification_phpp_10.py`, `phius_certification.py` |
 | `model/schedules/` | `PhxScheduleVentilation` (+ `Vent_UtilPeriods`, `Vent_OperatingPeriod`), `PhxScheduleOccupancy`, `PhxScheduleLighting` | Time-based operating patterns |
-| `model/loads/` | `PhxLoadVentilation`, `PhxLoadOccupancy`, `PhxLoadLighting` | Numeric load definitions |
+| `model/loads/` | `PhxLoadVentilation`, `PhxLoadOccupancy`, `PhxLoadLighting`, `PhxProcessLoad` | Numeric load definitions. `PhxProcessLoad` (on `PhxZone.process_loads`) is a Phius non-res annual-energy line item built from the Honeybee-Energy ElectricEquipment and Process loads |
 | `model/programs/` | `PhxProgramVentilation`, `PhxProgramOccupancy`, `PhxProgramLighting` | Load + Schedule pairs |
 
 ### Electrical Equipment Devices (`model/elec_equip.py`)

@@ -17,6 +17,7 @@ from honeybee_ph_utils import aperture_psi_install
 from PHX.from_HBJSON import create_geometry
 from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
 from PHX.from_HBJSON._type_utils import MissingEnergyPropertiesError, get_room_people
+from PHX.from_HBJSON.create_process_loads import build_process_loads_from_hb_rooms, is_phius_non_residential
 from PHX.from_HBJSON.create_rooms import create_room_from_space
 from PHX.model import building, components, constructions
 from PHX.model.enums.building import (
@@ -456,6 +457,11 @@ def create_zone_from_hb_room(
     # -- Set the Zone's thermal bridges
     for phx_thermal_bridge in create_thermal_bridges_from_hb_room(_hb_room):
         new_zone.add_thermal_bridges(phx_thermal_bridge)
+
+    # -- Phius non-residential: equipment comes from the Honeybee-Energy loads, per source Room
+    if is_phius_non_residential(_hb_room):
+        source_rooms = {sp.host.identifier: sp.host for sp in sorted_spaces if sp.host} or {"": _hb_room}
+        new_zone.process_loads = build_process_loads_from_hb_rooms(source_rooms.values())
 
     # --  Set the ICFA / TFA Override Values
     new_zone.icfa_override = room_prop_ph.ph_bldg_segment.phius_certification.icfa_override
