@@ -15,7 +15,7 @@ from honeybee_phhvac.properties.room import get_ph_hvac_from_space
 
 from PHX.from_HBJSON._dwelling_occupancy import DwellingOccupancyIndex
 from PHX.from_HBJSON._type_utils import get_space_energy_properties
-from PHX.from_HBJSON.create_schedules import DEFAULT_VENT_PATTERN_IDENTIFIER
+from PHX.from_HBJSON.create_schedules import DEFAULT_OCC_PATTERN_IDENTIFIER, DEFAULT_VENT_PATTERN_IDENTIFIER
 from PHX.model import spaces
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Lighting,
@@ -175,6 +175,9 @@ def create_room_from_space(
             total_space_fa = get_ph_prop_from_room(host).total_space_floor_area
             if total_space_fa:
                 new_room.peak_occupancy = room_peak_occupancy * (_space.floor_area / total_space_fa)
+    else:
+        # -- No HB People load on the host Room: zero occupancy on the registered default pattern.
+        new_room.occupancy.schedule = _occ_sched_collection[DEFAULT_OCC_PATTERN_IDENTIFIER]
 
     # -- Keep the new room's Lighting reference aligned with the HB-Room's
     if hbe_lighting:

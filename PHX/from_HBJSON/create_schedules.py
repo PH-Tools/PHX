@@ -34,6 +34,19 @@ def _build_default_vent_pattern() -> ventilation.PhxScheduleVentilation:
     return new_phx_vent_schedule
 
 
+# -- Utilization Pattern used by Rooms with no HB People load (their Spaces carry zero occupancy).
+DEFAULT_OCC_PATTERN_IDENTIFIER = "__phx_default_constant_occupancy__"
+
+
+def _build_default_occupancy_pattern() -> occupancy.PhxScheduleOccupancy:
+    """Return a constant (24 h, 365 days, 100%) occupancy Utilization Pattern."""
+    new_phx_occ_schedule = occupancy.PhxScheduleOccupancy()
+    new_phx_occ_schedule.identifier = DEFAULT_OCC_PATTERN_IDENTIFIER
+    new_phx_occ_schedule.display_name = "default_constant_occupancy"
+    new_phx_occ_schedule.annual_utilization_factor = 1.0
+    return new_phx_occ_schedule
+
+
 def _room_has_ph_style_ventilation(_hb_room: room.Room) -> bool:
     """Returns True if the HB Room has detailed PH-Style ventilation schedule
         information, False if not.
@@ -446,7 +459,9 @@ def add_all_HB_Model_occupancy_schedules_to_PHX_Project(_project: project.PhxPro
             occ_schedule = get_people_schedule(hb_room)
             occ_schedule_id = occ_schedule.identifier
         except MissingEnergyPropertiesError:
-            # No people or occupancy schedule found, skip this room
+            # -- No HB People load on the Room. Its Spaces reference the default pattern instead.
+            if not _project.occupancy_sched_in_project_collection(DEFAULT_OCC_PATTERN_IDENTIFIER):
+                _project.add_occupancy_sched_to_collection(_build_default_occupancy_pattern())
             continue
 
         if _project.occupancy_sched_in_project_collection(occ_schedule_id):
