@@ -81,3 +81,15 @@ def test_merge_rooms_handles_segment_identifier_with_spaces():
 
     assert valid_string(merged.identifier) == merged.identifier
     assert merged.display_name == "Main House"
+
+
+def test_distinct_segment_identifiers_cleaning_to_same_string_stay_distinct():
+    rooms_a = _segment_rooms("Main House", origin_y=0.0, segment_id="main house")
+    rooms_b = _segment_rooms("Main_House", origin_y=10.0, segment_id="main_house")
+
+    merged_a = merge_rooms(rooms_a, 0.01, 1.0, False)
+    merged_b = merge_rooms(rooms_b, 0.01, 1.0, False)
+
+    assert valid_string(merged_a.identifier) == merged_a.identifier
+    assert valid_string(merged_b.identifier) == merged_b.identifier
+    assert merged_a.identifier != merged_b.identifier

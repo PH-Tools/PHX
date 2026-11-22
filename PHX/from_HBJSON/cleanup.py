@@ -2,6 +2,7 @@
 
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
+import hashlib
 import logging
 from typing import Any
 
@@ -576,6 +577,22 @@ def merge_foundations(_hb_rooms: list[room.Room]) -> dict[str, PhFoundation]:
     return foundation_groups
 
 
+def _merged_room_identifier(_segment_identifier: str) -> str:
+    """Return a valid, deterministic Honeybee Room identifier for a Building Segment.
+
+    Already-valid identifiers pass through unchanged. When sanitization modifies or
+    truncates the raw identifier (e.g. ``'main house'`` -> ``'main_house'``), a short
+    SHA-256 digest of the raw identifier is appended so distinct Segments that clean
+    to the same string never collide.
+    """
+    raw = str(_segment_identifier)
+    cleaned = clean_string(raw)
+    if cleaned == raw:
+        return cleaned
+    digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:8]
+    return f"{cleaned[:91]}_{digest}"
+
+
 def merge_rooms(
     _hb_rooms: list[room.Room],
     _tolerance: float,
@@ -631,7 +648,7 @@ def merge_rooms(
     room_ph_prop: RoomPhProperties = reference_room.properties.ph
     segment = room_ph_prop.ph_bldg_segment
     new_room = room.Room(
-        identifier=clean_string(str(segment.identifier)),
+        identifier=_merged_room_identifier(segment.identifier),
         faces=exposed_faces,
     )
     new_room.display_name = segment.display_name
