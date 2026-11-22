@@ -9,7 +9,7 @@ try:  # import the core honeybee dependencies
     from honeybee import face, room
     from honeybee.boundarycondition import Ground, Outdoors, Surface
     from honeybee.properties import FaceProperties
-    from honeybee.typing import clean_ep_string
+    from honeybee.typing import clean_ep_string, clean_string
     from honeybee_energy import shw
 except ImportError as e:
     raise ImportError(f"\nFailed to import honeybee:\n\t{e}")
@@ -629,10 +629,12 @@ def merge_rooms(
     # -------------------------------------------------------------------------
     # Build the new room from the exposed (possibly merged) faces
     room_ph_prop: RoomPhProperties = reference_room.properties.ph
+    segment = room_ph_prop.ph_bldg_segment
     new_room = room.Room(
-        identifier=room_ph_prop.ph_bldg_segment.display_name,
+        identifier=clean_string(str(segment.identifier)),
         faces=exposed_faces,
     )
+    new_room.display_name = segment.display_name
 
     # -------------------------------------------------------------------------
     # -- Set the new Merged-Room's properties.ph and
