@@ -16,12 +16,13 @@ from PHX.from_HBJSON import create_variant
 from PHX.from_HBJSON.create_project import convert_hb_model_to_PhxProject
 from PHX.model.building import PhxZone
 from PHX.model.enums.building import ZoneType
+from PHX.model.hvac.ventilation import PhxExhaustVentilatorRangeHood
 from PHX.model.project import PhxVariant
 from PHX.to_METr_JSON.metr_builder import generate_metr_json_dict
 from PHX.to_WUFI_XML.xml_builder import generate_WUFI_XML_from_object
 
 
-def _room_with_exhaust_vents() -> Room:
+def _room_with_exhaust_vents(devices=None) -> Room:
     house = Room.from_box("House", 4, 4, 3, origin=Point3D(0, 0, 0))
     house.display_name = "House"
     seg = SpaceFloorSegment()
@@ -34,8 +35,8 @@ def _room_with_exhaust_vents() -> Room:
     space = Space(house)
     space.add_new_volumes(vol)
     house.properties.ph.add_new_space(space)
-    house.properties.ph_hvac.add_exhaust_vent_device(ExhaustVentKitchenHood())
-    house.properties.ph_hvac.add_exhaust_vent_device(ExhaustVentDryer())
+    for device in devices if devices is not None else (ExhaustVentKitchenHood(), ExhaustVentDryer()):
+        house.properties.ph_hvac.add_exhaust_vent_device(device)
     return house
 
 
@@ -80,9 +81,15 @@ def test_attached_zone_has_no_exhaust_vents_in_wufi_xml_and_metr_json():
     assert metr_zones == {"Unnamed_Bldg_Segment": 2, "Garage": 0}
 
 
-@pytest.mark.parametrize("merge_devices", [False, True])
-def test_multiple_simulated_zones_receive_exhaust_vents_while_attached_zone_stays_empty(merge_devices: bool):
-    rm = _room_with_exhaust_vents()
+@pytest.mark.parametrize("merge_devices, expected_count", [(False, 2), (True, 1)])
+def test_multiple_simulated_zones_receive_and_merge_exhaust_vents_while_attached_zone_is_untouched(
+    merge_devices: bool, expected_count: int
+):
+    hood_1 = ExhaustVentKitchenHood()
+    hood_1.display_name = "Hood_1"
+    hood_2 = ExhaustVentKitchenHood()
+    hood_2.display_name = "Hood_2"
+    rm = _room_with_exhaust_vents([hood_1, hood_2])
 
     sim_1, sim_2 = PhxZone(display_name="Sim_1"), PhxZone(display_name="Sim_2")
     attached = PhxZone(display_name="Garage", zone_type=ZoneType.ATTACHED)
@@ -91,6 +98,21 @@ def test_multiple_simulated_zones_receive_exhaust_vents_while_attached_zone_stay
 
     create_variant.add_exhaust_vent_devices_from_hb_rooms(variant, rm, _merge_devices=merge_devices)
 
-    assert len(sim_1.exhaust_ventilator_collection.devices) == 2
-    assert len(sim_2.exhaust_ventilator_collection.devices) == 2
+    assert len(sim_1.exhaust_ventilator_collection.devices) == expected_count
+    assert len(sim_2.exhaust_ventilator_collection.devices) == expected_count
     assert list(attached.exhaust_ventilator_collection.devices) == []
+
+
+def test_merge_loop_skips_attached_zones():
+    rm = _room_with_exhaust_vents()
+    sim = PhxZone(display_name="Sim")
+    attached = PhxZone(display_name="Garage", zone_type=ZoneType.ATTACHED)
+    attached.exhaust_ventilator_collection.add_new_ventilator("hood_a", PhxExhaustVentilatorRangeHood())
+    attached.exhaust_ventilator_collection.add_new_ventilator("hood_b", PhxExhaustVentilatorRangeHood())
+
+    variant = PhxVariant()
+    variant.building.add_zones([sim, attached])
+
+    create_variant.add_exhaust_vent_devices_from_hb_rooms(variant, rm, _merge_devices=True)
+
+    assert len(attached.exhaust_ventilator_collection.devices) == 2
