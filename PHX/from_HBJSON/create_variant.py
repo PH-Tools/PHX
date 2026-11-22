@@ -40,6 +40,7 @@ from PHX.from_HBJSON.create_shw_devices import (
 )
 from PHX.model import certification, constructions, phx_site, project
 from PHX.model.enums import hvac, phi_certification_phpp_9, phi_certification_phpp_10, phius_certification
+from PHX.model.enums.building import ZoneType
 from PHX.model.utilization_patterns import (
     UtilizationPatternCollection_Lighting,
     UtilizationPatternCollection_Occupancy,
@@ -874,7 +875,7 @@ def _room_has_ph_equipment(_hb_room: room.Room) -> bool:
 
 
 def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Room) -> None:
-    """Creates new PHX-Elec-Equipment (Appliances) and adds them to each of the Variant.building.zones
+    """Creates new PHX-Elec-Equipment (Appliances) and adds them to each simulated zone in Variant.building.zones
 
     Arguments:
     ----------
@@ -898,6 +899,8 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
             )
         return None
 
+    simulated_zones = [zone for zone in _variant.building.zones if zone.zone_type == ZoneType.SIMULATED]
+
     # -- Get all the PhEquipment from the HBE-Process-Loads
     try:
         room_energy_props = get_room_energy_properties(_hb_room)
@@ -907,7 +910,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
             if not process_prop_ph.ph_equipment:
                 continue
             phx_elec_device = create_elec_equip.build_phx_elec_device(process_prop_ph.ph_equipment)
-            for zone in _variant.building.zones:
+            for zone in simulated_zones:
                 zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
     except MissingEnergyPropertiesError:
         # No energy properties or process loads defined, skip
@@ -921,7 +924,7 @@ def add_elec_equip_from_hb_room(_variant: project.PhxVariant, _hb_room: room.Roo
             lighting_prop_ph: lighting.LightingPhProperties = room_energy_props.lighting.properties.ph
             if lighting_prop_ph.ph_equipment:
                 phx_elec_device = create_elec_equip.build_phx_elec_device(lighting_prop_ph.ph_equipment)
-                for zone in _variant.building.zones:
+                for zone in simulated_zones:
                     zone.elec_equipment_collection.add_new_device(str(phx_elec_device.identifier), phx_elec_device)
     except MissingEnergyPropertiesError:
         # No energy properties or lighting defined, skip

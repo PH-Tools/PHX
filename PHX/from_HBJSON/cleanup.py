@@ -3,6 +3,7 @@
 """Functions used to cleanup / optimize Honeybee-Rooms before outputting to WUFI"""
 
 import logging
+from typing import Any
 
 try:  # import the core honeybee dependencies
     from honeybee import face, room
@@ -16,6 +17,7 @@ except ImportError as e:
 try:
     from honeybee_energy.load.equipment import ElectricEquipment
     from honeybee_energy.load.infiltration import Infiltration
+    from honeybee_energy.load.lighting import Lighting
     from honeybee_energy.load.people import People
     from honeybee_energy.load.process import Process
     from honeybee_energy.properties.face import FaceEnergyProperties
@@ -32,6 +34,8 @@ except ImportError as e:
 
 try:
     from honeybee_energy_ph.dwellings import total_dwelling_count
+    from honeybee_energy_ph.load.ph_equipment import PhEquipment
+    from honeybee_energy_ph.properties.load.lighting import LightingPhProperties
     from honeybee_energy_ph.properties.load.people import PeoplePhProperties, PhDwellings
     from honeybee_energy_ph.properties.load.process import ProcessPhProperties
 except ImportError as e:
@@ -415,6 +419,78 @@ def merge_elec_equip(_hb_rooms: list[room.Room]) -> ElectricEquipment:
     return new_hb_equip
 
 
+def _ph_equipment_value_signature(_equip: PhEquipment) -> dict[str, Any]:
+    """Return a PhEquipment's serialized engineering values, excluding per-instance metadata."""
+    data = _equip.to_dict()
+    for key in ("identifier", "display_name", "user_data", "comment"):
+        data.pop(key, None)
+    return data
+
+
+def merge_lighting(_hb_rooms: list[room.Room]) -> Lighting | None:
+    """Return a merged Honeybee Lighting load from a list of input HB-Rooms, or None if none carry Lighting.
+
+    Area-weights ``watts_per_area`` across the full merged floor area (conserving total installed
+    watts when some Rooms are unlit), skips Rooms without a PH lighting device, and preserves the
+    PH lighting device (e.g. ``PhPhiusLightingInterior``) from the first Room that carries one.
+    Logs a warning if multiple Rooms carry PH lighting devices with differing values.
+
+    Arguments:
+    ----------
+        * _hb_rooms (list[room.Room]): The HB-Rooms to build the merged Lighting object from.
+
+    Returns:
+    --------
+        * (Lighting | None): A new Honeybee Lighting object, or None if no Room has Lighting.
+    """
+    logger.debug(f"Merging Lighting from {len(_hb_rooms)} Rooms")
+
+    rooms_with_lighting: list[tuple[room.Room, Lighting]] = []
+    for rm in _hb_rooms:
+        try:
+            energy_props = get_room_energy_properties(rm)
+        except MissingEnergyPropertiesError:
+            continue
+        if energy_props.lighting is not None:
+            rooms_with_lighting.append((rm, energy_props.lighting))
+
+    if not rooms_with_lighting:
+        return None
+
+    total_floor_area = sum(rm.floor_area for rm in _hb_rooms) or 0.0
+    total_watts = sum(rm.floor_area * ltg.watts_per_area for rm, ltg in rooms_with_lighting)
+
+    reference_lighting = rooms_with_lighting[0][1]
+    new_lighting: Lighting = reference_lighting.duplicate()  # type: ignore
+    new_lighting.watts_per_area = total_watts / total_floor_area if total_floor_area > 0 else 0.0
+
+    # -- Collect PH lighting equipment from any Room that carries one (first wins deterministically).
+    ph_lighting_entries: list[tuple[room.Room, PhEquipment]] = []
+    for rm, ltg in rooms_with_lighting:
+        ltg_prop_ph: LightingPhProperties = ltg.properties.ph
+        if ltg_prop_ph.ph_equipment is not None:
+            ph_lighting_entries.append((rm, ltg_prop_ph.ph_equipment))
+
+    if ph_lighting_entries:
+        first_room, first_equip = ph_lighting_entries[0]
+        new_lighting_prop_ph: LightingPhProperties = new_lighting.properties.ph
+        new_lighting_prop_ph.ph_equipment = first_equip.duplicate(new_host=new_lighting_prop_ph)
+
+        first_sig = _ph_equipment_value_signature(first_equip)
+        conflicting_rooms = [
+            rm.display_name
+            for rm, equip in ph_lighting_entries[1:]
+            if _ph_equipment_value_signature(equip) != first_sig
+        ]
+        if conflicting_rooms:
+            logger.warning(
+                f"Merged Rooms carry conflicting PH lighting equipment values: kept '{first_room.display_name}', "
+                f"ignored differing values from {conflicting_rooms}."
+            )
+
+    return new_lighting
+
+
 def merge_process_loads(_hb_rooms: list[room.Room]) -> list[Process]:
     """Returns a new HB-Process-Obj with it's values set from a list of input HB-Rooms.
 
@@ -607,6 +683,7 @@ def merge_rooms(
         new_rm_energy_props.infiltration = merge_infiltrations(_hb_rooms)
         new_rm_energy_props.people = merge_occupancies(_hb_rooms)
         new_rm_energy_props.electric_equipment = merge_elec_equip(_hb_rooms)
+        new_rm_energy_props.lighting = merge_lighting(_hb_rooms)
         new_rm_energy_props.shw = merge_shw_programs(_hb_rooms)
         new_rm_energy_props.remove_process_loads()
         new_rm_energy_props._process_loads = merge_process_loads(_hb_rooms)
