@@ -606,19 +606,21 @@ def add_exhaust_vent_devices_from_hb_rooms(
     _hb_room: room.Room,
     _merge_devices: bool = False,
 ) -> None:
-    """Add all the Exhaust Ventilation Equipment from the HB Room onto the new Variant/Zone.
+    """Add all the Exhaust Ventilation Equipment from the HB Room onto each simulated zone in the Variant.
 
     Arguments:
     ----------
         * _variant (project.Variant): The PHX-Variant to add the new exhaust equipment to.
         * _hb_room (room.Room): The Honeybee-Room to use as the source.
-        * _merge_devices (bool): Default=True. Merge together the Exhaust Ventilation
+        * _merge_devices (bool): Default=False. Merge together the Exhaust Ventilation
             Devices into a single device (per type)?
 
     Returns:
     --------
         * None
     """
+
+    simulated_zones = [zone for zone in _variant.zones if zone.zone_type == ZoneType.SIMULATED]
 
     room_prop_ph: RoomPhProperties = _hb_room.properties.ph
     for hbph_space in room_prop_ph.spaces:
@@ -629,7 +631,7 @@ def add_exhaust_vent_devices_from_hb_rooms(
 
             # -- Get or Build the PHX Exhaust Ventilation Device
             # -- If the Device already exists, just use that one.
-            for zone in _variant.zones:
+            for zone in simulated_zones:
                 # -- If the device is already in the Zone's collection, dont add another one.
                 if zone.exhaust_ventilator_collection.device_in_collection(key):
                     continue
@@ -640,9 +642,9 @@ def add_exhaust_vent_devices_from_hb_rooms(
                 #  -- And add the new ventilator to the Zone's set
                 zone.exhaust_ventilator_collection.add_new_ventilator(key, phx_device)
 
-    # -- Once all the Exhaust Ventilators have been added to the Zones,
+    # -- Once all the Exhaust Ventilators have been added to the simulated Zones,
     # -- merge them together
-    for zone in _variant.zones:
+    for zone in simulated_zones:
         if _merge_devices:
             zone.exhaust_ventilator_collection.merge_all_devices()
 
