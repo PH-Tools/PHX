@@ -107,12 +107,16 @@ def test_merge_loop_skips_attached_zones():
     rm = _room_with_exhaust_vents()
     sim = PhxZone(display_name="Sim")
     attached = PhxZone(display_name="Garage", zone_type=ZoneType.ATTACHED)
-    attached.exhaust_ventilator_collection.add_new_ventilator("hood_a", PhxExhaustVentilatorRangeHood())
-    attached.exhaust_ventilator_collection.add_new_ventilator("hood_b", PhxExhaustVentilatorRangeHood())
+    hood_a = PhxExhaustVentilatorRangeHood()
+    hood_b = PhxExhaustVentilatorRangeHood()
+    attached.exhaust_ventilator_collection.add_new_ventilator("hood_a", hood_a)
+    attached.exhaust_ventilator_collection.add_new_ventilator("hood_b", hood_b)
 
     variant = PhxVariant()
     variant.building.add_zones([sim, attached])
 
     create_variant.add_exhaust_vent_devices_from_hb_rooms(variant, rm, _merge_devices=True)
 
-    assert len(attached.exhaust_ventilator_collection.devices) == 2
+    assert attached.exhaust_ventilator_collection._devices == {"hood_a": hood_a, "hood_b": hood_b}
+    assert attached.exhaust_ventilator_collection._devices["hood_a"] is hood_a
+    assert attached.exhaust_ventilator_collection._devices["hood_b"] is hood_b
