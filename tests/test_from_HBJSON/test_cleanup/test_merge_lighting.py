@@ -63,6 +63,7 @@ def test_ph_lighting_device_survives_when_first_room_has_no_lighting():
 
     merged = merge_rooms([unlit, apartment], 0.01, 1.0, False)
     assert merged.properties.energy.lighting is not None
+    assert merged.properties.energy.lighting.watts_per_area == pytest.approx(1.0)
     assert isinstance(merged.properties.energy.lighting.properties.ph.ph_equipment, PhPhiusLightingInterior)
 
 

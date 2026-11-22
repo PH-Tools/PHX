@@ -430,10 +430,10 @@ def _ph_equipment_value_signature(_equip: PhEquipment) -> dict[str, Any]:
 def merge_lighting(_hb_rooms: list[room.Room]) -> Lighting | None:
     """Return a merged Honeybee Lighting load from a list of input HB-Rooms, or None if none carry Lighting.
 
-    Area-weights ``watts_per_area`` across Rooms that carry a Lighting load, and preserves
-    one PH lighting device (e.g. ``PhPhiusLightingInterior``) from the first Room that
-    carries one so the result does not depend on Room order. Logs a warning if multiple
-    Rooms carry PH lighting devices with differing values.
+    Area-weights ``watts_per_area`` across the full merged floor area (conserving total installed
+    watts when some Rooms are unlit), skips Rooms without a PH lighting device, and preserves the
+    PH lighting device (e.g. ``PhPhiusLightingInterior``) from the first Room that carries one.
+    Logs a warning if multiple Rooms carry PH lighting devices with differing values.
 
     Arguments:
     ----------
@@ -457,7 +457,7 @@ def merge_lighting(_hb_rooms: list[room.Room]) -> Lighting | None:
     if not rooms_with_lighting:
         return None
 
-    total_floor_area = sum(rm.floor_area for rm, _ in rooms_with_lighting) or 0.0
+    total_floor_area = sum(rm.floor_area for rm in _hb_rooms) or 0.0
     total_watts = sum(rm.floor_area * ltg.watts_per_area for rm, ltg in rooms_with_lighting)
 
     reference_lighting = rooms_with_lighting[0][1]
